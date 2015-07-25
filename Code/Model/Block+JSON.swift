@@ -13,22 +13,24 @@
 * limitations under the License.
 */
 
-import UIKit
-import Blockly
+import Foundation
 
-class ViewController: UIViewController {
-  @IBOutlet weak var label: UILabel!
+extension Block {
+  // MARK: - Public
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  @objc
+  public class func blockFromJSONDictionary(
+    json: Dictionary<String, AnyObject>, workspace: Workspace) throws -> Block {
+      // TODO(vicng): Implement parsing part :)
+      if (json["output"] != nil && json["previousStatement"] != nil) {
+        throw BlockError(.InvalidJSON,
+          "Must not have both an output and a previousStatement.")
+      }
 
-    let workspace = Workspace(isFlyout: true, isRTL: false)
-    let block = Block(identifier: "👋🌏", name: "New Kid", workspace: workspace, category: 0,
-      colourHue: 0, inputList: [], inputsInline: true)
-    label.text = block.identifier
-  }
+      let blockName = (json["name"] as? String) ?? ""
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
+      let builder = Block.Builder(identifier: "", name: blockName, workspace: workspace)
+
+      return builder.build()
   }
 }

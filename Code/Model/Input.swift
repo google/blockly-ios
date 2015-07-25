@@ -13,22 +13,9 @@
 * limitations under the License.
 */
 
-import UIKit
-import Blockly
+import Foundation
 
-class ViewController: UIViewController {
-  @IBOutlet weak var label: UILabel!
+@objc(BKYInput)
+public class Input : NSObject {
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    let workspace = Workspace(isFlyout: true, isRTL: false)
-    let block = Block(identifier: "👋🌏", name: "New Kid", workspace: workspace, category: 0,
-      colourHue: 0, inputList: [], inputsInline: true)
-    label.text = block.identifier
-  }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-  }
 }

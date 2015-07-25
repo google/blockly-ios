@@ -13,22 +13,18 @@
 * limitations under the License.
 */
 
-import UIKit
-import Blockly
+import Foundation
 
-class ViewController: UIViewController {
-  @IBOutlet weak var label: UILabel!
+@objc(BKYConnection)
+public class Connection : NSObject {
+  // MARK: - Properties
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  public unowned var sourceBlock : Block
+  public var position : CGPoint = CGPointZero
 
-    let workspace = Workspace(isFlyout: true, isRTL: false)
-    let block = Block(identifier: "👋🌏", name: "New Kid", workspace: workspace, category: 0,
-      colourHue: 0, inputList: [], inputsInline: true)
-    label.text = block.identifier
-  }
+  // MARK: - Initializers
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
+  public init(sourceBlock: Block) {
+    self.sourceBlock = sourceBlock
   }
 }

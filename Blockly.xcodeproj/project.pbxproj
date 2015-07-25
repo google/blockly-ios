@@ -9,10 +9,16 @@
 /* Begin PBXBuildFile section */
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
 		FA548C5C1B63136F008BC59C /* BlocklyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C5A1B63136F008BC59C /* BlocklyTests.swift */; };
-		FA548C5D1B63136F008BC59C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA548C5B1B63136F008BC59C /* Info.plist */; };
 		FA548C611B63144A008BC59C /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = FA548C5F1B63144A008BC59C /* Blockly.h */; };
-		FA548C621B63144A008BC59C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA548C601B63144A008BC59C /* Info.plist */; };
-		FA548C661B6314D7008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C651B6314D7008BC59C /* Block.swift */; };
+		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
+		FA548C8B1B66E861008BC59C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C871B66E861008BC59C /* Connection.swift */; };
+		FA548C8C1B66E861008BC59C /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C881B66E861008BC59C /* Input.swift */; };
+		FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
+		FA548D231B66F415008BC59C /* Block+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D221B66F415008BC59C /* Block+JSON.swift */; };
+		FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D261B6708F2008BC59C /* Block+Builder.swift */; };
+		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
+		FA8BEEAA1B68655E00D0674B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEA91B68655E00D0674B /* Constants.swift */; };
+		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +38,15 @@
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA548C5F1B63144A008BC59C /* Blockly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blockly.h; sourceTree = "<group>"; };
 		FA548C601B63144A008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA548C651B6314D7008BC59C /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Block.swift; path = Model/Block.swift; sourceTree = "<group>"; };
+		FA548C861B66E861008BC59C /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		FA548C871B66E861008BC59C /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		FA548C881B66E861008BC59C /* Input.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
+		FA548C891B66E861008BC59C /* Workspace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
+		FA548D221B66F415008BC59C /* Block+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+JSON.swift"; sourceTree = "<group>"; };
+		FA548D261B6708F2008BC59C /* Block+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Builder.swift"; sourceTree = "<group>"; };
+		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
+		FA8BEEA91B68655E00D0674B /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Core/Constants.swift; sourceTree = "<group>"; };
+		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +98,43 @@
 		FA548C5E1B63144A008BC59C /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				FA8BEE121B68513200D0674B /* Core */,
+				FA548C851B66E861008BC59C /* Model */,
 				FA548C5F1B63144A008BC59C /* Blockly.h */,
 				FA548C601B63144A008BC59C /* Info.plist */,
-				FA548C651B6314D7008BC59C /* Block.swift */,
 			);
 			path = Code;
+			sourceTree = "<group>";
+		};
+		FA548C851B66E861008BC59C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FA548C861B66E861008BC59C /* Block.swift */,
+				FA548D261B6708F2008BC59C /* Block+Builder.swift */,
+				FA548D221B66F415008BC59C /* Block+JSON.swift */,
+				FA548C871B66E861008BC59C /* Connection.swift */,
+				FA548C881B66E861008BC59C /* Input.swift */,
+				FA548C891B66E861008BC59C /* Workspace.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FA8BEE0F1B684F8700D0674B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
+				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
+				FA8BEEA91B68655E00D0674B /* Constants.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		FA8BEE121B68513200D0674B /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FA8BEE0F1B684F8700D0674B /* Common */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +193,8 @@
 		FA548BFC1B630BAC008BC59C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Google Inc.";
 				TargetAttributes = {
 					FA548C041B630BAC008BC59C = {
@@ -181,7 +228,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548C621B63144A008BC59C /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,7 +235,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548C5D1B63136F008BC59C /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +245,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548C661B6314D7008BC59C /* Block.swift in Sources */,
+				FA548D231B66F415008BC59C /* Block+JSON.swift in Sources */,
+				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
+				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
+				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
+				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
+				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
+				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
+				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
+				FA8BEEAA1B68655E00D0674B /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +297,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -320,9 +374,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};
@@ -338,6 +393,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -356,7 +412,9 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};
@@ -369,6 +427,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

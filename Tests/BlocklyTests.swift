@@ -19,9 +19,29 @@ import XCTest
 
 class BlocklyTests: XCTestCase {
 
+  var workspace: Workspace!
+
+  override func setUp() {
+    super.setUp()
+
+    workspace = Workspace(isFlyout: true, isRTL: false)
+  }
+
+  override func tearDown() {
+    super.tearDown()
+  }
+
   func testBlockCreation() {
-    let block = Block(identifier: "Test")
+    let builder = Block.Builder(identifier: "Test", name: "name", workspace: workspace)
+    let block = builder.build()
 
     XCTAssertEqual("Test", block.identifier)
+  }
+
+  func testBlockCreationFromJSON() {
+    let json = try! NSJSONSerialization.bky_JSONDictionaryFromString("{}")
+    let block = try! Block.blockFromJSONDictionary(json, workspace: workspace)
+
+    // TODO(vicng): Test block properties
   }
 }
