@@ -1,0 +1,61 @@
+# For options, see http://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+# A style complying with Google’s C++ style guide
+BasedOnStyle: Google
+
+# If true, horizontally aligns arguments after an open bracket.
+# This applies to round brackets (parentheses), angle brackets and square brackets.
+AlignAfterOpenBracket: true
+
+# If true, horizontally align operands of binary and ternary expressions.
+AlignOperands: false
+
+# Allow putting all parameters of a function declaration onto the next line even if BinPackParameters is false.
+AllowAllParametersOfDeclarationOnNextLine: true
+
+# If true, always break after the template<...> of a template declaration.
+AlwaysBreakTemplateDeclarations: true
+
+# If false, a function call’s arguments will either be all on the same line or will have one line each.
+BinPackArguments: false
+
+# If false, a function call’s or function definition’s parameters will either all be on the same line or will have one line each.
+BinPackParameters: false
+
+# If true, ternary operators will be placed after line breaks.
+BreakBeforeTernaryOperators: true
+
+# Column limit for Obj-C at Google is 100
+ColumnLimit: 100
+
+# Indent width for line continuations.
+ContinuationIndentWidth: 4
+
+# If true, analyze the formatted file for the most common alignment of & and *. PointerAlignment is then used only as fallback.
+DerivePointerAlignment: false
+
+# The number of characters to use for indentation of ObjC blocks.
+ObjCBlockIndentWidth: 2
+
+# Add a space after @property in Objective-C.
+# i.e. use \@property (readonly) instead of \@property(readonly).
+ObjCSpaceAfterProperty: false
+
+# Add a space in front of an Objective-C protocol list
+# i.e. use Foo <Protocol> instead of Foo<Protocol>.
+ObjCSpaceBeforeProtocolList: true
+
+# Pointer and reference alignment style.
+# ie. Right means * and & align to the variable, not the type.
+# (PointerBindsToType looks like it's been deprecated and replaced by PointerAlignment)
+PointerBindsToType: false
+PointerAlignment: Right
+
+# If true, spaces are inserted inside container literals (e.g. ObjC array and dict literals).
+SpacesInContainerLiterals: true
+
+# The number of columns used for tab stops.
+TabWidth: 2
+
+# The way to use tab characters in the resulting file.
+UseTab: Never

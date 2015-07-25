@@ -1,0 +1,348 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FA548C301B6312AE008BC59C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C2F1B6312AE008BC59C /* AppDelegate.swift */; };
+		FA548C321B6312AE008BC59C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C311B6312AE008BC59C /* ViewController.swift */; };
+		FA548C351B6312AE008BC59C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA548C331B6312AE008BC59C /* Main.storyboard */; };
+		FA548C371B6312AE008BC59C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA548C361B6312AE008BC59C /* Images.xcassets */; };
+		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
+		FA548C741B631829008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA548C6D1B631627008BC59C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA548C681B631627008BC59C /* Blockly.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FA548C051B630BAC008BC59C;
+			remoteInfo = Blockly;
+		};
+		FA548C6F1B631627008BC59C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA548C681B631627008BC59C /* Blockly.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FA548C101B630BAD008BC59C;
+			remoteInfo = BlocklyTests;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FA548C2A1B6312AE008BC59C /* BlocklySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA548C2E1B6312AE008BC59C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA548C2F1B6312AE008BC59C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA548C311B6312AE008BC59C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FA548C341B6312AE008BC59C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FA548C361B6312AE008BC59C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FA548C391B6312AE008BC59C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		FA548C681B631627008BC59C /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA548C271B6312AE008BC59C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA548C741B631829008BC59C /* Blockly.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA548C211B6312AE008BC59C = {
+			isa = PBXGroup;
+			children = (
+				FA548C681B631627008BC59C /* Blockly.xcodeproj */,
+				FA548C2C1B6312AE008BC59C /* BlocklySample */,
+				FA548C2B1B6312AE008BC59C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FA548C2B1B6312AE008BC59C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA548C2A1B6312AE008BC59C /* BlocklySample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA548C2C1B6312AE008BC59C /* BlocklySample */ = {
+			isa = PBXGroup;
+			children = (
+				FA548C2F1B6312AE008BC59C /* AppDelegate.swift */,
+				FA548C311B6312AE008BC59C /* ViewController.swift */,
+				FA548C331B6312AE008BC59C /* Main.storyboard */,
+				FA548C361B6312AE008BC59C /* Images.xcassets */,
+				FA548C381B6312AE008BC59C /* LaunchScreen.xib */,
+				FA548C2D1B6312AE008BC59C /* Supporting Files */,
+			);
+			path = BlocklySample;
+			sourceTree = "<group>";
+		};
+		FA548C2D1B6312AE008BC59C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA548C2E1B6312AE008BC59C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FA548C691B631627008BC59C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA548C6E1B631627008BC59C /* Blockly.framework */,
+				FA548C701B631627008BC59C /* BlocklyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA548C291B6312AE008BC59C /* BlocklySample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA548C491B6312AE008BC59C /* Build configuration list for PBXNativeTarget "BlocklySample" */;
+			buildPhases = (
+				FA548C261B6312AE008BC59C /* Sources */,
+				FA548C271B6312AE008BC59C /* Frameworks */,
+				FA548C281B6312AE008BC59C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlocklySample;
+			productName = BlocklySample;
+			productReference = FA548C2A1B6312AE008BC59C /* BlocklySample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA548C221B6312AE008BC59C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Google Inc.";
+				TargetAttributes = {
+					FA548C291B6312AE008BC59C = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = FA548C251B6312AE008BC59C /* Build configuration list for PBXProject "BlocklySample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA548C211B6312AE008BC59C;
+			productRefGroup = FA548C2B1B6312AE008BC59C /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FA548C691B631627008BC59C /* Products */;
+					ProjectRef = FA548C681B631627008BC59C /* Blockly.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				FA548C291B6312AE008BC59C /* BlocklySample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FA548C6E1B631627008BC59C /* Blockly.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Blockly.framework;
+			remoteRef = FA548C6D1B631627008BC59C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FA548C701B631627008BC59C /* BlocklyTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BlocklyTests.xctest;
+			remoteRef = FA548C6F1B631627008BC59C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA548C281B6312AE008BC59C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA548C351B6312AE008BC59C /* Main.storyboard in Resources */,
+				FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */,
+				FA548C371B6312AE008BC59C /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA548C261B6312AE008BC59C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA548C321B6312AE008BC59C /* ViewController.swift in Sources */,
+				FA548C301B6312AE008BC59C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FA548C331B6312AE008BC59C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA548C341B6312AE008BC59C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FA548C381B6312AE008BC59C /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA548C391B6312AE008BC59C /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FA548C471B6312AE008BC59C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA548C481B6312AE008BC59C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA548C4A1B6312AE008BC59C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = BlocklySample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FA548C4B1B6312AE008BC59C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = BlocklySample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA548C251B6312AE008BC59C /* Build configuration list for PBXProject "BlocklySample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA548C471B6312AE008BC59C /* Debug */,
+				FA548C481B6312AE008BC59C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA548C491B6312AE008BC59C /* Build configuration list for PBXNativeTarget "BlocklySample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA548C4A1B6312AE008BC59C /* Debug */,
+				FA548C4B1B6312AE008BC59C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA548C221B6312AE008BC59C /* Project object */;
+}
