@@ -39,12 +39,12 @@ extension NSJSONSerialization {
   public static func bky_JSONObjectFromString(jsonString: String) throws -> AnyObject {
     guard let
       jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+
       else {
         throw NSError(
           domain: NSJSONSerialization.bky_HelperErrorDomain,
           code: NSJSONSerializationHelperErrorCode.JSONParsing.rawValue,
-          userInfo: [Constants.UserInfoKeyErrorDescription:
-            "Could not convert json to NSData:\n\(jsonString)"])
+          userInfo: [NSLocalizedDescriptionKey: "Could not convert json to NSData:\n\(jsonString)"])
     }
 
     return try NSJSONSerialization.JSONObjectWithData(
@@ -66,7 +66,7 @@ extension NSJSONSerialization {
           throw NSError(
             domain: NSJSONSerialization.bky_HelperErrorDomain,
             code: NSJSONSerializationHelperErrorCode.InvalidTypecast.rawValue,
-            userInfo: [Constants.UserInfoKeyErrorDescription:
+            userInfo: [NSLocalizedDescriptionKey:
               "Could not convert AnyObject to Dictionary<String, AnyObject>"])
       }
       return json
@@ -80,15 +80,14 @@ extension NSJSONSerialization {
   */
   @objc
   public static func bky_JSONArrayFromString(jsonString: String) throws -> [AnyObject] {
-      // Parse jsonString into json array
-      guard let json = try bky_JSONObjectFromString(jsonString) as? [AnyObject]
-        else {
-          throw NSError(
-            domain: NSJSONSerialization.bky_HelperErrorDomain,
-            code: NSJSONSerializationHelperErrorCode.InvalidTypecast.rawValue,
-            userInfo: [Constants.UserInfoKeyErrorDescription:
-              "Could not convert AnyObject to [AnyObject]"])
-      }
-      return json
+    // Parse jsonString into json array
+    guard let json = try bky_JSONObjectFromString(jsonString) as? [AnyObject]
+      else {
+        throw NSError(
+          domain: NSJSONSerialization.bky_HelperErrorDomain,
+          code: NSJSONSerializationHelperErrorCode.InvalidTypecast.rawValue,
+          userInfo: [NSLocalizedDescriptionKey: "Could not convert AnyObject to [AnyObject]"])
+    }
+    return json
   }
 }

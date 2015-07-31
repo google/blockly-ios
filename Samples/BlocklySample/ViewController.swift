@@ -23,8 +23,8 @@ class ViewController: UIViewController {
     super.viewDidLoad()
 
     let workspace = Workspace(isFlyout: true, isRTL: false)
-    let block = Block(identifier: "👋🌏", name: "New Kid", workspace: workspace, category: 0,
-      colourHue: 0, inputList: [], inputsInline: true)
+    let builder = Block.Builder(identifier: "👋🌏", name: "New Kid", workspace: workspace)
+    let block = builder.build()
     label.text = block.identifier
   }
 

@@ -39,6 +39,7 @@ public class Block : NSObject {
   public weak var parentBlock: Block?
   public var tooltip: String = ""
   public var comment: String = ""
+  public var helpURL: String = ""
   public var hasContextMenu: Bool = true
   public var canDelete: Bool = true
   public var canMove: Bool = true
@@ -51,9 +52,10 @@ public class Block : NSObject {
   // MARK: - Initializers
 
   /** To create a Block, use Block.Builder instead. */
-  internal init(identifier: String, name: String, workspace: Workspace, category: Int, colourHue: Int,
-    inputList: [Input] = [], inputsInline: Bool, outputConnection: Connection? = nil,
-    nextConnection: Connection? = nil, previousConnection: Connection? = nil) {
+  internal init(identifier: String, name: String, workspace: Workspace, category: Int,
+    colourHue: Int, inputList: [Input] = [], inputsInline: Bool,
+    outputConnection: Connection? = nil, nextConnection: Connection? = nil,
+    previousConnection: Connection? = nil) {
       self.identifier = identifier
       self.name = name
       self.category = category
@@ -69,7 +71,7 @@ public class Block : NSObject {
 
 @objc
 public enum BlockErrorCode: Int {
-  case InvalidJSON = 100
+  case InvalidBlockDefinition = 100
 }
 
 @objc
@@ -81,7 +83,7 @@ public class BlockError: NSError {
     super.init(
       domain: BlockError.Domain,
       code: code.rawValue,
-      userInfo: [Constants.UserInfoKeyErrorDescription : description])
+      userInfo: [NSLocalizedDescriptionKey : description])
   }
 
   public required init?(coder aDecoder: NSCoder) {

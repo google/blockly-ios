@@ -39,9 +39,17 @@ class BlocklyTests: XCTestCase {
   }
 
   func testBlockCreationFromJSON() {
-    let json = try! NSJSONSerialization.bky_JSONDictionaryFromString("{}")
-    let block = try! Block.blockFromJSONDictionary(json, workspace: workspace)
+    var block: Block!
+    do {
+      let json = try NSJSONSerialization.bky_JSONDictionaryFromString(
+        "{\"colour\":135, \"inputsInline\":true, \"name\":\"New Kid\"}")
+      block = try Block.blockFromJSONDictionary(json, workspace: workspace)
+    } catch let error as NSError {
+      XCTAssertTrue(false, error.localizedDescription)
+    }
 
-    // TODO(vicng): Test block properties
+    XCTAssertEqual("New Kid", block.name)
+    XCTAssertEqual(135, block.colourHue)
+    XCTAssertEqual(true, block.inputsInline)
   }
 }

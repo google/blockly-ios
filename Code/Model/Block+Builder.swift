@@ -22,8 +22,8 @@ extension Block {
     // MARK: - Properties
 
     // These values are declared as constants in |Block|
-    public var identifier: String
-    public var name: String
+    public var identifier: String = ""
+    public var name: String = ""
     public var category: Int = 0
     public var colourHue: Int = 0
     public var outputConnection: Connection?
@@ -38,6 +38,7 @@ extension Block {
     public weak var parentBlock: Block?
     public var tooltip: String = ""
     public var comment: String = ""
+    public var helpURL: String = ""
     public var hasContextMenu: Bool = true
     public var canDelete: Bool = true
     public var canMove: Bool = true
@@ -67,6 +68,7 @@ extension Block {
       block.parentBlock = parentBlock
       block.tooltip = tooltip
       block.comment = comment
+      block.helpURL = helpURL
       block.hasContextMenu = hasContextMenu
       block.canDelete = canDelete
       block.canMove = canMove
