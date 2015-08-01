@@ -16,7 +16,33 @@
 @testable import Blockly
 import XCTest
 
-class BlockTest: XCTestCase {
+class BlockJSONTest: XCTestCase {
+
+  // MARK: - blockFromJSON
+
+  func testBlockFromJSON_allFieldsSet() {
+    let testBundle = NSBundle(forClass: self.dynamicType.self)
+    let path = testBundle.pathForResource("block_test_1", ofType: "json")
+    let workspace = Workspace(isFlyout: false)
+
+    var block: Block!
+    do {
+      let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+      let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
+      block = try Block.blockFromJSON(json, workspace: workspace)
+    } catch let error as NSError {
+      XCTFail("Error: \(error.localizedDescription)")
+    }
+
+    XCTAssertEqual("block_id_1", block.identifier)
+    XCTAssertEqual("block_name_1", block.name)
+    XCTAssertEqual(135, block.colourHue)
+    XCTAssertEqual(true, block.inputsInline)
+    XCTAssertEqual("Click me", block.tooltip)
+    XCTAssertEqual("http://www.example.com/", block.helpURL)
+
+    // TODO:(vicng) Test fields/inputs
+  }
 
   // MARK: - tokenizeMessage
 

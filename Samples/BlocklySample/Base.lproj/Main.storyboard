@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8135.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -25,8 +26,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="OG2-O8-YIX" secondAttribute="centerY" id="c12-Sh-rdn"/>
-                            <constraint firstAttribute="centerX" secondItem="OG2-O8-YIX" secondAttribute="centerX" id="tYD-kg-c7u"/>
+                            <constraint firstItem="OG2-O8-YIX" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="EK7-F2-nk0"/>
+                            <constraint firstItem="OG2-O8-YIX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qR6-Z1-yYb"/>
                         </constraints>
                     </view>
                     <connections>

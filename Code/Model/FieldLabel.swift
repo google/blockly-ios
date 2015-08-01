@@ -16,21 +16,19 @@
 import Foundation
 
 /**
-Data structure that contains |Block| instances.
+* Non-editable text field. Used for titles, labels, etc.
 */
-@objc(BKYWorkspace)
-public class Workspace : NSObject {
+@objc(BKYFieldLabel)
+public class FieldLabel: Field {
   // MARK: - Properties
 
-  public let isFlyout: Bool
-  public let isRTL: Bool
-  public let maxBlocks: Int?
+  public var text: String = ""
 
   // MARK: - Initializers
 
-  public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
-    self.isFlyout = isFlyout
-    self.isRTL = isRTL
-    self.maxBlocks = maxBlocks
+  public init(name: String, text: String) {
+    self.text = text
+
+    super.init(type: .Label, name: name)
   }
 }

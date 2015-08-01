@@ -13,24 +13,25 @@
 * limitations under the License.
 */
 
-import Foundation
+@testable import Blockly
+import XCTest
 
-/**
-Data structure that contains |Block| instances.
-*/
-@objc(BKYWorkspace)
-public class Workspace : NSObject {
-  // MARK: - Properties
+class InputTest: XCTestCase {
 
-  public let isFlyout: Bool
-  public let isRTL: Bool
-  public let maxBlocks: Int?
+  var block: Block!
 
-  // MARK: - Initializers
+  override func setUp() {
+    let workspace = Workspace(isFlyout: false, isRTL: true)
+    let builder = Block.Builder(identifier: "Test", name: "name", workspace: workspace)
+    block = builder.build()
 
-  public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
-    self.isFlyout = isFlyout
-    self.isRTL = isRTL
-    self.maxBlocks = maxBlocks
+    super.setUp()
+  }
+
+  // TODO:(vicng) Implement tests
+
+  // MARK: - inputFromJSON
+
+  func testInputFromJSON_valid() {
   }
 }

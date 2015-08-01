@@ -15,9 +15,13 @@
 
 import Foundation
 
-// TODO(vicng): The Obj-C bridging header isn't generated properly when a class marked with @objc
-//     has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
-//     When it's fixed, replace "@objc" with "@objc(BKYBlock)".
+/**
+Class that represents a single block.
+
+- TODO:(vicng) The Obj-C bridging header isn't generated properly when a class marked with @objc
+has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
+When it's fixed, replace "@objc" with "@objc(BKYBlock)".
+*/
 @objc
 public class Block : NSObject {
   // MARK: - Properties
@@ -29,7 +33,7 @@ public class Block : NSObject {
   public let outputConnection: Connection?
   public let nextConnection: Connection?
   public let previousConnection: Connection?
-  public let inputList: [Input]
+  public internal(set) var inputList: [Input]
   public let inputsInline: Bool
   public unowned let workspace: Workspace
   public var isInFlyout: Bool {
@@ -44,8 +48,10 @@ public class Block : NSObject {
   public var canDelete: Bool = true
   public var canMove: Bool = true
   public var canEdit: Bool = true
-  public var collapsed: Bool = false
   public var disabled: Bool = false
+
+  // TODO:(vicng) Potentially move these properties into a view class
+  public var collapsed: Bool = false
   public var rendered: Bool = false
   public var position: CGPoint = CGPointZero
 
@@ -59,7 +65,7 @@ public class Block : NSObject {
       self.identifier = identifier
       self.name = name
       self.category = category
-      self.colourHue = colourHue
+      self.colourHue = min(max(colourHue, 0), 360)
       self.workspace = workspace
       self.inputList = inputList
       self.inputsInline = inputsInline
@@ -69,17 +75,26 @@ public class Block : NSObject {
   }
 }
 
-@objc
-public enum BlockErrorCode: Int {
-  case InvalidBlockDefinition = 100
-}
+// MARK: -
 
-@objc
+/**
+Class used when errors occur inside |Block| methods.
+*/
+@objc(BKYBlockError)
 public class BlockError: NSError {
   /** Domain to use when throwing an error from this class */
   static let Domain = "com.google.blockly.Block"
 
-  public init(_ code: BlockErrorCode, _ description: String) {
+  // MARK: - Enum - Code
+  @objc
+  public enum BKYBlockErrorCode: Int {
+    case InvalidBlockDefinition = 100
+  }
+  public typealias Code = BKYBlockErrorCode
+
+  // MARK: - Initializers
+
+  public init(_ code: Code, _ description: String) {
     super.init(
       domain: BlockError.Domain,
       code: code.rawValue,

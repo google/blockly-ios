@@ -13,24 +13,12 @@
 * limitations under the License.
 */
 
-import Foundation
+@testable import Blockly
+import XCTest
 
-/**
-Data structure that contains |Block| instances.
-*/
-@objc(BKYWorkspace)
-public class Workspace : NSObject {
-  // MARK: - Properties
+class FieldTest: XCTestCase {
 
-  public let isFlyout: Bool
-  public let isRTL: Bool
-  public let maxBlocks: Int?
+  // TODO:(vicng) Implement tests
 
-  // MARK: - Initializers
-
-  public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
-    self.isFlyout = isFlyout
-    self.isRTL = isRTL
-    self.maxBlocks = maxBlocks
-  }
+  // MARK: - fieldFromDictionary
 }

@@ -16,12 +16,14 @@
 import Foundation
 
 extension Block {
+  /**
+  Builder for creating instances of |Block|.
+  */
   @objc(BKYBlockBuilder)
   public class Builder: NSObject {
-
     // MARK: - Properties
 
-    // These values are declared as constants in |Block|
+    // These values are publicly immutable in |Block|
     public var identifier: String = ""
     public var name: String = ""
     public var category: Int = 0
@@ -33,7 +35,7 @@ extension Block {
     public var inputsInline: Bool = false
     public unowned var workspace: Workspace
 
-    // These values are declared as variables in |Block|
+    // These values are publicly mutable in |Block|
     public var childBlocks: [Block] = []
     public weak var parentBlock: Block?
     public var tooltip: String = ""
@@ -58,6 +60,11 @@ extension Block {
 
     // MARK: - Public
 
+    /**
+    Creates a new block given the current state of the builder.
+
+    - Returns: A new block
+    */
     public func build() -> Block {
       let block = Block(identifier: identifier, name: name, workspace: workspace, category: category,
         colourHue: colourHue, inputList: inputList, inputsInline: inputsInline,

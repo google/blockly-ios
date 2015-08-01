@@ -15,14 +15,30 @@
 
 import Foundation
 
-func bky_println(message: String, function: String = __FUNCTION__) {
+/**
+In builds with a DEBUG symbol defined, prints a value's description to the console.
+In non-DEBUG builds, this method does nothing.
+
+- Parameter value: The value to print to the console.
+- Parameter function: String to precede the value. By default, this is populated with the function
+name that is executing this method.
+*/
+func bky_print<T>(value: T, function: String = __FUNCTION__) {
   #if DEBUG
-    println("\(function): \(message)")
+    print("\(function): \(value)")
   #endif
 }
 
-func bky_debugprintln(message: String, function: String = __FUNCTION__) {
+/**
+In builds with a DEBUG symbol defined, prints a value's debug description to the console.
+In non-DEBUG builds, this method does nothing.
+
+- Parameter value: The value to print to the console.
+- Parameter function: String to precede the value. By default, this is populated with the function
+name that is executing this method.
+*/
+func bky_debugPrint<T>(value: T, function: String = __FUNCTION__) {
   #if DEBUG
-    debugprintln("\(function): \(message)")
+    debugPrint("\(function): \(value)")
   #endif
 }

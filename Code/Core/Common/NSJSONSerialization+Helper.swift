@@ -32,8 +32,8 @@ extension NSJSONSerialization {
   /**
   Convenience method for retrieving a JSON object from a String.
 
-  :param: json The JSON string
-  :returns: Either a Dictionary<String, AnyObject> or Array<AnyObject>
+  - Parameter jsonString: The JSON string
+  - Returns: Either a Dictionary<String, AnyObject> or Array<AnyObject>
   */
   @objc
   public static func bky_JSONObjectFromString(jsonString: String) throws -> AnyObject {
@@ -54,8 +54,8 @@ extension NSJSONSerialization {
   /**
   Convenience method for retrieving a JSON dictionary from a String.
 
-  :param: json A valid JSON string dictionary
-  :returns: The JSON dictionary
+  - Parameter jsonString: A valid JSON string dictionary
+  - Returns: The JSON dictionary
   */
   @objc
   public static func bky_JSONDictionaryFromString(jsonString: String) throws
@@ -75,8 +75,8 @@ extension NSJSONSerialization {
   /**
   Convenience method for retrieving a JSON array from a String.
 
-  :param: json A valid JSON string array
-  :returns: The JSON array
+  - Parameter jsonString: A valid JSON string array
+  - Returns: The JSON array
   */
   @objc
   public static func bky_JSONArrayFromString(jsonString: String) throws -> [AnyObject] {

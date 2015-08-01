@@ -7,18 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA2DFC071B7174350072A278 /* block_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_test_1.json */; };
+		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
+		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
+		FA2DFC151B717E4B0072A278 /* BlockJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */; };
+		FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */; };
+		FA2F722B1B71532E00A94223 /* InputTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F722A1B71532E00A94223 /* InputTest.swift */; };
+		FA2F722D1B71543200A94223 /* FieldTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F722C1B71543200A94223 /* FieldTest.swift */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
-		FA548C5C1B63136F008BC59C /* BlocklyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C5A1B63136F008BC59C /* BlocklyTests.swift */; };
 		FA548C611B63144A008BC59C /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = FA548C5F1B63144A008BC59C /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
 		FA548C8B1B66E861008BC59C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C871B66E861008BC59C /* Connection.swift */; };
 		FA548C8C1B66E861008BC59C /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C881B66E861008BC59C /* Input.swift */; };
 		FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
-		FA548D231B66F415008BC59C /* Block+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D221B66F415008BC59C /* Block+JSON.swift */; };
 		FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D261B6708F2008BC59C /* Block+Builder.swift */; };
+		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
+		FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */; };
+		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
-		FA8BEEBA1B69C2ED00D0674B /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEB91B69C2ED00D0674B /* BlockTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,9 +39,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA2DFC061B7174350072A278 /* block_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_test_1.json; sourceTree = "<group>"; };
+		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
+		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
+		FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
+		FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+JSON.swift"; sourceTree = "<group>"; };
+		FA2F722A1B71532E00A94223 /* InputTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTest.swift; sourceTree = "<group>"; };
+		FA2F722C1B71543200A94223 /* FieldTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldTest.swift; sourceTree = "<group>"; };
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA548C5A1B63136F008BC59C /* BlocklyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyTests.swift; sourceTree = "<group>"; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA548C5F1B63144A008BC59C /* Blockly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blockly.h; sourceTree = "<group>"; };
 		FA548C601B63144A008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -42,11 +55,12 @@
 		FA548C871B66E861008BC59C /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		FA548C881B66E861008BC59C /* Input.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		FA548C891B66E861008BC59C /* Workspace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
-		FA548D221B66F415008BC59C /* Block+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+JSON.swift"; sourceTree = "<group>"; };
 		FA548D261B6708F2008BC59C /* Block+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Builder.swift"; sourceTree = "<group>"; };
+		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
+		FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Helper.swift"; path = "Core/Common/Dictionary+Helper.swift"; sourceTree = "<group>"; };
+		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
-		FA8BEEB91B69C2ED00D0674B /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +82,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA2DFC051B71740E0072A278 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA2DFC061B7174350072A278 /* block_test_1.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FA2DFC0C1B7177760072A278 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */,
+				FA2DFC0E1B7177760072A278 /* Input+JSON.swift */,
+				FA2DFC111B7177B10072A278 /* Field+JSON.swift */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
+		FA2DFC131B717E4B0072A278 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
 		FA548BFB1B630BAC008BC59C = {
 			isa = PBXGroup;
 			children = (
@@ -89,8 +129,8 @@
 		FA548C591B63136F008BC59C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				FA2DFC051B71740E0072A278 /* Resources */,
 				FA8BEEB81B69C28500D0674B /* Model */,
-				FA548C5A1B63136F008BC59C /* BlocklyTests.swift */,
 				FA548C5B1B63136F008BC59C /* Info.plist */,
 			);
 			path = Tests;
@@ -110,12 +150,14 @@
 		FA548C851B66E861008BC59C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FA2DFC0C1B7177760072A278 /* JSON */,
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* Block+Builder.swift */,
-				FA548D221B66F415008BC59C /* Block+JSON.swift */,
 				FA548C871B66E861008BC59C /* Connection.swift */,
 				FA548C881B66E861008BC59C /* Input.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
+				FA6232511B6B12CF00F1EF42 /* Field.swift */,
+				FA6232581B708D8E00F1EF42 /* FieldLabel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -125,6 +167,7 @@
 			children = (
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
 				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
+				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -140,7 +183,9 @@
 		FA8BEEB81B69C28500D0674B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				FA8BEEB91B69C2ED00D0674B /* BlockTest.swift */,
+				FA2DFC131B717E4B0072A278 /* JSON */,
+				FA2F722A1B71532E00A94223 /* InputTest.swift */,
+				FA2F722C1B71543200A94223 /* FieldTest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -243,6 +288,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA2DFC071B7174350072A278 /* block_test_1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,8 +299,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548D231B66F415008BC59C /* Block+JSON.swift in Sources */,
+				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
+				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
+				FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */,
+				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
+				FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */,
+				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
 				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
@@ -268,8 +319,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548C5C1B63136F008BC59C /* BlocklyTests.swift in Sources */,
-				FA8BEEBA1B69C2ED00D0674B /* BlockTest.swift in Sources */,
+				FA2DFC151B717E4B0072A278 /* BlockJSONTest.swift in Sources */,
+				FA2F722D1B71543200A94223 /* FieldTest.swift in Sources */,
+				FA2F722B1B71532E00A94223 /* InputTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +434,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -401,6 +455,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -420,9 +475,10 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -437,6 +493,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Release;
 		};

@@ -15,16 +15,65 @@
 
 import Foundation
 
+/**
+Component used to create a connection between two |Block| instances.
+*/
 @objc(BKYConnection)
 public class Connection : NSObject {
+  // MARK: - Enum - ConnectionType
+
+  /** Represents all possible types of connections. */
+  @objc
+  public enum BKYConnectionType: Int {
+    case InputValue = 1, OutputValue, NextStatement, PreviousStatement
+  }
+  typealias ConnectionType = BKYConnectionType
+
   // MARK: - Properties
 
-  public unowned var sourceBlock : Block
-  public var position : CGPoint = CGPointZero
+  public let type: BKYConnectionType
+  public unowned let sourceBlock: Block
+  public var position: CGPoint = CGPointZero
+  public weak var targetConnection: Connection?
+
+  public var typeChecks: [String]? {
+    didSet {
+      if (typeChecks != nil && targetConnection != nil &&
+        !isCompatibleWithConnection(targetConnection!)) {
+          // The new value type is not compatible with the existing connection.
+          if (isSuperior) {
+            targetConnection?.sourceBlock.parentBlock = nil
+          } else {
+            sourceBlock.parentBlock = nil
+          }
+
+          // TODO:(vicng) Generate change event
+      }
+    }
+  }
+
+  public var isSuperior: Bool {
+    return (self.type == .InputValue || self.type == .NextStatement)
+  }
 
   // MARK: - Initializers
 
-  public init(sourceBlock: Block) {
+  public init(type: BKYConnectionType, sourceBlock: Block) {
+    self.type = type
     self.sourceBlock = sourceBlock
+  }
+
+  // MARK: - Private
+
+  /**
+  Returns if this connection is compatible with another connection with respect to the value type
+  system.  E.g. square_root("Hello") is not compatible.
+
+  - Parameter otherConnection: Connection to compare against.
+  - Returns: True if the connections share a type.
+  */
+  private func isCompatibleWithConnection(otherConnection: Connection) -> Bool {
+    // TODO:(vicng) Implement this
+    return true
   }
 }
