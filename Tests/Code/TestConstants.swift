@@ -15,20 +15,7 @@
 
 import Foundation
 
-/**
-Non-editable text field. Used for titles, labels, etc.
-*/
-@objc(BKYFieldLabel)
-public class FieldLabel: Field {
-  // MARK: - Properties
-
-  public var text: String = ""
-
-  // MARK: - Initializers
-
-  public init(name: String, text: String) {
-    self.text = text
-
-    super.init(type: .Label, name: name)
-  }
+public class TestConstants {
+  /** Allow for this amount of difference when comparing two Floats together. */
+  public static let ACCURACY_F: Float = 0.001
 }

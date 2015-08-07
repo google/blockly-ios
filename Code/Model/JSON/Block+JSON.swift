@@ -79,7 +79,7 @@ extension Block {
 
       // TODO:(vicng) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
-      block.inputList += try block.interpolateMessage(
+      block.inputs += try block.interpolateMessage(
         message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
     }
 
@@ -132,7 +132,7 @@ extension Block {
               .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
-          if let field = Field.fieldFromJSON(element) {
+          if let field = try Field.fieldFromJSON(element) {
             // Add field to field list
             tempFieldList.append(field)
             break

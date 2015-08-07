@@ -16,19 +16,33 @@
 import Foundation
 
 /**
-Non-editable text field. Used for titles, labels, etc.
+An input field for a 0 to 360 angle.
 */
-@objc(BKYFieldLabel)
-public class FieldLabel: Field {
+@objc(BKYFieldAngle)
+public class FieldAngle: Field {
   // MARK: - Properties
 
-  public var text: String = ""
+  public var angle: Int {
+    didSet { self.angle = FieldAngle.normalizeAngle(self.angle) }
+  }
 
   // MARK: - Initializers
 
-  public init(name: String, text: String) {
-    self.text = text
+  public init(name: String, angle: Int) {
+    self.angle = FieldAngle.normalizeAngle(angle)
 
-    super.init(type: .Label, name: name)
+    super.init(type: .Angle, name: name)
+  }
+
+  // MARK: - Internal - For testing only
+
+  internal class func normalizeAngle(var angle: Int) -> Int {
+    if (angle != 360) {
+      angle = angle % 360
+      if (angle < 0) {
+        angle += 360
+      }
+    }
+    return angle
   }
 }

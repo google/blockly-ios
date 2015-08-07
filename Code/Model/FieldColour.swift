@@ -16,19 +16,19 @@
 import Foundation
 
 /**
-Non-editable text field. Used for titles, labels, etc.
+An input field for a colour value.
 */
-@objc(BKYFieldLabel)
-public class FieldLabel: Field {
+@objc(BKYFieldColour)
+public class FieldColour: Field {
   // MARK: - Properties
 
-  public var text: String = ""
+  public var colour: UIColor
 
   // MARK: - Initializers
 
-  public init(name: String, text: String) {
-    self.text = text
-
-    super.init(type: .Label, name: name)
+  public init(name: String, colour: UIColor) {
+    self.colour = colour
+    
+    super.init(type: .Colour, name: name)
   }
 }

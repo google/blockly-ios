@@ -33,15 +33,15 @@ public class Field: NSObject {
     case Label = 0, Input, Angle, Checkbox, Colour, Date, Variable, Dropdown, Image
 
     private static let stringMapping = [
-      Label: "field_label",
-      Input: "field_input",
       Angle: "field_angle",
       Checkbox: "field_checkbox",
       Colour: "field_colour",
       Date: "field_date",
-      Variable: "field_variable",
       Dropdown: "field_dropdown",
       Image: "field_image",
+      Input: "field_input",
+      Label: "field_label",
+      Variable: "field_variable",
     ]
 
     public func stringValue() -> String {
@@ -49,10 +49,10 @@ public class Field: NSObject {
     }
 
     internal init?(string: String) {
-      if let value = BKYFieldType.stringMapping.bky_anyKeyForValue(string) {
-        self = value
+      guard let value = BKYFieldType.stringMapping.bky_anyKeyForValue(string) else {
+        return nil
       }
-      return nil
+      self = value
     }
   }
   public typealias FieldType = BKYFieldType

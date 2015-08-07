@@ -13,22 +13,21 @@
 * limitations under the License.
 */
 
-import Foundation
+@testable import Blockly
+import XCTest
 
-/**
-Non-editable text field. Used for titles, labels, etc.
-*/
-@objc(BKYFieldLabel)
-public class FieldLabel: Field {
-  // MARK: - Properties
+class FieldAngleTest: XCTestCase {
 
-  public var text: String = ""
+  // MARK: - Internal static methods
 
-  // MARK: - Initializers
-
-  public init(name: String, text: String) {
-    self.text = text
-
-    super.init(type: .Label, name: name)
+  func testNormalizeAngle() {
+    XCTAssertEqual(0, FieldAngle.normalizeAngle(0))
+    XCTAssertEqual(200, FieldAngle.normalizeAngle(200))
+    XCTAssertEqual(360, FieldAngle.normalizeAngle(360))
+    XCTAssertEqual(1, FieldAngle.normalizeAngle(361))
+    XCTAssertEqual(359, FieldAngle.normalizeAngle(-1))
+    XCTAssertEqual(0, FieldAngle.normalizeAngle(720))
+    XCTAssertEqual(83, FieldAngle.normalizeAngle(80003))
+    XCTAssertEqual(277, FieldAngle.normalizeAngle(-80003))
   }
 }

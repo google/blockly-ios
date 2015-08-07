@@ -33,7 +33,7 @@ public class Block : NSObject {
   public let outputConnection: Connection?
   public let nextConnection: Connection?
   public let previousConnection: Connection?
-  public internal(set) var inputList: [Input]
+  public internal(set) var inputs: [Input]
   public let inputsInline: Bool
   public unowned let workspace: Workspace
   public var isInFlyout: Bool {
@@ -59,7 +59,7 @@ public class Block : NSObject {
 
   /** To create a Block, use Block.Builder instead. */
   internal init(identifier: String, name: String, workspace: Workspace, category: Int,
-    colourHue: Int, inputList: [Input] = [], inputsInline: Bool,
+    colourHue: Int, inputs: [Input] = [], inputsInline: Bool,
     outputConnection: Connection? = nil, nextConnection: Connection? = nil,
     previousConnection: Connection? = nil) {
       self.identifier = identifier
@@ -67,7 +67,7 @@ public class Block : NSObject {
       self.category = category
       self.colourHue = min(max(colourHue, 0), 360)
       self.workspace = workspace
-      self.inputList = inputList
+      self.inputs = inputs
       self.inputsInline = inputsInline
       self.outputConnection = outputConnection
       self.nextConnection = nextConnection

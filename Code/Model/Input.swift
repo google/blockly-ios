@@ -42,10 +42,10 @@ public class Input : NSObject {
     }
 
     internal init?(string: String) {
-      if let value = BKYInputType.stringMapping.bky_anyKeyForValue(string) {
-        self = value
+      guard let value = BKYInputType.stringMapping.bky_anyKeyForValue(string) else {
+        return nil
       }
-      return nil
+      self = value
     }
   }
   public typealias InputType = BKYInputType
@@ -68,10 +68,10 @@ public class Input : NSObject {
     }
 
     internal init?(string: String) {
-      if let value = BKYInputAlignment.stringMapping.bky_anyKeyForValue(string) {
-        self = value
+      guard let value = BKYInputAlignment.stringMapping.bky_anyKeyForValue(string) else {
+        return nil
       }
-      return nil
+      self = value
     }
   }
   public typealias Alignment = BKYInputAlignment

@@ -31,7 +31,7 @@ extension Block {
     public var outputConnection: Connection?
     public var nextConnection: Connection?
     public var previousConnection: Connection?
-    public var inputList: [Input] = []
+    public var inputs: [Input] = []
     public var inputsInline: Bool = false
     public unowned var workspace: Workspace
 
@@ -67,7 +67,7 @@ extension Block {
     */
     public func build() -> Block {
       let block = Block(identifier: identifier, name: name, workspace: workspace, category: category,
-        colourHue: colourHue, inputList: inputList, inputsInline: inputsInline,
+        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, nextConnection: nextConnection,
         previousConnection: previousConnection)
 

@@ -13,12 +13,22 @@
 * limitations under the License.
 */
 
-@testable import Blockly
-import XCTest
+import Foundation
 
-class FieldTest: XCTestCase {
+/**
+An input field for a checkbox.
+*/
+@objc(BKYFieldCheckbox)
+public class FieldCheckbox: Field {
+  // MARK: - Properties
 
-  // TODO:(vicng) Implement tests
+  public var checked: Bool
 
-  // MARK: - fieldFromDictionary
+  // MARK: - Initializers
+
+  public init(name: String, checked: Bool) {
+    self.checked = checked
+
+    super.init(type: .Checkbox, name: name)
+  }
 }

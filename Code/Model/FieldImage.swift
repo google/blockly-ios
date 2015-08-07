@@ -13,25 +13,26 @@
 * limitations under the License.
 */
 
-@testable import Blockly
-import XCTest
+import Foundation
 
-class InputTest: XCTestCase {
+/**
+An image field used for titles, labels, etc.
+*/
+@objc(BKYFieldImage)
+public class FieldImage: Field {
+  // MARK: - Properties
 
-  var block: Block!
+  public var size: CGSize
+  public var imageURL: String
+  public var altText: String
 
-  override func setUp() {
-    let workspace = Workspace(isFlyout: false, isRTL: true)
-    let builder = Block.Builder(identifier: "Test", name: "name", workspace: workspace)
-    block = builder.build()
+  // MARK: - Initializers
 
-    super.setUp()
-  }
+  public init(name: String, imageURL: String, size: CGSize, altText: String) {
+    self.imageURL = imageURL
+    self.size = size
+    self.altText = altText
 
-  // TODO:(vicng) Implement tests
-
-  // MARK: - inputFromJSON
-
-  func testInputFromJSON_valid() {
+    super.init(type: .Image, name: name)
   }
 }

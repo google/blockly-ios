@@ -10,10 +10,23 @@
 		FA2DFC071B7174350072A278 /* block_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_test_1.json */; };
 		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
 		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
-		FA2DFC151B717E4B0072A278 /* BlockJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */; };
 		FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */; };
-		FA2F722B1B71532E00A94223 /* InputTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F722A1B71532E00A94223 /* InputTest.swift */; };
-		FA2F722D1B71543200A94223 /* FieldTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F722C1B71543200A94223 /* FieldTest.swift */; };
+		FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB41B72DCF10072A278 /* FieldAngle.swift */; };
+		FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB61B72DCFB0072A278 /* FieldCheckbox.swift */; };
+		FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB81B72DD030072A278 /* FieldColour.swift */; };
+		FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCBA1B72DD0C0072A278 /* FieldDate.swift */; };
+		FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCBC1B72DD140072A278 /* FieldDropdown.swift */; };
+		FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCBE1B72DD1D0072A278 /* FieldImage.swift */; };
+		FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCC21B72DD400072A278 /* FieldVariable.swift */; };
+		FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD581B72EBEE0072A278 /* FieldInput.swift */; };
+		FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */; };
+		FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */; };
+		FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */; };
+		FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */; };
+		FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40C1B744A8E000980E9 /* TestConstants.swift */; };
+		FA4BB4AC1B75470A000980E9 /* FieldAngleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */; };
+		FA4BB4B01B754A71000980E9 /* FieldDateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */; };
+		FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4B11B754D87000980E9 /* UIColorHelper.swift */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
 		FA548C611B63144A008BC59C /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = FA548C5F1B63144A008BC59C /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
@@ -42,10 +55,23 @@
 		FA2DFC061B7174350072A278 /* block_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_test_1.json; sourceTree = "<group>"; };
 		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
-		FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
 		FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+JSON.swift"; sourceTree = "<group>"; };
-		FA2F722A1B71532E00A94223 /* InputTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTest.swift; sourceTree = "<group>"; };
-		FA2F722C1B71543200A94223 /* FieldTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldTest.swift; sourceTree = "<group>"; };
+		FA2DFCB41B72DCF10072A278 /* FieldAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngle.swift; sourceTree = "<group>"; };
+		FA2DFCB61B72DCFB0072A278 /* FieldCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckbox.swift; sourceTree = "<group>"; };
+		FA2DFCB81B72DD030072A278 /* FieldColour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColour.swift; sourceTree = "<group>"; };
+		FA2DFCBA1B72DD0C0072A278 /* FieldDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDate.swift; sourceTree = "<group>"; };
+		FA2DFCBC1B72DD140072A278 /* FieldDropdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdown.swift; sourceTree = "<group>"; };
+		FA2DFCBE1B72DD1D0072A278 /* FieldImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImage.swift; sourceTree = "<group>"; };
+		FA2DFCC21B72DD400072A278 /* FieldVariable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariable.swift; sourceTree = "<group>"; };
+		FA2DFD581B72EBEE0072A278 /* FieldInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInput.swift; sourceTree = "<group>"; };
+		FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Helper.swift"; path = "Core/Common/UIColor+Helper.swift"; sourceTree = "<group>"; };
+		FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
+		FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldJSONTest.swift; sourceTree = "<group>"; };
+		FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputJSONTest.swift; sourceTree = "<group>"; };
+		FA4BB40C1B744A8E000980E9 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestConstants.swift; path = Code/TestConstants.swift; sourceTree = "<group>"; };
+		FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FieldAngleTest.swift; path = Tests/Code/Model/FieldAngleTest.swift; sourceTree = SOURCE_ROOT; };
+		FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateTest.swift; sourceTree = "<group>"; };
+		FA4BB4B11B754D87000980E9 /* UIColorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIColorHelper.swift; path = Tests/Code/Core/Common/UIColorHelper.swift; sourceTree = SOURCE_ROOT; };
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,12 +126,49 @@
 			path = JSON;
 			sourceTree = "<group>";
 		};
-		FA2DFC131B717E4B0072A278 /* JSON */ = {
+		FA4BB4061B744A8E000980E9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
-				FA2DFC141B717E4B0072A278 /* BlockJSONTest.swift */,
+				FA4BB4AD1B75483D000980E9 /* Core */,
+				FA4BB4071B744A8E000980E9 /* Model */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		FA4BB4071B744A8E000980E9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FA4BB4081B744A8E000980E9 /* JSON */,
+				FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */,
+				FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FA4BB4081B744A8E000980E9 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */,
+				FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */,
+				FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		FA4BB4AD1B75483D000980E9 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FA4BB4AE1B75483D000980E9 /* Common */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		FA4BB4AE1B75483D000980E9 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FA4BB4B11B754D87000980E9 /* UIColorHelper.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		FA548BFB1B630BAC008BC59C = {
@@ -129,8 +192,9 @@
 		FA548C591B63136F008BC59C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				FA4BB4061B744A8E000980E9 /* Code */,
+				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 				FA2DFC051B71740E0072A278 /* Resources */,
-				FA8BEEB81B69C28500D0674B /* Model */,
 				FA548C5B1B63136F008BC59C /* Info.plist */,
 			);
 			path = Tests;
@@ -154,10 +218,18 @@
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* Block+Builder.swift */,
 				FA548C871B66E861008BC59C /* Connection.swift */,
+				FA6232511B6B12CF00F1EF42 /* Field.swift */,
+				FA2DFCB41B72DCF10072A278 /* FieldAngle.swift */,
+				FA2DFCB61B72DCFB0072A278 /* FieldCheckbox.swift */,
+				FA2DFCB81B72DD030072A278 /* FieldColour.swift */,
+				FA2DFCBA1B72DD0C0072A278 /* FieldDate.swift */,
+				FA2DFCBC1B72DD140072A278 /* FieldDropdown.swift */,
+				FA2DFCBE1B72DD1D0072A278 /* FieldImage.swift */,
+				FA2DFD581B72EBEE0072A278 /* FieldInput.swift */,
+				FA6232581B708D8E00F1EF42 /* FieldLabel.swift */,
+				FA2DFCC21B72DD400072A278 /* FieldVariable.swift */,
 				FA548C881B66E861008BC59C /* Input.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
-				FA6232511B6B12CF00F1EF42 /* Field.swift */,
-				FA6232581B708D8E00F1EF42 /* FieldLabel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,9 +237,10 @@
 		FA8BEE0F1B684F8700D0674B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
 				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
-				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
+				FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -178,16 +251,6 @@
 				FA8BEE0F1B684F8700D0674B /* Common */,
 			);
 			name = Core;
-			sourceTree = "<group>";
-		};
-		FA8BEEB81B69C28500D0674B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				FA2DFC131B717E4B0072A278 /* JSON */,
-				FA2F722A1B71532E00A94223 /* InputTest.swift */,
-				FA2F722C1B71543200A94223 /* FieldTest.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,19 +362,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
+				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
+				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
 				FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */,
+				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
 				FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */,
+				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
 				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
+				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
+				FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */,
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
+				FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
+				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,9 +391,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA2DFC151B717E4B0072A278 /* BlockJSONTest.swift in Sources */,
-				FA2F722D1B71543200A94223 /* FieldTest.swift in Sources */,
-				FA2F722B1B71532E00A94223 /* InputTest.swift in Sources */,
+				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
+				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
+				FA4BB4AC1B75470A000980E9 /* FieldAngleTest.swift in Sources */,
+				FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */,
+				FA4BB4B01B754A71000980E9 /* FieldDateTest.swift in Sources */,
+				FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */,
+				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,7 +515,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};

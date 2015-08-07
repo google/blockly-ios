@@ -16,19 +16,19 @@
 import Foundation
 
 /**
-Non-editable text field. Used for titles, labels, etc.
+An editable text field.
 */
-@objc(BKYFieldLabel)
-public class FieldLabel: Field {
+@objc(BKYFieldInput)
+public class FieldInput: Field {
   // MARK: - Properties
 
-  public var text: String = ""
+  public var text: String
 
   // MARK: - Initializers
 
   public init(name: String, text: String) {
     self.text = text
 
-    super.init(type: .Label, name: name)
+    super.init(type: .Input, name: name)
   }
 }
