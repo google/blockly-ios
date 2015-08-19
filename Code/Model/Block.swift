@@ -16,6 +16,19 @@
 import Foundation
 
 /**
+Protocol for events that occur on a |Block|.
+*/
+@objc(BKYBlockDelegate)
+public protocol BlockDelegate {
+  /**
+  Event that is called when one of the block's properties has changed.
+
+  - Parameter block: The block that changed.
+  */
+  func blockDidChange(block: Block)
+}
+
+/**
 Class that represents a single block.
 
 - TODO:(vicng) The Obj-C bridging header isn't generated properly when a class marked with @objc
@@ -49,6 +62,7 @@ public class Block : NSObject {
   public var canMove: Bool = true
   public var canEdit: Bool = true
   public var disabled: Bool = false
+  public weak var delegate: BlockDelegate?
 
   // TODO:(vicng) Potentially move these properties into a view class
   public var collapsed: Bool = false

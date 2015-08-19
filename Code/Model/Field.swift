@@ -16,6 +16,19 @@
 import Foundation
 
 /**
+Protocol for events that occur on a |Field|.
+*/
+@objc(BKYFieldDelegate)
+public protocol FieldDelegate {
+  /**
+  Event that is called when one of the field's properties has changed.
+
+  - Parameter field: The field that changed.
+  */
+  func fieldDidChange(field: Field)
+}
+
+/**
 Input field.  Used for editable titles, variables, etc. This is an abstract class that defines the
 UI on the block.  Actual instances would be |FieldLabel|, |FieldDropdown|, etc.
 
@@ -61,6 +74,7 @@ public class Field: NSObject {
 
   public let type: FieldType
   public let name: String
+  public weak var delegate: FieldDelegate?
 
   // MARK: - Initializers
 

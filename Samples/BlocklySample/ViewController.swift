@@ -17,18 +17,44 @@ import UIKit
 import Blockly
 
 class ViewController: UIViewController {
-  @IBOutlet weak var label: UILabel!
+  // MARK: - Super
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let workspace = Workspace(isFlyout: true, isRTL: false)
-    let builder = Block.Builder(identifier: "👋🌏", name: "New Kid", workspace: workspace)
-    let block = builder.build()
-    label.text = block.identifier
+    let workspace = buildWorkspace()
+    let workspaceLayout = LayoutBuilder.buildLayoutTreeFromWorkspace(workspace)
+    workspaceLayout.updateLayout()
+
+    let workspaceView = WorkspaceView()
+    workspaceView.layout = workspaceLayout
+    workspaceView.backgroundColor = UIColor.greenColor()
+    workspaceView.translatesAutoresizingMaskIntoConstraints = false
+    workspaceView.frame = self.view.bounds
+    workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.view.addSubview(workspaceView)
+    self.view.sendSubviewToBack(workspaceView)
+    workspaceView.refresh()
   }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
+  }
+
+  // MARK: - Private
+
+  func buildWorkspace() -> Workspace {
+    let workspace = Workspace(isFlyout: true, isRTL: false)
+
+    let builder = Block.Builder(identifier: "👋🌏", name: "New Kid", workspace: workspace)
+    let ifBlock = builder.build()
+
+    let input1 = Input(type: .Value, name: "IF0", sourceBlock: ifBlock)
+    input1.connection?.typeChecks = ["Boolean"]
+    input1.fields.append(FieldLabel(name: "", text: "if"))
+
+    workspace.blocks.append(ifBlock)
+
+    return workspace
   }
 }

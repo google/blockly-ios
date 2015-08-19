@@ -23,7 +23,7 @@ In non-DEBUG builds, this method does nothing.
 - Parameter function: String to precede the value. By default, this is populated with the function
 name that is executing this method.
 */
-func bky_print<T>(value: T, function: String = __FUNCTION__) {
+internal func bky_print<T>(value: T, function: String = __FUNCTION__) {
   #if DEBUG
     print("\(function): \(value)")
   #endif
@@ -37,7 +37,7 @@ In non-DEBUG builds, this method does nothing.
 - Parameter function: String to precede the value. By default, this is populated with the function
 name that is executing this method.
 */
-func bky_debugPrint<T>(value: T, function: String = __FUNCTION__) {
+internal func bky_debugPrint<T>(value: T, function: String = __FUNCTION__) {
   #if DEBUG
     debugPrint("\(function): \(value)")
   #endif

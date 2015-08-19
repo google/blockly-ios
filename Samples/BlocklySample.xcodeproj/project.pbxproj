@@ -7,15 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA4BB55E1B7BEC36000980E9 /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; };
+		FA4BB55F1B7BEC36000980E9 /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA548C301B6312AE008BC59C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C2F1B6312AE008BC59C /* AppDelegate.swift */; };
 		FA548C321B6312AE008BC59C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C311B6312AE008BC59C /* ViewController.swift */; };
 		FA548C351B6312AE008BC59C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA548C331B6312AE008BC59C /* Main.storyboard */; };
 		FA548C371B6312AE008BC59C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA548C361B6312AE008BC59C /* Images.xcassets */; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
-		FA548C741B631829008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FA4BB5601B7BEC36000980E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA548C681B631627008BC59C /* Blockly.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FA548C041B630BAC008BC59C;
+			remoteInfo = Blockly;
+		};
 		FA548C6D1B631627008BC59C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA548C681B631627008BC59C /* Blockly.xcodeproj */;
@@ -31,6 +39,20 @@
 			remoteInfo = BlocklyTests;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA4BB5621B7BEC36000980E9 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FA4BB55F1B7BEC36000980E9 /* Blockly.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		FA548C2A1B6312AE008BC59C /* BlocklySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA548C741B631829008BC59C /* Blockly.framework in Frameworks */,
+				FA4BB55E1B7BEC36000980E9 /* Blockly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,10 +134,12 @@
 				FA548C261B6312AE008BC59C /* Sources */,
 				FA548C271B6312AE008BC59C /* Frameworks */,
 				FA548C281B6312AE008BC59C /* Resources */,
+				FA4BB5621B7BEC36000980E9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FA4BB5611B7BEC36000980E9 /* PBXTargetDependency */,
 			);
 			name = BlocklySample;
 			productName = BlocklySample;
@@ -202,6 +226,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA4BB5611B7BEC36000980E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Blockly;
+			targetProxy = FA4BB5601B7BEC36000980E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		FA548C331B6312AE008BC59C /* Main.storyboard */ = {
@@ -307,10 +339,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BlocklySample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.google.samples.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklySample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -320,9 +354,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BlocklySample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.google.samples.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklySample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

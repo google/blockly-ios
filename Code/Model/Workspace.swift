@@ -16,6 +16,19 @@
 import Foundation
 
 /**
+Protocol for events that occur on a |Workspace|.
+*/
+@objc(BKYWorkspaceDelegate)
+public protocol WorkspaceDelegate {
+  /**
+  Event that is called when one of the workspace's properties has changed.
+
+  - Parameter workspace: The workspace that changed.
+  */
+  func workspaceDidChange(workspace: Workspace)
+}
+
+/**
 Data structure that contains |Block| instances.
 */
 @objc(BKYWorkspace)
@@ -25,6 +38,8 @@ public class Workspace : NSObject {
   public let isFlyout: Bool
   public let isRTL: Bool
   public let maxBlocks: Int?
+  public var blocks = [Block]()
+  public weak var delegate: WorkspaceDelegate?
 
   // MARK: - Initializers
 

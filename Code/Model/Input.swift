@@ -16,6 +16,19 @@
 import Foundation
 
 /**
+Protocol for events that occur on an |Input|.
+*/
+@objc(BKYInputDelegate)
+public protocol InputDelegate {
+  /**
+  Event that is called when one of the input's properties has changed.
+
+  - Parameter input: The input that changed.
+  */
+  func inputDidChange(input: Input)
+}
+
+/**
 Class representing an input (value, statement, or dummy).
 
 - TODO:(vicng): The Obj-C bridging header isn't generated properly when a class marked with @objc
@@ -85,6 +98,7 @@ public class Input : NSObject {
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
   public var fields: [Field] = []
+  public weak var delegate: InputDelegate?
 
   // MARK: - Initializers
 
