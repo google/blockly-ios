@@ -22,8 +22,12 @@ Stores information on how to render and position a |Block| on-screen.
 public class WorkspaceLayout: Layout {
   // MARK: - Properties
 
+  /** The `Workspace` to layout */
   public let workspace: Workspace
-  public var blockLayouts = [BlockLayout]()
+
+  /** The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
+  `self.workspace.blocks[]`. */
+  public private(set) var blockGroupLayouts = [BlockGroupLayout]()
 
   // MARK: - Initializers
 
@@ -36,13 +40,13 @@ public class WorkspaceLayout: Layout {
   // MARK: - Super
 
   public override var childLayouts: [Layout] {
-    return blockLayouts
+    return blockGroupLayouts
   }
 
   public override func layoutChildren() {
     // Update relative position/size of blocks
-    for blockLayout in blockLayouts {
-      blockLayout.layoutChildren()
+    for blockGroupLayout in blockGroupLayouts {
+      blockGroupLayout.layoutChildren()
     }
 
     // Update size required for the workspace
@@ -54,15 +58,36 @@ public class WorkspaceLayout: Layout {
   /** Returns all descendants of this layout that are of type |BlockLayout|. */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()
-    var blockLayoutsToProcess = blockLayouts
+    var layoutsToProcess = blockGroupLayouts
 
-    while !blockLayoutsToProcess.isEmpty {
-      let blockLayout = blockLayoutsToProcess.removeFirst()
-      descendants.append(blockLayout)
-      blockLayoutsToProcess += blockLayout.childBlockLayouts
+    while !layoutsToProcess.isEmpty {
+      let blockGroupLayout = layoutsToProcess.removeFirst()
+      descendants += blockGroupLayout.blockLayouts
+
+      for blockLayout in blockGroupLayout.blockLayouts {
+        for inputLayout in blockLayout.inputLayouts {
+          layoutsToProcess.append(inputLayout.blockGroupLayout)
+        }
+      }
     }
 
     return descendants
+  }
+
+  /**
+  Appends a blockGroupLayout to `self.blockGroupLayouts` and sets its `parentLayout` to this
+  instance.
+  */
+  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
+    blockGroupLayout.parentLayout = self
+    blockGroupLayouts.append(blockGroupLayout)
+  }
+
+  /** Removes `self.blockGroupLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  public func removeBlockGroupLayoutAtIndex(index: Int) -> BlockGroupLayout {
+    let blockGroupLayout = blockGroupLayouts.removeAtIndex(index)
+    blockGroupLayout.parentLayout = nil
+    return blockGroupLayout
   }
 }
 

@@ -16,27 +16,38 @@
 import UIKit
 
 /*
-Stores information for positioning |Input| areas on-screen.
+Stores information for positioning `Input` areas on-screen.
 */
 @objc(BKYInputLayout)
 public class InputLayout: Layout {
   // MARK: - Properties
 
+  /** The target `Input` to layout */
   public let input: Input
-  public var fieldLayouts = [FieldLayout]()
+
+  /** The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`. */
+  public var blockGroupLayout: BlockGroupLayout! {
+    didSet {
+      blockGroupLayout?.parentLayout = self
+    }
+  }
+
+  /** The corresponding layouts for `self.input.fields[]` */
+  public private(set) var fieldLayouts = [FieldLayout]()
 
   // MARK: - Initializers
 
-  public required init(input: Input, parentLayout: Layout?) {
+  public required init(input: Input, parentLayout: BlockLayout?) {
     self.input = input
     super.init(parentLayout: parentLayout)
     self.input.delegate = self
+    self.blockGroupLayout = BlockGroupLayout(parentLayout: self)
   }
 
   // MARK: - Super
 
   public override var childLayouts: [Layout] {
-    return fieldLayouts
+    return ([blockGroupLayout] as [Layout]) + (fieldLayouts as [Layout])
   }
 
   public override func layoutChildren() {
@@ -47,10 +58,28 @@ public class InputLayout: Layout {
       // TODO:(vicng) Figure out new positions for each field
     }
 
+    // Update relative position/size of blocks
+    blockGroupLayout.layoutChildren()
+
+    // TODO:(vicng) Figure out new positions for the block group
+
     self.size = sizeThatFitsForChildLayouts()
   }
 
   // MARK: - Public
+
+  /** Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance. */
+  public func appendFieldLayout(fieldLayout: FieldLayout) {
+    fieldLayout.parentLayout = self
+    fieldLayouts.append(fieldLayout)
+  }
+
+  /** Removes `self.fieldLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  public func removeFieldLayoutAtIndex(index: Int) -> FieldLayout {
+    let fieldLayout = fieldLayouts.removeAtIndex(index)
+    fieldLayout.parentLayout = nil
+    return fieldLayout
+  }
 }
 
 // MARK: - InputDelegate

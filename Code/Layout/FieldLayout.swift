@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Abstract class for a Field-based Layout.
+Abstract class for a `Field`-based `Layout`.
 */
 @objc(BKYFieldLayout)
 public class FieldLayout: Layout {

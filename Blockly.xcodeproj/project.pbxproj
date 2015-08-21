@@ -16,6 +16,7 @@
 		FA2726801B83F76500777B49 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27267F1B83F76500777B49 /* LayoutBuilder.swift */; };
 		FA2726821B83F86000777B49 /* FieldLabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726811B83F86000777B49 /* FieldLabelLayout.swift */; };
 		FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726831B83F99300777B49 /* FieldLayout.swift */; };
+		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
 		FA2DFC071B7174350072A278 /* block_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_test_1.json */; };
 		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
 		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
@@ -74,6 +75,7 @@
 		FA27267F1B83F76500777B49 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA2726811B83F86000777B49 /* FieldLabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelLayout.swift; sourceTree = "<group>"; };
 		FA2726831B83F99300777B49 /* FieldLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLayout.swift; sourceTree = "<group>"; };
+		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
 		FA2DFC061B7174350072A278 /* block_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_test_1.json; sourceTree = "<group>"; };
 		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2726751B83C54900777B49 /* BlockLayout.swift */,
+				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FA2726771B83C54900777B49 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
 				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
@@ -456,6 +459,7 @@
 				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
 				FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */,
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
+				FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */,
 				FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */,
 				FA4BB56E1B7C03EA000980E9 /* BezierPathView.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
