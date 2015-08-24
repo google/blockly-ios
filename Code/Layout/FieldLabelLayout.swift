@@ -36,7 +36,11 @@ public class FieldLabelLayout: FieldLayout {
   // MARK: - Super
 
   public override func layoutChildren() {
-    // TODO:(vicng) Calculate field size
+    // TODO:(vicng) Add hook to do this measurement from FieldLabelView
+    // TODO:(vicng) Translate this value back into Blockly coordinates
+    // TODO:(vicng) Use a standardized font size that can be configurable for the project
+    // TODO:(vicng) Clean up TODOs!
+    self.size = fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
   }
 }
 

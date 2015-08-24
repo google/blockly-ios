@@ -93,6 +93,13 @@ public class Block : NSObject {
       self.nextConnection = nextConnection
       self.previousConnection = previousConnection
   }
+
+  // MARK: - Public
+
+  /** Append an input to `self.inputs[]` */
+  public func appendInput(input: Input) {
+    inputs.append(input)
+  }
 }
 
 // MARK: -

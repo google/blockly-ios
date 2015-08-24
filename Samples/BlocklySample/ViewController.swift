@@ -49,9 +49,12 @@ class ViewController: UIViewController {
     let builder = Block.Builder(identifier: "👋🌏", name: "New Kid", workspace: workspace)
     let ifBlock = builder.build()
 
-    let input1 = Input(type: .Value, name: "IF0", sourceBlock: ifBlock)
-    input1.connection?.typeChecks = ["Boolean"]
-    input1.fields.append(FieldLabel(name: "", text: "if"))
+    let input0 = Input(type: .Value, name: "IF0", sourceBlock: ifBlock)
+    input0.connection?.typeChecks = ["Boolean"]
+    input0.appendField(FieldLabel(name: "", text: "if"))
+    ifBlock.appendInput(input0)
+    let input1 = Input(type: .Statement, name: "IF1", sourceBlock: ifBlock)
+    ifBlock.appendInput(input1)
 
     workspace.blocks.append(ifBlock)
 

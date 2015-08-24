@@ -39,4 +39,9 @@ public class ViewManager: NSObject {
     }
     return nil
   }
+
+  public func bezierPathView() -> BezierPathView {
+    // TODO:(vicng) Implement a caching mechanism
+    return BezierPathView()
+  }
 }

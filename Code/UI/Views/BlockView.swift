@@ -24,30 +24,24 @@ public class BlockView: UIView {
   // MARK: - Properties
 
   /** Layout object to render */
-  public var layout: BlockLayout! {
+  public var layout: BlockLayout? {
     didSet {
-      if layout != nil {
-        self.frame = layout.viewFrameAtScale(1.0)
-
-        // TODO:(vicng) Set the background colour properly
-        self.backgroundColor = UIColor.redColor()
-
-        // TODO:(vicng) Re-draw this view too
-      } else {
-        self.frame = CGRectZero
-        self.backgroundColor = UIColor.clearColor()
-      }
+      refresh()
     }
   }
 
+  /** Manager for recyclable views. */
+  private let _viewManager = ViewManager.sharedInstance
+
   /** View for rendering the block's background */
-  private let blockBackgroundView = BezierPathView()
+  private let _blockBackgroundView: BezierPathView = ViewManager.sharedInstance.bezierPathView()
 
   /** View for rendering the block's highlight overly */
-  private lazy var highlightOverlayView = BezierPathView()
+  private lazy var _highlightOverlayView: BezierPathView =
+    ViewManager.sharedInstance.bezierPathView()
 
   /** Field subviews */
-  private var fieldViews = [UIView]()
+  private var _fieldViews = [UIView]()
 
   // MARK: - Initializers
 
@@ -57,10 +51,11 @@ public class BlockView: UIView {
     self.translatesAutoresizingMaskIntoConstraints = false
 
     // Configure background
-    blockBackgroundView.frame = self.bounds
-    blockBackgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    addSubview(blockBackgroundView)
-    sendSubviewToBack(blockBackgroundView)
+
+    _blockBackgroundView.frame = self.bounds
+    _blockBackgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    addSubview(_blockBackgroundView)
+    sendSubviewToBack(_blockBackgroundView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -76,5 +71,37 @@ public class BlockView: UIView {
     // TODO:(vicng) Layout block background
 
     // TODO:(vicng) Layout fields
+  }
+
+  // MARK: - Private
+
+  private func refresh() {
+    // Remove all subviews and recycle
+    for view in self.subviews {
+      // TODO:(vicng) Recycle view
+      view.removeFromSuperview()
+    }
+
+    guard let layout = self.layout else {
+      self.frame = CGRectZero
+      self.backgroundColor = UIColor.clearColor()
+      return
+    }
+
+    self.frame = layout.viewFrameAtScale(1.0)
+    // TODO:(vicng) Set the background colour properly
+    self.backgroundColor = UIColor.redColor()
+
+    // TODO:(vicng) Re-draw this view too
+
+    // TODO:(vicng) Add field views
+  }
+}
+
+// MARK: - Protocol - Recyclable
+
+extension BlockView: Recyclable {
+  public func recycle() {
+    // TODO: (vicng) Release all resources held by this object and recycle any subviews if necessary
   }
 }

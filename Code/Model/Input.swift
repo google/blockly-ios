@@ -94,7 +94,6 @@ public class Input : NSObject {
   public let type: BKYInputType
   public let name: String
   public private(set) var connection: Connection?
-
   /** The block that is connected to this input, if it exists. */
   public var connectedBlock: Block? {
     return connection?.targetConnection?.sourceBlock
@@ -102,7 +101,7 @@ public class Input : NSObject {
 
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
-  public var fields: [Field] = []
+  public internal(set) var fields: [Field] = []
   public weak var delegate: InputDelegate?
 
   // MARK: - Initializers
@@ -117,5 +116,12 @@ public class Input : NSObject {
     } else if (type == .Statement) {
       self.connection = Connection(type: .NextStatement, sourceBlock: sourceBlock)
     }
+  }
+
+  // MARK: - Public
+
+  /** Append a field to `self.fields[]` */
+  public func appendField(field: Field) {
+    fields.append(field)
   }
 }
