@@ -45,73 +45,140 @@ extension Field {
   data in the dictionary.
   */
   internal static func fieldFromJSON(json: [String: AnyObject]) throws -> Field? {
-    guard let type = Field.FieldType(string: (json[PARAMETER_TYPE] as? String ?? "")) else {
+    let type = json[PARAMETER_TYPE] as? String ?? ""
+    if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
+      return try creationHandler(json)
+    } else {
       return nil
     }
+  }
+}
 
-    switch type {
-    case .Angle:
-      return FieldAngle(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        angle: (json[PARAMETER_ANGLE] as? Int ?? 90))
+/**
+Manages the registration of fields
+*/
+extension Field {
+  @objc(BKYFieldJSONRegistry)
+  public class JSONRegistry: NSObject {
+    /** Callback for creating a Field instance from JSON */
+    public typealias CreationHandler = [String: AnyObject] throws -> Field
 
-    case .Checkbox:
-      return FieldCheckbox(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
+    // MARK: - Properties
+    public static let sharedInstance = JSONRegistry()
 
-    case .Colour:
-      let colour = UIColor.bky_colorFromRGB(json[PARAMETER_COLOUR] as? String ?? "")
-      return FieldColour(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        colour: (colour ?? UIColor.redColor()))
+    private var registry = [String: CreationHandler]()
+    public subscript(key: String) -> CreationHandler? {
+      get { return registry[key.lowercaseString] }
+      set { registry[key.lowercaseString] = newValue }
+    }
 
-    case .Date:
-      return FieldDate(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        stringDate: (json[PARAMETER_DATE] as? String ?? ""))
+    // MARK: - Initializers
 
-    case .Dropdown:
-      // Options should be an array of string arrays.
-      // eg. [["Name 1", "Value 1"], ["Name 2", "Value 2"]]
-      let options = json[PARAMETER_OPTIONS] as? Array<[String]> ?? []
+    public override init() {
+      super.init()
 
-      // Check that all arrays contain exactly two values and that the second value is not empty
-      if (options.filter { ($0.count != 2) || ($0[1] == "") }.count > 0) {
-        throw BlockError(.InvalidBlockDefinition, "Each dropdown field option must contain " +
-          "exactly two String values and the second value must not be empty.")
+      // Angle
+      registerType("field_angle") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldAngle(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          angle: (json[PARAMETER_ANGLE] as? Int ?? 90))
       }
 
-      return FieldDropdown(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        // Reconstruct options into array of (String, String) tuples
-        // eg.[(displayName: "Name 1", value: "Value 1"), (displayName: "Name 2", value: "Value 2")]
-        options: options.map({ (displayName: $0[0], value: $0[1]) }))
+      // Checkbox
+      registerType("field_checkbox") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldCheckbox(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
+      }
 
-    case .Image:
-      return FieldImage(
-        name: (json[PARAMETER_NAME] as? String ?? ""),
-        imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
-          "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
-        size: CGSizeMake(
-          CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
-          CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
-        altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))
+      // Colour
+      registerType("field_colour") {
+        (json: [String: AnyObject]) throws -> Field in
+        let colour = UIColor.bky_colorFromRGB(json[PARAMETER_COLOUR] as? String ?? "")
+        return FieldColour(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          colour: (colour ?? UIColor.redColor()))
+      }
 
-    case .Input:
-      return FieldInput(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        text: (json[PARAMETER_TEXT] as? String ?? "default"))
+      // Date
+      registerType("field_date") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldDate(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          stringDate: (json[PARAMETER_DATE] as? String ?? ""))
+      }
 
-    case .Label:
-      return FieldLabel(
-        name: (json[PARAMETER_NAME] as? String ?? ""),
-        text: (json[PARAMETER_TEXT] as? String ?? ""))
+      // Dropdown
+      registerType("field_dropdown") {
+        (json: [String: AnyObject]) throws -> Field in
+        // Options should be an array of string arrays.
+        // eg. [["Name 1", "Value 1"], ["Name 2", "Value 2"]]
+        let options = json[PARAMETER_OPTIONS] as? Array<[String]> ?? []
 
-    case .Variable:
-      return FieldVariable(
-        name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-        variable: (json[PARAMETER_VARIABLE] as? String ?? "item"))
+        // Check that all arrays contain exactly two values and that the second value is not empty
+        if (options.filter { ($0.count != 2) || ($0[1] == "") }.count > 0) {
+          throw BlockError(.InvalidBlockDefinition, "Each dropdown field option must contain " +
+            "exactly two String values and the second value must not be empty.")
+        }
+
+        return FieldDropdown(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          // Reconstruct options into array of (String, String) tuples
+          // eg. [(displayName: "Name 1", value: "Value 1"),
+          //     (displayName: "Name 2", value: "Value 2")]
+          options: options.map({ (displayName: $0[0], value: $0[1]) }))
+      }
+
+      // Image
+      registerType("field_image") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldImage(
+          name: (json[PARAMETER_NAME] as? String ?? ""),
+          imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
+            "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
+          size: CGSizeMake(
+            CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
+            CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
+          altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))
+      }
+
+      // Input
+      registerType("field_input") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldInput(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          text: (json[PARAMETER_TEXT] as? String ?? "default"))
+      }
+
+      // Label
+      registerType("field_label") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldLabel(
+          name: (json[PARAMETER_NAME] as? String ?? ""),
+          text: (json[PARAMETER_TEXT] as? String ?? ""))
+      }
+
+      // Variable
+      registerType("field_variable") {
+        (json: [String: AnyObject]) throws -> Field in
+        return FieldVariable(
+          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
+          variable: (json[PARAMETER_VARIABLE] as? String ?? "item"))
+      }
+    }
+
+    // MARK: - Public
+
+    /** Registers a JSON creation handler for a given field key. */
+    public func registerType(type: String, creationHandler: CreationHandler) {
+      registry[type] = creationHandler
+    }
+
+    /** Unregisters a JSON creation handler for a given field key. */
+    public func unregisterType(type: String) {
+      registry[type] = nil
     }
   }
 }

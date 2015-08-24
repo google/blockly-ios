@@ -30,7 +30,7 @@ public class FieldDropdown: Field {
   public init(name: String, options: [(displayName: String, value: String)]) {
     self.options = options
 
-    super.init(type: .Dropdown, name: name)
+    super.init(name: name)
   }
 
   public convenience init(name: String, displayNames: [String], values: [String]) throws {

@@ -33,6 +33,6 @@ public class FieldImage: Field {
     self.size = size
     self.altText = altText
 
-    super.init(type: .Image, name: name)
+    super.init(name: name)
   }
 }

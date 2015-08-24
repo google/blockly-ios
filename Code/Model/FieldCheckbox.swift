@@ -29,6 +29,6 @@ public class FieldCheckbox: Field {
   public init(name: String, checked: Bool) {
     self.checked = checked
 
-    super.init(type: .Checkbox, name: name)
+    super.init(name: name)
   }
 }

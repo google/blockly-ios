@@ -31,7 +31,7 @@ public class FieldAngle: Field {
   public init(name: String, angle: Int) {
     self.angle = FieldAngle.normalizeAngle(angle)
 
-    super.init(type: .Angle, name: name)
+    super.init(name: name)
   }
 
   // MARK: - Internal - For testing only

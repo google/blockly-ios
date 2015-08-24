@@ -31,7 +31,7 @@ public class FieldDate: Field {
   public init(name: String, date: NSDate) {
     self.date = FieldDate.normalizeDate(date)
 
-    super.init(type: .Date, name: name)
+    super.init(name: name)
   }
 
   /**

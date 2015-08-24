@@ -29,6 +29,6 @@ public class FieldVariable: Field {
   public init(name: String, variable: String) {
     self.variable = variable
 
-    super.init(type: .Variable, name: name)
+    super.init(name: name)
   }
 }

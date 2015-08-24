@@ -29,6 +29,6 @@ public class FieldColour: Field {
   public init(name: String, colour: UIColor) {
     self.colour = colour
     
-    super.init(type: .Colour, name: name)
+    super.init(name: name)
   }
 }

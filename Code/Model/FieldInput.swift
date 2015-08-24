@@ -29,6 +29,6 @@ public class FieldInput: Field {
   public init(name: String, text: String) {
     self.text = text
 
-    super.init(type: .Input, name: name)
+    super.init(name: name)
   }
 }

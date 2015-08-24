@@ -29,6 +29,6 @@ public class FieldLabel: Field {
   public init(name: String, text: String) {
     self.text = text
 
-    super.init(type: .Label, name: name)
+    super.init(name: name)
   }
 }

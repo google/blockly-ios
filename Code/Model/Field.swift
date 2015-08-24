@@ -38,48 +38,14 @@ When it's fixed, replace "@objc" with "@objc(BKYField)".
 */
 @objc
 public class Field: NSObject {
-  // MARK: - Enum - FieldType
-
-  /** Represents types of fields. */
-  @objc
-  public enum BKYFieldType: Int {
-    case Label = 0, Input, Angle, Checkbox, Colour, Date, Variable, Dropdown, Image
-
-    private static let stringMapping = [
-      Angle: "field_angle",
-      Checkbox: "field_checkbox",
-      Colour: "field_colour",
-      Date: "field_date",
-      Dropdown: "field_dropdown",
-      Image: "field_image",
-      Input: "field_input",
-      Label: "field_label",
-      Variable: "field_variable",
-    ]
-
-    public func stringValue() -> String {
-      return BKYFieldType.stringMapping[self]!
-    }
-
-    internal init?(string: String) {
-      guard let value = BKYFieldType.stringMapping.bky_anyKeyForValue(string) else {
-        return nil
-      }
-      self = value
-    }
-  }
-  public typealias FieldType = BKYFieldType
-
   // MARK: - Properties
 
-  public let type: FieldType
   public let name: String
   public weak var delegate: FieldDelegate?
 
   // MARK: - Initializers
 
-  internal init(type: FieldType, name: String) {
-    self.type = type
+  internal init(name: String) {
     self.name = name
   }
 }

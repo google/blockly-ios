@@ -45,14 +45,10 @@ public class Block : NSObject {
   public let colourHue: Int
   public let outputConnection: Connection?
   public let nextConnection: Connection?
-
-  /** The next statement block directly connected to this block, if it exists. */
   public var nextBlock: Block? {
     return nextConnection?.targetConnection?.sourceBlock
   }
   public let previousConnection: Connection?
-
-  /** The previous statement block directly connected to this block, if it exists. */
   public var previousBlock: Block? {
     return previousConnection?.targetConnection?.sourceBlock
   }
@@ -84,7 +80,7 @@ public class Block : NSObject {
   /** To create a Block, use Block.Builder instead. */
   internal init(identifier: String, name: String, workspace: Workspace, category: Int,
     colourHue: Int, inputs: [Input] = [], inputsInline: Bool,
-    outputConnection: Connection? = nil, nextConnection: Connection? = nil, 
+    outputConnection: Connection? = nil, nextConnection: Connection? = nil,
     previousConnection: Connection? = nil) {
       self.identifier = identifier
       self.name = name
