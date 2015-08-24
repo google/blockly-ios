@@ -16,12 +16,13 @@
 import Foundation
 
 /*
-Stores information on how to render and position a |FieldLabel| on-screen.
+Stores information on how to render and position a `FieldLabel` on-screen.
 */
 @objc(BKYFieldLabelLayout)
 public class FieldLabelLayout: FieldLayout {
   // MARK: - Properties
 
+  /** The `FieldLabel` to layout. */
   public let fieldLabel: FieldLabel
 
   // MARK: - Initializers

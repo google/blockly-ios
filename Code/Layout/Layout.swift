@@ -34,8 +34,8 @@ Abstract base class that defines a node in a tree-hierarchy. It is used for stor
 information on how to render and position itself relative to other nodes in this hierarchy. Nodes
 can represent fields, blocks, or a workspace (which are always root nodes).
 
-The coordinate system used inside a |Layout| object is in the "Blockly" space. To obtain a
-translation of a |Layout|'s absolute position and size from "Blockly" coordinates to |UIView|
+The coordinate system used inside a `Layout` object is in the "Blockly" space. To obtain a
+translation of a `Layout` object's absolute position and size from "Blockly" coordinates to `UIView`
 coordinates, use the method `viewFrameAtScale(:)`.
 */
 @objc(BKYLayout)
@@ -45,7 +45,7 @@ public class Layout: NSObject {
   /** The parent node of this layout. If this value is nil, this layout is the root node. */
   public weak var parentLayout: Layout?
 
-  /** Position relative to self.parentLayout */
+  /** Position relative to `self.parentLayout` */
   public var relativePosition: BKYPoint = CGPointZero
 
   /** Stored position relative to the root node */

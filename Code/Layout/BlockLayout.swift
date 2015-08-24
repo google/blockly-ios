@@ -13,24 +13,26 @@
 * limitations under the License.
 */
 
-import UIKit
+import Foundation
 
 // MARK: -
 
 /*
-Stores information on how to render and position a |Block| on-screen.
+Stores information on how to render and position a `Block` on-screen.
 */
 @objc(BKYBlockLayout)
 public class BlockLayout: Layout {
   // MARK: - Properties
 
+  /** The `Block` to layout. */
   public let block: Block
-  public var childBlockLayouts = [BlockLayout]()
-  public var inputLayouts = [InputLayout]()
+
+  /* The corresponding layout objects for `self.block.inputs[]` */
+  public private(set) var inputLayouts = [InputLayout]()
 
   // MARK: - Initializers
 
-  public required init(block: Block, parentLayout: Layout?) {
+  public required init(block: Block, parentLayout: BlockGroupLayout?) {
     self.block = block
     super.init(parentLayout: parentLayout)
     self.block.delegate = self
@@ -39,17 +41,10 @@ public class BlockLayout: Layout {
   // MARK: - Super
 
   public override var childLayouts: [Layout] {
-    return (childBlockLayouts as [Layout]) + (inputLayouts as [Layout])
+    return inputLayouts
   }
 
   public override func layoutChildren() {
-    // Update relative position/size of blocks
-    for blockLayout in childBlockLayouts {
-      blockLayout.layoutChildren()
-
-      // TODO:(vicng) Figure out new positions for each block
-    }
-
     // Update relative position/size of inputs
     for inputLayout in inputLayouts {
       inputLayout.layoutChildren()
@@ -68,6 +63,23 @@ public class BlockLayout: Layout {
     if self.size != newSize {
       self.size = newSize
     }
+  }
+
+  // MARK: - Public
+
+  /**
+  Appends an inputLayout to `self.inputLayouts` and sets its `parentLayout` to this instance.
+  */
+  public func appendInputLayout(inputLayout: InputLayout) {
+    inputLayout.parentLayout = self
+    inputLayouts.append(inputLayout)
+  }
+
+  /** Removes `self.inputLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  public func removeInputLayoutAtIndex(index: Int) -> InputLayout {
+    let inputLayout = inputLayouts.removeAtIndex(index)
+    inputLayout.parentLayout = nil
+    return inputLayout
   }
 }
 

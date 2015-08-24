@@ -32,8 +32,8 @@ public protocol InputDelegate {
 Class representing an input (value, statement, or dummy).
 
 - TODO:(vicng): The Obj-C bridging header isn't generated properly when a class marked with @objc
-  has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
-  When it's fixed, replace "@objc" with "@objc(BKYInput)".
+has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
+When it's fixed, replace "@objc" with "@objc(BKYInput)".
 */
 @objc
 public class Input : NSObject {
@@ -94,6 +94,11 @@ public class Input : NSObject {
   public let type: BKYInputType
   public let name: String
   public private(set) var connection: Connection?
+
+  /** The block that is connected to this input, if it exists. */
+  public var connectedBlock: Block? {
+    return connection?.targetConnection?.sourceBlock
+  }
 
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
