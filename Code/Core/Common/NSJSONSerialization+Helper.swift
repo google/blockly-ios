@@ -35,7 +35,6 @@ extension NSJSONSerialization {
   - Parameter jsonString: The JSON string
   - Returns: Either a Dictionary<String, AnyObject> or Array<AnyObject>
   */
-  @objc
   public static func bky_JSONObjectFromString(jsonString: String) throws -> AnyObject {
     guard let
       jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
@@ -57,7 +56,6 @@ extension NSJSONSerialization {
   - Parameter jsonString: A valid JSON string dictionary
   - Returns: The JSON dictionary
   */
-  @objc
   public static func bky_JSONDictionaryFromString(jsonString: String) throws
     -> Dictionary<String, AnyObject> {
       // Parse jsonString into json dictionary
@@ -78,7 +76,6 @@ extension NSJSONSerialization {
   - Parameter jsonString: A valid JSON string array
   - Returns: The JSON array
   */
-  @objc
   public static func bky_JSONArrayFromString(jsonString: String) throws -> [AnyObject] {
     // Parse jsonString into json array
     guard let json = try bky_JSONObjectFromString(jsonString) as? [AnyObject]

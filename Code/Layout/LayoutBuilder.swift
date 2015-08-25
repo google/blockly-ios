@@ -90,6 +90,7 @@ public class LayoutBuilder: NSObject {
   }
 
   /** Builds and returns an entire `FieldLayout` tree from a given field. */
+  // TODO:(vicng) Re-factor this method so that any user-defined Field could be created here.
   public static func buildLayoutTreeFromField(field: Field, parentLayout: Layout?) -> FieldLayout? {
     // TODO:(vicng) Implement error handling if the field's layout could not be found
     if let fieldLabel = field as? FieldLabel {

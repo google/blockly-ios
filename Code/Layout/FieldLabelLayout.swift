@@ -22,6 +22,9 @@ Stores information on how to render and position a `FieldLabel` on-screen.
 public class FieldLabelLayout: FieldLayout {
   // MARK: - Properties
 
+  /** The default Layout measurer to use for new instances of FieldLabelLayout. */
+  public static var defaultMeasurer: FieldLayoutMeasurer.Type = FieldLabelView.self
+
   /** The `FieldLabel` to layout. */
   public let fieldLabel: FieldLabel
 
@@ -29,18 +32,8 @@ public class FieldLabelLayout: FieldLayout {
 
   public required init(fieldLabel: FieldLabel, parentLayout: Layout?) {
     self.fieldLabel = fieldLabel
-    super.init(parentLayout: parentLayout)
+    super.init(parentLayout: parentLayout, measurer: FieldLabelLayout.defaultMeasurer)
     self.fieldLabel.delegate = self
-  }
-
-  // MARK: - Super
-
-  public override func layoutChildren() {
-    // TODO:(vicng) Add hook to do this measurement from FieldLabelView
-    // TODO:(vicng) Translate this value back into Blockly coordinates
-    // TODO:(vicng) Use a standardized font size that can be configurable for the project
-    // TODO:(vicng) Clean up TODOs!
-    self.size = fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
   }
 }
 

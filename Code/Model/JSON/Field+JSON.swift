@@ -64,12 +64,15 @@ extension Field {
     public typealias CreationHandler = [String: AnyObject] throws -> Field
 
     // MARK: - Properties
+
+    /** Shared instanced. */
     public static let sharedInstance = JSONRegistry()
 
-    private var registry = [String: CreationHandler]()
+    /** Dictionary mapping JSON field types to its creation handler. */
+    private var _registry = [String: CreationHandler]()
     public subscript(key: String) -> CreationHandler? {
-      get { return registry[key.lowercaseString] }
-      set { registry[key.lowercaseString] = newValue }
+      get { return _registry[key.lowercaseString] }
+      set { _registry[key.lowercaseString] = newValue }
     }
 
     // MARK: - Initializers
@@ -173,12 +176,12 @@ extension Field {
 
     /** Registers a JSON creation handler for a given field key. */
     public func registerType(type: String, creationHandler: CreationHandler) {
-      registry[type] = creationHandler
+      _registry[type] = creationHandler
     }
 
     /** Unregisters a JSON creation handler for a given field key. */
     public func unregisterType(type: String) {
-      registry[type] = nil
+      _registry[type] = nil
     }
   }
 }

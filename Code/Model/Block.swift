@@ -30,12 +30,8 @@ public protocol BlockDelegate {
 
 /**
 Class that represents a single block.
-
-- TODO:(vicng) The Obj-C bridging header isn't generated properly when a class marked with @objc
-has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
-When it's fixed, replace "@objc" with "@objc(BKYBlock)".
 */
-@objc
+@objc(BKYBlock)
 public class Block : NSObject {
   // MARK: - Properties
 

@@ -30,12 +30,8 @@ public protocol InputDelegate {
 
 /**
 Class representing an input (value, statement, or dummy).
-
-- TODO:(vicng): The Obj-C bridging header isn't generated properly when a class marked with @objc
-has an extension (ie. Block+JSON.swift). This looks like a bug with Xcode 7.
-When it's fixed, replace "@objc" with "@objc(BKYInput)".
 */
-@objc
+@objc(BKYInput)
 public class Input : NSObject {
   // MARK: - Enum - InputType
 
@@ -106,7 +102,6 @@ public class Input : NSObject {
 
   // MARK: - Initializers
 
-  @objc
   public init(type: InputType, name: String, sourceBlock: Block) {
     self.name = name
     self.type = type

@@ -28,7 +28,6 @@ extension Block {
   malformed data, or contradictory data).
   - Returns: A new block.
   */
-  @objc
   public class func blockFromJSON(json: [String: AnyObject], workspace: Workspace) throws -> Block
   {
     if (json["output"] != nil && json["previousStatement"] != nil) {
@@ -168,7 +167,7 @@ extension Block {
     // Throw an error if not every argument index was used
     let unusedIndices = processedIndices.filter({ $0 == false })
     if (unusedIndices.count > 0) {
-      let unusedIndicesString = ",".join(unusedIndices.map({ String($0) }))
+      let unusedIndicesString = unusedIndices.map({ String($0) }).joinWithSeparator(",")
       throw BlockError(.InvalidBlockDefinition,
         "Message did not reference the following indices: \(unusedIndicesString)")
     }

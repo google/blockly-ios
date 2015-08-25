@@ -21,6 +21,7 @@ Handles the management of recyclable views.
 @objc(BKYViewManager)
 public class ViewManager: NSObject {
 
+  /** Shared instance. */
   public static let sharedInstance = ViewManager()
 
   public func blockViewForLayout(layout: BlockLayout) -> BlockView {

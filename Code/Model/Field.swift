@@ -31,12 +31,8 @@ public protocol FieldDelegate {
 /**
 Input field.  Used for editable titles, variables, etc. This is an abstract class that defines the
 UI on the block.  Actual instances would be |FieldLabel|, |FieldDropdown|, etc.
-
-- TODO:(vicng) The Obj-C bridging header isn't generated properly when a class marked with @objc
-has a subclass (ie. FieldLabel.swift). This looks like a bug with Xcode 7.
-When it's fixed, replace "@objc" with "@objc(BKYField)".
 */
-@objc
+@objc(BKYField)
 public class Field: NSObject {
   // MARK: - Properties
 

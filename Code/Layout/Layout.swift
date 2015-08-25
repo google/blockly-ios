@@ -45,10 +45,13 @@ public class Layout: NSObject {
   /** The parent node of this layout. If this value is nil, this layout is the root node. */
   public weak var parentLayout: Layout?
 
+
   /** Position relative to `self.parentLayout` */
   public var relativePosition: BKYPoint = CGPointZero
 
-  /** Stored position relative to the root node */
+  // TODO:(vicng) Replace this property with a CGRect viewFrame.
+  /** Stored position relative to its parent *view* node. For example, the parent view node for a
+  Field is a Block, while the parent view node for a Block is a Workspace. */
   public private(set) var absolutePosition: BKYPoint = CGPointZero {
     didSet {
       if absolutePosition != oldValue {

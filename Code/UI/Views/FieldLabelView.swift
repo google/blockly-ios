@@ -45,3 +45,16 @@ public class FieldLabelView: UILabel {
     super.init(coder: aDecoder)
   }
 }
+
+extension FieldLabelView: FieldLayoutMeasurer {
+  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+    guard let fieldLayout = layout as? FieldLabelLayout else {
+      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
+        "Expected type [FieldLabelLayout].")
+      return CGSizeZero
+    }
+    // TODO:(vicng) Return different values based on the scale
+    // TODO:(vicng) Use a standardized font size that can be configurable for the project
+    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
+  }
+}
