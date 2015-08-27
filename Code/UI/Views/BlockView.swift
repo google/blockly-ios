@@ -34,11 +34,14 @@ public class BlockView: UIView {
   private let _viewManager = ViewManager.sharedInstance
 
   /** View for rendering the block's background */
-  private let _blockBackgroundView: BezierPathView = ViewManager.sharedInstance.bezierPathView()
+  private let _blockBackgroundView: BezierPathView = {
+      return ViewManager.sharedInstance.viewForType(BezierPathView.self)
+    }()
 
   /** View for rendering the block's highlight overly */
-  private lazy var _highlightOverlayView: BezierPathView =
-    ViewManager.sharedInstance.bezierPathView()
+  private lazy var _highlightOverlayView: BezierPathView = {
+      return ViewManager.sharedInstance.viewForType(BezierPathView.self)
+    }()
 
   /** Field subviews */
   private var _fieldViews = [UIView]()
@@ -51,8 +54,8 @@ public class BlockView: UIView {
     self.translatesAutoresizingMaskIntoConstraints = false
 
     // Configure background
-
     _blockBackgroundView.frame = self.bounds
+    _blockBackgroundView.backgroundColor = UIColor.clearColor()
     _blockBackgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     addSubview(_blockBackgroundView)
     sendSubviewToBack(_blockBackgroundView)
@@ -76,11 +79,8 @@ public class BlockView: UIView {
   // MARK: - Private
 
   private func refresh() {
-    // Remove all subviews and recycle
-    for view in self.subviews {
-      // TODO:(vicng) Recycle view
-      view.removeFromSuperview()
-    }
+    // Remove and recycle field subviews
+    recycleFieldViews()
 
     guard let layout = self.layout else {
       self.frame = CGRectZero
@@ -94,14 +94,39 @@ public class BlockView: UIView {
 
     // TODO:(vicng) Re-draw this view too
 
-    // TODO:(vicng) Add field views
+    // Add field views
+    for fieldLayout in layout.fieldLayouts {
+      if let fieldView = ViewManager.sharedInstance.fieldViewForLayout(fieldLayout) {
+        _fieldViews.append(fieldView)
+
+        addSubview(fieldView)
+        fieldView.layer.zPosition = fieldLayout.zPosition
+      }
+    }
   }
 }
 
-// MARK: - Protocol - Recyclable
+// MARK: - Recyclable implementation
 
 extension BlockView: Recyclable {
   public func recycle() {
-    // TODO: (vicng) Release all resources held by this object and recycle any subviews if necessary
+    recycleFieldViews()
+
+    _blockBackgroundView.removeFromSuperview()
+    ViewManager.sharedInstance.recycleView(_blockBackgroundView)
+
+      _highlightOverlayView.removeFromSuperview()
+    ViewManager.sharedInstance.recycleView(_highlightOverlayView)
+  }
+
+  private func recycleFieldViews() {
+    for fieldView in _fieldViews {
+      fieldView.removeFromSuperview()
+
+      if fieldView is Recyclable {
+        ViewManager.sharedInstance.recycleView(fieldView)
+      }
+    }
+    _fieldViews = []
   }
 }

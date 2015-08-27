@@ -64,10 +64,10 @@ public class Layout: NSObject {
   public var size: BKYSize = CGSizeZero
 
   /**
-  Z-index of the layout. Those with higher values should render on top of those with lower
+  Z-position of the layout. Those with higher values should render on top of those with lower
   values.
   */
-  public var zIndex: Int = 0
+  public var zPosition: CGFloat = 0
 
   /** Flag indicating if this layout's corresponding view needs to be completely re-drawn. */
   public var needsDisplay: Bool = false

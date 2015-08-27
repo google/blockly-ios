@@ -24,7 +24,7 @@ When it's fixed, add in "@objc(BKYLayoutMeasurer)".
 */
 public protocol FieldLayoutMeasurer {
   /**
-  Measures and returns the amount of space needed to render the Layout, in a UIView.
+  Measures and returns the amount of space needed to render a FieldLayout, in a UIView.
 
   - Parameter layout: The layout to measure
   - Parameter scale: The current scale of the layout, relative to Blockly coordinates.
@@ -64,7 +64,8 @@ public class FieldLayout: Layout {
   // MARK: - Super
 
   public override func layoutChildren() {
-    // TODO:(vicng) Pass scale in from a workspace value
+    // TODO:(vicng) Pass scale in from a workspace value, and translate this value back into Blockly
+    // coordinates
     self.size = measurer.measureLayout(self, scale: 1.0)
   }
 }

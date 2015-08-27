@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; settings = {ASSET_TAGS = (); }; };
 		FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2725D61B7ED2C300777B49 /* ViewManager.swift */; };
 		FA2726731B82B5B100777B49 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726721B82B5B100777B49 /* Assertions.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
@@ -69,6 +70,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
 		FA2725D61B7ED2C300777B49 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FA2726721B82B5B100777B49 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assertions.swift; path = Core/Common/Assertions.swift; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2726751B83C54900777B49 /* BlockLayout.swift */,
+				FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */,
 				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FA2726771B83C54900777B49 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
@@ -461,6 +464,7 @@
 				FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
+				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */,

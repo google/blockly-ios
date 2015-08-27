@@ -27,8 +27,17 @@ public class BlockLayout: Layout {
   /** The `Block` to layout. */
   public let block: Block
 
-  /* The corresponding layout objects for `self.block.inputs[]` */
+  /** The corresponding layout objects for `self.block.inputs[]` */
   public private(set) var inputLayouts = [InputLayout]()
+
+  /** A list of all `FieldLayout` objects belonging under this `BlockLayout`. */
+  public var fieldLayouts: [FieldLayout] {
+    var fieldLayouts = [FieldLayout]()
+    for inputLayout in inputLayouts {
+      fieldLayouts += inputLayout.fieldLayouts
+    }
+    return fieldLayouts
+  }
 
   // MARK: - Initializers
 
@@ -45,11 +54,29 @@ public class BlockLayout: Layout {
   }
 
   public override func layoutChildren() {
+    var xOffset: CGFloat = 0
+    var yOffset: CGFloat = 0
+    var maximumInputWidth: CGFloat = 0
+
     // Update relative position/size of inputs
     for inputLayout in inputLayouts {
       inputLayout.layoutChildren()
 
-      // TODO:(vicng) Figure out new positions for each input
+      inputLayout.relativePosition.x = xOffset
+      inputLayout.relativePosition.y = yOffset
+
+      if block.inputsInline {
+        // TODO:(vicng) Add inline x padding
+        xOffset += inputLayout.size.width
+      } else {
+        // TODO:(vicng) Add inline y padding
+        maximumInputWidth = max(maximumInputWidth, inputLayout.size.width)
+        yOffset += inputLayout.size.height
+      }
+    }
+
+    if !block.inputsInline {
+      // TODO:(vicng) Re-layout inputs based on new maximum width
     }
 
     // Update the size required for this block

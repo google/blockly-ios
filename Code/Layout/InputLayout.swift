@@ -51,17 +51,31 @@ public class InputLayout: Layout {
   }
 
   public override func layoutChildren() {
+    var xOffset: CGFloat = 0
+
     // Update relative position/size of fields
     for fieldLayout in fieldLayouts {
       fieldLayout.layoutChildren()
 
-      // TODO:(vicng) Figure out new positions for each field
+      // TODO:(vicng) Add inline x padding
+      fieldLayout.relativePosition.x = xOffset
+      fieldLayout.relativePosition.y = 0
+
+      xOffset += fieldLayout.size.width
     }
 
     // Update relative position/size of blocks
     blockGroupLayout.layoutChildren()
 
-    // TODO:(vicng) Figure out new positions for the block group
+    let inputsInline = (parentLayout as? BlockLayout)?.block.inputsInline ?? false
+
+    if inputsInline {
+      // TODO:(vicng) Add inline x padding
+      blockGroupLayout.relativePosition.x = xOffset
+    } else {
+      // TODO:(vicng) Do a better job positioning this
+      blockGroupLayout.relativePosition.x = xOffset
+    }
 
     self.size = sizeThatFitsForChildLayouts()
   }

@@ -50,11 +50,18 @@ public class BlockGroupLayout: Layout {
   }
 
   public override func layoutChildren() {
+    var yOffset: CGFloat = 0
+
     // Update relative position/size of inputs
     for blockLayout in blockLayouts {
       blockLayout.layoutChildren()
 
-      // TODO:(vicng) Figure out new positions for each block
+      blockLayout.relativePosition.x = 0
+      blockLayout.relativePosition.y = yOffset
+
+      // TODO:(vicng) Blocks are technically overlapping. Take into account the size of the notch
+      // to figure out how much each block should actually be offset by.
+      yOffset += blockLayout.size.height
     }
 
     // Update the size required for this block

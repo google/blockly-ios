@@ -55,6 +55,10 @@ class ViewController: UIViewController {
     ifBlock.appendInput(input0)
     let input1 = Input(type: .Statement, name: "IF1", sourceBlock: ifBlock)
     ifBlock.appendInput(input1)
+    let input2 = Input(type: .Value, name: "IF2", sourceBlock: ifBlock)
+    input2.connection?.typeChecks = ["Boolean"]
+    input2.appendField(FieldLabel(name: "", text: "else"))
+    ifBlock.appendInput(input2)
 
     workspace.blocks.append(ifBlock)
 

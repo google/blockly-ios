@@ -19,7 +19,7 @@ import Foundation
 Defines a protocol for objects that can be recycled for re-use.
 */
 @objc(BKYRecyclable)
-public protocol Recyclable {
+public protocol Recyclable: class {
   /**
   Instantiates a new instance of the recyclable class.
   */

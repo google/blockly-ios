@@ -26,9 +26,7 @@ public class FieldLabelView: UILabel {
   /** Layout object to render */
   public var layout: FieldLabelLayout! {
     didSet {
-      self.frame = (layout != nil) ? layout.viewFrameAtScale(1.0) : CGRectZero
-
-      // TODO:(vicng) Re-draw this view too
+      refresh()
     }
   }
 
@@ -37,12 +35,29 @@ public class FieldLabelView: UILabel {
   public required init() {
     super.init(frame: CGRectZero)
 
-    self.translatesAutoresizingMaskIntoConstraints = false
+    // TODO:(vicng) Standardize this font
+    self.font = UIFont.systemFontOfSize(14)
   }
 
   public required init?(coder aDecoder: NSCoder) {
     bky_assertionFailure("Called unsupported initializer")
     super.init(coder: aDecoder)
+  }
+
+  // MARK: - Public
+
+  /**
+  Refreshes the view based on the current layout.
+  */
+  public func refresh() {
+    if layout == nil {
+      self.frame = CGRectZero
+      self.text = ""
+      return
+    }
+
+    self.frame = layout.viewFrameAtScale(1.0)
+    self.text = layout.fieldLabel.text
   }
 }
 
@@ -56,5 +71,11 @@ extension FieldLabelView: FieldLayoutMeasurer {
     // TODO:(vicng) Return different values based on the scale
     // TODO:(vicng) Use a standardized font size that can be configurable for the project
     return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
+  }
+}
+
+extension FieldLabelView: Recyclable {
+  public func recycle() {
+    self.layout = nil
   }
 }

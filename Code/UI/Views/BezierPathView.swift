@@ -29,7 +29,7 @@ public class BezierPathView: UIView {
 
   // MARK: - Initializers
 
-  public init() {
+  public required init() {
     super.init(frame: CGRectZero)
 
     self.translatesAutoresizingMaskIntoConstraints = false
@@ -78,5 +78,13 @@ public class BezierPathView: UIView {
 
     // Restore the graphics state before drawing any other content.
     CGContextRestoreGState(context)
+  }
+}
+
+// MARK: - Recyclable implementation
+
+extension BezierPathView: Recyclable {
+  public func recycle() {
+    // TODO:(vicng) Implement this
   }
 }
