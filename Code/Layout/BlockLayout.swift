@@ -24,13 +24,13 @@ Stores information on how to render and position a `Block` on-screen.
 public class BlockLayout: Layout {
   // MARK: - Properties
 
-  /** The `Block` to layout. */
+  /// The `Block` to layout.
   public let block: Block
 
-  /** The corresponding layout objects for `self.block.inputs[]` */
+  /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
 
-  /** A list of all `FieldLayout` objects belonging under this `BlockLayout`. */
+  /// A list of all `FieldLayout` objects belonging under this `BlockLayout`.
   public var fieldLayouts: [FieldLayout] {
     var fieldLayouts = [FieldLayout]()
     for inputLayout in inputLayouts {
@@ -96,13 +96,20 @@ public class BlockLayout: Layout {
 
   /**
   Appends an inputLayout to `self.inputLayouts` and sets its `parentLayout` to this instance.
+
+  - Parameter inputLayout: The `InputLayout` to append.
   */
   public func appendInputLayout(inputLayout: InputLayout) {
     inputLayout.parentLayout = self
     inputLayouts.append(inputLayout)
   }
 
-  /** Removes `self.inputLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  /**
+  Removes `self.inputLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+
+  - Parameter index: The index to remove from `inputLayouts`.
+  - Returns: The `BlockLayout` that was removed.
+  */
   public func removeInputLayoutAtIndex(index: Int) -> InputLayout {
     let inputLayout = inputLayouts.removeAtIndex(index)
     inputLayout.parentLayout = nil

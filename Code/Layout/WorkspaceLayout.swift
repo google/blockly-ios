@@ -22,11 +22,11 @@ Stores information on how to render and position a |Block| on-screen.
 public class WorkspaceLayout: Layout {
   // MARK: - Properties
 
-  /** The `Workspace` to layout */
+  /// The `Workspace` to layout
   public let workspace: Workspace
 
-  /** The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
-  `self.workspace.blocks[]`. */
+  /// The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
+  /// `self.workspace.blocks[]`.
   public private(set) var blockGroupLayouts = [BlockGroupLayout]()
 
   // MARK: - Initializers
@@ -55,7 +55,9 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Public
 
-  /** Returns all descendants of this layout that are of type |BlockLayout|. */
+  /**
+  Returns all descendants of this layout that are of type |BlockLayout|.
+  */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()
     var layoutsToProcess = blockGroupLayouts
@@ -77,13 +79,20 @@ public class WorkspaceLayout: Layout {
   /**
   Appends a blockGroupLayout to `self.blockGroupLayouts` and sets its `parentLayout` to this
   instance.
+
+  - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
   */
   public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
     blockGroupLayout.parentLayout = self
     blockGroupLayouts.append(blockGroupLayout)
   }
 
-  /** Removes `self.blockGroupLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  /**
+  Removes `self.blockGroupLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+
+  - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
+  - Returns: The `BlockGroupLayout` that was removed.
+  */
   public func removeBlockGroupLayoutAtIndex(index: Int) -> BlockGroupLayout {
     let blockGroupLayout = blockGroupLayouts.removeAtIndex(index)
     blockGroupLayout.parentLayout = nil

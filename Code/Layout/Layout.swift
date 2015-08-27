@@ -42,37 +42,30 @@ coordinates, use the method `viewFrameAtScale(:)`.
 public class Layout: NSObject {
   // MARK: - Properties
 
-  /** The parent node of this layout. If this value is nil, this layout is the root node. */
+  /// The parent node of this layout. If this value is nil, this layout is the root node.
   public weak var parentLayout: Layout?
 
-
-  /** Position relative to `self.parentLayout` */
+  /// Position relative to `self.parentLayout`
   public var relativePosition: BKYPoint = CGPointZero
-
+  /// Size required by this layout
+  public var size: BKYSize = CGSizeZero
   // TODO:(vicng) Replace this property with a CGRect viewFrame.
-  /** Stored position relative to its parent *view* node. For example, the parent view node for a
-  Field is a Block, while the parent view node for a Block is a Workspace. */
-  public private(set) var absolutePosition: BKYPoint = CGPointZero {
+  /// Stored position relative to its parent *view* node. For example, the parent view node for a
+  /// Field is a Block, while the parent view node for a Block is a Workspace. */
+  public var absolutePosition: BKYPoint = BKYPointZero {
     didSet {
       if absolutePosition != oldValue {
         // TODO:(vicng) Generate change event
       }
     }
   }
-
-  /** Size required by this layout */
-  public var size: BKYSize = CGSizeZero
-
-  /**
-  Z-position of the layout. Those with higher values should render on top of those with lower
-  values.
-  */
+  /// Z-position of the layout. Those with higher values should render on top of those with lower
+  /// values.
   public var zPosition: CGFloat = 0
 
-  /** Flag indicating if this layout's corresponding view needs to be completely re-drawn. */
+  /// Flag indicating if this layout's corresponding view needs to be completely re-drawn.
   public var needsDisplay: Bool = false
-
-  /** Flag indicating if this layout's corresponding view needs to be repositioned. */
+  /// Flag indicating if this layout's corresponding view needs to be repositioned.
   public var needsRepositioning: Bool = false
 
   // MARK: - Initializers
@@ -106,7 +99,9 @@ public class Layout: NSObject {
 
   // MARK: - Public
 
-  /** Returns a UIView frame (ie. absolute position/size) scaled by a specific value. */
+  /**
+  Returns a UIView frame (ie. absolute position/size) scaled by a specific value.
+  */
   public func viewFrameAtScale(scale: CGFloat) -> CGRect {
     return CGRectMake(
       ceil(self.absolutePosition.x * scale),
@@ -146,7 +141,9 @@ public class Layout: NSObject {
     // TODO:(vicng) Potentially generate a change event back to the corresponding view
   }
 
-  /** Returns the minimum amount of space needed to render `self.childLayouts`. */
+  /**
+  Returns the minimum amount of space needed to render `self.childLayouts`.
+  */
   internal func sizeThatFitsForChildLayouts() -> BKYSize {
     var size = BKYSizeZero
 
@@ -154,7 +151,7 @@ public class Layout: NSObject {
       size.width = max(size.width, layout.relativePosition.x + layout.size.width)
       size.height = max(size.height, layout.relativePosition.y + layout.size.height)
     }
-
+    
     return size
   }
 }

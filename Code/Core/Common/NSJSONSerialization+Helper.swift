@@ -22,7 +22,9 @@ import Foundation
 }
 
 extension NSJSONSerialization {
-  /** Domain to use when throwing an error from this class */
+  // MARK: - Static Properties
+
+  /// Domain to use when throwing an error from this class
   @objc static var bky_HelperErrorDomain: String {
     return "com.google.blockly.NSJSONSerialization+Helper"
   }

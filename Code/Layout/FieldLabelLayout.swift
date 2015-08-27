@@ -20,12 +20,14 @@ Stores information on how to render and position a `FieldLabel` on-screen.
 */
 @objc(BKYFieldLabelLayout)
 public class FieldLabelLayout: FieldLayout {
-  // MARK: - Properties
+  // MARK: - Static Properties
 
-  /** The default Layout measurer to use for new instances of FieldLabelLayout. */
+  /// The default Layout measurer to use for new instances of FieldLabelLayout.
   public static var defaultMeasurer: FieldLayoutMeasurer.Type = FieldLabelView.self
 
-  /** The `FieldLabel` to layout. */
+  // MARK: - Properties
+
+  /// The `FieldLabel` to layout.
   public let fieldLabel: FieldLabel
 
   // MARK: - Initializers

@@ -20,8 +20,11 @@ Class for building an entire `Layout` tree from a model object.
 */
 @objc(BKYLayoutBuilder)
 public class LayoutBuilder: NSObject {
+  // MARK: - Public
 
-  /** Builds and returns an entire `WorkspaceLayout` tree from a given workspace. */
+  /**
+  Builds and returns an entire `WorkspaceLayout` tree from a given workspace.
+  */
   public static func buildLayoutTreeFromWorkspace(workspace: Workspace) -> WorkspaceLayout {
     let workspaceLayout = WorkspaceLayout(workspace: workspace)
 
@@ -33,7 +36,9 @@ public class LayoutBuilder: NSObject {
     return workspaceLayout
   }
 
-  /** Builds and returns an entire `BlockGroupLayout` tree from a given block. */
+  /**
+  Builds and returns an entire `BlockGroupLayout` tree from a given block.
+  */
   public static func buildBlockGroupLayoutTreeFromBlock(block: Block, parentLayout: Layout?)
     -> BlockGroupLayout {
       let blockGroupLayout = BlockGroupLayout(parentLayout: parentLayout)
@@ -54,7 +59,9 @@ public class LayoutBuilder: NSObject {
       return blockGroupLayout
   }
 
-  /** Builds and returns an entire `BlockLayout` tree from a given block. */
+  /**
+  Builds and returns an entire `BlockLayout` tree from a given block.
+  */
   public static func buildBlockLayoutTreeFromBlock(block: Block, parentLayout: BlockGroupLayout?)
     -> BlockLayout {
       let blockLayout = BlockLayout(block: block, parentLayout: parentLayout)
@@ -68,7 +75,9 @@ public class LayoutBuilder: NSObject {
       return blockLayout
   }
 
-  /** Builds and returns an entire `InputLayout` tree from a given input. */
+  /**
+  Builds and returns an entire `InputLayout` tree from a given input.
+  */
   public static func buildLayoutTreeFromInput(
     input: Input, parentLayout: BlockLayout?) -> InputLayout {
       let inputLayout = InputLayout(input: input, parentLayout: parentLayout)
@@ -89,8 +98,10 @@ public class LayoutBuilder: NSObject {
       return inputLayout
   }
 
-  /** Builds and returns an entire `FieldLayout` tree from a given field. */
   // TODO:(vicng) Re-factor this method so that any user-defined Field could be created here.
+  /**
+  Builds and returns an entire `FieldLayout` tree from a given field.
+  */
   public static func buildLayoutTreeFromField(field: Field, parentLayout: Layout?) -> FieldLayout? {
     // TODO:(vicng) Implement error handling if the field's layout could not be found
     if let fieldLabel = field as? FieldLabel {

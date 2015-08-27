@@ -22,17 +22,17 @@ Stores information for positioning `Input` areas on-screen.
 public class InputLayout: Layout {
   // MARK: - Properties
 
-  /** The target `Input` to layout */
+  /// The target `Input` to layout
   public let input: Input
 
-  /** The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`. */
+  /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
   public var blockGroupLayout: BlockGroupLayout! {
     didSet {
       blockGroupLayout?.parentLayout = self
     }
   }
 
-  /** The corresponding layouts for `self.input.fields[]` */
+  /// The corresponding layouts for `self.input.fields[]`
   public private(set) var fieldLayouts = [FieldLayout]()
 
   // MARK: - Initializers
@@ -82,13 +82,22 @@ public class InputLayout: Layout {
 
   // MARK: - Public
 
-  /** Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance. */
+  /**
+  Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance.
+
+  - Parameter fieldLayout: The `FieldLayout` to append.
+  */
   public func appendFieldLayout(fieldLayout: FieldLayout) {
     fieldLayout.parentLayout = self
     fieldLayouts.append(fieldLayout)
   }
 
-  /** Removes `self.fieldLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  /**
+  Removes `self.fieldLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+
+  - Parameter index: The index to remove from `self.fieldLayouts`.
+  - Returns: The `FieldLayout` that was removed.
+  */
   public func removeFieldLayoutAtIndex(index: Int) -> FieldLayout {
     let fieldLayout = fieldLayouts.removeAtIndex(index)
     fieldLayout.parentLayout = nil

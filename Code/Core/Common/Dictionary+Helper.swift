@@ -16,6 +16,7 @@
 import Foundation
 
 extension Dictionary where Value: Equatable {
+  // MARK: - Public
 
   /**
   Returns a list of keys in the dictionary that match the given value.
@@ -23,7 +24,7 @@ extension Dictionary where Value: Equatable {
   - Parameter value: The value to find.
   - Returns: The list of keys for that value.
   */
-  func bky_allKeysForValue(value: Value) -> [Key] {
+  public func bky_allKeysForValue(value: Value) -> [Key] {
     return self.filter { $1 == value }.map { $0.0 }
   }
 
@@ -34,7 +35,7 @@ extension Dictionary where Value: Equatable {
   - Parameter value: The value to find.
   - Returns: Any key mapped for the given value, or |nil| if none is found.
   */
-  func bky_anyKeyForValue(value: Value) -> Key? {
+  public func bky_anyKeyForValue(value: Value) -> Key? {
     let possibleKeys = bky_allKeysForValue(value)
     return !possibleKeys.isEmpty ? possibleKeys[0] : nil
   }

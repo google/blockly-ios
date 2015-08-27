@@ -44,20 +44,20 @@ Handles the management of recyclable objects.
 public class ObjectPool: NSObject {
   // MARK: - Properties
 
-  /**
-  Keeps track of all recycled objects. Objects of the same type are keyed by their class name and
-  stored in an array.
-  */
+  /// Keeps track of all recycled objects. Objects of the same type are keyed by their class name
+  /// and stored in an array.
   private var _recycledObjects = [String: Array<Recyclable>]()
 
   // MARK: - Public
 
   /**
   If a recycled object is available for re-use, that object is returned.
-  If not, a new object of the given Type is instantiated.
 
-  - Parameter type: The type of Recyclable object to retrieve.
+  If not, a new object of the given `Recyclable.Type` is instantiated.
+
+  - Parameter type: The type of `Recyclable` object to retrieve.
   - Note: Objects obtained through this method should be recycled through `recycleObject(:)`.
+  - Returns: An object of the given type.
   */
   public func objectForType<T: Recyclable>(type: T.Type) -> T {
     // Force cast Recyclable back into the concrete "T" type
@@ -66,12 +66,14 @@ public class ObjectPool: NSObject {
 
   /**
   If a recycled object is available for re-use, that object is returned.
-  If not, a new object of the given Type is instantiated.
 
-  - Parameter type: The type of Recyclable object to retrieve.
+  If not, a new object of the given `Recyclable.Type` is instantiated.
+
+  - Parameter type: The type of `Recyclable` object to retrieve.
   - Note: Objects obtained through this method should be recycled through `recycleObject(:)`.
   - Warning: This method should only be called by Objective-C code. Swift code should use
   `objectForType(type:)` instead.
+  - Returns: An object of the given type.
   */
   public func recyclableObjectForType(type: Recyclable.Type) -> Recyclable {
     let className = String(type)

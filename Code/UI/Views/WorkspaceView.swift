@@ -20,10 +20,9 @@ View for rendering a |WorkspaceLayout|.
 */
 @objc(BKYWorkspaceView)
 public class WorkspaceView: UIScrollView {
-
   // MARK: - Properties
 
-  /** Layout object to render */
+  /// Layout object to render
   public var layout: WorkspaceLayout! {
     didSet {
       self.frame = (layout != nil) ? layout.viewFrameAtScale(1.0) : CGRectZero
@@ -31,12 +30,12 @@ public class WorkspaceView: UIScrollView {
     }
   }
 
+  /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
-  /** Gesture recognizer to handle moving blocks around. */
+  /// Gesture recognizer to handle moving blocks around.
   private var _blockPanGestureRecognizer: UIPanGestureRecognizer!
-
-  /** Gesture recognizer to handle selecting blocks. */
+  /// Gesture recognizer to handle selecting blocks.
   private var _blockTapGestureRecognizer: UITapGestureRecognizer!
 
   // MARK: - Initializers
@@ -60,7 +59,10 @@ public class WorkspaceView: UIScrollView {
 
   // MARK: - Public
 
-  /** Re-refreshes blocks that are currently visible in the viewport. */
+  /**
+  Refreshes the view based on the current layout. Only blocks that are visible or near the current
+  viewport are refreshed.
+  */
   public func refresh() {
     // TODO:(vicng) Figure out a good amount to pad the workspace by
     self.contentSize = CGSizeMake(
@@ -84,8 +86,20 @@ public class WorkspaceView: UIScrollView {
     }
   }
 
-  // MARK: - Gesture Recognizers
+  // MARK: - Private
 
+  private func shouldRenderLayout(layout: Layout) -> Bool {
+    // TODO:(vicng) Implement this method
+    return true
+  }
+}
+
+// MARK: - Gesture Recognizers
+
+extension WorkspaceView {
+  /**
+  Event handler for a UIPanGestureRecognizer.
+  */
   internal func didRecognizePanGesture(gesture: UIPanGestureRecognizer) {
     guard let blockView = gesture.view as? BlockView else {
       return
@@ -97,18 +111,14 @@ public class WorkspaceView: UIScrollView {
     blockView.frame.origin = gesture.locationInView(self)
   }
 
+  /**
+  Event handler for a UITapGestureRecognizer.
+  */
   internal func didRecognizeTapGesture(gesture: UITapGestureRecognizer) {
     guard let blockView = gesture.view as? BlockView else {
       return
     }
 
     // TODO:(vicng) Set this block as "selected" within the workspace
-  }
-
-  // MARK: - Private
-
-  private func shouldRenderLayout(layout: Layout) -> Bool {
-    // TODO:(vicng) Implement this method
-    return true
   }
 }

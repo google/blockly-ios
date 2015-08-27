@@ -17,6 +17,7 @@ import Foundation
 
 /**
 In builds with a DEBUG symbol defined, prints a value's description to the console.
+
 In non-DEBUG builds, this method does nothing.
 
 - Parameter value: The value to print to the console.
@@ -31,6 +32,7 @@ internal func bky_print<T>(value: T, function: String = __FUNCTION__) {
 
 /**
 In builds with a DEBUG symbol defined, prints a value's debug description to the console.
+
 In non-DEBUG builds, this method does nothing.
 
 - Parameter value: The value to print to the console.

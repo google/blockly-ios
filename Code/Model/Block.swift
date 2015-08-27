@@ -73,7 +73,9 @@ public class Block : NSObject {
 
   // MARK: - Initializers
 
-  /** To create a Block, use Block.Builder instead. */
+  /**
+  To create a Block, use Block.Builder instead.
+  */
   internal init(identifier: String, name: String, workspace: Workspace, category: Int,
     colourHue: Int, inputs: [Input] = [], inputsInline: Bool,
     outputConnection: Connection? = nil, nextConnection: Connection? = nil,
@@ -92,7 +94,11 @@ public class Block : NSObject {
 
   // MARK: - Public
 
-  /** Append an input to `self.inputs[]` */
+  /**
+  Appends an input to `self.inputs[]`.
+
+  - Parameter input: The input to append.
+  */
   public func appendInput(input: Input) {
     inputs.append(input)
   }
@@ -105,8 +111,10 @@ Class used when errors occur inside |Block| methods.
 */
 @objc(BKYBlockError)
 public class BlockError: NSError {
-  /** Domain to use when throwing an error from this class */
-  static let Domain = "com.google.blockly.Block"
+  // MARK: - Static Properties
+
+  /// Domain to use when throwing an error from this class
+  public static let Domain = "com.google.blockly.Block"
 
   // MARK: - Enum - Code
   @objc

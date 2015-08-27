@@ -23,9 +23,9 @@ that are connecting via previous/next connections).
 public class BlockGroupLayout: Layout {
   // MARK: - Properties
 
-  /**
-  A list of sequential block layouts that belong to this group. While this class doesn't enforce it,
-  the following should hold true:
+  /*
+  A list of sequential block layouts that belong to this group. While this class doesn't enforce
+  it, the following should hold true:
 
   1) When `i < blockLayouts.count - 1`:
 
@@ -33,7 +33,7 @@ public class BlockGroupLayout: Layout {
 
   2) When `i >= 1`:
 
-  `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
+ `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
   */
   public private(set) var blockLayouts = [BlockLayout]()
 
@@ -70,13 +70,22 @@ public class BlockGroupLayout: Layout {
 
   // MARK: - Public
 
-  /** Appends a blockLayout to `self.blockLayouts` and sets its `parentLayout` to this instance. */
+  /**
+  Appends a blockLayout to `self.blockLayouts` and sets its `parentLayout` to this instance.
+
+  - Parameter blockLayout: The `BlockLayout` to append.
+  */
   public func appendBlockLayout(blockLayout: BlockLayout) {
     blockLayout.parentLayout = self
     blockLayouts.append(blockLayout)
   }
 
-  /** Removes `self.blockLayouts[index]`, sets its `parentLayout` to nil, and returns it. */
+  /**
+  Removes `self.blockLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+
+  - Parameter index: The index to remove from `self.blockLayouts`.
+  - Returns: The `BlockLayout` that was removed.
+  */
   public func removeBlockLayoutAtIndex(index: Int) -> BlockLayout {
     let blockLayout = blockLayouts.removeAtIndex(index)
     blockLayout.parentLayout = nil

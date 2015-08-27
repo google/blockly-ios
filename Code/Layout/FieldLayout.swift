@@ -44,7 +44,7 @@ Abstract class for a `Field`-based `Layout`.
 public class FieldLayout: Layout {
   // MARK: - Properties
 
-  /** Object responsible for measuring the layout of this object. */
+  /// Object responsible for measuring the layout of this object.
   public var measurer: FieldLayoutMeasurer.Type
 
   // MARK: - Initializers
@@ -60,8 +60,6 @@ public class FieldLayout: Layout {
     // Fields are leaf nodes in the layout tree hierarchy, return an empty array.
     return []
   }
-
-  // MARK: - Super
 
   public override func layoutChildren() {
     // TODO:(vicng) Pass scale in from a workspace value, and translate this value back into Blockly

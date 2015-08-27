@@ -20,16 +20,27 @@ Handles the management of recyclable views.
 */
 @objc(BKYViewManager)
 public class ViewManager: NSObject {
-  // MARK: - Properties
+  // MARK: - Static Properties
 
-  /** Shared instance. */
+  /// Shared instance.
   public static let sharedInstance = ViewManager()
 
-  /** Object pool for holding reusable views. */
+  // MARK: - Properties
+
+  /// Object pool for holding reusable views.
   private let _objectPool = ObjectPool()
 
   // MARK: - Public
 
+  /**
+  Looks in the internal cache for a `BlockView` that has been assigned the given layout.
+  If one is found, it is returned.
+  If not, a recycled (or new) `BlockView` instance is created. This instance is assigned the given
+  layout, stored in the internal cache for future lookup, and returned.
+
+  - Parameter layout: The given `BlockLayout`.
+  - Returns: A `BlockView` with the given layout assigned to it.
+  */
   public func blockViewForLayout(layout: BlockLayout) -> BlockView {
     // TODO:(vicng) Implement a lookup mechanism based on a layout ID
     let blockView = viewForType(BlockView.self)
@@ -37,6 +48,15 @@ public class ViewManager: NSObject {
     return blockView
   }
 
+  /**
+  Looks in the internal cache for a `FieldView` that has been assigned the given layout.
+  If one is found, it is returned.
+  If not, a recycled (or new) `UIView` instance is created. This instance is assigned the given
+  layout, stored in the internal cache for future lookup, and returned.
+
+  - Parameter layout: The given `FieldLayout`.
+  - Returns: A `UIView` with the given layout assigned to it.
+  */
   public func fieldViewForLayout(layout: FieldLayout) -> UIView? {
     // TODO:(vicng) Implement a lookup mechanism based on a layout ID
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout

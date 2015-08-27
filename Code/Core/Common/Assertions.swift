@@ -19,6 +19,9 @@ import Foundation
 In builds with a DEBUG symbol defined, this method calls: `assert(condition, message)`
 
 In non-DEBUG builds, this method does nothing.
+
+- Parameter condition: The condition to pass to `assert(condition, message)`
+- Parameter message: The message to pass to `assert(condition, message)`
 */
 internal func bky_assert(condition: Bool, message: String) {
   #if DEBUG
@@ -30,6 +33,8 @@ internal func bky_assert(condition: Bool, message: String) {
 In builds with a DEBUG symbol defined, this method calls: `assertionFailure(message)`
 
 In non-DEBUG builds, this method does nothing.
+
+- Parameter message: The message to pass to `assertionFailure(message)`.
 */
 internal func bky_assertionFailure(message: String) {
   #if DEBUG

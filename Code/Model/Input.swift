@@ -90,7 +90,7 @@ public class Input : NSObject {
   public let type: BKYInputType
   public let name: String
   public private(set) var connection: Connection?
-  /** The block that is connected to this input, if it exists. */
+  /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
     return connection?.targetConnection?.sourceBlock
   }
@@ -115,7 +115,11 @@ public class Input : NSObject {
 
   // MARK: - Public
 
-  /** Append a field to `self.fields[]` */
+  /**
+  Appends a field to `self.fields[]`.
+
+  - Parameter field: The field to append.
+  */
   public func appendField(field: Field) {
     fields.append(field)
   }

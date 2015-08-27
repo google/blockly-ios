@@ -22,7 +22,7 @@ An input field for selecting options from a dropdown menu.
 public class FieldDropdown: Field {
   // MARK: - Properties
 
-  /** Drop-down options. First value is the display name, second value is the option value. */
+  /// Drop-down options. First value is the display name, second value is the option value.
   public var options: [(displayName: String, value: String)]
 
   // MARK: - Initializers

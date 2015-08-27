@@ -20,10 +20,9 @@ View for rendering a |FieldLabelLayout|.
 */
 @objc(BKYFieldLabelView)
 public class FieldLabelView: UILabel {
-
   // MARK: - Properties
 
-  /** Layout object to render */
+  /// Layout object to render
   public var layout: FieldLabelLayout! {
     didSet {
       refresh()
@@ -61,6 +60,8 @@ public class FieldLabelView: UILabel {
   }
 }
 
+// MARK: - FieldLayoutMeasurer implementation
+
 extension FieldLabelView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldLayout = layout as? FieldLabelLayout else {
@@ -73,6 +74,8 @@ extension FieldLabelView: FieldLayoutMeasurer {
     return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
   }
 }
+
+// MARK: - Recyclable implementation
 
 extension FieldLabelView: Recyclable {
   public func recycle() {

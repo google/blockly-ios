@@ -20,30 +20,29 @@ View for rendering a |BlockLayout|.
 */
 @objc(BKYBlockView)
 public class BlockView: UIView {
-
   // MARK: - Properties
 
-  /** Layout object to render */
+  /// Layout object to render
   public var layout: BlockLayout? {
     didSet {
       refresh()
     }
   }
 
-  /** Manager for recyclable views. */
+  /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
-  /** View for rendering the block's background */
+  /// View for rendering the block's background
   private let _blockBackgroundView: BezierPathView = {
       return ViewManager.sharedInstance.viewForType(BezierPathView.self)
     }()
 
-  /** View for rendering the block's highlight overly */
+  /// View for rendering the block's highlight overly
   private lazy var _highlightOverlayView: BezierPathView = {
       return ViewManager.sharedInstance.viewForType(BezierPathView.self)
     }()
 
-  /** Field subviews */
+  /// Field subviews
   private var _fieldViews = [UIView]()
 
   // MARK: - Initializers
@@ -76,9 +75,12 @@ public class BlockView: UIView {
     // TODO:(vicng) Layout fields
   }
 
-  // MARK: - Private
+  // MARK: - Public
 
-  private func refresh() {
+  /**
+  Refreshes the view based on the current layout.
+  */
+  public func refresh() {
     // Remove and recycle field subviews
     recycleFieldViews()
 

@@ -16,7 +16,7 @@
 import Foundation
 
 extension Field {
-  // MARK: - Properties
+  // MARK: - Static Properties
 
   // JSON parameters
   private static let PARAMETER_ALT_TEXT = "alt"
@@ -60,15 +60,19 @@ Manages the registration of fields
 extension Field {
   @objc(BKYFieldJSONRegistry)
   public class JSONRegistry: NSObject {
-    /** Callback for creating a Field instance from JSON */
+    // MARK: - Static Properties
+
+    /// Shared instance.
+    public static let sharedInstance = JSONRegistry()
+
+    // MARK: - Closures
+
+    /// Callback for creating a Field instance from JSON
     public typealias CreationHandler = [String: AnyObject] throws -> Field
 
     // MARK: - Properties
 
-    /** Shared instanced. */
-    public static let sharedInstance = JSONRegistry()
-
-    /** Dictionary mapping JSON field types to its creation handler. */
+    /// Dictionary mapping JSON field types to its creation handler.
     private var _registry = [String: CreationHandler]()
     public subscript(key: String) -> CreationHandler? {
       get { return _registry[key.lowercaseString] }
@@ -174,12 +178,21 @@ extension Field {
 
     // MARK: - Public
 
-    /** Registers a JSON creation handler for a given field key. */
+    /**
+    Registers a JSON creation handler for a given field key.
+
+    - Parameter type: The key for a field type.
+    - Parameter creationHandler: The `CreationHandler` to use for this field key.
+    */
     public func registerType(type: String, creationHandler: CreationHandler) {
       _registry[type] = creationHandler
     }
 
-    /** Unregisters a JSON creation handler for a given field key. */
+    /**
+    Unregisters a JSON creation handler for a given field key.
+
+    - Parameter type: The key for a field type.
+    */
     public func unregisterType(type: String) {
       _registry[type] = nil
     }
