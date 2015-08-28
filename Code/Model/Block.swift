@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Protocol for events that occur on a |Block|.
+Protocol for events that occur on a `Block`.
 */
 @objc(BKYBlockDelegate)
 public protocol BlockDelegate {
@@ -107,7 +107,7 @@ public class Block : NSObject {
 // MARK: -
 
 /**
-Class used when errors occur inside |Block| methods.
+Class used when errors occur inside `Block` methods.
 */
 @objc(BKYBlockError)
 public class BlockError: NSError {

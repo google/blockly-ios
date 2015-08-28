@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Component used to create a connection between two |Block| instances.
+Component used to create a connection between two `Block` instances.
 */
 @objc(BKYConnection)
 public class Connection : NSObject {

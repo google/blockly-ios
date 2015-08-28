@@ -49,9 +49,10 @@ public class FieldLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(parentLayout: Layout?, measurer: FieldLayoutMeasurer.Type) {
+  public init(workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout,
+    measurer: FieldLayoutMeasurer.Type) {
     self.measurer = measurer
-    super.init(parentLayout: parentLayout)
+    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
   }
 
   // MARK: - Super
@@ -62,8 +63,29 @@ public class FieldLayout: Layout {
   }
 
   public override func layoutChildren() {
-    // TODO:(vicng) Pass scale in from a workspace value, and translate this value back into Blockly
-    // coordinates
-    self.size = measurer.measureLayout(self, scale: 1.0)
+    let scale = self.workspaceLayout.scale
+    var layoutSize = CGSizeZero
+
+    if scale > 0 {
+      // Measure the layout in the UIView coordinate system
+      layoutSize = measurer.measureLayout(self, scale: scale)
+
+      // Convert the layout size back into the Blockly coordinate system
+      layoutSize = CGSizeMake(ceil(layoutSize.width / scale), ceil(layoutSize.height / scale))
+    }
+
+    self.size = layoutSize
+  }
+
+  internal override func refreshViewFrame() {
+    // View frames for fields are calculated relative to its parent's parent
+    // (InputLayout -> BlockLayout)
+    let scale = workspaceLayout.scale
+    let parentRelativePosition = parentLayout?.relativePosition ?? BKYPointZero
+    viewFrame = CGRectMake(
+      ceil((parentRelativePosition.x + relativePosition.x) * scale),
+      ceil((parentRelativePosition.y + relativePosition.y) * scale),
+      ceil(size.width * scale),
+      ceil(size.height * scale))
   }
 }

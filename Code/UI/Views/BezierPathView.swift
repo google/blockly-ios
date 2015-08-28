@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-View used to draw a |UIBezierPath|, via drawRect.
+View used to draw a `UIBezierPath`, via `drawRect(:)`.
 */
 @objc(BKYBezierPathView)
 public class BezierPathView: UIView {

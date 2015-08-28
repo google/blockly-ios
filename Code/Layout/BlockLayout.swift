@@ -41,9 +41,10 @@ public class BlockLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(block: Block, parentLayout: BlockGroupLayout?) {
+  public required init(
+    block: Block, workspaceLayout: WorkspaceLayout!, parentLayout: BlockGroupLayout?) {
     self.block = block
-    super.init(parentLayout: parentLayout)
+    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
     self.block.delegate = self
   }
 

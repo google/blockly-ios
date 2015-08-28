@@ -39,8 +39,9 @@ public class BlockGroupLayout: Layout {
 
   // MARK: - Initializers
 
-  public override init(parentLayout: Layout?) {
-    super.init(parentLayout: parentLayout)
+  public override init(
+    workspaceLayout: WorkspaceLayout!, parentLayout: Layout?) {
+    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
   }
 
   // MARK: - Super

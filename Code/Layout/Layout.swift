@@ -42,6 +42,8 @@ coordinates, use the method `viewFrameAtScale(:)`.
 public class Layout: NSObject {
   // MARK: - Properties
 
+  /// The workspace node which this node belongs to.
+  public weak var workspaceLayout: WorkspaceLayout!
   /// The parent node of this layout. If this value is nil, this layout is the root node.
   public weak var parentLayout: Layout?
 
@@ -49,12 +51,16 @@ public class Layout: NSObject {
   public var relativePosition: BKYPoint = CGPointZero
   /// Size required by this layout
   public var size: BKYSize = CGSizeZero
-  // TODO:(vicng) Replace this property with a CGRect viewFrame.
-  /// Stored position relative to its parent *view* node. For example, the parent view node for a
-  /// Field is a Block, while the parent view node for a Block is a Workspace. */
-  public var absolutePosition: BKYPoint = BKYPointZero {
+  /// Absolute position relative to the root node. */
+  public internal(set) var absolutePosition: BKYPoint = BKYPointZero
+
+  /**
+  UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
+  view node layout for a Field is a Block, while the parent view node for a Block is a Workspace.
+  */
+  public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
-      if absolutePosition != oldValue {
+      if viewFrame != oldValue {
         // TODO:(vicng) Generate change event
       }
     }
@@ -70,17 +76,18 @@ public class Layout: NSObject {
 
   // MARK: - Initializers
 
-  public init(parentLayout: Layout? = nil) {
+  public init(workspaceLayout: WorkspaceLayout!, parentLayout: Layout? = nil) {
     self.parentLayout = parentLayout
+    self.workspaceLayout = workspaceLayout
     super.init()
   }
 
   // MARK: - Abstract
 
   /**
-  Returns an array containing all direct children |Layout| objects underneath this one.
+  Returns an array containing all direct children `Layout` objects underneath this one.
 
-  - Note: This method needs to be implemented by a subclass of |Layout|.
+  - Note: This method needs to be implemented by a subclass of `Layout`.
   */
   internal var childLayouts: [Layout] {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
@@ -88,10 +95,10 @@ public class Layout: NSObject {
   }
 
   /**
-  For every layout in this tree hierarchy (including this one), this method recalculates its `size`
+  For every `Layout` in its tree hierarchy (including itself), this method recalculates its `size`
   and `relativePosition` values.
 
-  - Note: This method needs to be implemented by a subclass of |Layout|.
+  - Note: This method needs to be implemented by a subclass of `Layout`.
   */
   internal func layoutChildren() {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
@@ -100,32 +107,25 @@ public class Layout: NSObject {
   // MARK: - Public
 
   /**
-  Returns a UIView frame (ie. absolute position/size) scaled by a specific value.
-  */
-  public func viewFrameAtScale(scale: CGFloat) -> CGRect {
-    return CGRectMake(
-      ceil(self.absolutePosition.x * scale),
-      ceil(self.absolutePosition.y * scale),
-      ceil(self.size.width * scale),
-      ceil(self.size.height * scale))
-  }
-
-  /**
-  For every layout in this tree hierarchy (including this one), this method recalculates its `size`,
-  `relativePosition`, and `absolutePosition`, based on the current state of `self.parentLayout`.
+  For every `Layout` in its tree hierarchy (including itself), this method recalculates its
+  `size`, `relativePosition`, `absolutePosition`, and `viewFrame`,
+  based on the current state of `self.parentLayout`.
   */
   public func updateLayout() {
+    // TODO:(vicng) Rename these methods to properly reflect their nuances and how they should be
+    // called
     layoutChildren()
-    refreshAbsolutePositionsOfLayoutTree()
+    refreshViewBoundsForTree()
   }
 
   // MARK: - Internal
 
   /**
-  For every layout in this tree hierarchy (including this one), updates the absolute position
-  based on the current state of `self.parentLayout`.
+  For every `Layout` in its tree hierarchy (including itself), updates the `absolutePosition` and
+  `viewFrame` based on the current state of this object.
   */
-  internal func refreshAbsolutePositionsOfLayoutTree() {
+  internal func refreshViewBoundsForTree() {
+    // Update absolute position
     if parentLayout != nil {
       self.absolutePosition = BKYPointMake(
         parentLayout!.absolutePosition.x + relativePosition.x,
@@ -134,11 +134,27 @@ public class Layout: NSObject {
       self.absolutePosition = BKYPointZero
     }
 
+    // Update the view frame
+    refreshViewFrame()
+
     for layout in self.childLayouts {
-      layout.refreshAbsolutePositionsOfLayoutTree()
+      layout.refreshViewBoundsForTree()
     }
 
     // TODO:(vicng) Potentially generate a change event back to the corresponding view
+  }
+
+  /**
+  Refreshes `viewFrame` based on the current state of this object.
+  */
+  internal func refreshViewFrame() {
+    // Update the view frame
+    let scale = workspaceLayout.scale
+    viewFrame = CGRectMake(
+      ceil(absolutePosition.x * scale),
+      ceil(absolutePosition.y * scale),
+      ceil(size.width * scale),
+      ceil(size.height * scale))
   }
 
   /**
@@ -151,7 +167,7 @@ public class Layout: NSObject {
       size.width = max(size.width, layout.relativePosition.x + layout.size.width)
       size.height = max(size.height, layout.relativePosition.y + layout.size.height)
     }
-    
+
     return size
   }
 }

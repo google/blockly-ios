@@ -88,7 +88,7 @@ extension Block {
   // MARK: - Internal
 
   /**
-  Interpolate a message description into an |Input| array.
+  Interpolate a message description into an `Input` array.
 
   - Parameter message: Text contains interpolation tokens (%1, %2, ...) that match with fields or
   inputs defined in the arguments array. Each interpolation token should only appear once.
@@ -99,8 +99,8 @@ extension Block {
   [BlockError]: Thrown if the number of arguments doesn't match the number of interpolation tokens
   provided in the message, if any interpolation token was used more than once, if not all argument
   values were referenced by the interpolation tokens, or if an argument could not be parsed into an
-  |Input| or |Field|.
-  - Returns: An |Input| array
+  `Input` or `Field`.
+  - Returns: An `Input` array
   */
   internal func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
     lastDummyAlignment: Input.Alignment) throws -> [Input]
@@ -185,8 +185,8 @@ extension Block {
 
   /**
   Tokenize message, splitting text by text parameter positions (eg. "%1","%2",etc.). Tokens are
-  returned in an array, where regular text is returned as a |String| and positions are returned
-  as an |Int|.
+  returned in an array, where regular text is returned as a `String` and positions are returned
+  as an `Int`.
 
   eg. `tokenizeMessage("Here is an example: %1\nAnd another example: %2.")`
 
@@ -195,7 +195,7 @@ extension Block {
   `["Here is an example: ", 1, "\nAnd another example: ", 2]`
 
   - Parameter message: The message to tokenize
-  - Returns: An array of tokens consisting of either |String| or |Int|
+  - Returns: An array of tokens consisting of either `String` or `Int`
   */
   internal class func tokenizeMessage(message: String) -> [NSObject] {
     enum State {

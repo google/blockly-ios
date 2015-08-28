@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-View for rendering a |FieldLabelLayout|.
+View for rendering a `FieldLabelLayout`.
 */
 @objc(BKYFieldLabelView)
 public class FieldLabelView: UILabel {
@@ -33,9 +33,6 @@ public class FieldLabelView: UILabel {
 
   public required init() {
     super.init(frame: CGRectZero)
-
-    // TODO:(vicng) Standardize this font
-    self.font = UIFont.systemFontOfSize(14)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -55,8 +52,11 @@ public class FieldLabelView: UILabel {
       return
     }
 
-    self.frame = layout.viewFrameAtScale(1.0)
+    self.frame = layout.viewFrame
     self.text = layout.fieldLabel.text
+
+    // TODO:(vicng) Standardize this font
+    self.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
   }
 }
 
@@ -71,7 +71,7 @@ extension FieldLabelView: FieldLayoutMeasurer {
     }
     // TODO:(vicng) Return different values based on the scale
     // TODO:(vicng) Use a standardized font size that can be configurable for the project
-    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14))
+    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
   }
 }
 

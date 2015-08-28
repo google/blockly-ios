@@ -16,7 +16,7 @@
 import Foundation
 
 /*
-Stores information on how to render and position a |Block| on-screen.
+Stores information on how to render and position a `Block` on-screen.
 */
 @objc(BKYWorkspaceLayout)
 public class WorkspaceLayout: Layout {
@@ -29,12 +29,16 @@ public class WorkspaceLayout: Layout {
   /// `self.workspace.blocks[]`.
   public private(set) var blockGroupLayouts = [BlockGroupLayout]()
 
+  /// The current scale of the workspace
+  public var scale: CGFloat = 1.0
+
   // MARK: - Initializers
 
   public required init(workspace: Workspace) {
     self.workspace = workspace
-    super.init(parentLayout: nil)
+    super.init(workspaceLayout: nil, parentLayout: nil)
     self.workspace.delegate = self
+    self.workspaceLayout = self
   }
 
   // MARK: - Super
@@ -56,7 +60,7 @@ public class WorkspaceLayout: Layout {
   // MARK: - Public
 
   /**
-  Returns all descendants of this layout that are of type |BlockLayout|.
+  Returns all descendants of this layout that are of type `BlockLayout`.
   */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()

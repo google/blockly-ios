@@ -37,11 +37,12 @@ public class InputLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, parentLayout: BlockLayout?) {
-    self.input = input
-    super.init(parentLayout: parentLayout)
-    self.input.delegate = self
-    self.blockGroupLayout = BlockGroupLayout(parentLayout: self)
+  public required init(input: Input, workspaceLayout: WorkspaceLayout!,
+    parentLayout: BlockLayout) {
+      self.input = input
+      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      self.input.delegate = self
+      self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout, parentLayout: self)
   }
 
   // MARK: - Super

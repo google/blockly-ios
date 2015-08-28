@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Protocol for events that occur on an |Input|.
+Protocol for events that occur on an `Input`.
 */
 @objc(BKYInputDelegate)
 public protocol InputDelegate {

@@ -19,11 +19,11 @@ extension Input {
   // MARK: - Internal
 
   /**
-  Creates a new |Input| from a JSON dictionary.
+  Creates a new `Input` from a JSON dictionary.
 
   - Parameter json: JSON dictionary
   - Parameter sourceBlock: The block that will be associated with the input
-  - Returns: An |Input| instance based on the JSON dictionary, or |nil| if there wasn't sufficient
+  - Returns: An `Input` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
   internal static func inputFromJSON(json: [String: AnyObject], sourceBlock: Block) -> Input? {

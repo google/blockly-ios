@@ -36,12 +36,12 @@ extension Field {
   // MARK: - Internal
 
   /**
-  Creates a new |Field| from a JSON dictionary.
+  Creates a new `Field` from a JSON dictionary.
 
   - Parameter json: JSON dictionary
   - Throws:
-  |BlockError|: Occurs if malformed JSON data was passed in.
-  - Returns: A |Field| instance based on the JSON dictionary, or |nil| if there wasn't sufficient
+  `BlockError`: Occurs if malformed JSON data was passed in.
+  - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
   internal static func fieldFromJSON(json: [String: AnyObject]) throws -> Field? {

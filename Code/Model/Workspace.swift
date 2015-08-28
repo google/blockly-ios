@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Protocol for events that occur on a |Workspace|.
+Protocol for events that occur on a `Workspace`.
 */
 @objc(BKYWorkspaceDelegate)
 public protocol WorkspaceDelegate {
@@ -29,7 +29,7 @@ public protocol WorkspaceDelegate {
 }
 
 /**
-Data structure that contains |Block| instances.
+Data structure that contains `Block` instances.
 */
 @objc(BKYWorkspace)
 public class Workspace : NSObject {

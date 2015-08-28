@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-Protocol for events that occur on a |Field|.
+Protocol for events that occur on a `Field`.
 */
 @objc(BKYFieldDelegate)
 public protocol FieldDelegate {
@@ -30,7 +30,7 @@ public protocol FieldDelegate {
 
 /**
 Input field.  Used for editable titles, variables, etc. This is an abstract class that defines the
-UI on the block.  Actual instances would be |FieldLabel|, |FieldDropdown|, etc.
+UI on the block.  Actual instances would be `FieldLabel`, `FieldDropdown`, etc.
 */
 @objc(BKYField)
 public class Field: NSObject {

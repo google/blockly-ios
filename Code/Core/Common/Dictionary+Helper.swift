@@ -33,7 +33,7 @@ extension Dictionary where Value: Equatable {
   key this may be, if there are multiple keys that contain the same value.
 
   - Parameter value: The value to find.
-  - Returns: Any key mapped for the given value, or |nil| if none is found.
+  - Returns: Any key mapped for the given value, or `nil` if none is found.
   */
   public func bky_anyKeyForValue(value: Value) -> Key? {
     let possibleKeys = bky_allKeysForValue(value)

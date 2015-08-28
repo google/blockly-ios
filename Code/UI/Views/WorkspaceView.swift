@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-View for rendering a |WorkspaceLayout|.
+View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
 public class WorkspaceView: UIScrollView {
@@ -25,7 +25,7 @@ public class WorkspaceView: UIScrollView {
   /// Layout object to render
   public var layout: WorkspaceLayout! {
     didSet {
-      self.frame = (layout != nil) ? layout.viewFrameAtScale(1.0) : CGRectZero
+      self.frame = layout?.viewFrame ?? CGRectZero
       // TODO:(vicng) Re-draw this view too
     }
   }

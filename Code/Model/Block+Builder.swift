@@ -17,13 +17,13 @@ import Foundation
 
 extension Block {
   /**
-  Builder for creating instances of |Block|.
+  Builder for creating instances of `Block`.
   */
   @objc(BKYBlockBuilder)
   public class Builder: NSObject {
     // MARK: - Properties
 
-    // These values are publicly immutable in |Block|
+    // These values are publicly immutable in `Block`
     public var identifier: String = ""
     public var name: String = ""
     public var category: Int = 0
@@ -35,7 +35,7 @@ extension Block {
     public var inputsInline: Bool = false
     public unowned var workspace: Workspace
 
-    // These values are publicly mutable in |Block|
+    // These values are publicly mutable in `Block`
     public var childBlocks: [Block] = []
     public weak var parentBlock: Block?
     public var tooltip: String = ""

@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-View for rendering a |BlockLayout|.
+View for rendering a `BlockLayout`.
 */
 @objc(BKYBlockView)
 public class BlockView: UIView {
@@ -90,7 +90,7 @@ public class BlockView: UIView {
       return
     }
 
-    self.frame = layout.viewFrameAtScale(1.0)
+    self.frame = layout.viewFrame
     // TODO:(vicng) Set the background colour properly
     self.backgroundColor = UIColor.redColor()
 
