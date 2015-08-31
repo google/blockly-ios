@@ -15,18 +15,20 @@
 
 import Foundation
 
-/** Point in the Blockly coordinate system. */
-public typealias BKYPoint = CGPoint
-public var BKYPointZero: BKYPoint { return CGPointZero }
-public func BKYPointMake(x: CGFloat, _ y: CGFloat) -> BKYPoint {
-  return CGPointMake(x, y)
-}
+/**
+Protocol for events that occur on a `Layout`.
+*/
+@objc(BKYLayoutDelegate)
+public protocol LayoutDelegate {
+  // TODO:(vicng) Figure out the level of granularity that's needed for these events.
+  // For now, it's ok just to do a complete refresh, but this needs to be optimized
+  // later.
+  /**
+  Event that is called when one of a `Layout`'s properties has changed.
 
-/** Size in the Blockly coordinate system. */
-public typealias BKYSize = CGSize
-public var BKYSizeZero: BKYSize { return CGSizeZero }
-public func BKYSizeMake(width: CGFloat, _ height: CGFloat) -> BKYSize {
-  return CGSizeMake(width, height)
+  - Parameter layout: The `Layout` that changed.
+  */
+  func layoutDidChange(layout: Layout)
 }
 
 /**
@@ -34,9 +36,11 @@ Abstract base class that defines a node in a tree-hierarchy. It is used for stor
 information on how to render and position itself relative to other nodes in this hierarchy. Nodes
 can represent fields, blocks, or a workspace (which are always root nodes).
 
-The coordinate system used inside a `Layout` object is in the "Blockly" space. To obtain a
-translation of a `Layout` object's absolute position and size from "Blockly" coordinates to `UIView`
-coordinates, use the method `viewFrameAtScale(:)`.
+The coordinate system used inside a `Layout` object is in the "Workspace coordinate system".
+There are many properties inside a `Layout` object that should not be accessed or
+modified by UI views during rendering (eg. `relativePosition`, `size`, `absolutePosition`). Instead,
+a UI view can simply access the property `viewFrame` to determine its "UIView coordinate system"
+position and size.
 */
 @objc(BKYLayout)
 public class Layout: NSObject {
@@ -48,11 +52,11 @@ public class Layout: NSObject {
   public weak var parentLayout: Layout?
 
   /// Position relative to `self.parentLayout`
-  public var relativePosition: BKYPoint = CGPointZero
+  internal var relativePosition: WorkspacePoint = WorkspacePointZero
   /// Size required by this layout
-  public var size: BKYSize = CGSizeZero
+  internal var size: WorkspaceSize = WorkspaceSizeZero
   /// Absolute position relative to the root node. */
-  public internal(set) var absolutePosition: BKYPoint = BKYPointZero
+  internal var absolutePosition: WorkspacePoint = WorkspacePointZero
 
   /**
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
@@ -61,18 +65,18 @@ public class Layout: NSObject {
   public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
       if viewFrame != oldValue {
-        // TODO:(vicng) Generate change event
+        delegate?.layoutDidChange(self)
       }
     }
   }
-  /// Z-position of the layout. Those with higher values should render on top of those with lower
-  /// values.
-  public var zPosition: CGFloat = 0
 
   /// Flag indicating if this layout's corresponding view needs to be completely re-drawn.
   public var needsDisplay: Bool = false
   /// Flag indicating if this layout's corresponding view needs to be repositioned.
   public var needsRepositioning: Bool = false
+
+  /// The delegate for events that occur on this instance
+  public weak var delegate: LayoutDelegate?
 
   // MARK: - Initializers
 
@@ -127,11 +131,11 @@ public class Layout: NSObject {
   internal func refreshViewBoundsForTree() {
     // Update absolute position
     if parentLayout != nil {
-      self.absolutePosition = BKYPointMake(
+      self.absolutePosition = WorkspacePointMake(
         parentLayout!.absolutePosition.x + relativePosition.x,
         parentLayout!.absolutePosition.y + relativePosition.y)
     } else {
-      self.absolutePosition = BKYPointZero
+      self.absolutePosition = WorkspacePointZero
     }
 
     // Update the view frame
@@ -149,25 +153,21 @@ public class Layout: NSObject {
   */
   internal func refreshViewFrame() {
     // Update the view frame
-    let scale = workspaceLayout.scale
-    viewFrame = CGRectMake(
-      ceil(absolutePosition.x * scale),
-      ceil(absolutePosition.y * scale),
-      ceil(size.width * scale),
-      ceil(size.height * scale))
+    self.viewFrame = workspaceLayout.uiViewFrameFromWorkspacePoint(
+      self.absolutePosition, size: self.size)
   }
 
   /**
   Returns the minimum amount of space needed to render `self.childLayouts`.
   */
-  internal func sizeThatFitsForChildLayouts() -> BKYSize {
-    var size = BKYSizeZero
+  internal func sizeThatFitsForChildLayouts() -> WorkspaceSize {
+    var size = WorkspaceSizeZero
 
     for layout in self.childLayouts {
       size.width = max(size.width, layout.relativePosition.x + layout.size.width)
       size.height = max(size.height, layout.relativePosition.y + layout.size.height)
     }
-
+    
     return size
   }
 }

@@ -33,7 +33,7 @@ public class BlockGroupLayout: Layout {
 
   2) When `i >= 1`:
 
- `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
+  `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
   */
   public private(set) var blockLayouts = [BlockLayout]()
 
@@ -41,7 +41,7 @@ public class BlockGroupLayout: Layout {
 
   public override init(
     workspaceLayout: WorkspaceLayout!, parentLayout: Layout?) {
-    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
   }
 
   // MARK: - Super
@@ -91,5 +91,20 @@ public class BlockGroupLayout: Layout {
     let blockLayout = blockLayouts.removeAtIndex(index)
     blockLayout.parentLayout = nil
     return blockLayout
+  }
+
+  /**
+  If this instance's `parentLayout` is an instance of `WorkspaceLayout`, this method changes
+  `relativePosition` to the position. If not, this method does nothing.
+
+  - Parameter position: The relative position within its parent's Workspace layout, specified in a
+  Workspace coordinate system point.
+  */
+  public func moveToWorkspacePosition(position: WorkspacePoint) {
+    if self.parentLayout is WorkspaceLayout {
+      self.relativePosition = position
+      // TODO:(vicng) updateLayout() may be heavy-handed. Optimize this later.
+      self.updateLayout()
+    }
   }
 }

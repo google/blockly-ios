@@ -24,14 +24,10 @@ When it's fixed, add in "@objc(BKYLayoutMeasurer)".
 */
 public protocol FieldLayoutMeasurer {
   /**
-  Measures and returns the amount of space needed to render a FieldLayout, in a UIView.
+  Measures and returns the amount of space needed to render a `FieldLayout`, in a `UIView`.
 
   - Parameter layout: The layout to measure
-  - Parameter scale: The current scale of the layout, relative to Blockly coordinates.
-  eg.
-  1.0 means the Blockly layout is zoomed in at "100%".
-  0.5 means the Blockly layout is zoomed in at "50%".
-  2.0 means the Blockly layout is zoomed in at "200%".
+  - Parameter scale: The current scale of the layout's `workspaceLayout`.
   - Returns: The amount of space needed, in UIView coordinates.
   */
   static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize
@@ -51,8 +47,8 @@ public class FieldLayout: Layout {
 
   public init(workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout,
     measurer: FieldLayoutMeasurer.Type) {
-    self.measurer = measurer
-    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      self.measurer = measurer
+      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
   }
 
   // MARK: - Super
@@ -63,29 +59,21 @@ public class FieldLayout: Layout {
   }
 
   public override func layoutChildren() {
-    let scale = self.workspaceLayout.scale
-    var layoutSize = CGSizeZero
+    // Measure the layout in the UIView coordinate system
+    let layoutSize: CGSize = measurer.measureLayout(self, scale: self.workspaceLayout.scale)
 
-    if scale > 0 {
-      // Measure the layout in the UIView coordinate system
-      layoutSize = measurer.measureLayout(self, scale: scale)
-
-      // Convert the layout size back into the Blockly coordinate system
-      layoutSize = CGSizeMake(ceil(layoutSize.width / scale), ceil(layoutSize.height / scale))
-    }
-
-    self.size = layoutSize
+    // Convert the layout size back into the Workspace coordinate system
+    self.size = workspaceLayout.workspaceSizeFromUISize(layoutSize)
   }
 
   internal override func refreshViewFrame() {
     // View frames for fields are calculated relative to its parent's parent
     // (InputLayout -> BlockLayout)
-    let scale = workspaceLayout.scale
-    let parentRelativePosition = parentLayout?.relativePosition ?? BKYPointZero
-    viewFrame = CGRectMake(
-      ceil((parentRelativePosition.x + relativePosition.x) * scale),
-      ceil((parentRelativePosition.y + relativePosition.y) * scale),
-      ceil(size.width * scale),
-      ceil(size.height * scale))
+    var point = relativePosition
+    if let parentRelativePosition = parentLayout?.relativePosition {
+      point.x += parentRelativePosition.x
+      point.y += parentRelativePosition.y
+    }
+    self.viewFrame = self.workspaceLayout.uiViewFrameFromWorkspacePoint(point, size: self.size)
   }
 }

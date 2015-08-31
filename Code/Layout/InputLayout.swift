@@ -52,6 +52,8 @@ public class InputLayout: Layout {
   }
 
   public override func layoutChildren() {
+    // TODO:(vicng) Render value/statement/dummy inputs differently
+
     var xOffset: CGFloat = 0
 
     // Update relative position/size of fields

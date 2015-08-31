@@ -16,7 +16,7 @@
 import Foundation
 
 /**
-UI configuration for elements within a block, based within the Blockly coordinate system.
+UI configuration for elements within a block, based within the Workspace coordinate system.
 */
 extension BlockLayout {
   @objc(BKYBlockLayoutConfig)
@@ -24,39 +24,39 @@ extension BlockLayout {
     /// The shared instance used to configure all instances of `BlockLayout`.
     public static let sharedInstance = Config()
 
-    /// Horizontal space between elements, specified as a Blockly coordinate system unit.
+    /// Horizontal space between elements, specified as a Workspace coordinate system unit.
     public var horizontalSeparatorSpace: CGFloat = 10
 
-    /// Vertical space between elements, specified as a Blockly coordinate system unit.
+    /// Vertical space between elements, specified as a Workspace coordinate system unit.
     public var verticalSeparatorSpace: CGFloat = 10
 
-    /// Vertical padding around inline elements, specified as a Blockly coordinate system unit.
+    /// Vertical padding around inline elements, specified as a Workspace coordinate system unit.
     public var inlineVerticalPadding: CGFloat = 5
 
-    /// Minimum height of a block, specified as a Blockly coordinate system unit.
+    /// Minimum height of a block, specified as a Workspace coordinate system unit.
     public var minimumBlockHeight: CGFloat = 25
 
-    /// Rounded corner radius of a block, specified as a Blockly coordinate system unit.
+    /// Rounded corner radius of a block, specified as a Workspace coordinate system unit.
     public var blockCornerRadius: CGFloat = 8
 
-    /// Height of a horizontal puzzle tab, specified as a Blockly coordinate system unit.
+    /// Height of a horizontal puzzle tab, specified as a Workspace coordinate system unit.
     public var puzzleTabHeight: CGFloat = 20
 
-    /// Width of a horizontal puzzle tab, specified as a Blockly coordinate system unit.
+    /// Width of a horizontal puzzle tab, specified as a Workspace coordinate system unit.
     public var puzzleTabWidth: CGFloat = 8
 
-    /// Width of vertical tab (including left margin), specified as a Blockly coordinate system
+    /// Width of vertical tab (including left margin), specified as a Workspace coordinate system
     /// unit.
     public var notchWidth: CGFloat = 30;
 
-    /// Minimum height of field rows, specified as a Blockly coordinate system unit.
+    /// Minimum height of field rows, specified as a Workspace coordinate system unit.
     public var minimumFieldHeight: CGFloat = 18
 
-    /// Height of jagged teeth at the end of collapsed blocks, specified as a Blockly coordinate
+    /// Height of jagged teeth at the end of collapsed blocks, specified as a Workspace coordinate
     /// system unit.
     public var jaggedTeethHeight: CGFloat = 20
 
-    /// Width of jagged teeth at the end of collapsed blocks, specified as a Blockly coordinate
+    /// Width of jagged teeth at the end of collapsed blocks, specified as a Workspace coordinate
     /// system unit.
     public var jaggedTeethWidth: CGFloat = 15
   }

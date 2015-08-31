@@ -22,13 +22,13 @@ An image field used for titles, labels, etc.
 public class FieldImage: Field {
   // MARK: - Properties
 
-  public var size: BKYSize
+  public var size: WorkspaceSize
   public var imageURL: String
   public var altText: String
 
   // MARK: - Initializers
 
-  public init(name: String, imageURL: String, size: BKYSize, altText: String) {
+  public init(name: String, imageURL: String, size: WorkspaceSize, altText: String) {
     self.imageURL = imageURL
     self.size = size
     self.altText = altText

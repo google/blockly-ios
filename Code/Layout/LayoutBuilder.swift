@@ -67,7 +67,7 @@ public class LayoutBuilder: NSObject {
   Builds and returns an entire `BlockLayout` tree from a given block.
   */
   public static func buildBlockLayoutTreeFromBlock(
-    block: Block, workspaceLayout: WorkspaceLayout, parentLayout: BlockGroupLayout?)
+    block: Block, workspaceLayout: WorkspaceLayout, parentLayout: BlockGroupLayout)
     -> BlockLayout {
       let blockLayout = BlockLayout(
         block: block, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
@@ -101,7 +101,7 @@ public class LayoutBuilder: NSObject {
       for field in input.fields {
         if let fieldLayout = buildLayoutTreeFromField(
           field, workspaceLayout: workspaceLayout, parentLayout: inputLayout) {
-          inputLayout.appendFieldLayout(fieldLayout)
+            inputLayout.appendFieldLayout(fieldLayout)
         }
       }
 
@@ -114,12 +114,12 @@ public class LayoutBuilder: NSObject {
   */
   public static func buildLayoutTreeFromField(
     field: Field, workspaceLayout: WorkspaceLayout, parentLayout: InputLayout) -> FieldLayout? {
-    // TODO:(vicng) Implement error handling if the field's layout could not be found
-    if let fieldLabel = field as? FieldLabel {
-      return FieldLabelLayout(
-        fieldLabel: fieldLabel, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-    }
-
-    return nil
+      // TODO:(vicng) Implement error handling if the field's layout could not be found
+      if let fieldLabel = field as? FieldLabel {
+        return FieldLabelLayout(
+          fieldLabel: fieldLabel, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      }
+      
+      return nil
   }
 }

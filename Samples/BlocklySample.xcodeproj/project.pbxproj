@@ -63,6 +63,8 @@
 		FA548C361B6312AE008BC59C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA548C391B6312AE008BC59C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		FA548C681B631627008BC59C /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
+		FAA291631B9520490005F100 /* BlocklySample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlocklySample-Bridging-Header.h"; sourceTree = "<group>"; };
+		FAA291641B9520490005F100 /* SampleObjCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleObjCObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,8 @@
 				FA548C361B6312AE008BC59C /* Images.xcassets */,
 				FA548C381B6312AE008BC59C /* LaunchScreen.xib */,
 				FA548C2D1B6312AE008BC59C /* Supporting Files */,
+				FAA291641B9520490005F100 /* SampleObjCObject.h */,
+				FAA291631B9520490005F100 /* BlocklySample-Bridging-Header.h */,
 			);
 			path = BlocklySample;
 			sourceTree = "<group>";
@@ -347,7 +351,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklySample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "BlocklySample/BlocklySample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -363,7 +367,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklySample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "BlocklySample/BlocklySample-Bridging-Header.h";
 			};
 			name = Release;
 		};

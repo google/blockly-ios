@@ -25,7 +25,11 @@ public class BlockView: UIView {
   /// Layout object to render
   public var layout: BlockLayout? {
     didSet {
-      refresh()
+      if layout != oldValue {
+        oldValue?.delegate = nil
+        layout?.delegate = self
+        refresh()
+      }
     }
   }
 
@@ -34,12 +38,12 @@ public class BlockView: UIView {
 
   /// View for rendering the block's background
   private let _blockBackgroundView: BezierPathView = {
-      return ViewManager.sharedInstance.viewForType(BezierPathView.self)
+    return ViewManager.sharedInstance.viewForType(BezierPathView.self)
     }()
 
   /// View for rendering the block's highlight overly
   private lazy var _highlightOverlayView: BezierPathView = {
-      return ViewManager.sharedInstance.viewForType(BezierPathView.self)
+    return ViewManager.sharedInstance.viewForType(BezierPathView.self)
     }()
 
   /// Field subviews
@@ -93,6 +97,7 @@ public class BlockView: UIView {
     self.frame = layout.viewFrame
     // TODO:(vicng) Set the background colour properly
     self.backgroundColor = UIColor.redColor()
+    self.layer.zPosition = layout.zPosition
 
     // TODO:(vicng) Re-draw this view too
 
@@ -102,7 +107,6 @@ public class BlockView: UIView {
         _fieldViews.append(fieldView)
 
         addSubview(fieldView)
-        fieldView.layer.zPosition = fieldLayout.zPosition
       }
     }
   }
@@ -112,12 +116,14 @@ public class BlockView: UIView {
 
 extension BlockView: Recyclable {
   public func recycle() {
+    self.layout = nil
+
     recycleFieldViews()
 
     _blockBackgroundView.removeFromSuperview()
     ViewManager.sharedInstance.recycleView(_blockBackgroundView)
 
-      _highlightOverlayView.removeFromSuperview()
+    _highlightOverlayView.removeFromSuperview()
     ViewManager.sharedInstance.recycleView(_highlightOverlayView)
   }
 
@@ -130,5 +136,13 @@ extension BlockView: Recyclable {
       }
     }
     _fieldViews = []
+  }
+}
+
+// MARK: - LayoutDelegate implementation
+
+extension BlockView: LayoutDelegate {
+  public func layoutDidChange(layout: Layout) {
+    refresh()
   }
 }

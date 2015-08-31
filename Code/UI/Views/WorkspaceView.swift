@@ -82,7 +82,7 @@ public class WorkspaceView: UIScrollView {
       if descendantView.superview != nil {
         descendantView.removeFromSuperview()
       }
-      self.addSubview(descendantView)
+      addSubview(descendantView)
     }
   }
 
@@ -105,10 +105,12 @@ extension WorkspaceView {
       return
     }
 
-    // TODO:(vicng) Polish this implementation (for now, it is here as proof-of-concept). Also,
-    // do not modify blockView.frame directly -- instead modify blockView.layout.relativePosition,
-    // which should generate an event to update blockView.frame.
-    blockView.frame.origin = gesture.locationInView(self)
+    if (blockView.layout?.topBlockInBlockLayout == true) ?? false {
+      // TODO:(vicng) Disconnect this block from its block group layout, prior to moving it
+    }
+
+    blockView.layout?.parentBlockGroupLayout.moveToWorkspacePosition(
+      layout.workspacePointFromUIPoint(gesture.locationInView(self)))
   }
 
   /**

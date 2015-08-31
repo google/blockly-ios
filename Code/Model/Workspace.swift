@@ -16,6 +16,24 @@
 import Foundation
 
 /**
+Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
+*/
+public typealias WorkspacePoint = CGPoint
+public var WorkspacePointZero: WorkspacePoint { return CGPointZero }
+public func WorkspacePointMake(x: CGFloat, _ y: CGFloat) -> WorkspacePoint {
+  return CGPointMake(x, y)
+}
+
+/**
+Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
+*/
+public typealias WorkspaceSize = CGSize
+public var WorkspaceSizeZero: WorkspaceSize { return CGSizeZero }
+public func WorkspaceSizeMake(width: CGFloat, _ height: CGFloat) -> WorkspaceSize {
+  return CGSizeMake(width, height)
+}
+
+/**
 Protocol for events that occur on a `Workspace`.
 */
 @objc(BKYWorkspaceDelegate)

@@ -39,13 +39,33 @@ public class BlockLayout: Layout {
     return fieldLayouts
   }
 
+  /// Z-position of the block layout. Those with higher values should render on top of those with
+  /// lower values.
+  public var zPosition: CGFloat = 0 {
+    didSet {
+      if zPosition != oldValue {
+        self.delegate?.layoutDidChange(self)
+      }
+    }
+  }
+
+  /// Whether this block is the first child of its parent, which must be a `BlockGroupLayout`.
+  public var topBlockInBlockLayout: Bool {
+    return parentBlockGroupLayout.blockLayouts[0] == self ?? false
+  }
+
+  /// The parent block group layout
+  public var parentBlockGroupLayout: BlockGroupLayout {
+    return parentLayout as! BlockGroupLayout
+  }
+
   // MARK: - Initializers
 
   public required init(
-    block: Block, workspaceLayout: WorkspaceLayout!, parentLayout: BlockGroupLayout?) {
-    self.block = block
-    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-    self.block.delegate = self
+    block: Block, workspaceLayout: WorkspaceLayout!, parentLayout: BlockGroupLayout) {
+      self.block = block
+      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      self.block.delegate = self
   }
 
   // MARK: - Super
@@ -81,16 +101,7 @@ public class BlockLayout: Layout {
     }
 
     // Update the size required for this block
-    var newSize = sizeThatFitsForChildLayouts()
-
-    // TODO:(vicng) Determine the correct amount of padding needed for this layout.
-    //      For now, (100,100) has been added as a quick test.
-    newSize.height += 100
-    newSize.width += 100
-
-    if self.size != newSize {
-      self.size = newSize
-    }
+    self.size = sizeThatFitsForChildLayouts()
   }
 
   // MARK: - Public
