@@ -25,13 +25,13 @@ extension BlockLayout {
     public static let sharedInstance = Config()
 
     /// Horizontal space between elements, specified as a Workspace coordinate system unit.
-    public var horizontalSeparatorSpace: CGFloat = 10
+    public var xSeparatorSpace: CGFloat = 10
 
     /// Vertical space between elements, specified as a Workspace coordinate system unit.
-    public var verticalSeparatorSpace: CGFloat = 10
+    public var ySeparatorSpace: CGFloat = 10
 
     /// Vertical padding around inline elements, specified as a Workspace coordinate system unit.
-    public var inlineVerticalPadding: CGFloat = 5
+    public var inlineYPadding: CGFloat = 5
 
     /// Minimum height of a block, specified as a Workspace coordinate system unit.
     public var minimumBlockHeight: CGFloat = 25

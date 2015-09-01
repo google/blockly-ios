@@ -167,7 +167,7 @@ public class Layout: NSObject {
       size.width = max(size.width, layout.relativePosition.x + layout.size.width)
       size.height = max(size.height, layout.relativePosition.y + layout.size.height)
     }
-    
+
     return size
   }
 }

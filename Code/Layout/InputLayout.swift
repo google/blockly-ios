@@ -26,23 +26,32 @@ public class InputLayout: Layout {
   public let input: Input
 
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
-  public var blockGroupLayout: BlockGroupLayout! {
+  public var blockGroupLayout: BlockGroupLayout {
     didSet {
-      blockGroupLayout?.parentLayout = self
+      blockGroupLayout.parentLayout = self
     }
   }
 
   /// The corresponding layouts for `self.input.fields[]`
   public private(set) var fieldLayouts = [FieldLayout]()
 
+  /// The minimal amount of width required to render `fieldLayouts`, specified as a Workspace
+  /// coordinate system unit.
+  public var minimalFieldWidthRequired: CGFloat {
+    // TODO:(vicng) Add inline padding to the "0" value
+    return fieldLayouts.count > 0 ?
+      (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.size.width) : 0
+  }
+
   // MARK: - Initializers
 
   public required init(input: Input, workspaceLayout: WorkspaceLayout!,
     parentLayout: BlockLayout) {
       self.input = input
+      self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout, parentLayout: nil)
       super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
       self.input.delegate = self
-      self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout, parentLayout: self)
+      self.blockGroupLayout.parentLayout = self
   }
 
   // MARK: - Super
@@ -52,9 +61,8 @@ public class InputLayout: Layout {
   }
 
   public override func layoutChildren() {
-    // TODO:(vicng) Render value/statement/dummy inputs differently
-
     var xOffset: CGFloat = 0
+    var maxYFieldPoint: CGFloat = 0
 
     // Update relative position/size of fields
     for fieldLayout in fieldLayouts {
@@ -65,6 +73,8 @@ public class InputLayout: Layout {
       fieldLayout.relativePosition.y = 0
 
       xOffset += fieldLayout.size.width
+      maxYFieldPoint = max(fieldLayout.relativePosition.y + fieldLayout.size.height,
+        maxYFieldPoint)
     }
 
     // Update relative position/size of blocks
@@ -72,15 +82,23 @@ public class InputLayout: Layout {
 
     let inputsInline = (parentLayout as? BlockLayout)?.block.inputsInline ?? false
 
-    if inputsInline {
+    if (self.input.type == .Value && inputsInline) || self.input.type == .Statement {
       // TODO:(vicng) Add inline x padding
       blockGroupLayout.relativePosition.x = xOffset
-    } else {
+      blockGroupLayout.relativePosition.y = 0
+    } else if (self.input.type == .Value && !inputsInline) {
       // TODO:(vicng) Do a better job positioning this
       blockGroupLayout.relativePosition.x = xOffset
+      blockGroupLayout.relativePosition.y = 0
+    } else {
+      blockGroupLayout.relativePosition = WorkspacePointZero
     }
 
     self.size = sizeThatFitsForChildLayouts()
+
+    if self.input.type == .Dummy {
+      // TODO:(vicng) Add extra padding at the end
+    }
   }
 
   // MARK: - Public
@@ -105,6 +123,44 @@ public class InputLayout: Layout {
     let fieldLayout = fieldLayouts.removeAtIndex(index)
     fieldLayout.parentLayout = nil
     return fieldLayout
+  }
+
+  // MARK: - Internal
+
+  /**
+  Allow the input layout to use more width when rendering its field layouts.
+
+  If the given width is larger than the minimal amount needed, the layout is resized and its
+  elements are repositioned.
+
+  If the given width is not large enough, then all elements in the layout remain unchanged.
+
+  - Parameter width: A width value, specified in the Workspace coordinate system.
+  */
+  internal func maximizeFieldWidthTo(width: CGFloat) {
+    let minimalFieldWidthRequired = self.minimalFieldWidthRequired
+    if width <= minimalFieldWidthRequired {
+      return
+    }
+
+    let widthDifference = width - minimalFieldWidthRequired
+    self.size.width += widthDifference
+
+    // Shift fields based on new width and alignment
+    if self.input.alignment == .Centre || self.input.alignment == .Right {
+      let shiftAmount = (self.input.alignment == .Centre) ?
+        floor(widthDifference / 2) : widthDifference
+      for fieldLayout in fieldLayouts {
+        fieldLayout.relativePosition.x += shiftAmount
+      }
+    }
+
+    let inputsInline = (parentLayout as? BlockLayout)?.block.inputsInline ?? false
+
+    if self.input.type != .Value || !inputsInline {
+      // Shift the block group layout the entire width difference
+      self.blockGroupLayout.relativePosition.x += widthDifference
+    }
   }
 }
 

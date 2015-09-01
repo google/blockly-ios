@@ -77,27 +77,47 @@ public class BlockLayout: Layout {
   public override func layoutChildren() {
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
-    var maximumInputWidth: CGFloat = 0
+    var maximumFieldWidth: CGFloat = 0
+    var currentLineHeight: CGFloat = 0
+    var previousInputLayout: InputLayout?
 
     // Update relative position/size of inputs
     for inputLayout in inputLayouts {
-      inputLayout.layoutChildren()
 
+      // Offset this input layout based on the previous one
+      if block.inputsInline &&
+        (previousInputLayout?.input.type == .Value || previousInputLayout?.input.type == .Dummy) &&
+        (inputLayout.input.type == .Value || inputLayout.input.type == .Dummy) {
+          // Continue appending to this line
+          // TODO:(vicng) Add inline x padding
+          xOffset += previousInputLayout!.size.width
+      } else {
+        // Start a new line
+        // TODO:(vicng) Add inline x/y padding
+        xOffset = 0
+        yOffset += currentLineHeight
+        currentLineHeight = 0
+      }
+
+      inputLayout.layoutChildren()
       inputLayout.relativePosition.x = xOffset
       inputLayout.relativePosition.y = yOffset
 
-      if block.inputsInline {
-        // TODO:(vicng) Add inline x padding
-        xOffset += inputLayout.size.width
-      } else {
-        // TODO:(vicng) Add inline y padding
-        maximumInputWidth = max(maximumInputWidth, inputLayout.size.width)
-        yOffset += inputLayout.size.height
+      // Update the maximum field width used
+      if !block.inputsInline || inputLayout.input.type == .Statement {
+        maximumFieldWidth =
+          max(maximumFieldWidth, inputLayout.minimalFieldWidthRequired)
       }
+
+      currentLineHeight = max(currentLineHeight, inputLayout.size.height)
+      previousInputLayout = inputLayout
     }
 
-    if !block.inputsInline {
-      // TODO:(vicng) Re-layout inputs based on new maximum width
+    // Re-layout inputs based on new maximum width
+    for inputLayout in inputLayouts {
+      if !block.inputsInline || inputLayout.input.type == .Statement {
+        inputLayout.maximizeFieldWidthTo(maximumFieldWidth)
+      }
     }
 
     // Update the size required for this block

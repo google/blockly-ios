@@ -14,6 +14,7 @@
 		FA548C351B6312AE008BC59C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA548C331B6312AE008BC59C /* Main.storyboard */; };
 		FA548C371B6312AE008BC59C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA548C361B6312AE008BC59C /* Images.xcassets */; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
+		FAA2916A1B9576650005F100 /* TestBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA291691B9576650005F100 /* TestBlock.json */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		FA548C681B631627008BC59C /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
 		FAA291631B9520490005F100 /* BlocklySample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlocklySample-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA291641B9520490005F100 /* SampleObjCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleObjCObject.h; sourceTree = "<group>"; };
+		FAA291691B9576650005F100 /* TestBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestBlock.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				FA548C2D1B6312AE008BC59C /* Supporting Files */,
 				FAA291641B9520490005F100 /* SampleObjCObject.h */,
 				FAA291631B9520490005F100 /* BlocklySample-Bridging-Header.h */,
+				FAA291691B9576650005F100 /* TestBlock.json */,
 			);
 			path = BlocklySample;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA548C351B6312AE008BC59C /* Main.storyboard in Resources */,
+				FAA2916A1B9576650005F100 /* TestBlock.json in Resources */,
 				FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */,
 				FA548C371B6312AE008BC59C /* Images.xcassets in Resources */,
 			);

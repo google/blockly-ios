@@ -44,23 +44,17 @@ class ViewController: UIViewController {
   // MARK: - Private
 
   func buildWorkspace() -> Workspace {
-    let workspace = Workspace(isFlyout: true, isRTL: false)
+    let workspace = Workspace(isFlyout: false)
 
-    let builder = Block.Builder(identifier: "👋🌏", name: "New Kid", workspace: workspace)
-    let ifBlock = builder.build()
-
-    let input0 = Input(type: .Value, name: "IF0", sourceBlock: ifBlock)
-    input0.connection?.typeChecks = ["Boolean"]
-    input0.appendField(FieldLabel(name: "", text: "if"))
-    ifBlock.appendInput(input0)
-    let input1 = Input(type: .Statement, name: "IF1", sourceBlock: ifBlock)
-    ifBlock.appendInput(input1)
-    let input2 = Input(type: .Value, name: "IF2", sourceBlock: ifBlock)
-    input2.connection?.typeChecks = ["Boolean"]
-    input2.appendField(FieldLabel(name: "", text: "else"))
-    ifBlock.appendInput(input2)
-
-    workspace.blocks.append(ifBlock)
+    do {
+      let path = NSBundle.mainBundle().pathForResource("TestBlock", ofType: "json")
+      let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+      let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
+      let block = try Block.blockFromJSON(json, workspace: workspace)
+      workspace.blocks.append(block)
+    } catch let error as NSError {
+      print("An error occurred loading the block: \(error)")
+    }
 
     return workspace
   }
