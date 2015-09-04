@@ -153,8 +153,8 @@ public class Layout: NSObject {
   */
   internal func refreshViewFrame() {
     // Update the view frame
-    self.viewFrame = workspaceLayout.uiViewFrameFromWorkspacePoint(
-      self.absolutePosition, size: self.size)
+    self.viewFrame =
+      workspaceLayout.viewFrameFromWorkspacePoint(self.absolutePosition, size: self.size)
   }
 
   /**

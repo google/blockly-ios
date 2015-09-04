@@ -63,7 +63,7 @@ public class FieldLayout: Layout {
     let layoutSize: CGSize = measurer.measureLayout(self, scale: self.workspaceLayout.scale)
 
     // Convert the layout size back into the Workspace coordinate system
-    self.size = workspaceLayout.workspaceSizeFromUISize(layoutSize)
+    self.size = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
   }
 
   internal override func refreshViewFrame() {
@@ -74,6 +74,6 @@ public class FieldLayout: Layout {
       point.x += parentRelativePosition.x
       point.y += parentRelativePosition.y
     }
-    self.viewFrame = self.workspaceLayout.uiViewFrameFromWorkspacePoint(point, size: self.size)
+    self.viewFrame = self.workspaceLayout.viewFrameFromWorkspacePoint(point, size: self.size)
   }
 }

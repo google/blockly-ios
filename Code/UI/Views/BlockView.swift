@@ -69,16 +69,6 @@ public class BlockView: UIView {
     super.init(coder: aDecoder)
   }
 
-  // MARK: - Super
-
-  public override func layoutSubviews() {
-    super.layoutSubviews()
-
-    // TODO:(vicng) Layout block background
-
-    // TODO:(vicng) Layout fields
-  }
-
   // MARK: - Public
 
   /**
@@ -95,11 +85,23 @@ public class BlockView: UIView {
     }
 
     self.frame = layout.viewFrame
-    // TODO:(vicng) Set the background colour properly
-    self.backgroundColor = UIColor.redColor()
     self.layer.zPosition = layout.zPosition
 
-    // TODO:(vicng) Re-draw this view too
+    // TODO:(vicng) Set the colours properly
+    _blockBackgroundView.strokeColour = UIColor.grayColor()
+    _blockBackgroundView.fillColour = UIColor.blueColor()
+    _blockBackgroundView.bezierPath = blockBackgroundBezierPath()
+
+    // TODO:(vicng) Optimize this so this view only needs is created/added when the user
+    // highlights the block.
+    _highlightOverlayView.strokeColour = UIColor.orangeColor()
+    _highlightOverlayView.fillColour = UIColor.orangeColor()
+    _highlightOverlayView.frame = self.bounds
+    _highlightOverlayView.backgroundColor = UIColor.clearColor()
+    _highlightOverlayView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    _highlightOverlayView.bezierPath = blockHighlightBezierPath()
+    addSubview(_highlightOverlayView)
+    sendSubviewToBack(_highlightOverlayView)
 
     // Add field views
     for fieldLayout in layout.fieldLayouts {
@@ -144,5 +146,38 @@ extension BlockView: Recyclable {
 extension BlockView: LayoutDelegate {
   public func layoutDidChange(layout: Layout) {
     refresh()
+  }
+}
+
+// MARK: - Bezier Path Builders
+
+extension BlockView {
+  private func blockBackgroundBezierPath() -> UIBezierPath? {
+    guard let layout = self.layout else {
+      return nil
+    }
+
+    // TODO:(vicng) Construct the block background path properly (the code below is simply test
+    // code).
+    let bezierPath = WorkspaceBezierPath(layout: layout.workspaceLayout)
+
+    movePathToTopLeftCornerStart(bezierPath)
+    addTopLeftCornerToPath(bezierPath)
+    addNotchToPath(bezierPath)
+    bezierPath.addLineToPoint(100, 0, relative: true)
+    bezierPath.addLineToPoint(0, 50, relative: true)
+    bezierPath.addLineToPoint(-150, 0, relative: true)
+    bezierPath.closePath()
+
+    return bezierPath.viewBezierPath
+  }
+
+  private func blockHighlightBezierPath() -> UIBezierPath? {
+    guard let layout = self.layout else {
+      return nil
+    }
+    
+    // TODO:(vicng) Build highlight bezier path
+    return nil
   }
 }

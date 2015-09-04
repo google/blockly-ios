@@ -22,6 +22,11 @@ Stores information on how to render and position a `Block` on-screen.
 */
 @objc(BKYBlockLayout)
 public class BlockLayout: Layout {
+  // MARK: - Static Properties
+
+  /// The shared instance used to configure all instances of `BlockLayout`.
+  public static let sharedConfig = Config()
+
   // MARK: - Properties
 
   /// The `Block` to layout.

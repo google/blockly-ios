@@ -110,7 +110,7 @@ extension WorkspaceView {
     }
 
     blockView.layout?.parentBlockGroupLayout.moveToWorkspacePosition(
-      layout.workspacePointFromUIPoint(gesture.locationInView(self)))
+      layout.workspacePointFromViewPoint(gesture.locationInView(self)))
   }
 
   /**

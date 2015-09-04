@@ -22,10 +22,34 @@ View used to draw a `UIBezierPath`, via `drawRect(:)`.
 public class BezierPathView: UIView {
   // MARK: - Properties
 
-  internal var bezierPath: UIBezierPath?
-  internal var fillColour: UIColor?
-  internal var strokeColour: UIColor?
-  internal var rtl: Bool = false
+  internal var bezierPath: UIBezierPath? {
+    didSet {
+      if bezierPath != oldValue {
+        setNeedsDisplay()
+      }
+    }
+  }
+  internal var fillColour: UIColor? {
+    didSet {
+      if fillColour != oldValue {
+        setNeedsDisplay()
+      }
+    }
+  }
+  internal var strokeColour: UIColor? {
+    didSet {
+      if strokeColour != oldValue {
+        setNeedsDisplay()
+      }
+    }
+  }
+  internal var rtl: Bool = false {
+    didSet {
+      if rtl != oldValue {
+        setNeedsDisplay()
+      }
+    }
+  }
 
   // MARK: - Initializers
 

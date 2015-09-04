@@ -21,9 +21,6 @@ UI configuration for elements within a block, based within the Workspace coordin
 extension BlockLayout {
   @objc(BKYBlockLayoutConfig)
   public class Config: NSObject {
-    /// The shared instance used to configure all instances of `BlockLayout`.
-    public static let sharedInstance = Config()
-
     /// Horizontal space between elements, specified as a Workspace coordinate system unit.
     public var xSeparatorSpace: CGFloat = 10
 
