@@ -59,13 +59,17 @@ public class WorkspaceLayout: Layout {
   }
 
   public override func layoutChildren() {
+    var size = WorkspaceSizeZero
+
     // Update relative position/size of blocks
     for blockGroupLayout in blockGroupLayouts {
       blockGroupLayout.layoutChildren()
+
+      size = LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: size)
     }
 
     // Update size required for the workspace
-    self.size = sizeThatFitsForChildLayouts()
+    self.size = size
   }
 
   // MARK: - Public
@@ -164,10 +168,29 @@ extension WorkspaceLayout {
   }
 
   /**
+  Using the current `scale` value, this method translates a unit value from the Workspace coordinate
+  system to the UIView coordinate system.
+
+  - Parameter unit: A unit value from the Workspace coordinate system.
+  - Returns: A unit value in the UIView coordinate system.
+  */
+  public func viewUnitFromWorkspaceUnit(unit: CGFloat) -> CGFloat {
+    if scale == 0 {
+      return 0
+    } else if scale == 1 {
+      return unit
+    } else {
+      // Round unit values when going from workspace to view coordinates. This helps keep
+      // things consistent when translating points and sizes.
+      return round(unit * scale)
+    }
+  }
+
+  /**
   Using the current `scale` value, this method translates a point from the Workspace coordinate
   system to the UIView coordinate system.
 
-  - Parameter size: A point from the Workspace coordinate system.
+  - Parameter point: A point from the Workspace coordinate system.
   - Returns: A point in the UIView coordinate system.
   */
   public func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
@@ -177,7 +200,7 @@ extension WorkspaceLayout {
     } else if scale == 1 {
       return point
     } else {
-      return CGPointMake(round(point.x * scale), round(point.y * scale))
+      return CGPointMake(viewUnitFromWorkspaceUnit(point.x), viewUnitFromWorkspaceUnit(point.y))
     }
   }
 
@@ -190,7 +213,33 @@ extension WorkspaceLayout {
   - Returns: A point in the UIView coordinate system.
   */
   public func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
-    return viewPointFromWorkspacePoint(WorkspacePointMake(x, y))
+    // TODO:(vicng) Handle the offset of the viewport relative to the workspace
+    if scale == 0 {
+      return CGPointZero
+    } else if scale == 1 {
+      return CGPointMake(x, y)
+    } else {
+      return CGPointMake(viewUnitFromWorkspaceUnit(x), viewUnitFromWorkspaceUnit(y))
+    }
+  }
+
+  /**
+  Using the current `scale` value, this method translates a size from the Workspace coordinate
+  system to the UIView coordinate system.
+
+  - Parameter size: A size from the Workspace coordinate system.
+  - Returns: A size in the UIView coordinate system.
+  */
+  public func viewSizeFromWorkspaceSize(size: WorkspaceSize) -> CGSize {
+    if scale == 0 {
+      return CGSizeZero
+    } else if scale == 1 {
+      return size
+    } else {
+      return CGSizeMake(
+        viewUnitFromWorkspaceUnit(size.width),
+        viewUnitFromWorkspaceUnit(size.height))
+    }
   }
 
   /**
@@ -209,10 +258,10 @@ extension WorkspaceLayout {
       return CGRectMake(point.x, point.y, size.width, size.height)
     } else {
       return CGRectMake(
-        round(point.x * scale),
-        round(point.y * scale),
-        ceil(size.width * scale),
-        ceil(size.height * scale))
+        viewUnitFromWorkspaceUnit(point.x),
+        viewUnitFromWorkspaceUnit(point.y),
+        viewUnitFromWorkspaceUnit(size.width),
+        viewUnitFromWorkspaceUnit(size.height))
     }
   }
 }

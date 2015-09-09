@@ -156,18 +156,4 @@ public class Layout: NSObject {
     self.viewFrame =
       workspaceLayout.viewFrameFromWorkspacePoint(self.absolutePosition, size: self.size)
   }
-
-  /**
-  Returns the minimum amount of space needed to render `self.childLayouts`.
-  */
-  internal func sizeThatFitsForChildLayouts() -> WorkspaceSize {
-    var size = WorkspaceSizeZero
-
-    for layout in self.childLayouts {
-      size.width = max(size.width, layout.relativePosition.x + layout.size.width)
-      size.height = max(size.height, layout.relativePosition.y + layout.size.height)
-    }
-
-    return size
-  }
 }

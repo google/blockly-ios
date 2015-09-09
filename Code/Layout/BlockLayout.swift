@@ -17,7 +17,7 @@ import Foundation
 
 // MARK: -
 
-/*
+/**
 Stores information on how to render and position a `Block` on-screen.
 */
 @objc(BKYBlockLayout)
@@ -88,7 +88,6 @@ public class BlockLayout: Layout {
 
     // Update relative position/size of inputs
     for inputLayout in inputLayouts {
-
       // Offset this input layout based on the previous one
       if block.inputsInline &&
         (previousInputLayout?.input.type == .Value || previousInputLayout?.input.type == .Dummy) &&
@@ -118,15 +117,18 @@ public class BlockLayout: Layout {
       previousInputLayout = inputLayout
     }
 
+    var size = WorkspaceSizeZero
+
     // Re-layout inputs based on new maximum width
     for inputLayout in inputLayouts {
       if !block.inputsInline || inputLayout.input.type == .Statement {
         inputLayout.maximizeFieldWidthTo(maximumFieldWidth)
       }
+      size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
     }
 
     // Update the size required for this block
-    self.size = sizeThatFitsForChildLayouts()
+    self.size = size
   }
 
   // MARK: - Public
