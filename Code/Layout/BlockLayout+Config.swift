@@ -46,6 +46,9 @@ extension BlockLayout {
     /// unit.
     public var notchWidth: CGFloat = 30;
 
+    /// Height of vertical tab, specified as a Workspace coordinate system unit.
+    public var notchHeight: CGFloat = 4;
+
     /// Minimum height of field rows, specified as a Workspace coordinate system unit.
     public var minimumFieldHeight: CGFloat = 18
 

@@ -89,7 +89,7 @@ public class BlockView: UIView {
 
     // TODO:(vicng) Set the colours properly
     _blockBackgroundView.strokeColour = UIColor.grayColor()
-    _blockBackgroundView.fillColour = UIColor.blueColor()
+    _blockBackgroundView.fillColour = UIColor.yellowColor()
     _blockBackgroundView.bezierPath = blockBackgroundBezierPath()
 
     // TODO:(vicng) Optimize this so this view only needs is created/added when the user
@@ -157,19 +157,85 @@ extension BlockView {
       return nil
     }
 
-    // TODO:(vicng) Construct the block background path properly (the code below is simply test
-    // code).
-    let bezierPath = WorkspaceBezierPath(layout: layout.workspaceLayout)
+    let path = WorkspaceBezierPath(layout: layout.workspaceLayout)
+    let background = layout.background
+    var previousBottomPadding: CGFloat = 0
 
-    movePathToTopLeftCornerStart(bezierPath)
-    addTopLeftCornerToPath(bezierPath)
-    addNotchToPath(bezierPath)
-    bezierPath.addLineToPoint(100, 0, relative: true)
-    bezierPath.addLineToPoint(0, 50, relative: true)
-    bezierPath.addLineToPoint(-150, 0, relative: true)
-    bezierPath.closePath()
+    path.moveToPoint(0, 0, relative: false)
 
-    return bezierPath.viewBezierPath
+    for (var i = 0; i < background.rows.count; i++) {
+      let row = background.rows[i]
+
+      // DRAW THE TOP EDGES
+
+      if i == 0 && background.femalePreviousStatementConnector {
+        // Draw previous statement connector
+        addNotchToPath(path, drawLeftToRight: true)
+      }
+
+      path.addLineToPoint(row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+
+      // Draw top padding
+      let topPadding = row.topPadding + previousBottomPadding
+      if topPadding > 0 {
+        path.addLineToPoint(0, topPadding, relative: true)
+      }
+
+      // DRAW THE RIGHT EDGES
+
+      if row.isStatement {
+        // Draw the "C" part of a statement block
+
+        // Inner-ceiling of "C"
+        path.addLineToPoint(
+          row.statementIndent + row.statementConnectorWidth,
+          path.currentWorkspacePoint.y, relative: false)
+
+        // TODO:(vicng) Draw notch
+
+        path.addLineToPoint(row.statementIndent, path.currentWorkspacePoint.y, relative: false)
+
+        // Inner-left side of "C"
+        path.addLineToPoint(0, row.middleHeight, relative: true)
+
+        // Inner-floor of "C"
+        path.addLineToPoint(row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+      } else if row.femaleOutputConnector {
+        // TODO:(vicng) Draw female output connector and then the rest of the middle height
+        path.addLineToPoint(0, row.middleHeight, relative: true)
+      } else {
+        // Simply draw the middle height for the vertical edge
+        path.addLineToPoint(0, row.middleHeight, relative: true)
+      }
+
+      // Store bottom padding (to draw into the the top padding of the next row)
+      previousBottomPadding = row.bottomPadding
+    }
+
+    if previousBottomPadding > 0 {
+      path.addLineToPoint(0, previousBottomPadding, relative: true)
+    }
+
+    // DRAW THE BOTTOM EDGES
+
+    if background.maleNextStatementConnector {
+      path.addLineToPoint(
+        BlockLayout.sharedConfig.notchWidth, path.currentWorkspacePoint.y, relative: true)
+      addNotchToPath(path, drawLeftToRight: false)
+    }
+
+    path.addLineToPoint(0, path.currentWorkspacePoint.y, relative: false)
+
+    // DRAW THE LEFT EDGES
+
+    if background.maleOutputConnector {
+      // TODO:(vicng) Draw male output connector
+      addPuzzleTabToPath(path)
+    }
+
+    path.closePath()
+
+    return path.viewBezierPath
   }
 
   private func blockHighlightBezierPath() -> UIBezierPath? {

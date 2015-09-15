@@ -1,100 +1,31 @@
 {
   "id": "math_foo",
-  "message0": "if %1 %2 %3 %4 %5 %6 %7 alsdjflkasdjkasasdfasdjklasdf %8 asdf %9 if %10 %11 %12 %13 %14 %15 %16 asdf def %17 123123123123123123123123123123123123123123dflkjlkl %18",
+  "message0": "%1 LEFT ALIGN %2 CENTER ALIGN %3 STATEMENT RIGHT ALIGN %4 LEFT ALIGN Blockly Blockly Blockly %5",
   "args0": [
             {
-            "type": "field_input",
-            "name": "abc",
-            "text": "default"
-            },
-            {
-            "type": "field_checkbox",
-            "name": "NAME",
-            "checked": true
-            },
-            {
-            "type": "field_colour",
-            "name": "NAME",
-            "colour": "#3366ff"
-            },
-            {
-            "type": "field_variable",
-            "name": "NAME",
-            "variable": "item"
-            },
-            {
-            "type": "field_image",
-            "src": "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-            "width": 15,
-            "height": 15,
-            "alt": "*"
-            },
-            {
-            "type": "field_input",
-            "name": "def",
-            "text": "asd"
+            "type": "input_statement",
+            "name": "NAME"
             },
             {
             "type": "input_value",
-            "name": "if"
+            "name": "NAME"
             },
             {
-            "type": "input_dummy",
+            "type": "input_statement",
+            "name": "NAME",
             "align": "CENTRE"
             },
             {
-            "type": "input_dummy",
+            "type": "input_statement",
+            "name": "NAME",
             "align": "RIGHT"
-            },
-            {
-            "type": "field_input",
-            "name": "abc",
-            "text": "default"
-            },
-            {
-            "type": "field_checkbox",
-            "name": "NAME",
-            "checked": true
-            },
-            {
-            "type": "field_colour",
-            "name": "NAME",
-            "colour": "#3366ff"
-            },
-            {
-            "type": "field_variable",
-            "name": "NAME",
-            "variable": "item"
-            },
-            {
-            "type": "field_image",
-            "src": "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-            "width": 15,
-            "height": 15,
-            "alt": "*"
-            },
-            {
-            "type": "field_input",
-            "name": "def",
-            "text": "asd"
             },
             {
             "type": "input_value",
-            "name": "if"
-            },
-            {
-            "type": "input_statement",
-            "name": "NAMEasdfasdfasdfasdfssasdfasdfasdfasdfasdfssdfafaf"
-            },
-            {
-            "type": "input_statement",
-            "name": "NAME",
-            "align": "RIGHT"
+            "name": "NAME"
             }
             ],
   "inputsInline": false,
-  "output": null,
-  "colour": 160,
   "tooltip": "",
   "helpUrl": "http://www.example.com/"
 }

@@ -32,6 +32,9 @@ public class BlockLayout: Layout {
   /// The `Block` to layout.
   public let block: Block
 
+  /// The information for rendering the background for this block.
+  public let background = BlockLayout.Background()
+
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
 
@@ -80,51 +83,85 @@ public class BlockLayout: Layout {
   }
 
   public override func layoutChildren() {
+    // TODO:(vicng) Add x/y padding everywhere
+
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
-    var maximumFieldWidth: CGFloat = 0
+    var minimalWidthRequired: CGFloat = 0
     var currentLineHeight: CGFloat = 0
     var previousInputLayout: InputLayout?
+    var backgroundRow: BackgroundRow!
+
+    // Set the background properties based on the block layout and remove all rows from the
+    // background
+    self.background.updateRenderPropertiesFromBlockLayout(self)
+    self.background.removeAllRows()
 
     // Update relative position/size of inputs
     for inputLayout in inputLayouts {
-      // Offset this input layout based on the previous one
-      if block.inputsInline &&
-        (previousInputLayout?.input.type == .Value || previousInputLayout?.input.type == .Dummy) &&
-        (inputLayout.input.type == .Value || inputLayout.input.type == .Dummy) {
-          // Continue appending to this line
-          // TODO:(vicng) Add inline x padding
-          xOffset += previousInputLayout!.size.width
-      } else {
-        // Start a new line
-        // TODO:(vicng) Add inline x/y padding
-        xOffset = 0
+      if backgroundRow == nil || // First row
+        !block.inputsInline || // External inputs
+        previousInputLayout?.input.type == .Statement || // Previous input was a statement
+        inputLayout.input.type == .Statement // Current input is a statement
+      {
+        // Start a new row
+        backgroundRow = BackgroundRow()
+        background.appendRow(backgroundRow)
+
+        // Reset values for this row
+        xOffset =
+          (self.background.maleOutputConnector ? BlockLayout.sharedConfig.puzzleTabWidth : 0)
         yOffset += currentLineHeight
         currentLineHeight = 0
       }
 
+      // Append this input layout to the current row
+      backgroundRow.inputLayouts.append(inputLayout)
+
+      // Perform layout
       inputLayout.layoutChildren()
       inputLayout.relativePosition.x = xOffset
       inputLayout.relativePosition.y = yOffset
 
       // Update the maximum field width used
-      if !block.inputsInline || inputLayout.input.type == .Statement {
-        maximumFieldWidth =
-          max(maximumFieldWidth, inputLayout.minimalFieldWidthRequired)
+      if !block.inputsInline {
+        minimalWidthRequired =
+          max(minimalWidthRequired, inputLayout.minimalFieldWidthRequired)
+      } else if inputLayout.input.type == .Statement {
+        minimalWidthRequired =
+          max(minimalWidthRequired, inputLayout.minimalStatementWidthRequired)
       }
 
+      // Update position coordinates for this row
+      xOffset += inputLayout.size.width
       currentLineHeight = max(currentLineHeight, inputLayout.size.height)
       previousInputLayout = inputLayout
     }
 
+    // Increase the amount of space used for statements and external inputs, re-layout each
+    // background row based on a new maximum width, and calculate the size needed for this entire
+    // BlockLayout.
     var size = WorkspaceSizeZero
 
-    // Re-layout inputs based on new maximum width
-    for inputLayout in inputLayouts {
-      if !block.inputsInline || inputLayout.input.type == .Statement {
-        inputLayout.maximizeFieldWidthTo(maximumFieldWidth)
+    for backgroundRow in self.background.rows {
+      if inputLayouts.isEmpty {
+        continue
       }
-      size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
+
+      let lastInputLayout = backgroundRow.inputLayouts.last!
+      if lastInputLayout.input.type == .Statement {
+        // Maximize the amount of space for a statement
+        lastInputLayout.maximizeStatementWidthTo(minimalWidthRequired)
+      } else if !block.inputsInline {
+        // Maximize the amount of space for fields
+        lastInputLayout.maximizeFieldWidthTo(minimalWidthRequired)
+      }
+
+      // Update the background row based on the new max width
+      backgroundRow.updateRenderPropertiesWithMaximumRowWidth(minimalWidthRequired)
+
+      size = LayoutHelper.sizeThatFitsLayout(
+        backgroundRow.inputLayouts.last!, fromInitialSize: size)
     }
 
     // Update the size required for this block

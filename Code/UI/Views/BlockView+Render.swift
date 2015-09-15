@@ -19,18 +19,27 @@ extension BlockView {
   // MARK: - Public
 
   /**
-  Adds the path for drawing a next/previous notch from left-to-right.
+  Adds the path for drawing a next/previous notch.
   ```
   Draws: --
            \_/
   ```
   - Parameter path: The Bezier path to add to.
+  - Parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
+  should be drawn right-to-left.
   */
-  public func addNotchToPath(path: WorkspaceBezierPath) {
-    path.addLineToPoint(BlockLayout.sharedConfig.notchWidth - 15, 0, relative: true)
-    path.addLineToPoint(6, 4, relative: true)
-    path.addLineToPoint(3, 0, relative: true)
-    path.addLineToPoint(6, -4, relative: true)
+  public func addNotchToPath(path: WorkspaceBezierPath, drawLeftToRight: Bool) {
+    if drawLeftToRight {
+      path.addLineToPoint(BlockLayout.sharedConfig.notchWidth - 15, 0, relative: true)
+      path.addLineToPoint(6, BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(3, 0, relative: true)
+      path.addLineToPoint(6, -BlockLayout.sharedConfig.notchHeight, relative: true)
+    } else {
+      path.addLineToPoint(6, -BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(3, 0, relative: true)
+      path.addLineToPoint(6, BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(BlockLayout.sharedConfig.notchWidth - 15, 0, relative: true)
+    }
   }
 
   /**

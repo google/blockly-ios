@@ -89,6 +89,7 @@ public class Input : NSObject {
 
   public let type: BKYInputType
   public let name: String
+  public unowned let sourceBlock: Block
   public private(set) var connection: Connection?
   /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
@@ -105,6 +106,7 @@ public class Input : NSObject {
   public init(type: InputType, name: String, sourceBlock: Block) {
     self.name = name
     self.type = type
+    self.sourceBlock = sourceBlock
 
     if (type == .Value) {
       self.connection = Connection(type: .InputValue, sourceBlock: sourceBlock)
