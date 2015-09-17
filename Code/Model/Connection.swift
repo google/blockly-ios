@@ -35,6 +35,9 @@ public class Connection : NSObject {
   public unowned let sourceBlock: Block
   public var position: CGPoint = CGPointZero
   public weak var targetConnection: Connection?
+  public var targetBlock: Block? {
+    return targetConnection?.sourceBlock
+  }
 
   public var typeChecks: [String]? {
     didSet {
@@ -61,6 +64,14 @@ public class Connection : NSObject {
   public init(type: BKYConnectionType, sourceBlock: Block) {
     self.type = type
     self.sourceBlock = sourceBlock
+  }
+
+  public func connectTo(otherConnection: Connection?) -> Bool {
+    // TODO:(vicng) This is a very basic implementation. Implement this properly!
+    self.targetConnection = otherConnection
+    otherConnection?.targetConnection = self
+
+    return true
   }
 
   // MARK: - Private

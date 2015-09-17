@@ -27,5 +27,7 @@
             ],
   "inputsInline": false,
   "tooltip": "",
+  "previousStatement": null,
+  "nextStatement": null,
   "helpUrl": "http://www.example.com/"
 }

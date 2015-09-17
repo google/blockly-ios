@@ -30,6 +30,9 @@ public class ViewManager: NSObject {
   /// Object pool for holding reusable views.
   private let _objectPool = ObjectPool()
 
+  /// Dictionary of known BlockViews
+  private var _blockViews = [String: BlockView]()
+
   // MARK: - Public
 
   /**
@@ -42,9 +45,18 @@ public class ViewManager: NSObject {
   - Returns: A `BlockView` with the given layout assigned to it.
   */
   public func blockViewForLayout(layout: BlockLayout) -> BlockView {
-    // TODO:(vicng) Implement a lookup mechanism based on a layout ID
+    // Try to see if the view already exists
+    if let cachedView = _blockViews[layout.block.uuid] {
+      return cachedView
+    }
+
+    // Get a fresh view and populate it with the layout
     let blockView = viewForType(BlockView.self)
     blockView.layout = layout
+
+    // Cache it for future lookups
+    _blockViews[layout.block.uuid] = blockView
+
     return blockView
   }
 

@@ -33,28 +33,14 @@ public class WorkspaceView: UIScrollView {
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
-  /// Gesture recognizer to handle moving blocks around.
-  private var _blockPanGestureRecognizer: UIPanGestureRecognizer!
-  /// Gesture recognizer to handle selecting blocks.
-  private var _blockTapGestureRecognizer: UITapGestureRecognizer!
-
   // MARK: - Initializers
 
   public required init() {
     super.init(frame: CGRectZero)
-    commonInit()
   }
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  private func commonInit() {
-    _blockPanGestureRecognizer =
-      UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:")
-    _blockTapGestureRecognizer =
-      UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:")
   }
 
   // MARK: - Public
@@ -76,8 +62,10 @@ public class WorkspaceView: UIScrollView {
       }
 
       let descendantView = _viewManager.blockViewForLayout(descendantLayout)
-      descendantView.addGestureRecognizer(_blockPanGestureRecognizer)
-      descendantView.addGestureRecognizer(_blockTapGestureRecognizer)
+      descendantView.addGestureRecognizer(
+        UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
+      descendantView.addGestureRecognizer(
+        UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
 
       if descendantView.superview != nil {
         descendantView.removeFromSuperview()

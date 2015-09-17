@@ -56,7 +56,8 @@ public class Workspace : NSObject {
   public let isFlyout: Bool
   public let isRTL: Bool
   public let maxBlocks: Int?
-  public var blocks = [Block]()
+  public private(set) var topBlocks = [Block]()
+  public private(set) var allBlocks = [String: Block]()
   public weak var delegate: WorkspaceDelegate?
 
   // MARK: - Initializers
@@ -65,5 +66,35 @@ public class Workspace : NSObject {
     self.isFlyout = isFlyout
     self.isRTL = isRTL
     self.maxBlocks = maxBlocks
+  }
+
+  // MARK: - Public
+
+  /**
+  Add a given block to the workspace.
+
+  - Parameter block: The block to add.
+  - Parameter asTopBlock: True if the block should be added to `topBlocks`. False, if not.
+  */
+  public func addBlock(block: Block, asTopBlock: Bool) {
+    allBlocks[block.uuid] = block
+
+    if asTopBlock {
+      topBlocks.append(block)
+    }
+
+    // TODO:(vicng) Generate change event
+  }
+
+  /**
+  Removes a given block from the workspace.
+
+  - Parameter block: The block to remove.
+  */
+  public func removeBlock(block: Block) {
+    allBlocks[block.uuid] = nil
+    topBlocks = topBlocks.filter { $0 != block }
+
+    // TODO:(vicng) Generate change event
   }
 }

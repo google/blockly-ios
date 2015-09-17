@@ -35,25 +35,27 @@ Class that represents a single block.
 public class Block : NSObject {
   // MARK: - Properties
 
+  /// A unique identifier used to identify this block for its lifetime
+  public let uuid: String
   public let identifier: String
   public let name: String
   public let category: Int
   public let colourHue: Int
-  public let outputConnection: Connection?
-  public let nextConnection: Connection?
-  public var nextBlock: Block? {
-    return nextConnection?.targetConnection?.sourceBlock
-  }
-  public let previousConnection: Connection?
-  public var previousBlock: Block? {
-    return previousConnection?.targetConnection?.sourceBlock
-  }
-  public internal(set) var inputs: [Input]
   public let inputsInline: Bool
   public unowned let workspace: Workspace
   public var isInFlyout: Bool {
     return workspace.isFlyout
   }
+  public internal(set) var outputConnection: Connection?
+  public internal(set) var nextConnection: Connection?
+  public var nextBlock: Block? {
+    return nextConnection?.targetConnection?.sourceBlock
+  }
+  public internal(set) var previousConnection: Connection?
+  public var previousBlock: Block? {
+    return previousConnection?.targetConnection?.sourceBlock
+  }
+  public internal(set) var inputs: [Input]
   public var childBlocks: [Block] = []
   public weak var parentBlock: Block?
   public var tooltip: String = ""
@@ -77,9 +79,8 @@ public class Block : NSObject {
   To create a Block, use Block.Builder instead.
   */
   internal init(identifier: String, name: String, workspace: Workspace, category: Int,
-    colourHue: Int, inputs: [Input] = [], inputsInline: Bool,
-    outputConnection: Connection? = nil, nextConnection: Connection? = nil,
-    previousConnection: Connection? = nil) {
+    colourHue: Int, inputs: [Input] = [], inputsInline: Bool) {
+      self.uuid = NSUUID().UUIDString
       self.identifier = identifier
       self.name = name
       self.category = category
@@ -87,9 +88,6 @@ public class Block : NSObject {
       self.workspace = workspace
       self.inputs = inputs
       self.inputsInline = inputsInline
-      self.outputConnection = outputConnection
-      self.nextConnection = nextConnection
-      self.previousConnection = previousConnection
   }
 
   // MARK: - Public

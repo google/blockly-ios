@@ -28,7 +28,7 @@ public class LayoutBuilder: NSObject {
   public static func buildLayoutTreeFromWorkspace(workspace: Workspace) -> WorkspaceLayout {
     let workspaceLayout = WorkspaceLayout(workspace: workspace)
 
-    for block in workspace.blocks {
+    for block in workspace.topBlocks {
       let layout = buildBlockGroupLayoutTreeFromBlock(
         block, workspaceLayout: workspaceLayout, parentLayout: workspaceLayout)
       workspaceLayout.appendBlockGroupLayout(layout)

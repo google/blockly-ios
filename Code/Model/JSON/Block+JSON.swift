@@ -43,14 +43,32 @@ extension Block {
     if let colourHue = json["colour"] as? Int {
       builder.colourHue = min(max(colourHue, 0), 360)
     }
-    if let output = json["output"] as? String {
-      // TODO:(vicng) Parse output
+    if let output = json["output"] {
+      if let typeCheck = output as? String {
+        try builder.setOutputConnectionEnabled(true, typeChecks: [typeCheck])
+      } else if let typeChecks = output as? [String] {
+        try builder.setOutputConnectionEnabled(true, typeChecks: typeChecks)
+      } else {
+        try builder.setOutputConnectionEnabled(true)
+      }
     }
-    if let previousStatement = json["previousStatement"] as? String {
-      // TODO:(vicng) Parse previousStatement
+    if let previousStatement = json["previousStatement"] {
+      if let typeCheck = previousStatement as? String {
+        try builder.setPreviousConnectionEnabled(true, typeChecks: [typeCheck])
+      } else if let typeChecks = previousStatement as? [String] {
+        try builder.setPreviousConnectionEnabled(true, typeChecks: typeChecks)
+      } else {
+        try builder.setPreviousConnectionEnabled(true)
+      }
     }
-    if let nextStatement = json["nextStatement"] as? String {
-      // TODO:(vicng) Parse nextStatement
+    if let nextStatement = json["nextStatement"] {
+      if let typeCheck = nextStatement as? String {
+        try builder.setNextConnectionEnabled(true, typeChecks: [typeCheck])
+      } else if let typeChecks = nextStatement as? [String] {
+        try builder.setNextConnectionEnabled(true, typeChecks: typeChecks)
+      } else {
+        try builder.setNextConnectionEnabled(true)
+      }
     }
     if let inputsInline = json["inputsInline"] as? Bool {
       builder.inputsInline = inputsInline

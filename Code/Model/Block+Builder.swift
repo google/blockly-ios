@@ -21,6 +21,10 @@ extension Block {
   */
   @objc(BKYBlockBuilder)
   public class Builder: NSObject {
+    // MARK: - Static Properties
+    private static let CONFLICTING_CONNECTIONS_ERROR =
+      "Block cannot have both an output and a either a previous or next statement."
+
     // MARK: - Properties
 
     // These values are publicly immutable in `Block`
@@ -28,9 +32,12 @@ extension Block {
     public var name: String = ""
     public var category: Int = 0
     public var colourHue: Int = 0
-    public var outputConnection: Connection?
-    public var nextConnection: Connection?
-    public var previousConnection: Connection?
+    public private(set) var outputConnectionEnabled: Bool = false
+    public private(set) var outputConnectionTypeChecks: [String]?
+    public private(set) var nextConnectionEnabled: Bool = false
+    public private(set) var nextConnectionTypeChecks: [String]?
+    public private(set) var previousConnectionEnabled: Bool = false
+    public private(set) var previousConnectionTypeChecks: [String]?
     public var inputs: [Input] = []
     public var inputsInline: Bool = false
     public unowned var workspace: Workspace
@@ -67,9 +74,7 @@ extension Block {
     */
     public func build() -> Block {
       let block = Block(identifier: identifier, name: name, workspace: workspace, category: category,
-        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
-        outputConnection: outputConnection, nextConnection: nextConnection,
-        previousConnection: previousConnection)
+        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline)
 
       block.childBlocks = childBlocks
       block.parentBlock = parentBlock
@@ -84,8 +89,47 @@ extension Block {
       block.disabled = disabled
       block.rendered = rendered
       block.position = position
-      
+
+      if outputConnectionEnabled {
+        block.outputConnection = Connection(type: .OutputValue, sourceBlock: block)
+        block.outputConnection!.typeChecks = outputConnectionTypeChecks
+      }
+
+      if nextConnectionEnabled {
+        block.nextConnection = Connection(type: .NextStatement, sourceBlock: block)
+        block.nextConnection!.typeChecks = nextConnectionTypeChecks
+      }
+
+      if previousConnectionEnabled {
+        block.previousConnection = Connection(type: .PreviousStatement, sourceBlock: block)
+        block.previousConnection!.typeChecks = previousConnectionTypeChecks
+      }
+
       return block
+    }
+
+    public func setOutputConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+      if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
+        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+      }
+      self.outputConnectionEnabled = enabled
+      self.outputConnectionTypeChecks = typeChecks
+    }
+
+    public func setNextConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+      if enabled && outputConnectionEnabled {
+        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+      }
+      self.nextConnectionEnabled = enabled
+      self.nextConnectionTypeChecks = typeChecks
+    }
+
+    public func setPreviousConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+      if enabled && outputConnectionEnabled {
+        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+      }
+      self.previousConnectionEnabled = enabled
+      self.previousConnectionTypeChecks = typeChecks
     }
   }
 }

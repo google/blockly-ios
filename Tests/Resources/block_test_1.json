@@ -57,6 +57,7 @@
     }
   ],
   "colour": 135,
+  "output": ["Number", "String"],
   "tooltip": "Click me",
   "inputsInline": true,
   "helpUrl": "http://www.example.com/"

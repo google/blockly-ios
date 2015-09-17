@@ -46,16 +46,28 @@ class ViewController: UIViewController {
   func buildWorkspace() -> Workspace {
     let workspace = Workspace(isFlyout: false)
 
+    if let block1 = buildBlock(workspace) {
+      workspace.addBlock(block1, asTopBlock: true)
+
+      if let block2 = buildBlock(workspace) {
+        workspace.addBlock(block2, asTopBlock: false)
+        block1.nextConnection?.connectTo(block2.previousConnection)
+      }
+    }
+
+    return workspace
+  }
+
+  func buildBlock(workspace: Workspace) -> Block? {
     do {
       let path = NSBundle.mainBundle().pathForResource("TestBlock", ofType: "json")
       let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
       let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
-      let block = try Block.blockFromJSON(json, workspace: workspace)
-      workspace.blocks.append(block)
+      return try Block.blockFromJSON(json, workspace: workspace)
     } catch let error as NSError {
       print("An error occurred loading the block: \(error)")
     }
 
-    return workspace
+    return nil
   }
 }

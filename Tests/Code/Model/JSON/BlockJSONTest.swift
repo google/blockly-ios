@@ -42,6 +42,9 @@ class BlockJSONTest: XCTestCase {
     XCTAssertEqual("Click me", block.tooltip)
     XCTAssertEqual("http://www.example.com/", block.helpURL)
     XCTAssertEqual(3, block.inputs.count)
+    XCTAssertNotNil(block.outputConnection)
+    XCTAssertNotNil(block.outputConnection?.typeChecks)
+    XCTAssertEqual(["Number", "String"], (block.outputConnection?.typeChecks)!)
 
     // -- Input Value --
     let input0 = block.inputs[0]
