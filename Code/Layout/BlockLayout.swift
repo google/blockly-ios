@@ -83,6 +83,8 @@ public class BlockLayout: Layout {
   }
 
   public override func layoutChildren() {
+    // TODO:(vicng) Potentially move logic from this method into Block.Background to make things
+    // easier to follow.
     // TODO:(vicng) Add x/y padding everywhere
 
     var xOffset: CGFloat = 0
@@ -141,8 +143,6 @@ public class BlockLayout: Layout {
     // Increase the amount of space used for statements and external inputs, re-layout each
     // background row based on a new maximum width, and calculate the size needed for this entire
     // BlockLayout.
-    var size = WorkspaceSizeZero
-
     for backgroundRow in self.background.rows {
       if inputLayouts.isEmpty {
         continue
@@ -150,6 +150,8 @@ public class BlockLayout: Layout {
 
       let lastInputLayout = backgroundRow.inputLayouts.last!
       if lastInputLayout.input.type == .Statement {
+        // TODO:(vicng) This is wrong! This should be maximized to a statement only max, not the
+        // block's global max.
         // Maximize the amount of space for a statement
         lastInputLayout.maximizeStatementWidthTo(minimalWidthRequired)
       } else if !block.inputsInline {
@@ -159,9 +161,17 @@ public class BlockLayout: Layout {
 
       // Update the background row based on the new max width
       backgroundRow.updateRenderPropertiesWithMaximumRowWidth(minimalWidthRequired)
+    }
 
-      size = LayoutHelper.sizeThatFitsLayout(
-        backgroundRow.inputLayouts.last!, fromInitialSize: size)
+    var size = WorkspaceSizeZero
+    for inputLayout in inputLayouts {
+      size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
+    }
+
+    if background.maleNextStatementConnector {
+      // TODO:(vicng) Make the size.height a property of self.background
+      // Create room to draw the notch height at the bottom
+      size.height += BlockLayout.sharedConfig.notchHeight
     }
 
     // Update the size required for this block
@@ -190,6 +200,25 @@ public class BlockLayout: Layout {
     let inputLayout = inputLayouts.removeAtIndex(index)
     inputLayout.parentLayout = nil
     return inputLayout
+  }
+
+  // MARK: - Internal
+
+  /**
+  For a given input layout, returns the input layout located one cell before it within
+  `inputLayouts`.
+
+  - Parameter layout: A given input layout
+  - Returns: If the given input layout is found at `inputLayouts[i]` where `i > 0`,
+  `inputLayouts[i - 1]` is returned. Otherwise, nil is returned.
+  */
+  internal func inputLayoutBeforeLayout(layout: InputLayout) -> InputLayout? {
+    for (var i = 0; i < inputLayouts.count; i++) {
+      if inputLayouts[i] == layout {
+        return i > 0 ? inputLayouts[i - 1] : nil
+      }
+    }
+    return nil
   }
 }
 

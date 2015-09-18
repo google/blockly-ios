@@ -36,6 +36,7 @@ extension BlockLayout {
     /// Rounded corner radius of a block, specified as a Workspace coordinate system unit.
     public var blockCornerRadius: CGFloat = 8
 
+    // WARNING:(vicng) This value or puzzleTabHeight in WebBlockly is set to 20
     /// Height of a horizontal puzzle tab, specified as a Workspace coordinate system unit.
     public var puzzleTabHeight: CGFloat = 20
 

@@ -35,10 +35,10 @@ extension BlockView {
       path.addLineToPoint(3, 0, relative: true)
       path.addLineToPoint(6, -BlockLayout.sharedConfig.notchHeight, relative: true)
     } else {
-      path.addLineToPoint(6, -BlockLayout.sharedConfig.notchHeight, relative: true)
-      path.addLineToPoint(3, 0, relative: true)
-      path.addLineToPoint(6, BlockLayout.sharedConfig.notchHeight, relative: true)
-      path.addLineToPoint(BlockLayout.sharedConfig.notchWidth - 15, 0, relative: true)
+      path.addLineToPoint(-6, BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(-3, 0, relative: true)
+      path.addLineToPoint(-6, -BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(-(BlockLayout.sharedConfig.notchWidth - 15), 0, relative: true)
     }
   }
 
@@ -63,26 +63,46 @@ extension BlockView {
   }
 
   /**
-  Adds the path for drawing a horizontal puzzle tab from top-to-bottom.
+  Adds the path for drawing a horizontal puzzle tab.
   ```
   Draws:
          |
        /\|
       |
        \/|
+         |
   ```
   - Parameter path: The Bezier path to add to.
+  - Parameter drawTopToBottom: True if the path should be drawn from top-to-bottom. False if it
+  should be drawn bottom-to-top.
   */
-  public func addPuzzleTabToPath(path: WorkspaceBezierPath) {
+  public func addPuzzleTabToPath(path: WorkspaceBezierPath, drawTopToBottom: Bool) {
     let tabWidth = BlockLayout.sharedConfig.puzzleTabWidth
+    let totalPuzzleTabHeight = BlockLayout.sharedConfig.puzzleTabHeight
+    let verticalLineHeight = totalPuzzleTabHeight * 0.2
+    let roundedHalfPieceHeight = totalPuzzleTabHeight * 0.3
 
-    path.addLineToPoint(0, 5, relative: true)
-    path.addCurveToPoint(WorkspacePointMake(-tabWidth, 7.5),
-      controlPoint1: WorkspacePointMake(0, 10),
-      controlPoint2: WorkspacePointMake(-tabWidth, -8),
-      relative: true)
-    path.addSmoothCurveToPoint(WorkspacePointMake(tabWidth, 7.5),
-      controlPoint2: WorkspacePointMake(tabWidth, -2.5), relative: true)
+    if drawTopToBottom {
+      path.addLineToPoint(0, verticalLineHeight, relative: true)
+      path.addCurveToPoint(WorkspacePointMake(-tabWidth, roundedHalfPieceHeight),
+        controlPoint1: WorkspacePointMake(0, roundedHalfPieceHeight * 1.25),
+        controlPoint2: WorkspacePointMake(-tabWidth, -roundedHalfPieceHeight),
+        relative: true)
+      path.addSmoothCurveToPoint(WorkspacePointMake(tabWidth, roundedHalfPieceHeight),
+        controlPoint2: WorkspacePointMake(tabWidth, -roundedHalfPieceHeight * 0.3125),
+        relative: true)
+      path.addLineToPoint(0, verticalLineHeight, relative: true)
+    } else {
+      path.addLineToPoint(0, -verticalLineHeight, relative: true)
+      path.addCurveToPoint(WorkspacePointMake(-tabWidth, -roundedHalfPieceHeight),
+        controlPoint1: WorkspacePointMake(0, -roundedHalfPieceHeight * 1.25),
+        controlPoint2: WorkspacePointMake(-tabWidth, roundedHalfPieceHeight),
+        relative: true)
+      path.addSmoothCurveToPoint(WorkspacePointMake(tabWidth, -roundedHalfPieceHeight),
+        controlPoint2: WorkspacePointMake(tabWidth, roundedHalfPieceHeight * 0.3125),
+        relative: true)
+      path.addLineToPoint(0, -verticalLineHeight, relative: true)
+    }
   }
 
   /**

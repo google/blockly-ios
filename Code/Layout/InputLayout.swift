@@ -154,23 +154,30 @@ public class InputLayout: Layout {
         self.inlineConnectorEnd =
           blockGroupLayout.relativePosition.x + blockGroupLayout.size.width
         self.rightEdge = blockGroupLayout.relativePosition.x + blockGroupLayout.size.width
-        widthRequired = inlineConnectorEnd
+        widthRequired = self.rightEdge
       } else {
         // TODO:(vicng) Add x padding and handle stroke widths
-        self.rightEdge = blockGroupLayout.relativePosition.x
-        widthRequired = blockGroupLayout.relativePosition.x + blockGroupLayout.size.width
+        self.rightEdge =
+          blockGroupLayout.relativePosition.x + BlockLayout.sharedConfig.puzzleTabWidth
+        widthRequired = max(
+          blockGroupLayout.relativePosition.x + blockGroupLayout.size.width,
+          self.rightEdge)
       }
 
       // TODO:(vicng) Add y padding
       let heightRequired = max(
-        fieldMaximumYPoint, blockGroupLayout.relativePosition.y + blockGroupLayout.size.height)
+        fieldMaximumYPoint,
+        blockGroupLayout.relativePosition.y + blockGroupLayout.size.height,
+        BlockLayout.sharedConfig.puzzleTabHeight)
 
       self.size = WorkspaceSizeMake(widthRequired, heightRequired)
     case .Statement:
-      // If this is the first child for the block layout, we need to add an empty row at the top to
-      // begin a "C" shape.
-      let rowTopPadding = self.isFirstChild ?
-        BlockLayout.sharedConfig.ySeparatorSpace : BlockLayout.sharedConfig.inlineYPadding
+      // If this is the first child for the block layout or the previous input type was a statement,
+      // we need to add an empty row at the top to begin a new "C" shape.
+      let previousInputLayout = (parentLayout as? BlockLayout)?.inputLayoutBeforeLayout(self)
+
+      let rowTopPadding = (self.isFirstChild || previousInputLayout?.input.type == .Statement) ?
+        BlockLayout.sharedConfig.ySeparatorSpace : 0
       self.statementRowTopPadding = rowTopPadding
 
       // Update field layouts to pad with extra row
@@ -186,7 +193,7 @@ public class InputLayout: Layout {
       // If this is the last child for the block layout, we need to add an empty row at the bottom
       // to end the "C" shape.
       self.statementRowBottomPadding = self.isLastChild ?
-        BlockLayout.sharedConfig.ySeparatorSpace : BlockLayout.sharedConfig.inlineYPadding
+        BlockLayout.sharedConfig.ySeparatorSpace : 0
 
       // Reposition block group layout
       self.blockGroupLayout.relativePosition.x = statementIndent
@@ -281,7 +288,7 @@ public class InputLayout: Layout {
   }
 
   /**
-  For statement inputs, allow the input layout to use more width when rendering its 
+  For statement inputs, allow the input layout to use more width when rendering its
   statement.
   For all other inputs, this method does nothing.
 

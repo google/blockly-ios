@@ -160,8 +160,14 @@ extension BlockView {
     let path = WorkspaceBezierPath(layout: layout.workspaceLayout)
     let background = layout.background
     var previousBottomPadding: CGFloat = 0
+    let xLeftEdgeOffset: CGFloat // Note: this is the right edge in RTL layouts
+    if background.maleOutputConnector {
+      xLeftEdgeOffset = BlockLayout.sharedConfig.puzzleTabWidth
+    } else {
+      xLeftEdgeOffset = 0
+    }
 
-    path.moveToPoint(0, 0, relative: false)
+    path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
 
     for (var i = 0; i < background.rows.count; i++) {
       let row = background.rows[i]
@@ -173,7 +179,8 @@ extension BlockView {
         addNotchToPath(path, drawLeftToRight: true)
       }
 
-      path.addLineToPoint(row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+      path.addLineToPoint(
+        xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y, relative: false)
 
       // Draw top padding
       let topPadding = row.topPadding + previousBottomPadding
@@ -188,21 +195,28 @@ extension BlockView {
 
         // Inner-ceiling of "C"
         path.addLineToPoint(
-          row.statementIndent + row.statementConnectorWidth,
+          xLeftEdgeOffset + row.statementIndent + row.statementConnectorWidth,
           path.currentWorkspacePoint.y, relative: false)
 
         // TODO:(vicng) Draw notch
 
-        path.addLineToPoint(row.statementIndent, path.currentWorkspacePoint.y, relative: false)
+        path.addLineToPoint(
+          xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
 
         // Inner-left side of "C"
         path.addLineToPoint(0, row.middleHeight, relative: true)
 
         // Inner-floor of "C"
-        path.addLineToPoint(row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+        path.addLineToPoint(
+          xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y, relative: false)
       } else if row.femaleOutputConnector {
-        // TODO:(vicng) Draw female output connector and then the rest of the middle height
-        path.addLineToPoint(0, row.middleHeight, relative: true)
+        // Draw female output connector and then the rest of the middle height
+        let startingY = path.currentWorkspacePoint.y
+        addPuzzleTabToPath(path, drawTopToBottom: true)
+        let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
+        bky_assert(restOfVerticalEdge >= 0,
+          message: "Middle height for the block layout is less than the space needed")
+        path.addLineToPoint(0, restOfVerticalEdge, relative: true)
       } else {
         // Simply draw the middle height for the vertical edge
         path.addLineToPoint(0, row.middleHeight, relative: true)
@@ -220,24 +234,28 @@ extension BlockView {
 
     if background.maleNextStatementConnector {
       path.addLineToPoint(
-        BlockLayout.sharedConfig.notchWidth, path.currentWorkspacePoint.y, relative: true)
+        xLeftEdgeOffset + BlockLayout.sharedConfig.notchWidth, path.currentWorkspacePoint.y,
+        relative: false)
       addNotchToPath(path, drawLeftToRight: false)
     }
 
-    path.addLineToPoint(0, path.currentWorkspacePoint.y, relative: false)
+    path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
 
     // DRAW THE LEFT EDGES
 
     if background.maleOutputConnector {
-      // TODO:(vicng) Draw male output connector
-      addPuzzleTabToPath(path)
+      // Add male connector
+      path.addLineToPoint(
+        0, BlockLayout.sharedConfig.puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
+
+      addPuzzleTabToPath(path, drawTopToBottom: false)
     }
 
     path.closePath()
 
     return path.viewBezierPath
   }
-
+  
   private func blockHighlightBezierPath() -> UIBezierPath? {
     guard let layout = self.layout else {
       return nil

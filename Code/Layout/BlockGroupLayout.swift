@@ -61,9 +61,9 @@ public class BlockGroupLayout: Layout {
       blockLayout.relativePosition.x = 0
       blockLayout.relativePosition.y = yOffset
 
-      // TODO:(vicng) Blocks are technically overlapping. Take into account the size of the notch
-      // to figure out how much each block should actually be offset by.
-      yOffset += blockLayout.size.height
+      // Blocks are technically overlapping, so the actual amount that the next block is offset by
+      // must take into account the size of the notch height
+      yOffset += blockLayout.size.height - BlockLayout.sharedConfig.notchHeight
 
       size = LayoutHelper.sizeThatFitsLayout(blockLayout, fromInitialSize: size)
     }

@@ -46,21 +46,26 @@ class ViewController: UIViewController {
   func buildWorkspace() -> Workspace {
     let workspace = Workspace(isFlyout: false)
 
-    if let block1 = buildBlock(workspace) {
+    if let block1 = buildStatementBlock(workspace) {
       workspace.addBlock(block1, asTopBlock: true)
 
-      if let block2 = buildBlock(workspace) {
+      if let block2 = buildOutputBlock(workspace) {
         workspace.addBlock(block2, asTopBlock: false)
-        block1.nextConnection?.connectTo(block2.previousConnection)
+        block1.inputs[1].connection?.connectTo(block2.outputConnection)
+      }
+
+      if let block3 = buildStatementBlock(workspace) {
+        workspace.addBlock(block3, asTopBlock: false)
+        block1.nextConnection?.connectTo(block3.previousConnection)
       }
     }
 
     return workspace
   }
 
-  func buildBlock(workspace: Workspace) -> Block? {
+  func buildBlock(workspace: Workspace, filename: String) -> Block? {
     do {
-      let path = NSBundle.mainBundle().pathForResource("TestBlock", ofType: "json")
+      let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
       let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
       let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
       return try Block.blockFromJSON(json, workspace: workspace)
@@ -69,5 +74,13 @@ class ViewController: UIViewController {
     }
 
     return nil
+  }
+
+  func buildOutputBlock(workspace: Workspace) -> Block? {
+    return buildBlock(workspace, filename: "TestBlockOutput")
+  }
+
+  func buildStatementBlock(workspace: Workspace) -> Block? {
+    return buildBlock(workspace, filename: "TestBlockStatement")
   }
 }
