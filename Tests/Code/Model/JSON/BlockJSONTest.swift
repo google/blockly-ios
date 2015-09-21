@@ -36,7 +36,6 @@ class BlockJSONTest: XCTestCase {
     }
 
     XCTAssertEqual("block_id_1", block.identifier)
-    XCTAssertEqual("block_name_1", block.name)
     XCTAssertEqual(135, block.colourHue)
     XCTAssertEqual(true, block.inputsInline)
     XCTAssertEqual("Click me", block.tooltip)

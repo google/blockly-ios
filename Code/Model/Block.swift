@@ -38,7 +38,6 @@ public class Block : NSObject {
   /// A unique identifier used to identify this block for its lifetime
   public let uuid: String
   public let identifier: String
-  public let name: String
   public let category: Int
   public let colourHue: Int
   public let inputsInline: Bool
@@ -78,11 +77,10 @@ public class Block : NSObject {
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(identifier: String, name: String, workspace: Workspace, category: Int,
+  internal init(identifier: String, workspace: Workspace, category: Int,
     colourHue: Int, inputs: [Input] = [], inputsInline: Bool) {
       self.uuid = NSUUID().UUIDString
       self.identifier = identifier
-      self.name = name
       self.category = category
       self.colourHue = min(max(colourHue, 0), 360)
       self.workspace = workspace

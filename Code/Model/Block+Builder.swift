@@ -29,7 +29,6 @@ extension Block {
 
     // These values are publicly immutable in `Block`
     public var identifier: String = ""
-    public var name: String = ""
     public var category: Int = 0
     public var colourHue: Int = 0
     public private(set) var outputConnectionEnabled: Bool = false
@@ -59,9 +58,8 @@ extension Block {
 
     // MARK: - Initializers
 
-    public init(identifier: String, name: String, workspace: Workspace) {
+    public init(identifier: String, workspace: Workspace) {
       self.identifier = identifier
-      self.name = name
       self.workspace = workspace
     }
 
@@ -73,7 +71,7 @@ extension Block {
     - Returns: A new block
     */
     public func build() -> Block {
-      let block = Block(identifier: identifier, name: name, workspace: workspace, category: category,
+      let block = Block(identifier: identifier, workspace: workspace, category: category,
         colourHue: colourHue, inputs: inputs, inputsInline: inputsInline)
 
       block.childBlocks = childBlocks

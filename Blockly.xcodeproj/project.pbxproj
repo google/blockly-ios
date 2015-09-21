@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; settings = {ASSET_TAGS = (); }; };
+		F98FF7E31BB2087700A4F8E5 /* block_factory_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */; settings = {ASSET_TAGS = (); }; };
+		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; settings = {ASSET_TAGS = (); }; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; settings = {ASSET_TAGS = (); }; };
 		FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2725D61B7ED2C300777B49 /* ViewManager.swift */; };
 		FA2726731B82B5B100777B49 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726721B82B5B100777B49 /* Assertions.swift */; };
@@ -75,6 +78,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
+		F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_test_1.json; sourceTree = "<group>"; };
+		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
 		FA2725D61B7ED2C300777B49 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FA2726721B82B5B100777B49 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assertions.swift; path = Core/Common/Assertions.swift; sourceTree = "<group>"; };
@@ -175,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2DFC061B7174350072A278 /* block_test_1.json */,
+				F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -214,6 +221,7 @@
 				FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */,
 				FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */,
 				FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */,
+				F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -302,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2DFC0C1B7177760072A278 /* JSON */,
+				F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */,
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* Block+Builder.swift */,
 				FA548C871B66E861008BC59C /* Connection.swift */,
@@ -446,6 +455,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F98FF7E31BB2087700A4F8E5 /* block_factory_test_1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +515,7 @@
 				FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */,
 				FAC590481B990E6C0079A6E3 /* String+LayoutHelper.swift in Sources */,
 				FA4BB56E1B7C03EA000980E9 /* BezierPathView.swift in Sources */,
+				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
 				FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */,
@@ -522,6 +533,7 @@
 				FA4BB4B01B754A71000980E9 /* FieldDateTest.swift in Sources */,
 				FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

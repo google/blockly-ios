@@ -37,8 +37,7 @@ extension Block {
 
     // Build the block
     let identifier = (json["id"] as? String) ?? ""
-    let blockName = (json["name"] as? String) ?? ""
-    let builder = Block.Builder(identifier: identifier, name: blockName, workspace: workspace)
+    let builder = Block.Builder(identifier: identifier, workspace: workspace)
 
     if let colourHue = json["colour"] as? Int {
       builder.colourHue = min(max(colourHue, 0), 360)
