@@ -43,4 +43,10 @@ public class FieldDropdown: Field {
       .map { (displayName: $0.0, value: $0.1) }) // Re-map each tuple as (displayName:, value:)
     self.init(name: name, options: options)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldDropdown(name: name, options: options)
+  }
 }

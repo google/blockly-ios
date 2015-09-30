@@ -89,7 +89,11 @@ public class Input : NSObject {
 
   public let type: BKYInputType
   public let name: String
-  public unowned let sourceBlock: Block
+  public weak var sourceBlock: Block! {
+    didSet {
+      self.connection?.sourceBlock = sourceBlock
+    }
+  }
   public private(set) var connection: Connection?
   /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
@@ -103,19 +107,19 @@ public class Input : NSObject {
 
   // MARK: - Initializers
 
-  public init(type: InputType, name: String, sourceBlock: Block) {
+  public init(type: InputType, name: String) {
     self.name = name
     self.type = type
-    self.sourceBlock = sourceBlock
 
     if (type == .Value) {
-      self.connection = Connection(type: .InputValue, sourceBlock: sourceBlock)
+      self.connection = Connection(type: .InputValue)
     } else if (type == .Statement) {
-      self.connection = Connection(type: .NextStatement, sourceBlock: sourceBlock)
+      self.connection = Connection(type: .NextStatement)
     }
   }
 
   // MARK: - Public
+
 
   /**
   Appends a field to `self.fields[]`.

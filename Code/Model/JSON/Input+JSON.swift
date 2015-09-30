@@ -26,13 +26,13 @@ extension Input {
   - Returns: An `Input` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
-  internal static func inputFromJSON(json: [String: AnyObject], sourceBlock: Block) -> Input? {
+  internal static func inputFromJSON(json: [String: AnyObject]) -> Input? {
     guard let type = Input.InputType(string: ((json["type"] as? String) ?? "")) else {
       return nil
     }
 
     let name = (json["name"] as? String) ?? "NAME"
-    let input = Input(type: type, name: name, sourceBlock: sourceBlock)
+    let input = Input(type: type, name: name)
 
     // Set alignment
     if let alignmentString = json["align"] as? String,

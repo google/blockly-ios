@@ -37,7 +37,7 @@ class InputJSONTest: XCTestCase {
       "align": "CENTRE",
       "check": ["String", "Boolean"]
     ]
-    guard let input: Input = Input.inputFromJSON(json, sourceBlock: block) else {
+    guard let input: Input = Input.inputFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -61,7 +61,7 @@ class InputJSONTest: XCTestCase {
       "align": "LEFT",
       "check": "CustomCheckType"
     ]
-    guard let input: Input = Input.inputFromJSON(json, sourceBlock: block) else {
+    guard let input: Input = Input.inputFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -83,7 +83,7 @@ class InputJSONTest: XCTestCase {
       "name": "input dummy",
       "check": "Broken!" // This shouldn't be used
     ]
-    guard let input: Input = Input.inputFromJSON(json, sourceBlock: block) else {
+    guard let input: Input = Input.inputFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }

@@ -31,4 +31,10 @@ public class FieldLabel: Field {
 
     super.init(name: name)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldLabel(name: name, text: text)
+  }
 }

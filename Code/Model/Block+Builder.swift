@@ -63,6 +63,41 @@ extension Block {
       self.workspace = workspace
     }
 
+    /**
+    Initialize a builder from an existing block. All values that are not specific to
+    a single instance of a block will be copied in to the builder.
+    */
+    public init(block: Block, workspace: Workspace) {
+      self.workspace = workspace
+
+      identifier = block.identifier
+      category = block.category
+      colourHue = block.colourHue
+      inputsInline = block.inputsInline
+
+      tooltip = block.tooltip
+      comment = block.comment
+      helpURL = block.helpURL
+      hasContextMenu = block.hasContextMenu
+      collapsed = block.collapsed
+      position = block.position
+
+      outputConnectionEnabled = block.outputConnection != nil ? true : false
+      outputConnectionTypeChecks = block.outputConnection?.typeChecks
+      nextConnectionEnabled = block.nextConnection != nil ? true : false
+      nextConnectionTypeChecks = block.nextConnection?.typeChecks
+      previousConnectionEnabled = block.previousConnection != nil ? true : false
+      previousConnectionTypeChecks = block.previousConnection?.typeChecks
+
+      for input in block.inputs {
+        let newInput = Input(type: input.type, name: input.name);
+        for field in input.fields {
+          newInput.appendField(field.copy() as! Field)
+        }
+        inputs.append(newInput)
+      }
+    }
+
     // MARK: - Public
 
     /**
@@ -89,17 +124,17 @@ extension Block {
       block.position = position
 
       if outputConnectionEnabled {
-        block.outputConnection = Connection(type: .OutputValue, sourceBlock: block)
+        block.outputConnection = Connection(type: .OutputValue)
         block.outputConnection!.typeChecks = outputConnectionTypeChecks
       }
 
       if nextConnectionEnabled {
-        block.nextConnection = Connection(type: .NextStatement, sourceBlock: block)
+        block.nextConnection = Connection(type: .NextStatement)
         block.nextConnection!.typeChecks = nextConnectionTypeChecks
       }
 
       if previousConnectionEnabled {
-        block.previousConnection = Connection(type: .PreviousStatement, sourceBlock: block)
+        block.previousConnection = Connection(type: .PreviousStatement)
         block.previousConnection!.typeChecks = previousConnectionTypeChecks
       }
 

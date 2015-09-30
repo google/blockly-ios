@@ -31,4 +31,10 @@ public class FieldVariable: Field {
 
     super.init(name: name)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldVariable(name: name, variable: variable)
+  }
 }

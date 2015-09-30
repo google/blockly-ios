@@ -22,18 +22,33 @@ class BlockFactoryJSONTest: XCTestCase {
       let workspace = Workspace(isFlyout: false)
       do {
         let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
-        let blocks = factory.blocks;
-        XCTAssertEqual(blocks.count, 2)
+        if let _ = factory.obtain("block_id_1") {
+          // expected
+        } else {
+          XCTFail("Factory is missing block_id_1")
+        }
+        if let _ = factory.obtain("block_id_2") {
+          // expected
+        } else {
+          XCTFail("Factory is missing block_id_2");
+        }
       } catch let error as NSError {
         XCTFail("Error: \(error.localizedDescription)")
       }
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+  func testMultipleBlocks() {
+    let workspace = Workspace(isFlyout: false)
+    do {
+      let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
+      if let block1 = factory.obtain("block_id_1") {
+        let block2 = factory.obtain("block_id_1");
+        XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice");
+      } else {
+        XCTFail("Factory is missing block_id_1")
+      }
+    } catch let error as NSError {
+      XCTFail("Error: \(error.localizedDescription)")
     }
-
+  }
 }

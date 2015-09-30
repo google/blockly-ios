@@ -35,4 +35,10 @@ public class FieldImage: Field {
 
     super.init(name: name)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldImage(name: name, imageURL: imageURL, size: size, altText: altText)
+  }
 }

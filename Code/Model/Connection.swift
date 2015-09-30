@@ -32,7 +32,7 @@ public class Connection : NSObject {
   // MARK: - Properties
 
   public let type: BKYConnectionType
-  public unowned let sourceBlock: Block
+  public weak var sourceBlock: Block!
   public var position: CGPoint = CGPointZero
   public weak var targetConnection: Connection?
   public var targetBlock: Block? {
@@ -61,9 +61,8 @@ public class Connection : NSObject {
 
   // MARK: - Initializers
 
-  public init(type: BKYConnectionType, sourceBlock: Block) {
+  public init(type: BKYConnectionType) {
     self.type = type
-    self.sourceBlock = sourceBlock
   }
 
   public func connectTo(otherConnection: Connection?) -> Bool {

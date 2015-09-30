@@ -31,4 +31,10 @@ public class FieldInput: Field {
 
     super.init(name: name)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldInput(name: name, text: text)
+  }
 }

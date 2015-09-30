@@ -79,9 +79,6 @@ extension Block {
       builder.helpURL = helpURL
     }
 
-    // Create the block
-    let block = builder.build()
-
     // Interpolate any messages for the block
     for (var i = 0; ; i++) {
       guard let message = json["message\(i)"] as? String else {
@@ -95,11 +92,11 @@ extension Block {
 
       // TODO:(vicng) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
-      block.inputs += try block.interpolateMessage(
+      builder.inputs += try interpolateMessage(
         message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
     }
 
-    return block
+    return builder.build()
   }
 
   // MARK: - Internal
@@ -119,7 +116,7 @@ extension Block {
   `Input` or `Field`.
   - Returns: An `Input` array
   */
-  internal func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
+  internal class func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
     lastDummyAlignment: Input.Alignment) throws -> [Input]
   {
     let tokens = Block.tokenizeMessage(message)
@@ -152,7 +149,7 @@ extension Block {
             // Add field to field list
             tempFieldList.append(field)
             break
-          } else if let input = Input.inputFromJSON(element, sourceBlock: self) {
+          } else if let input = Input.inputFromJSON(element) {
             // Add current field list to input, and add input to input list
             input.fields += tempFieldList
             tempFieldList = []
@@ -191,7 +188,7 @@ extension Block {
 
     // If there were leftover fields we need to add a dummy input to hold them.
     if (!tempFieldList.isEmpty) {
-      let input = Input(type: .Dummy, name: "", sourceBlock: self)
+      let input = Input(type: .Dummy, name: "")
       input.fields += tempFieldList
       tempFieldList = []
       allInputs.append(input)

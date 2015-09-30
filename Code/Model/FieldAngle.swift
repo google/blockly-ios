@@ -34,6 +34,12 @@ public class FieldAngle: Field {
     super.init(name: name)
   }
 
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldAngle(name: name, angle: angle)
+  }
+
   // MARK: - Internal - For testing only
 
   internal class func normalizeAngle(var angle: Int) -> Int {

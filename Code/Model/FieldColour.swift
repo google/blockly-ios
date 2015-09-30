@@ -31,4 +31,10 @@ public class FieldColour: Field {
     
     super.init(name: name)
   }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldColour(name: name, colour: colour)
+  }
 }

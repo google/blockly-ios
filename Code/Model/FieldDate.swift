@@ -30,7 +30,6 @@ public class FieldDate: Field {
 
   public init(name: String, date: NSDate) {
     self.date = FieldDate.normalizeDate(date)
-
     super.init(name: name)
   }
 
@@ -45,6 +44,12 @@ public class FieldDate: Field {
     self.init(
       name: name,
       date: FieldDate.dateFromString(stringDate) ?? NSDate())
+  }
+
+  // MARK: - Super
+
+  public override func copy() -> AnyObject {
+    return FieldDate(name: name, date: date)
   }
 
   // MARK: - Public

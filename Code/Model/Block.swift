@@ -45,12 +45,24 @@ public class Block : NSObject {
   public var isInFlyout: Bool {
     return workspace.isFlyout
   }
-  public internal(set) var outputConnection: Connection?
-  public internal(set) var nextConnection: Connection?
+  public internal(set) var outputConnection: Connection? {
+    didSet {
+      outputConnection?.sourceBlock = self
+    }
+  }
+  public internal(set) var nextConnection: Connection? {
+    didSet {
+      nextConnection?.sourceBlock = self
+    }
+  }
   public var nextBlock: Block? {
     return nextConnection?.targetConnection?.sourceBlock
   }
-  public internal(set) var previousConnection: Connection?
+  public internal(set) var previousConnection: Connection? {
+    didSet {
+      previousConnection?.sourceBlock = self
+    }
+  }
   public var previousBlock: Block? {
     return previousConnection?.targetConnection?.sourceBlock
   }
@@ -86,6 +98,11 @@ public class Block : NSObject {
       self.workspace = workspace
       self.inputs = inputs
       self.inputsInline = inputsInline
+
+      super.init()
+      for input in inputs {
+        input.sourceBlock = self
+      }
   }
 
   // MARK: - Public
