@@ -89,7 +89,8 @@ public class BlockLayout: Layout {
 
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
-    var minimalWidthRequired: CGFloat = 0
+    var minimalFieldWidthRequired: CGFloat = 0
+    var minimalStatementWidthRequired: CGFloat = 0
     var currentLineHeight: CGFloat = 0
     var previousInputLayout: InputLayout?
     var backgroundRow: BackgroundRow!
@@ -126,12 +127,12 @@ public class BlockLayout: Layout {
       inputLayout.relativePosition.y = yOffset
 
       // Update the maximum field width used
-      if !block.inputsInline {
-        minimalWidthRequired =
-          max(minimalWidthRequired, inputLayout.minimalFieldWidthRequired)
-      } else if inputLayout.input.type == .Statement {
-        minimalWidthRequired =
-          max(minimalWidthRequired, inputLayout.minimalStatementWidthRequired)
+      if inputLayout.input.type == .Statement {
+        minimalStatementWidthRequired =
+          max(minimalStatementWidthRequired, inputLayout.minimalStatementWidthRequired)
+      } else if !block.inputsInline {
+        minimalFieldWidthRequired =
+          max(minimalFieldWidthRequired, inputLayout.minimalFieldWidthRequired)
       }
 
       // Update position coordinates for this row
@@ -143,6 +144,7 @@ public class BlockLayout: Layout {
     // Increase the amount of space used for statements and external inputs, re-layout each
     // background row based on a new maximum width, and calculate the size needed for this entire
     // BlockLayout.
+    let minimalWidthRequired = max(minimalFieldWidthRequired, minimalStatementWidthRequired)
     for backgroundRow in self.background.rows {
       if inputLayouts.isEmpty {
         continue
@@ -150,10 +152,15 @@ public class BlockLayout: Layout {
 
       let lastInputLayout = backgroundRow.inputLayouts.last!
       if lastInputLayout.input.type == .Statement {
-        // TODO:(vicng) This is wrong! This should be maximized to a statement only max, not the
-        // block's global max.
-        // Maximize the amount of space for a statement
-        lastInputLayout.maximizeStatementWidthTo(minimalWidthRequired)
+        // Maximize the statement width
+        lastInputLayout.maximizeStatementWidthTo(minimalStatementWidthRequired)
+
+        if !block.inputsInline {
+          // Extend the right edge of the statement (ie. the top and bottom parts of the "C" shape)
+          // so that it equals largest width used for this block.
+          lastInputLayout.extendStatementRightEdgeBy(
+            max(minimalWidthRequired - lastInputLayout.rightEdge, 0))
+        }
       } else if !block.inputsInline {
         // Maximize the amount of space for fields
         lastInputLayout.maximizeFieldWidthTo(minimalWidthRequired)

@@ -206,9 +206,15 @@ extension BlockView {
         // Inner-left side of "C"
         path.addLineToPoint(0, row.middleHeight, relative: true)
 
-        // Inner-floor of "C"
-        path.addLineToPoint(
-          xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+        if i == (background.rows.count - 1) {
+          // If there is no other row after this, draw the inner-floor of the "C".
+          path.addLineToPoint(
+            xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y,
+            relative: false)
+        } else {
+          // If there is another row after this, the inner-floor of the "C" is drawn by the
+          // right edge of the next row.
+        }
       } else if row.femaleOutputConnector {
         // Draw female output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y

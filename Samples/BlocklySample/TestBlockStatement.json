@@ -1,6 +1,6 @@
 {
   "id": "math_foo",
-  "message0": "%1 LEFT ALIGN %2 CENTER ALIGN %3 STATEMENT RIGHT ALIGN %4 LEFT ALIGN Blockly Blockly Blockly %5",
+  "message0": "%1 LEFT ALIGN %2 CENTER ALIGN %3 LEFT ALIGN Blockly Blockly Blockly %4 STATEMENT RIGHT ALIGN %5",
   "args0": [
             {
             "type": "input_statement",
@@ -16,16 +16,16 @@
             "align": "CENTRE"
             },
             {
+            "type": "input_value",
+            "name": "NAME"
+            },
+            {
             "type": "input_statement",
             "name": "NAME",
             "align": "RIGHT"
-            },
-            {
-            "type": "input_value",
-            "name": "NAME"
             }
             ],
-  "inputsInline": false,
+  "inputsInline": true,
   "tooltip": "",
   "previousStatement": null,
   "nextStatement": null,

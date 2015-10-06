@@ -73,8 +73,10 @@ public class InputLayout: Layout {
   /// coordinate system unit.
   public var minimalFieldWidthRequired: CGFloat {
     // TODO:(vicng) Add inline padding to the "0" value
+    let puzzleTabWidth = (!isInline && input.type == .Value) ?
+      BlockLayout.sharedConfig.puzzleTabWidth : 0
     return fieldLayouts.count > 0 ?
-      (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.size.width) : 0
+      (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.size.width + puzzleTabWidth) : 0
   }
 
   public var minimalStatementWidthRequired: CGFloat {
@@ -282,7 +284,6 @@ public class InputLayout: Layout {
       self.statementIndent += widthDifference
       self.blockGroupLayout.relativePosition.x += widthDifference
     } else if self.input.type == .Value && !self.isInline {
-      self.inlineConnectorStart += widthDifference
       self.blockGroupLayout.relativePosition.x += widthDifference
     }
   }
@@ -301,9 +302,25 @@ public class InputLayout: Layout {
   */
   internal func maximizeStatementWidthTo(width: CGFloat) {
     if self.input.type == .Statement {
-      // Maximize the field
+      // Maximize the statement width by maximizing the field width
       maximizeFieldWidthTo(
         width - self.statementConnectorWidth - BlockLayout.sharedConfig.xSeparatorSpace)
+    }
+  }
+
+  /**
+  For statement inputs, extends the right edge of the input layout by a given width. As a
+  consequence, the total size of input layout is increased to reflect this.
+
+  For all other inputs, this method does nothing.
+
+  - Parameter width: The width value to extend the right edge, specified in the Workspace coordinate
+  system. If this value is less than or equal to 0, this method does nothing.
+  */
+  internal func extendStatementRightEdgeBy(width: CGFloat) {
+    if self.input.type == .Statement && width > 0 {
+      self.size.width += width
+      self.rightEdge += width
     }
   }
 
