@@ -63,17 +63,20 @@ public class FieldLayout: Layout {
     let layoutSize: CGSize = measurer.measureLayout(self, scale: self.workspaceLayout.scale)
 
     // Convert the layout size back into the Workspace coordinate system
-    self.size = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
+    self.contentSize = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
   }
 
   internal override func refreshViewFrame() {
     // View frames for fields are calculated relative to its parent's parent
     // (InputLayout -> BlockLayout)
-    var point = relativePosition
-    if let parentRelativePosition = parentLayout?.relativePosition {
-      point.x += parentRelativePosition.x
-      point.y += parentRelativePosition.y
+    var point = WorkspacePointMake(
+      relativePosition.x + edgeInsets.left,
+      relativePosition.y + edgeInsets.top)
+    if let parentRelativePosition = parentLayout?.relativePosition,
+      parentEdgeInsets = parentLayout?.edgeInsets {
+      point.x += parentRelativePosition.x + parentEdgeInsets.left
+      point.y += parentRelativePosition.y + parentEdgeInsets.top
     }
-    self.viewFrame = self.workspaceLayout.viewFrameFromWorkspacePoint(point, size: self.size)
+    self.viewFrame = self.workspaceLayout.viewFrameFromWorkspacePoint(point, size: self.contentSize)
   }
 }

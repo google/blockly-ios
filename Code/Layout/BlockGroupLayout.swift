@@ -63,13 +63,13 @@ public class BlockGroupLayout: Layout {
 
       // Blocks are technically overlapping, so the actual amount that the next block is offset by
       // must take into account the size of the notch height
-      yOffset += blockLayout.size.height - BlockLayout.sharedConfig.notchHeight
+      yOffset += blockLayout.totalSize.height - BlockLayout.sharedConfig.notchHeight
 
       size = LayoutHelper.sizeThatFitsLayout(blockLayout, fromInitialSize: size)
     }
 
     // Update the size required for this block
-    self.size = size
+    self.contentSize = size
   }
 
   // MARK: - Public

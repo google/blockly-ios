@@ -69,7 +69,7 @@ public class WorkspaceLayout: Layout {
     }
 
     // Update size required for the workspace
-    self.size = size
+    self.contentSize = size
   }
 
   // MARK: - Public

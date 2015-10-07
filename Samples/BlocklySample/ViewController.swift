@@ -56,7 +56,7 @@ class ViewController: UIViewController {
 
       if let block3 = buildStatementBlock(workspace) {
         workspace.addBlock(block3, asTopBlock: false)
-        block1.nextConnection?.connectTo(block3.previousConnection)
+        block1.inputs[2].connection?.connectTo(block3.previousConnection)
       }
     }
 

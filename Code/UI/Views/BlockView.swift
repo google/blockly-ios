@@ -195,10 +195,11 @@ extension BlockView {
 
         // Inner-ceiling of "C"
         path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent + row.statementConnectorWidth,
+          xLeftEdgeOffset + row.statementIndent + BlockLayout.sharedConfig.notchWidth,
           path.currentWorkspacePoint.y, relative: false)
 
-        // TODO:(vicng) Draw notch
+        // Draw notch
+        addNotchToPath(path, drawLeftToRight: false)
 
         path.addLineToPoint(
           xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)

@@ -131,12 +131,13 @@ extension BlockLayout {
     // MARK: - Public
 
     /**
-    Updates all render properties using the current state of `inputLayouts` and a given maximum
+    Updates all render properties using the current state of `inputLayouts` and a given minimal row
     width.
 
-    - Parameter maximumRowWidth: The maximum width that this row can grow to.
+    - Parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
+    used for inline rows.
     */
-    public func updateRenderPropertiesWithMaximumRowWidth(maximumRowWidth: CGFloat) {
+    public func updateRenderPropertiesWithMinimalRowWidth(minimalRowWidth: CGFloat) {
       if inputLayouts.isEmpty {
         return
       }
@@ -156,10 +157,15 @@ extension BlockLayout {
       } else if !lastInputLayout.input.sourceBlock.inputsInline {
         self.rightEdge = lastInputLayout.rightEdge
         self.femaleOutputConnector = (lastInputLayout.input.connection != nil)
-        self.middleHeight = lastInputLayout.size.height
+        self.middleHeight = lastInputLayout.totalSize.height
       } else {
-        self.rightEdge = max(maximumRowWidth, lastInputLayout.rightEdge)
-        self.middleHeight = inputLayouts.map { $0.size.height }.maxElement()!
+        // The right edge for inline dummy/value inputs is the total width of all combined
+        var rightEdge: CGFloat = 0
+        for inputLayout in inputLayouts {
+          rightEdge += inputLayout.totalSize.width
+        }
+        self.rightEdge = max(minimalRowWidth, rightEdge, lastInputLayout.rightEdge)
+        self.middleHeight = inputLayouts.map { $0.totalSize.height }.maxElement()!
       }
     }
 

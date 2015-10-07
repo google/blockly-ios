@@ -52,8 +52,8 @@ public class WorkspaceView: UIScrollView {
   public func refresh() {
     // TODO:(vicng) Figure out a good amount to pad the workspace by
     self.contentSize = CGSizeMake(
-      layout.size.width + UIScreen.mainScreen().bounds.size.width,
-      layout.size.height + UIScreen.mainScreen().bounds.size.height)
+      layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
+      layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
 
     // Get blocks that are in the current viewport
     for descendantLayout in layout.allBlockLayoutDescendants() {

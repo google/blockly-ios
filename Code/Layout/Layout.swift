@@ -53,10 +53,23 @@ public class Layout: NSObject {
 
   /// Position relative to `self.parentLayout`
   internal var relativePosition: WorkspacePoint = WorkspacePointZero
-  /// Size required by this layout
-  internal var size: WorkspaceSize = WorkspaceSizeZero
-  /// Absolute position relative to the root node. */
-  internal var absolutePosition: WorkspacePoint = WorkspacePointZero
+  /// Content size of this layout
+  internal var contentSize: WorkspaceSize = WorkspaceSizeZero {
+    didSet {
+      updateTotalSize()
+    }
+  }
+  /// Inline edge insets for the layout.
+  internal var edgeInsets: WorkspaceEdgeInsets = WorkspaceEdgeInsetsZero {
+    didSet {
+      updateTotalSize()
+    }
+  }
+  /// Absolute position relative to the root node.
+  internal private(set) var absolutePosition: WorkspacePoint = WorkspacePointZero
+  /// Total size used by this layout. This value is calculated by combining `edgeInsets` and
+  /// `contentSize`.
+  internal private(set) var totalSize: WorkspaceSize = WorkspaceSizeZero
 
   /**
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
@@ -132,10 +145,10 @@ public class Layout: NSObject {
     // Update absolute position
     if parentLayout != nil {
       self.absolutePosition = WorkspacePointMake(
-        parentLayout!.absolutePosition.x + relativePosition.x,
-        parentLayout!.absolutePosition.y + relativePosition.y)
+        parentLayout!.absolutePosition.x + relativePosition.x + edgeInsets.left,
+        parentLayout!.absolutePosition.y + relativePosition.y + edgeInsets.top)
     } else {
-      self.absolutePosition = WorkspacePointZero
+      self.absolutePosition = WorkspacePointMake(edgeInsets.left, edgeInsets.top)
     }
 
     // Update the view frame
@@ -154,6 +167,16 @@ public class Layout: NSObject {
   internal func refreshViewFrame() {
     // Update the view frame
     self.viewFrame =
-      workspaceLayout.viewFrameFromWorkspacePoint(self.absolutePosition, size: self.size)
+      workspaceLayout.viewFrameFromWorkspacePoint(self.absolutePosition, size: self.contentSize)
+  }
+
+  // MARK: - Private
+
+  /**
+  Updates the `totalSize` value based on the current state of `contentSize` and `edgeInsets`.
+  */
+  private func updateTotalSize() {
+    totalSize.width = contentSize.width + edgeInsets.left + edgeInsets.right
+    totalSize.height = contentSize.height + edgeInsets.top + edgeInsets.bottom
   }
 }

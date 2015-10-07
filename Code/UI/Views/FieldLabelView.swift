@@ -55,6 +55,10 @@ public class FieldLabelView: UILabel {
     self.frame = layout.viewFrame
     self.text = layout.fieldLabel.text
 
+    // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
+    // state.
+    self.backgroundColor = UIColor.redColor()
+
     // TODO:(vicng) Standardize this font
     self.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
   }

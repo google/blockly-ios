@@ -85,7 +85,6 @@ public class BlockLayout: Layout {
   public override func layoutChildren() {
     // TODO:(vicng) Potentially move logic from this method into Block.Background to make things
     // easier to follow.
-    // TODO:(vicng) Add x/y padding everywhere
 
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
@@ -136,8 +135,8 @@ public class BlockLayout: Layout {
       }
 
       // Update position coordinates for this row
-      xOffset += inputLayout.size.width
-      currentLineHeight = max(currentLineHeight, inputLayout.size.height)
+      xOffset += inputLayout.totalSize.width
+      currentLineHeight = max(currentLineHeight, inputLayout.totalSize.height)
       previousInputLayout = inputLayout
     }
 
@@ -167,7 +166,7 @@ public class BlockLayout: Layout {
       }
 
       // Update the background row based on the new max width
-      backgroundRow.updateRenderPropertiesWithMaximumRowWidth(minimalWidthRequired)
+      backgroundRow.updateRenderPropertiesWithMinimalRowWidth(minimalWidthRequired)
     }
 
     var size = WorkspaceSizeZero
@@ -182,7 +181,7 @@ public class BlockLayout: Layout {
     }
 
     // Update the size required for this block
-    self.size = size
+    self.contentSize = size
   }
 
   // MARK: - Public
@@ -223,6 +222,23 @@ public class BlockLayout: Layout {
     for (var i = 0; i < inputLayouts.count; i++) {
       if inputLayouts[i] == layout {
         return i > 0 ? inputLayouts[i - 1] : nil
+      }
+    }
+    return nil
+  }
+
+  /**
+  For a given input layout, returns the input layout located one cell after it within
+  `inputLayouts`.
+
+  - Parameter layout: A given input layout
+  - Returns: If the given input layout is found at `inputLayouts[i]` where
+  `i < inputLayouts.count - 1`, `inputLayouts[i + 1]` is returned. Otherwise, nil is returned.
+  */
+  internal func inputLayoutAfterLayout(layout: InputLayout) -> InputLayout? {
+    for (var i = 0; i < inputLayouts.count - 1; i++) {
+      if inputLayouts[i] == layout {
+        return inputLayouts[i + 1]
       }
     }
     return nil

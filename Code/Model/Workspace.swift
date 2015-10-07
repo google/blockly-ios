@@ -34,6 +34,17 @@ public func WorkspaceSizeMake(width: CGFloat, _ height: CGFloat) -> WorkspaceSiz
 }
 
 /**
+Edge insets in the Workspace coordinate system (which is separate from the UIView coordinate
+system).
+*/
+public typealias WorkspaceEdgeInsets = UIEdgeInsets
+public var WorkspaceEdgeInsetsZero: WorkspaceEdgeInsets { return UIEdgeInsetsZero }
+public func WorkspaceEdgeInsetsMake(
+  top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> WorkspaceEdgeInsets {
+  return UIEdgeInsetsMake(top, left, bottom, right)
+}
+
+/**
 Protocol for events that occur on a `Workspace`.
 */
 @objc(BKYWorkspaceDelegate)

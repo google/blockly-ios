@@ -72,11 +72,11 @@ public class InputLayout: Layout {
   /// The minimal amount of width required to render `fieldLayouts`, specified as a Workspace
   /// coordinate system unit.
   public var minimalFieldWidthRequired: CGFloat {
-    // TODO:(vicng) Add inline padding to the "0" value
+    let fieldWidth = fieldLayouts.count > 0 ?
+      (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
     let puzzleTabWidth = (!isInline && input.type == .Value) ?
-      BlockLayout.sharedConfig.puzzleTabWidth : 0
-    return fieldLayouts.count > 0 ?
-      (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.size.width + puzzleTabWidth) : 0
+      (BlockLayout.sharedConfig.puzzleTabWidth) : 0
+    return fieldWidth + puzzleTabWidth
   }
 
   public var minimalStatementWidthRequired: CGFloat {
@@ -123,17 +123,40 @@ public class InputLayout: Layout {
     var fieldMaximumYPoint: CGFloat = 0
 
     // Update relative position/size of fields
-    for fieldLayout in fieldLayouts {
+    for (var i = 0; i < fieldLayouts.count; i++) {
+      let fieldLayout = fieldLayouts[i]
       fieldLayout.layoutChildren()
 
-      // TODO:(vicng) Add inline x/y padding
+      // Position the field
       fieldLayout.relativePosition.x = fieldXOffset
       fieldLayout.relativePosition.y = 0
 
-      // TODO:(vicng) Add x/y padding
-      fieldXOffset += fieldLayout.size.width
-      fieldMaximumHeight = max(fieldLayout.size.height, fieldMaximumHeight)
-      fieldMaximumYPoint = max(fieldLayout.relativePosition.y + fieldLayout.size.height,
+      // Add inline x/y padding for each field
+      fieldLayout.edgeInsets.left = BlockLayout.sharedConfig.xSeparatorSpace
+      fieldLayout.edgeInsets.top = BlockLayout.sharedConfig.inlineYPadding
+      fieldLayout.edgeInsets.bottom = BlockLayout.sharedConfig.inlineYPadding
+
+      if i == fieldLayouts.count - 1 {
+        // Add right padding to the last field
+        var addRightEdgeInset = true
+
+        // Special case: Don't add right padding to the last field of an inline dummy input if it's
+        // immediately followed by another dummy/value input.
+        if self.input.type == .Dummy {
+          let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayoutAfterLayout(self)
+          if nextInputLayout?.input.type == .Value || nextInputLayout?.input.type == .Dummy {
+            addRightEdgeInset = false
+          }
+        }
+
+        if addRightEdgeInset {
+          fieldLayout.edgeInsets.right = BlockLayout.sharedConfig.xSeparatorSpace
+        }
+      }
+
+      fieldXOffset += fieldLayout.totalSize.width
+      fieldMaximumHeight = max(fieldLayout.totalSize.height, fieldMaximumHeight)
+      fieldMaximumYPoint = max(fieldLayout.relativePosition.y + fieldLayout.totalSize.height,
         fieldMaximumYPoint)
     }
 
@@ -145,34 +168,38 @@ public class InputLayout: Layout {
     // InputLayout.
     switch (self.input.type) {
     case .Value:
-      // TODO:(vicng) Add extra x/y padding and handle stroke widths of block
+      // TODO:(vicng) Handle stroke widths for the inline connector cut-out
+
+      // Position the block group
       blockGroupLayout.relativePosition.x = fieldXOffset
       blockGroupLayout.relativePosition.y = 0
 
       let widthRequired: CGFloat
       if self.isInline {
-        // TODO:(vicng) Add x padding and handle stroke widths
+        blockGroupLayout.edgeInsets.right = BlockLayout.sharedConfig.xSeparatorSpace
+        blockGroupLayout.edgeInsets.top = BlockLayout.sharedConfig.inlineYPadding
+        blockGroupLayout.edgeInsets.bottom = BlockLayout.sharedConfig.inlineYPadding
+
         self.inlineConnectorStart = blockGroupLayout.relativePosition.x
         self.inlineConnectorEnd =
-          blockGroupLayout.relativePosition.x + blockGroupLayout.size.width
-        self.rightEdge = blockGroupLayout.relativePosition.x + blockGroupLayout.size.width
+          blockGroupLayout.relativePosition.x + blockGroupLayout.contentSize.width
+        self.rightEdge = blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width
         widthRequired = self.rightEdge
       } else {
-        // TODO:(vicng) Add x padding and handle stroke widths
         self.rightEdge =
           blockGroupLayout.relativePosition.x + BlockLayout.sharedConfig.puzzleTabWidth
         widthRequired = max(
-          blockGroupLayout.relativePosition.x + blockGroupLayout.size.width,
+          blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width,
           self.rightEdge)
       }
 
       // TODO:(vicng) Add y padding
       let heightRequired = max(
         fieldMaximumYPoint,
-        blockGroupLayout.relativePosition.y + blockGroupLayout.size.height,
+        blockGroupLayout.relativePosition.y + blockGroupLayout.totalSize.height,
         BlockLayout.sharedConfig.puzzleTabHeight)
 
-      self.size = WorkspaceSizeMake(widthRequired, heightRequired)
+      self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
     case .Statement:
       // If this is the first child for the block layout or the previous input type was a statement,
       // we need to add an empty row at the top to begin a new "C" shape.
@@ -188,8 +215,9 @@ public class InputLayout: Layout {
       }
 
       // Set statement render properties
-      self.statementIndent = fieldXOffset + BlockLayout.sharedConfig.xSeparatorSpace
-      self.statementConnectorWidth = BlockLayout.sharedConfig.notchWidth
+      self.statementIndent = fieldXOffset
+      self.statementConnectorWidth = BlockLayout.sharedConfig.notchWidth +
+        BlockLayout.sharedConfig.xSeparatorSpace
       self.rightEdge = statementIndent + statementConnectorWidth
 
       // If this is the last child for the block layout, we need to add an empty row at the bottom
@@ -204,23 +232,22 @@ public class InputLayout: Layout {
       // TODO:(vicng) If more blocks can be added to the last block in the group, add a bit of
       // space to the bottom of the middle part to show this is possible
       self.statementMiddleHeight = max(
-        blockGroupLayout.size.height, fieldMaximumHeight, BlockLayout.sharedConfig.ySeparatorSpace)
+        blockGroupLayout.totalSize.height, fieldMaximumHeight,
+        BlockLayout.sharedConfig.ySeparatorSpace)
 
       // Set total size
       var size = WorkspaceSizeZero
-      size.width = max(blockGroupLayout.relativePosition.x + blockGroupLayout.size.width,
-        statementIndent + statementConnectorWidth)
+      size.width = max(blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width,
+        self.rightEdge)
       size.height = statementRowTopPadding + statementMiddleHeight + statementRowBottomPadding
-      self.size = size
+      self.contentSize = size
     case .Dummy:
       blockGroupLayout.relativePosition = WorkspacePointZero
 
-      // TODO:(vicng) Add x/y padding
       self.rightEdge = fieldXOffset
-      let widthRequired = fieldXOffset
-      let heightRequired = max(
-        fieldMaximumYPoint, blockGroupLayout.relativePosition.y + blockGroupLayout.size.height)
-      self.size = WorkspaceSizeMake(widthRequired, heightRequired)
+      let widthRequired = self.rightEdge
+      let heightRequired = fieldMaximumYPoint
+      self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
     }
   }
 
@@ -267,7 +294,7 @@ public class InputLayout: Layout {
     }
 
     let widthDifference = width - minimalFieldWidthRequired
-    self.size.width += widthDifference
+    self.contentSize.width += widthDifference
     self.rightEdge += widthDifference
 
     // Shift fields based on new width and alignment
@@ -303,8 +330,7 @@ public class InputLayout: Layout {
   internal func maximizeStatementWidthTo(width: CGFloat) {
     if self.input.type == .Statement {
       // Maximize the statement width by maximizing the field width
-      maximizeFieldWidthTo(
-        width - self.statementConnectorWidth - BlockLayout.sharedConfig.xSeparatorSpace)
+      maximizeFieldWidthTo(width - self.statementConnectorWidth)
     }
   }
 
@@ -319,7 +345,7 @@ public class InputLayout: Layout {
   */
   internal func extendStatementRightEdgeBy(width: CGFloat) {
     if self.input.type == .Statement && width > 0 {
-      self.size.width += width
+      self.contentSize.width += width
       self.rightEdge += width
     }
   }

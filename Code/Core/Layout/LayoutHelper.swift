@@ -30,8 +30,8 @@ public class LayoutHelper: NSObject {
   */
   internal static func sizeThatFitsLayout(layout: Layout, var fromInitialSize size: WorkspaceSize)
     -> WorkspaceSize {
-      size.width = max(size.width, layout.relativePosition.x + layout.size.width)
-      size.height = max(size.height, layout.relativePosition.y + layout.size.height)
+      size.width = max(size.width, layout.relativePosition.x + layout.totalSize.width)
+      size.height = max(size.height, layout.relativePosition.y + layout.totalSize.height)
       return size
   }
 }
