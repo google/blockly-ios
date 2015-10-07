@@ -126,7 +126,8 @@ extension BlockLayout {
     /// The corresponding input layouts used to render this row
     public var inputLayouts = [InputLayout]()
 
-    // TODO:(vicng) Add inline value locations
+    /// Inline connector locations
+    public var inlineConnectors = [InlineConnector]()
 
     // MARK: - Public
 
@@ -163,6 +164,14 @@ extension BlockLayout {
         var rightEdge: CGFloat = 0
         for inputLayout in inputLayouts {
           rightEdge += inputLayout.totalSize.width
+
+          // Add inline connector locations
+          if inputLayout.input.type == .Value {
+            let inlineConnector = InlineConnector(
+              inputLayout.relativePosition + inputLayout.inlineConnectorPosition,
+              inputLayout.inlineConnectorSize)
+            self.inlineConnectors.append(inlineConnector)
+          }
         }
         self.rightEdge = max(minimalRowWidth, rightEdge, lastInputLayout.rightEdge)
         self.middleHeight = inputLayouts.map { $0.totalSize.height }.maxElement()!
@@ -183,6 +192,25 @@ extension BlockLayout {
       self.middleHeight = 0
       self.statementIndent = 0
       self.statementConnectorWidth = 0
+      self.inlineConnectors = []
+    }
+  }
+
+  /**
+  Information on where to render an inline connector.
+  */
+  public struct InlineConnector {
+    /// The position of where to begin rendering the inline connector, relative to the containing
+    /// block.
+    public var relativePosition: WorkspacePoint
+
+    /// The size of the inline connector.
+    public var size: WorkspaceSize
+
+    /// Initializer
+    private init(_ relativePosition: WorkspacePoint, _ size: WorkspaceSize) {
+      self.relativePosition = relativePosition
+      self.size = size
     }
   }
 }

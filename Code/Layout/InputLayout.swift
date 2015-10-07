@@ -41,13 +41,13 @@ public class InputLayout: Layout {
   /// a Workspace coordinate system unit.
   public var rightEdge: CGFloat = 0
 
-  /// For inline value inputs, the relative x-position of where to begin rendering the input
+  /// For inline value inputs, the relative position of where to begin rendering the input
   /// connector (ie. the female puzzle piece), expressed as a Workspace coordinate system unit.
-  public var inlineConnectorStart: CGFloat = 0
+  public var inlineConnectorPosition: WorkspacePoint = WorkspacePointZero
 
-  /// For inline value inputs, the relative x-position of where to finish rendering the input
-  /// connector (ie. the female puzzle piece), expressed as a Workspace coordinate system unit.
-  public var inlineConnectorEnd: CGFloat = 0
+  /// For inline value inputs, the size of the input connector (ie. the female puzzle piece),
+  /// expressed as a Workspace coordinate system unit.
+  public var inlineConnectorSize: WorkspaceSize = WorkspaceSizeZero
 
   /// For statement inputs, the relative x-position of where to begin rendering the inner left
   /// edge of the "C" shaped block, expressed as a Workspace coordinate system unit.
@@ -175,15 +175,23 @@ public class InputLayout: Layout {
       blockGroupLayout.relativePosition.y = 0
 
       let widthRequired: CGFloat
+      var inlineConnectorMaximumYPoint: CGFloat = 0
       if self.isInline {
-        blockGroupLayout.edgeInsets.right = BlockLayout.sharedConfig.xSeparatorSpace
         blockGroupLayout.edgeInsets.top = BlockLayout.sharedConfig.inlineYPadding
         blockGroupLayout.edgeInsets.bottom = BlockLayout.sharedConfig.inlineYPadding
 
-        self.inlineConnectorStart = blockGroupLayout.relativePosition.x
-        self.inlineConnectorEnd =
-          blockGroupLayout.relativePosition.x + blockGroupLayout.contentSize.width
-        self.rightEdge = blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width
+        self.inlineConnectorPosition = WorkspacePointMake(
+          blockGroupLayout.relativePosition.x,
+          blockGroupLayout.relativePosition.y + blockGroupLayout.edgeInsets.top)
+        self.inlineConnectorSize = WorkspaceSizeMake(
+          max(blockGroupLayout.contentSize.width,
+            BlockLayout.sharedConfig.puzzleTabWidth + BlockLayout.sharedConfig.xSeparatorSpace),
+          max(blockGroupLayout.contentSize.height, BlockLayout.sharedConfig.minimumBlockHeight))
+        self.rightEdge = inlineConnectorPosition.x + inlineConnectorSize.width +
+          BlockLayout.sharedConfig.xSeparatorSpace
+
+        inlineConnectorMaximumYPoint = inlineConnectorPosition.y + inlineConnectorSize.height +
+          blockGroupLayout.edgeInsets.bottom
         widthRequired = self.rightEdge
       } else {
         self.rightEdge =
@@ -193,9 +201,9 @@ public class InputLayout: Layout {
           self.rightEdge)
       }
 
-      // TODO:(vicng) Add y padding
       let heightRequired = max(
         fieldMaximumYPoint,
+        inlineConnectorMaximumYPoint,
         blockGroupLayout.relativePosition.y + blockGroupLayout.totalSize.height,
         BlockLayout.sharedConfig.puzzleTabHeight)
 
@@ -357,8 +365,8 @@ public class InputLayout: Layout {
   */
   private func resetRenderProperties() {
     self.rightEdge = 0
-    self.inlineConnectorStart = 0
-    self.inlineConnectorEnd = 0
+    self.inlineConnectorPosition = WorkspacePointZero
+    self.inlineConnectorSize = WorkspaceSizeZero
     self.statementIndent = 0
     self.statementConnectorWidth = 0
     self.statementRowTopPadding = 0

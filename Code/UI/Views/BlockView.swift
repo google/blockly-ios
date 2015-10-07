@@ -260,6 +260,30 @@ extension BlockView {
 
     path.closePath()
 
+    // DRAW INLINE CONNECTORS
+    path.viewBezierPath.usesEvenOddFillRule = true
+    for backgroundRow in background.rows {
+      for inlineConnector in backgroundRow.inlineConnectors {
+        path.moveToPoint(
+          inlineConnector.relativePosition.x + BlockLayout.sharedConfig.puzzleTabWidth,
+          inlineConnector.relativePosition.y,
+          relative: false)
+
+        let xEdgeWidth = inlineConnector.size.width - BlockLayout.sharedConfig.puzzleTabWidth
+        // Top edge
+        path.addLineToPoint(xEdgeWidth, 0, relative: true)
+        // Right edge
+        path.addLineToPoint(0, inlineConnector.size.height, relative: true)
+        // Bottom edge
+        path.addLineToPoint(-xEdgeWidth, 0, relative: true)
+        // Left edge
+        path.addLineToPoint(0,
+          -(inlineConnector.size.height - BlockLayout.sharedConfig.puzzleTabHeight), relative: true)
+        // Puzzle notch
+        addPuzzleTabToPath(path, drawTopToBottom: false)
+      }
+    }
+
     return path.viewBezierPath
   }
   
