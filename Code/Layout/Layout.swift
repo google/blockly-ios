@@ -199,7 +199,7 @@ public class Layout: NSObject {
   /**
   If `needsDisplay` or `needsRepositioning` has been set for this layout, the appropriate change
   event is sent to the `delegate`.
-  
+
   After this method has finished execution, both `needsDisplay` and `needsRepositioning` are set
   back to false.
   */

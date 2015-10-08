@@ -34,7 +34,7 @@ public class LayoutEventManager: NSObject {
 
   /**
   Schedules to call `sendChangeEvent()` on a given layout at the beginning of the next run loop.
-  
+
   - Parameter layout: The given layout
   */
   public func scheduleChangeEventForLayout(layout: Layout) {
