@@ -28,7 +28,7 @@ public class BlockView: UIView {
       if layout != oldValue {
         oldValue?.delegate = nil
         layout?.delegate = self
-        refresh()
+        refreshView()
       }
     }
   }
@@ -69,12 +69,12 @@ public class BlockView: UIView {
     super.init(coder: aDecoder)
   }
 
-  // MARK: - Public
+  // MARK: - Private
 
   /**
   Refreshes the view based on the current layout.
   */
-  public func refresh() {
+  private func refreshView() {
     // Remove and recycle field subviews
     recycleFieldViews()
 
@@ -84,8 +84,7 @@ public class BlockView: UIView {
       return
     }
 
-    self.frame = layout.viewFrame
-    self.layer.zPosition = layout.zPosition
+    updatePosition()
 
     // TODO:(vicng) Set the colours properly
     _blockBackgroundView.strokeColour = UIColor.grayColor()
@@ -111,6 +110,19 @@ public class BlockView: UIView {
         addSubview(fieldView)
       }
     }
+  }
+
+  /**
+  Updates `frame` and `layer.zPosition` based on the current layout.
+  */
+  private func updatePosition() {
+    guard let layout = self.layout else {
+      self.frame = CGRectZero
+      return
+    }
+
+    self.frame = layout.viewFrame
+    self.layer.zPosition = layout.zPosition
   }
 }
 
@@ -144,8 +156,12 @@ extension BlockView: Recyclable {
 // MARK: - LayoutDelegate implementation
 
 extension BlockView: LayoutDelegate {
-  public func layoutDidChange(layout: Layout) {
-    refresh()
+  public func layoutDisplayChanged(layout: Layout) {
+    refreshView()
+  }
+
+  public func layoutPositionChanged(layout: Layout) {
+    updatePosition()
   }
 }
 

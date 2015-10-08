@@ -52,7 +52,7 @@ public class BlockLayout: Layout {
   public var zPosition: CGFloat = 0 {
     didSet {
       if zPosition != oldValue {
-        self.delegate?.layoutDidChange(self)
+        self.needsRepositioning = true
       }
     }
   }

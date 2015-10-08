@@ -66,6 +66,7 @@
 		FAC5904A1B9915990079A6E3 /* CGPoint+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590E11B9F782C0079A6E3 /* LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */; settings = {ASSET_TAGS = (); }; };
+		FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +142,7 @@
 		FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPoint+Operators.swift"; path = "Core/Common/CGPoint+Operators.swift"; sourceTree = "<group>"; };
 		FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutHelper.swift; sourceTree = "<group>"; };
 		FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Background.swift"; sourceTree = "<group>"; };
+		FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
 				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
+				FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */,
 				FA27267F1B83F76500777B49 /* LayoutBuilder.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
 			);
@@ -502,6 +505,7 @@
 				FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
+				FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */,
 				FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */,
 				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,

@@ -20,15 +20,19 @@ Protocol for events that occur on a `Layout`.
 */
 @objc(BKYLayoutDelegate)
 public protocol LayoutDelegate {
-  // TODO:(vicng) Figure out the level of granularity that's needed for these events.
-  // For now, it's ok just to do a complete refresh, but this needs to be optimized
-  // later.
   /**
-  Event that is called when one of a `Layout`'s properties has changed.
+  Event that is called when an entire layout's display needs to be updated from the UI side.
 
   - Parameter layout: The `Layout` that changed.
   */
-  func layoutDidChange(layout: Layout)
+  func layoutDisplayChanged(layout: Layout)
+
+  /**
+  Event that is called when a layout's needs to be repositioned from the UI side.
+
+  - Parameter layout: The `Layout` that changed.
+  */
+  func layoutPositionChanged(layout: Layout)
 }
 
 /**
@@ -46,6 +50,8 @@ position and size.
 public class Layout: NSObject {
   // MARK: - Properties
 
+  /// A unique identifier used to identify this block for its lifetime
+  public let uuid: String
   /// The workspace node which this node belongs to.
   public weak var workspaceLayout: WorkspaceLayout!
   /// The parent node of this layout. If this value is nil, this layout is the root node.
@@ -78,15 +84,36 @@ public class Layout: NSObject {
   public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
       if viewFrame != oldValue {
-        delegate?.layoutDidChange(self)
+        // Mark this layout for repositioning
+        self.needsRepositioning = true
       }
     }
   }
 
-  /// Flag indicating if this layout's corresponding view needs to be completely re-drawn.
-  public var needsDisplay: Bool = false
-  /// Flag indicating if this layout's corresponding view needs to be repositioned.
-  public var needsRepositioning: Bool = false
+  /**
+  Flag indicating if this layout's corresponding view needs to be completely re-drawn.
+  Setting this value to true schedules a change event to be called on the `delegate` at the
+  beginning of the next run loop.
+  */
+  public var needsDisplay: Bool = false {
+    didSet {
+      if self.needsDisplay {
+        LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
+      }
+    }
+  }
+  /**
+  Flag indicating if this layout's corresponding view needs to be repositioned.
+  Setting this value to true schedules a change event to be called on the `delegate` at the
+  beginning of the next run loop.
+  */
+  public var needsRepositioning: Bool = false {
+    didSet {
+      if self.needsRepositioning {
+        LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
+      }
+    }
+  }
 
   /// The delegate for events that occur on this instance
   public weak var delegate: LayoutDelegate?
@@ -94,6 +121,7 @@ public class Layout: NSObject {
   // MARK: - Initializers
 
   public init(workspaceLayout: WorkspaceLayout!, parentLayout: Layout? = nil) {
+    self.uuid = NSUUID().UUIDString
     self.parentLayout = parentLayout
     self.workspaceLayout = workspaceLayout
     super.init()
@@ -125,8 +153,8 @@ public class Layout: NSObject {
 
   /**
   For every `Layout` in its tree hierarchy (including itself), this method recalculates its
-  `size`, `relativePosition`, `absolutePosition`, and `viewFrame`,
-  based on the current state of `self.parentLayout`.
+  `size`, `relativePosition`, `absolutePosition`, and `viewFrame`, based on the current state of
+  `self.parentLayout`.
   */
   public func updateLayout() {
     // TODO:(vicng) Rename these methods to properly reflect their nuances and how they should be
@@ -157,8 +185,6 @@ public class Layout: NSObject {
     for layout in self.childLayouts {
       layout.refreshViewBoundsForTree()
     }
-
-    // TODO:(vicng) Potentially generate a change event back to the corresponding view
   }
 
   /**
@@ -168,6 +194,24 @@ public class Layout: NSObject {
     // Update the view frame
     self.viewFrame =
       workspaceLayout.viewFrameFromWorkspacePoint(self.absolutePosition, size: self.contentSize)
+  }
+
+  /**
+  If `needsDisplay` or `needsRepositioning` has been set for this layout, the appropriate change
+  event is sent to the `delegate`.
+  
+  After this method has finished execution, both `needsDisplay` and `needsRepositioning` are set
+  back to false.
+  */
+  internal func sendChangeEvent() {
+    if self.needsDisplay {
+      self.delegate?.layoutDisplayChanged(self)
+    } else if self.needsRepositioning {
+      self.delegate?.layoutPositionChanged(self)
+    }
+
+    self.needsDisplay = false
+    self.needsRepositioning = false
   }
 
   // MARK: - Private

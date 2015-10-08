@@ -106,8 +106,7 @@ public class BlockGroupLayout: Layout {
   public func moveToWorkspacePosition(position: WorkspacePoint) {
     if self.parentLayout is WorkspaceLayout {
       self.relativePosition = position
-      // TODO:(vicng) updateLayout() may be heavy-handed. Optimize this later.
-      self.updateLayout()
+      self.refreshViewBoundsForTree()
     }
   }
 }
