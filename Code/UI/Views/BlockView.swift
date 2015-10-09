@@ -69,6 +69,18 @@ public class BlockView: UIView {
     super.init(coder: aDecoder)
   }
 
+  // MARK: - Super
+
+  public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+    // Override this method so that this only returns true if the point is inside the
+    // block background bezier path
+    if let bezierPath = _blockBackgroundView.bezierPath {
+      return bezierPath.containsPoint(point)
+    } else {
+      return false
+    }
+  }
+
   // MARK: - Private
 
   /**

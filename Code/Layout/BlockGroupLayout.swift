@@ -100,7 +100,7 @@ public class BlockGroupLayout: Layout {
   If this instance's `parentLayout` is an instance of `WorkspaceLayout`, this method changes
   `relativePosition` to the position. If not, this method does nothing.
 
-  - Parameter position: The relative position within its parent's Workspace layout, specified in a
+  - Parameter position: The relative position within its parent's Workspace layout, specified as a
   Workspace coordinate system point.
   */
   public func moveToWorkspacePosition(position: WorkspacePoint) {

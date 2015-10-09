@@ -22,6 +22,12 @@ View for rendering a `WorkspaceLayout`.
 public class WorkspaceView: UIScrollView {
   // MARK: - Properties
 
+  /// Stores the location of the block view's start position for a pan gesture
+  private var panGestureBlockViewStartPosition: WorkspacePoint?
+
+  /// Stores the first touch location of a pan gesture
+  private var panGestureFirstTouchPosition: WorkspacePoint?
+
   /// Layout object to render
   public var layout: WorkspaceLayout! {
     didSet {
@@ -93,12 +99,28 @@ extension WorkspaceView {
       return
     }
 
-    if (blockView.layout?.topBlockInBlockLayout == true) ?? false {
-      // TODO:(vicng) Disconnect this block from its block group layout, prior to moving it
+    if gesture.state == .Began {
+      // Store the start position of the block view and first touch point, but don't do anything yet
+      panGestureBlockViewStartPosition = blockView.layout?.absolutePosition
+      panGestureFirstTouchPosition =
+        layout.workspacePointFromViewPoint(gesture.locationInView(self))
+    } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
+      // Handle actual panning of the view
+      let currentWorkspacePoint = layout.workspacePointFromViewPoint(gesture.locationInView(self))
+
+      if (blockView.layout?.topBlockInBlockLayout == true) ?? false {
+        // TODO:(vicng) Disconnect this block from its block group layout, prior to moving it
+      }
+
+      blockView.layout?.parentBlockGroupLayout.moveToWorkspacePosition(
+        panGestureBlockViewStartPosition! + currentWorkspacePoint - panGestureFirstTouchPosition!)
     }
 
-    blockView.layout?.parentBlockGroupLayout.moveToWorkspacePosition(
-      layout.workspacePointFromViewPoint(gesture.locationInView(self)))
+    // Reset ivars if the gesture has finished
+    if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
+      panGestureFirstTouchPosition = nil
+      panGestureBlockViewStartPosition = nil
+    }
   }
 
   /**
