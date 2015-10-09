@@ -31,8 +31,11 @@ public class WorkspaceView: UIScrollView {
   /// Layout object to render
   public var layout: WorkspaceLayout! {
     didSet {
-      self.frame = layout?.viewFrame ?? CGRectZero
-      // TODO:(vicng) Re-draw this view too
+      if layout != oldValue {
+        oldValue?.delegate = nil
+        layout?.delegate = self
+        refreshView()
+      }
     }
   }
 
@@ -55,36 +58,83 @@ public class WorkspaceView: UIScrollView {
   Refreshes the view based on the current layout. Only blocks that are visible or near the current
   viewport are refreshed.
   */
-  public func refresh() {
-    // TODO:(vicng) Figure out a good amount to pad the workspace by
-    self.contentSize = CGSizeMake(
-      layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
-      layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
+  public func refreshView() {
+    refreshContentSize()
 
     // Get blocks that are in the current viewport
     for descendantLayout in layout.allBlockLayoutDescendants() {
-      if !shouldRenderLayout(descendantLayout) {
-        return
+      if !shouldRenderBlockLayout(descendantLayout) {
+        // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
+        // workspace view and recycle it.
+        if let descendantView = _viewManager.cachedBlockViewForLayout(
+          descendantLayout, createIfNotFound: false) {
+            descendantView.bky_removeAllGestureRecognizers()
+            descendantView.removeFromSuperview()
+            _viewManager.recycleView(descendantView)
+        }
+        continue
       }
 
-      let descendantView = _viewManager.blockViewForLayout(descendantLayout)
+      // Render this block layout
+      let descendantView = _viewManager.cachedBlockViewForLayout(
+        descendantLayout, createIfNotFound: true) as BlockView!
+      descendantView.bky_removeAllGestureRecognizers()
       descendantView.addGestureRecognizer(
         UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
       descendantView.addGestureRecognizer(
         UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
-
-      if descendantView.superview != nil {
-        descendantView.removeFromSuperview()
-      }
       addSubview(descendantView)
     }
   }
 
+  /**
+  Refreshes `contentSize` based on the current layout.
+  */
+  public func refreshContentSize() {
+    // TODO:(vicng) Figure out a good amount to pad the workspace by
+    self.contentSize = CGSizeMake(
+      layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
+      layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
+  }
+
   // MARK: - Private
 
-  private func shouldRenderLayout(layout: Layout) -> Bool {
-    // TODO:(vicng) Implement this method
-    return true
+  /**
+  Returns true if a given block layout should be rendered within the workspace view.
+  Otherwise, false is returned.
+
+  - Parameter blockLayout: A given block layout.
+  */
+  private func shouldRenderBlockLayout(blockLayout: BlockLayout) -> Bool {
+    // Allow blocks within a 1/2 screen away to be rendered
+    let xDelta = self.contentSize.width / 2
+    let yDelta = self.contentSize.height / 2
+    let minX = self.contentOffset.x - xDelta
+    let maxX = self.contentOffset.x + self.contentSize.width + xDelta
+    let minY = self.contentOffset.y - yDelta
+    let maxY = self.contentOffset.y + self.contentSize.height + yDelta
+    let leftMostEdge = blockLayout.viewFrame.origin.x
+    let rightMostEdge = blockLayout.viewFrame.origin.x + blockLayout.viewFrame.size.width
+    let topMostEdge = blockLayout.viewFrame.origin.y
+    let bottomMostEdge = blockLayout.viewFrame.origin.y + blockLayout.viewFrame.size.height
+
+    return
+      ((minX <= leftMostEdge && leftMostEdge <= maxX) ||
+      (minX <= rightMostEdge && rightMostEdge <= maxX)) &&
+      ((minY <= topMostEdge && topMostEdge <= maxY) ||
+      (minY <= bottomMostEdge && bottomMostEdge <= maxY))
+  }
+}
+
+// MARK: - LayoutDelegate
+
+extension WorkspaceView: LayoutDelegate {
+  public func layoutDisplayChanged(layout: Layout) {
+    refreshView()
+  }
+
+  public func layoutPositionChanged(layout: Layout) {
+    refreshContentSize()
   }
 }
 

@@ -38,26 +38,34 @@ public class ViewManager: NSObject {
   /**
   Looks in the internal cache for a `BlockView` that has been assigned the given layout.
   If one is found, it is returned.
-  If not, a recycled (or new) `BlockView` instance is created. This instance is assigned the given
-  layout, stored in the internal cache for future lookup, and returned.
+  If none is found and `createIfNotFound` is set to true, a recycled (or new) `BlockView` instance
+  is returned. This instance is assigned the given layout and stored in the internal cache for
+  future lookup, prior to being returned.
+  In all other cases, nil is returned.
 
   - Parameter layout: The given `BlockLayout`.
-  - Returns: A `BlockView` with the given layout assigned to it.
+  - Parameter createIfNotFound: If the given block layout could not be found in the cache and this
+  value is set to true, returns a new BlockView with the given layout assigned to it.
+  - Returns: A `BlockView` with the given layout assigned to it, or nil.
   */
-  public func blockViewForLayout(layout: BlockLayout) -> BlockView {
+  public func cachedBlockViewForLayout(layout: BlockLayout, createIfNotFound: Bool) -> BlockView? {
     // Try to see if the view already exists
     if let cachedView = _blockViews[layout.block.uuid] {
       return cachedView
     }
 
-    // Get a fresh view and populate it with the layout
-    let blockView = viewForType(BlockView.self)
-    blockView.layout = layout
+    if createIfNotFound {
+      // Get a fresh view and populate it with the layout
+      let blockView = viewForType(BlockView.self)
+      blockView.layout = layout
 
-    // Cache it for future lookups
-    _blockViews[layout.block.uuid] = blockView
+      // Cache it for future lookups
+      _blockViews[layout.block.uuid] = blockView
 
-    return blockView
+      return blockView
+    }
+
+    return nil
   }
 
   /**

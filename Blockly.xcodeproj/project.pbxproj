@@ -67,6 +67,7 @@
 		FAC590E11B9F782C0079A6E3 /* LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */; settings = {ASSET_TAGS = (); }; };
 		FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
+		FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +144,7 @@
 		FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutHelper.swift; sourceTree = "<group>"; };
 		FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Background.swift"; sourceTree = "<group>"; };
 		FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
+		FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Helper.swift"; path = "Core/Common/UIView+Helper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,12 +342,13 @@
 			isa = PBXGroup;
 			children = (
 				FA2726721B82B5B100777B49 /* Assertions.swift */,
+				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
 				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
 				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
 				FA27269D1B8C013A00777B49 /* ObjectPool.swift */,
 				FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */,
-				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
+				FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FA2726731B82B5B100777B49 /* Assertions.swift in Sources */,
 				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
+				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
 				FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,

@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.view.addSubview(workspaceView)
     self.view.sendSubviewToBack(workspaceView)
-    workspaceView.refresh()
+    workspaceView.refreshView()
   }
 
   override func didReceiveMemoryWarning() {

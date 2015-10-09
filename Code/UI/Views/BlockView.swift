@@ -96,7 +96,7 @@ public class BlockView: UIView {
       return
     }
 
-    updatePosition()
+    refreshPosition()
 
     // TODO:(vicng) Set the colours properly
     _blockBackgroundView.strokeColour = UIColor.grayColor()
@@ -125,9 +125,9 @@ public class BlockView: UIView {
   }
 
   /**
-  Updates `frame` and `layer.zPosition` based on the current layout.
+  Refreshes `frame` and `layer.zPosition` based on the current layout.
   */
-  private func updatePosition() {
+  private func refreshPosition() {
     guard let layout = self.layout else {
       self.frame = CGRectZero
       return
@@ -173,7 +173,7 @@ extension BlockView: LayoutDelegate {
   }
 
   public func layoutPositionChanged(layout: Layout) {
-    updatePosition()
+    refreshPosition()
   }
 }
 
