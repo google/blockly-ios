@@ -106,8 +106,26 @@ extension Block {
     - Returns: A new block
     */
     public func build() -> Block {
+      var outputConnection: Connection?
+      var nextConnection: Connection?
+      var previousConnection: Connection?
+      if outputConnectionEnabled {
+        outputConnection = Connection(type: .OutputValue)
+        outputConnection!.typeChecks = outputConnectionTypeChecks
+      }
+      if nextConnectionEnabled {
+        nextConnection = Connection(type: .NextStatement)
+        nextConnection!.typeChecks = nextConnectionTypeChecks
+      }
+      if previousConnectionEnabled {
+        previousConnection = Connection(type: .PreviousStatement)
+        previousConnection!.typeChecks = previousConnectionTypeChecks
+      }
+
       let block = Block(identifier: identifier, workspace: workspace, category: category,
-        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline)
+        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
+        outputConnection: outputConnection, previousConnection: previousConnection,
+        nextConnection: nextConnection)
 
       block.childBlocks = childBlocks
       block.parentBlock = parentBlock
@@ -122,21 +140,6 @@ extension Block {
       block.disabled = disabled
       block.rendered = rendered
       block.position = position
-
-      if outputConnectionEnabled {
-        block.outputConnection = Connection(type: .OutputValue)
-        block.outputConnection!.typeChecks = outputConnectionTypeChecks
-      }
-
-      if nextConnectionEnabled {
-        block.nextConnection = Connection(type: .NextStatement)
-        block.nextConnection!.typeChecks = nextConnectionTypeChecks
-      }
-
-      if previousConnectionEnabled {
-        block.previousConnection = Connection(type: .PreviousStatement)
-        block.previousConnection!.typeChecks = previousConnectionTypeChecks
-      }
 
       return block
     }

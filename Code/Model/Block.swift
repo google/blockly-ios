@@ -45,24 +45,15 @@ public class Block : NSObject {
   public var isInFlyout: Bool {
     return workspace.isFlyout
   }
-  public internal(set) var outputConnection: Connection? {
-    didSet {
-      outputConnection?.sourceBlock = self
-    }
+  public let outputConnection: Connection?
+  public var outputBlock: Block? {
+    return outputConnection?.targetConnection?.sourceBlock
   }
-  public internal(set) var nextConnection: Connection? {
-    didSet {
-      nextConnection?.sourceBlock = self
-    }
-  }
+  public let nextConnection: Connection?
   public var nextBlock: Block? {
     return nextConnection?.targetConnection?.sourceBlock
   }
-  public internal(set) var previousConnection: Connection? {
-    didSet {
-      previousConnection?.sourceBlock = self
-    }
-  }
+  public let previousConnection: Connection?
   public var previousBlock: Block? {
     return previousConnection?.targetConnection?.sourceBlock
   }
@@ -90,7 +81,8 @@ public class Block : NSObject {
   To create a Block, use Block.Builder instead.
   */
   internal init(identifier: String, workspace: Workspace, category: Int,
-    colourHue: Int, inputs: [Input] = [], inputsInline: Bool) {
+    colourHue: Int, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
+    previousConnection: Connection?, nextConnection: Connection?) {
       self.uuid = NSUUID().UUIDString
       self.identifier = identifier
       self.category = category
@@ -98,11 +90,17 @@ public class Block : NSObject {
       self.workspace = workspace
       self.inputs = inputs
       self.inputsInline = inputsInline
+      self.outputConnection = outputConnection
+      self.previousConnection = previousConnection
+      self.nextConnection = nextConnection
 
       super.init()
       for input in inputs {
         input.sourceBlock = self
       }
+      self.outputConnection?.sourceBlock = self
+      self.previousConnection?.sourceBlock = self
+      self.nextConnection?.sourceBlock = self
   }
 
   // MARK: - Public
