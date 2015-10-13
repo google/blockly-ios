@@ -16,19 +16,6 @@
 import Foundation
 
 /**
-Protocol for events that occur on a `Block`.
-*/
-@objc(BKYBlockDelegate)
-public protocol BlockDelegate {
-  /**
-  Event that is called when one of the block's properties has changed.
-
-  - Parameter block: The block that changed.
-  */
-  func blockDidChange(block: Block)
-}
-
-/**
 Class that represents a single block.
 */
 @objc(BKYBlock)
@@ -68,12 +55,13 @@ public class Block : NSObject {
   public var canMove: Bool = true
   public var canEdit: Bool = true
   public var disabled: Bool = false
-  public weak var delegate: BlockDelegate?
 
   // TODO:(vicng) Potentially move these properties into a view class
   public var collapsed: Bool = false
   public var rendered: Bool = false
-  public var position: CGPoint = CGPointZero
+
+  /// The layout used for rendering this block
+  public var layout: BlockLayout?
 
   // MARK: - Initializers
 
@@ -101,6 +89,8 @@ public class Block : NSObject {
       self.outputConnection?.sourceBlock = self
       self.previousConnection?.sourceBlock = self
       self.nextConnection?.sourceBlock = self
+
+      // TODO:(vicng) Instantiate self.layout from a layout factory and mark its setter as private
   }
 
   // MARK: - Public

@@ -28,22 +28,14 @@ public class FieldLabelLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldLabel` to layout.
-  public let fieldLabel: FieldLabel
+  public unowned let fieldLabel: FieldLabel
 
   // MARK: - Initializers
 
   public required init(
     fieldLabel: FieldLabel, workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout) {
     self.fieldLabel = fieldLabel
-    super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout, measurer: FieldLabelLayout.defaultMeasurer)
-    self.fieldLabel.delegate = self
-  }
-}
-
-// MARK: - FieldDelegate
-
-extension FieldLabelLayout: FieldDelegate {
-  public func fieldDidChange(field: Field) {
-    // TODO:(vicng) Potentially generate an event to update the corresponding view
+    super.init(field: fieldLabel, workspaceLayout: workspaceLayout,
+      parentLayout: parentLayout, measurer: FieldLabelLayout.defaultMeasurer)
   }
 }

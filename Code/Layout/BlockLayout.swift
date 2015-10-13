@@ -30,11 +30,13 @@ public class BlockLayout: Layout {
   // MARK: - Properties
 
   /// The `Block` to layout.
-  public let block: Block
+  public unowned let block: Block
 
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
 
+  // TODO:(vicng) Compute this value via "self.block.inputs[]" and remove methods to append/remove
+  // input layouts.
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
 
@@ -73,7 +75,7 @@ public class BlockLayout: Layout {
     block: Block, workspaceLayout: WorkspaceLayout!, parentLayout: BlockGroupLayout) {
       self.block = block
       super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-      self.block.delegate = self
+      self.block.layout = self
   }
 
   // MARK: - Super
@@ -242,13 +244,5 @@ public class BlockLayout: Layout {
       }
     }
     return nil
-  }
-}
-
-// MARK: - BlockDelegate
-
-extension BlockLayout: BlockDelegate {
-  public func blockDidChange(block: Block) {
-    // TODO:(vicng) Potentially generate an event to update the corresponding view
   }
 }

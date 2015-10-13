@@ -23,7 +23,7 @@ public class InputLayout: Layout {
   // MARK: - Properties
 
   /// The target `Input` to layout
-  public let input: Input
+  public unowned let input: Input
 
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
   public var blockGroupLayout: BlockGroupLayout {
@@ -105,7 +105,7 @@ public class InputLayout: Layout {
       self.input = input
       self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout, parentLayout: nil)
       super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-      self.input.delegate = self
+      self.input.layout = self
       self.blockGroupLayout.parentLayout = self
   }
 
@@ -372,13 +372,5 @@ public class InputLayout: Layout {
     self.statementRowTopPadding = 0
     self.statementRowBottomPadding = 0
     self.statementMiddleHeight = 0
-  }
-}
-
-// MARK: - InputDelegate
-
-extension InputLayout: InputDelegate {
-  public func inputDidChange(input: Input) {
-    // TODO:(vicng) Potentially generate an event to update the source block of this input
   }
 }

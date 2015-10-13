@@ -71,12 +71,18 @@ public class Workspace : NSObject {
   public private(set) var allBlocks = [String: Block]()
   public weak var delegate: WorkspaceDelegate?
 
+  /// The layout used for rendering this workspace
+  public var layout: WorkspaceLayout?
+
   // MARK: - Initializers
 
   public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
     self.isFlyout = isFlyout
     self.isRTL = isRTL
     self.maxBlocks = maxBlocks
+    super.init()
+
+    // TODO:(vicng) Instantiate self.layout from a layout factory and mark its setter as private
   }
 
   // MARK: - Public

@@ -43,12 +43,17 @@ public class FieldLayout: Layout {
   /// Object responsible for measuring the layout of this object.
   public var measurer: FieldLayoutMeasurer.Type
 
+  /// The target field to layout
+  public unowned let field: Field
+
   // MARK: - Initializers
 
-  public init(workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout,
+  public init(field: Field, workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout,
     measurer: FieldLayoutMeasurer.Type) {
+      self.field = field
       self.measurer = measurer
       super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      self.field.layout = self
   }
 
   // MARK: - Super

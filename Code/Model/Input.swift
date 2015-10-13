@@ -16,19 +16,6 @@
 import Foundation
 
 /**
-Protocol for events that occur on an `Input`.
-*/
-@objc(BKYInputDelegate)
-public protocol InputDelegate {
-  /**
-  Event that is called when one of the input's properties has changed.
-
-  - Parameter input: The input that changed.
-  */
-  func inputDidChange(input: Input)
-}
-
-/**
 Class representing an input (value, statement, or dummy).
 */
 @objc(BKYInput)
@@ -92,6 +79,7 @@ public class Input : NSObject {
   public weak var sourceBlock: Block! {
     didSet {
       self.connection?.sourceBlock = sourceBlock
+      self.layout?.parentLayout = sourceBlock?.layout
     }
   }
   public private(set) var connection: Connection?
@@ -103,7 +91,9 @@ public class Input : NSObject {
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
   public internal(set) var fields: [Field] = []
-  public weak var delegate: InputDelegate?
+
+  /// The layout used for rendering this input
+  public var layout: InputLayout?
 
   // MARK: - Initializers
 
@@ -116,6 +106,10 @@ public class Input : NSObject {
     } else if (type == .Statement) {
       self.connection = Connection(type: .NextStatement)
     }
+
+    super.init()
+
+    // TODO:(vicng) Instantiate self.layout from a layout factory and mark its setter as private
   }
 
   // MARK: - Public
@@ -128,5 +122,8 @@ public class Input : NSObject {
   */
   public func appendField(field: Field) {
     fields.append(field)
+
+    // Set the parent layout of the field's layout
+    field.layout?.parentLayout = layout
   }
 }

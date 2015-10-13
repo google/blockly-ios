@@ -54,7 +54,6 @@ extension Block {
     public var collapsed: Bool = false
     public var disabled: Bool = false
     public var rendered: Bool = false
-    public var position: CGPoint = CGPointZero
 
     // MARK: - Initializers
 
@@ -80,7 +79,6 @@ extension Block {
       helpURL = block.helpURL
       hasContextMenu = block.hasContextMenu
       collapsed = block.collapsed
-      position = block.position
 
       outputConnectionEnabled = block.outputConnection != nil ? true : false
       outputConnectionTypeChecks = block.outputConnection?.typeChecks
@@ -139,7 +137,6 @@ extension Block {
       block.collapsed = collapsed
       block.disabled = disabled
       block.rendered = rendered
-      block.position = position
 
       return block
     }
