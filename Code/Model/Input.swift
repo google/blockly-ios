@@ -90,14 +90,14 @@ public class Input : NSObject {
 
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
-  public internal(set) var fields: [Field] = []
+  public private(set) var fields: [Field] = []
 
   /// The layout used for rendering this input
-  public var layout: InputLayout?
+  public private(set) var layout: InputLayout?
 
   // MARK: - Initializers
 
-  public init(type: InputType, name: String) {
+  public init(type: InputType, name: String, workspace: Workspace) {
     self.name = name
     self.type = type
 
@@ -109,7 +109,11 @@ public class Input : NSObject {
 
     super.init()
 
-    // TODO:(vicng) Instantiate self.layout from a layout factory and mark its setter as private
+    do {
+      self.layout = try workspace.layoutFactory?.layoutForInput(self, workspace: workspace)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not initialize the layout: \(error)")
+    }
   }
 
   // MARK: - Public
@@ -123,7 +127,20 @@ public class Input : NSObject {
   public func appendField(field: Field) {
     fields.append(field)
 
-    // Set the parent layout of the field's layout
-    field.layout?.parentLayout = layout
+    // Append the field's layout to this input layout
+    if field.layout != nil {
+      layout?.appendFieldLayout(field.layout!)
+    }
+  }
+
+  /**
+  Appends a given list of fields to the end of `self.fields[]`.
+
+  - Parameter fields: The fields to append.
+  */
+  public func appendFields(fields: [Field]) {
+    for field in fields {
+      appendField(field)
+    }
   }
 }

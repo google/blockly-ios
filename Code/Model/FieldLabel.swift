@@ -26,15 +26,15 @@ public class FieldLabel: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, text: String) {
+  public init(name: String, text: String, workspace: Workspace) {
     self.text = text
 
-    super.init(name: name)
+    super.init(name: name, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldLabel(name: name, text: text)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldLabel(name: name, text: text, workspace: workspace)
   }
 }

@@ -18,10 +18,11 @@ import XCTest
 
 class InputJSONTest: XCTestCase {
 
+  var workspace: Workspace!
   var block: Block!
 
   override func setUp() {
-    let workspace = Workspace(isFlyout: false, isRTL: true)
+    workspace = Workspace(layoutFactory: nil, isFlyout: false, isRTL: true)
     let builder = Block.Builder(identifier: "Test", workspace: workspace)
     block = builder.build()
 
@@ -37,7 +38,7 @@ class InputJSONTest: XCTestCase {
       "align": "CENTRE",
       "check": ["String", "Boolean"]
     ]
-    guard let input: Input = Input.inputFromJSON(json) else {
+    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -61,7 +62,7 @@ class InputJSONTest: XCTestCase {
       "align": "LEFT",
       "check": "CustomCheckType"
     ]
-    guard let input: Input = Input.inputFromJSON(json) else {
+    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -83,7 +84,7 @@ class InputJSONTest: XCTestCase {
       "name": "input dummy",
       "check": "Broken!" // This shouldn't be used
     ]
-    guard let input: Input = Input.inputFromJSON(json) else {
+    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
       XCTFail("Could not parse json into an Input")
       return
     }

@@ -107,6 +107,7 @@ public class Block : NSObject {
 
 // MARK: -
 
+// TODO:(vicng) Rename this class to BlocklyError
 /**
 Class used when errors occur inside `Block` methods.
 */
@@ -120,7 +121,8 @@ public class BlockError: NSError {
   // MARK: - Enum - Code
   @objc
   public enum BKYBlockErrorCode: Int {
-    case InvalidBlockDefinition = 100
+    case InvalidBlockDefinition = 100,
+      LayoutNotFound = 200
   }
   public typealias Code = BKYBlockErrorCode
 

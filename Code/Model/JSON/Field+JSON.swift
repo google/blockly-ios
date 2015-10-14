@@ -44,18 +44,19 @@ extension Field {
   - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
-  internal static func fieldFromJSON(json: [String: AnyObject]) throws -> Field? {
-    let type = json[PARAMETER_TYPE] as? String ?? ""
-    if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
-      return try creationHandler(json)
-    } else {
-      return nil
-    }
+  internal static func fieldFromJSON(
+    json: [String: AnyObject], workspace: Workspace) throws -> Field? {
+      let type = json[PARAMETER_TYPE] as? String ?? ""
+      if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
+        return try creationHandler(json: json, workspace: workspace)
+      } else {
+        return nil
+      }
   }
 }
 
 /**
-Manages the registration of fields
+Manages the registration of fields.
 */
 extension Field {
   @objc(BKYFieldJSONRegistry)
@@ -68,7 +69,8 @@ extension Field {
     // MARK: - Closures
 
     /// Callback for creating a Field instance from JSON
-    public typealias CreationHandler = [String: AnyObject] throws -> Field
+    public typealias CreationHandler =
+      (json: [String: AnyObject], workspace: Workspace) throws -> Field
 
     // MARK: - Properties
 
@@ -86,40 +88,44 @@ extension Field {
 
       // Angle
       registerType("field_angle") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldAngle(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          angle: (json[PARAMETER_ANGLE] as? Int ?? 90))
+          angle: (json[PARAMETER_ANGLE] as? Int ?? 90),
+          workspace: workspace)
       }
 
       // Checkbox
       registerType("field_checkbox") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldCheckbox(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
+          checked: (json[PARAMETER_CHECKED] as? Bool ?? true),
+          workspace: workspace)
       }
 
       // Colour
       registerType("field_colour") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         let colour = UIColor.bky_colorFromRGB(json[PARAMETER_COLOUR] as? String ?? "")
         return FieldColour(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          colour: (colour ?? UIColor.redColor()))
+          colour: (colour ?? UIColor.redColor()),
+          workspace: workspace)
       }
 
       // Date
       registerType("field_date") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldDate(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          stringDate: (json[PARAMETER_DATE] as? String ?? ""))
+          stringDate: (json[PARAMETER_DATE] as? String ?? ""),
+          workspace: workspace)
       }
 
       // Dropdown
       registerType("field_dropdown") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         // Options should be an array of string arrays.
         // eg. [["Name 1", "Value 1"], ["Name 2", "Value 2"]]
         let options = json[PARAMETER_OPTIONS] as? Array<[String]> ?? []
@@ -135,12 +141,13 @@ extension Field {
           // Reconstruct options into array of (String, String) tuples
           // eg. [(displayName: "Name 1", value: "Value 1"),
           //     (displayName: "Name 2", value: "Value 2")]
-          options: options.map({ (displayName: $0[0], value: $0[1]) }))
+          options: options.map({ (displayName: $0[0], value: $0[1]) }),
+          workspace: workspace)
       }
 
       // Image
       registerType("field_image") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldImage(
           name: (json[PARAMETER_NAME] as? String ?? ""),
           imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
@@ -148,31 +155,35 @@ extension Field {
           size: CGSizeMake(
             CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
             CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
-          altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))
+          altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"),
+          workspace: workspace)
       }
 
       // Input
       registerType("field_input") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldInput(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          text: (json[PARAMETER_TEXT] as? String ?? "default"))
+          text: (json[PARAMETER_TEXT] as? String ?? "default"),
+          workspace: workspace)
       }
 
       // Label
       registerType("field_label") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldLabel(
           name: (json[PARAMETER_NAME] as? String ?? ""),
-          text: (json[PARAMETER_TEXT] as? String ?? ""))
+          text: (json[PARAMETER_TEXT] as? String ?? ""),
+          workspace: workspace)
       }
 
       // Variable
       registerType("field_variable") {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: AnyObject], workspace: Workspace) throws -> Field in
         return FieldVariable(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          variable: (json[PARAMETER_VARIABLE] as? String ?? "item"))
+          variable: (json[PARAMETER_VARIABLE] as? String ?? "item"),
+          workspace: workspace)
       }
     }
 

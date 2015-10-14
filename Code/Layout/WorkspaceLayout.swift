@@ -48,7 +48,7 @@ public class WorkspaceLayout: Layout {
   public required init(workspace: Workspace) {
     self.workspace = workspace
     super.init(workspaceLayout: nil)
-    self.workspace.layout = self
+
     self.workspaceLayout = self
   }
 

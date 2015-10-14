@@ -15,6 +15,8 @@
 
 import Foundation
 
+// TODO:(vicng) Delete use of this class.
+
 /**
 Class for building an entire `Layout` tree from a model object.
 */
@@ -25,16 +27,16 @@ public class LayoutBuilder: NSObject {
   /**
   Builds and returns an entire `WorkspaceLayout` tree from a given workspace.
   */
-  public static func buildLayoutTreeFromWorkspace(workspace: Workspace) -> WorkspaceLayout {
-    let workspaceLayout = WorkspaceLayout(workspace: workspace)
+  public static func buildLayoutTreeForWorkspace(workspace: Workspace) {
+    guard let workspaceLayout = workspace.layout else {
+      return
+    }
 
     for block in workspace.topBlocks {
       let blockGroupLayout = buildBlockGroupLayoutTreeFromBlock(
         block, workspaceLayout: workspaceLayout)
       workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
-
-    return workspaceLayout
   }
 
   /**
@@ -69,7 +71,10 @@ public class LayoutBuilder: NSObject {
 
       // Build the input tree underneath this block
       for input in block.inputs {
-        let inputLayout = buildLayoutTreeFromInput(input, workspaceLayout: workspaceLayout)
+        guard let inputLayout = input.layout else {
+          continue
+        }
+        buildLayoutTreeForInput(input, workspaceLayout: workspaceLayout)
         blockLayout.appendInputLayout(inputLayout)
       }
 
@@ -77,40 +82,17 @@ public class LayoutBuilder: NSObject {
   }
 
   /**
-  Builds and returns an entire `InputLayout` tree from a given input.
+  Builds the `InputLayout` tree for a given input.
   */
-  public static func buildLayoutTreeFromInput(
-    input: Input, workspaceLayout: WorkspaceLayout) -> InputLayout {
-      let inputLayout = InputLayout(
-        input: input, workspaceLayout: workspaceLayout)
+  public static func buildLayoutTreeForInput(input: Input, workspaceLayout: WorkspaceLayout) {
+      guard let inputLayout = input.layout else {
+        return
+      }
 
       // Build the block group underneath this input
       if let connectedBlock = input.connectedBlock {
         inputLayout.blockGroupLayout =
           buildBlockGroupLayoutTreeFromBlock(connectedBlock, workspaceLayout: workspaceLayout)
       }
-
-      // Build the field tree underneath this input
-      for field in input.fields {
-        if let fieldLayout = buildLayoutTreeFromField(field, workspaceLayout: workspaceLayout) {
-          inputLayout.appendFieldLayout(fieldLayout)
-        }
-      }
-
-      return inputLayout
-  }
-
-  // TODO:(vicng) Re-factor this method so that any user-defined Field could be created here.
-  /**
-  Builds and returns an entire `FieldLayout` tree from a given field.
-  */
-  public static func buildLayoutTreeFromField(
-    field: Field, workspaceLayout: WorkspaceLayout) -> FieldLayout? {
-      // TODO:(vicng) Implement error handling if the field's layout could not be found
-      if let fieldLabel = field as? FieldLabel {
-        return FieldLabelLayout(fieldLabel: fieldLabel, workspaceLayout: workspaceLayout)
-      }
-
-      return nil
   }
 }

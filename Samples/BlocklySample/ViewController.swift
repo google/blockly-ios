@@ -23,7 +23,11 @@ class ViewController: UIViewController {
     super.viewDidLoad()
 
     let workspace = buildWorkspace()
-    let workspaceLayout = LayoutBuilder.buildLayoutTreeFromWorkspace(workspace)
+    LayoutBuilder.buildLayoutTreeForWorkspace(workspace)
+
+    guard let workspaceLayout = workspace.layout else {
+      return
+    }
     workspaceLayout.updateLayout()
 
     let workspaceView = WorkspaceView()
@@ -44,7 +48,8 @@ class ViewController: UIViewController {
   // MARK: - Private
 
   func buildWorkspace() -> Workspace {
-    let workspace = Workspace(isFlyout: false)
+    let layoutFactory = LayoutFactory()
+    let workspace = Workspace(layoutFactory: layoutFactory, isFlyout: false)
 
     if let block1 = buildStatementBlock(workspace) {
       workspace.addBlock(block1, asTopBlock: true)

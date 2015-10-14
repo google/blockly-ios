@@ -88,9 +88,9 @@ extension Block {
       previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
       for input in block.inputs {
-        let newInput = Input(type: input.type, name: input.name);
+        let newInput = Input(type: input.type, name: input.name, workspace: workspace);
         for field in input.fields {
-          newInput.appendField(field.copy() as! Field)
+          newInput.appendField(field.copyToWorkspace(workspace))
         }
         inputs.append(newInput)
       }

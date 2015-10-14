@@ -19,13 +19,13 @@ import XCTest
 class BlockBuilderTest: XCTestCase {
 
   func testBuildBlock() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
     let block = buildFrankenBlock(workspace).build()
     validateFrankenblock(block)
   }
 
   func testBuildFromBlock() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
     let block = buildFrankenBlock(workspace).build()
     let block2 = buildFrankenBlock(workspace).build()
     block.nextConnection?.connectTo(block2.previousConnection)
@@ -94,33 +94,35 @@ class BlockBuilderTest: XCTestCase {
   internal func buildFrankenBlock(workspace: Workspace) -> Block.Builder {
     let bob = Block.Builder(identifier: "frankenblock", workspace: workspace)
 
-    var input = Input(type: Input.InputType.Value, name: "value_input")
-    var field = FieldInput(name: "text_input", text: "something") as Field
+    var input = Input(type: Input.InputType.Value, name: "value_input", workspace: workspace)
+    var field = FieldInput(name: "text_input", text: "something", workspace: workspace) as Field
     input.appendField(field)
-    field = FieldCheckbox(name: "checkbox", checked: true)
+    field = FieldCheckbox(name: "checkbox", checked: true, workspace: workspace)
     input.appendField(field)
     bob.inputs.append(input)
 
-    input = Input(type: Input.InputType.Statement, name:"statement_input")
+    input = Input(type: Input.InputType.Statement, name:"statement_input", workspace: workspace)
     do {
       field = try FieldDropdown(name: "dropdown",
-        displayNames: ["option1", "option2", "option3"], values: ["OPTION1", "OPTION2", "OPTION3"])
+        displayNames: ["option1", "option2", "option3"],
+        values: ["OPTION1", "OPTION2", "OPTION3"],
+        workspace: workspace)
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
     input.appendField(field)
-    field = FieldVariable(name: "variable", variable: "item")
+    field = FieldVariable(name: "variable", variable: "item", workspace: workspace)
     input.appendField(field)
     bob.inputs.append(input)
 
-    input = Input(type: Input.InputType.Dummy, name: "dummy_input")
-    field = FieldAngle(name: "angle", angle: 90)
+    input = Input(type: Input.InputType.Dummy, name: "dummy_input", workspace: workspace)
+    field = FieldAngle(name: "angle", angle: 90, workspace: workspace)
     input.appendField(field)
-    field = FieldColour(name: "colour", colour: UIColor.magentaColor())
+    field = FieldColour(name: "colour", colour: UIColor.magentaColor(), workspace: workspace)
     input.appendField(field)
     field = FieldImage(name: "no name",
       imageURL: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-      size: WorkspaceSize(width: 15, height: 20), altText: "*")
+      size: WorkspaceSize(width: 15, height: 20), altText: "*", workspace: workspace)
     input.appendField(field)
     bob.inputs.append(input)
 

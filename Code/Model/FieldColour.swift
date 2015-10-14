@@ -26,15 +26,15 @@ public class FieldColour: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, colour: UIColor) {
+  public init(name: String, colour: UIColor, workspace: Workspace) {
     self.colour = colour
-    
-    super.init(name: name)
+
+    super.init(name: name, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldColour(name: name, colour: colour)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldColour(name: name, colour: colour, workspace: workspace)
   }
 }

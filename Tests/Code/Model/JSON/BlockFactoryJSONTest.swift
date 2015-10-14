@@ -19,7 +19,7 @@ import XCTest
 class BlockFactoryJSONTest: XCTestCase {
 
     func testLoadBlocks() {
-      let workspace = Workspace(isFlyout: false)
+      let workspace = Workspace(layoutFactory: nil, isFlyout: false)
       do {
         let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
         if let _ = factory.obtain("block_id_1") {
@@ -38,7 +38,7 @@ class BlockFactoryJSONTest: XCTestCase {
     }
 
   func testMultipleBlocks() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
     do {
       let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
       if let block1 = factory.obtain("block_id_1") {

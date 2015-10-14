@@ -28,9 +28,9 @@ public class FieldDate: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, date: NSDate) {
+  public init(name: String, date: NSDate, workspace: Workspace) {
     self.date = FieldDate.normalizeDate(date)
-    super.init(name: name)
+    super.init(name: name, workspace: workspace)
   }
 
   /**
@@ -40,16 +40,17 @@ public class FieldDate: Field {
   - Parameter stringDate: String of the format "yyyy-MM-dd". If the string couldn't be parsed into a
   valid date, the current date is used instead.
   */
-  public convenience init(name: String, stringDate: String) {
+  public convenience init(name: String, stringDate: String, workspace: Workspace) {
     self.init(
       name: name,
-      date: FieldDate.dateFromString(stringDate) ?? NSDate())
+      date: FieldDate.dateFromString(stringDate) ?? NSDate(),
+      workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldDate(name: name, date: date)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldDate(name: name, date: date, workspace: workspace)
   }
 
   // MARK: - Public

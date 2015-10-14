@@ -28,16 +28,16 @@ public class FieldAngle: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, angle: Int) {
+  public init(name: String, angle: Int, workspace: Workspace) {
     self.angle = FieldAngle.normalizeAngle(angle)
 
-    super.init(name: name)
+    super.init(name: name, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldAngle(name: name, angle: angle)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldAngle(name: name, angle: angle, workspace: workspace)
   }
 
   // MARK: - Internal - For testing only

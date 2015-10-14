@@ -26,15 +26,15 @@ public class FieldVariable: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, variable: String) {
+  public init(name: String, variable: String, workspace: Workspace) {
     self.variable = variable
 
-    super.init(name: name)
+    super.init(name: name, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldVariable(name: name, variable: variable)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldVariable(name: name, variable: variable, workspace: workspace)
   }
 }

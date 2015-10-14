@@ -28,17 +28,19 @@ public class FieldImage: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, imageURL: String, size: WorkspaceSize, altText: String) {
-    self.imageURL = imageURL
-    self.size = size
-    self.altText = altText
+  public init(
+    name: String, imageURL: String, size: WorkspaceSize, altText: String, workspace: Workspace) {
+      self.imageURL = imageURL
+      self.size = size
+      self.altText = altText
 
-    super.init(name: name)
+      super.init(name: name, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldImage(name: name, imageURL: imageURL, size: size, altText: altText)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldImage(
+      name: name, imageURL: imageURL, size: size, altText: altText, workspace: workspace)
   }
 }

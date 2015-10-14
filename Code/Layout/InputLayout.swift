@@ -104,7 +104,7 @@ public class InputLayout: Layout {
     self.input = input
     self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout)
     super.init(workspaceLayout: workspaceLayout)
-    self.input.layout = self
+
     self.blockGroupLayout.parentLayout = self
   }
 
@@ -258,7 +258,7 @@ public class InputLayout: Layout {
     }
   }
 
-  // MARK: - Public
+  // MARK: - Internal
 
   /**
   Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance.
@@ -281,8 +281,6 @@ public class InputLayout: Layout {
     fieldLayout.parentLayout = nil
     return fieldLayout
   }
-
-  // MARK: - Internal
 
   /**
   Allow the input layout to use more width when rendering its field layouts.

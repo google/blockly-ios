@@ -26,14 +26,33 @@ public class Field: NSObject {
   public let name: String
 
   /// The layout used for rendering this field
-  public var layout: FieldLayout?
+  public private(set) var layout: FieldLayout?
 
   // MARK: - Initializers
 
-  internal init(name: String) {
+  internal init(name: String, workspace: Workspace) {
     self.name = name
     super.init()
 
-    // TODO:(vicng) Instantiate self.layout from a layout factory and mark its setter as private
+    do {
+      self.layout = try workspace.layoutFactory?.layoutForField(self, workspace: workspace)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not initialize the layout: \(error)")
+    }
+  }
+
+  // MARK: - Abstract
+
+  /**
+  Returns a copy of this field, for use in a given workspace.
+
+  - Parameter workspace: The given workspace
+  - Returns: A copy of this field, for use in the given workspace.
+  - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
+  a `Field` subclass does not implement this method.
+  */
+  public func copyToWorkspace(workspace: Workspace) -> Field {
+    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    return self.copy() as! Field // This shouldn't happen.
   }
 }

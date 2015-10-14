@@ -52,7 +52,6 @@ public class FieldLayout: Layout {
     self.field = field
     self.measurer = measurer
     super.init(workspaceLayout: workspaceLayout)
-    self.field.layout = self
   }
 
   // MARK: - Super

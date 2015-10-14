@@ -93,7 +93,7 @@ extension Block {
       // TODO:(vicng) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
       builder.inputs += try interpolateMessage(
-        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
+        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment, workspace: workspace)
     }
 
     return builder.build()
@@ -117,7 +117,7 @@ extension Block {
   - Returns: An `Input` array
   */
   internal class func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
-    lastDummyAlignment: Input.Alignment) throws -> [Input]
+    lastDummyAlignment: Input.Alignment, workspace: Workspace) throws -> [Input]
   {
     let tokens = Block.tokenizeMessage(message)
     var processedIndices = [Bool](count: arguments.count, repeatedValue: false)
@@ -145,13 +145,13 @@ extension Block {
               .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
-          if let field = try Field.fieldFromJSON(element) {
+          if let field = try Field.fieldFromJSON(element, workspace: workspace) {
             // Add field to field list
             tempFieldList.append(field)
             break
-          } else if let input = Input.inputFromJSON(element) {
+          } else if let input = Input.inputFromJSON(element, workspace: workspace) {
             // Add current field list to input, and add input to input list
-            input.fields += tempFieldList
+            input.appendFields(tempFieldList)
             tempFieldList = []
             allInputs.append(input)
             break
@@ -169,7 +169,7 @@ extension Block {
         stringToken = stringToken.stringByTrimmingCharactersInSet(
           NSCharacterSet.whitespaceAndNewlineCharacterSet())
         if (stringToken != "") {
-          tempFieldList.append(FieldLabel(name: "", text: stringToken))
+          tempFieldList.append(FieldLabel(name: "", text: stringToken, workspace: workspace))
         }
 
       default:
@@ -188,8 +188,8 @@ extension Block {
 
     // If there were leftover fields we need to add a dummy input to hold them.
     if (!tempFieldList.isEmpty) {
-      let input = Input(type: .Dummy, name: "")
-      input.fields += tempFieldList
+      let input = Input(type: .Dummy, name: "", workspace: workspace)
+      input.appendFields(tempFieldList)
       tempFieldList = []
       allInputs.append(input)
     }

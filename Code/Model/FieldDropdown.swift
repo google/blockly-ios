@@ -27,26 +27,27 @@ public class FieldDropdown: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, options: [(displayName: String, value: String)]) {
+  public init(name: String, options: [(displayName: String, value: String)], workspace: Workspace) {
     self.options = options
 
-    super.init(name: name)
+    super.init(name: name, workspace: workspace)
   }
 
-  public convenience init(name: String, displayNames: [String], values: [String]) throws {
-    if (displayNames.count != values.count) {
-      throw BlockError(.InvalidBlockDefinition,
-        "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
-    }
-    let options = Array(
-      zip(displayNames, values) // Creates tuples of (displayNames[i], values[i])
-      .map { (displayName: $0.0, value: $0.1) }) // Re-map each tuple as (displayName:, value:)
-    self.init(name: name, options: options)
+  public convenience init(
+    name: String, displayNames: [String], values: [String], workspace: Workspace) throws {
+      if (displayNames.count != values.count) {
+        throw BlockError(.InvalidBlockDefinition,
+          "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
+      }
+      let options = Array(
+        zip(displayNames, values) // Creates tuples of (displayNames[i], values[i])
+        .map { (displayName: $0.0, value: $0.1) }) // Re-map each tuple as (displayName:, value:)
+      self.init(name: name, options: options, workspace: workspace)
   }
 
   // MARK: - Super
 
-  public override func copy() -> AnyObject {
-    return FieldDropdown(name: name, options: options)
+  public override func copyToWorkspace(workspace: Workspace) -> Field {
+    return FieldDropdown(name: name, options: options, workspace: workspace)
   }
 }
