@@ -162,7 +162,7 @@ extension WorkspaceView {
         // TODO:(vicng) Disconnect this block from its block group layout, prior to moving it
       }
 
-      blockView.layout?.parentBlockGroupLayout.moveToWorkspacePosition(
+      blockView.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(
         panGestureBlockViewStartPosition! + currentWorkspacePoint - panGestureFirstTouchPosition!)
     }
 

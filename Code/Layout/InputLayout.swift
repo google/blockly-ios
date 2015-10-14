@@ -100,13 +100,12 @@ public class InputLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, workspaceLayout: WorkspaceLayout!,
-    parentLayout: BlockLayout) {
-      self.input = input
-      self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout, parentLayout: nil)
-      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-      self.input.layout = self
-      self.blockGroupLayout.parentLayout = self
+  public required init(input: Input, workspaceLayout: WorkspaceLayout) {
+    self.input = input
+    self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout)
+    super.init(workspaceLayout: workspaceLayout)
+    self.input.layout = self
+    self.blockGroupLayout.parentLayout = self
   }
 
   // MARK: - Super

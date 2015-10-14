@@ -45,19 +45,6 @@ public func WorkspaceEdgeInsetsMake(
 }
 
 /**
-Protocol for events that occur on a `Workspace`.
-*/
-@objc(BKYWorkspaceDelegate)
-public protocol WorkspaceDelegate {
-  /**
-  Event that is called when one of the workspace's properties has changed.
-
-  - Parameter workspace: The workspace that changed.
-  */
-  func workspaceDidChange(workspace: Workspace)
-}
-
-/**
 Data structure that contains `Block` instances.
 */
 @objc(BKYWorkspace)
@@ -69,7 +56,6 @@ public class Workspace : NSObject {
   public let maxBlocks: Int?
   public private(set) var topBlocks = [Block]()
   public private(set) var allBlocks = [String: Block]()
-  public weak var delegate: WorkspaceDelegate?
 
   /// The layout used for rendering this workspace
   public var layout: WorkspaceLayout?

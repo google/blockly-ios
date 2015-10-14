@@ -29,9 +29,9 @@ public class LayoutBuilder: NSObject {
     let workspaceLayout = WorkspaceLayout(workspace: workspace)
 
     for block in workspace.topBlocks {
-      let layout = buildBlockGroupLayoutTreeFromBlock(
-        block, workspaceLayout: workspaceLayout, parentLayout: workspaceLayout)
-      workspaceLayout.appendBlockGroupLayout(layout)
+      let blockGroupLayout = buildBlockGroupLayoutTreeFromBlock(
+        block, workspaceLayout: workspaceLayout)
+      workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
 
     return workspaceLayout
@@ -41,21 +41,18 @@ public class LayoutBuilder: NSObject {
   Builds and returns an entire `BlockGroupLayout` tree from a given block.
   */
   public static func buildBlockGroupLayoutTreeFromBlock(
-    block: Block, workspaceLayout: WorkspaceLayout, parentLayout: Layout?)
-    -> BlockGroupLayout {
-      let blockGroupLayout = BlockGroupLayout(
-        workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+    block: Block, workspaceLayout: WorkspaceLayout) -> BlockGroupLayout {
+      let blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout)
 
       // The passed in block is considered as the first block in this group
-      let blockLayout = buildBlockLayoutTreeFromBlock(
-        block, workspaceLayout: workspaceLayout, parentLayout: blockGroupLayout)
+      let blockLayout = buildBlockLayoutTreeFromBlock(block, workspaceLayout: workspaceLayout)
       blockGroupLayout.appendBlockLayout(blockLayout)
 
       // Iterate and append each "next block"
       var currentBlock = block
       while let nextBlock = currentBlock.nextBlock {
         let nextBlockLayout = buildBlockLayoutTreeFromBlock(
-          nextBlock, workspaceLayout: workspaceLayout, parentLayout: blockGroupLayout)
+          nextBlock, workspaceLayout: workspaceLayout)
         blockGroupLayout.appendBlockLayout(nextBlockLayout)
         currentBlock = nextBlock
       }
@@ -66,16 +63,13 @@ public class LayoutBuilder: NSObject {
   /**
   Builds and returns an entire `BlockLayout` tree from a given block.
   */
-  public static func buildBlockLayoutTreeFromBlock(
-    block: Block, workspaceLayout: WorkspaceLayout, parentLayout: BlockGroupLayout)
+  public static func buildBlockLayoutTreeFromBlock(block: Block, workspaceLayout: WorkspaceLayout)
     -> BlockLayout {
-      let blockLayout = BlockLayout(
-        block: block, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+      let blockLayout = BlockLayout(block: block, workspaceLayout: workspaceLayout)
 
       // Build the input tree underneath this block
       for input in block.inputs {
-        let inputLayout = buildLayoutTreeFromInput(
-          input, workspaceLayout: workspaceLayout, parentLayout: blockLayout)
+        let inputLayout = buildLayoutTreeFromInput(input, workspaceLayout: workspaceLayout)
         blockLayout.appendInputLayout(inputLayout)
       }
 
@@ -86,22 +80,20 @@ public class LayoutBuilder: NSObject {
   Builds and returns an entire `InputLayout` tree from a given input.
   */
   public static func buildLayoutTreeFromInput(
-    input: Input, workspaceLayout: WorkspaceLayout, parentLayout: BlockLayout) -> InputLayout {
+    input: Input, workspaceLayout: WorkspaceLayout) -> InputLayout {
       let inputLayout = InputLayout(
-        input: input, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+        input: input, workspaceLayout: workspaceLayout)
 
       // Build the block group underneath this input
       if let connectedBlock = input.connectedBlock {
         inputLayout.blockGroupLayout =
-          buildBlockGroupLayoutTreeFromBlock(
-            connectedBlock, workspaceLayout: workspaceLayout, parentLayout: inputLayout)
+          buildBlockGroupLayoutTreeFromBlock(connectedBlock, workspaceLayout: workspaceLayout)
       }
 
       // Build the field tree underneath this input
       for field in input.fields {
-        if let fieldLayout = buildLayoutTreeFromField(
-          field, workspaceLayout: workspaceLayout, parentLayout: inputLayout) {
-            inputLayout.appendFieldLayout(fieldLayout)
+        if let fieldLayout = buildLayoutTreeFromField(field, workspaceLayout: workspaceLayout) {
+          inputLayout.appendFieldLayout(fieldLayout)
         }
       }
 
@@ -113,13 +105,12 @@ public class LayoutBuilder: NSObject {
   Builds and returns an entire `FieldLayout` tree from a given field.
   */
   public static func buildLayoutTreeFromField(
-    field: Field, workspaceLayout: WorkspaceLayout, parentLayout: InputLayout) -> FieldLayout? {
+    field: Field, workspaceLayout: WorkspaceLayout) -> FieldLayout? {
       // TODO:(vicng) Implement error handling if the field's layout could not be found
       if let fieldLabel = field as? FieldLabel {
-        return FieldLabelLayout(
-          fieldLabel: fieldLabel, workspaceLayout: workspaceLayout, parentLayout: parentLayout)
+        return FieldLabelLayout(fieldLabel: fieldLabel, workspaceLayout: workspaceLayout)
       }
-      
+
       return nil
   }
 }

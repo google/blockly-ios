@@ -47,8 +47,8 @@ public class WorkspaceLayout: Layout {
 
   public required init(workspace: Workspace) {
     self.workspace = workspace
-    super.init(workspaceLayout: nil, parentLayout: nil)
-    self.workspace.delegate = self
+    super.init(workspaceLayout: nil)
+    self.workspace.layout = self
     self.workspaceLayout = self
   }
 
@@ -116,14 +116,6 @@ public class WorkspaceLayout: Layout {
     let blockGroupLayout = blockGroupLayouts.removeAtIndex(index)
     blockGroupLayout.parentLayout = nil
     return blockGroupLayout
-  }
-}
-
-// MARK: - WorkspaceDelegate implementation
-
-extension WorkspaceLayout: WorkspaceDelegate {
-  public func workspaceDidChange(workspace: Workspace) {
-    // TODO:(vicng) Potentially generate an event to update the corresponding view
   }
 }
 

@@ -32,10 +32,9 @@ public class FieldLabelLayout: FieldLayout {
 
   // MARK: - Initializers
 
-  public required init(
-    fieldLabel: FieldLabel, workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout) {
+  public required init(fieldLabel: FieldLabel, workspaceLayout: WorkspaceLayout) {
     self.fieldLabel = fieldLabel
     super.init(field: fieldLabel, workspaceLayout: workspaceLayout,
-      parentLayout: parentLayout, measurer: FieldLabelLayout.defaultMeasurer)
+      measurer: FieldLabelLayout.defaultMeasurer)
   }
 }

@@ -120,9 +120,8 @@ public class Layout: NSObject {
 
   // MARK: - Initializers
 
-  public init(workspaceLayout: WorkspaceLayout!, parentLayout: Layout? = nil) {
+  public init(workspaceLayout: WorkspaceLayout!) {
     self.uuid = NSUUID().UUIDString
-    self.parentLayout = parentLayout
     self.workspaceLayout = workspaceLayout
     super.init()
   }

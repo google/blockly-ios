@@ -48,12 +48,11 @@ public class FieldLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(field: Field, workspaceLayout: WorkspaceLayout!, parentLayout: InputLayout,
-    measurer: FieldLayoutMeasurer.Type) {
-      self.field = field
-      self.measurer = measurer
-      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-      self.field.layout = self
+  public init(field: Field, workspaceLayout: WorkspaceLayout, measurer: FieldLayoutMeasurer.Type) {
+    self.field = field
+    self.measurer = measurer
+    super.init(workspaceLayout: workspaceLayout)
+    self.field.layout = self
   }
 
   // MARK: - Super

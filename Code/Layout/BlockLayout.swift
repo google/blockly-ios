@@ -61,21 +61,20 @@ public class BlockLayout: Layout {
 
   /// Whether this block is the first child of its parent, which must be a `BlockGroupLayout`.
   public var topBlockInBlockLayout: Bool {
-    return parentBlockGroupLayout.blockLayouts[0] == self ?? false
+    return parentBlockGroupLayout?.blockLayouts[0] == self ?? false
   }
 
   /// The parent block group layout
-  public var parentBlockGroupLayout: BlockGroupLayout {
-    return parentLayout as! BlockGroupLayout
+  public var parentBlockGroupLayout: BlockGroupLayout? {
+    return parentLayout as? BlockGroupLayout
   }
 
   // MARK: - Initializers
 
-  public required init(
-    block: Block, workspaceLayout: WorkspaceLayout!, parentLayout: BlockGroupLayout) {
-      self.block = block
-      super.init(workspaceLayout: workspaceLayout, parentLayout: parentLayout)
-      self.block.layout = self
+  public required init(block: Block, workspaceLayout: WorkspaceLayout) {
+    self.block = block
+    super.init(workspaceLayout: workspaceLayout)
+    self.block.layout = self
   }
 
   // MARK: - Super
