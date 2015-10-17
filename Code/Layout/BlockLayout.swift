@@ -35,8 +35,6 @@ public class BlockLayout: Layout {
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
 
-  // TODO:(vicng) Compute this value via "self.block.inputs[]" and remove methods to append/remove
-  // input layouts.
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
 
@@ -74,7 +72,6 @@ public class BlockLayout: Layout {
   public required init(block: Block, workspaceLayout: WorkspaceLayout) {
     self.block = block
     super.init(workspaceLayout: workspaceLayout)
-    self.block.layout = self
   }
 
   // MARK: - Super

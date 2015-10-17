@@ -18,7 +18,6 @@
 		FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726771B83C54900777B49 /* InputLayout.swift */; };
 		FA27267D1B83C54900777B49 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726781B83C54900777B49 /* Layout.swift */; };
 		FA27267E1B83C54900777B49 /* WorkspaceLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726791B83C54900777B49 /* WorkspaceLayout.swift */; };
-		FA2726801B83F76500777B49 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27267F1B83F76500777B49 /* LayoutBuilder.swift */; };
 		FA2726821B83F86000777B49 /* FieldLabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726811B83F86000777B49 /* FieldLabelLayout.swift */; };
 		FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726831B83F99300777B49 /* FieldLayout.swift */; };
 		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
@@ -93,7 +92,6 @@
 		FA2726771B83C54900777B49 /* InputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLayout.swift; sourceTree = "<group>"; };
 		FA2726781B83C54900777B49 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		FA2726791B83C54900777B49 /* WorkspaceLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayout.swift; sourceTree = "<group>"; };
-		FA27267F1B83F76500777B49 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA2726811B83F86000777B49 /* FieldLabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelLayout.swift; sourceTree = "<group>"; };
 		FA2726831B83F99300777B49 /* FieldLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLayout.swift; sourceTree = "<group>"; };
 		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
@@ -179,7 +177,6 @@
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
 				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
-				FA27267F1B83F76500777B49 /* LayoutBuilder.swift */,
 				FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
@@ -502,7 +499,6 @@
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
 				FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */,
-				FA2726801B83F76500777B49 /* LayoutBuilder.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,

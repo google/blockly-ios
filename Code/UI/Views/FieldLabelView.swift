@@ -23,9 +23,11 @@ public class FieldLabelView: UILabel {
   // MARK: - Properties
 
   /// Layout object to render
-  public var layout: FieldLabelLayout! {
+  public var layout: FieldLabelLayout? {
     didSet {
-      refresh()
+      oldValue?.delegate = nil
+      layout?.delegate = self
+      refreshView()
     }
   }
 
@@ -45,14 +47,14 @@ public class FieldLabelView: UILabel {
   /**
   Refreshes the view based on the current layout.
   */
-  public func refresh() {
-    if layout == nil {
-      self.frame = CGRectZero
-      self.text = ""
+  public func refreshView() {
+    guard let layout = self.layout else {
+      ViewManager.sharedInstance.recycleView(self)
       return
     }
 
-    self.frame = layout.viewFrame
+    refreshPosition()
+
     self.text = layout.fieldLabel.text
 
     // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
@@ -61,6 +63,30 @@ public class FieldLabelView: UILabel {
 
     // TODO:(vicng) Standardize this font
     self.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+  }
+
+  /**
+  Refreshes `frame` based on the current layout.
+  */
+  private func refreshPosition() {
+    guard let layout = self.layout else {
+      ViewManager.sharedInstance.recycleView(self)
+      return
+    }
+
+    self.frame = layout.viewFrame
+  }
+}
+
+// MARK: - LayoutDelegate implementation
+
+extension FieldLabelView: LayoutDelegate {
+  public func layoutDisplayChanged(layout: Layout) {
+    refreshView()
+  }
+
+  public func layoutPositionChanged(layout: Layout) {
+    refreshPosition()
   }
 }
 
@@ -75,7 +101,8 @@ extension FieldLabelView: FieldLayoutMeasurer {
     }
     // TODO:(vicng) Return different values based on the scale
     // TODO:(vicng) Use a standardized font size that can be configurable for the project
-    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
+    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(
+      UIFont.systemFontOfSize(14 * scale))
   }
 }
 
@@ -84,5 +111,7 @@ extension FieldLabelView: FieldLayoutMeasurer {
 extension FieldLabelView: Recyclable {
   public func recycle() {
     self.layout = nil
+    self.frame = CGRectZero
+    self.text = ""
   }
 }

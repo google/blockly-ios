@@ -62,28 +62,30 @@ public class WorkspaceView: UIScrollView {
     refreshContentSize()
 
     // Get blocks that are in the current viewport
-    for descendantLayout in layout.allBlockLayoutDescendants() {
-      if !shouldRenderBlockLayout(descendantLayout) {
+    for blockLayout in layout.allBlockLayoutDescendants() {
+      let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
+
+      if !shouldRenderBlockLayout(blockLayout) {
         // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
         // workspace view and recycle it.
-        if let descendantView = _viewManager.cachedBlockViewForLayout(
-          descendantLayout, createIfNotFound: false) {
-            descendantView.bky_removeAllGestureRecognizers()
-            descendantView.removeFromSuperview()
-            _viewManager.recycleView(descendantView)
+        if blockView != nil {
+            blockView!.bky_removeAllGestureRecognizers()
+            blockView!.removeFromSuperview()
+            _viewManager.recycleView(blockView!)
         }
         continue
+      } else if blockView == nil {
+        // Create a new block view for this layout
+        let newBlockView = _viewManager.newBlockViewForLayout(blockLayout)
+        newBlockView.bky_removeAllGestureRecognizers()
+        newBlockView.addGestureRecognizer(
+          UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
+        newBlockView.addGestureRecognizer(
+          UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
+        addSubview(newBlockView)
+      } else {
+        // Do nothing. The block view will handle its own refreshing/repositioning.
       }
-
-      // Render this block layout
-      let descendantView = _viewManager.cachedBlockViewForLayout(
-        descendantLayout, createIfNotFound: true) as BlockView!
-      descendantView.bky_removeAllGestureRecognizers()
-      descendantView.addGestureRecognizer(
-        UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
-      descendantView.addGestureRecognizer(
-        UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
-      addSubview(descendantView)
     }
   }
 
@@ -158,9 +160,9 @@ extension WorkspaceView {
       // Handle actual panning of the view
       let currentWorkspacePoint = layout.workspacePointFromViewPoint(gesture.locationInView(self))
 
-      if (blockView.layout?.topBlockInBlockLayout == true) ?? false {
-        // TODO:(vicng) Disconnect this block from its block group layout, prior to moving it
-      }
+      // Disconnect this block from its previous or output connections prior to moving it
+      blockView.layout?.block.previousConnection?.disconnect()
+      blockView.layout?.block.outputConnection?.disconnect()
 
       blockView.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(
         panGestureBlockViewStartPosition! + currentWorkspacePoint - panGestureFirstTouchPosition!)

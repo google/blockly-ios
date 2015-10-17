@@ -42,8 +42,6 @@ extension Block {
     public unowned var workspace: Workspace
 
     // These values are publicly mutable in `Block`
-    public var childBlocks: [Block] = []
-    public weak var parentBlock: Block?
     public var tooltip: String = ""
     public var comment: String = ""
     public var helpURL: String = ""
@@ -88,7 +86,7 @@ extension Block {
       previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
       for input in block.inputs {
-        let newInput = Input(type: input.type, name: input.name, workspace: workspace);
+        let newInput = Input(type: input.type, name: input.name, workspace: workspace)
         for field in input.fields {
           newInput.appendField(field.copyToWorkspace(workspace))
         }
@@ -125,8 +123,6 @@ extension Block {
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)
 
-      block.childBlocks = childBlocks
-      block.parentBlock = parentBlock
       block.tooltip = tooltip
       block.comment = comment
       block.helpURL = helpURL

@@ -33,6 +33,8 @@ public protocol LayoutDelegate {
   - Parameter layout: The `Layout` that changed.
   */
   func layoutPositionChanged(layout: Layout)
+
+  // TODO:(vicng) Add an event for when a layout is deleted
 }
 
 /**
@@ -55,7 +57,15 @@ public class Layout: NSObject {
   /// The workspace node which this node belongs to.
   public weak var workspaceLayout: WorkspaceLayout!
   /// The parent node of this layout. If this value is nil, this layout is the root node.
-  public weak var parentLayout: Layout?
+  public weak var parentLayout: Layout? {
+    didSet {
+      if parentLayout != oldValue {
+        // TODO:(vicng) Fix this so the right change events are generated up and down the tree. For
+        // now, simply update the entire workspaceLayout.
+        workspaceLayout.updateLayout()
+      }
+    }
+  }
 
   /// Position relative to `self.parentLayout`
   internal var relativePosition: WorkspacePoint = WorkspacePointZero
@@ -84,8 +94,10 @@ public class Layout: NSObject {
   public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
       if viewFrame != oldValue {
-        // Mark this layout for repositioning
-        self.needsRepositioning = true
+        // TODO:(vicng) For now, this is a hack. The Layout tree needs to be changed so each layout
+        // can determine when it exactly needs a re-draw or reposition. Once this is done properly,
+        // change this line back to `self.needsRepositioning = true`.
+        self.needsDisplay = true
       }
     }
   }

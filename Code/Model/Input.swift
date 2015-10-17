@@ -79,7 +79,6 @@ public class Input : NSObject {
   public weak var sourceBlock: Block! {
     didSet {
       self.connection?.sourceBlock = sourceBlock
-      self.layout?.parentLayout = sourceBlock?.layout
     }
   }
   public private(set) var connection: Connection?
@@ -101,13 +100,13 @@ public class Input : NSObject {
     self.name = name
     self.type = type
 
-    if (type == .Value) {
-      self.connection = Connection(type: .InputValue)
-    } else if (type == .Statement) {
-      self.connection = Connection(type: .NextStatement)
-    }
-
     super.init()
+
+    if (type == .Value) {
+      self.connection = Connection(type: .InputValue, sourceInput: self)
+    } else if (type == .Statement) {
+      self.connection = Connection(type: .NextStatement, sourceInput: self)
+    }
 
     do {
       self.layout = try workspace.layoutFactory?.layoutForInput(self, workspace: workspace)

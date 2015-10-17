@@ -84,15 +84,40 @@ public class BlockGroupLayout: Layout {
   }
 
   /**
-  Removes `self.blockLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+  Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
 
-  - Parameter index: The index to remove from `self.blockLayouts`.
-  - Returns: The `BlockLayout` that was removed.
+  - Parameter blockLayouts: The list of `BlockLayout` instances to append.
   */
-  public func removeBlockLayoutAtIndex(index: Int) -> BlockLayout {
-    let blockLayout = blockLayouts.removeAtIndex(index)
-    blockLayout.parentLayout = nil
-    return blockLayout
+  public func appendBlockLayouts(blockLayouts: [BlockLayout]) {
+    for blockLayout in blockLayouts {
+      appendBlockLayout(blockLayout)
+    }
+  }
+
+  /**
+  Removes a given block layout and all subsequent layouts from `blockLayouts`, and returns them in
+  an array.
+
+  - Parameter blockLayout: The given block layout to find and remove.
+  - Returns: The list of block layouts that were removed, starting from the given block layout. If
+  the given block layout could not be found, it is still returned as a single-element list.
+  */
+  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout) -> [BlockLayout] {
+    var removedElements = [BlockLayout]()
+
+    if let index = blockLayouts.indexOf(blockLayout) {
+      while (index < blockLayouts.count) {
+        let removedLayout = blockLayouts.removeAtIndex(index)
+        removedLayout.parentLayout = nil
+        removedElements.append(removedLayout)
+      }
+    } else {
+      // Always return the given block layout, even it's not found
+      removedElements.append(blockLayout)
+      blockLayout.parentLayout = nil
+    }
+
+    return removedElements
   }
 
   /**

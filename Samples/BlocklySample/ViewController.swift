@@ -23,7 +23,6 @@ class ViewController: UIViewController {
     super.viewDidLoad()
 
     let workspace = buildWorkspace()
-    LayoutBuilder.buildLayoutTreeForWorkspace(workspace)
 
     guard let workspaceLayout = workspace.layout else {
       return
@@ -52,16 +51,16 @@ class ViewController: UIViewController {
     let workspace = Workspace(layoutFactory: layoutFactory, isFlyout: false)
 
     if let block1 = buildStatementBlock(workspace) {
-      workspace.addBlock(block1, asTopBlock: true)
+      workspace.addBlock(block1)
 
       if let block2 = buildOutputBlock(workspace) {
-        workspace.addBlock(block2, asTopBlock: false)
-        block1.inputs[1].connection?.connectTo(block2.outputConnection)
+        workspace.addBlock(block2)
+        try! block1.inputs[1].connection?.connectTo(block2.outputConnection)
       }
 
       if let block3 = buildStatementBlock(workspace) {
-        workspace.addBlock(block3, asTopBlock: false)
-        block1.inputs[2].connection?.connectTo(block3.previousConnection)
+        workspace.addBlock(block3)
+        try! block1.inputs[2].connection?.connectTo(block3.previousConnection)
       }
     }
 

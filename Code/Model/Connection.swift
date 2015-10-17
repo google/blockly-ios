@@ -16,6 +16,19 @@
 import Foundation
 
 /**
+Protocol for events that occur on a `Connection`.
+*/
+@objc(BKYConnectionDelegate)
+public protocol ConnectionDelegate {
+  /**
+  Event that is called when the target connection has been changed for a given connection.
+
+  - Parameter connection: The connection whose `targetConnection` has been changed.
+  */
+  func didChangeTargetForConnection(connection: Connection)
+}
+
+/**
 Component used to create a connection between two `Block` instances.
 */
 @objc(BKYConnection)
@@ -33,8 +46,11 @@ public class Connection : NSObject {
 
   public let type: BKYConnectionType
   public weak var sourceBlock: Block!
+
+  /// If this connection belongs to a value or statement input, this is its source
+  public private(set) weak var sourceInput: Input?
   public var position: CGPoint = CGPointZero
-  public weak var targetConnection: Connection?
+  public private(set) weak var targetConnection: Connection?
   public var targetBlock: Block? {
     return targetConnection?.sourceBlock
   }
@@ -44,11 +60,8 @@ public class Connection : NSObject {
       if (typeChecks != nil && targetConnection != nil &&
         !isCompatibleWithConnection(targetConnection!)) {
           // The new value type is not compatible with the existing connection.
-          if (isSuperior) {
-            targetConnection?.sourceBlock.parentBlock = nil
-          } else {
-            sourceBlock.parentBlock = nil
-          }
+
+          // TODO:(vicng) Disconnect this connection from its target
 
           // TODO:(vicng) Generate change event
       }
@@ -59,18 +72,42 @@ public class Connection : NSObject {
     return (self.type == .InputValue || self.type == .NextStatement)
   }
 
+  public var delegate: ConnectionDelegate?
+
   // MARK: - Initializers
 
-  public init(type: BKYConnectionType) {
+  public init(type: BKYConnectionType, sourceInput: Input? = nil) {
     self.type = type
+    self.sourceInput = sourceInput
   }
 
-  public func connectTo(otherConnection: Connection?) -> Bool {
+  public func connectTo(otherConnection: Connection?) throws -> Bool {
     // TODO:(vicng) This is a very basic implementation. Implement this properly!
-    self.targetConnection = otherConnection
-    otherConnection?.targetConnection = self
+    guard let newTargetConnection = otherConnection else {
+      return false
+    }
+
+    // Set targetConnections for both sides before sending out delegate event
+    self.targetConnection = newTargetConnection
+    newTargetConnection.targetConnection = self
+
+    self.delegate?.didChangeTargetForConnection(self)
+    newTargetConnection.delegate?.didChangeTargetForConnection(newTargetConnection)
 
     return true
+  }
+
+  public func disconnect() {
+    guard let oldTargetConnection = targetConnection else {
+      return
+    }
+
+    // Set targetConnections for both sides before sending out delegate event
+    self.targetConnection = nil
+    oldTargetConnection.targetConnection = nil
+
+    self.delegate?.didChangeTargetForConnection(self)
+    oldTargetConnection.delegate?.didChangeTargetForConnection(oldTargetConnection)
   }
 
   // MARK: - Private

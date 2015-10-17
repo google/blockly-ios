@@ -20,7 +20,7 @@ Factory responsible for returning new instances of Layout objects.
 */
 @objc(BKYLayoutFactory)
 public class LayoutFactory: NSObject {
-  // MARK: - Properties
+  // MARK: - Static Properties
 
   /// Error description for when the workspace layout is not defined
   public static let ERROR_WORKSPACE_LAYOUT_NOT_DEFINED = "workspace.layout has not been set"
@@ -39,20 +39,56 @@ public class LayoutFactory: NSObject {
   }
 
   /**
+  Builds and returns a `BlockLayout` for a given block and workspace.
+
+  - Parameter block: The given block
+  - Parameter workspace: The workspace where the block will be added.
+  - Returns: A new `BlockLayout` instance or nil, if either `workspace.layout` is nil or no suitable
+  layout could be found for the block.
+  - Throws:
+  `BlockError`: Thrown if workspace.layout is nil
+  */
+  public func layoutForBlock(block: Block, workspace: Workspace) throws -> BlockLayout {
+    guard let workspaceLayout = workspace.layout else {
+      // Can't return a block layout if the workspace does not have a layout
+      throw BlockError(.LayoutNotFound, LayoutFactory.ERROR_WORKSPACE_LAYOUT_NOT_DEFINED)
+    }
+
+    return BlockLayout(block: block, workspaceLayout: workspaceLayout)
+  }
+
+  /**
+  Builds and returns a `BlockGroupLayout` for a given workspace.
+
+  - Parameter workspace: The workspace where the block group will be used.
+  - Returns: A new `BlockGroupLayout` instance.
+  - Throws:
+  `BlockError`: Thrown if workspace.layout is nil
+  */
+  public func blockGroupLayoutForWorkspace(workspace: Workspace) throws -> BlockGroupLayout {
+    guard let workspaceLayout = workspace.layout else {
+      // Can't return a block layout if the workspace does not have a layout
+      throw BlockError(.LayoutNotFound, LayoutFactory.ERROR_WORKSPACE_LAYOUT_NOT_DEFINED)
+    }
+
+    return BlockGroupLayout(workspaceLayout: workspaceLayout)
+  }
+
+  /**
   Builds and returns an `InputLayout` for a given input and workspace.
 
   - Parameter input: The given input
   - Parameter workspace: The workspace where the input will be added.
+  - Returns: A new `InputLayout` instance.
   - Throws:
   `BlockError`: Thrown if workspace.layout is nil
-  - Returns: A new `InputLayout` instance or nil, if either `workspace.layout` is nil or no suitable
-  layout could be found for the input.
   */
   public func layoutForInput(input: Input, workspace: Workspace) throws -> InputLayout {
     guard let workspaceLayout = workspace.layout else {
       // Can't return an input layout if the workspace does not have a layout
       throw BlockError(.LayoutNotFound, LayoutFactory.ERROR_WORKSPACE_LAYOUT_NOT_DEFINED)
     }
+
     return InputLayout(input: input, workspaceLayout: workspaceLayout)
   }
 
@@ -61,17 +97,17 @@ public class LayoutFactory: NSObject {
 
   - Parameter field: The given field
   - Parameter workspace: The workspace where the field will be added.
+  - Returns: A new `FieldLayout` instance.
   - Throws:
   `BlockError`: Thrown if workspace.layout is nil or if no suitable `FieldLayout` could be found for
   the field.
-  - Returns: A new `FieldLayout` instance or nil, if either `workspace.layout` is nil or no suitable
-  layout could be found for the field.
   */
   public func layoutForField(field: Field, workspace: Workspace) throws -> FieldLayout {
     guard let workspaceLayout = workspace.layout else {
       // Can't return a field layout if the workspace does not have a layout
       throw BlockError(.LayoutNotFound, LayoutFactory.ERROR_WORKSPACE_LAYOUT_NOT_DEFINED)
     }
+
     if let fieldLabel = field as? FieldLabel {
       return FieldLabelLayout(fieldLabel: fieldLabel, workspaceLayout: workspaceLayout)
     }

@@ -87,12 +87,9 @@ public class BlockView: UIView {
   Refreshes the view based on the current layout.
   */
   private func refreshView() {
-    // Remove and recycle field subviews
-    recycleFieldViews()
-
     guard let layout = self.layout else {
-      self.frame = CGRectZero
-      self.backgroundColor = UIColor.clearColor()
+      // Recycle self and return
+      _viewManager.recycleView(self)
       return
     }
 
@@ -114,14 +111,25 @@ public class BlockView: UIView {
     addSubview(_highlightOverlayView)
     sendSubviewToBack(_highlightOverlayView)
 
-    // Add field views
+    // Update field views
     for fieldLayout in layout.fieldLayouts {
-      if let fieldView = ViewManager.sharedInstance.fieldViewForLayout(fieldLayout) {
-        _fieldViews.append(fieldView)
+      let cachedFieldView = ViewManager.sharedInstance.cachedFieldViewForLayout(fieldLayout)
 
-        addSubview(fieldView)
+      if cachedFieldView == nil {
+        do {
+          let fieldView = try ViewManager.sharedInstance.newFieldViewForLayout(fieldLayout)
+          _fieldViews.append(fieldView)
+
+          addSubview(fieldView)
+        } catch let error as NSError {
+          bky_assertionFailure("\(error)")
+        }
+      } else {
+        // Do nothing. The field view will handle its own refreshing/repositioning.
       }
     }
+
+    // TODO:(vicng) Remove any field views that no longer have field layouts associated with it
   }
 
   /**
@@ -129,7 +137,8 @@ public class BlockView: UIView {
   */
   private func refreshPosition() {
     guard let layout = self.layout else {
-      self.frame = CGRectZero
+      // Recycle self and return
+      _viewManager.recycleView(self)
       return
     }
 
@@ -143,6 +152,7 @@ public class BlockView: UIView {
 extension BlockView: Recyclable {
   public func recycle() {
     self.layout = nil
+    self.frame = CGRectZero
 
     recycleFieldViews()
 

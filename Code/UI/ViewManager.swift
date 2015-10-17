@@ -30,62 +30,88 @@ public class ViewManager: NSObject {
   /// Object pool for holding reusable views.
   private let _objectPool = ObjectPool()
 
-  /// Dictionary of known BlockViews
+  /// Dictionary of cached BlockViews
   private var _blockViews = [String: BlockView]()
+
+  /// Dictionary of cached views for FieldLayouts
+  private var _fieldViews = [String: UIView]()
 
   // MARK: - Public
 
   /**
-  Looks in the internal cache for a `BlockView` that has been assigned the given layout.
-  If one is found, it is returned.
-  If none is found and `createIfNotFound` is set to true, a recycled (or new) `BlockView` instance
-  is returned. This instance is assigned the given layout and stored in the internal cache for
-  future lookup, prior to being returned.
-  In all other cases, nil is returned.
+  Returns the `BlockView` that has been cached for the given layout. If the view could not be found
+  in the cache, nil is returned.
 
-  - Parameter layout: The given `BlockLayout`.
-  - Parameter createIfNotFound: If the given block layout could not be found in the cache and this
-  value is set to true, returns a new BlockView with the given layout assigned to it.
-  - Returns: A `BlockView` with the given layout assigned to it, or nil.
+  - Parameter layout: The given `BlockLayout`
+  - Returns: A `BlockView` with the given layout assigned to it, or nil
   */
-  public func cachedBlockViewForLayout(layout: BlockLayout, createIfNotFound: Bool) -> BlockView? {
+  public func cachedBlockViewForLayout(layout: BlockLayout) -> BlockView? {
     // Try to see if the view already exists
     if let cachedView = _blockViews[layout.block.uuid] {
       return cachedView
     }
-
-    if createIfNotFound {
-      // Get a fresh view and populate it with the layout
-      let blockView = viewForType(BlockView.self)
-      blockView.layout = layout
-
-      // Cache it for future lookups
-      _blockViews[layout.block.uuid] = blockView
-
-      return blockView
-    }
-
     return nil
   }
 
   /**
-  Looks in the internal cache for a `FieldView` that has been assigned the given layout.
-  If one is found, it is returned.
-  If not, a recycled (or new) `UIView` instance is created. This instance is assigned the given
-  layout, stored in the internal cache for future lookup, and returned.
+  Returns a recycled or new `BlockView` instance assigned to the given layout. This view is stored
+  in the internal cache for future lookup.
 
-  - Parameter layout: The given `FieldLayout`.
-  - Returns: A `UIView` with the given layout assigned to it.
+  - Parameter layout: The given `BlockLayout`
+  - Returns: A `BlockView` with the given layout assigned to it
   */
-  public func fieldViewForLayout(layout: FieldLayout) -> UIView? {
-    // TODO:(vicng) Implement a lookup mechanism based on a layout ID
+  public func newBlockViewForLayout(layout: BlockLayout) -> BlockView {
+    // Get a fresh view and populate it with the layout
+    let blockView = viewForType(BlockView.self)
+    blockView.layout = layout
+
+    // Cache it for future lookups
+    _blockViews[layout.block.uuid] = blockView
+
+    return blockView
+  }
+
+  /**
+  Returns the `UIView` that has been cached for the given layout. If the view could not be found
+  in the cache, nil is returned.
+
+  - Parameter layout: The given `FieldLayout`
+  - Returns: A `UIView` with the given layout assigned to it, or nil
+  */
+  public func cachedFieldViewForLayout(layout: FieldLayout) -> UIView? {
+    // Try to see if the view already exists
+    if let cachedView = _fieldViews[layout.uuid] {
+      return cachedView
+    }
+    return nil
+  }
+
+  /**
+  Returns a recycled or new `UIView` instance assigned to the given layout. This view is stored
+  in the internal cache for future lookup.
+
+  - Parameter layout: The given `FieldLayout`
+  - Returns: A `UIView` with the given layout assigned to it
+  - Throws:
+  `BlockError`: Thrown if no `UIView` could be retrieved for the given layout.
+  */
+  public func newFieldViewForLayout(layout: FieldLayout) throws -> UIView {
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout
+
+    var fieldView: UIView?
     if let fieldLabelLayout = layout as? FieldLabelLayout {
       let fieldLabelView = viewForType(FieldLabelView.self)
       fieldLabelView.layout = fieldLabelLayout
-      return fieldLabelView
+      fieldView = fieldLabelView
     }
-    return nil
+
+    if fieldView == nil {
+      throw BlockError(.ViewNotFound, "Could not retrieve view for \(layout.dynamicType)")
+    }
+
+    // Cache it for future lookups
+    _fieldViews[layout.uuid] = fieldView!
+    return fieldView!
   }
 
   /**

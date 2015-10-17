@@ -26,8 +26,8 @@ public class WorkspaceLayout: Layout {
   public let workspace: Workspace
 
   /// The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
-  /// `self.workspace.blocks[]`.
-  public private(set) var blockGroupLayouts = [BlockGroupLayout]()
+  /// `self.workspace.blocks[]`, keyed by each layout's `uuid`.
+  public private(set) var blockGroupLayouts = [String: BlockGroupLayout]()
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point translates to a (5, 5) Workspace point.
@@ -55,14 +55,14 @@ public class WorkspaceLayout: Layout {
   // MARK: - Super
 
   public override var childLayouts: [Layout] {
-    return blockGroupLayouts
+    return blockGroupLayouts.map({ $0.1 }) // Returns the value of each key/value entry.
   }
 
   public override func layoutChildren() {
     var size = WorkspaceSizeZero
 
     // Update relative position/size of blocks
-    for blockGroupLayout in blockGroupLayouts {
+    for (_, blockGroupLayout) in blockGroupLayouts {
       blockGroupLayout.layoutChildren()
 
       size = LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: size)
@@ -79,7 +79,7 @@ public class WorkspaceLayout: Layout {
   */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()
-    var layoutsToProcess = blockGroupLayouts
+    var layoutsToProcess = childLayouts as! [BlockGroupLayout]
 
     while !layoutsToProcess.isEmpty {
       let blockGroupLayout = layoutsToProcess.removeFirst()
@@ -103,19 +103,17 @@ public class WorkspaceLayout: Layout {
   */
   public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
     blockGroupLayout.parentLayout = self
-    blockGroupLayouts.append(blockGroupLayout)
+    blockGroupLayouts[blockGroupLayout.uuid] = blockGroupLayout
   }
 
   /**
-  Removes `self.blockGroupLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+  Removes a given block group layout from `self.blockGroupLayouts`.
 
-  - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
-  - Returns: The `BlockGroupLayout` that was removed.
+  - Parameter blockGroupLayout: The given block group layout.
   */
-  public func removeBlockGroupLayoutAtIndex(index: Int) -> BlockGroupLayout {
-    let blockGroupLayout = blockGroupLayouts.removeAtIndex(index)
+  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
     blockGroupLayout.parentLayout = nil
-    return blockGroupLayout
+    blockGroupLayouts[blockGroupLayout.uuid] = nil
   }
 }
 

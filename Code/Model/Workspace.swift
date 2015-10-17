@@ -54,7 +54,6 @@ public class Workspace : NSObject {
   public let isFlyout: Bool
   public let isRTL: Bool
   public let maxBlocks: Int?
-  public private(set) var topBlocks = [Block]()
   public private(set) var allBlocks = [String: Block]()
 
   /// The layout used for rendering this workspace
@@ -82,16 +81,9 @@ public class Workspace : NSObject {
   Add a given block to the workspace.
 
   - Parameter block: The block to add.
-  - Parameter asTopBlock: True if the block should be added to `topBlocks`. False, if not.
   */
-  public func addBlock(block: Block, asTopBlock: Bool) {
+  public func addBlock(block: Block) {
     allBlocks[block.uuid] = block
-
-    if asTopBlock {
-      topBlocks.append(block)
-    }
-
-    // TODO:(vicng) Generate change event
   }
 
   /**
@@ -101,7 +93,6 @@ public class Workspace : NSObject {
   */
   public func removeBlock(block: Block) {
     allBlocks[block.uuid] = nil
-    topBlocks = topBlocks.filter { $0 != block }
 
     // TODO:(vicng) Generate change event
   }
