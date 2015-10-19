@@ -32,7 +32,7 @@ public protocol Recyclable: class {
   - Note: This should not be called directly by clients. To recycle the object, it should be done
   via `objectPool.recycleObject(object)`.
   */
-  func recycle()
+  func prepareForReuse()
 }
 
 // MARK: -
@@ -89,15 +89,15 @@ public class ObjectPool: NSObject {
   }
 
   /**
-  Calls `recycle()` on the object and stores it for re-use later.
+  Calls `prepareForReuse()` on the object and stores it for re-use later.
 
   - Parameter object: The object to recycle.
   - Note: Objects recycled through this method should be obtained through `objectForType(:)` or
   `recyclableObjectForType(:)`.
   */
   public func recycleObject(object: Recyclable) {
-    // Recycle the object
-    object.recycle()
+    // Prepare the object for re-use
+    object.prepareForReuse()
 
     let className = String(object.dynamicType)
 

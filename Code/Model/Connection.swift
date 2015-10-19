@@ -84,6 +84,7 @@ public class Connection : NSObject {
   public func connectTo(otherConnection: Connection?) throws -> Bool {
     // TODO:(vicng) This is a very basic implementation. Implement this properly!
     guard let newTargetConnection = otherConnection else {
+      // TODO:(vicng) Throw errors when the user tries to make connections that aren't valid
       return false
     }
 

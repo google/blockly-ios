@@ -144,13 +144,17 @@ public class Block : NSObject {
         return
     }
 
-    let oldParentLayout = blockLayout.parentBlockGroupLayout
-
     // Disconnect this block's layout and all subsequent block layouts from its block group layout,
     // so they can be reattached to another block group layout
     let layoutsToReattach: [BlockLayout]
-    if oldParentLayout != nil {
-      layoutsToReattach = oldParentLayout!.removeAllStartingFromBlockLayout(blockLayout)
+    if let oldParentLayout = blockLayout.parentBlockGroupLayout {
+      layoutsToReattach = oldParentLayout.removeAllStartingFromBlockLayout(blockLayout)
+
+      if oldParentLayout.blockLayouts.count == 0 &&
+        oldParentLayout.parentLayout == workspace.layout {
+        // Remove this block's old parent group layout from the workspace level
+        workspace.layout?.removeBlockGroupLayout(oldParentLayout)
+      }
     } else {
       layoutsToReattach = [blockLayout]
     }
@@ -159,18 +163,13 @@ public class Block : NSObject {
       // Block was connected to another block
 
       if connection == previousConnection {
-        // Remove this block's old parent group layout from the workspace level
-        if oldParentLayout != nil {
-          workspace.layout?.removeBlockGroupLayout(oldParentLayout!)
-        }
-
         // Reattach block layouts to the target block's group layout
-        connection.targetConnection?.sourceBlock.layout?.parentBlockGroupLayout?.appendBlockLayouts(
-          layoutsToReattach)
+        connection.targetConnection?.sourceBlock.layout?.parentBlockGroupLayout?
+          .appendBlockLayouts(layoutsToReattach)
       } else if connection == outputConnection {
         // Reattach block layouts to target input's block group layout
-        connection.targetConnection?.sourceInput?.layout?.blockGroupLayout.appendBlockLayouts(
-          layoutsToReattach)
+        connection.targetConnection?.sourceInput?.layout?.blockGroupLayout
+          .appendBlockLayouts(layoutsToReattach)
       }
     } else {
       // Block was disconnected and added to the workspace level

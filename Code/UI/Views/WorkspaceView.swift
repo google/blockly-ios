@@ -19,8 +19,16 @@ import Foundation
 View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
-public class WorkspaceView: UIScrollView {
+public class WorkspaceView: LayoutView {
   // MARK: - Properties
+
+  /// Layout object to render
+  public var workspaceLayout: WorkspaceLayout? {
+    return layout as? WorkspaceLayout
+  }
+
+  /// Scroll view used to render the workspace
+  private var scrollView: UIScrollView!
 
   /// Stores the location of the block view's start position for a pan gesture
   private var panGestureBlockViewStartPosition: WorkspacePoint?
@@ -28,38 +36,31 @@ public class WorkspaceView: UIScrollView {
   /// Stores the first touch location of a pan gesture
   private var panGestureFirstTouchPosition: WorkspacePoint?
 
-  /// Layout object to render
-  public var layout: WorkspaceLayout! {
-    didSet {
-      if layout != oldValue {
-        oldValue?.delegate = nil
-        layout?.delegate = self
-        refreshView()
-      }
-    }
-  }
-
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
   // MARK: - Initializers
 
   public required init() {
+    self.scrollView = UIScrollView(frame: CGRectZero)
     super.init(frame: CGRectZero)
+
+    scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.autoresizesSubviews = true
+    addSubview(scrollView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
+    bky_assertionFailure("Called unsupported initializer")
     super.init(coder: aDecoder)
   }
 
-  // MARK: - Public
+  // MARK: - Super
 
-  /**
-  Refreshes the view based on the current layout. Only blocks that are visible or near the current
-  viewport are refreshed.
-  */
-  public func refreshView() {
-    refreshContentSize()
+  public override func internalRefreshView() {
+    guard let layout = self.layout as? WorkspaceLayout else {
+      return
+    }
 
     // Get blocks that are in the current viewport
     for blockLayout in layout.allBlockLayoutDescendants() {
@@ -69,32 +70,41 @@ public class WorkspaceView: UIScrollView {
         // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
         // workspace view and recycle it.
         if blockView != nil {
-            blockView!.bky_removeAllGestureRecognizers()
-            blockView!.removeFromSuperview()
-            _viewManager.recycleView(blockView!)
+          removeBlockView(blockView!)
         }
-        continue
       } else if blockView == nil {
         // Create a new block view for this layout
-        let newBlockView = _viewManager.newBlockViewForLayout(blockLayout)
-        newBlockView.bky_removeAllGestureRecognizers()
-        newBlockView.addGestureRecognizer(
-          UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
-        newBlockView.addGestureRecognizer(
-          UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
-        addSubview(newBlockView)
+        addBlockViewForLayout(blockLayout)
       } else {
         // Do nothing. The block view will handle its own refreshing/repositioning.
       }
     }
   }
 
-  /**
-  Refreshes `contentSize` based on the current layout.
-  */
-  public func refreshContentSize() {
+  public override func internalPrepareForReuse() {
+    guard let layout = self.layout as? WorkspaceLayout else {
+      return
+    }
+
+    // Remove all block views
+    for blockLayout in layout.allBlockLayoutDescendants() {
+      if let blockView = _viewManager.cachedBlockViewForLayout(blockLayout) {
+        removeBlockView(blockView)
+      }
+    }
+  }
+
+  public override func refreshPosition() {
+    guard let layout = self.layout as? WorkspaceLayout else {
+      return
+    }
+
+    // NOTE: This method purposely does not call super.refreshPosition() since that automatically
+    // sets `viewFrame` and `layer.zPosition` -- things that don't need to be done by this view.
+
+    // Set the content size of the scroll view.
     // TODO:(vicng) Figure out a good amount to pad the workspace by
-    self.contentSize = CGSizeMake(
+    scrollView.contentSize = CGSizeMake(
       layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
       layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
   }
@@ -109,12 +119,12 @@ public class WorkspaceView: UIScrollView {
   */
   private func shouldRenderBlockLayout(blockLayout: BlockLayout) -> Bool {
     // Allow blocks within a 1/2 screen away to be rendered
-    let xDelta = self.contentSize.width / 2
-    let yDelta = self.contentSize.height / 2
-    let minX = self.contentOffset.x - xDelta
-    let maxX = self.contentOffset.x + self.contentSize.width + xDelta
-    let minY = self.contentOffset.y - yDelta
-    let maxY = self.contentOffset.y + self.contentSize.height + yDelta
+    let xDelta = scrollView.contentSize.width / 2
+    let yDelta = scrollView.contentSize.height / 2
+    let minX = scrollView.contentOffset.x - xDelta
+    let maxX = scrollView.contentOffset.x + scrollView.contentSize.width + xDelta
+    let minY = scrollView.contentOffset.y - yDelta
+    let maxY = scrollView.contentOffset.y + scrollView.contentSize.height + yDelta
     let leftMostEdge = blockLayout.viewFrame.origin.x
     let rightMostEdge = blockLayout.viewFrame.origin.x + blockLayout.viewFrame.size.width
     let topMostEdge = blockLayout.viewFrame.origin.y
@@ -126,17 +136,35 @@ public class WorkspaceView: UIScrollView {
       ((minY <= topMostEdge && topMostEdge <= maxY) ||
       (minY <= bottomMostEdge && bottomMostEdge <= maxY))
   }
-}
 
-// MARK: - LayoutDelegate
-
-extension WorkspaceView: LayoutDelegate {
-  public func layoutDisplayChanged(layout: Layout) {
-    refreshView()
+  /**
+  Creates a block view for a given layout and adds it to the scroll view.
+  
+  - Parameter layout: The given layout
+  */
+  private func addBlockViewForLayout(layout: BlockLayout) {
+    let newBlockView = _viewManager.newBlockViewForLayout(layout)
+    newBlockView.bky_removeAllGestureRecognizers()
+    newBlockView.addGestureRecognizer(
+      UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
+    newBlockView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
+    scrollView.addSubview(newBlockView)
   }
 
-  public func layoutPositionChanged(layout: Layout) {
-    refreshContentSize()
+  /**
+  Removes a given block view from the scroll view and recycles it.
+
+  - Parameter blockView: The given block view
+  */
+  private func removeBlockView(blockView: BlockView) {
+    blockView.bky_removeAllGestureRecognizers()
+    blockView.removeFromSuperview()
+
+    if let blockLayout = blockView.blockLayout {
+      _viewManager.uncacheBlockViewForLayout(blockLayout)
+    }
+    _viewManager.recycleView(blockView)
   }
 }
 
@@ -147,7 +175,8 @@ extension WorkspaceView {
   Event handler for a UIPanGestureRecognizer.
   */
   internal func didRecognizePanGesture(gesture: UIPanGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView else {
+    guard let blockView = gesture.view as? BlockView,
+      layout = self.layout as? WorkspaceLayout else {
       return
     }
 
@@ -161,10 +190,10 @@ extension WorkspaceView {
       let currentWorkspacePoint = layout.workspacePointFromViewPoint(gesture.locationInView(self))
 
       // Disconnect this block from its previous or output connections prior to moving it
-      blockView.layout?.block.previousConnection?.disconnect()
-      blockView.layout?.block.outputConnection?.disconnect()
+      blockView.blockLayout?.block.previousConnection?.disconnect()
+      blockView.blockLayout?.block.outputConnection?.disconnect()
 
-      blockView.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(
+      blockView.blockLayout?.parentBlockGroupLayout?.moveToWorkspacePosition(
         panGestureBlockViewStartPosition! + currentWorkspacePoint - panGestureFirstTouchPosition!)
     }
 

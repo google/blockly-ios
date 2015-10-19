@@ -19,22 +19,26 @@ import Foundation
 View for rendering a `FieldLabelLayout`.
 */
 @objc(BKYFieldLabelView)
-public class FieldLabelView: UILabel {
+public class FieldLabelView: LayoutView {
   // MARK: - Properties
 
   /// Layout object to render
-  public var layout: FieldLabelLayout? {
-    didSet {
-      oldValue?.delegate = nil
-      layout?.delegate = self
-      refreshView()
-    }
+  public var fieldLabelLayout: FieldLabelLayout? {
+    return layout as? FieldLabelLayout
   }
+
+  /// The label to render
+  private var label: UILabel!
 
   // MARK: - Initializers
 
   public required init() {
+    self.label = UILabel(frame: CGRectZero)
     super.init(frame: CGRectZero)
+
+    label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.autoresizesSubviews = true
+    addSubview(label)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -42,51 +46,26 @@ public class FieldLabelView: UILabel {
     super.init(coder: aDecoder)
   }
 
-  // MARK: - Public
+  // MARK: - Super
 
-  /**
-  Refreshes the view based on the current layout.
-  */
-  public func refreshView() {
-    guard let layout = self.layout else {
-      ViewManager.sharedInstance.recycleView(self)
+  public override func internalRefreshView() {
+    guard let layout = self.layout as? FieldLabelLayout else {
       return
     }
 
-    refreshPosition()
-
-    self.text = layout.fieldLabel.text
+    self.label.text = layout.fieldLabel.text
 
     // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
     // state.
     self.backgroundColor = UIColor.redColor()
 
     // TODO:(vicng) Standardize this font
-    self.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+    self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
   }
 
-  /**
-  Refreshes `frame` based on the current layout.
-  */
-  private func refreshPosition() {
-    guard let layout = self.layout else {
-      ViewManager.sharedInstance.recycleView(self)
-      return
-    }
-
-    self.frame = layout.viewFrame
-  }
-}
-
-// MARK: - LayoutDelegate implementation
-
-extension FieldLabelView: LayoutDelegate {
-  public func layoutDisplayChanged(layout: Layout) {
-    refreshView()
-  }
-
-  public func layoutPositionChanged(layout: Layout) {
-    refreshPosition()
+  public override func internalPrepareForReuse() {
+    self.frame = CGRectZero
+    self.label.text = ""
   }
 }
 
@@ -103,15 +82,5 @@ extension FieldLabelView: FieldLayoutMeasurer {
     // TODO:(vicng) Use a standardized font size that can be configurable for the project
     return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(
       UIFont.systemFontOfSize(14 * scale))
-  }
-}
-
-// MARK: - Recyclable implementation
-
-extension FieldLabelView: Recyclable {
-  public func recycle() {
-    self.layout = nil
-    self.frame = CGRectZero
-    self.text = ""
   }
 }

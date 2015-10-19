@@ -108,7 +108,7 @@ public class BezierPathView: UIView {
 // MARK: - Recyclable implementation
 
 extension BezierPathView: Recyclable {
-  public func recycle() {
+  public func prepareForReuse() {
     // TODO:(vicng) Implement this
   }
 }

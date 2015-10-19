@@ -47,16 +47,6 @@ public class BlockLayout: Layout {
     return fieldLayouts
   }
 
-  /// Z-position of the block layout. Those with higher values should render on top of those with
-  /// lower values.
-  public var zPosition: CGFloat = 0 {
-    didSet {
-      if zPosition != oldValue {
-        self.needsRepositioning = true
-      }
-    }
-  }
-
   /// Whether this block is the first child of its parent, which must be a `BlockGroupLayout`.
   public var topBlockInBlockLayout: Bool {
     return parentBlockGroupLayout?.blockLayouts[0] == self ?? false

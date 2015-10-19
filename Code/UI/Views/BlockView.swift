@@ -19,18 +19,12 @@ import Foundation
 View for rendering a `BlockLayout`.
 */
 @objc(BKYBlockView)
-public class BlockView: UIView {
+public class BlockView: LayoutView {
   // MARK: - Properties
 
   /// Layout object to render
-  public var layout: BlockLayout? {
-    didSet {
-      if layout != oldValue {
-        oldValue?.delegate = nil
-        layout?.delegate = self
-        refreshView()
-      }
-    }
+  public var blockLayout: BlockLayout? {
+    return layout as? BlockLayout
   }
 
   /// Manager for acquiring and recycling views.
@@ -47,7 +41,7 @@ public class BlockView: UIView {
     }()
 
   /// Field subviews
-  private var _fieldViews = [UIView]()
+  private var _fieldViews = [LayoutView]()
 
   // MARK: - Initializers
 
@@ -81,15 +75,8 @@ public class BlockView: UIView {
     }
   }
 
-  // MARK: - Private
-
-  /**
-  Refreshes the view based on the current layout.
-  */
-  private func refreshView() {
-    guard let layout = self.layout else {
-      // Recycle self and return
-      _viewManager.recycleView(self)
+  public override func internalRefreshView() {
+    guard let layout = self.layout as? BlockLayout else {
       return
     }
 
@@ -132,58 +119,19 @@ public class BlockView: UIView {
     // TODO:(vicng) Remove any field views that no longer have field layouts associated with it
   }
 
-  /**
-  Refreshes `frame` and `layer.zPosition` based on the current layout.
-  */
-  private func refreshPosition() {
-    guard let layout = self.layout else {
-      // Recycle self and return
-      _viewManager.recycleView(self)
-      return
-    }
-
-    self.frame = layout.viewFrame
-    self.layer.zPosition = layout.zPosition
-  }
-}
-
-// MARK: - Recyclable implementation
-
-extension BlockView: Recyclable {
-  public func recycle() {
-    self.layout = nil
+  public override func internalPrepareForReuse() {
     self.frame = CGRectZero
 
-    recycleFieldViews()
-
-    _blockBackgroundView.removeFromSuperview()
-    ViewManager.sharedInstance.recycleView(_blockBackgroundView)
-
-    _highlightOverlayView.removeFromSuperview()
-    ViewManager.sharedInstance.recycleView(_highlightOverlayView)
-  }
-
-  private func recycleFieldViews() {
     for fieldView in _fieldViews {
-      fieldView.removeFromSuperview()
-
-      if fieldView is Recyclable {
-        ViewManager.sharedInstance.recycleView(fieldView)
+      if let fieldLayout = fieldView.layout as? FieldLayout {
+        _viewManager.uncacheFieldViewForLayout(fieldLayout)
       }
+      ViewManager.sharedInstance.recycleView(fieldView)
     }
     _fieldViews = []
-  }
-}
 
-// MARK: - LayoutDelegate implementation
-
-extension BlockView: LayoutDelegate {
-  public func layoutDisplayChanged(layout: Layout) {
-    refreshView()
-  }
-
-  public func layoutPositionChanged(layout: Layout) {
-    refreshPosition()
+    ViewManager.sharedInstance.recycleView(_blockBackgroundView)
+    ViewManager.sharedInstance.recycleView(_highlightOverlayView)
   }
 }
 
@@ -191,7 +139,7 @@ extension BlockView: LayoutDelegate {
 
 extension BlockView {
   private func blockBackgroundBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout else {
+    guard let layout = self.layout as? BlockLayout else {
       return nil
     }
 
