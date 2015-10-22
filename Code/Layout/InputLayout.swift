@@ -26,11 +26,7 @@ public class InputLayout: Layout {
   public unowned let input: Input
 
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
-  public var blockGroupLayout: BlockGroupLayout {
-    didSet {
-      blockGroupLayout.parentLayout = self
-    }
-  }
+  public private(set) var blockGroupLayout: BlockGroupLayout
 
   /// The corresponding layouts for `self.input.fields[]`
   public private(set) var fieldLayouts = [FieldLayout]()
@@ -110,11 +106,7 @@ public class InputLayout: Layout {
 
   // MARK: - Super
 
-  public override var childLayouts: [Layout] {
-    return ([blockGroupLayout] as [Layout]) + (fieldLayouts as [Layout])
-  }
-
-  public override func layoutChildren() {
+  public override func performLayout(includeChildren includeChildren: Bool) {
     resetRenderProperties()
 
     var fieldXOffset: CGFloat = 0
@@ -124,7 +116,9 @@ public class InputLayout: Layout {
     // Update relative position/size of fields
     for (var i = 0; i < fieldLayouts.count; i++) {
       let fieldLayout = fieldLayouts[i]
-      fieldLayout.layoutChildren()
+      if includeChildren {
+        fieldLayout.performLayout(includeChildren: true)
+      }
 
       // Position the field
       fieldLayout.relativePosition.x = fieldXOffset
@@ -160,7 +154,9 @@ public class InputLayout: Layout {
     }
 
     // Update block group layout size
-    blockGroupLayout.layoutChildren()
+    if includeChildren {
+      blockGroupLayout.performLayout(includeChildren: true)
+    }
 
     // Reposition fields/groups based on the input type, set the render properties so
     // the UI will know how to draw the shape of a block, and set the size of the entire
@@ -350,8 +346,11 @@ public class InputLayout: Layout {
   */
   internal func extendStatementRightEdgeBy(width: CGFloat) {
     if self.input.type == .Statement && width > 0 {
-      self.contentSize.width += width
+      // Extend the right edge
       self.rightEdge += width
+
+      // Update the content size to account for this change
+      self.contentSize.width = max(self.contentSize.width, self.rightEdge)
     }
   }
 

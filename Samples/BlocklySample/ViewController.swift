@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     guard let workspaceLayout = workspace.layout else {
       return
     }
-    workspaceLayout.updateLayout()
+    workspaceLayout.updateLayoutDownTree()
 
     let workspaceView = WorkspaceView()
     workspaceView.layout = workspaceLayout
@@ -50,17 +50,13 @@ class ViewController: UIViewController {
     let layoutFactory = LayoutFactory()
     let workspace = Workspace(layoutFactory: layoutFactory, isFlyout: false)
 
-    if let block1 = buildStatementBlock(workspace) {
-      workspace.addBlock(block1)
-
+    if let block1 = buildChainedStatementBlock(workspace) {
       if let block2 = buildOutputBlock(workspace) {
-        workspace.addBlock(block2)
         try! block1.inputs[1].connection?.connectTo(block2.outputConnection)
-      }
 
-      if let block3 = buildStatementBlock(workspace) {
-        workspace.addBlock(block3)
-        try! block1.inputs[2].connection?.connectTo(block3.previousConnection)
+        if let block3 = buildChainedStatementBlock(workspace) {
+          try! block2.inputs[0].connection?.connectTo(block3.previousConnection)
+        }
       }
     }
 
@@ -86,5 +82,21 @@ class ViewController: UIViewController {
 
   func buildStatementBlock(workspace: Workspace) -> Block? {
     return buildBlock(workspace, filename: "TestBlockStatement")
+  }
+
+  func buildChainedStatementBlock(workspace: Workspace) -> Block? {
+    if let block = buildStatementBlock(workspace) {
+      var previousBlock = block
+      for (var i = 0; i < 10; i++) {
+        if let nextBlock = buildStatementBlock(workspace) {
+          try! previousBlock.nextConnection?.connectTo(nextBlock.previousConnection)
+          previousBlock = nextBlock
+        }
+      }
+
+      return block
+    }
+
+    return nil
   }
 }

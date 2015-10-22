@@ -66,7 +66,10 @@ public class WorkspaceView: LayoutView {
     for blockLayout in layout.allBlockLayoutDescendants() {
       let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
 
-      if !shouldRenderBlockLayout(blockLayout) {
+      // TODO:(vicng) For now, always render blocks regardless of where they are on the screen.
+      // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
+      let shouldRenderBlockLayout = true
+      if !shouldRenderBlockLayout {
         // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
         // workspace view and recycle it.
         if blockView != nil {

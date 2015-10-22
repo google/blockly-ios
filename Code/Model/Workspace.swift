@@ -75,14 +75,14 @@ public class Workspace : NSObject {
       self.layout = layoutFactory?.layoutForWorkspace(self)
   }
 
-  // MARK: - Public
+  // MARK: - Internal
 
   /**
   Add a given block to the workspace.
 
   - Parameter block: The block to add.
   */
-  public func addBlock(block: Block) {
+  internal func addBlock(block: Block) {
     allBlocks[block.uuid] = block
   }
 
@@ -91,7 +91,7 @@ public class Workspace : NSObject {
 
   - Parameter block: The block to remove.
   */
-  public func removeBlock(block: Block) {
+  internal func removeBlock(block: Block) {
     allBlocks[block.uuid] = nil
 
     // TODO:(vicng) Generate change event

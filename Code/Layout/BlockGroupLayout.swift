@@ -45,17 +45,15 @@ public class BlockGroupLayout: Layout {
 
   // MARK: - Super
 
-  public override var childLayouts: [Layout] {
-    return blockLayouts
-  }
-
-  public override func layoutChildren() {
+  public override func performLayout(includeChildren includeChildren: Bool) {
     var yOffset: CGFloat = 0
     var size = WorkspaceSizeZero
 
     // Update relative position/size of inputs
     for blockLayout in blockLayouts {
-      blockLayout.layoutChildren()
+      if includeChildren {
+        blockLayout.performLayout(includeChildren: true)
+      }
 
       blockLayout.relativePosition.x = 0
       blockLayout.relativePosition.y = yOffset
@@ -74,23 +72,20 @@ public class BlockGroupLayout: Layout {
   // MARK: - Public
 
   /**
-  Appends a blockLayout to `self.blockLayouts` and sets its `parentLayout` to this instance.
-
-  - Parameter blockLayout: The `BlockLayout` to append.
-  */
-  public func appendBlockLayout(blockLayout: BlockLayout) {
-    blockLayout.parentLayout = self
-    blockLayouts.append(blockLayout)
-  }
-
-  /**
   Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
 
   - Parameter blockLayouts: The list of `BlockLayout` instances to append.
+  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after all layouts
+  have been appended.
   */
-  public func appendBlockLayouts(blockLayouts: [BlockLayout]) {
+  public func appendBlockLayouts(blockLayouts: [BlockLayout], updateLayout: Bool) {
     for blockLayout in blockLayouts {
-      appendBlockLayout(blockLayout)
+      blockLayout.parentLayout = self
+      self.blockLayouts.append(blockLayout)
+    }
+
+    if updateLayout {
+      updateLayoutUpTree()
     }
   }
 
@@ -99,25 +94,32 @@ public class BlockGroupLayout: Layout {
   an array.
 
   - Parameter blockLayout: The given block layout to find and remove.
+  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the list of
+  block layouts have been removed.
   - Returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
-  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout) -> [BlockLayout] {
-    var removedElements = [BlockLayout]()
+  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout, updateLayout: Bool)
+    -> [BlockLayout] {
+      var removedElements = [BlockLayout]()
 
-    if let index = blockLayouts.indexOf(blockLayout) {
-      while (index < blockLayouts.count) {
-        let removedLayout = blockLayouts.removeAtIndex(index)
-        removedLayout.parentLayout = nil
-        removedElements.append(removedLayout)
+      if let index = blockLayouts.indexOf(blockLayout) {
+        while (index < blockLayouts.count) {
+          let removedLayout = blockLayouts.removeAtIndex(index)
+          removedLayout.parentLayout = nil
+          removedElements.append(removedLayout)
+        }
+
+        if updateLayout {
+          updateLayoutUpTree()
+        }
+      } else {
+        // Always return the given block layout, even it's not found
+        removedElements.append(blockLayout)
+        blockLayout.parentLayout = nil
       }
-    } else {
-      // Always return the given block layout, even it's not found
-      removedElements.append(blockLayout)
-      blockLayout.parentLayout = nil
-    }
 
-    return removedElements
+      return removedElements
   }
 
   /**
@@ -130,7 +132,7 @@ public class BlockGroupLayout: Layout {
   public func moveToWorkspacePosition(position: WorkspacePoint) {
     if self.parentLayout is WorkspaceLayout {
       self.relativePosition = position
-      self.refreshViewBoundsForTree()
+      self.refreshViewPositionsForTree()
     }
   }
 }

@@ -56,17 +56,15 @@ public class FieldLayout: Layout {
 
   // MARK: - Super
 
-  public override var childLayouts: [Layout] {
-    // Fields are leaf nodes in the layout tree hierarchy, return an empty array.
-    return []
-  }
-
-  public override func layoutChildren() {
+  public override func performLayout(includeChildren includeChildren: Bool) {
     // Measure the layout in the UIView coordinate system
     let layoutSize: CGSize = measurer.measureLayout(self, scale: self.workspaceLayout.scale)
 
     // Convert the layout size back into the Workspace coordinate system
     self.contentSize = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
+
+    // Force this field to be redisplayed
+    self.needsDisplay = true
   }
 
   internal override func refreshViewFrame() {

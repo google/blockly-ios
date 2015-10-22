@@ -38,7 +38,7 @@ public class WorkspaceLayout: Layout {
         scale = 0.5
       }
       if scale != oldValue {
-        updateLayout()
+        updateLayoutDownTree()
       }
     }
   }
@@ -54,22 +54,23 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Super
 
-  public override var childLayouts: [Layout] {
-    return blockGroupLayouts.map({ $0.1 }) // Returns the value of each key/value entry.
-  }
-
-  public override func layoutChildren() {
+  public override func performLayout(includeChildren includeChildren: Bool) {
     var size = WorkspaceSizeZero
 
     // Update relative position/size of blocks
     for (_, blockGroupLayout) in blockGroupLayouts {
-      blockGroupLayout.layoutChildren()
+      if includeChildren {
+        blockGroupLayout.performLayout(includeChildren: true)
+      }
 
       size = LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: size)
     }
 
     // Update size required for the workspace
     self.contentSize = size
+
+    // Force the workspace to be re-displayed
+    self.needsDisplay = true
   }
 
   // MARK: - Public
@@ -79,7 +80,7 @@ public class WorkspaceLayout: Layout {
   */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()
-    var layoutsToProcess = childLayouts as! [BlockGroupLayout]
+    var layoutsToProcess = childLayouts.map({$0.1}) as! [BlockGroupLayout]
 
     while !layoutsToProcess.isEmpty {
       let blockGroupLayout = layoutsToProcess.removeFirst()
@@ -100,20 +101,32 @@ public class WorkspaceLayout: Layout {
   instance.
 
   - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
+  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the layout
+  has been appended.
   */
-  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
+  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
     blockGroupLayout.parentLayout = self
     blockGroupLayouts[blockGroupLayout.uuid] = blockGroupLayout
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
   }
 
   /**
   Removes a given block group layout from `self.blockGroupLayouts`.
 
   - Parameter blockGroupLayout: The given block group layout.
+  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the layout
+  has been removed.
   */
-  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout) {
+  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
     blockGroupLayout.parentLayout = nil
     blockGroupLayouts[blockGroupLayout.uuid] = nil
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
   }
 }
 

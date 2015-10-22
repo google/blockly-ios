@@ -66,11 +66,7 @@ public class BlockLayout: Layout {
 
   // MARK: - Super
 
-  public override var childLayouts: [Layout] {
-    return inputLayouts
-  }
-
-  public override func layoutChildren() {
+  public override func performLayout(includeChildren includeChildren: Bool) {
     // TODO:(vicng) Potentially move logic from this method into Block.Background to make things
     // easier to follow.
 
@@ -108,8 +104,8 @@ public class BlockLayout: Layout {
       // Append this input layout to the current row
       backgroundRow.inputLayouts.append(inputLayout)
 
-      // Perform layout
-      inputLayout.layoutChildren()
+      // Since input layouts are dependent on each other, always re-perform their layouts
+      inputLayout.performLayout(includeChildren: includeChildren)
       inputLayout.relativePosition.x = xOffset
       inputLayout.relativePosition.y = yOffset
 
@@ -133,7 +129,7 @@ public class BlockLayout: Layout {
     // BlockLayout.
     let minimalWidthRequired = max(minimalFieldWidthRequired, minimalStatementWidthRequired)
     for backgroundRow in self.background.rows {
-      if inputLayouts.isEmpty {
+      if backgroundRow.inputLayouts.isEmpty {
         continue
       }
 
@@ -170,6 +166,9 @@ public class BlockLayout: Layout {
 
     // Update the size required for this block
     self.contentSize = size
+
+    // Force this block to be redisplayed
+    self.needsDisplay = true
   }
 
   // MARK: - Public

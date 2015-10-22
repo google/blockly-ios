@@ -52,20 +52,27 @@ position and size.
 public class Layout: NSObject {
   // MARK: - Properties
 
-  /// A unique identifier used to identify this block for its lifetime
+  /// A unique identifier used to identify this layout for its lifetime
   public let uuid: String
   /// The workspace node which this node belongs to.
   public weak var workspaceLayout: WorkspaceLayout!
   /// The parent node of this layout. If this value is nil, this layout is the root node.
-  public weak var parentLayout: Layout? {
+  public internal(set) weak var parentLayout: Layout? {
     didSet {
-      if parentLayout != oldValue {
-        // TODO:(vicng) Fix this so the right change events are generated up and down the tree. For
-        // now, simply update the entire workspaceLayout.
-        workspaceLayout.updateLayout()
+      if parentLayout == oldValue {
+        return
       }
+
+      // Remove self from old parent's childLayouts
+      oldValue?.childLayouts[self.uuid] = nil
+
+      // Add self to new parent's childLayouts
+      parentLayout?.childLayouts[self.uuid] = self
     }
   }
+
+  /// Layouts whose `parentLayout` is set to this layout
+  public private(set) var childLayouts = [String: Layout]()
 
   /// Position relative to `self.parentLayout`
   internal var relativePosition: WorkspacePoint = WorkspacePointZero
@@ -94,10 +101,7 @@ public class Layout: NSObject {
   public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
       if viewFrame != oldValue {
-        // TODO:(vicng) For now, this is a hack. The Layout tree needs to be changed so each layout
-        // can determine when it exactly needs a re-draw or reposition. Once this is done properly,
-        // change this line back to `self.needsRepositioning = true`.
-        self.needsDisplay = true
+        self.needsRepositioning = true
       }
     }
   }
@@ -153,22 +157,15 @@ public class Layout: NSObject {
   // MARK: - Abstract
 
   /**
-  Returns an array containing all direct children `Layout` objects underneath this one.
+  This method repositions its children and recalculates its `contentSize` based on the positions
+  of its children.
 
+  - Parameter includeChildren: A flag indicating whether `performLayout(:)` should be called on any
+  child layouts, prior to repositioning them. It is the responsibility of subclass implementations
+  to honor this flag.
   - Note: This method needs to be implemented by a subclass of `Layout`.
   */
-  internal var childLayouts: [Layout] {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
-    return []
-  }
-
-  /**
-  For every `Layout` in its tree hierarchy (including itself), this method recalculates its `size`
-  and `relativePosition` values.
-
-  - Note: This method needs to be implemented by a subclass of `Layout`.
-  */
-  internal func layoutChildren() {
+  public func performLayout(includeChildren includeChildren: Bool) {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
   }
 
@@ -176,14 +173,30 @@ public class Layout: NSObject {
 
   /**
   For every `Layout` in its tree hierarchy (including itself), this method recalculates its
-  `size`, `relativePosition`, `absolutePosition`, and `viewFrame`, based on the current state of
-  `self.parentLayout`.
+  `contentSize`, `relativePosition`, `absolutePosition`, and `viewFrame`, based on the current state
+  of `self.parentLayout`.
   */
-  public func updateLayout() {
-    // TODO:(vicng) Rename these methods to properly reflect their nuances and how they should be
-    // called
-    layoutChildren()
-    refreshViewBoundsForTree()
+  public func updateLayoutDownTree() {
+    performLayout(includeChildren: true)
+    refreshViewPositionsForTree()
+  }
+
+  /**
+  Performs the layout of its direct children (and not of its grandchildren) and repeats this for
+  every parent up the tree. When the top is reached, the `absolutePosition` and `viewFrame` for
+  each layout in the tree is re-calculated.
+  */
+  public func updateLayoutUpTree() {
+    // Re-position content at this level
+    performLayout(includeChildren: false)
+
+    if let parentLayout = self.parentLayout {
+      // Recursively do the same thing up the tree hierarchy
+      parentLayout.updateLayoutUpTree()
+    } else {
+      // The top of the tree has been reached. Re-calculate view positions for the entire tree.
+      refreshViewPositionsForTree()
+    }
   }
 
   // MARK: - Internal
@@ -192,7 +205,10 @@ public class Layout: NSObject {
   For every `Layout` in its tree hierarchy (including itself), updates the `absolutePosition` and
   `viewFrame` based on the current state of this object.
   */
-  internal func refreshViewBoundsForTree() {
+  internal func refreshViewPositionsForTree() {
+    // TODO:(vicng) Optimize this method so it only recalculates view positions for layouts that
+    // are "dirty"
+
     // Update absolute position
     if parentLayout != nil {
       self.absolutePosition = WorkspacePointMake(
@@ -202,11 +218,14 @@ public class Layout: NSObject {
       self.absolutePosition = WorkspacePointMake(edgeInsets.left, edgeInsets.top)
     }
 
-    // Update the view frame
-    refreshViewFrame()
+    // Update the view frame (InputLayouts and BlockGroupLayouts do not need to update their view
+    // frames as they do not get rendered)
+    if !(self is InputLayout) && !(self is BlockGroupLayout) {
+      refreshViewFrame()
+    }
 
-    for layout in self.childLayouts {
-      layout.refreshViewBoundsForTree()
+    for (_, layout) in self.childLayouts {
+      layout.refreshViewPositionsForTree()
     }
   }
 

@@ -115,6 +115,9 @@ public class Block : NSObject {
       if let connection = outputConnection {
         updateLayoutHierarchyForConnection(connection)
       }
+
+      // Automatically add this block to the workspace so it doesn't go out of reference
+      workspace.addBlock(self)
   }
 
   // MARK: - Public
@@ -148,46 +151,44 @@ public class Block : NSObject {
     // so they can be reattached to another block group layout
     let layoutsToReattach: [BlockLayout]
     if let oldParentLayout = blockLayout.parentBlockGroupLayout {
-      layoutsToReattach = oldParentLayout.removeAllStartingFromBlockLayout(blockLayout)
+      layoutsToReattach =
+        oldParentLayout.removeAllStartingFromBlockLayout(blockLayout, updateLayout: true)
 
       if oldParentLayout.blockLayouts.count == 0 &&
         oldParentLayout.parentLayout == workspace.layout {
         // Remove this block's old parent group layout from the workspace level
-        workspace.layout?.removeBlockGroupLayout(oldParentLayout)
+        workspace.layout?.removeBlockGroupLayout(oldParentLayout, updateLayout: true)
       }
     } else {
       layoutsToReattach = [blockLayout]
     }
 
-    if connection.targetConnection != nil {
+    if let targetConnection = connection.targetConnection {
       // Block was connected to another block
 
-      if connection == previousConnection {
-        // Reattach block layouts to the target block's group layout
-        connection.targetConnection?.sourceBlock.layout?.parentBlockGroupLayout?
-          .appendBlockLayouts(layoutsToReattach)
-      } else if connection == outputConnection {
+      if targetConnection.sourceInput != nil {
         // Reattach block layouts to target input's block group layout
-        connection.targetConnection?.sourceInput?.layout?.blockGroupLayout
-          .appendBlockLayouts(layoutsToReattach)
+        targetConnection.sourceInput?.layout?.blockGroupLayout
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      } else {
+        // Reattach block layouts to the target block's group layout
+        targetConnection.sourceBlock.layout?.parentBlockGroupLayout?
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
       }
     } else {
       // Block was disconnected and added to the workspace level
 
-      // Keep track of the current absolute position of the block layout as this will be the
-      // `relativePosition` for the new block group layout
-      let currentAbsolutePosition = blockLayout.absolutePosition
-
-      // Reattach block layouts to a new block group layout
       do {
+        // Create a new block group layout and set its `relativePosition` to the current absolute
+        // position of the block that was disconnected
         let blockGroupLayout = try layoutFactory.blockGroupLayoutForWorkspace(workspace)
-        blockGroupLayout.relativePosition = currentAbsolutePosition
-        blockGroupLayout.appendBlockLayouts(layoutsToReattach)
-        // TODO:(vicng) This is heavy-handed, optimize this.
-        blockGroupLayout.updateLayout()
+        blockGroupLayout.relativePosition = blockLayout.absolutePosition
 
         // Add this new block group layout to the workspace level
-        workspace.layout?.appendBlockGroupLayout(blockGroupLayout)
+        workspace.layout?.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+
+        // Reattach block layouts to a new block group layout
+        blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
       } catch let error as NSError {
         bky_assertionFailure("Could not create a new BlockGroupLayout: \(error)")
       }
