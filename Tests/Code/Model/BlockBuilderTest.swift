@@ -28,9 +28,9 @@ class BlockBuilderTest: XCTestCase {
     let workspace = Workspace(layoutFactory: nil, isFlyout: false)
     let block = buildFrankenBlock(workspace).build()
     let block2 = buildFrankenBlock(workspace).build()
-    block.nextConnection?.connectTo(block2.previousConnection)
+    try! block.nextConnection?.connectTo(block2.previousConnection)
     let block3 = buildFrankenBlock(workspace).build()
-    block.previousConnection?.connectTo(block3.nextConnection);
+    try! block.previousConnection?.connectTo(block3.nextConnection)
 
     let blockCopy = Block.Builder(block: block, workspace: workspace).build()
     validateFrankenblock(blockCopy)
@@ -138,5 +138,4 @@ class BlockBuilderTest: XCTestCase {
 
     return bob
   }
-
 }
