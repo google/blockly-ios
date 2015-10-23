@@ -220,7 +220,6 @@ public class BlockError: NSError {
   public enum BKYBlockErrorCode: Int {
     case InvalidBlockDefinition = 100,
       LayoutNotFound = 200,
-      InvalidConnection = 201,
       ViewNotFound = 300
   }
   public typealias Code = BKYBlockErrorCode

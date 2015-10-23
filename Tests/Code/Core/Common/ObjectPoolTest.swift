@@ -47,7 +47,7 @@ class CokeCan: NSObject, Recyclable {
     super.init()
   }
 
-  func prepareForReuse() {
+  func recycle() {
     recycled = true
   }
 }

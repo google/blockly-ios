@@ -59,8 +59,6 @@
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
-		FA9C7FA81BDAEA0D00E39F9E /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */; settings = {ASSET_TAGS = (); }; };
-		FA9C7FAE1BDAEA6100E39F9E /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */; settings = {ASSET_TAGS = (); }; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; settings = {ASSET_TAGS = (); }; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */; settings = {ASSET_TAGS = (); }; };
@@ -139,8 +137,6 @@
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
-		FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
-		FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceBezierPath.swift; sourceTree = "<group>"; };
@@ -213,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				FA4BB4AD1B75483D000980E9 /* Core */,
-				FA9C7FAC1BDAEA6100E39F9E /* Managers */,
 				FA4BB4071B744A8E000980E9 /* Model */,
 			);
 			path = Code;
@@ -313,7 +308,6 @@
 			isa = PBXGroup;
 			children = (
 				FA8BEE121B68513200D0674B /* Core */,
-				FA9C7FA61BDAEA0D00E39F9E /* Managers */,
 				FA548C851B66E861008BC59C /* Model */,
 				FA2726741B83C54900777B49 /* Layout */,
 				FA4BB4B31B7575FE000980E9 /* UI */,
@@ -369,22 +363,6 @@
 				FAC590441B990E4B0079A6E3 /* Layout */,
 			);
 			name = Core;
-			sourceTree = "<group>";
-		};
-		FA9C7FA61BDAEA0D00E39F9E /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
-		FA9C7FAC1BDAEA6100E39F9E /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		FAC590441B990E4B0079A6E3 /* Layout */ = {
@@ -532,7 +510,6 @@
 				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
 				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
 				FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */,
-				FA9C7FA81BDAEA0D00E39F9E /* ConnectionManager.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
 				FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */,
@@ -572,7 +549,6 @@
 				FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
-				FA9C7FAE1BDAEA6100E39F9E /* ConnectionManagerTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,
 			);
