@@ -12,7 +12,6 @@
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; settings = {ASSET_TAGS = (); }; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; settings = {ASSET_TAGS = (); }; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; settings = {ASSET_TAGS = (); }; };
-		FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2725D61B7ED2C300777B49 /* ViewManager.swift */; };
 		FA2726731B82B5B100777B49 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726721B82B5B100777B49 /* Assertions.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
 		FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726771B83C54900777B49 /* InputLayout.swift */; };
@@ -59,8 +58,8 @@
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
-		FA9C7FA81BDAEA0D00E39F9E /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FA9C7FAE1BDAEA6100E39F9E /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */; settings = {ASSET_TAGS = (); }; };
+		FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */; settings = {ASSET_TAGS = (); }; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; settings = {ASSET_TAGS = (); }; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */; settings = {ASSET_TAGS = (); }; };
@@ -68,9 +67,11 @@
 		FAC5904A1B9915990079A6E3 /* CGPoint+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590E11B9F782C0079A6E3 /* LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */; settings = {ASSET_TAGS = (); }; };
-		FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */; settings = {ASSET_TAGS = (); }; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; settings = {ASSET_TAGS = (); }; };
+		FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */; settings = {ASSET_TAGS = (); }; };
+		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
+		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +90,6 @@
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
-		FA2725D61B7ED2C300777B49 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FA2726721B82B5B100777B49 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assertions.swift; path = Core/Common/Assertions.swift; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
 		FA2726771B83C54900777B49 /* InputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLayout.swift; sourceTree = "<group>"; };
@@ -139,8 +139,8 @@
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
-		FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
+		FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocklyError.swift; path = Core/Common/BlocklyError.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceBezierPath.swift; sourceTree = "<group>"; };
@@ -148,9 +148,11 @@
 		FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPoint+Operators.swift"; path = "Core/Common/CGPoint+Operators.swift"; sourceTree = "<group>"; };
 		FAC590E01B9F782C0079A6E3 /* LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutHelper.swift; sourceTree = "<group>"; };
 		FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Background.swift"; sourceTree = "<group>"; };
-		FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Helper.swift"; path = "Core/Common/UIView+Helper.swift"; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
+		FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
+		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,7 +185,7 @@
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
 				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
-				FAD3ABE81BC70D4A00C0B254 /* LayoutEventManager.swift */,
+				FAE557731BE028640019D0D4 /* LayoutEventManager.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
 			);
@@ -262,7 +264,6 @@
 			isa = PBXGroup;
 			children = (
 				FA4BB5681B7C03EA000980E9 /* Views */,
-				FA2725D61B7ED2C300777B49 /* ViewManager.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -275,6 +276,7 @@
 				FAA291761B9674330005F100 /* BlockView+Render.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
+				FAE557751BE028840019D0D4 /* ViewManager.swift */,
 				FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */,
 			);
 			path = Views;
@@ -313,9 +315,9 @@
 			isa = PBXGroup;
 			children = (
 				FA8BEE121B68513200D0674B /* Core */,
-				FA9C7FA61BDAEA0D00E39F9E /* Managers */,
 				FA548C851B66E861008BC59C /* Model */,
 				FA2726741B83C54900777B49 /* Layout */,
+				FAE5576C1BE0219C0019D0D4 /* Control */,
 				FA4BB4B31B7575FE000980E9 /* UI */,
 				FA548C5F1B63144A008BC59C /* Blockly.h */,
 				FA548C601B63144A008BC59C /* Info.plist */,
@@ -351,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2726721B82B5B100777B49 /* Assertions.swift */,
+				FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */,
 				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
 				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
@@ -371,14 +374,6 @@
 			name = Core;
 			sourceTree = "<group>";
 		};
-		FA9C7FA61BDAEA0D00E39F9E /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				FA9C7FA71BDAEA0D00E39F9E /* ConnectionManager.swift */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
 		FA9C7FAC1BDAEA6100E39F9E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +391,14 @@
 			);
 			name = Layout;
 			path = Core/Layout;
+			sourceTree = "<group>";
+		};
+		FAE5576C1BE0219C0019D0D4 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */,
+			);
+			path = Control;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,6 +520,7 @@
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
+				FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */,
 				FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */,
 				FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
@@ -531,11 +535,8 @@
 				FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */,
 				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
 				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
-				FA2725D71B7ED2C300777B49 /* ViewManager.swift in Sources */,
-				FA9C7FA81BDAEA0D00E39F9E /* ConnectionManager.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
-				FAD3ABE91BC70D4A00C0B254 /* LayoutEventManager.swift in Sources */,
 				FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */,
 				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
@@ -554,8 +555,11 @@
 				FAC590481B990E6C0079A6E3 /* String+LayoutHelper.swift in Sources */,
 				FA4BB56E1B7C03EA000980E9 /* BezierPathView.swift in Sources */,
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
+				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
+				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
+				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
 				FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

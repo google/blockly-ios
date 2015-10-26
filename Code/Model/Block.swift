@@ -203,38 +203,3 @@ extension Block: ConnectionDelegate {
     updateLayoutHierarchyForConnection(connection)
   }
 }
-
-// TODO:(vicng) Rename this class to BlocklyError
-/**
-Class used when errors occur inside `Block` methods.
-*/
-@objc(BKYBlockError)
-public class BlockError: NSError {
-  // MARK: - Static Properties
-
-  /// Domain to use when throwing an error from this class
-  public static let Domain = "com.google.blockly.Block"
-
-  // MARK: - Enum - Code
-  @objc
-  public enum BKYBlockErrorCode: Int {
-    case InvalidBlockDefinition = 100,
-      LayoutNotFound = 200,
-      InvalidConnection = 201,
-      ViewNotFound = 300
-  }
-  public typealias Code = BKYBlockErrorCode
-
-  // MARK: - Initializers
-
-  public init(_ code: Code, _ description: String) {
-    super.init(
-      domain: BlockError.Domain,
-      code: code.rawValue,
-      userInfo: [NSLocalizedDescriptionKey : description])
-  }
-
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
-}

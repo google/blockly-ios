@@ -36,7 +36,7 @@ public class FieldDropdown: Field {
   public convenience init(
     name: String, displayNames: [String], values: [String], workspace: Workspace) throws {
       if (displayNames.count != values.count) {
-        throw BlockError(.InvalidBlockDefinition,
+        throw BlocklyError(.InvalidBlockDefinition,
           "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
       }
       let options = Array(

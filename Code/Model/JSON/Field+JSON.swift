@@ -40,7 +40,7 @@ extension Field {
 
   - Parameter json: JSON dictionary
   - Throws:
-  `BlockError`: Occurs if malformed JSON data was passed in.
+  `BlocklyError`: Occurs if malformed JSON data was passed in.
   - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
@@ -132,7 +132,7 @@ extension Field {
 
         // Check that all arrays contain exactly two values and that the second value is not empty
         if (options.filter { ($0.count != 2) || ($0[1] == "") }.count > 0) {
-          throw BlockError(.InvalidBlockDefinition, "Each dropdown field option must contain " +
+          throw BlocklyError(.InvalidBlockDefinition, "Each dropdown field option must contain " +
             "exactly two String values and the second value must not be empty.")
         }
 

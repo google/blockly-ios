@@ -113,7 +113,7 @@ public class Connection : NSObject {
 
   - Parameter connection: The other connection
   - Throws:
-  `BlockError`: Thrown if the connection could not be made, with error code .InvalidConnection
+  `BlocklyError`: Thrown if the connection could not be made, with error code .InvalidConnection
   */
   public func connectTo(connection: Connection?) throws {
     if connection == targetConnection {
@@ -123,16 +123,16 @@ public class Connection : NSObject {
 
     switch canConnectWithReasonTo(connection) {
     case .ReasonSelfConnection:
-      throw BlockError(.InvalidConnection, "Cannot connect a block to itself.")
+      throw BlocklyError(.InvalidConnection, "Cannot connect a block to itself.")
     case .ReasonWrongType:
-      throw BlockError(.InvalidConnection, "Cannot connect these types.")
+      throw BlocklyError(.InvalidConnection, "Cannot connect these types.")
     case .ReasonMustDisconnect:
-      throw BlockError(.InvalidConnection,
+      throw BlocklyError(.InvalidConnection,
         "Must disconnect from current block before connecting to a new one.")
     case .ReasonTargetNull:
-      throw BlockError(.InvalidConnection, "Cannot connect to a null connection")
+      throw BlocklyError(.InvalidConnection, "Cannot connect to a null connection")
     case .ReasonChecksFailed:
-      throw BlockError(.InvalidConnection, "Cannot connect, checks do not match.")
+      throw BlocklyError(.InvalidConnection, "Cannot connect, checks do not match.")
     case .CanConnect:
       // Connection can be made, continue.
       break

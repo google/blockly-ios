@@ -139,7 +139,7 @@ extension Block {
 
     public func setOutputConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
-        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.outputConnectionEnabled = enabled
       self.outputConnectionTypeChecks = typeChecks
@@ -147,7 +147,7 @@ extension Block {
 
     public func setNextConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
-        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.nextConnectionEnabled = enabled
       self.nextConnectionTypeChecks = typeChecks
@@ -155,7 +155,7 @@ extension Block {
 
     public func setPreviousConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
-        throw BlockError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.previousConnectionEnabled = enabled
       self.previousConnectionTypeChecks = typeChecks

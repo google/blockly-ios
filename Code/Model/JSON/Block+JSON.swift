@@ -24,14 +24,14 @@ extension Block {
   - Parameter json: The JSON dictionary.
   - Parameter workspace: The workspace to associate with the new block.
   - Throws:
-  [BlockError]: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
+  [BlocklyError]: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
   malformed data, or contradictory data).
   - Returns: A new block.
   */
   public class func blockFromJSON(json: [String: AnyObject], workspace: Workspace) throws -> Block
   {
     if (json["output"] != nil && json["previousStatement"] != nil) {
-      throw BlockError(.InvalidBlockDefinition,
+      throw BlocklyError(.InvalidBlockDefinition,
         "Must not have both an output and a previousStatement.")
     }
 
@@ -110,7 +110,7 @@ extension Block {
   interpolation tokens in "message".
   - Parameter lastDummyAlignment: If a dummy input is added at the end, how should it be aligned?
   - Throws:
-  [BlockError]: Thrown if the number of arguments doesn't match the number of interpolation tokens
+  [BlocklyError]: Thrown if the number of arguments doesn't match the number of interpolation tokens
   provided in the message, if any interpolation token was used more than once, if not all argument
   values were referenced by the interpolation tokens, or if an argument could not be parsed into an
   `Input` or `Field`.
@@ -130,10 +130,10 @@ extension Block {
         // This was an argument position
         let index = numberToken - 1
         if (index < 0 || index >= arguments.count) {
-          throw BlockError(
+          throw BlocklyError(
             .InvalidBlockDefinition, "Message index \"\(numberToken)\" out of range.")
         } else if (processedIndices[index]) {
-          throw BlockError(
+          throw BlocklyError(
             .InvalidBlockDefinition, "Message index \"\(numberToken)\" duplicated.")
         }
 
@@ -141,7 +141,7 @@ extension Block {
 
         while (element != nil) {
           guard let argumentType = element["type"] as? String else {
-            throw BlockError(
+            throw BlocklyError(
               .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
@@ -182,7 +182,7 @@ extension Block {
     let unusedIndices = processedIndices.filter({ $0 == false })
     if (unusedIndices.count > 0) {
       let unusedIndicesString = unusedIndices.map({ String($0) }).joinWithSeparator(",")
-      throw BlockError(.InvalidBlockDefinition,
+      throw BlocklyError(.InvalidBlockDefinition,
         "Message did not reference the following indices: \(unusedIndicesString)")
     }
 

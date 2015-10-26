@@ -102,7 +102,7 @@ public class ViewManager: NSObject {
   - Parameter layout: The given `FieldLayout`
   - Returns: A `LayoutView` with the given layout assigned to it
   - Throws:
-  `BlockError`: Thrown if no `LayoutView` could be retrieved for the given layout.
+  `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
   */
   public func newFieldViewForLayout(layout: FieldLayout) throws -> LayoutView {
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout
@@ -115,7 +115,7 @@ public class ViewManager: NSObject {
     }
 
     if fieldView == nil {
-      throw BlockError(.ViewNotFound, "Could not retrieve view for \(layout.dynamicType)")
+      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(layout.dynamicType)")
     }
 
     // Cache it for future lookups
