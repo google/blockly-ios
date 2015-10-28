@@ -35,8 +35,42 @@ public class BlockLayout: Layout {
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
 
+  /// The relative position of the output connection, expressed as a Workspace coordinate system
+  /// unit
+  private var outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+
+  /// The relative position of the next connection, expressed as a Workspace coordinate system unit
+  private var nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+
+  /// The relative position of the previous connection, expressed as a Workspace coordinate system
+  /// unit
+  private var previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
+
+  internal override var absolutePosition: WorkspacePoint {
+    didSet {
+      // Update connection positions
+      if let outputConnection = self.block.outputConnection {
+        self.workspaceLayout.connectionManager.moveConnection(outputConnection,
+          toLocation: self.absolutePosition,
+          withOffset: outputConnectionRelativePosition)
+      }
+
+      if let nextConnection = self.block.nextConnection {
+        self.workspaceLayout.connectionManager.moveConnection(nextConnection,
+          toLocation: self.absolutePosition,
+          withOffset: nextConnectionRelativePosition)
+      }
+
+      if let previousConnection = self.block.previousConnection {
+        self.workspaceLayout.connectionManager.moveConnection(previousConnection,
+          toLocation: self.absolutePosition,
+          withOffset: previousConnectionRelativePosition)
+      }
+    }
+  }
 
   /// A list of all `FieldLayout` objects belonging under this `BlockLayout`.
   public var fieldLayouts: [FieldLayout] {
@@ -70,6 +104,8 @@ public class BlockLayout: Layout {
     // TODO:(vicng) Potentially move logic from this method into Block.Background to make things
     // easier to follow.
 
+    let outputPuzzleTabXOffset = block.outputConnection != nil ?
+      BlockLayout.sharedConfig.puzzleTabWidth : 0
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
     var minimalFieldWidthRequired: CGFloat = 0
@@ -95,8 +131,7 @@ public class BlockLayout: Layout {
         background.appendRow(backgroundRow)
 
         // Reset values for this row
-        xOffset =
-          (self.background.maleOutputConnector ? BlockLayout.sharedConfig.puzzleTabWidth : 0)
+        xOffset = outputPuzzleTabXOffset
         yOffset += currentLineHeight
         currentLineHeight = 0
       }
@@ -158,10 +193,27 @@ public class BlockLayout: Layout {
       size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
     }
 
-    if background.maleNextStatementConnector {
+    // Update connection relative positions
+    let notchXOffset = outputPuzzleTabXOffset + BlockLayout.sharedConfig.notchWidth / 2
+
+    if block.previousConnection != nil {
+      previousConnectionRelativePosition =
+        WorkspacePointMake(notchXOffset, BlockLayout.sharedConfig.notchHeight)
+    }
+
+    if block.nextConnection != nil {
+      let blockBottomEdge = background.rows.reduce(0, combine: { $0 + $1.rowHeight})
+      nextConnectionRelativePosition =
+        WorkspacePointMake(notchXOffset, blockBottomEdge + BlockLayout.sharedConfig.notchHeight)
+
       // TODO:(vicng) Make the size.height a property of self.background
       // Create room to draw the notch height at the bottom
       size.height += BlockLayout.sharedConfig.notchHeight
+    }
+
+    if block.outputConnection != nil {
+      outputConnectionRelativePosition =
+        WorkspacePointMake(0, BlockLayout.sharedConfig.puzzleTabHeight / 2)
     }
 
     // Update the size required for this block

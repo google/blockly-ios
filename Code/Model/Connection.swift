@@ -67,8 +67,12 @@ public class Connection : NSObject {
   public weak var sourceBlock: Block!
   /// If this connection belongs to a value or statement input, this is its source
   public private(set) weak var sourceInput: Input?
-  /// The position of this connection in the workspace.
-  public var position: CGPoint = CGPointZero
+  /**
+  The position of this connection in the workspace.
+  NOTE: While this value *should* be stored in a Layout subclass, it's more efficient to simply
+  store the absolute position here since it's the only relevant property needed.
+  */
+  public internal(set) var position: WorkspacePoint = WorkspacePointZero
   /// The connection that this one is connected to
   public private(set) weak var targetConnection: Connection?
   /// The source block of the `targetConnection`

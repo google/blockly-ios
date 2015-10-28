@@ -72,6 +72,7 @@
 		FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; settings = {ASSET_TAGS = (); }; };
+		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,7 @@
 		FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
+		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -397,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */,
+				FAE557781BE02B270019D0D4 /* Dragger.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -557,6 +560,7 @@
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
+				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,

@@ -89,7 +89,7 @@ public class Layout: NSObject {
     }
   }
   /// Absolute position relative to the root node.
-  internal private(set) var absolutePosition: WorkspacePoint = WorkspacePointZero
+  internal var absolutePosition: WorkspacePoint = WorkspacePointZero
   /// Total size used by this layout. This value is calculated by combining `edgeInsets` and
   /// `contentSize`.
   internal private(set) var totalSize: WorkspaceSize = WorkspaceSizeZero

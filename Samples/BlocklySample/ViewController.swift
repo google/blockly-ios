@@ -57,6 +57,10 @@ class ViewController: UIViewController {
         if let block3 = buildChainedStatementBlock(workspace) {
           try! block2.inputs[0].connection?.connectTo(block3.previousConnection)
         }
+
+        if let block4 = buildOutputBlock(workspace) {
+          try! block2.inputs[1].connection?.connectTo(block4.outputConnection)
+        }
       }
     }
 

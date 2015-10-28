@@ -129,6 +129,11 @@ extension BlockLayout {
     /// Inline connector locations
     public var inlineConnectors = [InlineConnector]()
 
+    /// The height of this row, expressed as a Workspace coordinate system value
+    public var rowHeight: CGFloat {
+      return topPadding + middleHeight + bottomPadding
+    }
+
     // MARK: - Public
 
     /**

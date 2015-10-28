@@ -30,20 +30,19 @@ public class WorkspaceView: LayoutView {
   /// Scroll view used to render the workspace
   private var scrollView: UIScrollView!
 
-  /// Stores the location of the block view's start position for a pan gesture
-  private var panGestureBlockViewStartPosition: WorkspacePoint?
-
-  /// Stores the first touch location of a pan gesture
-  private var panGestureFirstTouchPosition: WorkspacePoint?
-
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
+
+  /// Controls logic for dragging blocks around in the workspace
+  private var _dragger: Dragger!
 
   // MARK: - Initializers
 
   public required init() {
     self.scrollView = UIScrollView(frame: CGRectZero)
     super.init(frame: CGRectZero)
+
+    _dragger = Dragger(workspaceView: self)
 
     scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.autoresizesSubviews = true
@@ -142,16 +141,20 @@ public class WorkspaceView: LayoutView {
 
   /**
   Creates a block view for a given layout and adds it to the scroll view.
-  
+
   - Parameter layout: The given layout
   */
   private func addBlockViewForLayout(layout: BlockLayout) {
     let newBlockView = _viewManager.newBlockViewForLayout(layout)
     newBlockView.bky_removeAllGestureRecognizers()
-    newBlockView.addGestureRecognizer(
-      UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:"))
-    newBlockView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:"))
+
+    let panGesture = UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:")
+    panGesture.maximumNumberOfTouches = 1
+    newBlockView.addGestureRecognizer(panGesture)
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:")
+    newBlockView.addGestureRecognizer(tapGesture)
+
     scrollView.addSubview(newBlockView)
   }
 
@@ -178,32 +181,18 @@ extension WorkspaceView {
   Event handler for a UIPanGestureRecognizer.
   */
   internal func didRecognizePanGesture(gesture: UIPanGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView,
-      layout = self.layout as? WorkspaceLayout else {
+    guard let blockView = gesture.view as? BlockView else {
       return
     }
 
     if gesture.state == .Began {
-      // Store the start position of the block view and first touch point, but don't do anything yet
-      panGestureBlockViewStartPosition = blockView.layout?.absolutePosition
-      panGestureFirstTouchPosition =
-        layout.workspacePointFromViewPoint(gesture.locationInView(self))
+      _dragger.startDraggingBlock(blockView, gesture: gesture)
     } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
-      // Handle actual panning of the view
-      let currentWorkspacePoint = layout.workspacePointFromViewPoint(gesture.locationInView(self))
-
-      // Disconnect this block from its previous or output connections prior to moving it
-      blockView.blockLayout?.block.previousConnection?.disconnect()
-      blockView.blockLayout?.block.outputConnection?.disconnect()
-
-      blockView.blockLayout?.parentBlockGroupLayout?.moveToWorkspacePosition(
-        panGestureBlockViewStartPosition! + currentWorkspacePoint - panGestureFirstTouchPosition!)
+      _dragger.continueDraggingBlock(blockView, gesture: gesture)
     }
 
-    // Reset ivars if the gesture has finished
     if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
-      panGestureFirstTouchPosition = nil
-      panGestureBlockViewStartPosition = nil
+      _dragger.finishDraggingBlock(blockView, gesture: gesture)
     }
   }
 

@@ -25,6 +25,33 @@ public class InputLayout: Layout {
   /// The target `Input` to layout
   public unowned let input: Input
 
+  internal override var absolutePosition: WorkspacePoint {
+    didSet {
+      // Update connection position
+      guard let connection = self.input.connection else {
+        return
+      }
+
+      let connectionPoint: WorkspacePoint
+      if input.type == .Statement {
+        connectionPoint = WorkspacePointMake(
+          statementIndent + BlockLayout.sharedConfig.notchWidth / 2,
+          statementRowTopPadding + BlockLayout.sharedConfig.notchHeight)
+      } else if isInline {
+        connectionPoint = WorkspacePointMake(
+          inlineConnectorPosition.x,
+          inlineConnectorPosition.y + BlockLayout.sharedConfig.puzzleTabHeight / 2)
+      } else {
+        connectionPoint = WorkspacePointMake(
+          rightEdge - BlockLayout.sharedConfig.puzzleTabWidth,
+          BlockLayout.sharedConfig.puzzleTabHeight / 2)
+      }
+
+      self.workspaceLayout.connectionManager.moveConnection(connection,
+        toLocation: self.absolutePosition, withOffset: connectionPoint)
+    }
+  }
+
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
   public private(set) var blockGroupLayout: BlockGroupLayout
 

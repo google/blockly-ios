@@ -43,6 +43,13 @@ public class BezierPathView: UIView {
       }
     }
   }
+  internal var lineWidth: CGFloat = 1 {
+    didSet {
+      if lineWidth != oldValue {
+        setNeedsDisplay()
+      }
+    }
+  }
   internal var rtl: Bool = false {
     didSet {
       if rtl != oldValue {
@@ -86,7 +93,7 @@ public class BezierPathView: UIView {
     }
 
     // Adjust the drawing options as needed.
-    path.lineWidth = 1
+    path.lineWidth = self.lineWidth
 
     // Fill the path before stroking it so that the fill
     // color does not obscure the stroked line.

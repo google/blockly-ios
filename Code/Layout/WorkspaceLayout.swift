@@ -25,6 +25,9 @@ public class WorkspaceLayout: Layout {
   /// The `Workspace` to layout
   public let workspace: Workspace
 
+  /// The locations of all connections in this workspace
+  public let connectionManager: ConnectionManager
+
   /// The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
   /// `self.workspace.blocks[]`, keyed by each layout's `uuid`.
   public private(set) var blockGroupLayouts = [String: BlockGroupLayout]()
@@ -47,6 +50,7 @@ public class WorkspaceLayout: Layout {
 
   public required init(workspace: Workspace) {
     self.workspace = workspace
+    self.connectionManager = ConnectionManager()
     super.init(workspaceLayout: nil)
 
     self.workspaceLayout = self
@@ -149,7 +153,9 @@ extension WorkspaceLayout {
     } else if scale == 1 {
       return point
     } else {
-      return WorkspacePointMake(point.x / scale, point.y / scale)
+      return WorkspacePointMake(
+        workspaceUnitFromViewUnit(point.x),
+        workspaceUnitFromViewUnit(point.y))
     }
   }
 
@@ -166,7 +172,26 @@ extension WorkspaceLayout {
     } else if scale == 1 {
       return size
     } else {
-      return WorkspaceSizeMake(size.width / scale, size.height / scale)
+      return WorkspaceSizeMake(
+        workspaceUnitFromViewUnit(size.width),
+        workspaceUnitFromViewUnit(size.height))
+    }
+  }
+
+  /**
+  Using the current `scale` value, this method translates a unit value from the UIView coordinate
+  system to the Workspace coordinate system.
+
+  - Parameter unit: A unit value from the UIView coordinate system.
+  - Returns: A unit value in the Workspace coordinate system.
+  */
+  public func workspaceUnitFromViewUnit(unit: CGFloat) -> CGFloat {
+    if scale == 0 {
+      return 0
+    } else if scale == 1 {
+      return unit
+    } else {
+      return unit / scale
     }
   }
 
