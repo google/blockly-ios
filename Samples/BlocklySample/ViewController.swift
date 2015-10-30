@@ -31,7 +31,7 @@ class ViewController: UIViewController {
 
     let workspaceView = WorkspaceView()
     workspaceView.layout = workspaceLayout
-    workspaceView.backgroundColor = UIColor.greenColor()
+    workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     workspaceView.translatesAutoresizingMaskIntoConstraints = false
     workspaceView.frame = self.view.bounds
     workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]

@@ -68,8 +68,8 @@ public class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   public func addLineToPoint(point: WorkspacePoint, relative: Bool) {
-    bky_print("[current point=\(self.currentWorkspacePoint)], [point=\(point)], " +
-      "[relative=\(relative)], ")
+//    bky_print("[current point=\(self.currentWorkspacePoint)], [point=\(point)], " +
+//      "[relative=\(relative)], ")
     viewBezierPath.addLineToPoint(viewPointFromWorkspacePoint(point, relative: relative))
 
     setCurrentWorkspacePoint(point, relative: relative)

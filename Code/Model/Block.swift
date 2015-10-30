@@ -89,6 +89,32 @@ public class Block : NSObject {
 
       super.init()
 
+      // Automatically add this block to the workspace so it doesn't go out of reference
+      workspace.addBlock(self)
+
+      // Finish updating model hierarchy for inputs and connections
+      for input in inputs {
+        input.sourceBlock = self
+
+        if let connection = input.connection {
+          directConnections.append(connection)
+        }
+      }
+      self.outputConnection?.sourceBlock = self
+      self.previousConnection?.sourceBlock = self
+      self.nextConnection?.sourceBlock = self
+
+      if let connection = previousConnection {
+        directConnections.append(connection)
+      }
+      if let connection = outputConnection {
+        directConnections.append(connection)
+      }
+      if let connection = nextConnection {
+        directConnections.append(connection)
+      }
+
+      // Finally, build the layout hierarchy
       do {
         self.layout = try workspace.layoutFactory?.layoutForBlock(self, workspace: workspace)
       } catch let error as NSError {
@@ -96,39 +122,22 @@ public class Block : NSObject {
       }
 
       for input in inputs {
-        input.sourceBlock = self
-
-        if let connection = input.connection {
-          directConnections.append(connection)
-        }
-
         if let inputLayout = input.layout {
           self.layout?.appendInputLayout(inputLayout)
         }
       }
-      self.outputConnection?.sourceBlock = self
-      self.previousConnection?.sourceBlock = self
-      self.nextConnection?.sourceBlock = self
 
-      // Only previous/output connectors are responsible for updating the block group 
+      // Only previous/output connectors are responsible for updating the block group
       // layout hierarchy, not next/input connectors.
-      self.previousConnection?.delegate = self
-      self.outputConnection?.delegate = self
+      self.previousConnection?.listeners.add(self)
+      self.outputConnection?.listeners.add(self)
 
       if let connection = previousConnection {
         updateLayoutHierarchyForConnection(connection)
-        directConnections.append(connection)
       }
       if let connection = outputConnection {
         updateLayoutHierarchyForConnection(connection)
-        directConnections.append(connection)
       }
-      if let connection = nextConnection {
-        directConnections.append(connection)
-      }
-
-      // Automatically add this block to the workspace so it doesn't go out of reference
-      workspace.addBlock(self)
   }
 
   // MARK: - Public
@@ -269,9 +278,9 @@ public class Block : NSObject {
   }
 }
 
-// MARK: - ConnectionDelegate
+// MARK: - ConnectionListener
 
-extension Block: ConnectionDelegate {
+extension Block: ConnectionListener {
   public func didChangeTargetForConnection(connection: Connection) {
     updateLayoutHierarchyForConnection(connection)
   }

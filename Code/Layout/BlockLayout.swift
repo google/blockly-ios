@@ -35,6 +35,16 @@ public class BlockLayout: Layout {
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
 
+  /// Flag if this block should be highlighted
+  public var highlighted: Bool = false {
+    didSet {
+      if highlighted != oldValue {
+        // Force re-draw
+        self.needsDisplay = true
+      }
+    }
+  }
+
   /// The relative position of the output connection, expressed as a Workspace coordinate system
   /// unit
   private var outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
@@ -96,6 +106,10 @@ public class BlockLayout: Layout {
   public required init(block: Block, workspaceLayout: WorkspaceLayout) {
     self.block = block
     super.init(workspaceLayout: workspaceLayout)
+
+    for connection in self.block.directConnections {
+      connection.listeners.add(self)
+    }
   }
 
   // MARK: - Super
@@ -281,5 +295,14 @@ public class BlockLayout: Layout {
       }
     }
     return nil
+  }
+}
+
+// MARK: - ConnectionListener
+
+extension BlockLayout: ConnectionListener {
+  public func didChangeHighlightForConnection(connection: Connection) {
+    // Force redraw for the view
+    self.needsDisplay = true
   }
 }

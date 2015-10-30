@@ -30,15 +30,16 @@ public class BlockView: LayoutView {
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
+  // TODO:(vicng) iOS will not render bezier paths that are very large (eg. 5000x5000).
+  //              Change this implementation so that bezier path views are tiled together.
+
   /// View for rendering the block's background
-  private let _blockBackgroundView: BezierPathView = {
+  private let _backgroundView: BezierPathView = {
     return ViewManager.sharedInstance.viewForType(BezierPathView.self)
     }()
 
-  /// View for rendering the block's highlight overly
-  private lazy var _highlightOverlayView: BezierPathView = {
-    return ViewManager.sharedInstance.viewForType(BezierPathView.self)
-    }()
+  /// View for rendering the block's highlight overlay
+  private var _highlightView: BezierPathView?
 
   /// Field subviews
   private var _fieldViews = [LayoutView]()
@@ -51,11 +52,11 @@ public class BlockView: LayoutView {
     self.translatesAutoresizingMaskIntoConstraints = false
 
     // Configure background
-    _blockBackgroundView.frame = self.bounds
-    _blockBackgroundView.backgroundColor = UIColor.clearColor()
-    _blockBackgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    addSubview(_blockBackgroundView)
-    sendSubviewToBack(_blockBackgroundView)
+    _backgroundView.frame = self.bounds
+    _backgroundView.backgroundColor = UIColor.clearColor()
+    _backgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    addSubview(_backgroundView)
+    sendSubviewToBack(_backgroundView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -68,7 +69,7 @@ public class BlockView: LayoutView {
   public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
     // Override this method so that this only returns true if the point is inside the
     // block background bezier path
-    if let bezierPath = _blockBackgroundView.bezierPath {
+    if let bezierPath = _backgroundView.bezierPath {
       return bezierPath.containsPoint(point)
     } else {
       return false
@@ -82,21 +83,22 @@ public class BlockView: LayoutView {
 
     refreshPosition()
 
+    // Update background
     // TODO:(vicng) Set the colours properly
-    _blockBackgroundView.strokeColour = UIColor.grayColor()
-    _blockBackgroundView.fillColour = UIColor.yellowColor()
-    _blockBackgroundView.bezierPath = blockBackgroundBezierPath()
+    _backgroundView.strokeColour = layout.highlighted ?
+      UIColor.blueColor() : UIColor.darkGrayColor()
+    _backgroundView.lineWidth = layout.highlighted ?
+      BlockLayout.sharedConfig.blockLineWidthHighlight :
+      BlockLayout.sharedConfig.blockLineWidthRegular
+    _backgroundView.fillColour = UIColor.greenColor()
+    _backgroundView.bezierPath = blockBackgroundBezierPath()
 
-    // TODO:(vicng) Optimize this so this view only needs is created/added when the user
-    // highlights the block.
-    _highlightOverlayView.strokeColour = UIColor.orangeColor()
-    _highlightOverlayView.fillColour = UIColor.orangeColor()
-    _highlightOverlayView.frame = self.bounds
-    _highlightOverlayView.backgroundColor = UIColor.clearColor()
-    _highlightOverlayView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    _highlightOverlayView.bezierPath = blockHighlightBezierPath()
-    addSubview(_highlightOverlayView)
-    sendSubviewToBack(_highlightOverlayView)
+    // Update highlight
+    if let path = blockHighlightBezierPath() {
+      addHighlightViewWithPath(path)
+    } else {
+      removeHighlightView()
+    }
 
     // Update field views
     for fieldLayout in layout.fieldLayouts {
@@ -130,8 +132,42 @@ public class BlockView: LayoutView {
     }
     _fieldViews = []
 
-    ViewManager.sharedInstance.recycleView(_blockBackgroundView)
-    ViewManager.sharedInstance.recycleView(_highlightOverlayView)
+    removeHighlightView()
+  }
+
+  // MARK: - Private
+
+  private func addHighlightViewWithPath(path: UIBezierPath) {
+    guard let workspaceLayout = layout?.workspaceLayout else {
+      return
+    }
+
+    if _highlightView == nil {
+      let lineWidth =
+        workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
+      let highlightView = ViewManager.sharedInstance.viewForType(BezierPathView.self)
+      highlightView.lineWidth = lineWidth
+      highlightView.strokeColour = UIColor.blueColor()
+      highlightView.fillColour = nil
+      // TODO:(vicng) The highlight view frame needs to be larger than this view since it uses a
+      // larger line width
+      highlightView.frame = self.bounds
+      highlightView.backgroundColor = UIColor.clearColor()
+      highlightView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+      highlightView.clipsToBounds = false
+      addSubview(highlightView)
+      _highlightView = highlightView
+    }
+    _highlightView!.bezierPath = path
+    bringSubviewToFront(_highlightView!)
+  }
+
+  private func removeHighlightView() {
+    if let highlightView = _highlightView {
+      highlightView.removeFromSuperview()
+      ViewManager.sharedInstance.recycleView(highlightView)
+      _highlightView = nil
+    }
   }
 }
 
@@ -269,16 +305,52 @@ extension BlockView {
         addPuzzleTabToPath(path, drawTopToBottom: false)
       }
     }
-
+    
     return path.viewBezierPath
   }
-  
+
   private func blockHighlightBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout else {
+    guard let layout = self.layout as? BlockLayout else {
       return nil
     }
-    
-    // TODO:(vicng) Build highlight bezier path
-    return nil
+
+    let hasConnectionHighlight = layout.block.directConnections.filter { $0.highlighted }.count > 0
+    if !hasConnectionHighlight {
+      return nil
+    }
+
+    // Build path for each highlighted connection
+    let path = WorkspaceBezierPath(layout: layout.workspaceLayout)
+
+    for connection in layout.block.directConnections {
+      if !connection.highlighted {
+        continue
+      }
+
+      let connectionRelativePosition = connection.position - layout.absolutePosition
+
+      // Highlight specific connection
+      switch connection.type {
+      case .InputValue, .OutputValue:
+        // The connection point is set to the apex of the puzzle tab's curve. Move the point before
+        // drawing it.
+        path.moveToPoint(connectionRelativePosition +
+          WorkspacePointMake(BlockLayout.sharedConfig.puzzleTabWidth,
+            -BlockLayout.sharedConfig.puzzleTabHeight / 2),
+          relative: false)
+        addPuzzleTabToPath(path, drawTopToBottom: true)
+        break
+      case .PreviousStatement, .NextStatement:
+        // The connection point is set to the bottom of the notch. Move the point before drawing it.
+        path.moveToPoint(connectionRelativePosition -
+          WorkspacePointMake(BlockLayout.sharedConfig.notchWidth / 2,
+            BlockLayout.sharedConfig.notchHeight),
+          relative: false)
+        addNotchToPath(path, drawLeftToRight: true)
+        break
+      }
+    }
+
+    return path.viewBezierPath
   }
 }

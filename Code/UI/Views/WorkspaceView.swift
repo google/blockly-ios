@@ -146,16 +146,26 @@ public class WorkspaceView: LayoutView {
   */
   private func addBlockViewForLayout(layout: BlockLayout) {
     let newBlockView = _viewManager.newBlockViewForLayout(layout)
-    newBlockView.bky_removeAllGestureRecognizers()
+    addGestureRecognizersForBlockView(newBlockView)
+    scrollView.addSubview(newBlockView)
+  }
+
+  /**
+  Adds pan and tap gesture recognizers to a block view.
+  
+  - Parameter blockView: A given block view.
+  */
+  private func addGestureRecognizersForBlockView(blockView: BlockView) {
+    blockView.bky_removeAllGestureRecognizers()
 
     let panGesture = UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:")
     panGesture.maximumNumberOfTouches = 1
-    newBlockView.addGestureRecognizer(panGesture)
+    blockView.addGestureRecognizer(panGesture)
+    self.scrollView.panGestureRecognizer.requireGestureRecognizerToFail(panGesture)
 
     let tapGesture = UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:")
-    newBlockView.addGestureRecognizer(tapGesture)
-
-    scrollView.addSubview(newBlockView)
+    blockView.addGestureRecognizer(tapGesture)
+    self.scrollView.panGestureRecognizer.requireGestureRecognizerToFail(tapGesture)
   }
 
   /**
@@ -168,6 +178,7 @@ public class WorkspaceView: LayoutView {
     blockView.removeFromSuperview()
 
     if let blockLayout = blockView.blockLayout {
+      _dragger.clearGestureDataForBlockLayout(blockLayout)
       _viewManager.uncacheBlockViewForLayout(blockLayout)
     }
     _viewManager.recycleView(blockView)
@@ -181,18 +192,26 @@ extension WorkspaceView {
   Event handler for a UIPanGestureRecognizer.
   */
   internal func didRecognizePanGesture(gesture: UIPanGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView else {
+    guard let blockView = gesture.view as? BlockView,
+      blockLayout = blockView.blockLayout else {
       return
     }
 
+    let touchPosition =
+      workspaceLayout!.workspacePointFromViewPoint(gesture.locationInView(self))
+
     if gesture.state == .Began {
-      _dragger.startDraggingBlock(blockView, gesture: gesture)
+      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
     } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
-      _dragger.continueDraggingBlock(blockView, gesture: gesture)
+      _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
     }
 
     if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
-      _dragger.finishDraggingBlock(blockView, gesture: gesture)
+      _dragger.finishDraggingBlockLayout(blockLayout)
+
+      // HACK: Re-add gesture recognizers for the block view, as there is a problem re-recognizing
+      // them when dragging multiple blocks simultaneously
+      addGestureRecognizersForBlockView(blockView)
     }
   }
 

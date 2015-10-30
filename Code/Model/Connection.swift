@@ -18,14 +18,21 @@ import Foundation
 /**
 Protocol for events that occur on a `Connection`.
 */
-@objc(BKYConnectionDelegate)
-public protocol ConnectionDelegate {
+@objc(BKYConnectionListener)
+public protocol ConnectionListener {
   /**
-  Event that is called when the target connection has been changed for a given connection.
+  Event that is called when the target connection has changed for a given connection.
 
-  - Parameter connection: The connection whose `targetConnection` has been changed.
+  - Parameter connection: The connection whose `targetConnection` value has changed.
   */
-  func didChangeTargetForConnection(connection: Connection)
+  optional func didChangeTargetForConnection(connection: Connection)
+
+  /**
+  Event that is called when the highlighted value has changed for a given connection.
+
+  - Parameter connection: The connection whose `highlighted` value has changed.
+  */
+  optional func didChangeHighlightForConnection(connection: Connection)
 }
 
 /**
@@ -103,7 +110,17 @@ public class Connection : NSObject {
     return (self.type == .InputValue || self.type == .NextStatement)
   }
 
-  public weak var delegate: ConnectionDelegate?
+  /// All connection listeners
+  public let listeners = ListenerSet<ConnectionListener>()
+
+  /// Keeps track of all block uuid's that are telling this connection to be 
+  /// highlighted
+  private var _highlights = Set<String>()
+
+  /// Flag if this connection should be highlighted in the UI
+  public var highlighted: Bool {
+    return !_highlights.isEmpty
+  }
 
   // MARK: - Initializers
 
@@ -148,8 +165,10 @@ public class Connection : NSObject {
       newTargetConnection.targetConnection = self
 
       // Send delegate events
-      self.delegate?.didChangeTargetForConnection(self)
-      newTargetConnection.delegate?.didChangeTargetForConnection(newTargetConnection)
+      listeners.forEach { $0.didChangeTargetForConnection?(self) }
+      newTargetConnection.listeners.forEach {
+        $0.didChangeTargetForConnection?(newTargetConnection)
+      }
     }
   }
 
@@ -167,8 +186,8 @@ public class Connection : NSObject {
     oldTargetConnection.targetConnection = nil
 
     // Send delegate events
-    self.delegate?.didChangeTargetForConnection(self)
-    oldTargetConnection.delegate?.didChangeTargetForConnection(oldTargetConnection)
+    listeners.forEach { $0.didChangeTargetForConnection?(self) }
+    oldTargetConnection.listeners.forEach { $0.didChangeTargetForConnection?(oldTargetConnection) }
   }
 
   /**
@@ -216,6 +235,38 @@ public class Connection : NSObject {
     let xDiff = position.x - other.position.x
     let yDiff = position.y - other.position.y
     return sqrt(xDiff * xDiff + yDiff * yDiff)
+  }
+
+  /**
+  Adds a highlight to this connection for a block. If there were no previous highlights for this
+  connection, the `highlighted` value is changed to `true` and its listeners are notified.
+  
+  - Parameter block: The given block
+  */
+  public func addHighlightForBlock(block: Block) {
+    if !_highlights.contains(block.uuid) {
+      _highlights.insert(block.uuid)
+
+      if _highlights.count == 1 {
+        listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+      }
+    }
+  }
+
+  /**
+  Removes the highlight from this connection for a block. If there are no highlights after this
+  one is removed, the `highlighted` value is changed to `false` and its listeners are notified.
+  
+  - Parameter block: The given block
+  */
+  public func removeHighlightForBlock(block: Block) {
+    if _highlights.contains(block.uuid) {
+      _highlights.remove(block.uuid)
+
+      if _highlights.count == 0 {
+        listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+      }
+    }
   }
 
   // MARK: - Private
