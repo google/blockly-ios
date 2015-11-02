@@ -36,6 +36,26 @@ public protocol ConnectionListener {
 }
 
 /**
+Protocol for position events that occur on a `Connection`.
+*/
+@objc(BKYConnectionPositionListener)
+public protocol ConnectionPositionListener {
+  /**
+  Event that is called immediately before the connection's `position` will change.
+
+  - Parameter connection: The connection whose `position` value will change.
+  */
+  func willChangePositionForConnection(connection: Connection)
+
+  /**
+  Event that is called immediately after the connection's `position` has changed.
+
+  - Parameter connection: The connection whose `position` value has changed.
+  */
+  func didChangePositionForConnection(connection: Connection)
+}
+
+/**
 Component used to create a connection between two `Block` instances.
 */
 @objc(BKYConnection)
@@ -68,6 +88,8 @@ public class Connection : NSObject {
 
   // MARK: - Properties
 
+  /// A globally unique identifier
+  public let uuid: String
   /// The connection type
   public let type: BKYConnectionType
   /// The block that holds this connection
@@ -79,7 +101,7 @@ public class Connection : NSObject {
   NOTE: While this value *should* be stored in a Layout subclass, it's more efficient to simply
   store the absolute position here since it's the only relevant property needed.
   */
-  public internal(set) var position: WorkspacePoint = WorkspacePointZero
+  public private(set) var position: WorkspacePoint = WorkspacePointZero
   /// The connection that this one is connected to
   public private(set) weak var targetConnection: Connection?
   /// The source block of the `targetConnection`
@@ -90,7 +112,6 @@ public class Connection : NSObject {
   public var connected: Bool {
     return targetConnection != nil
   }
-  public var dragMode: Bool = false
   /**
   The set of checks for this connection. Two Connections may be connected if one of them
   supports any connection (when this is null) or if they share at least one common check
@@ -110,8 +131,11 @@ public class Connection : NSObject {
     return (self.type == .InputValue || self.type == .NextStatement)
   }
 
-  /// All connection listeners
-  public let listeners = ListenerSet<ConnectionListener>()
+  /// Connection listeners
+  public let listeners = WeakSet<ConnectionListener>()
+
+  /// Connection position listeners
+  public let positionListeners = WeakSet<ConnectionPositionListener>()
 
   /// Keeps track of all block uuid's that are telling this connection to be 
   /// highlighted
@@ -125,6 +149,7 @@ public class Connection : NSObject {
   // MARK: - Initializers
 
   public init(type: BKYConnectionType, sourceInput: Input? = nil) {
+    self.uuid = NSUUID().UUIDString
     self.type = type
     self.sourceInput = sourceInput
   }
@@ -267,6 +292,27 @@ public class Connection : NSObject {
         listeners.forEach { $0.didChangeHighlightForConnection?(self) }
       }
     }
+  }
+
+  /**
+  Move the connection to a specific position.
+  
+  - Parameter position: The position to move to.
+  - Parameter offset: An additional offset, usually the position of the parent view in the workspace
+  view.
+  */
+  public func moveToPosition(position: WorkspacePoint, withOffset offset: WorkspacePoint? = nil) {
+    let newX = position.x + (offset?.x ?? 0)
+    let newY = position.y + (offset?.y ?? 0)
+
+    if self.position.x == newX && self.position.y == newY {
+      return
+    }
+
+    positionListeners.forEach { $0.willChangePositionForConnection(self) }
+    self.position.x = newX
+    self.position.y = newY
+    positionListeners.forEach { $0.didChangePositionForConnection(self) }
   }
 
   // MARK: - Private

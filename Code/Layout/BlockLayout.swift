@@ -62,23 +62,14 @@ public class BlockLayout: Layout {
   internal override var absolutePosition: WorkspacePoint {
     didSet {
       // Update connection positions
-      if let outputConnection = self.block.outputConnection {
-        self.workspaceLayout.connectionManager.moveConnection(outputConnection,
-          toLocation: self.absolutePosition,
-          withOffset: outputConnectionRelativePosition)
-      }
+      self.block.outputConnection?.moveToPosition(self.absolutePosition,
+        withOffset: outputConnectionRelativePosition)
 
-      if let nextConnection = self.block.nextConnection {
-        self.workspaceLayout.connectionManager.moveConnection(nextConnection,
-          toLocation: self.absolutePosition,
-          withOffset: nextConnectionRelativePosition)
-      }
+      self.block.nextConnection?.moveToPosition(self.absolutePosition,
+        withOffset: nextConnectionRelativePosition)
 
-      if let previousConnection = self.block.previousConnection {
-        self.workspaceLayout.connectionManager.moveConnection(previousConnection,
-          toLocation: self.absolutePosition,
-          withOffset: previousConnectionRelativePosition)
-      }
+      self.block.previousConnection?.moveToPosition(self.absolutePosition,
+        withOffset: previousConnectionRelativePosition)
     }
   }
 
@@ -109,6 +100,11 @@ public class BlockLayout: Layout {
 
     for connection in self.block.directConnections {
       connection.listeners.add(self)
+
+      // Automatically let the workspace's connection manager track this connection
+      self.workspaceLayout.connectionManager.trackConnection(connection)
+
+      // TODO:(vicng) Untrack these connections when the block is deleted
     }
   }
 

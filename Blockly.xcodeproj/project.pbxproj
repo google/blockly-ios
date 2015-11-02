@@ -73,7 +73,7 @@
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; settings = {ASSET_TAGS = (); }; };
-		FAFAA7341BE2D7DE008731CD /* ListenerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAA7331BE2D7DE008731CD /* ListenerSet.swift */; settings = {ASSET_TAGS = (); }; };
+		FAFAA7341BE2D7DE008731CD /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAA7331BE2D7DE008731CD /* WeakSet.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,7 +156,7 @@
 		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
-		FAFAA7331BE2D7DE008731CD /* ListenerSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListenerSet.swift; path = Core/Common/ListenerSet.swift; sourceTree = "<group>"; };
+		FAFAA7331BE2D7DE008731CD /* WeakSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WeakSet.swift; path = Core/Common/WeakSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,12 +360,12 @@
 				FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */,
 				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
 				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
-				FAFAA7331BE2D7DE008731CD /* ListenerSet.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
 				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
 				FA27269D1B8C013A00777B49 /* ObjectPool.swift */,
 				FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */,
 				FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */,
+				FAFAA7331BE2D7DE008731CD /* WeakSet.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -543,7 +543,7 @@
 				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
-				FAFAA7341BE2D7DE008731CD /* ListenerSet.swift in Sources */,
+				FAFAA7341BE2D7DE008731CD /* WeakSet.swift in Sources */,
 				FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */,
 				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,

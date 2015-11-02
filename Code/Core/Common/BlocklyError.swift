@@ -31,6 +31,7 @@ public class BlocklyError: NSError {
     case InvalidBlockDefinition = 100,
     LayoutNotFound = 200,
     InvalidConnection = 201,
+    ConnectionManagerError = 210,
     ViewNotFound = 300
   }
   public typealias Code = BKYBlocklyErrorCode

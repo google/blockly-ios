@@ -40,22 +40,22 @@ class ConnectionManagerTest: XCTestCase {
 
   // MARK: - ConnectionManager Tests
 
-  func testConnectionManagerAdd() {
+  func testConnectionManagerTrack() {
     var conn = Connection(type: .PreviousStatement)
-    manager.addConnection(conn)
-    XCTAssertTrue(manager.connectionsForType(.PreviousStatement).contains(conn))
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.connectionsForType(.PreviousStatement).contains(conn))
 
     conn = Connection(type: .NextStatement)
-    manager.addConnection(conn)
-    XCTAssertTrue(manager.connectionsForType(.NextStatement).contains(conn))
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.connectionsForType(.NextStatement).contains(conn))
 
     conn = Connection(type: .InputValue)
-    manager.addConnection(conn)
-    XCTAssertTrue(manager.connectionsForType(.InputValue).contains(conn))
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.connectionsForType(.InputValue).contains(conn))
 
     conn = Connection(type: .OutputValue)
-    manager.addConnection(conn)
-    XCTAssertTrue(manager.connectionsForType(.OutputValue).contains(conn))
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.connectionsForType(.OutputValue).contains(conn))
   }
 
   func testConnectionManagerMoveTo() {
@@ -63,25 +63,25 @@ class ConnectionManagerTest: XCTestCase {
     let offsetY: CGFloat  = -10
     let offset = WorkspacePointMake(offsetX, offsetY)
     let conn = createConnection(0, 0, .PreviousStatement)
-    manager.addConnection(conn)
+    manager.trackConnection(conn)
 
     // Move to this position + the given offset.
     var moveX: CGFloat = 15
     var moveY: CGFloat = 20
-    manager.moveConnection(conn, toLocation: WorkspacePointMake(moveX, moveY), withOffset: offset)
+    conn.moveToPosition(WorkspacePointMake(moveX, moveY), withOffset: offset)
     XCTAssertEqual(moveX + offsetX, conn.position.x)
     XCTAssertEqual(moveY + offsetY, conn.position.y)
     // Connection should still be in the list
-    XCTAssertTrue(manager.connectionsForType(.PreviousStatement).contains(conn))
+    XCTAssertTrue(manager.mainGroup.connectionsForType(.PreviousStatement).contains(conn))
 
-    manager.removeConnection(conn)
-    conn.dragMode = true
-    // Moving a connection while being dragged should update the connection itself but not
-    // put it back into the connection manager.
+    manager.untrackConnection(conn)
+
+    // Moving a connection should update the connection itself but it should no longer be in the
+    // connection manager.
     moveX = 10
     moveY = 100
-    manager.moveConnection(conn, toLocation: WorkspacePointMake(moveX, moveY), withOffset: offset)
-    XCTAssertFalse(manager.connectionsForType(.PreviousStatement).contains(conn))
+    conn.moveToPosition(WorkspacePointMake(moveX, moveY), withOffset: offset)
+    XCTAssertFalse(manager.mainGroup.connectionsForType(.PreviousStatement).contains(conn))
     XCTAssertEqual(moveX + offsetX, conn.position.x)
     XCTAssertEqual(moveY + offsetY, conn.position.y)
   }
@@ -93,8 +93,7 @@ class ConnectionManagerTest: XCTestCase {
 
     XCTAssertTrue(ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0))
     // Move connections farther apart
-    two.position.x = 100
-    two.position.y = 100
+    two.moveToPosition(WorkspacePointMake(100, 100))
     XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0))
 
     // Don't offer to connect an already connected left (male) value plug to
@@ -127,10 +126,76 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0))
   }
 
+  // MARK: - ConnectionManager.Group Tests
+
+  func testConnectionManagerCreateGroup() {
+    let connectionGroup = manager.createGroup()
+    let conn = Connection(type: .PreviousStatement)
+    manager.trackConnection(conn, assignToGroup: connectionGroup)
+    XCTAssertTrue(connectionGroup.connectionsForType(.PreviousStatement).contains(conn))
+    XCTAssertTrue(!manager.mainGroup.connectionsForType(.PreviousStatement).contains(conn))
+  }
+
+  func testConnectionManagerDeleteGroup() {
+    let connectionGroup = manager.createGroup()
+    let conn = Connection(type: .InputValue)
+    manager.trackConnection(conn, assignToGroup: connectionGroup)
+
+    do {
+      try manager.deleteGroup(connectionGroup)
+      XCTFail("Should not be able to delete non-empty group")
+    } catch {
+    }
+
+    do {
+      try manager.deleteGroup(manager.mainGroup)
+      XCTFail("Should not be able to delete the main group")
+    } catch {
+    }
+
+    manager.untrackConnection(conn)
+
+    do {
+      try manager.deleteGroup(connectionGroup)
+    } catch let error as NSError {
+      XCTFail("Could not delete group: \(error)")
+    }
+  }
+
+  func testConnectionManagerMoveConnections() {
+    let group1 = manager.createGroup()
+    let group2 = manager.createGroup()
+
+    var connections = [Connection]()
+    for (var i = 0; i < 12; i++) {
+      let connectionType = Connection.ConnectionType(rawValue: i % 4)
+      connections.append(createConnection(CGFloat(i), CGFloat(i), connectionType!))
+      manager.trackConnection(connections[i], assignToGroup: group1)
+    }
+
+    // Verify all connections are in group 1
+    for connection in connections {
+      XCTAssertTrue(group1.allConnections.contains(connection))
+      XCTAssertFalse(group2.allConnections.contains(connection))
+    }
+    XCTAssertEqual(connections.count, group1.allConnections.count)
+    XCTAssertEqual(0, group2.allConnections.count)
+
+    manager.moveConnectionsFromGroup(group1, toGroup: group2)
+
+    // Verify all connections are in group 2
+    for connection in connections {
+      XCTAssertFalse(group1.allConnections.contains(connection))
+      XCTAssertTrue(group2.allConnections.contains(connection))
+    }
+    XCTAssertEqual(0, group1.allConnections.count)
+    XCTAssertEqual(connections.count, group2.allConnections.count)
+  }
+
   // MARK: - ConnectionManager.YSortedList Tests
 
   func testYSortedListFindPosition() {
-    let list = manager.connectionsForType(.PreviousStatement)
+    let list = manager.mainGroup.connectionsForType(.PreviousStatement)
     list.addConnection(createConnection(0, 0, .PreviousStatement))
     list.addConnection(createConnection(0, 1, .PreviousStatement))
     list.addConnection(createConnection(0, 2, .PreviousStatement))
@@ -143,7 +208,7 @@ class ConnectionManagerTest: XCTestCase {
   }
 
   func testYSortedListFind() {
-    let previousList = manager.connectionsForType(.PreviousStatement)
+    let previousList = manager.mainGroup.connectionsForType(.PreviousStatement)
     for (var i = 0; i < 10; i++) {
       previousList.addConnection(createConnection(CGFloat(i), 0, .PreviousStatement))
       previousList.addConnection(createConnection(0, CGFloat(i), .PreviousStatement))
@@ -158,7 +223,7 @@ class ConnectionManagerTest: XCTestCase {
   }
 
   func testYSortedListOrdered() {
-    let list = manager.connectionsForType(.PreviousStatement)
+    let list = manager.mainGroup.connectionsForType(.PreviousStatement)
     for (var i = 0; i < 10; i++) {
       list.addConnection(createConnection(0, CGFloat(9 - i), .PreviousStatement))
     }
@@ -192,7 +257,7 @@ class ConnectionManagerTest: XCTestCase {
 
   // Test YSortedList
   func testYSortedListSearchForClosest() {
-    let list = manager.connectionsForType(.PreviousStatement)
+    let list = manager.mainGroup.connectionsForType(.PreviousStatement)
 
     // search an empty list
     XCTAssertEqual(nil, searchList(list, x: 10, y: 10, radius: 100))
@@ -224,7 +289,7 @@ class ConnectionManagerTest: XCTestCase {
 
   func testYSortedListGetNeighbours() {
 
-    let list = manager.connectionsForType(.PreviousStatement)
+    let list = manager.mainGroup.connectionsForType(.PreviousStatement)
 
     // Search an empty list
     XCTAssertTrue(getNeighbourHelper(list, x: 10, y: 10, radius: 100).isEmpty)
@@ -285,8 +350,7 @@ class ConnectionManagerTest: XCTestCase {
     x: CGFloat, _ y: CGFloat, _ type: Connection.ConnectionType, sourceInput: Input? = nil)
     -> Connection {
       let conn = Connection(type: type, sourceInput: sourceInput)
-      conn.position.x = x
-      conn.position.y = y
+      conn.moveToPosition(WorkspacePointMake(x, y))
       conn.sourceBlock = Block.Builder(identifier: "test", workspace: workspace).build()
       return conn
   }

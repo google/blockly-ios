@@ -34,15 +34,13 @@ public class WorkspaceView: LayoutView {
   private let _viewManager = ViewManager.sharedInstance
 
   /// Controls logic for dragging blocks around in the workspace
-  private var _dragger: Dragger!
+  private var _dragger = Dragger()
 
   // MARK: - Initializers
 
   public required init() {
     self.scrollView = UIScrollView(frame: CGRectZero)
     super.init(frame: CGRectZero)
-
-    _dragger = Dragger(workspaceView: self)
 
     scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.autoresizesSubviews = true
@@ -199,6 +197,9 @@ extension WorkspaceView {
 
     let touchPosition =
       workspaceLayout!.workspacePointFromViewPoint(gesture.locationInView(self))
+
+    // TODO:(vicng) Handle screen rotations (either lock the screen during drags or stop any
+    // on-going drags when the screen is rotated).
 
     if gesture.state == .Began {
       _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)

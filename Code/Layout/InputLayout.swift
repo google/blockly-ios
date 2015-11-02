@@ -47,8 +47,7 @@ public class InputLayout: Layout {
           BlockLayout.sharedConfig.puzzleTabHeight / 2)
       }
 
-      self.workspaceLayout.connectionManager.moveConnection(connection,
-        toLocation: self.absolutePosition, withOffset: connectionPoint)
+      connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
     }
   }
 
