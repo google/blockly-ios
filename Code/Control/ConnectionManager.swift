@@ -16,16 +16,19 @@
 import Foundation
 
 /**
-Controller for `Connection` instances, where connections can be separated into groups (see 
+Controller for `Connection` instances, where connections can be separated into groups (see
 `ConnectionManager.Group`).
 */
 @objc(BKYConnectionManager)
 public class ConnectionManager: NSObject {
+  public typealias ConnectionPair =
+    (moving: Connection, target: Connection, fromConnectionManagerGroup: ConnectionManager.Group)
+
   // MARK: - Properties
 
   /// The main group. By default, all connections are tracked in this group, unless specified
   /// otherwise.
-  public let mainGroup = ConnectionManager.Group()
+  public let mainGroup: ConnectionManager.Group
 
   /// Dictionary for retrieving a connection's assigned group (keyed by the connection uuid)
   private var _groupsByConnection = Dictionary<String, ConnectionManager.Group>()
@@ -36,36 +39,65 @@ public class ConnectionManager: NSObject {
   // MARK: - Initializers
 
   public override init() {
+    self.mainGroup = ConnectionManager.Group(ownerBlock: nil)
+    super.init()
     self._groups.insert(mainGroup)
   }
 
   // MARK: - Public
 
   /**
-  Adds a new `ConnectionManager.Group` to the manager and returns it.
+  Adds a new `ConnectionManager.Group` to the manager for a given block.
+
+  - Parameter block: If this value is specified, all connections underneath this block's tree are
+  automatically moved to the newly created connection group. This value is also assigned as the
+  `ownerBlock` of the connection group.
+  - Returns: The newly created connection group
   */
-  public func createGroup() -> ConnectionManager.Group {
-    let newGroup = ConnectionManager.Group()
+  public func startGroupForBlock(block: Block?) -> ConnectionManager.Group {
+    let newGroup = ConnectionManager.Group(ownerBlock: block)
     _groups.insert(newGroup)
+
+    if let childConnections = block?.allConnectionsForTree() {
+      // Change the connection group for all affected connections to the new one created
+      // for the drag gesture
+      for connection in childConnections {
+        trackConnection(connection, assignToGroup: newGroup)
+      }
+    }
+
     return newGroup
   }
 
   /**
-  Deletes a `ConnectionManager.Group` from the manager.
+  Moves all connections from one group to another group. The first group is automatically
+  deleted after this operation is completed (unless both groups are the same).
 
-  - Parameter group: The group to delete
-  - Throws:
-  `BlocklyError`: Thrown with .ConnectionManagerError if (`group` == `mainGroup`) or if `group` is
-  not empty.
+  - Parameter fromGroup: The group containing the connections to move
+  - Parameter intoGroup: The receiving group. If this value is nil, the `mainGroup` is used by
+  default.
   */
-  public func deleteGroup(group: ConnectionManager.Group) throws {
-    if group == mainGroup {
-      throw BlocklyError(.ConnectionManagerError, "Cannot remove the mainGroup")
-    } else if !group.allConnections.isEmpty {
-      throw BlocklyError(.ConnectionManagerError, "Cannot delete non-empty group")
+  public func mergeGroup(fromGroup: ConnectionManager.Group, intoGroup: ConnectionManager.Group?) {
+    let newGroup = (intoGroup ?? self.mainGroup)
+    if fromGroup == newGroup {
+      return
     }
 
-    _groups.remove(group)
+    let allConnections = fromGroup.allConnections
+
+    fromGroup.transferConnectionsToGroup(newGroup)
+
+    for connection in allConnections {
+      // Update dictionary of groups by connection
+      _groupsByConnection[connection.uuid] = newGroup
+    }
+
+    // Delete the group that was merged
+    do {
+      try deleteGroup(fromGroup)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not delete connection group: \(error)")
+    }
   }
 
   /**
@@ -81,14 +113,13 @@ public class ConnectionManager: NSObject {
     connection: Connection, assignToGroup group: ConnectionManager.Group? = nil) {
       let newGroup = (group ?? mainGroup)
 
-      if let existingGroup = _groupsByConnection[connection.uuid] {
-        if existingGroup == newGroup {
-          // Connection is already being tracked
-          return
-        }
-        // Each connection can only be tracked by one group at a time, remove from existing group
-        existingGroup.untrackConnection(connection)
+      if _groupsByConnection[connection.uuid] == newGroup {
+        // Connection is already being tracked by this group, do nothing
+        return
       }
+
+      // Each connection can only be tracked by one group at a time, remove from existing group
+      untrackConnection(connection)
 
       // Let the new group track this connection
       newGroup.trackConnection(connection)
@@ -106,45 +137,35 @@ public class ConnectionManager: NSObject {
   }
 
   /**
-  Moves all connections from an existing group to a new group.
+  Iterate over all direct connections on a given group's `ownerBlock` and find the one that is
+  closest to a valid connection on another block.
 
-  - Parameter oldGroup: The group containing the connections to move
-  - Parameter newGroup: The new group
+  - Parameter group: The group whose `ownerBlock`'s direct connections to search
+  - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
+  coordinate system unit
+  - Returns: A connection pair where the `pair.moving` connection is one on the given block and the
+  `pair.target` connection is the closest compatible connection. Nil is returned if no suitable
+  connection pair could be found.
   */
-  public func moveConnectionsFromGroup(
-    oldGroup: ConnectionManager.Group, toGroup newGroup:ConnectionManager.Group) {
-      if oldGroup == newGroup {
-        return
+  public func findBestConnectionForGroup(group: ConnectionManager.Group, maxRadius: CGFloat)
+    -> ConnectionPair? {
+      guard let block = group.ownerBlock else {
+        return nil
       }
 
-      let allConnections = oldGroup.allConnections
-
-      // Untrack all connections from the old group (this is faster than calling
-      // oldGroup.untrackConnection(:) for each connection)
-      oldGroup.untrackAllConnections()
-
-      // Add the connection to the new group
-      for connection in allConnections {
-        trackConnection(connection, assignToGroup: newGroup)
-      }
-  }
-
-  /**
-  Find the closest compatible connection to this connection.
-
-  - Parameter connection: The base connection for the search.
-  - Parameter maxRadius: How far out to search for compatible connections.
-  - Returns: The closest compatible connection and the connection group it was found in.
-  */
-  public func closestConnection(connection: Connection, maxRadius: CGFloat)
-    -> (Connection, ConnectionManager.Group)? {
+      // Find the connection that is closest to any direct connection on the block.
+      var candidate: ConnectionPair?
       var radius = maxRadius
-      var candidate: (Connection, ConnectionManager.Group)? = nil
 
-      for group in _groups {
-        if let compatibleConnection = group.closestConnection(connection, maxRadius: radius) {
-          candidate = (compatibleConnection, group)
-          radius = connection.distanceFromConnection(compatibleConnection)
+      for blockConnection in block.directConnections {
+        if let compatibleConnection =
+          closestConnection(blockConnection, maxRadius: radius, ignoreGroup: group)
+        {
+          candidate = (
+            moving: blockConnection,
+            target: compatibleConnection.0,
+            fromConnectionManagerGroup: compatibleConnection.1)
+          radius = blockConnection.distanceFromConnection(compatibleConnection.0)
         }
       }
 
@@ -156,7 +177,8 @@ public class ConnectionManager: NSObject {
   bumping so type checking does not apply.
 
   - Parameter connection: The base connection for the search.
-  - Parameter maxRadius: How far out to search for compatible connections.
+  - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
+  coordinate system unit
   - Returns: A list of all nearby compatible connections.
   */
   public func neighboursForConnection(connection: Connection, maxRadius: CGFloat) -> [Connection] {
@@ -164,6 +186,52 @@ public class ConnectionManager: NSObject {
   }
 
   // MARK: - Internal - For testing only
+
+  /**
+  Deletes a `ConnectionManager.Group` from the manager.
+
+  - Parameter group: The group to delete
+  - Throws:
+  `BlocklyError`: Thrown with .ConnectionManagerError if (`group` == `mainGroup`) or if `group` is
+  not empty.
+  */
+  internal func deleteGroup(group: ConnectionManager.Group) throws {
+    if group == mainGroup {
+      throw BlocklyError(.ConnectionManagerError, "Cannot remove the mainGroup")
+    } else if !group.allConnections.isEmpty {
+      throw BlocklyError(.ConnectionManagerError, "Cannot delete non-empty group")
+    }
+
+    _groups.remove(group)
+  }
+
+  /**
+  Find the closest compatible connection to this connection.
+
+  - Parameter connection: The base connection for the search.
+  - Parameter maxRadius: How far out to search for compatible connections.
+  - Parameter ignoreGroup: Optional group to ignore when looking for compatible connections.
+  - Returns: The closest compatible connection and the connection group it was found in.
+  */
+  internal func closestConnection(
+    connection: Connection, maxRadius: CGFloat, ignoreGroup: ConnectionManager.Group?)
+    -> (Connection, ConnectionManager.Group)? {
+      var radius = maxRadius
+      var candidate: (Connection, ConnectionManager.Group)? = nil
+
+      for group in _groups {
+        if group == ignoreGroup {
+          continue
+        }
+
+        if let compatibleConnection = group.closestConnection(connection, maxRadius: radius) {
+          candidate = (compatibleConnection, group)
+          radius = connection.distanceFromConnection(compatibleConnection)
+        }
+      }
+
+      return candidate
+  }
 
   /**
   Check if the two connections can be dragged to connect to each other.
@@ -198,6 +266,8 @@ public class ConnectionManager: NSObject {
   }
 }
 
+// MARK: - Class - ConnectionManager.Group
+
 extension ConnectionManager {
   /**
   Manages a specific set of `Connection` instances.
@@ -206,6 +276,7 @@ extension ConnectionManager {
   public class Group: NSObject, ConnectionPositionListener {
 
     // MARK: - Properties
+    private weak var ownerBlock: Block?
 
     private let _previousConnections = YSortedList()
     private let _nextConnections = YSortedList()
@@ -228,7 +299,9 @@ extension ConnectionManager {
 
     // MARK: - Initializers
 
-    private override init() {
+    private init(ownerBlock: Block?) {
+      self.ownerBlock = ownerBlock
+
       // NOTE: If updating this, also update Connection.OPPOSITE_TYPES array.
       // The arrays are indexed by connection type codes (`connection.type.rawValue`).
       _matchingLists =
@@ -257,17 +330,6 @@ extension ConnectionManager {
     internal func untrackConnection(connection: Connection) {
       removeConnection(connection)
       connection.positionListeners.remove(self)
-    }
-
-    /**
-    Removes all connections and stops listening for changes to their positions. Calling this method
-    resets the group to its default state.
-    */
-    internal func untrackAllConnections() {
-      for list in _matchingLists {
-        list._connections.forEach { $0.positionListeners.remove(self) }
-        list.removeAllConnections()
-      }
     }
 
     /**
@@ -302,6 +364,28 @@ extension ConnectionManager {
 
     internal func connectionsForType(type: Connection.ConnectionType) -> YSortedList {
       return _matchingLists[type.rawValue]
+    }
+
+    /**
+    Moves connections that are being tracked by this group to another group.
+
+    - Parameter toGroup: The new group
+    */
+    internal func transferConnectionsToGroup(toGroup: Group) {
+      for (var i = 0; i < _matchingLists.count; i++) {
+        let fromConnectionList = _matchingLists[i]
+        let toConnectionList = toGroup._matchingLists[i]
+
+        // Remove position listeners for this group and add them for the new group
+        let affectedConnections = fromConnectionList._connections
+        for connection in affectedConnections {
+          connection.positionListeners.remove(self)
+          connection.positionListeners.add(toGroup)
+        }
+
+        // And now transfer the connections over to the corresponding list in the new group
+        fromConnectionList.transferConnectionsToList(toConnectionList)
+      }
     }
 
     // MARK: - Private
@@ -376,7 +460,7 @@ extension ConnectionManager {
     /**
     Insert the given connection into this list.
 
-    -Parameter connection: The connection to insert.
+    - Parameter connection: The connection to insert.
     */
     internal func addConnection(connection: Connection) {
       _connections.insert(connection, atIndex: findPositionForConnection(connection))
@@ -557,6 +641,25 @@ extension ConnectionManager {
 
     internal func contains(connection: Connection) -> Bool {
       return findConnection(connection) != nil
+    }
+
+    internal func transferConnectionsToList(toList: YSortedList) {
+      // Transfer connections using merge sort
+      var insertionIndex = 0
+
+      for connection in _connections {
+        // Find the next insertion index
+        while insertionIndex < toList.count &&
+          toList[insertionIndex].position.y < connection.position.y  {
+            insertionIndex++
+        }
+
+        // Insert the connection and increment the insertion index
+        toList._connections.insert(connection, atIndex: insertionIndex++)
+      }
+
+      // Finally, remove all connections from this list
+      removeAllConnections()
     }
   }
 }

@@ -128,8 +128,8 @@ class ConnectionManagerTest: XCTestCase {
 
   // MARK: - ConnectionManager.Group Tests
 
-  func testConnectionManagerCreateGroup() {
-    let connectionGroup = manager.createGroup()
+  func testConnectionManagerStartGroup() {
+    let connectionGroup = manager.startGroupForBlock(nil)
     let conn = Connection(type: .PreviousStatement)
     manager.trackConnection(conn, assignToGroup: connectionGroup)
     XCTAssertTrue(connectionGroup.connectionsForType(.PreviousStatement).contains(conn))
@@ -137,7 +137,7 @@ class ConnectionManagerTest: XCTestCase {
   }
 
   func testConnectionManagerDeleteGroup() {
-    let connectionGroup = manager.createGroup()
+    let connectionGroup = manager.startGroupForBlock(nil)
     let conn = Connection(type: .InputValue)
     manager.trackConnection(conn, assignToGroup: connectionGroup)
 
@@ -162,9 +162,9 @@ class ConnectionManagerTest: XCTestCase {
     }
   }
 
-  func testConnectionManagerMoveConnections() {
-    let group1 = manager.createGroup()
-    let group2 = manager.createGroup()
+  func testConnectionManagerMergeGroups() {
+    let group1 = manager.startGroupForBlock(nil)
+    let group2 = manager.startGroupForBlock(nil)
 
     var connections = [Connection]()
     for (var i = 0; i < 12; i++) {
@@ -176,17 +176,22 @@ class ConnectionManagerTest: XCTestCase {
     // Verify all connections are in group 1
     for connection in connections {
       XCTAssertTrue(group1.allConnections.contains(connection))
+      XCTAssertTrue(connection.positionListeners.all.contains({ $0 === group1}))
       XCTAssertFalse(group2.allConnections.contains(connection))
+      XCTAssertFalse(connection.positionListeners.all.contains({ $0 === group2}))
     }
     XCTAssertEqual(connections.count, group1.allConnections.count)
     XCTAssertEqual(0, group2.allConnections.count)
 
-    manager.moveConnectionsFromGroup(group1, toGroup: group2)
+    manager.mergeGroup(group1, intoGroup: group2)
 
     // Verify all connections are in group 2
     for connection in connections {
       XCTAssertFalse(group1.allConnections.contains(connection))
+      XCTAssertFalse(connection.positionListeners.all.contains({ $0 === group1}))
       XCTAssertTrue(group2.allConnections.contains(connection))
+      XCTAssertTrue(connection.positionListeners.all.contains({ $0 === group2 }))
+
     }
     XCTAssertEqual(0, group1.allConnections.count)
     XCTAssertEqual(connections.count, group2.allConnections.count)
@@ -288,7 +293,6 @@ class ConnectionManagerTest: XCTestCase {
   }
 
   func testYSortedListGetNeighbours() {
-
     let list = manager.mainGroup.connectionsForType(.PreviousStatement)
 
     // Search an empty list
@@ -333,7 +337,105 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertTrue(result.isEmpty)
   }
 
+  func testYSortedListTransferConnectionsToEmptyGroup() {
+    let group1 = manager.startGroupForBlock(nil)
+    let group2 = manager.startGroupForBlock(nil)
+    let list1 = group1.connectionsForType(.PreviousStatement)
+    let list2 = group2.connectionsForType(.PreviousStatement)
+
+    // Create connections
+    let yCoords1: [CGFloat] = [-25, -24.3, 1, 6, 29, -2, 4]
+
+    var allConnections = [Connection]()
+    allConnections.appendContentsOf(createConnectionsForList(list1, yCoords: yCoords1))
+
+    // Transfer connections
+    list1.transferConnectionsToList(list2)
+
+    // Verify all connections are in list2 and that they are sorted
+    for connection in allConnections {
+      XCTAssertFalse(list1.contains(connection))
+      XCTAssertTrue(list2.contains(connection))
+    }
+    XCTAssertTrue(isListSorted(list2))
+  }
+
+  func testYSortedListTransferConnectionsToNonEmptyGroup1() {
+    let group1 = manager.startGroupForBlock(nil)
+    let group2 = manager.startGroupForBlock(nil)
+    let list1 = group1.connectionsForType(.PreviousStatement)
+    let list2 = group2.connectionsForType(.PreviousStatement)
+
+    // Create connections
+    let yCoords1: [CGFloat] = [-3, 0, 1, 5, 5, 6, 8]
+    let yCoords2: [CGFloat] = [0, 0.00001, 2, 4, 5, 5, 7, 8, 8.0001]
+
+    var allConnections = [Connection]()
+    allConnections.appendContentsOf(createConnectionsForList(list1, yCoords: yCoords1))
+    allConnections.appendContentsOf(createConnectionsForList(list2, yCoords: yCoords2))
+
+    // Transfer connections
+    list1.transferConnectionsToList(list2)
+
+    // Verify all connections are in list2 and that they are sorted
+    for connection in allConnections {
+      XCTAssertFalse(list1.contains(connection))
+      XCTAssertTrue(list2.contains(connection))
+    }
+    XCTAssertTrue(isListSorted(list2))
+  }
+
+  func testYSortedListTransferConnectionsToNonEmptyGroup2() {
+    let group1 = manager.startGroupForBlock(nil)
+    let group2 = manager.startGroupForBlock(nil)
+    let list1 = group1.connectionsForType(.PreviousStatement)
+    let list2 = group2.connectionsForType(.PreviousStatement)
+
+    // Create connections
+    let yCoords1: [CGFloat] = [-3, 0, 1, 5, 5, 6, 8]
+    let yCoords2: [CGFloat] = [-5, -3, -2, 0, 3, 8]
+
+    var allConnections = [Connection]()
+    allConnections.appendContentsOf(createConnectionsForList(list1, yCoords: yCoords1))
+    allConnections.appendContentsOf(createConnectionsForList(list2, yCoords: yCoords2))
+
+    // Transfer connections
+    list1.transferConnectionsToList(list2)
+
+    // Verify all connections are in list2 and that they are sorted
+    for connection in allConnections {
+      XCTAssertFalse(list1.contains(connection))
+      XCTAssertTrue(list2.contains(connection))
+    }
+    XCTAssertTrue(isListSorted(list2))
+  }
+
   // MARK: - Private Helpers
+
+  private func createConnectionsForList(list: ConnectionManager.YSortedList, yCoords: [CGFloat])
+    -> [Connection] {
+      var connections = [Connection]()
+      for (var i = 0; i < yCoords.count; i++) {
+        let connection = createConnection(CGFloat(i), CGFloat(yCoords[i]), .PreviousStatement)
+        list.addConnection(connection)
+        connections.append(connection)
+      }
+      return connections
+  }
+
+  private func isListSorted(list: ConnectionManager.YSortedList) -> Bool {
+    var currentPosY: CGFloat?
+
+    for (var i = 0; i < list.count; i++) {
+      if currentPosY != nil && list[i].position.y < currentPosY! {
+        // The value at list[i] has a y-pos that is less than the previous value
+        return false
+      }
+      currentPosY = list[i].position.y
+    }
+
+    return true
+  }
 
   private func getNeighbourHelper(
     list: ConnectionManager.YSortedList, x: CGFloat, y: CGFloat, radius: CGFloat) -> [Connection] {

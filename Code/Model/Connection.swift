@@ -296,7 +296,7 @@ public class Connection : NSObject {
 
   /**
   Move the connection to a specific position.
-  
+
   - Parameter position: The position to move to.
   - Parameter offset: An additional offset, usually the position of the parent view in the workspace
   view.
