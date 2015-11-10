@@ -251,6 +251,7 @@ public class Block : NSObject {
 
         // Add this new block group layout to the workspace level
         workspace.layout?.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+        workspace.layout?.bringBlockGroupLayoutToFront(blockGroupLayout)
 
         // Reattach block layouts to a new block group layout
         blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)

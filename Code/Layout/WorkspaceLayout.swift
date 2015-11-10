@@ -28,9 +28,10 @@ public class WorkspaceLayout: Layout {
   /// The locations of all connections in this workspace
   public let connectionManager: ConnectionManager
 
-  /// The corresponding `BlockGroupLayout` objects seeded by each `Block` inside of
-  /// `self.workspace.blocks[]`, keyed by each layout's `uuid`.
-  public private(set) var blockGroupLayouts = [String: BlockGroupLayout]()
+  /// All child `BlockGroupLayout` objects that have been appended to this layout
+  public var blockGroupLayouts: [BlockGroupLayout] {
+    return childLayouts.map({$0.1}) as! [BlockGroupLayout]
+  }
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point translates to a (5, 5) Workspace point.
@@ -45,6 +46,12 @@ public class WorkspaceLayout: Layout {
       }
     }
   }
+
+  // z-index counter used to layer blocks in a specific order.
+  private var _zIndexCounter: CGFloat = 1
+
+  // Maximum value that the z-index counter should reach
+  private var _maximumZIndexCounter: CGFloat = (pow(2, 23) - 1)
 
   // MARK: - Initializers
 
@@ -62,7 +69,7 @@ public class WorkspaceLayout: Layout {
     var size = WorkspaceSizeZero
 
     // Update relative position/size of blocks
-    for (_, blockGroupLayout) in blockGroupLayouts {
+    for blockGroupLayout in self.blockGroupLayouts {
       if includeChildren {
         blockGroupLayout.performLayout(includeChildren: true)
       }
@@ -109,8 +116,8 @@ public class WorkspaceLayout: Layout {
   has been appended.
   */
   public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
+    // Setting the parentLayout automatically adds it to self.childLayouts
     blockGroupLayout.parentLayout = self
-    blockGroupLayouts[blockGroupLayout.uuid] = blockGroupLayout
 
     if updateLayout {
       updateLayoutUpTree()
@@ -125,11 +132,45 @@ public class WorkspaceLayout: Layout {
   has been removed.
   */
   public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
+    // Setting the parentLayout to nil automatically removes it from self.childLayouts
     blockGroupLayout.parentLayout = nil
-    blockGroupLayouts[blockGroupLayout.uuid] = nil
 
     if updateLayout {
       updateLayoutUpTree()
+    }
+  }
+
+  /**
+  Brings the given block group layout to the front by setting its `zPosition` to the
+  highest value in the workspace.
+
+  - Parameter blockGroupLayout: The given block group layout
+  */
+  public func bringBlockGroupLayoutToFront(layout: BlockGroupLayout?) {
+    guard let blockGroupLayout = layout else {
+      return
+    }
+
+    // Verify that this layout is a child of the workspace
+    if childLayouts[blockGroupLayout.uuid] == nil {
+      return
+    }
+    if blockGroupLayout.zIndex == _zIndexCounter {
+      // This block group is already at the highest level, don't need to do anything
+      return
+    }
+
+    blockGroupLayout.zIndex = ++_zIndexCounter
+
+    if _zIndexCounter >= _maximumZIndexCounter {
+      // The maximum z-position has been reached (unbelievable!). Normalize all block group layouts.
+      _zIndexCounter = 1
+
+      let ascendingBlockGroupLayouts = self.blockGroupLayouts.sort({ $0.zIndex < $1.zIndex })
+
+      for blockGroupLayout in ascendingBlockGroupLayouts {
+        blockGroupLayout.zIndex = ++_zIndexCounter
+      }
     }
   }
 }

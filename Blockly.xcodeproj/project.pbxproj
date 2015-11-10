@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; settings = {ASSET_TAGS = (); }; };
-		F98FF7E31BB2087700A4F8E5 /* block_factory_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */; settings = {ASSET_TAGS = (); }; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; settings = {ASSET_TAGS = (); }; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; settings = {ASSET_TAGS = (); }; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; settings = {ASSET_TAGS = (); }; };
@@ -74,6 +73,7 @@
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; settings = {ASSET_TAGS = (); }; };
 		FAFAA7341BE2D7DE008731CD /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAA7331BE2D7DE008731CD /* WeakSet.swift */; settings = {ASSET_TAGS = (); }; };
+		FAFAA7361BE9A92F008731CD /* block_factory_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -498,7 +498,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F98FF7E31BB2087700A4F8E5 /* block_factory_test_1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA2DFC071B7174350072A278 /* block_test_1.json in Resources */,
+				FAFAA7361BE9A92F008731CD /* block_factory_test_1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

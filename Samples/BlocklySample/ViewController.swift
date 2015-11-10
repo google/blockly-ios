@@ -19,6 +19,8 @@ import Blockly
 class ViewController: UIViewController {
   // MARK: - Super
 
+  private var _blockFactory: BlockFactory!
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -32,7 +34,6 @@ class ViewController: UIViewController {
     let workspaceView = WorkspaceView()
     workspaceView.layout = workspaceLayout
     workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-    workspaceView.translatesAutoresizingMaskIntoConstraints = false
     workspaceView.frame = self.view.bounds
     workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.view.addSubview(workspaceView)
@@ -49,6 +50,12 @@ class ViewController: UIViewController {
   func buildWorkspace() -> Workspace {
     let layoutFactory = LayoutFactory()
     let workspace = Workspace(layoutFactory: layoutFactory, isFlyout: false)
+
+    do {
+      _blockFactory = try BlockFactory(workspace: workspace, jsonPath: "TestBlocks")
+    } catch let error as NSError {
+      print("An error occurred loading the test blocks: \(error)")
+    }
 
     if let block1 = buildChainedStatementBlock(workspace) {
       if let block2 = buildOutputBlock(workspace) {
@@ -67,25 +74,12 @@ class ViewController: UIViewController {
     return workspace
   }
 
-  func buildBlock(workspace: Workspace, filename: String) -> Block? {
-    do {
-      let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
-      let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
-      let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
-      return try Block.blockFromJSON(json, workspace: workspace)
-    } catch let error as NSError {
-      print("An error occurred loading the block: \(error)")
-    }
-
-    return nil
-  }
-
   func buildOutputBlock(workspace: Workspace) -> Block? {
-    return buildBlock(workspace, filename: "TestBlockOutput")
+    return _blockFactory.obtain("block_output")
   }
 
   func buildStatementBlock(workspace: Workspace) -> Block? {
-    return buildBlock(workspace, filename: "TestBlockStatement")
+    return _blockFactory.obtain("block_statement")
   }
 
   func buildChainedStatementBlock(workspace: Workspace) -> Block? {

@@ -57,6 +57,9 @@ public class Dragger: NSObject {
     // Highlight this block
     layout.highlighted = true
 
+    // Bring its block group layout to the front
+    layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+
     // Start a new connection group for this block group layout
     let newConnectionGroup = layout.workspaceLayout.connectionManager.startGroupForBlock(block)
 
@@ -112,6 +115,10 @@ public class Dragger: NSObject {
       let connectionPair = findBestConnectionForDrag(drag)
     {
       connectPair(connectionPair)
+
+      // Bring the entire block group layout to the front
+      layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+
       clearGestureDataForBlockLayout(layout,
         moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
     } else {

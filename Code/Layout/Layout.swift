@@ -106,16 +106,6 @@ public class Layout: NSObject {
     }
   }
 
-  /// Z-position of the layout. Those with higher values should render on top of those with lower
-  /// values.
-  public var zPosition: CGFloat = 0 {
-    didSet {
-      if zPosition != oldValue {
-        self.needsRepositioning = true
-      }
-    }
-  }
-
   /**
   Flag indicating if this layout's corresponding view needs to be completely re-drawn.
   Setting this value to true schedules a change event to be called on the `delegate` at the
@@ -246,6 +236,7 @@ public class Layout: NSObject {
   back to false.
   */
   internal func sendChangeEvent() {
+    // TODO:(vicng) Change these events so it's easy to create new ones based on flags
     if self.needsDisplay {
       self.delegate?.layoutDisplayChanged(self)
     } else if self.needsRepositioning {

@@ -65,7 +65,7 @@ public class LayoutView: UIView {
   }
 
   /**
-  Refreshes `frame` and `layer.zPosition` based on the state of the current `layout`.
+  Refreshes `frame` based on the state of the current `layout`.
   */
   public func refreshPosition() {
     guard let layout = self.layout else {
@@ -73,7 +73,6 @@ public class LayoutView: UIView {
     }
 
     self.frame = layout.viewFrame
-    self.layer.zPosition = layout.zPosition
   }
 }
 

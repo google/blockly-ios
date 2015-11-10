@@ -92,6 +92,39 @@ public class BlockLayout: Layout {
     return parentLayout as? BlockGroupLayout
   }
 
+  /// The top most block group layout for this block
+  public var rootBlockGroupLayout: BlockGroupLayout? {
+    var root = parentBlockGroupLayout
+    var currentLayout: Layout = self
+
+    while let parentLayout = currentLayout.parentLayout {
+      if let blockGroupLayout = parentLayout as? BlockGroupLayout {
+        root = blockGroupLayout
+      }
+      currentLayout = parentLayout
+    }
+
+    return root
+  }
+
+  /// Z-index of the layout. Those with higher values should render on top of those with lower
+  /// values.
+  public var zIndex: CGFloat = 0 {
+    didSet {
+      if zIndex == oldValue {
+        return
+      }
+
+      // Update the z-position for all of its block group children
+      for inputLayout in self.inputLayouts {
+        inputLayout.blockGroupLayout.zIndex = zIndex
+      }
+
+      // TODO:(vicng) Change this to raise a custom layout event for z-index
+      self.needsRepositioning = true
+    }
+  }
+
   // MARK: - Initializers
 
   public required init(block: Block, workspaceLayout: WorkspaceLayout) {

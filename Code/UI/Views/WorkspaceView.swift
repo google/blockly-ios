@@ -15,6 +15,10 @@
 
 import Foundation
 
+// TODO:(vicng) By default, Blockly is configured to support auto-layout. Create an option to
+// disable it, so it only uses frame-based layouts (which should theoretically result in faster
+// rendering).
+
 /**
 View for rendering a `WorkspaceLayout`.
 */
@@ -30,6 +34,9 @@ public class WorkspaceView: LayoutView {
   /// Scroll view used to render the workspace
   private var scrollView: UIScrollView!
 
+  /// View which holds all the block views
+  private var _blockGroupView: BlockGroupView!
+
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
@@ -40,11 +47,15 @@ public class WorkspaceView: LayoutView {
 
   public required init() {
     self.scrollView = UIScrollView(frame: CGRectZero)
+    _blockGroupView = BlockGroupView(frame: CGRectZero)
     super.init(frame: CGRectZero)
 
     scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    self.autoresizesSubviews = true
+    scrollView.autoresizesSubviews = false
     addSubview(scrollView)
+
+    _blockGroupView.autoresizesSubviews = false
+    scrollView.addSubview(_blockGroupView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -104,9 +115,10 @@ public class WorkspaceView: LayoutView {
 
     // Set the content size of the scroll view.
     // TODO:(vicng) Figure out a good amount to pad the workspace by
-    scrollView.contentSize = CGSizeMake(
+    _blockGroupView.frame = CGRectMake(0, 0,
       layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
       layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
+    scrollView.contentSize = _blockGroupView.bounds.size
   }
 
   // MARK: - Private
@@ -145,7 +157,7 @@ public class WorkspaceView: LayoutView {
   private func addBlockViewForLayout(layout: BlockLayout) {
     let newBlockView = _viewManager.newBlockViewForLayout(layout)
     addGestureRecognizersForBlockView(newBlockView)
-    scrollView.addSubview(newBlockView)
+    _blockGroupView.upsertBlockView(newBlockView)
   }
 
   /**
@@ -225,5 +237,67 @@ extension WorkspaceView {
     }
 
     // TODO:(vicng) Set this block as "selected" within the workspace
+  }
+}
+
+extension WorkspaceView {
+  /**
+  UIView which holds `BlockView` instances, where instances are ordered in the subview list by their
+  `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
+  `BlockGroupView` based on their `zIndex`.
+  */
+  public class BlockGroupView: UIView {
+    /**
+    Inserts or updates a given `BlockView` to this block group, where it is sorted inside
+    `BlockGroupView` based on its `zIndex`.
+
+    - Parameter blockView: The given block view
+    */
+    public func upsertBlockView(blockView: BlockView) {
+      let zIndex = blockView.zIndex
+
+      // More often than not, the target blockView's zIndex will be >= the zIndex of the highest
+      // subview anyway. Quickly check to see if that's the case.
+      let lastBlockView = (self.subviews.last as? BlockView)
+      if lastBlockView == nil ||
+        (blockView != lastBlockView && blockView.zIndex >= lastBlockView!.zIndex) {
+          self.insertSubview(blockView, atIndex: self.subviews.count)
+          return
+      }
+
+      // Binary search to find the correct position of where the block view should be, based on its
+      // z-index.
+
+      // Initialize clamps
+      var min = 0
+      var max = self.subviews.count
+
+      if blockView.superview == self {
+        // If blockView is already in this group, temporarily move it to the end.
+        // NOTE: blockView is purposely not removed from this view prior to running this method, as
+        // it will cause any active gesture recognizers on the blockView to be cancelled. Therefore,
+        // the blockView is simply skipped over if it is found in the binary search.
+        self.insertSubview(blockView, atIndex: self.subviews.count)
+        max = self.subviews.count - 1 // Don't include this blockView in the binary search range
+      }
+
+      while (min < max) {
+        let currentMid = (min + max) / 2
+        let currentZIndex = (self.subviews[currentMid] as! BlockView).zIndex
+
+        if (currentZIndex < zIndex) {
+          min = currentMid + 1
+        } else if (currentZIndex > zIndex) {
+          max = currentMid
+        } else {
+          min = currentMid
+          break
+        }
+      }
+
+      // This will insert the block view at the correct index, or update its index position if it
+      // is already a subview.
+      self.insertSubview(blockView, atIndex: min)
+    }
   }
 }

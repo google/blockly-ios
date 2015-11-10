@@ -37,6 +37,21 @@ public class BlockGroupLayout: Layout {
   */
   public private(set) var blockLayouts = [BlockLayout]()
 
+  /// Z-index of the layout. This value isn't used directly by the BlockGroupLayout. Setting this
+  /// value automatically updates all of its descendant blocks to use the same `zIndex`.
+  public var zIndex: CGFloat = 0 {
+    didSet {
+      if zIndex == oldValue {
+        return
+      }
+
+      // Update the z-index for all of its block children
+      for blockLayout in self.blockLayouts {
+        blockLayout.zIndex = zIndex
+      }
+    }
+  }
+
   // MARK: - Initializers
 
   public override init(workspaceLayout: WorkspaceLayout) {
@@ -82,6 +97,9 @@ public class BlockGroupLayout: Layout {
     for blockLayout in blockLayouts {
       blockLayout.parentLayout = self
       self.blockLayouts.append(blockLayout)
+
+      // Set the block (and its child blocks) to match the zPosition of this group
+      blockLayout.zIndex = zIndex
     }
 
     if updateLayout {

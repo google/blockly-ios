@@ -37,7 +37,6 @@ public class FieldLabelView: LayoutView {
     super.init(frame: CGRectZero)
 
     label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    self.autoresizesSubviews = true
     addSubview(label)
   }
 

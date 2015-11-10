@@ -44,17 +44,27 @@ public class BlockView: LayoutView {
   /// Field subviews
   private var _fieldViews = [LayoutView]()
 
+  public private(set) var zIndex: CGFloat = 0 {
+    didSet {
+      if zIndex != oldValue {
+        if let superview = self.superview as? WorkspaceView.BlockGroupView {
+          // Re-order this view within its parent BlockGroupView view
+          superview.upsertBlockView(self)
+        }
+      }
+    }
+  }
+
   // MARK: - Initializers
 
   public required init() {
     super.init(frame: CGRectZero)
 
-    self.translatesAutoresizingMaskIntoConstraints = false
-
     // Configure background
     _backgroundView.frame = self.bounds
     _backgroundView.backgroundColor = UIColor.clearColor()
     _backgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    _backgroundView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(_backgroundView)
     sendSubviewToBack(_backgroundView)
   }
@@ -135,6 +145,16 @@ public class BlockView: LayoutView {
     removeHighlightView()
   }
 
+  public override func refreshPosition() {
+    // Update the frame by calling super.refreshPosition()
+    super.refreshPosition()
+
+    // TODO:(vicng) Move this code to react to a custom layout event for z-index
+    if let newZIndex = self.blockLayout?.zIndex {
+      self.zIndex = newZIndex
+    }
+  }
+
   // MARK: - Private
 
   private func addHighlightViewWithPath(path: UIBezierPath) {
@@ -154,6 +174,7 @@ public class BlockView: LayoutView {
       highlightView.frame = self.bounds
       highlightView.backgroundColor = UIColor.clearColor()
       highlightView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+      highlightView.translatesAutoresizingMaskIntoConstraints = false
       highlightView.clipsToBounds = false
       addSubview(highlightView)
       _highlightView = highlightView

@@ -30,22 +30,25 @@ public class BlockFactory : NSObject {
   /**
   Creates a BlockFactory with an initial set of blocks loaded from a json file.
 
-  - Parameter jsonPath: Optional path to a file containing blocks in JSON.
+  - Parameter workspace: The workspace to associate all new blocks
+  - Parameter jsonPath: Path to a file containing blocks in JSON.
+  - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
   */
-  public init(jsonPath: String?, workspace: Workspace) throws {
+  public init(workspace: Workspace, jsonPath: String, bundle: NSBundle? = nil) throws {
     self.workspace = workspace
     super.init()
-    if jsonPath == nil {
+
+    let aBundle = (bundle ?? NSBundle.mainBundle())
+    guard let path = aBundle.pathForResource(jsonPath, ofType: "json") else {
+      bky_debugPrint("Could not find \"\(jsonPath).json\" in bundle [\(aBundle)]")
       return
     }
-    let bundle = NSBundle(forClass: self.dynamicType.self)
-    let path = bundle.pathForResource(jsonPath, ofType: "json")
-    let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+    let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
     let json = try NSJSONSerialization.bky_JSONArrayFromString(jsonString)
     for blockJson in json {
       let block = try Block.blockFromJSON(blockJson as! [String : AnyObject], workspace: workspace)
       blocks[block.identifier] = block
-      bky_debugPrint("Added block with name " + block.identifier)
+      bky_debugPrint("Added block with name \(block.identifier)")
     }
   }
 
@@ -59,7 +62,6 @@ public class BlockFactory : NSObject {
   */
   public func obtain(blockName: String) -> Block? {
     if let block = blocks[blockName] {
-      bky_debugPrint("Found block " + block.identifier)
       return Block.Builder(block: block, workspace: workspace).build()
     } else {
       return nil

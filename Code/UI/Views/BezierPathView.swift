@@ -63,7 +63,6 @@ public class BezierPathView: UIView {
   public required init() {
     super.init(frame: CGRectZero)
 
-    self.translatesAutoresizingMaskIntoConstraints = false
     self.backgroundColor = UIColor.clearColor()
   }
 

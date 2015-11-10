@@ -21,7 +21,8 @@ class BlockFactoryJSONTest: XCTestCase {
     func testLoadBlocks() {
       let workspace = Workspace(layoutFactory: nil, isFlyout: false)
       do {
-        let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
+        let factory = try BlockFactory(workspace: workspace, jsonPath: "block_factory_test_1",
+          bundle: NSBundle(forClass: self.dynamicType))
         if let _ = factory.obtain("block_id_1") {
           // expected
         } else {
@@ -40,7 +41,8 @@ class BlockFactoryJSONTest: XCTestCase {
   func testMultipleBlocks() {
     let workspace = Workspace(layoutFactory: nil, isFlyout: false)
     do {
-      let factory = try BlockFactory(jsonPath: "block_factory_test_1", workspace: workspace)
+      let factory = try BlockFactory(workspace: workspace, jsonPath: "block_factory_test_1",
+        bundle: NSBundle(forClass: self.dynamicType))
       if let block1 = factory.obtain("block_id_1") {
         let block2 = factory.obtain("block_id_1");
         XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice");
