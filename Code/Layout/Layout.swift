@@ -100,8 +100,11 @@ public class Layout: NSObject {
   */
   public internal(set) var viewFrame: CGRect = CGRectZero {
     didSet {
-      if viewFrame != oldValue {
+      if viewFrame.origin != oldValue.origin {
         self.needsRepositioning = true
+      }
+      if viewFrame.size != oldValue.size {
+        self.needsDisplay = true
       }
     }
   }

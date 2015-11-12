@@ -120,24 +120,6 @@ public class Block : NSObject {
       } catch let error as NSError {
         bky_assertionFailure("Could not initialize the layout: \(error)")
       }
-
-      for input in inputs {
-        if let inputLayout = input.layout {
-          self.layout?.appendInputLayout(inputLayout)
-        }
-      }
-
-      // Only previous/output connectors are responsible for updating the block group
-      // layout hierarchy, not next/input connectors.
-      self.previousConnection?.listeners.add(self)
-      self.outputConnection?.listeners.add(self)
-
-      if let connection = previousConnection {
-        updateLayoutHierarchyForConnection(connection)
-      }
-      if let connection = outputConnection {
-        updateLayoutHierarchyForConnection(connection)
-      }
   }
 
   // MARK: - Public
@@ -198,69 +180,6 @@ public class Block : NSObject {
 
   // MARK: - Private
 
-  private func updateLayoutHierarchyForConnection(connection: Connection) {
-    // TODO:(vicng) Optimize re-rendering all layouts affected by this method
-
-    if connection != previousConnection && connection != outputConnection {
-      // Only previous/output connectors are responsible for updating the block group
-      // layout hierarchy, not next/input connectors.
-      return
-    }
-    guard let blockLayout = layout,
-      layoutFactory = workspace.layoutFactory
-      else {
-        return
-    }
-
-    // Disconnect this block's layout and all subsequent block layouts from its block group layout,
-    // so they can be reattached to another block group layout
-    let layoutsToReattach: [BlockLayout]
-    if let oldParentLayout = blockLayout.parentBlockGroupLayout {
-      layoutsToReattach =
-        oldParentLayout.removeAllStartingFromBlockLayout(blockLayout, updateLayout: true)
-
-      if oldParentLayout.blockLayouts.count == 0 &&
-        oldParentLayout.parentLayout == workspace.layout {
-        // Remove this block's old parent group layout from the workspace level
-        workspace.layout?.removeBlockGroupLayout(oldParentLayout, updateLayout: true)
-      }
-    } else {
-      layoutsToReattach = [blockLayout]
-    }
-
-    if let targetConnection = connection.targetConnection {
-      // Block was connected to another block
-
-      if targetConnection.sourceInput != nil {
-        // Reattach block layouts to target input's block group layout
-        targetConnection.sourceInput?.layout?.blockGroupLayout
-          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
-      } else {
-        // Reattach block layouts to the target block's group layout
-        targetConnection.sourceBlock.layout?.parentBlockGroupLayout?
-          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
-      }
-    } else {
-      // Block was disconnected and added to the workspace level
-
-      do {
-        // Create a new block group layout and set its `relativePosition` to the current absolute
-        // position of the block that was disconnected
-        let blockGroupLayout = try layoutFactory.blockGroupLayoutForWorkspace(workspace)
-        blockGroupLayout.relativePosition = blockLayout.absolutePosition
-
-        // Add this new block group layout to the workspace level
-        workspace.layout?.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
-        workspace.layout?.bringBlockGroupLayoutToFront(blockGroupLayout)
-
-        // Reattach block layouts to a new block group layout
-        blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
-      } catch let error as NSError {
-        bky_assertionFailure("Could not create a new BlockGroupLayout: \(error)")
-      }
-    }
-  }
-
   /**
   - Returns: The only value input on the block, or null if there are zero or more than one.
   */
@@ -276,13 +195,5 @@ public class Block : NSObject {
       }
     }
     return valueInput
-  }
-}
-
-// MARK: - ConnectionListener
-
-extension Block: ConnectionListener {
-  public func didChangeTargetForConnection(connection: Connection) {
-    updateLayoutHierarchyForConnection(connection)
   }
 }

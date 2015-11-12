@@ -96,4 +96,11 @@ public class Workspace : NSObject {
 
     // TODO:(vicng) Generate change event
   }
+
+  /**
+  Returns if this block has been added to the workspace.
+  */
+  internal func containsBlock(block: Block) -> Bool {
+    return (allBlocks[block.uuid] != nil)
+  }
 }

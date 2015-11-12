@@ -64,6 +64,9 @@ public class BezierPathView: UIView {
     super.init(frame: CGRectZero)
 
     self.backgroundColor = UIColor.clearColor()
+
+    // Make sure this view doesn't try to stretch to fill its frame
+    self.contentMode = UIViewContentMode.TopLeft
   }
 
   public required init?(coder aDecoder: NSCoder) {

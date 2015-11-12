@@ -131,13 +131,38 @@ public class BlockLayout: Layout {
     self.block = block
     super.init(workspaceLayout: workspaceLayout)
 
+    // TODO:(vicng) Optimize this code so it's faster building the layout tree on startup
+
+    // Immediately create a BlockGroupLayout for this layout since every BlockLayout must always be
+    // owned by one at all times
+    do {
+      if let blockGroupLayout =
+        try block.workspace.layoutFactory?.blockGroupLayoutForWorkspace(block.workspace) {
+          blockGroupLayout.appendBlockLayouts([self], updateLayout: false)
+          self.parentLayout = blockGroupLayout
+          workspaceLayout.appendBlockGroupLayout(blockGroupLayout, updateLayout: true)
+      }
+    } catch let error as NSError {
+      bky_assertionFailure("Could not create a new BlockGroupLayout: \(error)")
+    }
+
     for connection in self.block.directConnections {
       connection.listeners.add(self)
 
       // Automatically let the workspace's connection manager track this connection
-      self.workspaceLayout.connectionManager.trackConnection(connection)
+      workspaceLayout.connectionManager.trackConnection(connection)
 
       // TODO:(vicng) Untrack these connections when the block is deleted
+
+      if connection.targetBlock != nil {
+        updateLayoutHierarchyForConnection(connection)
+      }
+    }
+
+    for input in block.inputs {
+      if let inputLayout = input.layout {
+        appendInputLayout(inputLayout)
+      }
     }
   }
 
@@ -325,6 +350,71 @@ public class BlockLayout: Layout {
     }
     return nil
   }
+
+  // MARK: - Private
+
+  private func updateLayoutHierarchyForConnection(connection: Connection) {
+    // TODO:(vicng) Optimize re-rendering all layouts affected by this method
+
+    if connection != self.block.previousConnection && connection != self.block.outputConnection {
+      // Only previous/output connectors are responsible for updating the block group
+      // layout hierarchy, not next/input connectors.
+      return
+    }
+
+    let workspace = self.block.workspace
+    guard let layoutFactory = workspace.layoutFactory else {
+        return
+    }
+
+    // Disconnect this block's layout and all subsequent block layouts from its block group layout,
+    // so they can be reattached to another block group layout
+    let layoutsToReattach: [BlockLayout]
+    if let oldParentLayout = self.parentBlockGroupLayout {
+      layoutsToReattach =
+        oldParentLayout.removeAllStartingFromBlockLayout(self, updateLayout: true)
+
+      if oldParentLayout.blockLayouts.count == 0 &&
+        oldParentLayout.parentLayout == workspace.layout {
+          // Remove this block's old parent group layout from the workspace level
+          workspace.layout?.removeBlockGroupLayout(oldParentLayout, updateLayout: true)
+      }
+    } else {
+      layoutsToReattach = [self]
+    }
+
+    if let targetConnection = connection.targetConnection {
+      // Block was connected to another block
+
+      if targetConnection.sourceInput != nil {
+        // Reattach block layouts to target input's block group layout
+        targetConnection.sourceInput?.layout?.blockGroupLayout
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      } else {
+        // Reattach block layouts to the target block's group layout
+        targetConnection.sourceBlock.layout?.parentBlockGroupLayout?
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      }
+    } else {
+      // Block was disconnected and added to the workspace level
+
+      do {
+        // Create a new block group layout and set its `relativePosition` to the current absolute
+        // position of the block that was disconnected
+        let blockGroupLayout = try layoutFactory.blockGroupLayoutForWorkspace(workspace)
+        blockGroupLayout.relativePosition = self.absolutePosition
+
+        // Add this new block group layout to the workspace level
+        workspace.layout?.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+        workspace.layout?.bringBlockGroupLayoutToFront(blockGroupLayout)
+
+        // Reattach block layouts to a new block group layout
+        blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      } catch let error as NSError {
+        bky_assertionFailure("Could not create a new BlockGroupLayout: \(error)")
+      }
+    }
+  }
 }
 
 // MARK: - ConnectionListener
@@ -333,5 +423,9 @@ extension BlockLayout: ConnectionListener {
   public func didChangeHighlightForConnection(connection: Connection) {
     // Force redraw for the view
     self.needsDisplay = true
+  }
+
+  public func didChangeTargetForConnection(connection: Connection) {
+    updateLayoutHierarchyForConnection(connection)
   }
 }

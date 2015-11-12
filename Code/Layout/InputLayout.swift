@@ -243,6 +243,10 @@ public class InputLayout: Layout {
         fieldLayout.relativePosition.y += rowTopPadding
       }
 
+      // Make sure there's some space for the statement indent (eg. if there were no fields
+      // specified)
+      fieldXOffset = max(fieldXOffset, BlockLayout.sharedConfig.xSeparatorSpace)
+
       // Set statement render properties
       self.statementIndent = fieldXOffset
       self.statementConnectorWidth = BlockLayout.sharedConfig.notchWidth +
