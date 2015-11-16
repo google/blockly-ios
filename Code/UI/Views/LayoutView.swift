@@ -23,7 +23,7 @@ public class LayoutView: UIView {
   // MARK: - Properties
 
   /// Layout object to render
-  public var layout: Layout? {
+  public weak var layout: Layout? {
     didSet {
       if layout != oldValue {
         oldValue?.delegate = nil

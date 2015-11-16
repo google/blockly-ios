@@ -19,20 +19,20 @@ import XCTest
 class BlockBuilderTest: XCTestCase {
 
   func testBuildBlock() {
-    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
-    let block = buildFrankenBlock(workspace).build()
+    let workspace = Workspace(isFlyout: false)
+    let block = buildFrankenBlock(workspace)
     validateFrankenblock(block)
   }
 
   func testBuildFromBlock() {
-    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
-    let block = buildFrankenBlock(workspace).build()
-    let block2 = buildFrankenBlock(workspace).build()
+    let workspace = Workspace(isFlyout: false)
+    let block = buildFrankenBlock(workspace)
+    let block2 = buildFrankenBlock(workspace)
     try! block.nextConnection?.connectTo(block2.previousConnection)
-    let block3 = buildFrankenBlock(workspace).build()
+    let block3 = buildFrankenBlock(workspace)
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
-    let blockCopy = Block.Builder(block: block, workspace: workspace).build()
+    let blockCopy = Block.Builder(block: block).buildForWorkspace(workspace)
     validateFrankenblock(blockCopy)
 
     // Validate that the block was deep copied
@@ -91,40 +91,42 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNotNil(input.fields[2] as? FieldImage)
   }
 
-  internal func buildFrankenBlock(workspace: Workspace) -> Block.Builder {
-    let bob = Block.Builder(identifier: "frankenblock", workspace: workspace)
+  internal func buildFrankenBlock(workspace: Workspace) -> Block {
+    let bob = Block.Builder(identifier: "frankenblock")
 
-    var input = Input(type: Input.InputType.Value, name: "value_input", workspace: workspace)
-    var field = FieldInput(name: "text_input", text: "something", workspace: workspace) as Field
-    input.appendField(field)
-    field = FieldCheckbox(name: "checkbox", checked: true, workspace: workspace)
-    input.appendField(field)
-    bob.inputs.append(input)
+    var inputBuilder = Input.Builder(type: Input.InputType.Value, name: "value_input")
+    var fields = [
+      FieldInput(name: "text_input", text: "something"),
+      FieldCheckbox(name: "checkbox", checked: true)
+    ]
+    inputBuilder.appendFields(fields)
+    bob.inputBuilders.append(inputBuilder)
+    fields = []
 
-    input = Input(type: Input.InputType.Statement, name:"statement_input", workspace: workspace)
+    inputBuilder = Input.Builder(type: Input.InputType.Statement, name:"statement_input")
     do {
-      field = try FieldDropdown(name: "dropdown",
+      fields.append(try FieldDropdown(name: "dropdown",
         displayNames: ["option1", "option2", "option3"],
-        values: ["OPTION1", "OPTION2", "OPTION3"],
-        workspace: workspace)
+        values: ["OPTION1", "OPTION2", "OPTION3"]))
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
-    input.appendField(field)
-    field = FieldVariable(name: "variable", variable: "item", workspace: workspace)
-    input.appendField(field)
-    bob.inputs.append(input)
+    fields.append(FieldVariable(name: "variable", variable: "item"))
+    inputBuilder.appendFields(fields)
+    bob.inputBuilders.append(inputBuilder)
+    fields = []
 
-    input = Input(type: Input.InputType.Dummy, name: "dummy_input", workspace: workspace)
-    field = FieldAngle(name: "angle", angle: 90, workspace: workspace)
-    input.appendField(field)
-    field = FieldColour(name: "colour", colour: UIColor.magentaColor(), workspace: workspace)
-    input.appendField(field)
-    field = FieldImage(name: "no name",
-      imageURL: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-      size: WorkspaceSize(width: 15, height: 20), altText: "*", workspace: workspace)
-    input.appendField(field)
-    bob.inputs.append(input)
+    inputBuilder = Input.Builder(type: Input.InputType.Dummy, name: "dummy_input")
+    fields = [
+      FieldAngle(name: "angle", angle: 90),
+      FieldColour(name: "colour", colour: UIColor.magentaColor()),
+      FieldImage(name: "no name",
+        imageURL: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
+        size: WorkspaceSize(width: 15, height: 20), altText: "*")
+    ]
+    inputBuilder.appendFields(fields)
+    bob.inputBuilders.append(inputBuilder)
+    fields = []
 
     do {
       try bob.setPreviousConnectionEnabled(true)
@@ -136,6 +138,6 @@ class BlockBuilderTest: XCTestCase {
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
-    return bob
+    return bob.buildForWorkspace(workspace)
   }
 }

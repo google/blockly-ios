@@ -284,7 +284,7 @@ public class InputLayout: Layout {
     }
   }
 
-  // MARK: - Internal
+  // MARK: - Public
 
   /**
   Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance.
@@ -307,6 +307,20 @@ public class InputLayout: Layout {
     fieldLayout.parentLayout = nil
     return fieldLayout
   }
+
+  /**
+  Removes all elements from `self.fieldLayouts`, sets their `parentLayout` to nil, and resets
+  `self.blockGroupLayout`.
+  */
+  public func reset() {
+    for (var i = fieldLayouts.count - 1 ; i >= 0; i--) {
+      removeFieldLayoutAtIndex(i)
+    }
+
+    self.blockGroupLayout.reset()
+  }
+
+  // MARK: - Internal
 
   /**
   Allow the input layout to use more width when rendering its field layouts.

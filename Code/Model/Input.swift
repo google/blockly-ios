@@ -91,12 +91,16 @@ public class Input : NSObject {
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
   public private(set) var fields: [Field] = []
 
+  // TODO(vicng): Consider replacing the layout reference with a delegate or listener
   /// The layout used for rendering this input
-  public private(set) var layout: InputLayout?
+  public var layout: InputLayout?
 
   // MARK: - Initializers
 
-  public init(type: InputType, name: String, workspace: Workspace) {
+  /**
+  To create an Input, use Input.Builder instead.
+  */
+  internal init(type: InputType, name: String) {
     self.name = name
     self.type = type
 
@@ -107,29 +111,17 @@ public class Input : NSObject {
     } else if (type == .Statement) {
       self.connection = Connection(type: .NextStatement, sourceInput: self)
     }
-
-    do {
-      self.layout = try workspace.layoutFactory?.layoutForInput(self, workspace: workspace)
-    } catch let error as NSError {
-      bky_assertionFailure("Could not initialize the layout: \(error)")
-    }
   }
 
   // MARK: - Public
-
 
   /**
   Appends a field to `self.fields[]`.
 
   - Parameter field: The field to append.
   */
-  public func appendField(field: Field) {
-    fields.append(field)
-
-    // Append the field's layout to this input layout
-    if field.layout != nil {
-      layout?.appendFieldLayout(field.layout!)
-    }
+  public func appendField(field: Field) throws {
+    try appendFields([field])
   }
 
   /**
@@ -137,9 +129,23 @@ public class Input : NSObject {
 
   - Parameter fields: The fields to append.
   */
-  public func appendFields(fields: [Field]) {
+  public func appendFields(fields: [Field]) throws {
     for field in fields {
-      appendField(field)
+      self.fields.append(field)
+
+      if self.layout != nil {
+        // This is an edge case, but if a field is appended after the input has been associated
+        // with a layout, then the new field must also have a layout associated with it.
+        if let fieldLayout = field.layout {
+          self.layout!.appendFieldLayout(fieldLayout)
+        } else {
+          throw BlocklyError(BlocklyError.Code.LayoutIllegalState,
+            "Can't add a field that is missing a layout to an input with an associated layout. " +
+            "Did you call layoutBuilder.buildLayoutTreeForField() on this field?")
+        }
+      }
     }
+
+    self.layout?.updateLayoutUpTree()
   }
 }

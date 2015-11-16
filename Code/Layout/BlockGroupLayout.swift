@@ -90,10 +90,9 @@ public class BlockGroupLayout: Layout {
   Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
 
   - Parameter blockLayouts: The list of `BlockLayout` instances to append.
-  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after all layouts
-  have been appended.
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func appendBlockLayouts(blockLayouts: [BlockLayout], updateLayout: Bool) {
+  public func appendBlockLayouts(blockLayouts: [BlockLayout], updateLayout: Bool = true) {
     for blockLayout in blockLayouts {
       blockLayout.parentLayout = self
       self.blockLayouts.append(blockLayout)
@@ -108,23 +107,38 @@ public class BlockGroupLayout: Layout {
   }
 
   /**
+  Removes `self.blockLayouts[index]`, sets its `parentLayout` to nil, and returns it.
+
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - Returns: The `BlockLayout` that was removed.
+  */
+  public func removeBlockLayoutAtIndex(index: Int, updateLayout: Bool = true) -> BlockLayout {
+    let removedLayout = blockLayouts.removeAtIndex(index)
+    removedLayout.parentLayout = nil
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
+
+    return removedLayout
+  }
+
+  /**
   Removes a given block layout and all subsequent layouts from `blockLayouts`, and returns them in
   an array.
 
   - Parameter blockLayout: The given block layout to find and remove.
-  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the list of
-  block layouts have been removed.
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   - Returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
-  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout, updateLayout: Bool)
+  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout, updateLayout: Bool = true)
     -> [BlockLayout] {
       var removedElements = [BlockLayout]()
 
       if let index = blockLayouts.indexOf(blockLayout) {
         while (index < blockLayouts.count) {
-          let removedLayout = blockLayouts.removeAtIndex(index)
-          removedLayout.parentLayout = nil
+          let removedLayout = removeBlockLayoutAtIndex(index, updateLayout: false)
           removedElements.append(removedLayout)
         }
 
@@ -138,6 +152,21 @@ public class BlockGroupLayout: Layout {
       }
 
       return removedElements
+  }
+
+  /**
+   Removes all elements from `self.blockLayouts` and sets their `parentLayout` to nil.
+
+   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+   */
+  public func reset(updateLayout updateLayout: Bool = true) {
+    for (var i = blockLayouts.count - 1; i >= 0; i--) {
+      removeBlockLayoutAtIndex(i, updateLayout: false)
+    }
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
   }
 
   /**

@@ -24,15 +24,30 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let workspace = buildWorkspace()
-
-    guard let workspaceLayout = workspace.layout else {
-      return
+    do {
+      _blockFactory = try BlockFactory(jsonPath: "TestBlocks")
+    } catch let error as NSError {
+      print("An error occurred loading the test blocks: \(error)")
     }
-    workspaceLayout.updateLayoutDownTree()
+
+    let workspace = createWorkspace()
+
+    do {
+      // Create the workspace layout, which is required for viewing the workspace
+      workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+
+      // Build its layout tree, which creates layout objects for all of its blocks/inputs/fields
+      // (allowing them to show up in the workspace view)
+      try workspace.layout!.layoutBuilder.buildLayoutTree()
+
+      // Perform a layout update for the entire tree
+      workspace.layout!.updateLayoutDownTree()
+    } catch let error as NSError {
+      print("Couldn't build layout tree for workspace: \(error)")
+    }
 
     let workspaceView = WorkspaceView()
-    workspaceView.layout = workspaceLayout
+    workspaceView.layout = workspace.layout
     workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     workspaceView.frame = self.view.bounds
     workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
@@ -47,15 +62,9 @@ class ViewController: UIViewController {
 
   // MARK: - Private
 
-  func buildWorkspace() -> Workspace {
-    let layoutFactory = LayoutFactory()
-    let workspace = Workspace(layoutFactory: layoutFactory, isFlyout: false)
-
-    do {
-      _blockFactory = try BlockFactory(workspace: workspace, jsonPath: "TestBlocks")
-    } catch let error as NSError {
-      print("An error occurred loading the test blocks: \(error)")
-    }
+  func createWorkspace() -> Workspace {
+    // Create workspace
+    let workspace = Workspace(isFlyout: false)
 
     if let block1 = buildChainedStatementBlock(workspace) {
       if let block2 = buildOutputBlock(workspace) {
@@ -75,17 +84,17 @@ class ViewController: UIViewController {
   }
 
   func buildOutputBlock(workspace: Workspace) -> Block? {
-    return _blockFactory.obtain("block_output")
+    return _blockFactory.obtain("block_output", forWorkspace: workspace)
   }
 
   func buildStatementBlock(workspace: Workspace) -> Block? {
-    return _blockFactory.obtain("block_statement")
+    return _blockFactory.obtain("block_statement", forWorkspace: workspace)
   }
 
   func buildChainedStatementBlock(workspace: Workspace) -> Block? {
     if let block = buildStatementBlock(workspace) {
       var previousBlock = block
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 30; i++) {
         if let nextBlock = buildStatementBlock(workspace) {
           try! previousBlock.nextConnection?.connectTo(nextBlock.previousConnection)
           previousBlock = nextBlock
@@ -96,5 +105,33 @@ class ViewController: UIViewController {
     }
 
     return nil
+  }
+
+  func buildSpaghettiBlock(workspace: Workspace, level: Int, blocksPerLevel: Int) -> Block?
+  {
+    if level <= 0 {
+      return nil
+    }
+    var firstBlock: Block?
+    var previousBlock: Block? = nil
+
+    for (var i = 0; i < blocksPerLevel; i++) {
+      if let nextBlock = _blockFactory.obtain("statement_statement_input", forWorkspace: workspace)
+      {
+        if let spaghettiBlock =
+          buildSpaghettiBlock(workspace, level: level - 1, blocksPerLevel: blocksPerLevel)
+        {
+          try! nextBlock.inputs[0].connection?.connectTo(spaghettiBlock.previousConnection)
+        }
+
+        try! previousBlock?.nextConnection?.connectTo(nextBlock.previousConnection)
+        if i == 0 {
+          firstBlock = nextBlock
+        }
+        previousBlock = nextBlock
+
+      }
+    }
+    return firstBlock
   }
 }

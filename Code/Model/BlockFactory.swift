@@ -21,9 +21,8 @@ JSON file or be added manually.
 */
 @objc(BKYBlockFactory)
 public class BlockFactory : NSObject {
-  public unowned let workspace: Workspace
 
-  internal var blocks = [String : Block]()
+  internal var _blockBuilders = Dictionary<String, Block.Builder>()
 
   // MARK: - Initializers
 
@@ -34,8 +33,7 @@ public class BlockFactory : NSObject {
   - Parameter jsonPath: Path to a file containing blocks in JSON.
   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
   */
-  public init(workspace: Workspace, jsonPath: String, bundle: NSBundle? = nil) throws {
-    self.workspace = workspace
+  public init(jsonPath: String, bundle: NSBundle? = nil) throws {
     super.init()
 
     let aBundle = (bundle ?? NSBundle.mainBundle())
@@ -46,25 +44,22 @@ public class BlockFactory : NSObject {
     let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
     let json = try NSJSONSerialization.bky_JSONArrayFromString(jsonString)
     for blockJson in json {
-      let block = try Block.blockFromJSON(blockJson as! [String : AnyObject], workspace: workspace)
-      blocks[block.identifier] = block
-      bky_debugPrint("Added block with name \(block.identifier)")
+      let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
+      _blockBuilders[blockBuilder.identifier] = blockBuilder
+      bky_debugPrint("Added block builder with name \(blockBuilder.identifier)")
     }
   }
 
   // MARK: - Public
 
   /**
-  Create a new instance of a block with the given name.
+  Create a new instance of a block with the given name, to use in a specific workspace.
 
   - Parameter blockName: The name of the block to obtain.
+  - Parameter workspace: The workspace that should own the new block.
   - Returns: A new block if the name is known, nil otherwise.
   */
-  public func obtain(blockName: String) -> Block? {
-    if let block = blocks[blockName] {
-      return Block.Builder(block: block, workspace: workspace).build()
-    } else {
-      return nil
-    }
+  public func obtain(blockName: String, forWorkspace workspace: Workspace) -> Block? {
+    return _blockBuilders[blockName]?.buildForWorkspace(workspace)
   }
 }

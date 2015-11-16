@@ -19,16 +19,15 @@ extension Block {
   // MARK: - Public
 
   /**
-  Creates a new block from a JSON dictionary.
+  Creates a new `Block.Builder` from a JSON dictionary.
 
   - Parameter json: The JSON dictionary.
-  - Parameter workspace: The workspace to associate with the new block.
   - Throws:
-  [BlocklyError]: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
+  `BlocklyError`: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
   malformed data, or contradictory data).
-  - Returns: A new block.
+  - Returns: A new block builder.
   */
-  public class func blockFromJSON(json: [String: AnyObject], workspace: Workspace) throws -> Block
+  public class func builderFromJSON(json: [String: AnyObject]) throws -> Block.Builder
   {
     if (json["output"] != nil && json["previousStatement"] != nil) {
       throw BlocklyError(.InvalidBlockDefinition,
@@ -37,7 +36,7 @@ extension Block {
 
     // Build the block
     let identifier = (json["id"] as? String) ?? ""
-    let builder = Block.Builder(identifier: identifier, workspace: workspace)
+    let builder = Block.Builder(identifier: identifier)
 
     if let colourHue = json["colour"] as? Int {
       builder.colourHue = min(max(colourHue, 0), 360)
@@ -92,17 +91,17 @@ extension Block {
 
       // TODO:(vicng) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
-      builder.inputs += try interpolateMessage(
-        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment, workspace: workspace)
+      builder.inputBuilders += try interpolateMessage(
+        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
     }
 
-    return builder.build()
+    return builder
   }
 
   // MARK: - Internal
 
   /**
-  Interpolate a message description into an `Input` array.
+  Interpolate a message description into an `Input.Builder` array.
 
   - Parameter message: Text contains interpolation tokens (%1, %2, ...) that match with fields or
   inputs defined in the arguments array. Each interpolation token should only appear once.
@@ -110,19 +109,19 @@ extension Block {
   interpolation tokens in "message".
   - Parameter lastDummyAlignment: If a dummy input is added at the end, how should it be aligned?
   - Throws:
-  [BlocklyError]: Thrown if the number of arguments doesn't match the number of interpolation tokens
+  `BlocklyError`: Thrown if the number of arguments doesn't match the number of interpolation tokens
   provided in the message, if any interpolation token was used more than once, if not all argument
   values were referenced by the interpolation tokens, or if an argument could not be parsed into an
   `Input` or `Field`.
-  - Returns: An `Input` array
+  - Returns: An `Input.Builder` array
   */
   internal class func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
-    lastDummyAlignment: Input.Alignment, workspace: Workspace) throws -> [Input]
+    lastDummyAlignment: Input.Alignment) throws -> [Input.Builder]
   {
     let tokens = Block.tokenizeMessage(message)
     var processedIndices = [Bool](count: arguments.count, repeatedValue: false)
     var tempFieldList = [Field]()
-    var allInputs = [Input]()
+    var allInputBuilders = Array<Input.Builder>()
 
     for token in tokens {
       switch (token) {
@@ -145,15 +144,15 @@ extension Block {
               .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
-          if let field = try Field.fieldFromJSON(element, workspace: workspace) {
+          if let field = try Field.fieldFromJSON(element) {
             // Add field to field list
             tempFieldList.append(field)
             break
-          } else if let input = Input.inputFromJSON(element, workspace: workspace) {
+          } else if let inputBuilder = Input.builderFromJSON(element) {
             // Add current field list to input, and add input to input list
-            input.appendFields(tempFieldList)
+            inputBuilder.appendFields(tempFieldList)
             tempFieldList = []
-            allInputs.append(input)
+            allInputBuilders.append(inputBuilder)
             break
           } else {
             // Try getting the fallback block if it exists
@@ -169,7 +168,7 @@ extension Block {
         stringToken = stringToken.stringByTrimmingCharactersInSet(
           NSCharacterSet.whitespaceAndNewlineCharacterSet())
         if (stringToken != "") {
-          tempFieldList.append(FieldLabel(name: "", text: stringToken, workspace: workspace))
+          tempFieldList.append(FieldLabel(name: "", text: stringToken))
         }
 
       default:
@@ -188,13 +187,13 @@ extension Block {
 
     // If there were leftover fields we need to add a dummy input to hold them.
     if (!tempFieldList.isEmpty) {
-      let input = Input(type: .Dummy, name: "", workspace: workspace)
-      input.appendFields(tempFieldList)
+      let inputBuilder = Input.Builder(type: .Dummy, name: "")
+      inputBuilder.appendFields(tempFieldList)
       tempFieldList = []
-      allInputs.append(input)
+      allInputBuilders.append(inputBuilder)
     }
 
-    return allInputs
+    return allInputBuilders
   }
 
   /**

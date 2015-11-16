@@ -25,34 +25,28 @@ public class Field: NSObject {
 
   public let name: String
 
+  // TODO(vicng): Consider replacing the layout reference with a delegate or listener
   /// The layout used for rendering this field
-  public private(set) var layout: FieldLayout?
+  public var layout: FieldLayout?
 
   // MARK: - Initializers
 
-  internal init(name: String, workspace: Workspace) {
+  internal init(name: String) {
     self.name = name
     super.init()
-
-    do {
-      self.layout = try workspace.layoutFactory?.layoutForField(self, workspace: workspace)
-    } catch let error as NSError {
-      bky_assertionFailure("Could not initialize the layout: \(error)")
-    }
   }
 
   // MARK: - Abstract
 
   /**
-  Returns a copy of this field, for use in a given workspace.
+  Returns a copy of this field.
 
-  - Parameter workspace: The given workspace
-  - Returns: A copy of this field, for use in the given workspace.
+  - Returns: A copy of this field.
   - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
   a `Field` subclass does not implement this method.
   */
-  public func copyToWorkspace(workspace: Workspace) -> Field {
+  public func copyField() -> Field {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
-    return self.copy() as! Field // This shouldn't happen.
+    return Field(name: name) // This shouldn't happen.
   }
 }

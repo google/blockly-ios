@@ -27,14 +27,14 @@ public class FieldDropdown: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, options: [(displayName: String, value: String)], workspace: Workspace) {
+  public init(name: String, options: [(displayName: String, value: String)]) {
     self.options = options
 
-    super.init(name: name, workspace: workspace)
+    super.init(name: name)
   }
 
   public convenience init(
-    name: String, displayNames: [String], values: [String], workspace: Workspace) throws {
+    name: String, displayNames: [String], values: [String]) throws {
       if (displayNames.count != values.count) {
         throw BlocklyError(.InvalidBlockDefinition,
           "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
@@ -42,12 +42,12 @@ public class FieldDropdown: Field {
       let options = Array(
         zip(displayNames, values) // Creates tuples of (displayNames[i], values[i])
         .map { (displayName: $0.0, value: $0.1) }) // Re-map each tuple as (displayName:, value:)
-      self.init(name: name, options: options, workspace: workspace)
+      self.init(name: name, options: options)
   }
 
   // MARK: - Super
 
-  public override func copyToWorkspace(workspace: Workspace) -> Field {
-    return FieldDropdown(name: name, options: options, workspace: workspace)
+  public override func copyField() -> Field {
+    return FieldDropdown(name: name, options: options)
   }
 }

@@ -26,15 +26,15 @@ public class FieldCheckbox: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, checked: Bool, workspace: Workspace) {
+  public init(name: String, checked: Bool) {
     self.checked = checked
 
-    super.init(name: name, workspace: workspace)
+    super.init(name: name)
   }
 
   // MARK: - Super
 
-  public override func copyToWorkspace(workspace: Workspace) -> Field {
-    return FieldCheckbox(name: name, checked: checked, workspace: workspace)
+  public override func copyField() -> Field {
+    return FieldCheckbox(name: name, checked: checked)
   }
 }

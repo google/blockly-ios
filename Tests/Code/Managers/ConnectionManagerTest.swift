@@ -34,7 +34,7 @@ class ConnectionManagerTest: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    workspace = Workspace(layoutFactory: nil, isFlyout: false)
+    workspace = Workspace(isFlyout: false)
     manager = ConnectionManager()
   }
 
@@ -113,9 +113,9 @@ class ConnectionManagerTest: XCTestCase {
 
   func testConnectionManagerIsConnectionAllowedNext() {
     let one = createConnection(0, 0, .NextStatement,
-      sourceInput: Input(type: .Value, name: "test input", workspace: workspace))
+      sourceInput: Input.Builder(type: .Value, name: "test input").build())
     let two = createConnection(0, 0, .NextStatement,
-      sourceInput: Input(type: .Value, name: "test input", workspace: workspace))
+      sourceInput: Input.Builder(type: .Value, name: "test input").build())
 
     // Don't offer to connect the bottom of a statement block to one that's already connected.
     let three = createConnection(0, 0, .PreviousStatement)
@@ -453,7 +453,7 @@ class ConnectionManagerTest: XCTestCase {
     -> Connection {
       let conn = Connection(type: type, sourceInput: sourceInput)
       conn.moveToPosition(WorkspacePointMake(x, y))
-      conn.sourceBlock = Block.Builder(identifier: "test", workspace: workspace).build()
+      conn.sourceBlock = Block.Builder(identifier: "test").buildForWorkspace(workspace)
       return conn
   }
 }

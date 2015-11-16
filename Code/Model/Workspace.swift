@@ -57,22 +57,21 @@ public class Workspace : NSObject {
   public private(set) var allBlocks = [String: Block]()
 
   /// The layout used for rendering this workspace
-  public private(set) var layout: WorkspaceLayout?
-
-  /// Factory responsible for returning `Layout` instances
-  public let layoutFactory: LayoutFactory?
+  public var layout: WorkspaceLayout?
 
   // MARK: - Initializers
 
-  public init(
-    layoutFactory: LayoutFactory?, isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
+  public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
       self.isFlyout = isFlyout
       self.isRTL = isRTL
       self.maxBlocks = maxBlocks
-      self.layoutFactory = layoutFactory
       super.init()
+  }
 
-      self.layout = layoutFactory?.layoutForWorkspace(self)
+  // MARK: - Public
+
+  public func topLevelBlocks() -> [Block] {
+    return allBlocks.values.filter({ $0.topLevel })
   }
 
   // MARK: - Internal

@@ -17,13 +17,13 @@ import Foundation
 
 extension Block {
   /**
-  Builder for creating instances of `Block`.
-  */
+   Builder for creating instances of `Block`.
+   */
   @objc(BKYBlockBuilder)
   public class Builder: NSObject {
     // MARK: - Static Properties
     private static let CONFLICTING_CONNECTIONS_ERROR =
-      "Block cannot have both an output and a either a previous or next statement."
+    "Block cannot have both an output and a either a previous or next statement."
 
     // MARK: - Properties
 
@@ -37,9 +37,8 @@ extension Block {
     public private(set) var nextConnectionTypeChecks: [String]?
     public private(set) var previousConnectionEnabled: Bool = false
     public private(set) var previousConnectionTypeChecks: [String]?
-    public var inputs: [Input] = []
+    public var inputBuilders: [Input.Builder] = []
     public var inputsInline: Bool = false
-    public unowned var workspace: Workspace
 
     // These values are publicly mutable in `Block`
     public var tooltip: String = ""
@@ -55,18 +54,16 @@ extension Block {
 
     // MARK: - Initializers
 
-    public init(identifier: String, workspace: Workspace) {
+    public init(identifier: String) {
       self.identifier = identifier
-      self.workspace = workspace
     }
 
     /**
     Initialize a builder from an existing block. All values that are not specific to
-    a single instance of a block will be copied in to the builder.
+    a single instance of a block will be copied in to the builder. Any associated layouts are not
+    copied into the builder.
     */
-    public init(block: Block, workspace: Workspace) {
-      self.workspace = workspace
-
+    public init(block: Block) {
       identifier = block.identifier
       category = block.category
       colourHue = block.colourHue
@@ -85,13 +82,7 @@ extension Block {
       previousConnectionEnabled = block.previousConnection != nil ? true : false
       previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
-      for input in block.inputs {
-        let newInput = Input(type: input.type, name: input.name, workspace: workspace)
-        for field in input.fields {
-          newInput.appendField(field.copyToWorkspace(workspace))
-        }
-        inputs.append(newInput)
-      }
+      inputBuilders.appendContentsOf(block.inputs.map({ Input.Builder(input: $0) }))
     }
 
     // MARK: - Public
@@ -101,7 +92,7 @@ extension Block {
 
     - Returns: A new block
     */
-    public func build() -> Block {
+    public func buildForWorkspace(workspace: Workspace) -> Block {
       var outputConnection: Connection?
       var nextConnection: Connection?
       var previousConnection: Connection?
@@ -117,8 +108,9 @@ extension Block {
         previousConnection = Connection(type: .PreviousStatement)
         previousConnection!.typeChecks = previousConnectionTypeChecks
       }
+      let inputs = inputBuilders.map({ $0.build() })
 
-      let block = Block(identifier: identifier, workspace: workspace, category: category,
+      let block = Block(workspace: workspace, identifier: identifier, category: category,
         colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)

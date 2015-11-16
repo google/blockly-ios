@@ -19,39 +19,37 @@ extension Input {
   // MARK: - Internal
 
   /**
-  Creates a new `Input` from a JSON dictionary.
+  Creates a new `Input.Builder` from a JSON dictionary.
 
   - Parameter json: JSON dictionary
   - Parameter sourceBlock: The block that will be associated with the input
-  - Returns: An `Input` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
-  data in the dictionary.
+  - Returns: An `Input.Builder` instance based on the JSON dictionary, or `nil` if there wasn't
+  sufficient data in the dictionary.
   */
-  internal static func inputFromJSON(json: [String: AnyObject], workspace: Workspace) -> Input? {
+  internal static func builderFromJSON(json: [String: AnyObject]) -> Input.Builder? {
     guard let type = Input.InputType(string: ((json["type"] as? String) ?? "")) else {
       return nil
     }
 
     let name = (json["name"] as? String) ?? "NAME"
-    let input = Input(type: type, name: name, workspace: workspace)
+    let inputBuilder = Input.Builder(type: type, name: name)
 
     // Set alignment
     if let alignmentString = json["align"] as? String,
       alignment = Input.Alignment(string: alignmentString) {
-        input.alignment = alignment
+        inputBuilder.alignment = alignment
     }
 
-    // Set input connection's typeChecks
-    if let connection = input.connection {
-      switch (json["check"]) {
-      case let array as [String]:
-        connection.typeChecks = array
-      case let string as String:
-        connection.typeChecks = [string]
-      default:
-        connection.typeChecks = nil
-      }
+    // Parse input connection's typeChecks
+    switch (json["check"]) {
+    case let array as [String]:
+      inputBuilder.connectionTypeChecks = array
+    case let string as String:
+      inputBuilder.connectionTypeChecks = [string]
+    default:
+      inputBuilder.connectionTypeChecks = nil
     }
 
-    return input
+    return inputBuilder
   }
 }

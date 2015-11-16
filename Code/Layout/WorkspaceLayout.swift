@@ -47,20 +47,25 @@ public class WorkspaceLayout: Layout {
     }
   }
 
-  // z-index counter used to layer blocks in a specific order.
+  /// z-index counter used to layer blocks in a specific order.
   private var _zIndexCounter: CGFloat = 1
 
-  // Maximum value that the z-index counter should reach
+  /// Maximum value that the z-index counter should reach
   private var _maximumZIndexCounter: CGFloat = (pow(2, 23) - 1)
+
+  /// Builder for constructing layouts under this workspace
+  public let layoutBuilder: LayoutBuilder
 
   // MARK: - Initializers
 
-  public required init(workspace: Workspace) {
+  public required init(workspace: Workspace, layoutBuilder: LayoutBuilder) {
     self.workspace = workspace
+    self.layoutBuilder = layoutBuilder
     self.connectionManager = ConnectionManager()
     super.init(workspaceLayout: nil)
 
     self.workspaceLayout = self
+    self.layoutBuilder.workspaceLayout = self
   }
 
   // MARK: - Super
@@ -112,10 +117,10 @@ public class WorkspaceLayout: Layout {
   instance.
 
   - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
-  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the layout
-  has been appended.
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
+  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
+  {
     // Setting the parentLayout automatically adds it to self.childLayouts
     blockGroupLayout.parentLayout = self
 
@@ -125,15 +130,33 @@ public class WorkspaceLayout: Layout {
   }
 
   /**
-  Removes a given block group layout from `self.blockGroupLayouts`.
+  Removes a given block group layout from `self.blockGroupLayouts` and sets its `parentLayout` to
+  nil.
 
   - Parameter blockGroupLayout: The given block group layout.
-  - Parameter updateLayout: If true, `updateLayoutUpTree()` is called immediately after the layout
-  has been removed.
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool) {
+  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
+  {
     // Setting the parentLayout to nil automatically removes it from self.childLayouts
     blockGroupLayout.parentLayout = nil
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
+  }
+
+  /**
+  Removes all elements from `self.blockGroupLayouts` and sets their `parentLayout` to nil.
+
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  */
+  public func reset(updateLayout updateLayout: Bool) {
+    for (_, layout) in self.childLayouts {
+      if let blockGroupLayout = layout as? BlockGroupLayout {
+        removeBlockGroupLayout(blockGroupLayout, updateLayout: false)
+      }
+    }
 
     if updateLayout {
       updateLayoutUpTree()

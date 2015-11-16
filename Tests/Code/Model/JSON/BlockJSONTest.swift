@@ -23,13 +23,13 @@ class BlockJSONTest: XCTestCase {
   func testBlockFromJSON_allFieldsSet() {
     let testBundle = NSBundle(forClass: self.dynamicType.self)
     let path = testBundle.pathForResource("block_test_1", ofType: "json")
-    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
+    let workspace = Workspace(isFlyout: false)
 
     var block: Block
     do {
       let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
       let json = try NSJSONSerialization.bky_JSONDictionaryFromString(jsonString)
-      block = try Block.blockFromJSON(json, workspace: workspace)
+      block = try Block.builderFromJSON(json).buildForWorkspace(workspace)
     } catch let error as NSError {
       XCTFail("Error: \(error.localizedDescription)")
       return

@@ -22,9 +22,9 @@ class InputJSONTest: XCTestCase {
   var block: Block!
 
   override func setUp() {
-    workspace = Workspace(layoutFactory: nil, isFlyout: false, isRTL: true)
-    let builder = Block.Builder(identifier: "Test", workspace: workspace)
-    block = builder.build()
+    workspace = Workspace(isFlyout: false, isRTL: true)
+    let builder = Block.Builder(identifier: "Test")
+    block = builder.buildForWorkspace(workspace)
 
     super.setUp()
   }
@@ -38,11 +38,12 @@ class InputJSONTest: XCTestCase {
       "align": "CENTRE",
       "check": ["String", "Boolean"]
     ]
-    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
+    guard let builder = Input.builderFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
 
+    let input = builder.build()
     XCTAssertEqual(Input.InputType.Value, input.type)
     XCTAssertEqual("input value", input.name)
     XCTAssertEqual(Input.Alignment.Centre, input.alignment)
@@ -62,11 +63,12 @@ class InputJSONTest: XCTestCase {
       "align": "LEFT",
       "check": "CustomCheckType"
     ]
-    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
+    guard let builder = Input.builderFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
 
+    let input = builder.build()
     XCTAssertEqual(Input.InputType.Statement, input.type)
     XCTAssertEqual("input statement", input.name)
     XCTAssertEqual(Input.Alignment.Left, input.alignment)
@@ -84,11 +86,12 @@ class InputJSONTest: XCTestCase {
       "name": "input dummy",
       "check": "Broken!" // This shouldn't be used
     ]
-    guard let input: Input = Input.inputFromJSON(json, workspace: workspace) else {
+    guard let builder = Input.builderFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
 
+    let input = builder.build()
     XCTAssertEqual(Input.InputType.Dummy, input.type)
     XCTAssertEqual("input dummy", input.name)
     XCTAssertNil(input.connection)

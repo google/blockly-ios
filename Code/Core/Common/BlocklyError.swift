@@ -30,8 +30,9 @@ public class BlocklyError: NSError {
   public enum BKYBlocklyErrorCode: Int {
     case InvalidBlockDefinition = 100,
     LayoutNotFound = 200,
-    InvalidConnection = 201,
+    LayoutIllegalState = 201,
     ConnectionManagerError = 210,
+    ConnectionInvalid = 211,
     ViewNotFound = 300
   }
   public typealias Code = BKYBlocklyErrorCode

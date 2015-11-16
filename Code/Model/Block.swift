@@ -65,61 +65,56 @@ public class Block : NSObject {
   public var collapsed: Bool = false
   public var rendered: Bool = false
 
+  // TODO(vicng): Consider replacing the layout reference with a delegate or listener
   /// The layout used for rendering this block
-  public private(set) var layout: BlockLayout?
+  public var layout: BlockLayout?
 
   // MARK: - Initializers
 
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(identifier: String, workspace: Workspace, category: Int,
+  internal init(workspace: Workspace, identifier: String, category: Int,
     colourHue: Int, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?) {
-      self.uuid = NSUUID().UUIDString
-      self.identifier = identifier
-      self.category = category
-      self.colourHue = min(max(colourHue, 0), 360)
-      self.workspace = workspace
-      self.inputs = inputs
-      self.inputsInline = inputsInline
-      self.outputConnection = outputConnection
-      self.previousConnection = previousConnection
-      self.nextConnection = nextConnection
+    previousConnection: Connection?, nextConnection: Connection?)
+  {
+    self.uuid = NSUUID().UUIDString
+    self.workspace = workspace
+    self.identifier = identifier
+    self.category = category
+    self.colourHue = min(max(colourHue, 0), 360)
+    self.inputs = inputs
+    self.inputsInline = inputsInline
+    self.outputConnection = outputConnection
+    self.previousConnection = previousConnection
+    self.nextConnection = nextConnection
 
-      super.init()
+    super.init()
 
-      // Automatically add this block to the workspace so it doesn't go out of reference
-      workspace.addBlock(self)
+    // Automatically add this block to the workspace so it doesn't go out of reference
+    workspace.addBlock(self)
 
-      // Finish updating model hierarchy for inputs and connections
-      for input in inputs {
-        input.sourceBlock = self
+    // Finish updating model hierarchy for inputs and connections
+    for input in inputs {
+      input.sourceBlock = self
 
-        if let connection = input.connection {
-          directConnections.append(connection)
-        }
-      }
-      self.outputConnection?.sourceBlock = self
-      self.previousConnection?.sourceBlock = self
-      self.nextConnection?.sourceBlock = self
-
-      if let connection = previousConnection {
+      if let connection = input.connection {
         directConnections.append(connection)
       }
-      if let connection = outputConnection {
-        directConnections.append(connection)
-      }
-      if let connection = nextConnection {
-        directConnections.append(connection)
-      }
+    }
+    self.outputConnection?.sourceBlock = self
+    self.previousConnection?.sourceBlock = self
+    self.nextConnection?.sourceBlock = self
 
-      // Finally, build the layout hierarchy
-      do {
-        self.layout = try workspace.layoutFactory?.layoutForBlock(self, workspace: workspace)
-      } catch let error as NSError {
-        bky_assertionFailure("Could not initialize the layout: \(error)")
-      }
+    if let connection = previousConnection {
+      directConnections.append(connection)
+    }
+    if let connection = outputConnection {
+      directConnections.append(connection)
+    }
+    if let connection = nextConnection {
+      directConnections.append(connection)
+    }
   }
 
   // MARK: - Public

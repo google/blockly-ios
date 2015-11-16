@@ -19,16 +19,16 @@ import XCTest
 class BlockFactoryJSONTest: XCTestCase {
 
     func testLoadBlocks() {
-      let workspace = Workspace(layoutFactory: nil, isFlyout: false)
+      let workspace = Workspace(isFlyout: false)
       do {
-        let factory = try BlockFactory(workspace: workspace, jsonPath: "block_factory_test_1",
+        let factory = try BlockFactory(jsonPath: "block_factory_test_1",
           bundle: NSBundle(forClass: self.dynamicType))
-        if let _ = factory.obtain("block_id_1") {
+        if let _ = factory.obtain("block_id_1", forWorkspace: workspace) {
           // expected
         } else {
           XCTFail("Factory is missing block_id_1")
         }
-        if let _ = factory.obtain("block_id_2") {
+        if let _ = factory.obtain("block_id_2", forWorkspace: workspace) {
           // expected
         } else {
           XCTFail("Factory is missing block_id_2");
@@ -39,12 +39,12 @@ class BlockFactoryJSONTest: XCTestCase {
     }
 
   func testMultipleBlocks() {
-    let workspace = Workspace(layoutFactory: nil, isFlyout: false)
+    let workspace = Workspace(isFlyout: false)
     do {
-      let factory = try BlockFactory(workspace: workspace, jsonPath: "block_factory_test_1",
+      let factory = try BlockFactory(jsonPath: "block_factory_test_1",
         bundle: NSBundle(forClass: self.dynamicType))
-      if let block1 = factory.obtain("block_id_1") {
-        let block2 = factory.obtain("block_id_1");
+      if let block1 = factory.obtain("block_id_1", forWorkspace: workspace) {
+        let block2 = factory.obtain("block_id_1", forWorkspace: workspace)
         XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice");
       } else {
         XCTFail("Factory is missing block_id_1")
