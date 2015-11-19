@@ -30,9 +30,10 @@ class ViewController: UIViewController {
       print("An error occurred loading the test blocks: \(error)")
     }
 
-    let workspace = createWorkspace()
-
+    var workspace: Workspace!
     do {
+      workspace = try createWorkspace()
+
       // Create the workspace layout, which is required for viewing the workspace
       workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
 
@@ -40,10 +41,13 @@ class ViewController: UIViewController {
       // (allowing them to show up in the workspace view)
       try workspace.layout!.layoutBuilder.buildLayoutTree()
 
+      // TODO(vicng): Add method to automatically space out top-level blocks from overlapping
+
       // Perform a layout update for the entire tree
       workspace.layout!.updateLayoutDownTree()
     } catch let error as NSError {
       print("Couldn't build layout tree for workspace: \(error)")
+      return
     }
 
     let workspaceView = WorkspaceView()
@@ -62,25 +66,46 @@ class ViewController: UIViewController {
 
   // MARK: - Private
 
-  func createWorkspace() -> Workspace {
+  func createWorkspace() throws -> Workspace {
     // Create workspace
     let workspace = Workspace(isFlyout: false)
 
+    // Build its layout tree, which creates layout objects for all of its blocks/inputs/fields
+    // (allowing them to show up in the workspace view)
+    try addChainedBlocksToWorkspace(workspace)
+
+    return workspace
+  }
+
+  func addChainedBlocksToWorkspace(workspace: Workspace) throws {
     if let block1 = buildChainedStatementBlock(workspace) {
       if let block2 = buildOutputBlock(workspace) {
-        try! block1.inputs[1].connection?.connectTo(block2.outputConnection)
+        try block1.inputs[1].connection?.connectTo(block2.outputConnection)
 
         if let block3 = buildChainedStatementBlock(workspace) {
-          try! block2.inputs[0].connection?.connectTo(block3.previousConnection)
+          try block2.inputs[0].connection?.connectTo(block3.previousConnection)
         }
 
         if let block4 = buildOutputBlock(workspace) {
-          try! block2.inputs[1].connection?.connectTo(block4.outputConnection)
+          try block2.inputs[1].connection?.connectTo(block4.outputConnection)
         }
       }
     }
+  }
 
-    return workspace
+  func addToolboxBlocksToWorkspace(workspace: Workspace) {
+    let blocks = ["controls_repeat_ext", "controls_whileUntil", "math_number",
+      "simple_input_output", "multiple_input_output", "statement_no_input", "statement_value_input",
+      "statement_multiple_value_input", "statement_statement_input", "output_no_input",
+      "statement_no_next", "block_output", "block_statement"]
+
+    for block in blocks {
+      _blockFactory.obtain(block, forWorkspace: workspace)
+    }
+  }
+
+  func addSpaghettiBlocksToWorkspace(workspace: Workspace) {
+    buildSpaghettiBlock(workspace, level: 4, blocksPerLevel: 5)
   }
 
   func buildOutputBlock(workspace: Workspace) -> Block? {
@@ -94,7 +119,7 @@ class ViewController: UIViewController {
   func buildChainedStatementBlock(workspace: Workspace) -> Block? {
     if let block = buildStatementBlock(workspace) {
       var previousBlock = block
-      for (var i = 0; i < 30; i++) {
+      for (var i = 0; i < 100; i++) {
         if let nextBlock = buildStatementBlock(workspace) {
           try! previousBlock.nextConnection?.connectTo(nextBlock.previousConnection)
           previousBlock = nextBlock
@@ -129,7 +154,6 @@ class ViewController: UIViewController {
           firstBlock = nextBlock
         }
         previousBlock = nextBlock
-
       }
     }
     return firstBlock

@@ -32,10 +32,7 @@ public class WorkspaceView: LayoutView {
   }
 
   /// Scroll view used to render the workspace
-  private var scrollView: UIScrollView!
-
-  /// View which holds all the block views
-  private var _blockGroupView: BlockGroupView!
+  private var scrollView: WorkspaceView.ScrollView!
 
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
@@ -46,16 +43,12 @@ public class WorkspaceView: LayoutView {
   // MARK: - Initializers
 
   public required init() {
-    self.scrollView = UIScrollView(frame: CGRectZero)
-    _blockGroupView = BlockGroupView(frame: CGRectZero)
+    self.scrollView = WorkspaceView.ScrollView(frame: CGRectZero)
     super.init(frame: CGRectZero)
 
     scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     scrollView.autoresizesSubviews = false
     addSubview(scrollView)
-
-    _blockGroupView.autoresizesSubviews = false
-    scrollView.addSubview(_blockGroupView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -115,10 +108,10 @@ public class WorkspaceView: LayoutView {
 
     // Set the content size of the scroll view.
     // TODO:(vicng) Figure out a good amount to pad the workspace by
-    _blockGroupView.frame = CGRectMake(0, 0,
+    scrollView.blockGroupView.frame = CGRectMake(0, 0,
       layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
       layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
-    scrollView.contentSize = _blockGroupView.bounds.size
+    scrollView.contentSize = scrollView.blockGroupView.bounds.size
   }
 
   // MARK: - Private
@@ -157,7 +150,7 @@ public class WorkspaceView: LayoutView {
   private func addBlockViewForLayout(layout: BlockLayout) {
     let newBlockView = _viewManager.newBlockViewForLayout(layout)
     addGestureRecognizersForBlockView(newBlockView)
-    _blockGroupView.upsertBlockView(newBlockView)
+    scrollView.blockGroupView.upsertBlockView(newBlockView)
   }
 
   /**
@@ -171,11 +164,9 @@ public class WorkspaceView: LayoutView {
     let panGesture = UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:")
     panGesture.maximumNumberOfTouches = 1
     blockView.addGestureRecognizer(panGesture)
-    self.scrollView.panGestureRecognizer.requireGestureRecognizerToFail(panGesture)
 
     let tapGesture = UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:")
     blockView.addGestureRecognizer(tapGesture)
-    self.scrollView.panGestureRecognizer.requireGestureRecognizerToFail(tapGesture)
   }
 
   /**
@@ -242,6 +233,102 @@ extension WorkspaceView {
 
 extension WorkspaceView {
   /**
+  A custom version of UIScrollView that can properly distinguish between dragging blocks and
+  scrolling the workspace, in a performant way.
+
+  The simple approach is to call `self.panGestureRecognizer.requireGestureRecognizerToFail(:)` on
+  each block's set of gesture recognizers. Unfortunately, this doesn't scale and causes
+  very slow initialization times. Another approach would be to assign this instance as a delegate of
+  `self.panGestureRecognizer.delegate` in order to control its behaviour, but that doesn't work
+  because the delegate assignment is protected by `UIScrollView`.
+
+  The alternative approach implemented here is to create a "fake" UIPanGestureRecognizer on which
+  `self.panGestureRecognizer` depends on. This allows us to kill `self.panGestureRecognizer` from
+  triggering if we can determine a block is being dragged.
+  */
+  public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
+    /// View which holds all the block views
+    private var blockGroupView: BlockGroupView!
+
+    /// The fake pan gesture recognizer
+    private var _fakePanGestureRecognizer: UIPanGestureRecognizer!
+
+    /// The first touch of the fake pan gesture recognizer
+    private var _firstTouch: UITouch?
+
+    // MARK: - Initializers
+
+    private override init(frame: CGRect) {
+      _fakePanGestureRecognizer = UIPanGestureRecognizer()
+      blockGroupView = BlockGroupView(frame: CGRectZero)
+      super.init(frame: frame)
+
+      _fakePanGestureRecognizer.delegate = self
+      addGestureRecognizer(_fakePanGestureRecognizer)
+      self.panGestureRecognizer.requireGestureRecognizerToFail(_fakePanGestureRecognizer)
+
+      blockGroupView.autoresizesSubviews = false
+      addSubview(blockGroupView)
+
+      self.delaysContentTouches = false
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      bky_assertionFailure("Called unsupported initializer")
+    }
+
+    // MARK: - Super
+
+    @objc public final func gestureRecognizer(
+      gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool
+    {
+      if gestureRecognizer == _fakePanGestureRecognizer && !self.decelerating && !self.dragging
+      {
+        // Register the first touch point of the fake gesture recognizer, now that the scroll view
+        // is "at rest".
+        _firstTouch = touch
+      }
+
+      return true
+    }
+
+    public final override func gestureRecognizerShouldBegin(
+      gestureRecognizer: UIGestureRecognizer) -> Bool
+    {
+      // This method is called when a gesture recognizer wants to transition from the "Possible"
+      // state to the "Began" state (ie. triggering the gesture recognizer).
+      if gestureRecognizer == _fakePanGestureRecognizer {
+        if _firstTouch != nil {
+          let firstTouchLocation = _firstTouch!.locationInView(blockGroupView)
+          let hitTestView = blockGroupView.hitTest(firstTouchLocation, withEvent: nil)
+          if hitTestView != nil && hitTestView != blockGroupView {
+            // The user is dragging something, but the first touch did not begin inside the scroll
+            // view, which can only mean that the user is dragging a block. Therefore, we need to
+            // temporarily disable panning of the scroll view by forcing it to transition into a
+            // Cancel state.
+            self.panGestureRecognizer.enabled = false
+
+            // Re-enable it for the future
+            self.panGestureRecognizer.enabled = true
+          }
+
+          _firstTouch = nil
+        }
+
+        // This fake gesture recognizer should always fail to allow legitimate gesture recognizers
+        // to be recognized. If `self.panGestureRecognizer` wasn't cancelled from above, it will
+        // now be allowed to recognize the current gesture.
+        return false
+      }
+
+      return super.gestureRecognizerShouldBegin(gestureRecognizer)
+    }
+  }
+}
+
+extension WorkspaceView {
+  /**
   UIView which holds `BlockView` instances, where instances are ordered in the subview list by their
   `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
   `BlockGroupView` based on their `zIndex`.
@@ -254,6 +341,9 @@ extension WorkspaceView {
     - Parameter blockView: The given block view
     */
     public func upsertBlockView(blockView: BlockView) {
+      // TODO(vicng): This method is causing performance problems when bringing lots of blocks to
+      // the front at the same time. Calling `self.subviews` may be the culprit (more investigation
+      // is needed).
       let zIndex = blockView.zIndex
 
       // More often than not, the target blockView's zIndex will be >= the zIndex of the highest

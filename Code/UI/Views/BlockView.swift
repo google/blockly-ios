@@ -33,13 +33,11 @@ public class BlockView: LayoutView {
   // TODO:(vicng) iOS will not render bezier paths that are very large (eg. 5000x5000).
   //              Change this implementation so that bezier path views are tiled together.
 
-  /// View for rendering the block's background
-  private let _backgroundView: BezierPathView = {
-    return ViewManager.sharedInstance.viewForType(BezierPathView.self)
-    }()
+  /// Layer for rendering the block's background
+  private let _backgroundLayer = BezierPathLayer()
 
-  /// View for rendering the block's highlight overlay
-  private var _highlightView: BezierPathView?
+  /// Layer for rendering the block's highlight overlay
+  private var _highlightLayer: BezierPathLayer?
 
   /// Field subviews
   private var _fieldViews = [LayoutView]()
@@ -60,13 +58,13 @@ public class BlockView: LayoutView {
   public required init() {
     super.init(frame: CGRectZero)
 
-    // Configure background
-    _backgroundView.frame = self.bounds
-    _backgroundView.backgroundColor = UIColor.clearColor()
-    _backgroundView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    _backgroundView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(_backgroundView)
-    sendSubviewToBack(_backgroundView)
+    // Enable user interaction on this view since it can be dragged around. This is needed by
+    // `WorkspaceView.ScrollView` to distinguish between dragging blocks and scrolling the
+    // workspace.
+    self.userInteractionEnabled = true
+
+    // Add background layer
+    self.layer.addSublayer(_backgroundLayer)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -79,7 +77,7 @@ public class BlockView: LayoutView {
   public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
     // Override this method so that this only returns true if the point is inside the
     // block background bezier path
-    if let bezierPath = _backgroundView.bezierPath {
+    if let bezierPath = _backgroundLayer.bezierPath {
       return bezierPath.containsPoint(point)
     } else {
       return false
@@ -95,19 +93,20 @@ public class BlockView: LayoutView {
 
     // Update background
     // TODO:(vicng) Set the colours properly
-    _backgroundView.strokeColour = layout.highlighted ?
-      UIColor.blueColor() : UIColor.darkGrayColor()
-    _backgroundView.lineWidth = layout.highlighted ?
+    _backgroundLayer.strokeColor = (layout.highlighted ?
+      UIColor.blueColor() : UIColor.darkGrayColor()).CGColor
+    _backgroundLayer.lineWidth = layout.highlighted ?
       BlockLayout.sharedConfig.blockLineWidthHighlight :
       BlockLayout.sharedConfig.blockLineWidthRegular
-    _backgroundView.fillColour = UIColor.greenColor()
-    _backgroundView.bezierPath = blockBackgroundBezierPath()
+    _backgroundLayer.fillColor = UIColor.greenColor().CGColor
+    _backgroundLayer.bezierPath = blockBackgroundBezierPath()
+    _backgroundLayer.frame = self.bounds
 
     // Update highlight
     if let path = blockHighlightBezierPath() {
-      addHighlightViewWithPath(path)
+      addHighlightLayerWithPath(path)
     } else {
-      removeHighlightView()
+      removeHighlightLayer()
     }
 
     // Update field views
@@ -142,7 +141,7 @@ public class BlockView: LayoutView {
     }
     _fieldViews = []
 
-    removeHighlightView()
+    removeHighlightLayer()
   }
 
   public override func refreshPosition() {
@@ -157,40 +156,38 @@ public class BlockView: LayoutView {
 
   // MARK: - Private
 
-  private func addHighlightViewWithPath(path: UIBezierPath) {
+  private func addHighlightLayerWithPath(path: UIBezierPath) {
     guard let workspaceLayout = layout?.workspaceLayout else {
       return
     }
 
-    if _highlightView == nil {
+    if _highlightLayer == nil {
       let lineWidth =
         workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
-      let highlightView = ViewManager.sharedInstance.viewForType(BezierPathView.self)
-      highlightView.lineWidth = lineWidth
-      highlightView.strokeColour = UIColor.blueColor()
-      highlightView.fillColour = nil
+      let highlightLayer = BezierPathLayer()
+      highlightLayer.lineWidth = lineWidth
+      highlightLayer.strokeColor = UIColor.blueColor().CGColor
+      highlightLayer.fillColor = nil
       // TODO:(vicng) The highlight view frame needs to be larger than this view since it uses a
       // larger line width
-      highlightView.frame = self.bounds
-      highlightView.backgroundColor = UIColor.clearColor()
-      highlightView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-      highlightView.translatesAutoresizingMaskIntoConstraints = false
-      highlightView.clipsToBounds = false
-      addSubview(highlightView)
-      _highlightView = highlightView
+      highlightLayer.frame = self.bounds
+      // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
+      highlightLayer.zPosition = 1
+      layer.addSublayer(highlightLayer)
+      _highlightLayer = highlightLayer
     }
-    _highlightView!.bezierPath = path
-    bringSubviewToFront(_highlightView!)
+    _highlightLayer!.bezierPath = path
   }
 
-  private func removeHighlightView() {
-    if let highlightView = _highlightView {
-      highlightView.removeFromSuperview()
-      ViewManager.sharedInstance.recycleView(highlightView)
-      _highlightView = nil
+  private func removeHighlightLayer() {
+    if let highlightLayer = _highlightLayer {
+      highlightLayer.removeFromSuperlayer()
+      _highlightLayer = nil
     }
   }
 }
+
+// TODO(vicng): Move this code into BlockBackgroundLayer and BlockHighlightLayer classes
 
 // MARK: - Bezier Path Builders
 
@@ -326,8 +323,13 @@ extension BlockView {
         addPuzzleTabToPath(path, drawTopToBottom: false)
       }
     }
-    
-    return path.viewBezierPath
+
+    let viewBezierPath = path.viewBezierPath
+    if layout.workspaceLayout.workspace.isRTL {
+      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
+    }
+
+    return viewBezierPath
   }
 
   private func blockHighlightBezierPath() -> UIBezierPath? {
@@ -372,6 +374,20 @@ extension BlockView {
       }
     }
 
-    return path.viewBezierPath
+    let viewBezierPath = path.viewBezierPath
+    if layout.workspaceLayout.workspace.isRTL {
+      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
+    }
+
+    return viewBezierPath
+  }
+
+  private func applyRtlTransformToBezierPath(path: UIBezierPath, layout: BlockLayout) {
+    var transform = CGAffineTransformIdentity
+    transform = CGAffineTransformScale(transform, CGFloat(-1.0), CGFloat(1.0))
+    // TODO(vicng): Need to store the actual block size in the layout (the layout.viewFrame is
+    // sometimes larger for blocks with external values)
+    transform = CGAffineTransformTranslate(transform, -layout.viewFrame.size.width, CGFloat(0))
+    path.applyTransform(transform)
   }
 }

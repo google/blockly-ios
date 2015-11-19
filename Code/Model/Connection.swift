@@ -36,10 +36,10 @@ public protocol ConnectionListener {
 }
 
 /**
-Protocol for position events that occur on a `Connection`.
+Delegate for position events that occur on a `Connection`.
 */
-@objc(BKYConnectionPositionListener)
-public protocol ConnectionPositionListener {
+@objc(BKYConnectionPositionDelegate)
+public protocol ConnectionPositionDelegate {
   /**
   Event that is called immediately before the connection's `position` will change.
 
@@ -59,7 +59,7 @@ public protocol ConnectionPositionListener {
 Component used to create a connection between two `Block` instances.
 */
 @objc(BKYConnection)
-public class Connection : NSObject {
+public final class Connection : NSObject {
   // MARK: - Static Properties
 
   // NOTE: If OPPOSITE_TYPES is updated, also update ConnectionManager's matchingLists and
@@ -132,10 +132,10 @@ public class Connection : NSObject {
   }
 
   /// Connection listeners
-  public let listeners = WeakSet<ConnectionListener>()
+  private final var _listeners = Array<ConnectionListener>()
 
-  /// Connection position listeners
-  public let positionListeners = WeakSet<ConnectionPositionListener>()
+  /// Connection position delegate
+  public final weak var positionDelegate: ConnectionPositionDelegate?
 
   /// Keeps track of all block uuid's that are telling this connection to be 
   /// highlighted
@@ -190,8 +190,8 @@ public class Connection : NSObject {
       newTargetConnection.targetConnection = self
 
       // Send delegate events
-      listeners.forEach { $0.didChangeTargetForConnection?(self) }
-      newTargetConnection.listeners.forEach {
+      _listeners.forEach { $0.didChangeTargetForConnection?(self) }
+      newTargetConnection._listeners.forEach {
         $0.didChangeTargetForConnection?(newTargetConnection)
       }
     }
@@ -211,8 +211,8 @@ public class Connection : NSObject {
     oldTargetConnection.targetConnection = nil
 
     // Send delegate events
-    listeners.forEach { $0.didChangeTargetForConnection?(self) }
-    oldTargetConnection.listeners.forEach { $0.didChangeTargetForConnection?(oldTargetConnection) }
+    _listeners.forEach { $0.didChangeTargetForConnection?(self) }
+    oldTargetConnection._listeners.forEach { $0.didChangeTargetForConnection?(oldTargetConnection) }
   }
 
   /**
@@ -273,7 +273,7 @@ public class Connection : NSObject {
       _highlights.insert(block.uuid)
 
       if _highlights.count == 1 {
-        listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+        _listeners.forEach { $0.didChangeHighlightForConnection?(self) }
       }
     }
   }
@@ -289,7 +289,7 @@ public class Connection : NSObject {
       _highlights.remove(block.uuid)
 
       if _highlights.count == 0 {
-        listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+        _listeners.forEach { $0.didChangeHighlightForConnection?(self) }
       }
     }
   }
@@ -301,18 +301,38 @@ public class Connection : NSObject {
   - Parameter offset: An additional offset, usually the position of the parent view in the workspace
   view.
   */
-  public func moveToPosition(position: WorkspacePoint, withOffset offset: WorkspacePoint? = nil) {
-    let newX = position.x + (offset?.x ?? 0)
-    let newY = position.y + (offset?.y ?? 0)
+  public func moveToPosition(
+    position: WorkspacePoint, withOffset offset: WorkspacePoint = WorkspacePointZero)
+  {
+    let newX = position.x + offset.x
+    let newY = position.y + offset.y
 
     if self.position.x == newX && self.position.y == newY {
       return
     }
 
-    positionListeners.forEach { $0.willChangePositionForConnection(self) }
+    positionDelegate?.willChangePositionForConnection(self)
     self.position.x = newX
     self.position.y = newY
-    positionListeners.forEach { $0.didChangePositionForConnection(self) }
+    positionDelegate?.didChangePositionForConnection(self)
+  }
+
+  /**
+  Adds a listener for changes to the connection.
+
+  - Parameter listener: The listener to add
+  */
+  public func addListener(listener: ConnectionListener) {
+    _listeners.append(listener)
+  }
+
+  /**
+  Removes a listener for changes to the connection.
+
+  - Parameter listener: The listener to remove
+  */
+  public func removeListener(listener: ConnectionListener) {
+    _listeners.bky_removeAllOccurrencesOfElement(listener)
   }
 
   // MARK: - Private

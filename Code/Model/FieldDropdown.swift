@@ -19,7 +19,7 @@ import Foundation
 An input field for selecting options from a dropdown menu.
 */
 @objc(BKYFieldDropdown)
-public class FieldDropdown: Field {
+public final class FieldDropdown: Field {
   // MARK: - Properties
 
   /// Drop-down options. First value is the display name, second value is the option value.

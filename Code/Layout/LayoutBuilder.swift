@@ -84,6 +84,7 @@ public class LayoutBuilder: NSObject {
     try buildLayoutTreeForBlockGroupLayout(blockGroupLayout, block: block)
 
     workspaceLayout.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+    workspaceLayout.bringBlockGroupLayoutToFront(blockGroupLayout)
 
     return blockGroupLayout
   }

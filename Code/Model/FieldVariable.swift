@@ -19,7 +19,7 @@ import Foundation
 An input for specifying a variable.
 */
 @objc(BKYFieldVariable)
-public class FieldVariable: Field {
+public final class FieldVariable: Field {
   // MARK: - Properties
 
   public var variable: String

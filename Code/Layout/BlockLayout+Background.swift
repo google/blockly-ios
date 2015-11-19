@@ -20,7 +20,7 @@ extension BlockLayout {
   Information for rendering a block.
   */
   @objc(BKYBlockLayoutBackground)
-  public class Background: NSObject {
+  public final class Background: NSObject {
     // MARK: - Properties
 
     /// Flag if the top-left corner should be square.
@@ -91,7 +91,7 @@ extension BlockLayout {
   Information for rendering a row inside a block.
   */
   @objc(BKYBlockLayoutBackgroundRow)
-  public class BackgroundRow: NSObject {
+  public final class BackgroundRow: NSObject {
     // MARK: - Properties
 
     /// Flag if a female output connector should be rendered on the right side of the row

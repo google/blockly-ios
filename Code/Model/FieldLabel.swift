@@ -19,7 +19,7 @@ import Foundation
 Non-editable text field. Used for titles, labels, etc.
 */
 @objc(BKYFieldLabel)
-public class FieldLabel: Field {
+public final class FieldLabel: Field {
   // MARK: - Properties
 
   public var text: String = ""

@@ -45,16 +45,27 @@ public class BlockLayout: Layout {
     }
   }
 
+  // TODO(vicng): Consider replacing all connections/relative positions with a ConnectionLayout
+
+  /// For performance reasons, keep a strong reference to the block.outputConnection
+  private var _outputConnection: Connection!
+
+  /// For performance reasons, keep a strong reference to the block.outputConnection
+  private var _nextConnection: Connection!
+
+  /// For performance reasons, keep a strong reference to the block.outputConnection
+  private var _previousConnection: Connection!
+
   /// The relative position of the output connection, expressed as a Workspace coordinate system
   /// unit
-  private var outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  private var _outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The relative position of the next connection, expressed as a Workspace coordinate system unit
-  private var nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  private var _nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The relative position of the previous connection, expressed as a Workspace coordinate system
   /// unit
-  private var previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  private var _previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
@@ -62,14 +73,20 @@ public class BlockLayout: Layout {
   internal override var absolutePosition: WorkspacePoint {
     didSet {
       // Update connection positions
-      self.block.outputConnection?.moveToPosition(self.absolutePosition,
-        withOffset: outputConnectionRelativePosition)
+      if _outputConnection != nil {
+        _outputConnection.moveToPosition(self.absolutePosition,
+          withOffset: _outputConnectionRelativePosition)
+      }
 
-      self.block.nextConnection?.moveToPosition(self.absolutePosition,
-        withOffset: nextConnectionRelativePosition)
+      if _nextConnection != nil {
+        _nextConnection.moveToPosition(self.absolutePosition,
+          withOffset: _nextConnectionRelativePosition)
+      }
 
-      self.block.previousConnection?.moveToPosition(self.absolutePosition,
-        withOffset: previousConnectionRelativePosition)
+      if _previousConnection != nil {
+        _previousConnection.moveToPosition(self.absolutePosition,
+          withOffset: _previousConnectionRelativePosition)
+      }
     }
   }
 
@@ -129,10 +146,13 @@ public class BlockLayout: Layout {
 
   public required init(block: Block, workspaceLayout: WorkspaceLayout) {
     self.block = block
+    _outputConnection = block.outputConnection
+    _nextConnection = block.nextConnection
+    _previousConnection = block.previousConnection
     super.init(workspaceLayout: workspaceLayout)
 
     for connection in self.block.directConnections {
-      connection.listeners.add(self)
+      connection.addListener(self)
 
       // Automatically let the workspace's connection manager track this connection
       workspaceLayout.connectionManager.trackConnection(connection)
@@ -240,13 +260,13 @@ public class BlockLayout: Layout {
     let notchXOffset = outputPuzzleTabXOffset + BlockLayout.sharedConfig.notchWidth / 2
 
     if block.previousConnection != nil {
-      previousConnectionRelativePosition =
+      _previousConnectionRelativePosition =
         WorkspacePointMake(notchXOffset, BlockLayout.sharedConfig.notchHeight)
     }
 
     if block.nextConnection != nil {
       let blockBottomEdge = background.rows.reduce(0, combine: { $0 + $1.rowHeight})
-      nextConnectionRelativePosition =
+      _nextConnectionRelativePosition =
         WorkspacePointMake(notchXOffset, blockBottomEdge + BlockLayout.sharedConfig.notchHeight)
 
       // TODO:(vicng) Make the size.height a property of self.background
@@ -255,7 +275,7 @@ public class BlockLayout: Layout {
     }
 
     if block.outputConnection != nil {
-      outputConnectionRelativePosition =
+      _outputConnectionRelativePosition =
         WorkspacePointMake(0, BlockLayout.sharedConfig.puzzleTabHeight / 2)
     }
 

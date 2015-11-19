@@ -20,7 +20,7 @@ Controller for `Connection` instances, where connections can be separated into g
 `ConnectionManager.Group`).
 */
 @objc(BKYConnectionManager)
-public class ConnectionManager: NSObject {
+public final class ConnectionManager: NSObject {
   public typealias ConnectionPair =
     (moving: Connection, target: Connection, fromConnectionManagerGroup: ConnectionManager.Group)
 
@@ -273,7 +273,7 @@ extension ConnectionManager {
   Manages a specific set of `Connection` instances.
   */
   @objc(BKYConnectionManagerGroup)
-  public class Group: NSObject, ConnectionPositionListener {
+  public final class Group: NSObject, ConnectionPositionDelegate {
 
     // MARK: - Properties
     private weak var ownerBlock: Block?
@@ -319,7 +319,7 @@ extension ConnectionManager {
     */
     internal func trackConnection(connection: Connection) {
       addConnection(connection)
-      connection.positionListeners.add(self)
+      connection.positionDelegate = self
     }
 
     /**
@@ -329,7 +329,9 @@ extension ConnectionManager {
     */
     internal func untrackConnection(connection: Connection) {
       removeConnection(connection)
-      connection.positionListeners.remove(self)
+      if connection.positionDelegate === self {
+        connection.positionDelegate = nil
+      }
     }
 
     /**
@@ -376,11 +378,10 @@ extension ConnectionManager {
         let fromConnectionList = _matchingLists[i]
         let toConnectionList = toGroup._matchingLists[i]
 
-        // Remove position listeners for this group and add them for the new group
+        // Set the position delegate to the new group
         let affectedConnections = fromConnectionList._connections
         for connection in affectedConnections {
-          connection.positionListeners.remove(self)
-          connection.positionListeners.add(toGroup)
+          connection.positionDelegate = toGroup
         }
 
         // And now transfer the connections over to the corresponding list in the new group
@@ -408,7 +409,7 @@ extension ConnectionManager {
       _matchingLists[connection.type.rawValue].removeConnection(connection)
     }
 
-    // MARK: - ConnectionPositionListener
+    // MARK: - ConnectionPositionDelegate
 
     public func willChangePositionForConnection(connection: Connection) {
       if dragMode {
@@ -437,7 +438,7 @@ extension ConnectionManager {
   Connections are not ordered by their x position and multiple connections may be at the same
   y position.
   */
-  internal class YSortedList {
+  internal final class YSortedList {
     // MARK: - Properties
 
     private var _connections = [Connection]()

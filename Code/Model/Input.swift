@@ -19,7 +19,7 @@ import Foundation
 Class representing an input (value, statement, or dummy).
 */
 @objc(BKYInput)
-public class Input : NSObject {
+public final class Input : NSObject {
   // MARK: - Enum - InputType
 
   /** Represents types of inputs. */

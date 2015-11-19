@@ -19,7 +19,7 @@ import Foundation
 Class that represents a single block.
 */
 @objc(BKYBlock)
-public class Block : NSObject {
+public final class Block : NSObject {
   // MARK: - Properties
 
   /// A unique identifier used to identify this block for its lifetime

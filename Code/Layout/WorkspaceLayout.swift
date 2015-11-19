@@ -23,19 +23,22 @@ public class WorkspaceLayout: Layout {
   // MARK: - Properties
 
   /// The `Workspace` to layout
-  public let workspace: Workspace
+  public final let workspace: Workspace
 
   /// The locations of all connections in this workspace
-  public let connectionManager: ConnectionManager
+  public final let connectionManager: ConnectionManager
+
+  /// Builder for constructing layouts under this workspace
+  public final let layoutBuilder: LayoutBuilder
 
   /// All child `BlockGroupLayout` objects that have been appended to this layout
-  public var blockGroupLayouts: [BlockGroupLayout] {
-    return childLayouts.map({$0.1}) as! [BlockGroupLayout]
+  public final var blockGroupLayouts: [BlockGroupLayout] {
+    return childLayouts.map({$0}) as! [BlockGroupLayout]
   }
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point translates to a (5, 5) Workspace point.
-  public var scale: CGFloat = 1.0 {
+  public final var scale: CGFloat = 1.0 {
     didSet {
       // Do not allow a scale less than 0.5
       if scale < 0.5 {
@@ -52,9 +55,6 @@ public class WorkspaceLayout: Layout {
 
   /// Maximum value that the z-index counter should reach
   private var _maximumZIndexCounter: CGFloat = (pow(2, 23) - 1)
-
-  /// Builder for constructing layouts under this workspace
-  public let layoutBuilder: LayoutBuilder
 
   // MARK: - Initializers
 
@@ -85,7 +85,17 @@ public class WorkspaceLayout: Layout {
     // Update size required for the workspace
     self.contentSize = size
 
-    // Force the workspace to be re-displayed
+    // TODO(vicng): *Sometimes* the workspace layout needs to be completely redisplayed (like when
+    // blocks are added/deleted), but for the most part it doesn't. Since this method is always
+    // called repeatedly during drag gestures, do not trigger a full redisplay. This should be
+    // optimized in the future to so the layout is smarter about when to trigger a full redisplay.
+    self.needsRepositioning = true
+  }
+
+  public override func updateLayoutDownTree() {
+    super.updateLayoutDownTree()
+
+    // When this method is called, force a redisplay at the workspace level
     self.needsDisplay = true
   }
 
@@ -96,19 +106,11 @@ public class WorkspaceLayout: Layout {
   */
   public func allBlockLayoutDescendants() -> [BlockLayout] {
     var descendants = [BlockLayout]()
-    var layoutsToProcess = childLayouts.map({$0.1}) as! [BlockGroupLayout]
-
-    while !layoutsToProcess.isEmpty {
-      let blockGroupLayout = layoutsToProcess.removeFirst()
-      descendants += blockGroupLayout.blockLayouts
-
-      for blockLayout in blockGroupLayout.blockLayouts {
-        for inputLayout in blockLayout.inputLayouts {
-          layoutsToProcess.append(inputLayout.blockGroupLayout)
-        }
+    for (_, block) in workspace.allBlocks {
+      if let layout = block.layout {
+        descendants.append(layout)
       }
     }
-
     return descendants
   }
 
@@ -152,7 +154,7 @@ public class WorkspaceLayout: Layout {
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   public func reset(updateLayout updateLayout: Bool) {
-    for (_, layout) in self.childLayouts {
+    for layout in self.childLayouts {
       if let blockGroupLayout = layout as? BlockGroupLayout {
         removeBlockGroupLayout(blockGroupLayout, updateLayout: false)
       }
@@ -175,7 +177,7 @@ public class WorkspaceLayout: Layout {
     }
 
     // Verify that this layout is a child of the workspace
-    if childLayouts[blockGroupLayout.uuid] == nil {
+    if !childLayouts.contains(blockGroupLayout) {
       return
     }
     if blockGroupLayout.zIndex == _zIndexCounter {
@@ -198,6 +200,10 @@ public class WorkspaceLayout: Layout {
   }
 }
 
+// TODO(vicng): Consider pulling these methods out into another class and so each layout could
+// directly reference a single instance of that class (defined for a workspace). It should
+// theoretically boost performance.
+
 // MARK: - Layout Translation
 
 extension WorkspaceLayout {
@@ -210,7 +216,7 @@ extension WorkspaceLayout {
   - Parameter point: A point from the UIView coordinate system.
   - Returns: A point in the Workspace coordinate system.
   */
-  public func workspacePointFromViewPoint(point: CGPoint) -> WorkspacePoint {
+  public final func workspacePointFromViewPoint(point: CGPoint) -> WorkspacePoint {
     // TODO:(vicng) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return WorkspacePointZero
@@ -230,7 +236,7 @@ extension WorkspaceLayout {
   - Parameter size: A size from the UIView coordinate system.
   - Returns: A size in the Workspace coordinate system.
   */
-  public func workspaceSizeFromViewSize(size: CGSize) -> WorkspaceSize {
+  public final func workspaceSizeFromViewSize(size: CGSize) -> WorkspaceSize {
     if scale == 0 {
       return WorkspaceSizeZero
     } else if scale == 1 {
@@ -249,7 +255,7 @@ extension WorkspaceLayout {
   - Parameter unit: A unit value from the UIView coordinate system.
   - Returns: A unit value in the Workspace coordinate system.
   */
-  public func workspaceUnitFromViewUnit(unit: CGFloat) -> CGFloat {
+  public final func workspaceUnitFromViewUnit(unit: CGFloat) -> CGFloat {
     if scale == 0 {
       return 0
     } else if scale == 1 {
@@ -266,7 +272,7 @@ extension WorkspaceLayout {
   - Parameter unit: A unit value from the Workspace coordinate system.
   - Returns: A unit value in the UIView coordinate system.
   */
-  public func viewUnitFromWorkspaceUnit(unit: CGFloat) -> CGFloat {
+  public final func viewUnitFromWorkspaceUnit(unit: CGFloat) -> CGFloat {
     if scale == 0 {
       return 0
     } else if scale == 1 {
@@ -285,7 +291,7 @@ extension WorkspaceLayout {
   - Parameter point: A point from the Workspace coordinate system.
   - Returns: A point in the UIView coordinate system.
   */
-  public func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
+  public final func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
     // TODO:(vicng) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
@@ -304,7 +310,7 @@ extension WorkspaceLayout {
   - Parameter y: The y-coordinate of the point
   - Returns: A point in the UIView coordinate system.
   */
-  public func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
+  public final func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
     // TODO:(vicng) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
@@ -322,7 +328,7 @@ extension WorkspaceLayout {
   - Parameter size: A size from the Workspace coordinate system.
   - Returns: A size in the UIView coordinate system.
   */
-  public func viewSizeFromWorkspaceSize(size: WorkspaceSize) -> CGSize {
+  public final func viewSizeFromWorkspaceSize(size: WorkspaceSize) -> CGSize {
     if scale == 0 {
       return CGSizeZero
     } else if scale == 1 {
@@ -342,7 +348,7 @@ extension WorkspaceLayout {
   - Parameter size: A size from the Workspace coordinate system.
   - Returns: A rectangle in the UIView coordinate system.
   */
-  public func viewFrameFromWorkspacePoint(point: WorkspacePoint, size: WorkspaceSize) -> CGRect {
+  public final func viewFrameFromWorkspacePoint(point: WorkspacePoint, size: WorkspaceSize) -> CGRect {
     // TODO:(vicng) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGRectZero

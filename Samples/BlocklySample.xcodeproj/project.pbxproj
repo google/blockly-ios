@@ -14,7 +14,7 @@
 		FA548C351B6312AE008BC59C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA548C331B6312AE008BC59C /* Main.storyboard */; };
 		FA548C371B6312AE008BC59C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA548C361B6312AE008BC59C /* Images.xcassets */; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
-		FAA2916A1B9576650005F100 /* TestBlocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA291691B9576650005F100 /* TestBlocks.json */; settings = {ASSET_TAGS = (); }; };
+		FAA2916A1B9576650005F100 /* TestBlocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA291691B9576650005F100 /* TestBlocks.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -372,6 +372,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklySample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BlocklySample/BlocklySample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};

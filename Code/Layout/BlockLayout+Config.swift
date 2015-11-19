@@ -22,50 +22,50 @@ extension BlockLayout {
   @objc(BKYBlockLayoutConfig)
   public class Config: NSObject {
     /// Horizontal space between elements, specified as a Workspace coordinate system unit.
-    public var xSeparatorSpace: CGFloat = 10
+    public final var xSeparatorSpace: CGFloat = 10
 
     /// Vertical space between elements, specified as a Workspace coordinate system unit.
-    public var ySeparatorSpace: CGFloat = 10
+    public final var ySeparatorSpace: CGFloat = 10
 
     /// Vertical padding around inline elements, specified as a Workspace coordinate system unit.
-    public var inlineYPadding: CGFloat = 5
+    public final var inlineYPadding: CGFloat = 5
 
     /// Minimum height of a block, specified as a Workspace coordinate system unit.
-    public var minimumBlockHeight: CGFloat = 25
+    public final var minimumBlockHeight: CGFloat = 25
 
     /// Rounded corner radius of a block, specified as a Workspace coordinate system unit.
-    public var blockCornerRadius: CGFloat = 8
+    public final var blockCornerRadius: CGFloat = 8
 
     /// Width of a regular line stroke for a block, specified as a Workspace coordinate system unit
-    public var blockLineWidthRegular: CGFloat = 1
+    public final var blockLineWidthRegular: CGFloat = 1
 
     /// Width of a highlighted line stroke for a block, specified as a Workspace coordinate system
     /// unit
-    public var blockLineWidthHighlight: CGFloat = 3
+    public final var blockLineWidthHighlight: CGFloat = 3
 
     // WARNING:(vicng) This value or puzzleTabHeight in WebBlockly is set to 20
     /// Height of a horizontal puzzle tab, specified as a Workspace coordinate system unit.
-    public var puzzleTabHeight: CGFloat = 20
+    public final var puzzleTabHeight: CGFloat = 20
 
     /// Width of a horizontal puzzle tab, specified as a Workspace coordinate system unit.
-    public var puzzleTabWidth: CGFloat = 8
+    public final var puzzleTabWidth: CGFloat = 8
 
     /// Width of vertical tab (including left margin), specified as a Workspace coordinate system
     /// unit.
-    public var notchWidth: CGFloat = 30;
+    public final var notchWidth: CGFloat = 30;
 
     /// Height of vertical tab, specified as a Workspace coordinate system unit.
-    public var notchHeight: CGFloat = 4;
+    public final var notchHeight: CGFloat = 4;
 
     /// Minimum height of field rows, specified as a Workspace coordinate system unit.
-    public var minimumFieldHeight: CGFloat = 18
+    public final var minimumFieldHeight: CGFloat = 18
 
     /// Height of jagged teeth at the end of collapsed blocks, specified as a Workspace coordinate
     /// system unit.
-    public var jaggedTeethHeight: CGFloat = 20
+    public final var jaggedTeethHeight: CGFloat = 20
 
     /// Width of jagged teeth at the end of collapsed blocks, specified as a Workspace coordinate
     /// system unit.
-    public var jaggedTeethWidth: CGFloat = 15
+    public final var jaggedTeethWidth: CGFloat = 15
   }
 }

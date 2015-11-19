@@ -53,58 +53,57 @@ public class Layout: NSObject {
   // MARK: - Properties
 
   /// A unique identifier used to identify this layout for its lifetime
-  public let uuid: String
+  public final let uuid: String
   /// The workspace node which this node belongs to.
-  public weak var workspaceLayout: WorkspaceLayout!
+  public final weak var workspaceLayout: WorkspaceLayout!
   /// The parent node of this layout. If this value is nil, this layout is the root node.
-  public internal(set) weak var parentLayout: Layout? {
+  public internal(set) final weak var parentLayout: Layout? {
     didSet {
       if parentLayout == oldValue {
         return
       }
 
       // Remove self from old parent's childLayouts
-      oldValue?.childLayouts[self.uuid] = nil
+      oldValue?.childLayouts.remove(self)
 
       // Add self to new parent's childLayouts
-      parentLayout?.childLayouts[self.uuid] = self
+      parentLayout?.childLayouts.insert(self)
     }
   }
 
   /// Layouts whose `parentLayout` is set to this layout
-  public private(set) var childLayouts = [String: Layout]()
+  public private(set) final var childLayouts = Set<Layout>()
 
   /// Position relative to `self.parentLayout`
-  internal var relativePosition: WorkspacePoint = WorkspacePointZero
+  internal final var relativePosition: WorkspacePoint = WorkspacePointZero
   /// Content size of this layout
-  internal var contentSize: WorkspaceSize = WorkspaceSizeZero {
+  internal final var contentSize: WorkspaceSize = WorkspaceSizeZero {
     didSet {
       updateTotalSize()
     }
   }
   /// Inline edge insets for the layout.
-  internal var edgeInsets: WorkspaceEdgeInsets = WorkspaceEdgeInsetsZero {
+  internal final var edgeInsets: WorkspaceEdgeInsets = WorkspaceEdgeInsetsZero {
     didSet {
       updateTotalSize()
     }
   }
+
+  // TODO(vicng): If ConnectionLayout is created, change absolutePosition to be final
   /// Absolute position relative to the root node.
   internal var absolutePosition: WorkspacePoint = WorkspacePointZero
   /// Total size used by this layout. This value is calculated by combining `edgeInsets` and
   /// `contentSize`.
-  internal private(set) var totalSize: WorkspaceSize = WorkspaceSizeZero
+  internal private(set) final var totalSize: WorkspaceSize = WorkspaceSizeZero
 
   /**
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
   view node layout for a Field is a Block, while the parent view node for a Block is a Workspace.
   */
-  public internal(set) var viewFrame: CGRect = CGRectZero {
+  public internal(set) final var viewFrame: CGRect = CGRectZero {
     didSet {
-      if viewFrame.origin != oldValue.origin {
+      if viewFrame != oldValue {
         self.needsRepositioning = true
-      }
-      if viewFrame.size != oldValue.size {
-        self.needsDisplay = true
       }
     }
   }
@@ -114,7 +113,7 @@ public class Layout: NSObject {
   Setting this value to true schedules a change event to be called on the `delegate` at the
   beginning of the next run loop.
   */
-  public var needsDisplay: Bool = false {
+  public final var needsDisplay: Bool = false {
     didSet {
       if self.needsDisplay {
         LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
@@ -126,7 +125,7 @@ public class Layout: NSObject {
   Setting this value to true schedules a change event to be called on the `delegate` at the
   beginning of the next run loop.
   */
-  public var needsRepositioning: Bool = false {
+  public final var needsRepositioning: Bool = false {
     didSet {
       if self.needsRepositioning {
         LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
@@ -137,7 +136,7 @@ public class Layout: NSObject {
   // TODO:(vicng) Consider making the LayoutView a property of the layout instead of using a
   // delegate.
   /// The delegate for events that occur on this instance
-  public weak var delegate: LayoutDelegate?
+  public final weak var delegate: LayoutDelegate?
 
   // MARK: - Initializers
 
@@ -171,7 +170,8 @@ public class Layout: NSObject {
   */
   public func updateLayoutDownTree() {
     performLayout(includeChildren: true)
-    refreshViewPositionsForTree()
+    refreshViewPositionsForTree(
+      parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero))
   }
 
   /**
@@ -179,7 +179,7 @@ public class Layout: NSObject {
   every parent up the tree. When the top is reached, the `absolutePosition` and `viewFrame` for
   each layout in the tree is re-calculated.
   */
-  public func updateLayoutUpTree() {
+  public final func updateLayoutUpTree() {
     // Re-position content at this level
     performLayout(includeChildren: false)
 
@@ -188,7 +188,7 @@ public class Layout: NSObject {
       parentLayout.updateLayoutUpTree()
     } else {
       // The top of the tree has been reached. Re-calculate view positions for the entire tree.
-      refreshViewPositionsForTree()
+      refreshViewPositionsForTree(parentAbsolutePosition: WorkspacePointZero)
     }
   }
 
@@ -197,28 +197,39 @@ public class Layout: NSObject {
   /**
   For every `Layout` in its tree hierarchy (including itself), updates the `absolutePosition` and
   `viewFrame` based on the current state of this object.
+
+  - Parameter parentAbsolutePosition: The absolute position of its parent layout.
+  - Parameter includeFields: If true, recursively update view positions for field layouts. If false,
+  skip them.
+  - Note: `parentAbsolutePosition` is passed as a parameter here to eliminate direct references to
+  `self.parentLayout` inside this method. This results in better performance.
   */
-  internal func refreshViewPositionsForTree() {
+  internal final func refreshViewPositionsForTree(
+    parentAbsolutePosition parentAbsolutePosition: WorkspacePoint,
+    includeFields: Bool = true)
+  {
     // TODO:(vicng) Optimize this method so it only recalculates view positions for layouts that
     // are "dirty"
 
     // Update absolute position
-    if parentLayout != nil {
-      self.absolutePosition = WorkspacePointMake(
-        parentLayout!.absolutePosition.x + relativePosition.x + edgeInsets.left,
-        parentLayout!.absolutePosition.y + relativePosition.y + edgeInsets.top)
-    } else {
-      self.absolutePosition = WorkspacePointMake(edgeInsets.left, edgeInsets.top)
-    }
+    self.absolutePosition = WorkspacePointMake(
+      parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
+      parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
 
     // Update the view frame (InputLayouts and BlockGroupLayouts do not need to update their view
     // frames as they do not get rendered)
-    if !(self is InputLayout) && !(self is BlockGroupLayout) {
+    if !(self is InputLayout) && !(self is BlockGroupLayout) &&
+      (includeFields || !(self is FieldLayout))
+    {
       refreshViewFrame()
     }
 
-    for (_, layout) in self.childLayouts {
-      layout.refreshViewPositionsForTree()
+    for layout in self.childLayouts {
+      // Automatically skip if this is a field and we're not allowing them
+      if includeFields || !(layout is FieldLayout) {
+        layout.refreshViewPositionsForTree(
+          parentAbsolutePosition: self.absolutePosition, includeFields: includeFields)
+      }
     }
   }
 
@@ -238,7 +249,7 @@ public class Layout: NSObject {
   After this method has finished execution, both `needsDisplay` and `needsRepositioning` are set
   back to false.
   */
-  internal func sendChangeEvent() {
+  internal final func sendChangeEvent() {
     // TODO:(vicng) Change these events so it's easy to create new ones based on flags
     if self.needsDisplay {
       self.delegate?.layoutDisplayChanged(self)

@@ -25,10 +25,15 @@ public class InputLayout: Layout {
   /// The target `Input` to layout
   public unowned let input: Input
 
+  // TODO(vicng): Consider replacing all connections/relative positions with a ConnectionLayout
+
+  /// For performance reasons, keep a strong reference to the input.connection
+  private var _connection: Connection!
+
   internal override var absolutePosition: WorkspacePoint {
     didSet {
       // Update connection position
-      guard let connection = self.input.connection else {
+      if _connection == nil {
         return
       }
 
@@ -47,7 +52,7 @@ public class InputLayout: Layout {
           BlockLayout.sharedConfig.puzzleTabHeight / 2)
       }
 
-      connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
+      _connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
     }
   }
 
@@ -125,6 +130,7 @@ public class InputLayout: Layout {
   public required init(input: Input, workspaceLayout: WorkspaceLayout) {
     self.input = input
     self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout)
+    self._connection = self.input.connection
     super.init(workspaceLayout: workspaceLayout)
 
     self.blockGroupLayout.parentLayout = self

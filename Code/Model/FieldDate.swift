@@ -19,7 +19,7 @@ import Foundation
 An input field for picking a date.
 */
 @objc(BKYFieldDate)
-public class FieldDate: Field {
+public final class FieldDate: Field {
   // MARK: - Properties
 
   public var date: NSDate {

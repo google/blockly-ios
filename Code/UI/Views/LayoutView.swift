@@ -23,7 +23,7 @@ public class LayoutView: UIView {
   // MARK: - Properties
 
   /// Layout object to render
-  public weak var layout: Layout? {
+  public final weak var layout: Layout? {
     didSet {
       if layout != oldValue {
         oldValue?.delegate = nil
@@ -79,7 +79,7 @@ public class LayoutView: UIView {
 // MARK: - Recyclable implementation
 
 extension LayoutView: Recyclable {
-  public func prepareForReuse() {
+  public final func prepareForReuse() {
     removeFromSuperview()
     self.layout = nil
 
@@ -90,11 +90,11 @@ extension LayoutView: Recyclable {
 // MARK: - LayoutDelegate implementation
 
 extension LayoutView: LayoutDelegate {
-  public func layoutDisplayChanged(layout: Layout) {
+  public final func layoutDisplayChanged(layout: Layout) {
     refreshView()
   }
 
-  public func layoutPositionChanged(layout: Layout) {
+  public final func layoutPositionChanged(layout: Layout) {
     refreshPosition()
   }
 }

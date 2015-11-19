@@ -177,9 +177,11 @@ public class BlockGroupLayout: Layout {
   Workspace coordinate system point.
   */
   public func moveToWorkspacePosition(position: WorkspacePoint) {
-    if self.parentLayout is WorkspaceLayout {
+    if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
       self.relativePosition = position
-      self.refreshViewPositionsForTree()
+      self.refreshViewPositionsForTree(
+        parentAbsolutePosition: workspaceLayout.absolutePosition,
+        includeFields: false)
     }
   }
 }

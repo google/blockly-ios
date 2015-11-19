@@ -16,25 +16,37 @@
 import Foundation
 
 /**
-An editable text field.
+Layer used to draw a `UIBezierPath`.
 */
-@objc(BKYFieldInput)
-public final class FieldInput: Field {
+@objc(BKYBezierPathLayer)
+public class BezierPathLayer: CAShapeLayer {
   // MARK: - Properties
 
-  public var text: String
+  internal var bezierPath: UIBezierPath? {
+    didSet {
+      if bezierPath == oldValue {
+        return
+      }
+
+      self.path = bezierPath?.CGPath
+      setNeedsDisplay()
+    }
+  }
 
   // MARK: - Initializers
 
-  public init(name: String, text: String) {
-    self.text = text
-
-    super.init(name: name)
+  public override init() {
+    super.init()
+    self.fillRule = kCAFillRuleEvenOdd
   }
 
-  // MARK: - Super
+  public override init(layer: AnyObject) {
+    super.init(layer: layer)
+    self.fillRule = kCAFillRuleEvenOdd
+  }
 
-  public override func copyField() -> Field {
-    return FieldInput(name: name, text: text)
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    self.fillRule = kCAFillRuleEvenOdd
   }
 }
