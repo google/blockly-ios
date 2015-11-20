@@ -335,7 +335,7 @@ public final class Connection : NSObject {
     _listeners.bky_removeAllOccurrencesOfElement(listener)
   }
 
-  // MARK: - Private
+  // MARK: - Internal - For testing only
 
   /**
   Returns if this connection is compatible with another connection with respect to the value type
@@ -345,7 +345,7 @@ public final class Connection : NSObject {
   - Returns: True if either connection's `typeChecks` value is nil, or if both connections share
   a common `typeChecks` value. False, otherwise.
   */
-  private func typeChecksMatchWithConnection(target: Connection) -> Bool {
+  internal func typeChecksMatchWithConnection(target: Connection) -> Bool {
     if self.typeChecks == nil || target.typeChecks == nil {
       return true
     }
