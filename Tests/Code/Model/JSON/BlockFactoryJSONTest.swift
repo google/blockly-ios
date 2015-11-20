@@ -21,7 +21,7 @@ class BlockFactoryJSONTest: XCTestCase {
     func testLoadBlocks() {
       let workspace = Workspace(isFlyout: false)
       do {
-        let factory = try BlockFactory(jsonPath: "block_factory_test_1",
+        let factory = try BlockFactory(jsonPath: "block_factory_json_test",
           bundle: NSBundle(forClass: self.dynamicType))
         if let _ = factory.obtain("block_id_1", forWorkspace: workspace) {
           // expected
@@ -41,7 +41,7 @@ class BlockFactoryJSONTest: XCTestCase {
   func testMultipleBlocks() {
     let workspace = Workspace(isFlyout: false)
     do {
-      let factory = try BlockFactory(jsonPath: "block_factory_test_1",
+      let factory = try BlockFactory(jsonPath: "block_factory_json_test",
         bundle: NSBundle(forClass: self.dynamicType))
       if let block1 = factory.obtain("block_id_1", forWorkspace: workspace) {
         let block2 = factory.obtain("block_id_1", forWorkspace: workspace)

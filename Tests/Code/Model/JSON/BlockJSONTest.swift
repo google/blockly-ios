@@ -22,7 +22,7 @@ class BlockJSONTest: XCTestCase {
 
   func testBlockFromJSON_allFieldsSet() {
     let testBundle = NSBundle(forClass: self.dynamicType.self)
-    let path = testBundle.pathForResource("block_test_1", ofType: "json")
+    let path = testBundle.pathForResource("block_json_test", ofType: "json")
     let workspace = Workspace(isFlyout: false)
 
     var block: Block

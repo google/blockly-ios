@@ -176,9 +176,9 @@ class ConnectionManagerTest: XCTestCase {
     // Verify all connections are in group 1
     for connection in connections {
       XCTAssertTrue(group1.allConnections.contains(connection))
-      XCTAssertTrue(connection.positionListeners.all.contains({ $0 === group1}))
+      XCTAssertTrue(connection.positionDelegate === group1)
       XCTAssertFalse(group2.allConnections.contains(connection))
-      XCTAssertFalse(connection.positionListeners.all.contains({ $0 === group2}))
+      XCTAssertFalse(connection.positionDelegate === group2)
     }
     XCTAssertEqual(connections.count, group1.allConnections.count)
     XCTAssertEqual(0, group2.allConnections.count)
@@ -188,10 +188,9 @@ class ConnectionManagerTest: XCTestCase {
     // Verify all connections are in group 2
     for connection in connections {
       XCTAssertFalse(group1.allConnections.contains(connection))
-      XCTAssertFalse(connection.positionListeners.all.contains({ $0 === group1}))
+      XCTAssertFalse(connection.positionDelegate === group1)
       XCTAssertTrue(group2.allConnections.contains(connection))
-      XCTAssertTrue(connection.positionListeners.all.contains({ $0 === group2 }))
-
+      XCTAssertTrue(connection.positionDelegate === group2)
     }
     XCTAssertEqual(0, group1.allConnections.count)
     XCTAssertEqual(connections.count, group2.allConnections.count)

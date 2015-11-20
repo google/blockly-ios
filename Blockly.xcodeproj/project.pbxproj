@@ -21,7 +21,7 @@
 		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
 		FA27269E1B8C013A00777B49 /* ObjectPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27269D1B8C013A00777B49 /* ObjectPool.swift */; };
 		FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */; };
-		FA2DFC071B7174350072A278 /* block_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_test_1.json */; };
+		FA2DFC071B7174350072A278 /* block_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_json_test.json */; };
 		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
 		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
 		FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */; };
@@ -44,6 +44,8 @@
 		FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56A1B7C03EA000980E9 /* BlockView.swift */; };
 		FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */; };
 		FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */; };
+		FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D21BFE9016000C621F /* BlockTest.swift */; };
+		FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4EE3D41BFE9342000C621F /* all_test_blocks.json */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
 		FA548C611B63144A008BC59C /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = FA548C5F1B63144A008BC59C /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
@@ -75,7 +77,7 @@
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; };
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; };
-		FAFAA7361BE9A92F008731CD /* block_factory_test_1.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */; };
+		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +92,7 @@
 
 /* Begin PBXFileReference section */
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
-		F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_test_1.json; sourceTree = "<group>"; };
+		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
@@ -104,7 +106,7 @@
 		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
 		FA27269D1B8C013A00777B49 /* ObjectPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectPool.swift; path = Core/Common/ObjectPool.swift; sourceTree = "<group>"; };
 		FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolTest.swift; sourceTree = "<group>"; };
-		FA2DFC061B7174350072A278 /* block_test_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_test_1.json; sourceTree = "<group>"; };
+		FA2DFC061B7174350072A278 /* block_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_json_test.json; sourceTree = "<group>"; };
 		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+JSON.swift"; sourceTree = "<group>"; };
@@ -127,6 +129,8 @@
 		FA4BB56A1B7C03EA000980E9 /* BlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelView.swift; sourceTree = "<group>"; };
 		FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
+		FA4EE3D21BFE9016000C621F /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
+		FA4EE3D41BFE9342000C621F /* all_test_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all_test_blocks.json; sourceTree = "<group>"; };
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -204,8 +208,9 @@
 		FA2DFC051B71740E0072A278 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FA2DFC061B7174350072A278 /* block_test_1.json */,
-				F98FF7E21BB2087700A4F8E5 /* block_factory_test_1.json */,
+				FA2DFC061B7174350072A278 /* block_json_test.json */,
+				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
+				FA4EE3D41BFE9342000C621F /* all_test_blocks.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -234,10 +239,11 @@
 			isa = PBXGroup;
 			children = (
 				FA4BB4081B744A8E000980E9 /* JSON */,
+				F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */,
 				F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */,
+				FA4EE3D21BFE9016000C621F /* BlockTest.swift */,
 				FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */,
 				FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */,
-				F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -511,8 +517,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA2DFC071B7174350072A278 /* block_test_1.json in Resources */,
-				FAFAA7361BE9A92F008731CD /* block_factory_test_1.json in Resources */,
+				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
+				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
+				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
+				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
 				FA4BB4AC1B75470A000980E9 /* FieldAngleTest.swift in Sources */,
 				FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */,
@@ -712,7 +720,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};

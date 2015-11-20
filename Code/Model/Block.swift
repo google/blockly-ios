@@ -173,12 +173,12 @@ public final class Block : NSObject {
     }
   }
 
-  // MARK: - Private
+  // MARK: - Internal - For testing only
 
   /**
   - Returns: The only value input on the block, or null if there are zero or more than one.
   */
-  private func onlyValueInput() -> Input? {
+  internal func onlyValueInput() -> Input? {
     var valueInput: Input?
     for input in self.inputs {
       if input.type == .Value {
