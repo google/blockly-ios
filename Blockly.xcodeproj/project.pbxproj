@@ -34,6 +34,8 @@
 		FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFCC21B72DD400072A278 /* FieldVariable.swift */; };
 		FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD581B72EBEE0072A278 /* FieldInput.swift */; };
 		FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */; };
+		FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */; };
+		FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */; };
 		FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */; };
 		FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */; };
 		FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */; };
@@ -60,7 +62,6 @@
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
-		FA9C7FAE1BDAEA6100E39F9E /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */; };
 		FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
 		FAA3F0A01BFD2E2100DB1C79 /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */; };
@@ -120,6 +121,8 @@
 		FA2DFCC21B72DD400072A278 /* FieldVariable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariable.swift; sourceTree = "<group>"; };
 		FA2DFD581B72EBEE0072A278 /* FieldInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInput.swift; sourceTree = "<group>"; };
 		FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Helper.swift"; path = "Core/Common/UIColor+Helper.swift"; sourceTree = "<group>"; };
+		FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilderTest.swift; sourceTree = "<group>"; };
+		FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
 		FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
 		FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldJSONTest.swift; sourceTree = "<group>"; };
 		FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputJSONTest.swift; sourceTree = "<group>"; };
@@ -149,7 +152,6 @@
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
-		FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
 		FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocklyError.swift; path = Core/Common/BlocklyError.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+Helper.swift"; path = "Core/Common/Array+Helper.swift"; sourceTree = "<group>"; };
@@ -227,12 +229,29 @@
 			path = JSON;
 			sourceTree = "<group>";
 		};
+		FA3786A21BFFDD69009D18DF /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		FA3786A51C00093B009D18DF /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
 		FA4BB4061B744A8E000980E9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
 				FA4BB4AD1B75483D000980E9 /* Core */,
-				FA9C7FAC1BDAEA6100E39F9E /* Managers */,
 				FA4BB4071B744A8E000980E9 /* Model */,
+				FA3786A21BFFDD69009D18DF /* Layout */,
+				FA3786A51C00093B009D18DF /* Control */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -392,14 +411,6 @@
 				FAC590441B990E4B0079A6E3 /* Layout */,
 			);
 			name = Core;
-			sourceTree = "<group>";
-		};
-		FA9C7FAC1BDAEA6100E39F9E /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				FA9C7FAD1BDAEA6100E39F9E /* ConnectionManagerTest.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		FAC590441B990E4B0079A6E3 /* Layout */ = {
@@ -597,13 +608,14 @@
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
+				FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */,
 				FA4BB4AC1B75470A000980E9 /* FieldAngleTest.swift in Sources */,
 				FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */,
 				FA4BB4B01B754A71000980E9 /* FieldDateTest.swift in Sources */,
 				FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */,
+				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
-				FA9C7FAE1BDAEA6100E39F9E /* ConnectionManagerTest.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,

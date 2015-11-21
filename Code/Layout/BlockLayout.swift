@@ -50,10 +50,10 @@ public class BlockLayout: Layout {
   /// For performance reasons, keep a strong reference to the block.outputConnection
   private var _outputConnection: Connection!
 
-  /// For performance reasons, keep a strong reference to the block.outputConnection
+  /// For performance reasons, keep a strong reference to the block.nextConnection
   private var _nextConnection: Connection!
 
-  /// For performance reasons, keep a strong reference to the block.outputConnection
+  /// For performance reasons, keep a strong reference to the block.previousConnection
   private var _previousConnection: Connection!
 
   /// The relative position of the output connection, expressed as a Workspace coordinate system

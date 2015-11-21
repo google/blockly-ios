@@ -56,6 +56,11 @@ public class InputLayout: Layout {
     }
   }
 
+  /// The parent block layout
+  public final var parentBlockLayout: BlockLayout? {
+    return parentLayout as? BlockLayout
+  }
+
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
   public private(set) var blockGroupLayout: BlockGroupLayout
 

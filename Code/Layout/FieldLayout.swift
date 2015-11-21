@@ -46,6 +46,11 @@ public class FieldLayout: Layout {
   /// The target field to layout
   public unowned let field: Field
 
+  /// The parent input layout
+  public final var parentInputLayout: InputLayout? {
+    return parentLayout as? InputLayout
+  }
+
   // MARK: - Initializers
 
   public init(field: Field, workspaceLayout: WorkspaceLayout, measurer: FieldLayoutMeasurer.Type) {
