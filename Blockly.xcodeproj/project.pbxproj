@@ -57,6 +57,7 @@
 		FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
 		FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D261B6708F2008BC59C /* Block+Builder.swift */; };
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
+		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
@@ -148,6 +149,7 @@
 		FA548C891B66E861008BC59C /* Workspace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		FA548D261B6708F2008BC59C /* Block+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Builder.swift"; sourceTree = "<group>"; };
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
+		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Helper.swift"; path = "Core/Common/Dictionary+Helper.swift"; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 		FA3786A21BFFDD69009D18DF /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */,
 				FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */,
 				FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */,
 			);
@@ -619,6 +622,7 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,

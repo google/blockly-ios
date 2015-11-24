@@ -87,7 +87,8 @@ public class BlockGroupLayout: Layout {
   // MARK: - Public
 
   /**
-  Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
+  Appends all blockLayouts to `self.blockLayouts`, sets their `parentLayout` to this instance, and
+  sets their `zIndex` values to match `self.zIndex`.
 
   - Parameter blockLayouts: The list of `BlockLayout` instances to append.
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
