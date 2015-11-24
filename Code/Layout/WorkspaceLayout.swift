@@ -102,9 +102,9 @@ public class WorkspaceLayout: Layout {
   // MARK: - Public
 
   /**
-  Returns all descendants of this layout that are of type `BlockLayout`.
+  Returns all layouts associated with every block inside `self.workspace.allBlocks`.
   */
-  public func allBlockLayoutDescendants() -> [BlockLayout] {
+  public func allBlockLayoutsInWorkspace() -> [BlockLayout] {
     var descendants = [BlockLayout]()
     for (_, block) in workspace.allBlocks {
       if let layout = block.layout {
@@ -153,7 +153,7 @@ public class WorkspaceLayout: Layout {
 
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset(updateLayout updateLayout: Bool) {
+  public func reset(updateLayout updateLayout: Bool = true) {
     for layout in self.childLayouts {
       if let blockGroupLayout = layout as? BlockGroupLayout {
         removeBlockGroupLayout(blockGroupLayout, updateLayout: false)
@@ -166,7 +166,7 @@ public class WorkspaceLayout: Layout {
   }
 
   /**
-  Brings the given block group layout to the front by setting its `zPosition` to the
+  Brings the given block group layout to the front by setting its `zIndex` to the
   highest value in the workspace.
 
   - Parameter blockGroupLayout: The given block group layout

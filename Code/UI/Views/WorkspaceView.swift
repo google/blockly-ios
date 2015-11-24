@@ -64,7 +64,7 @@ public class WorkspaceView: LayoutView {
     }
 
     // Get blocks that are in the current viewport
-    for blockLayout in layout.allBlockLayoutDescendants() {
+    for blockLayout in layout.allBlockLayoutsInWorkspace() {
       let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
 
       // TODO:(vicng) For now, always render blocks regardless of where they are on the screen.
@@ -91,7 +91,7 @@ public class WorkspaceView: LayoutView {
     }
 
     // Remove all block views
-    for blockLayout in layout.allBlockLayoutDescendants() {
+    for blockLayout in layout.allBlockLayoutsInWorkspace() {
       if let blockView = _viewManager.cachedBlockViewForLayout(blockLayout) {
         removeBlockView(blockView)
       }
