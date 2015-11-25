@@ -56,7 +56,7 @@ public class InputLayout: Layout {
     }
   }
 
-  /// The parent block layout
+  /// Convenience property returning `self.parentLayout` as a `BlockLayout`
   public final var parentBlockLayout: BlockLayout? {
     return parentLayout as? BlockLayout
   }

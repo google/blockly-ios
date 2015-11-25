@@ -46,7 +46,7 @@ public class FieldLayout: Layout {
   /// The target field to layout
   public unowned let field: Field
 
-  /// The parent input layout
+  /// Convenience property returning `self.parentLayout` as an `InputLayout`
   public final var parentInputLayout: InputLayout? {
     return parentLayout as? InputLayout
   }

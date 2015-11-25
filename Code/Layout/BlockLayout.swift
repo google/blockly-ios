@@ -99,11 +99,6 @@ public class BlockLayout: Layout {
     return fieldLayouts
   }
 
-  /// Whether this block is the first child of its parent, which must be a `BlockGroupLayout`.
-  public var topBlockInBlockLayout: Bool {
-    return parentBlockGroupLayout?.blockLayouts[0] == self ?? false
-  }
-
   /// The parent block group layout
   public var parentBlockGroupLayout: BlockGroupLayout? {
     return parentLayout as? BlockGroupLayout
@@ -125,7 +120,8 @@ public class BlockLayout: Layout {
   }
 
   /// Z-index of the layout. Those with higher values should render on top of those with lower
-  /// values.
+  /// values. Setting this value automatically updates every value of
+  /// `self.inputLayouts[i].blockGroupLayout.zIndex` to use the same `zIndex`.
   public var zIndex: CGFloat = 0 {
     didSet {
       if zIndex == oldValue {

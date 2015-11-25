@@ -303,11 +303,11 @@ class LayoutBuilderTest: XCTestCase {
         } else {
           XCTFail("Parent layout has not been set for field layout: \(fieldLayout)")
         }
-        
+
         verifyFieldLayout(fieldLayout)
       }
     }
-    
+
     verifyBlockGroupLayoutTree(inputLayout.blockGroupLayout, firstBlock: input.connectedBlock)
   }
   

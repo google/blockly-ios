@@ -213,7 +213,7 @@ class WorkspaceLayoutTest: XCTestCase {
         }
       }
     }
-    
+
     return blockLayouts
   }
 }
