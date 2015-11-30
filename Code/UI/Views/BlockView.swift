@@ -42,7 +42,7 @@ public class BlockView: LayoutView {
   /// Field subviews
   private var _fieldViews = [LayoutView]()
 
-  public private(set) var zIndex: CGFloat = 0 {
+  public private(set) final var zIndex: UInt = 0 {
     didSet {
       if zIndex != oldValue {
         if let superview = self.superview as? WorkspaceView.BlockGroupView {

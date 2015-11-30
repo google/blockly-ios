@@ -39,7 +39,7 @@ public class BlockGroupLayout: Layout {
 
   /// Z-index of the layout. This value isn't used directly by the BlockGroupLayout. Setting this
   /// value automatically updates all of its descendant blocks to use the same `zIndex`.
-  public var zIndex: CGFloat = 0 {
+  public var zIndex: UInt = 0 {
     didSet {
       if zIndex == oldValue {
         return

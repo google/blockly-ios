@@ -63,7 +63,7 @@
 		FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
-		FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */; };
+		FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* JSONHelper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
 		FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
@@ -156,7 +156,7 @@
 		FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Helper.swift"; path = "Core/Common/Dictionary+Helper.swift"; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
-		FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSJSONSerialization+Helper.swift"; path = "Core/Common/NSJSONSerialization+Helper.swift"; sourceTree = "<group>"; };
+		FA8BEE101B68511A00D0674B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONHelper.swift; path = Core/Common/JSONHelper.swift; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
 		FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocklyError.swift; path = Core/Common/BlocklyError.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
@@ -404,8 +404,8 @@
 				FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */,
 				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
 				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
+				FA8BEE101B68511A00D0674B /* JSONHelper.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
-				FA8BEE101B68511A00D0674B /* NSJSONSerialization+Helper.swift */,
 				FA27269D1B8C013A00777B49 /* ObjectPool.swift */,
 				FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */,
 				FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */,
@@ -575,7 +575,7 @@
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FA2726731B82B5B100777B49 /* Assertions.swift in Sources */,
 				FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */,
-				FA8BEE111B68511A00D0674B /* NSJSONSerialization+Helper.swift in Sources */,
+				FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */,
 				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,

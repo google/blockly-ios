@@ -51,10 +51,10 @@ public class WorkspaceLayout: Layout {
   }
 
   /// z-index counter used to layer blocks in a specific order.
-  private var _zIndexCounter: CGFloat = 1
+  private var _zIndexCounter: UInt = 1
 
   /// Maximum value that the z-index counter should reach
-  private var _maximumZIndexCounter: CGFloat = (pow(2, 23) - 1)
+  private var _maximumZIndexCounter: UInt = (UInt.max - 1)
 
   // MARK: - Initializers
 

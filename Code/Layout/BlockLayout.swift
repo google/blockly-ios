@@ -122,7 +122,7 @@ public class BlockLayout: Layout {
   /// Z-index of the layout. Those with higher values should render on top of those with lower
   /// values. Setting this value automatically updates every value of
   /// `self.inputLayouts[i].blockGroupLayout.zIndex` to use the same `zIndex`.
-  public var zIndex: CGFloat = 0 {
+  public var zIndex: UInt = 0 {
     didSet {
       if zIndex == oldValue {
         return

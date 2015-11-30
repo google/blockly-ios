@@ -328,52 +328,62 @@ extension WorkspaceView {
 }
 
 extension WorkspaceView {
+  // TODO(vicng): Handle removing block views
   /**
-  UIView which holds `BlockView` instances, where instances are ordered in the subview list by their
-  `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
+  UIView which *only* holds `BlockView` instances, where instances are ordered in the subview list
+  by their `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
   `BlockGroupView` based on their `zIndex`.
+
+  - Note: All block views should be added via `upsertBlockView(:)`. Using any other insertion method
+  on this class may have adverse effects. Also, adding any view other than a `BlockView` instance
+  will result in an app crash.
   */
-  public class BlockGroupView: UIView {
+  public final class BlockGroupView: UIView {
+    /// The highest z-index `BlockView` that has been added to this block group
+    private var highestInsertedZIndex: UInt = 0
+
     /**
-    Inserts or updates a given `BlockView` to this block group, where it is sorted inside
-    `BlockGroupView` based on its `zIndex`.
+    Inserts or updates a `BlockView` in this block group, where it is sorted inside `BlockGroupView`
+    based on its `zIndex`.
 
     - Parameter blockView: The given block view
     */
     public func upsertBlockView(blockView: BlockView) {
-      // TODO(vicng): This method is causing performance problems when bringing lots of blocks to
-      // the front at the same time. Calling `self.subviews` may be the culprit (more investigation
-      // is needed).
       let zIndex = blockView.zIndex
 
       // More often than not, the target blockView's zIndex will be >= the zIndex of the highest
       // subview anyway. Quickly check to see if that's the case.
-      let lastBlockView = (self.subviews.last as? BlockView)
-      if lastBlockView == nil ||
-        (blockView != lastBlockView && blockView.zIndex >= lastBlockView!.zIndex) {
-          self.insertSubview(blockView, atIndex: self.subviews.count)
-          return
+      if zIndex >= highestInsertedZIndex {
+        upsertBlockViewAtEnd(blockView)
+        return
+      }
+
+      let isUpdateOperation = (blockView.superview == self)
+      if isUpdateOperation {
+        // If blockView is already in this group, temporarily move it to the end.
+        // NOTE: blockView is purposely not removed from this view prior to running this method, as
+        // it will cause any active gesture recognizers on the blockView to be cancelled. Therefore,
+        // the blockView is simply skipped over if it is found in the binary search.
+        upsertBlockViewAtEnd(blockView)
       }
 
       // Binary search to find the correct position of where the block view should be, based on its
       // z-index.
 
+      // Calling self.subviews is very expensive -- internally, it does not appear to be an array
+      // and is constructed dynamically when called. Only call it once and stuff it in a local var.
+      let subviews = self.subviews
+
       // Initialize clamps
       var min = 0
-      var max = self.subviews.count
-
-      if blockView.superview == self {
-        // If blockView is already in this group, temporarily move it to the end.
-        // NOTE: blockView is purposely not removed from this view prior to running this method, as
-        // it will cause any active gesture recognizers on the blockView to be cancelled. Therefore,
-        // the blockView is simply skipped over if it is found in the binary search.
-        self.insertSubview(blockView, atIndex: self.subviews.count)
-        max = self.subviews.count - 1 // Don't include this blockView in the binary search range
-      }
+      var max = isUpdateOperation ?
+        // Don't include the last index since that's where the given blockView is now positioned
+        (subviews.count - 1) :
+        subviews.count
 
       while (min < max) {
         let currentMid = (min + max) / 2
-        let currentZIndex = (self.subviews[currentMid] as! BlockView).zIndex
+        let currentZIndex = (subviews[currentMid] as! BlockView).zIndex
 
         if (currentZIndex < zIndex) {
           min = currentMid + 1
@@ -385,9 +395,38 @@ extension WorkspaceView {
         }
       }
 
-      // This will insert the block view at the correct index, or update its index position if it
-      // is already a subview.
-      self.insertSubview(blockView, atIndex: min)
+      // Upsert the block view at the new index
+      upsertBlockView(blockView, atIndex: min)
+    }
+
+    private func upsertBlockViewAtEnd(blockView: BlockView) {
+      upsertBlockView(blockView, atIndex: -1)
+    }
+
+    /**
+    Upserts a block view into the group.
+
+    - Parameter blockView: The block view to upsert
+    - Parameter index: The index to upsert the block view at. If the value is < 0, the block view is
+    automatically upserted to the end of `self.subviews`.
+    */
+    private func upsertBlockView(blockView: BlockView, atIndex index: Int) {
+      if index >= 0 {
+        // Calling insertSubview(...) on a block view that is already a subview just updates its
+        // position in `self.subviews`.
+        // Note: Inserting (or re-inserting) a subview at an `index` greater than the number of
+        // subviews does not cause an error, it simply puts it at the end.
+        insertSubview(blockView, atIndex: index)
+      } else {
+        // Calling addSubview(_) always adds the view to the end of `self.subviews` (regardless of
+        // whether the view was already a subview) and brings it to appear on top of all other
+        // subviews.
+        addSubview(blockView)
+      }
+
+      if blockView.zIndex >= highestInsertedZIndex {
+        highestInsertedZIndex = blockView.zIndex
+      }
     }
   }
 }

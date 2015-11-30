@@ -71,9 +71,9 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
-    for (var i = 0; i < 10; i++) {
+    for (var i: UInt = 0; i < 10; i++) {
       let blockLayout = createBlockLayout()
-      blockLayout.zIndex = CGFloat(i - 5) // Assign a different z-index to each
+      blockLayout.zIndex = i // Assign a different z-index to each
       blockLayouts.append(blockLayout)
     }
     blockGroupLayout.appendBlockLayouts(blockLayouts)

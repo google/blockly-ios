@@ -42,7 +42,7 @@ public class BlockFactory : NSObject {
       return
     }
     let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-    let json = try NSJSONSerialization.bky_JSONArrayFromString(jsonString)
+    let json = try JSONHelper.JSONArrayFromString(jsonString)
     for blockJson in json {
       let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
       _blockBuilders[blockBuilder.identifier] = blockBuilder
