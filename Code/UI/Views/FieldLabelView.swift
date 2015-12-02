@@ -47,19 +47,22 @@ public class FieldLabelView: LayoutView {
 
   // MARK: - Super
 
-  public override func internalRefreshView() {
+  public override func internalRefreshView(forFlags flags: LayoutFlag)
+  {
     guard let layout = self.layout as? FieldLabelLayout else {
       return
     }
 
-    self.label.text = layout.fieldLabel.text
+    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+      self.label.text = layout.fieldLabel.text
 
-    // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
-    // state.
-    self.backgroundColor = UIColor.redColor()
+      // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
+      // state.
+      self.backgroundColor = UIColor.redColor()
 
-    // TODO:(vicng) Standardize this font
-    self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+      // TODO:(vicng) Standardize this font
+      self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+    }
   }
 
   public override func internalPrepareForReuse() {

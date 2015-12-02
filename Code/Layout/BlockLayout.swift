@@ -24,6 +24,16 @@ Stores information on how to render and position a `Block` on-screen.
 public class BlockLayout: Layout {
   // MARK: - Static Properties
 
+  /// Flag that should be used when `self.zIndex` has been updated
+  public static let Flag_UpdateZIndex = LayoutFlag(0)
+
+  /// Flag that should be used when `self.highlighted` has been updated
+  public static let Flag_UpdateHighlight = LayoutFlag(1)
+
+  /// Flag that should be used when any direct connection on this block has updated its highlight
+  /// value
+  public static let Flag_UpdateConnectionHighlight = LayoutFlag(2)
+
   /// The shared instance used to configure all instances of `BlockLayout`.
   public static let sharedConfig = Config()
 
@@ -39,8 +49,7 @@ public class BlockLayout: Layout {
   public var highlighted: Bool = false {
     didSet {
       if highlighted != oldValue {
-        // Force re-draw
-        self.needsDisplay = true
+        scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateHighlight)
       }
     }
   }
@@ -133,8 +142,7 @@ public class BlockLayout: Layout {
         inputLayout.blockGroupLayout.zIndex = zIndex
       }
 
-      // TODO:(vicng) Change this to raise a custom layout event for z-index
-      self.needsRepositioning = true
+      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateZIndex)
     }
   }
 
@@ -279,7 +287,7 @@ public class BlockLayout: Layout {
     self.contentSize = size
 
     // Force this block to be redisplayed
-    self.needsDisplay = true
+    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
 
   // MARK: - Public
@@ -433,8 +441,7 @@ public class BlockLayout: Layout {
 
 extension BlockLayout: ConnectionListener {
   public func didChangeHighlightForConnection(connection: Connection) {
-    // Force redraw for the view
-    self.needsDisplay = true
+    scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
   }
 
   public func didChangeTargetForConnection(connection: Connection) {

@@ -20,6 +20,11 @@ Stores information on how to render and position a `Block` on-screen.
 */
 @objc(BKYWorkspaceLayout)
 public class WorkspaceLayout: Layout {
+  // MARK: - Static Properties
+
+  /// Flag that should be used when the canvas size of the workspace has been updated.
+  public static let Flag_UpdateCanvasSize = LayoutFlag(0)
+
   // MARK: - Properties
 
   /// The `Workspace` to layout
@@ -85,18 +90,15 @@ public class WorkspaceLayout: Layout {
     // Update size required for the workspace
     self.contentSize = size
 
-    // TODO(vicng): *Sometimes* the workspace layout needs to be completely redisplayed (like when
-    // blocks are added/deleted), but for the most part it doesn't. Since this method is always
-    // called repeatedly during drag gestures, do not trigger a full redisplay. This should be
-    // optimized in the future to so the layout is smarter about when to trigger a full redisplay.
-    self.needsRepositioning = true
+    // Update the canvas size
+    scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 
   public override func updateLayoutDownTree() {
     super.updateLayoutDownTree()
 
     // When this method is called, force a redisplay at the workspace level
-    self.needsDisplay = true
+    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
 
   // MARK: - Public
@@ -128,6 +130,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
+      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
     }
   }
 
@@ -145,6 +148,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
+      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
     }
   }
 
@@ -162,6 +166,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
+      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
     }
   }
 

@@ -69,7 +69,7 @@ public class FieldLayout: Layout {
     self.contentSize = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
 
     // Force this field to be redisplayed
-    self.needsDisplay = true
+    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
 
   internal override func refreshViewFrame() {

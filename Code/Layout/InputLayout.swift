@@ -32,6 +32,10 @@ public class InputLayout: Layout {
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
+      // TODO(vicng): This is method is eating into performance. During method execution,
+      // "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
+      // often and take about 15% of CPU time.
+
       // Update connection position
       if _connection == nil {
         return

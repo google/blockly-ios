@@ -41,9 +41,11 @@ public class LayoutView: UIView {
   // MARK: - Abstract
 
   /**
-  Refreshes the view based on the state of the current layout.
+  Refreshes the view based on the current state `self.layout` and a given set of flags.
+
+  - Parameter flags: Only refresh the view for the flags that have been specified.
   */
-  public func internalRefreshView() {
+  public func internalRefreshView(forFlags flags: LayoutFlag) {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
   }
 
@@ -57,22 +59,36 @@ public class LayoutView: UIView {
   // MARK: - Public
 
   /**
-  Refreshes the view based on the current layout.
+  Refreshes the view based on the current state of `self.layout`.
+
+  - Parameter flags: Optionally refresh the view for only a given set of flags. By default, this
+  value is set to include all flags (i.e. `LayoutFlag.All`).
   */
-  public func refreshView() {
-    refreshPosition()
-    internalRefreshView()
+  public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All)
+  {
+    if flags.intersectsWith(Layout.Flag_UpdateViewFrame) {
+      updateViewFrameFromLayout()
+    }
+    if flags.subtract(Layout.Flag_UpdateViewFrame).hasFlagSet() {
+      internalRefreshView(forFlags: flags)
+    }
   }
 
   /**
-  Refreshes `frame` based on the state of the current `layout`.
+  Updates `self.frame` based on the current state of `self.layout`.
   */
-  public func refreshPosition() {
-    guard let layout = self.layout else {
-      return
+  public func updateViewFrameFromLayout() {
+    if layout != nil {
+      self.frame = layout!.viewFrame
     }
+  }
+}
 
-    self.frame = layout.viewFrame
+// MARK: - LayoutDelegate implementation
+
+extension LayoutView: LayoutDelegate {
+  public final func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag) {
+    refreshView(forFlags: flags)
   }
 }
 
@@ -84,17 +100,5 @@ extension LayoutView: Recyclable {
     self.layout = nil
 
     internalPrepareForReuse()
-  }
-}
-
-// MARK: - LayoutDelegate implementation
-
-extension LayoutView: LayoutDelegate {
-  public final func layoutDisplayChanged(layout: Layout) {
-    refreshView()
-  }
-
-  public final func layoutPositionChanged(layout: Layout) {
-    refreshPosition()
   }
 }

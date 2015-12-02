@@ -30,9 +30,6 @@ public class BlockView: LayoutView {
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
-  // TODO:(vicng) iOS will not render bezier paths that are very large (eg. 5000x5000).
-  //              Change this implementation so that bezier path views are tiled together.
-
   /// Layer for rendering the block's background
   private let _backgroundLayer = BezierPathLayer()
 
@@ -84,50 +81,62 @@ public class BlockView: LayoutView {
     }
   }
 
-  public override func internalRefreshView() {
-    guard let layout = self.layout as? BlockLayout else {
+  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+    guard let layout = self.blockLayout else {
       return
     }
 
-    refreshPosition()
-
-    // Update background
-    // TODO:(vicng) Set the colours properly
-    _backgroundLayer.strokeColor = (layout.highlighted ?
-      UIColor.blueColor() : UIColor.darkGrayColor()).CGColor
-    _backgroundLayer.lineWidth = layout.highlighted ?
-      BlockLayout.sharedConfig.blockLineWidthHighlight :
-      BlockLayout.sharedConfig.blockLineWidthRegular
-    _backgroundLayer.fillColor = UIColor.greenColor().CGColor
-    _backgroundLayer.bezierPath = blockBackgroundBezierPath()
-    _backgroundLayer.frame = self.bounds
-
-    // Update highlight
-    if let path = blockHighlightBezierPath() {
-      addHighlightLayerWithPath(path)
-    } else {
-      removeHighlightLayer()
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) {
+      // Update background
+      // TODO:(vicng) Set the colours properly
+      _backgroundLayer.strokeColor = (layout.highlighted ?
+        UIColor.blueColor() : UIColor.darkGrayColor()).CGColor
+      _backgroundLayer.lineWidth = layout.highlighted ?
+        BlockLayout.sharedConfig.blockLineWidthHighlight :
+        BlockLayout.sharedConfig.blockLineWidthRegular
+      _backgroundLayer.fillColor = UIColor.greenColor().CGColor
+      _backgroundLayer.bezierPath = blockBackgroundBezierPath()
+      _backgroundLayer.frame = self.bounds
     }
 
-    // Update field views
-    for fieldLayout in layout.fieldLayouts {
-      let cachedFieldView = ViewManager.sharedInstance.cachedFieldViewForLayout(fieldLayout)
-
-      if cachedFieldView == nil {
-        do {
-          let fieldView = try ViewManager.sharedInstance.newFieldViewForLayout(fieldLayout)
-          _fieldViews.append(fieldView)
-
-          addSubview(fieldView)
-        } catch let error as NSError {
-          bky_assertionFailure("\(error)")
-        }
+    if flags.intersectsWith(
+      [BlockLayout.Flag_NeedsDisplay,
+        BlockLayout.Flag_UpdateHighlight,
+        BlockLayout.Flag_UpdateConnectionHighlight])
+    {
+      // Update highlight
+      if let path = blockHighlightBezierPath() {
+        addHighlightLayerWithPath(path)
       } else {
-        // Do nothing. The field view will handle its own refreshing/repositioning.
+        removeHighlightLayer()
       }
     }
 
-    // TODO:(vicng) Remove any field views that no longer have field layouts associated with it
+    if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
+      // Update field views
+      for fieldLayout in layout.fieldLayouts {
+        let cachedFieldView = ViewManager.sharedInstance.cachedFieldViewForLayout(fieldLayout)
+
+        if cachedFieldView == nil {
+          do {
+            let fieldView = try ViewManager.sharedInstance.newFieldViewForLayout(fieldLayout)
+            _fieldViews.append(fieldView)
+
+            addSubview(fieldView)
+          } catch let error as NSError {
+            bky_assertionFailure("\(error)")
+          }
+        } else {
+          // Do nothing. The field view will handle its own refreshing/repositioning.
+        }
+      }
+
+      // TODO:(vicng) Remove any field views that no longer have field layouts associated with it
+    }
+
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateZIndex]) {
+      self.zIndex = layout.zIndex
+    }
   }
 
   public override func internalPrepareForReuse() {
@@ -142,16 +151,6 @@ public class BlockView: LayoutView {
     _fieldViews = []
 
     removeHighlightLayer()
-  }
-
-  public override func refreshPosition() {
-    // Update the frame by calling super.refreshPosition()
-    super.refreshPosition()
-
-    // TODO:(vicng) Move this code to react to a custom layout event for z-index
-    if let newZIndex = self.blockLayout?.zIndex {
-      self.zIndex = newZIndex
-    }
   }
 
   // MARK: - Private

@@ -46,10 +46,30 @@ public final class LayoutEventManager: NSObject {
     _layouts.addObject(layout)
 
     if !_scheduledSendChangeEvents {
+      // TODO(vicng): Consider scheduling these events to execute at the end of the current run loop
       // Schedule to send out all the change events at the beginning of the next run loop
-      self.performSelector("sendChangeEvents", withObject: nil, afterDelay: 0.0)
+      self.performSelector("internalSendChangeEvents", withObject: nil, afterDelay: 0.0)
       _scheduledSendChangeEvents = true
     }
+  }
+
+  // MARK: - Public
+
+  /**
+  Immediately calls `sendChangeEvent()` for every layout that was added via
+  scheduleChangeEventForLayout(_) (instead of waiting to do so at the beginning of the next run
+  loop).
+  */
+  public func immediatelySendChangeEvents() {
+    if _scheduledSendChangeEvents {
+      // Cancel internalSendChangeEvents() from being called again in the future
+      NSObject.cancelPreviousPerformRequestsWithTarget(self,
+        selector: "internalSendChangeEvents",
+        object: nil)
+      _scheduledSendChangeEvents = false
+    }
+
+    internalSendChangeEvents()
   }
 
   // MARK: - Internal
@@ -57,9 +77,10 @@ public final class LayoutEventManager: NSObject {
   /**
   Calls `sendChangeEvent()` on every layout added via `scheduleChangeEventForLayout(_)`.
 
-  - Note: This method must be internal in order to be able to call self.performSelector(...) on it.
+  - Note: This method must be internal in order to be able to call `self.performSelector(...)` on
+  it.
   */
-  internal func sendChangeEvents() {
+  internal func internalSendChangeEvents() {
     for layout in _layouts {
       (layout as! Layout).sendChangeEvent()
     }

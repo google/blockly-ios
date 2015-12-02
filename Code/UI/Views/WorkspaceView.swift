@@ -58,35 +58,51 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Super
 
-  public override func internalRefreshView() {
-    guard let layout = self.layout as? WorkspaceLayout else {
+  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+    guard let layout = self.workspaceLayout else {
       return
     }
 
-    // Get blocks that are in the current viewport
-    for blockLayout in layout.allBlockLayoutsInWorkspace() {
-      let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
+    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+      // Get blocks that are in the current viewport
+      for blockLayout in layout.allBlockLayoutsInWorkspace() {
+        let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
 
-      // TODO:(vicng) For now, always render blocks regardless of where they are on the screen.
-      // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
-      let shouldRenderBlockLayout = true
-      if !shouldRenderBlockLayout {
-        // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
-        // workspace view and recycle it.
-        if blockView != nil {
-          removeBlockView(blockView!)
+        // TODO:(vicng) For now, always render blocks regardless of where they are on the screen.
+        // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
+        let shouldRenderBlockLayout = true
+        if !shouldRenderBlockLayout {
+          // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
+          // workspace view and recycle it.
+          if blockView != nil {
+            removeBlockView(blockView!)
+          }
+        } else if blockView == nil {
+          // Create a new block view for this layout
+          addBlockViewForLayout(blockLayout)
+        } else {
+          // Do nothing. The block view will handle its own refreshing/repositioning.
         }
-      } else if blockView == nil {
-        // Create a new block view for this layout
-        addBlockViewForLayout(blockLayout)
-      } else {
-        // Do nothing. The block view will handle its own refreshing/repositioning.
       }
+    }
+
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
+      // Update the content size of the scroll view.
+      // TODO:(vicng) Figure out a good amount to pad the workspace by
+      scrollView.blockGroupView.frame = CGRectMake(0, 0,
+        layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
+        layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
+      scrollView.contentSize = scrollView.blockGroupView.bounds.size
     }
   }
 
+  public override func updateViewFrameFromLayout() {
+    // Do nothing. This view is special in that its `self.frame` should not be set by
+    // `self.layout.viewFrame`.
+  }
+
   public override func internalPrepareForReuse() {
-    guard let layout = self.layout as? WorkspaceLayout else {
+    guard let layout = self.workspaceLayout else {
       return
     }
 
@@ -96,22 +112,6 @@ public class WorkspaceView: LayoutView {
         removeBlockView(blockView)
       }
     }
-  }
-
-  public override func refreshPosition() {
-    guard let layout = self.layout as? WorkspaceLayout else {
-      return
-    }
-
-    // NOTE: This method purposely does not call super.refreshPosition() since that automatically
-    // sets `viewFrame` and `layer.zPosition` -- things that don't need to be done by this view.
-
-    // Set the content size of the scroll view.
-    // TODO:(vicng) Figure out a good amount to pad the workspace by
-    scrollView.blockGroupView.frame = CGRectMake(0, 0,
-      layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
-      layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
-    scrollView.contentSize = scrollView.blockGroupView.bounds.size
   }
 
   // MARK: - Private
