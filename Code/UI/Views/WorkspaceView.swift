@@ -15,6 +15,27 @@
 
 import Foundation
 
+/**
+ Protocol for events that occur on `WorkspaceView`.
+ */
+public protocol WorkspaceViewDelegate: class {
+  /**
+   Event that is called when a block view has been added to a workspace view.
+
+   - Parameter workspaceView: The given `WorkspaceView`
+   - Parameter blockView: The `BlockView` that has been added
+   */
+  func workspaceView(workspaceView: WorkspaceView, didAddBlockView blockView: BlockView)
+
+  /**
+   Event that is called when a block view will be removed from a workspace view.
+
+   - Parameter workspaceView: The given `WorkspaceView`
+   - Parameter blockView: The `BlockView` that will be removed
+   */
+  func workspaceView(workspaceView: WorkspaceView, willRemoveBlockView blockView: BlockView)
+}
+
 // TODO:(vicng) By default, Blockly is configured to support auto-layout. Create an option to
 // disable it, so it only uses frame-based layouts (which should theoretically result in faster
 // rendering).
@@ -37,8 +58,8 @@ public class WorkspaceView: LayoutView {
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
-  /// Controls logic for dragging blocks around in the workspace
-  private var _dragger = Dragger()
+  /// Delegate for events that occur on this view
+  public weak var delegate: WorkspaceViewDelegate?
 
   // MARK: - Initializers
 
@@ -149,25 +170,11 @@ public class WorkspaceView: LayoutView {
   */
   private func addBlockViewForLayout(layout: BlockLayout) {
     let newBlockView = _viewManager.newBlockViewForLayout(layout)
-    addGestureRecognizersForBlockView(newBlockView)
     scrollView.blockGroupView.upsertBlockView(newBlockView)
+
+    delegate?.workspaceView(self, didAddBlockView: newBlockView)
   }
 
-  /**
-  Adds pan and tap gesture recognizers to a block view.
-  
-  - Parameter blockView: A given block view.
-  */
-  private func addGestureRecognizersForBlockView(blockView: BlockView) {
-    blockView.bky_removeAllGestureRecognizers()
-
-    let panGesture = UIPanGestureRecognizer(target: self, action: "didRecognizePanGesture:")
-    panGesture.maximumNumberOfTouches = 1
-    blockView.addGestureRecognizer(panGesture)
-
-    let tapGesture = UITapGestureRecognizer(target: self, action: "didRecognizeTapGesture:")
-    blockView.addGestureRecognizer(tapGesture)
-  }
 
   /**
   Removes a given block view from the scroll view and recycles it.
@@ -175,59 +182,14 @@ public class WorkspaceView: LayoutView {
   - Parameter blockView: The given block view
   */
   private func removeBlockView(blockView: BlockView) {
-    blockView.bky_removeAllGestureRecognizers()
+    delegate?.workspaceView(self, willRemoveBlockView: blockView)
+
     blockView.removeFromSuperview()
 
     if let blockLayout = blockView.blockLayout {
-      _dragger.clearGestureDataForBlockLayout(blockLayout)
       _viewManager.uncacheBlockViewForLayout(blockLayout)
     }
     _viewManager.recycleView(blockView)
-  }
-}
-
-// MARK: - Gesture Recognizers
-
-extension WorkspaceView {
-  /**
-  Event handler for a UIPanGestureRecognizer.
-  */
-  internal func didRecognizePanGesture(gesture: UIPanGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView,
-      blockLayout = blockView.blockLayout else {
-      return
-    }
-
-    let touchPosition =
-      workspaceLayout!.workspacePointFromViewPoint(gesture.locationInView(self))
-
-    // TODO:(vicng) Handle screen rotations (either lock the screen during drags or stop any
-    // on-going drags when the screen is rotated).
-
-    if gesture.state == .Began {
-      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
-    } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
-      _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
-    }
-
-    if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
-      _dragger.finishDraggingBlockLayout(blockLayout)
-
-      // HACK: Re-add gesture recognizers for the block view, as there is a problem re-recognizing
-      // them when dragging multiple blocks simultaneously
-      addGestureRecognizersForBlockView(blockView)
-    }
-  }
-
-  /**
-  Event handler for a UITapGestureRecognizer.
-  */
-  internal func didRecognizeTapGesture(gesture: UITapGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView else {
-      return
-    }
-
-    // TODO:(vicng) Set this block as "selected" within the workspace
   }
 }
 

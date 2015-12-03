@@ -63,7 +63,7 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(workspace: Workspace, layoutBuilder: LayoutBuilder) {
+  public init(workspace: Workspace, layoutBuilder: LayoutBuilder) {
     self.workspace = workspace
     self.layoutBuilder = layoutBuilder
     self.connectionManager = ConnectionManager()

@@ -22,8 +22,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(
     application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    // Override point for customization after application launch.
+    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+  {
+    // Create window
+    let frame = UIScreen.mainScreen().bounds
+    self.window = UIWindow(frame: frame)
+
+    // Set workbench view controller as the starting point
+    let viewController = SimpleWorkbenchViewController()
+    viewController.loadWorkspace()
+    self.window!.rootViewController = viewController
+    self.window!.makeKeyAndVisible()
+
     return true
   }
 }

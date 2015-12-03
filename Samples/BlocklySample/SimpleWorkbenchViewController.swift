@@ -16,23 +16,42 @@
 import UIKit
 import Blockly
 
-class ViewController: UIViewController {
+class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Super
 
+  /// Factory that produces block instances from a parsed json file
   private var _blockFactory: BlockFactory!
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  // MARK: - Initializers
 
+  override init() {
+    super.init()
+    commonInit()
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    commonInit()
+  }
+
+  private func commonInit() {
+    // Load the block factory
     do {
       _blockFactory = try BlockFactory(jsonPath: "TestBlocks")
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
     }
+  }
 
-    var workspace: Workspace!
+  // MARK: - Internal
+
+  func loadWorkspace() {
+    // Create a workspace
+    let workspace = Workspace(isFlyout: false)
+
     do {
-      workspace = try createWorkspace()
+      // Add some blocks to the workspace
+      try addChainedBlocksToWorkspace(workspace)
 
       // Create the workspace layout, which is required for viewing the workspace
       workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
@@ -47,34 +66,9 @@ class ViewController: UIViewController {
       workspace.layout!.updateLayoutDownTree()
     } catch let error as NSError {
       print("Couldn't build layout tree for workspace: \(error)")
-      return
     }
 
-    let workspaceView = WorkspaceView()
-    workspaceView.layout = workspace.layout
-    workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-    workspaceView.frame = self.view.bounds
-    workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    self.view.addSubview(workspaceView)
-    self.view.sendSubviewToBack(workspaceView)
-    workspaceView.refreshView()
-  }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-  }
-
-  // MARK: - Private
-
-  func createWorkspace() throws -> Workspace {
-    // Create workspace
-    let workspace = Workspace(isFlyout: false)
-
-    // Build its layout tree, which creates layout objects for all of its blocks/inputs/fields
-    // (allowing them to show up in the workspace view)
-    try addChainedBlocksToWorkspace(workspace)
-
-    return workspace
+    self.workspace = workspace
   }
 
   func addChainedBlocksToWorkspace(workspace: Workspace) throws {
