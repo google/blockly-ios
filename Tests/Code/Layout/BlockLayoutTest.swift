@@ -45,15 +45,15 @@ class BlockLayoutTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let blockStatementOutputNoInput =
-        _blockFactory.obtain("output_no_input", forWorkspace: workspace),
+        _blockFactory.addBlock("output_no_input", toWorkspace: workspace),
       let blockInputOutput =
-        _blockFactory.obtain("simple_input_output", forWorkspace: workspace),
+        _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
       let blockStatementMultipleInputValueInput =
-        _blockFactory.obtain("statement_multiple_value_input", forWorkspace: workspace),
+        _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace),
       let blockStatementNoNext =
-        _blockFactory.obtain("statement_no_next", forWorkspace: workspace),
+        _blockFactory.addBlock("statement_no_next", toWorkspace: workspace),
       let blockStatementStatementInput =
-        _blockFactory.obtain("statement_statement_input", forWorkspace: workspace)
+        _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
@@ -121,7 +121,7 @@ class BlockLayoutTest: XCTestCase {
     // Add block to the workspace
     let workspace = _workspaceLayout.workspace
     guard
-      let block = _blockFactory.obtain("statement_multiple_value_input", forWorkspace: workspace)
+      let block = _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")

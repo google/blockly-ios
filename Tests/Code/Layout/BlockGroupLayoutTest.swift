@@ -204,7 +204,7 @@ class BlockGroupLayoutTest: XCTestCase {
     // group layout).
     let workspace = _workspaceLayout.workspace
     guard
-      let blockInputOutput = _blockFactory.obtain("simple_input_output", forWorkspace: workspace)
+      let blockInputOutput = _blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")

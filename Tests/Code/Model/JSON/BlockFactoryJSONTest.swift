@@ -23,12 +23,12 @@ class BlockFactoryJSONTest: XCTestCase {
       do {
         let factory = try BlockFactory(jsonPath: "block_factory_json_test",
           bundle: NSBundle(forClass: self.dynamicType))
-        if let _ = factory.obtain("block_id_1", forWorkspace: workspace) {
+        if let _ = factory.addBlock("block_id_1", toWorkspace: workspace) {
           // expected
         } else {
           XCTFail("Factory is missing block_id_1")
         }
-        if let _ = factory.obtain("block_id_2", forWorkspace: workspace) {
+        if let _ = factory.addBlock("block_id_2", toWorkspace: workspace) {
           // expected
         } else {
           XCTFail("Factory is missing block_id_2");
@@ -43,8 +43,8 @@ class BlockFactoryJSONTest: XCTestCase {
     do {
       let factory = try BlockFactory(jsonPath: "block_factory_json_test",
         bundle: NSBundle(forClass: self.dynamicType))
-      if let block1 = factory.obtain("block_id_1", forWorkspace: workspace) {
-        let block2 = factory.obtain("block_id_1", forWorkspace: workspace)
+      if let block1 = factory.addBlock("block_id_1", toWorkspace: workspace) {
+        let block2 = factory.addBlock("block_id_1", toWorkspace: workspace)
         XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice");
       } else {
         XCTFail("Factory is missing block_id_1")

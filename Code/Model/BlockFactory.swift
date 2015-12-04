@@ -16,9 +16,9 @@
 import Foundation
 
 /**
-Factory for instantiating new blocks by name. Blocks can be loaded in from a
-JSON file or be added manually.
-*/
+ Factory for instantiating new blocks by name. Blocks can be loaded in from a
+ JSON file or be added manually.
+ */
 @objc(BKYBlockFactory)
 public class BlockFactory : NSObject {
 
@@ -53,13 +53,14 @@ public class BlockFactory : NSObject {
   // MARK: - Public
 
   /**
-  Create a new instance of a block with the given name, to use in a specific workspace.
+  Create a new instance of a block with the given name, adds it to a specific workspace, and returns
+  it.
 
   - Parameter blockName: The name of the block to obtain.
   - Parameter workspace: The workspace that should own the new block.
   - Returns: A new block if the name is known, nil otherwise.
   */
-  public func obtain(blockName: String, forWorkspace workspace: Workspace) -> Block? {
+  public func addBlock(blockName: String, toWorkspace workspace: Workspace) -> Block? {
     return _blockBuilders[blockName]?.buildForWorkspace(workspace)
   }
 }

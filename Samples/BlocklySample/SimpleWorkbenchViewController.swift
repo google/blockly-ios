@@ -94,7 +94,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       "statement_no_next", "block_output", "block_statement"]
 
     for block in blocks {
-      _blockFactory.obtain(block, forWorkspace: workspace)
+      _blockFactory.addBlock(block, toWorkspace: workspace)
     }
   }
 
@@ -103,11 +103,11 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   }
 
   func buildOutputBlock(workspace: Workspace) -> Block? {
-    return _blockFactory.obtain("block_output", forWorkspace: workspace)
+    return _blockFactory.addBlock("block_output", toWorkspace: workspace)
   }
 
   func buildStatementBlock(workspace: Workspace) -> Block? {
-    return _blockFactory.obtain("block_statement", forWorkspace: workspace)
+    return _blockFactory.addBlock("block_statement", toWorkspace: workspace)
   }
 
   func buildChainedStatementBlock(workspace: Workspace) -> Block? {
@@ -135,7 +135,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     var previousBlock: Block? = nil
 
     for (var i = 0; i < blocksPerLevel; i++) {
-      if let nextBlock = _blockFactory.obtain("statement_statement_input", forWorkspace: workspace)
+      if let nextBlock = _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
       {
         if let spaghettiBlock =
           buildSpaghettiBlock(workspace, level: level - 1, blocksPerLevel: blocksPerLevel)
