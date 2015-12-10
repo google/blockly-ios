@@ -143,10 +143,12 @@ public class BlockView: LayoutView {
     self.frame = CGRectZero
 
     for fieldView in _fieldViews {
+      fieldView.removeFromSuperview()
+
       if let fieldLayout = fieldView.layout as? FieldLayout {
         _viewManager.uncacheFieldViewForLayout(fieldLayout)
       }
-      ViewManager.sharedInstance.recycleView(fieldView)
+      _viewManager.recycleView(fieldView)
     }
     _fieldViews = []
 

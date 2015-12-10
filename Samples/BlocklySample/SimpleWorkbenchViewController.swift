@@ -43,15 +43,32 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  // MARK: - Internal
+  // MARK: - Super
 
-  func loadWorkspace() {
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // Load data
+    loadWorkspace()
+    loadToolbox()
+
+    // Refresh the view
+    refreshView()
+  }
+
+  override func prefersStatusBarHidden() -> Bool {
+    return true
+  }
+
+  // MARK: - Private
+
+  private func loadWorkspace() {
     // Create a workspace
     let workspace = Workspace(isFlyout: false)
 
     do {
       // Add some blocks to the workspace
-      try addChainedBlocksToWorkspace(workspace)
+      // try addChainedBlocksToWorkspace(workspace)
 
       // Create the workspace layout, which is required for viewing the workspace
       workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
@@ -71,7 +88,43 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     self.workspace = workspace
   }
 
-  func addChainedBlocksToWorkspace(workspace: Workspace) throws {
+  private func loadToolbox() {
+    // Create a toolbox
+    let toolbox = Toolbox()
+
+    let loops = toolbox.addCategory("Loops", color: UIColor.blueColor())
+    addBlock("controls_repeat_ext", toCategory: loops)
+    addBlock("controls_whileUntil", toCategory: loops)
+
+    let math = toolbox.addCategory("Math", color: UIColor.greenColor())
+    addBlock("controls_whileUntil", toCategory: math)
+
+    let random = toolbox.addCategory("Random", color: UIColor.redColor())
+    addBlock("simple_input_output", toCategory: random)
+    addBlock("multiple_input_output", toCategory: random)
+    addBlock("output_no_input", toCategory: random, gap: 30)
+
+    addBlock("statement_no_input", toCategory: random)
+    addBlock("statement_value_input", toCategory: random)
+    addBlock("statement_multiple_value_input", toCategory: random)
+    addBlock("statement_no_next", toCategory: random, gap: 30)
+
+    addBlock("statement_statement_input", toCategory: random)
+    addBlock("block_statement", toCategory: random)
+    addBlock("block_output", toCategory: random)
+
+    self.toolbox = toolbox
+  }
+
+  private func addBlock(
+    blockName: String, toCategory category: Toolbox.Category, gap: CGFloat? = nil)
+  {
+    if let block = _blockFactory.addBlock(blockName, toWorkspace: category.workspace) {
+      category.addBlock(block, gap: gap)
+    }
+  }
+
+  private func addChainedBlocksToWorkspace(workspace: Workspace) throws {
     if let block1 = buildChainedStatementBlock(workspace) {
       if let block2 = buildOutputBlock(workspace) {
         try block1.inputs[1].connection?.connectTo(block2.outputConnection)
@@ -87,7 +140,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  func addToolboxBlocksToWorkspace(workspace: Workspace) {
+  private func addToolboxBlocksToWorkspace(workspace: Workspace) {
     let blocks = ["controls_repeat_ext", "controls_whileUntil", "math_number",
       "simple_input_output", "multiple_input_output", "statement_no_input", "statement_value_input",
       "statement_multiple_value_input", "statement_statement_input", "output_no_input",
@@ -98,19 +151,19 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  func addSpaghettiBlocksToWorkspace(workspace: Workspace) {
+  private func addSpaghettiBlocksToWorkspace(workspace: Workspace) {
     buildSpaghettiBlock(workspace, level: 4, blocksPerLevel: 5)
   }
 
-  func buildOutputBlock(workspace: Workspace) -> Block? {
+  private func buildOutputBlock(workspace: Workspace) -> Block? {
     return _blockFactory.addBlock("block_output", toWorkspace: workspace)
   }
 
-  func buildStatementBlock(workspace: Workspace) -> Block? {
+  private func buildStatementBlock(workspace: Workspace) -> Block? {
     return _blockFactory.addBlock("block_statement", toWorkspace: workspace)
   }
 
-  func buildChainedStatementBlock(workspace: Workspace) -> Block? {
+  private func buildChainedStatementBlock(workspace: Workspace) -> Block? {
     if let block = buildStatementBlock(workspace) {
       var previousBlock = block
       for (var i = 0; i < 100; i++) {
@@ -126,7 +179,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     return nil
   }
 
-  func buildSpaghettiBlock(workspace: Workspace, level: Int, blocksPerLevel: Int) -> Block?
+  private func buildSpaghettiBlock(workspace: Workspace, level: Int, blocksPerLevel: Int) -> Block?
   {
     if level <= 0 {
       return nil

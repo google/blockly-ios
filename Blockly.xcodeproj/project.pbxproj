@@ -66,11 +66,16 @@
 		FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* JSONHelper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
 		FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */; };
+		FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxView.swift */; };
+		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
+		FA9D2FBD1C111A1300D0E528 /* ToolboxCategoryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */; };
+		FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */; };
 		FAA204141C0FE8E400B035C5 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA204131C0FE8E400B035C5 /* WorkbenchViewController.swift */; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
 		FAA3F0A01BFD2E2100DB1C79 /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
+		FABF966F1C123C91005B482E /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABF966E1C123C91005B482E /* UIView+AutoLayout.swift */; };
 		FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */; };
 		FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */; };
 		FAC590481B990E6C0079A6E3 /* String+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590471B990E6C0079A6E3 /* String+LayoutHelper.swift */; };
@@ -160,11 +165,16 @@
 		FA8BEE101B68511A00D0674B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONHelper.swift; path = Core/Common/JSONHelper.swift; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
 		FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocklyError.swift; path = Core/Common/BlocklyError.swift; sourceTree = "<group>"; };
+		FA9D2FB81C11166000D0E528 /* ToolboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxView.swift; sourceTree = "<group>"; };
+		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
+		FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryLayout.swift; sourceTree = "<group>"; };
+		FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryListView.swift; sourceTree = "<group>"; };
 		FAA204131C0FE8E400B035C5 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+Helper.swift"; path = "Core/Common/Array+Helper.swift"; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FABF966E1C123C91005B482E /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+AutoLayout.swift"; path = "Core/Common/UIView+AutoLayout.swift"; sourceTree = "<group>"; };
 		FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+Builder.swift"; sourceTree = "<group>"; };
 		FAC590451B990E4B0079A6E3 /* WorkspaceBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceBezierPath.swift; sourceTree = "<group>"; };
 		FAC590471B990E6C0079A6E3 /* String+LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+LayoutHelper.swift"; sourceTree = "<group>"; };
@@ -212,6 +222,7 @@
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FAE557731BE028640019D0D4 /* LayoutEventManager.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
+				FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
 			);
 			path = Layout;
@@ -325,6 +336,8 @@
 				FAA291761B9674330005F100 /* BlockView+Render.swift */,
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
+				FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */,
+				FA9D2FB81C11166000D0E528 /* ToolboxView.swift */,
 				FAE557751BE028840019D0D4 /* ViewManager.swift */,
 				FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */,
 			);
@@ -394,6 +407,7 @@
 				FA2DFCC21B72DD400072A278 /* FieldVariable.swift */,
 				FA548C881B66E861008BC59C /* Input.swift */,
 				FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */,
+				FA9D2FBA1C11176700D0E528 /* Toolbox.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
 			);
 			path = Model;
@@ -411,6 +425,7 @@
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
 				FA27269D1B8C013A00777B49 /* ObjectPool.swift */,
 				FA2DFD5E1B7338570072A278 /* UIColor+Helper.swift */,
+				FABF966E1C123C91005B482E /* UIView+AutoLayout.swift */,
 				FAD3ABEA1BC87D2D00C0B254 /* UIView+Helper.swift */,
 			);
 			name = Common;
@@ -563,6 +578,7 @@
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
+				FA9D2FBD1C111A1300D0E528 /* ToolboxCategoryLayout.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
 				FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */,
@@ -580,12 +596,14 @@
 				FA2726731B82B5B100777B49 /* Assertions.swift in Sources */,
 				FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */,
 				FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */,
+				FABF966F1C123C91005B482E /* UIView+AutoLayout.swift in Sources */,
 				FAD3ABEB1BC87D2D00C0B254 /* UIView+Helper.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
 				FAC590461B990E4B0079A6E3 /* WorkspaceBezierPath.swift in Sources */,
 				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
+				FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */,
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FAC5904A1B9915990079A6E3 /* CGPoint+Operators.swift in Sources */,
 				FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */,
@@ -605,10 +623,12 @@
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
+				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
 				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
+				FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */,
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
 				FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */,
 			);

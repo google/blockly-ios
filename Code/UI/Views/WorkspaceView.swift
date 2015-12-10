@@ -53,13 +53,19 @@ public class WorkspaceView: LayoutView {
   }
 
   /// Scroll view used to render the workspace
-  private var scrollView: WorkspaceView.ScrollView!
+  public private(set) var scrollView: WorkspaceView.ScrollView!
 
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
 
   /// Delegate for events that occur on this view
   public weak var delegate: WorkspaceViewDelegate?
+
+  public var scrollViewCanvasPadding: CGSize = CGSizeZero {
+    didSet {
+      updateCanvasSizeFromLayout()
+    }
+  }
 
   // MARK: - Initializers
 
@@ -108,12 +114,7 @@ public class WorkspaceView: LayoutView {
     }
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
-      // Update the content size of the scroll view.
-      // TODO:(vicng) Figure out a good amount to pad the workspace by
-      scrollView.blockGroupView.frame = CGRectMake(0, 0,
-        layout.totalSize.width + UIScreen.mainScreen().bounds.size.width,
-        layout.totalSize.height + UIScreen.mainScreen().bounds.size.height)
-      scrollView.contentSize = scrollView.blockGroupView.bounds.size
+      updateCanvasSizeFromLayout()
     }
   }
 
@@ -123,19 +124,80 @@ public class WorkspaceView: LayoutView {
   }
 
   public override func internalPrepareForReuse() {
-    guard let layout = self.workspaceLayout else {
-      return
-    }
-
     // Remove all block views
-    for blockLayout in layout.allBlockLayoutsInWorkspace() {
-      if let blockView = _viewManager.cachedBlockViewForLayout(blockLayout) {
+    for view in scrollView.blockGroupView.subviews {
+      if let blockView = view as? BlockView {
         removeBlockView(blockView)
       }
     }
   }
 
+  // MARK: - Public
+
+  /**
+  Copies a block view into this workspace view. This is done by:
+  1) Creating a copy of the view's block
+  2) Building its layout tree and setting its workspace position to be relative to where the given
+  block view is currently on-screen.
+  3) Immediately firing all change events that are pending on `LayoutEventManager.sharedInstance`,
+  which forces the block view to be created in `self.internalRefreshView(...)`.
+
+  - Parameter blockView: The block view to copy into this workspace.
+  - Returns: The new block view that was added to this workspace.
+  - Throws:
+  `BlocklyError`: Thrown if the block view could not be created.
+  */
+  public func copyBlockView(blockView: BlockView) throws -> BlockView
+  {
+    guard let blockLayout = blockView.blockLayout else {
+      throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
+    }
+    guard let workspaceLayout = self.workspaceLayout else {
+      throw BlocklyError(.LayoutNotFound, "No workspace layout has been set for the `self.layout`")
+    }
+
+    let workspace = workspaceLayout.workspace
+
+    // TODO:(vicng) Change this to do a deep copy of the block
+    // Create a copy of the block
+    let newBlock = Block.Builder(block: blockLayout.block).buildForWorkspace(workspace)
+
+    // Get the position of the block view relative to this view, and use that as
+    // the position for the newly created block
+    let blockPosition =
+      blockView.convertPoint(CGPointZero, toView: self.scrollView)
+    let newWorkspacePosition = workspaceLayout.workspacePointFromViewPoint(blockPosition)
+
+    // Add the layout tree for the new block to the workspace layout
+    try workspaceLayout
+        .addLayoutTreeForTopLevelBlock(newBlock, atPosition: newWorkspacePosition)
+
+    // Send change events immediately, which will force the corresponding block view to be created
+    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
+
+    guard
+      let newBlockLayout = newBlock.layout,
+      let newBlockView = ViewManager.sharedInstance.cachedBlockViewForLayout(newBlockLayout) else
+    {
+      throw BlocklyError(.ViewNotFound, "View could not be located for the copied block")
+    }
+
+    return newBlockView
+  }
+
   // MARK: - Private
+
+  private func updateCanvasSizeFromLayout() {
+    guard let layout = self.workspaceLayout else {
+      return
+    }
+
+    // Update the content size of the scroll view.
+    scrollView.blockGroupView.frame = CGRectMake(0, 0,
+      layout.totalSize.width + self.scrollViewCanvasPadding.width,
+      layout.totalSize.height + self.scrollViewCanvasPadding.height)
+    scrollView.contentSize = scrollView.blockGroupView.bounds.size
+  }
 
   /**
   Returns true if a given block layout should be rendered within the workspace view.
@@ -193,6 +255,7 @@ public class WorkspaceView: LayoutView {
   }
 }
 
+// TODO:(vicng) Distinguish between swipe vs pan gestures
 extension WorkspaceView {
   /**
   A custom version of UIScrollView that can properly distinguish between dragging blocks and
@@ -210,7 +273,7 @@ extension WorkspaceView {
   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all the block views
-    private var blockGroupView: BlockGroupView!
+    public private(set) var blockGroupView: BlockGroupView!
 
     /// The fake pan gesture recognizer
     private var _fakePanGestureRecognizer: UIPanGestureRecognizer!

@@ -168,8 +168,6 @@ public class ViewManager: NSObject {
   or `recyclableViewForType`.
   */
   public func recycleView(view: UIView) {
-    view.removeFromSuperview()
-
     if let recyclableView = view as? Recyclable {
       _objectPool.recycleObject(recyclableView)
     } else {

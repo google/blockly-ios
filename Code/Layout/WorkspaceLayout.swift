@@ -16,7 +16,7 @@
 import Foundation
 
 /*
-Stores information on how to render and position a `Block` on-screen.
+Stores information on how to render and position a `Workspace` on-screen.
 */
 @objc(BKYWorkspaceLayout)
 public class WorkspaceLayout: Layout {
@@ -202,6 +202,37 @@ public class WorkspaceLayout: Layout {
         blockGroupLayout.zIndex = ++_zIndexCounter
       }
     }
+  }
+
+  /**
+   Creates the layout tree for a given top-level `block` and sets its parent's block group position
+   to a given `position`.
+
+   - Parameter block: The `Block` to add
+   - Parameter position: The position to place the top level block in the workspace.
+   - Throws:
+   `BlocklyError`: Thrown if the layout tree could not be properly constructed for `block`.
+   */
+  public func addLayoutTreeForTopLevelBlock(block: Block, atPosition position: WorkspacePoint)
+    throws
+  {
+    // Create the layout tree for this new block
+    try layoutBuilder.buildLayoutTreeForTopLevelBlock(block)
+
+    guard let blockGroupLayout = block.layout?.parentBlockGroupLayout else {
+      throw BlocklyError(.LayoutIllegalState, "Could not locate the parent block group layout")
+    }
+
+    // Set the position of the block group and perform a layout for the tree
+    blockGroupLayout.relativePosition = position
+    blockGroupLayout.updateLayoutDownTree()
+
+    // Update the content size
+    self.contentSize =
+      LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: self.contentSize)
+
+    // This layout needs a complete refresh since a new block group layout was added
+    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
 }
 

@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Set workbench view controller as the starting point
     let viewController = SimpleWorkbenchViewController()
-    viewController.loadWorkspace()
     self.window!.rootViewController = viewController
     self.window!.makeKeyAndVisible()
 

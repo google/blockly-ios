@@ -179,6 +179,7 @@ public class BlockGroupLayout: Layout {
   */
   public func moveToWorkspacePosition(position: WorkspacePoint) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
+      // TODO:(vicng) Update the canvas size of the workspace, if moving this block made it larger
       self.relativePosition = position
       self.refreshViewPositionsForTree(
         parentAbsolutePosition: workspaceLayout.absolutePosition,
