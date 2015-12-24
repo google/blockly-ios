@@ -90,9 +90,12 @@ public class Dragger: NSObject {
     // drag
     gestureData.connectionGroup.dragMode = true
 
-    // Move the block view based on the new touch position
-    layout.parentBlockGroupLayout?.moveToWorkspacePosition(
-      gestureData.blockLayoutStartPosition + (touchPosition - gestureData.touchStartPosition))
+    // Figure out the new workspace position based on the touch position
+    let position = gestureData.blockLayoutStartPosition +
+      (touchPosition - gestureData.touchStartPosition)
+
+    // Move to the new position (only update the canvas size at the very end of the drag)
+    layout.parentBlockGroupLayout?.moveToWorkspacePosition(position, updateCanvasSize: false)
 
     // Update the highlighted connection for this drag
     updateHighlightedConnectionForDrag(gestureData)
@@ -130,6 +133,10 @@ public class Dragger: NSObject {
     for (_, gestureData) in _dragGestureData {
       updateHighlightedConnectionForDrag(gestureData)
     }
+
+    // Update the workspace canvas size since it may have changed (this was purposely skipped
+    // during the drag for performance reasons, so we have to update it now)
+    layout.workspaceLayout.updateCanvasSize()
   }
 
   /**

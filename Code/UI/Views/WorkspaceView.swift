@@ -53,7 +53,7 @@ public class WorkspaceView: LayoutView {
   }
 
   /// Scroll view used to render the workspace
-  public private(set) var scrollView: WorkspaceView.ScrollView!
+  private var scrollView: WorkspaceView.ScrollView!
 
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance
@@ -61,7 +61,9 @@ public class WorkspaceView: LayoutView {
   /// Delegate for events that occur on this view
   public weak var delegate: WorkspaceViewDelegate?
 
-  public var scrollViewCanvasPadding: CGSize = CGSizeZero {
+  /// Flag if the canvas should be padded with empty space on the trailing and bottom edges. If set
+  /// to false, the user will only be allowed to scroll the exact amount needed to view all blocks.
+  public var allowCanvasPadding: Bool = true {
     didSet {
       updateCanvasSizeFromLayout()
     }
@@ -132,6 +134,12 @@ public class WorkspaceView: LayoutView {
     }
   }
 
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+
+    updateCanvasSizeFromLayout()
+  }
+
   // MARK: - Public
 
   /**
@@ -164,9 +172,15 @@ public class WorkspaceView: LayoutView {
 
     // Get the position of the block view relative to this view, and use that as
     // the position for the newly created block
-    let blockPosition =
-      blockView.convertPoint(CGPointZero, toView: self.scrollView)
-    let newWorkspacePosition = workspaceLayout.workspacePointFromViewPoint(blockPosition)
+    var blockViewPoint = CGPointZero
+    if workspaceLayout.workspace.isRTL {
+      // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
+      // it is the top-left corner point in LTR)
+      blockViewPoint = CGPointMake(blockView.bounds.size.width, 0)
+    }
+    let workspaceViewPosition =
+      blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
+    let newWorkspacePosition = workspacePointFromViewPoint(workspaceViewPosition)
 
     // Add the layout tree for the new block to the workspace layout
     try workspaceLayout
@@ -185,18 +199,81 @@ public class WorkspaceView: LayoutView {
     return newBlockView
   }
 
+  /**
+   Maps a gesture's touch location relative to this view to a logical Workspace position.
+
+   - Parameter gesture: The gesture
+   - Returns: The corresponding `WorkspacePoint` for the gesture
+   */
+  public func workspacePointFromGestureTouchLocation(gesture: UIGestureRecognizer) -> WorkspacePoint
+  {
+    let touchPosition = gesture.locationInView(self.scrollView.blockGroupView)
+    return workspacePointFromViewPoint(touchPosition)
+  }
+
   // MARK: - Private
+
+  /**
+  Maps a `UIView` point relative to `self.scrollView.blockGroupView` to a logical Workspace
+  position.
+
+  - Parameter point: The `UIView` point
+  - Returns: The corresponding `WorkspacePoint`
+  */
+  private func workspacePointFromViewPoint(point: CGPoint) -> WorkspacePoint {
+    guard let workspaceLayout = self.workspaceLayout else {
+      return WorkspacePointZero
+    }
+
+    var viewPoint = point
+    if workspaceLayout.workspace.isRTL {
+      // In RTL, the workspace position is relative to the top-right corner
+      viewPoint.x = self.scrollView.blockGroupView.bounds.size.width - viewPoint.x
+    }
+
+    // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
+    return workspaceLayout.scaledWorkspaceVectorFromViewVector(viewPoint)
+  }
 
   private func updateCanvasSizeFromLayout() {
     guard let layout = self.workspaceLayout else {
       return
     }
 
+    // Get the total canvas size in UIView sizing
+    let blockGroupSize = layout.viewSizeFromWorkspaceSize(layout.totalSize)
+
+    // Canvas padding must be at least one full screen width/height or else blocks will appear to
+    // jump whenever the total canvas size shrinks (eg. after blocks are moved from higher value
+    // coordinates to lower value ones)
+    let canvasPadding = allowCanvasPadding ?
+      CGSizeMake(self.bounds.size.width, self.bounds.size.height) : CGSizeZero
+
+    let oldContentSize = scrollView.contentSize
+    let newContentSize = blockGroupSize + canvasPadding
+
+    // Set the new size of the blockGroupView
+    scrollView.blockGroupView.frame = CGRectMake(0, 0, blockGroupSize.width, blockGroupSize.height)
+
     // Update the content size of the scroll view.
-    scrollView.blockGroupView.frame = CGRectMake(0, 0,
-      layout.totalSize.width + self.scrollViewCanvasPadding.width,
-      layout.totalSize.height + self.scrollViewCanvasPadding.height)
-    scrollView.contentSize = scrollView.blockGroupView.bounds.size
+    if layout.workspace.isRTL {
+      // Shift the scroll view so the canvas padding appears on the left side and not the right side
+      scrollView.contentInset = UIEdgeInsetsMake(0, canvasPadding.width, 0, -canvasPadding.width)
+
+      // Because the block group view frame is always positioned at (0,0) in RTL, the viewport
+      // will appear to suddenly jump if the view frame's width changes (because all the blocks
+      // inside the block group are positioned relative to the top-right corner, not the top-left
+      // corner like in LTR). To correct this jumping problem, we need to change the scroll view
+      // offset to match the difference in view frame width.
+      scrollView.contentOffset.x += newContentSize.width - oldContentSize.width
+    }
+
+    // Set the content size of the scroll view
+    // NOTE: This has to be done *after* adjusting the `scrollView.contentOffset`. `UIScrollView`
+    // will automatically adjust `contentOffset` on its own if `contentSize` shrinks and the
+    // the current `contentOffset` is unreachable (but it won't change if it grows, which is why we
+    // adjust `contentOffset` manually first).
+    scrollView.contentSize = newContentSize
   }
 
   /**

@@ -316,10 +316,16 @@ public class BlockLayout: Layout {
 
   /**
   Removes all elements from `self.inputLayouts` and sets their `parentLayout` to nil.
+
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset() {
+  public func reset(updateLayout updateLayout: Bool = true) {
     for (var i = inputLayouts.count - 1 ; i >= 0; i--) {
       removeInputLayoutAtIndex(i)
+    }
+
+    if updateLayout {
+      updateLayoutUpTree()
     }
   }
 

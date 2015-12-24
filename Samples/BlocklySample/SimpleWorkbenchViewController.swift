@@ -22,6 +22,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   /// Factory that produces block instances from a parsed json file
   private var _blockFactory: BlockFactory!
 
+  /// Flag for rendering the workspace in RTL mode
+  private var _rtl = false
+
   // MARK: - Initializers
 
   override init() {
@@ -41,6 +44,8 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
     }
+
+    // TODO:(vicng) Read in layout direction from system
   }
 
   // MARK: - Super
@@ -64,11 +69,12 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func loadWorkspace() {
     // Create a workspace
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace(isFlyout: false, isRTL: _rtl)
 
     do {
       // Add some blocks to the workspace
       // try addChainedBlocksToWorkspace(workspace)
+      addSpaghettiBlocksToWorkspace(workspace)
 
       // Create the workspace layout, which is required for viewing the workspace
       workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
@@ -90,7 +96,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func loadToolbox() {
     // Create a toolbox
-    let toolbox = Toolbox()
+    let toolbox = Toolbox(isRTL: _rtl)
 
     let loops = toolbox.addCategory("Loops", color: UIColor.blueColor())
     addBlock("controls_repeat_ext", toCategory: loops)

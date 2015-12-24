@@ -10,6 +10,7 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
+		FA141D751C28E3AB00FB6B91 /* CGSize+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141D741C28E3AB00FB6B91 /* CGSize+Operators.swift */; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; };
 		FA2726731B82B5B100777B49 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726721B82B5B100777B49 /* Assertions.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
@@ -106,6 +107,7 @@
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
+		FA141D741C28E3AB00FB6B91 /* CGSize+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGSize+Operators.swift"; path = "Core/Common/CGSize+Operators.swift"; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
 		FA2726721B82B5B100777B49 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assertions.swift; path = Core/Common/Assertions.swift; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 				FA2726721B82B5B100777B49 /* Assertions.swift */,
 				FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */,
 				FAC590491B9915990079A6E3 /* CGPoint+Operators.swift */,
+				FA141D741C28E3AB00FB6B91 /* CGSize+Operators.swift */,
 				FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */,
 				FA8BEE101B68511A00D0674B /* JSONHelper.swift */,
 				FA8BEEAB1B68657A00D0674B /* Logging.swift */,
@@ -617,6 +620,7 @@
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
 				FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */,
 				FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */,
+				FA141D751C28E3AB00FB6B91 /* CGSize+Operators.swift in Sources */,
 				FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */,
 				FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */,
 				FAC590481B990E6C0079A6E3 /* String+LayoutHelper.swift in Sources */,

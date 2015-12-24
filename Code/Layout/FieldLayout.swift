@@ -71,18 +71,4 @@ public class FieldLayout: Layout {
     // Force this field to be redisplayed
     scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
-
-  internal override func refreshViewFrame() {
-    // View frames for fields are calculated relative to its parent's parent
-    // (InputLayout -> BlockLayout)
-    var point = WorkspacePointMake(
-      relativePosition.x + edgeInsets.left,
-      relativePosition.y + edgeInsets.top)
-    if let parentRelativePosition = parentLayout?.relativePosition,
-      parentEdgeInsets = parentLayout?.edgeInsets {
-      point.x += parentRelativePosition.x + parentEdgeInsets.left
-      point.y += parentRelativePosition.y + parentEdgeInsets.top
-    }
-    self.viewFrame = self.workspaceLayout.viewFrameFromWorkspacePoint(point, size: self.contentSize)
-  }
 }

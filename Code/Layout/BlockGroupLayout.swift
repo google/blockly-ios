@@ -176,14 +176,17 @@ public class BlockGroupLayout: Layout {
 
   - Parameter position: The relative position within its parent's Workspace layout, specified as a
   Workspace coordinate system point.
+  - Parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
+  the current positions of its block groups.
   */
-  public func moveToWorkspacePosition(position: WorkspacePoint) {
+  public func moveToWorkspacePosition(position: WorkspacePoint, updateCanvasSize: Bool = true) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
-      // TODO:(vicng) Update the canvas size of the workspace, if moving this block made it larger
       self.relativePosition = position
-      self.refreshViewPositionsForTree(
-        parentAbsolutePosition: workspaceLayout.absolutePosition,
-        includeFields: false)
+      self.refreshViewPositionsForTree(includeFields: false)
+
+      if updateCanvasSize {
+        workspaceLayout.updateCanvasSize()
+      }
     }
   }
 }

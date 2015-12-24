@@ -16,15 +16,15 @@
 import Foundation
 
 /**
-Returns the sum of two points.
-*/
-internal func + (point1: CGPoint, point2: CGPoint) -> CGPoint {
-  return CGPointMake(point1.x + point2.x, point1.y + point2.y)
+ Returns the sum of two sizes.
+ */
+internal func + (size1: CGSize, size2: CGSize) -> CGSize {
+  return CGSizeMake(size1.width + size2.width, size1.height + size2.height)
 }
 
 /**
-Returns the difference of one point from another point.
-*/
-internal func - (point1: CGPoint, point2: CGPoint) -> CGPoint {
-  return CGPointMake(point1.x - point2.x, point1.y - point2.y)
+ Returns the difference of one size from another size.
+ */
+internal func - (size1: CGSize, size2: CGSize) -> CGSize {
+  return CGSizeMake(size1.width - size2.width, size1.height - size2.height)
 }
