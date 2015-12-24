@@ -36,11 +36,6 @@ public class WorkbenchViewController: UIViewController {
     didSet {
       oldValue?.delegate = nil
       workspaceView?.delegate = self
-
-      // TODO:(vicng) Figure out a good amount to pad the workspace by
-      workspaceView.scrollViewCanvasPadding = CGSizeMake(
-        UIScreen.mainScreen().bounds.size.width,
-        UIScreen.mainScreen().bounds.size.height)
     }
   }
 
@@ -188,8 +183,7 @@ extension WorkbenchViewController {
       addGestureTrackingForToolboxBlockView(toolboxBlockView)
 
       // Start the first step of dragging the block layout
-      let touchPosition = workspaceLayout.workspacePointFromViewPoint(
-        gesture.locationInView(self.workspaceView))
+      let touchPosition = workspaceView.workspacePointFromGestureTouchLocation(gesture)
       _dragger.startDraggingBlockLayout(newBlockView.blockLayout!, touchPosition: touchPosition)
 
       // Hide the toolbox category
@@ -241,8 +235,7 @@ extension WorkbenchViewController {
         return
     }
 
-    let touchPosition = self.workspaceView.workspaceLayout!.workspacePointFromViewPoint(
-      gesture.locationInView(self.workspaceView))
+    let touchPosition = self.workspaceView.workspacePointFromGestureTouchLocation(gesture)
 
     // TODO:(vicng) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).

@@ -51,7 +51,9 @@ Data structure that contains `Block` instances.
 public class Workspace : NSObject {
   // MARK: - Properties
 
+  // TODO:(vicng) Rename isFlyout to flyout
   public let isFlyout: Bool
+  // TODO:(vicng) Rename isRTL to rtl
   public let isRTL: Bool
   public let maxBlocks: Int?
   public private(set) var allBlocks = [String: Block]()

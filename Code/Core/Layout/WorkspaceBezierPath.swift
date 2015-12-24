@@ -112,7 +112,8 @@ public class WorkspaceBezierPath: NSObject {
         clockwise: clockwise)
 
       setCurrentWorkspacePoint(
-        _layout.workspacePointFromViewPoint(viewBezierPath.currentPoint), relative: relative)
+        _layout.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint),
+        relative: relative)
       _reflectionOfLastCurveControlPoint = nil
   }
 
@@ -229,7 +230,8 @@ public class WorkspaceBezierPath: NSObject {
   public func closePath() {
     viewBezierPath.closePath()
 
-    self.currentWorkspacePoint = _layout.workspacePointFromViewPoint(viewBezierPath.currentPoint)
+    self.currentWorkspacePoint =
+      _layout.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint)
     _reflectionOfLastCurveControlPoint = nil
   }
 

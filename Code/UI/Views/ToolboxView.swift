@@ -83,6 +83,7 @@ public class ToolboxView: UIView {
 
     blockListView = WorkspaceView()
     blockListView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
+    blockListView.allowCanvasPadding = false
 
     // Add constraints
     let views = ["categoryListView": categoryListView, "blockListView": blockListView]

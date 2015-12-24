@@ -326,13 +326,19 @@ public class InputLayout: Layout {
   /**
   Removes all elements from `self.fieldLayouts`, sets their `parentLayout` to nil, and resets
   `self.blockGroupLayout`.
+
+  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset() {
+  public func reset(updateLayout updateLayout: Bool) {
     for (var i = fieldLayouts.count - 1 ; i >= 0; i--) {
       removeFieldLayoutAtIndex(i)
     }
 
-    self.blockGroupLayout.reset()
+    self.blockGroupLayout.reset(updateLayout: false)
+
+    if updateLayout {
+      updateLayoutUpTree()
+    }
   }
 
   // MARK: - Internal

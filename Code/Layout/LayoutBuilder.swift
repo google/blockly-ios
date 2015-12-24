@@ -140,7 +140,7 @@ public class LayoutBuilder: NSObject {
     if block.layout == nil {
       block.layout = layoutFactory.layoutForBlock(block, workspaceLayout: workspaceLayout)
     }
-    block.layout!.reset()
+    block.layout!.reset(updateLayout: false)
 
     // Build the input layouts for this block
     for input in block.inputs {
@@ -163,7 +163,7 @@ public class LayoutBuilder: NSObject {
     if input.layout == nil {
       input.layout = layoutFactory.layoutForInput(input, workspaceLayout: workspaceLayout)
     }
-    input.layout!.reset()
+    input.layout!.reset(updateLayout: false)
 
     // Build field layouts for this input
     for field in input.fields {
