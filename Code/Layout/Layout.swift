@@ -209,7 +209,7 @@ public class Layout: NSObject {
       parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
       parentViewAbsolutePosition: (parentLayout?.viewAbsolutePosition ?? CGPointZero),
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
-      rtl: self.workspaceLayout.workspace.isRTL,
+      rtl: self.workspaceLayout.workspace.rtl,
       includeFields: includeFields)
   }
 

@@ -23,7 +23,7 @@ class FieldJSONTest: XCTestCase {
   // MARK: - Super
 
   override func setUp() {
-    self.workspace = Workspace(isFlyout: false)
+    self.workspace = Workspace()
   }
 
   // MARK: - fieldFromJSON - Angle

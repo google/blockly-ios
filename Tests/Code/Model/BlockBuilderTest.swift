@@ -19,13 +19,13 @@ import XCTest
 class BlockBuilderTest: XCTestCase {
 
   func testBuildBlock() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace()
     let block = buildFrankenBlock(workspace)
     validateFrankenblock(block)
   }
 
   func testBuildFromBlock() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace()
     let block = buildFrankenBlock(workspace)
     let block2 = buildFrankenBlock(workspace)
     try! block.nextConnection?.connectTo(block2.previousConnection)

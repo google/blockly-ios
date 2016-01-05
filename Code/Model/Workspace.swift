@@ -51,10 +51,7 @@ Data structure that contains `Block` instances.
 public class Workspace : NSObject {
   // MARK: - Properties
 
-  // TODO:(vicng) Rename isFlyout to flyout
-  public let isFlyout: Bool
-  // TODO:(vicng) Rename isRTL to rtl
-  public let isRTL: Bool
+  public let rtl: Bool
   public let maxBlocks: Int?
   public private(set) var allBlocks = [String: Block]()
 
@@ -63,11 +60,18 @@ public class Workspace : NSObject {
 
   // MARK: - Initializers
 
-  public init(isFlyout: Bool, isRTL: Bool = false, maxBlocks: Int? = nil) {
-      self.isFlyout = isFlyout
-      self.isRTL = isRTL
-      self.maxBlocks = maxBlocks
-      super.init()
+  /**
+  Initializer for a Workspace.
+
+  - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
+  is automatically set using the system's layout direction.
+  - Parameter maxBlocks: Optional parameter for setting `self.maxBlocks`.
+  */
+  public init(rtl: Bool? = nil, maxBlocks: Int? = nil) {
+    self.rtl =
+      rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
+    self.maxBlocks = maxBlocks
+    super.init()
   }
 
   // MARK: - Public

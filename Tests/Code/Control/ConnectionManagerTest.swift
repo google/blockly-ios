@@ -34,7 +34,7 @@ class ConnectionManagerTest: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    workspace = Workspace(isFlyout: false)
+    workspace = Workspace()
     manager = ConnectionManager()
   }
 

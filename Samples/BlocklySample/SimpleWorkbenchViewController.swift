@@ -22,9 +22,6 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   /// Factory that produces block instances from a parsed json file
   private var _blockFactory: BlockFactory!
 
-  /// Flag for rendering the workspace in RTL mode
-  private var _rtl = false
-
   // MARK: - Initializers
 
   override init() {
@@ -69,7 +66,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func loadWorkspace() {
     // Create a workspace
-    let workspace = Workspace(isFlyout: false, isRTL: _rtl)
+    let workspace = Workspace()
 
     do {
       // Add some blocks to the workspace
@@ -96,7 +93,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func loadToolbox() {
     // Create a toolbox
-    let toolbox = Toolbox(isRTL: _rtl)
+    let toolbox = Toolbox()
 
     let loops = toolbox.addCategory("Loops", color: UIColor.blueColor())
     addBlock("controls_repeat_ext", toCategory: loops)

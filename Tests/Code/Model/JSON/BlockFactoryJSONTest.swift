@@ -19,7 +19,7 @@ import XCTest
 class BlockFactoryJSONTest: XCTestCase {
 
     func testLoadBlocks() {
-      let workspace = Workspace(isFlyout: false)
+      let workspace = Workspace()
       do {
         let factory = try BlockFactory(jsonPath: "block_factory_json_test",
           bundle: NSBundle(forClass: self.dynamicType))
@@ -39,7 +39,7 @@ class BlockFactoryJSONTest: XCTestCase {
     }
 
   func testMultipleBlocks() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace()
     do {
       let factory = try BlockFactory(jsonPath: "block_factory_json_test",
         bundle: NSBundle(forClass: self.dynamicType))

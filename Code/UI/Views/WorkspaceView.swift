@@ -173,7 +173,7 @@ public class WorkspaceView: LayoutView {
     // Get the position of the block view relative to this view, and use that as
     // the position for the newly created block
     var blockViewPoint = CGPointZero
-    if workspaceLayout.workspace.isRTL {
+    if workspaceLayout.workspace.rtl {
       // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
       // it is the top-left corner point in LTR)
       blockViewPoint = CGPointMake(blockView.bounds.size.width, 0)
@@ -226,7 +226,7 @@ public class WorkspaceView: LayoutView {
     }
 
     var viewPoint = point
-    if workspaceLayout.workspace.isRTL {
+    if workspaceLayout.workspace.rtl {
       // In RTL, the workspace position is relative to the top-right corner
       viewPoint.x = self.scrollView.blockGroupView.bounds.size.width - viewPoint.x
     }
@@ -256,7 +256,7 @@ public class WorkspaceView: LayoutView {
     scrollView.blockGroupView.frame = CGRectMake(0, 0, blockGroupSize.width, blockGroupSize.height)
 
     // Update the content size of the scroll view.
-    if layout.workspace.isRTL {
+    if layout.workspace.rtl {
       // Shift the scroll view so the canvas padding appears on the left side and not the right side
       scrollView.contentInset = UIEdgeInsetsMake(0, canvasPadding.width, 0, -canvasPadding.width)
 

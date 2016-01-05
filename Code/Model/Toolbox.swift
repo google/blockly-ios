@@ -68,7 +68,7 @@ extension Toolbox {
 
     private init(toolbox: Toolbox, layoutBuilder: LayoutBuilder) {
       self.toolbox = toolbox
-      self.workspace = Workspace(isFlyout: true, isRTL: toolbox.isRTL)
+      self.workspace = Workspace()
       super.init()
 
       // Automatically create a layout for this category
