@@ -22,7 +22,7 @@ class BlockTest: XCTestCase {
   var _blockFactory: BlockFactory!
 
   override func setUp() {
-    _workspace = Workspace(isFlyout: false)
+    _workspace = Workspace()
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
   }

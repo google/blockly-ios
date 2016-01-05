@@ -326,7 +326,7 @@ extension BlockView {
     }
 
     let viewBezierPath = path.viewBezierPath
-    if layout.workspaceLayout.workspace.isRTL {
+    if layout.workspaceLayout.workspace.rtl {
       applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
     }
 
@@ -376,7 +376,7 @@ extension BlockView {
     }
 
     let viewBezierPath = path.viewBezierPath
-    if layout.workspaceLayout.workspace.isRTL {
+    if layout.workspaceLayout.workspace.rtl {
       applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
     }
 

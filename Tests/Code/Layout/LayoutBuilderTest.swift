@@ -24,7 +24,7 @@ class LayoutBuilderTest: XCTestCase {
   // MARK: - Setup
 
   override func setUp() {
-    let workspace = Workspace(isFlyout: false)
+    let workspace = Workspace()
     _workspaceLayout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
@@ -148,7 +148,7 @@ class LayoutBuilderTest: XCTestCase {
   }
 
   func testBuildLayoutTreeForTopLevelBlockWrongWorkspace() {
-    let workspace2 = Workspace(isFlyout: false)
+    let workspace2 = Workspace()
 
     // Add a blocks to workspace2
     guard let block = _blockFactory.addBlock("output_no_input", toWorkspace: workspace2) else {

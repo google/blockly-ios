@@ -23,7 +23,7 @@ class ConnectionTest: XCTestCase {
   // MARK: - Setup
 
   override func setUp() {
-    _workspace = Workspace(isFlyout: false)
+    _workspace = Workspace()
   }
 
   // MARK: - Tests

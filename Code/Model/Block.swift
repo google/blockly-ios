@@ -29,9 +29,6 @@ public final class Block : NSObject {
   public let colourHue: Int
   public let inputsInline: Bool
   public unowned let workspace: Workspace
-  public var isInFlyout: Bool {
-    return workspace.isFlyout
-  }
   public let outputConnection: Connection?
   public var outputBlock: Block? {
     return outputConnection?.targetConnection?.sourceBlock
