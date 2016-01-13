@@ -61,6 +61,10 @@ public class BlockFactory : NSObject {
   - Returns: A new block if the name is known, nil otherwise.
   */
   public func addBlock(blockName: String, toWorkspace workspace: Workspace) -> Block? {
-    return _blockBuilders[blockName]?.buildForWorkspace(workspace)
+    guard let block = _blockBuilders[blockName]?.build() else {
+      return nil
+    }
+    workspace.addBlock(block)
+    return block
   }
 }

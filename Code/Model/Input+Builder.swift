@@ -66,12 +66,7 @@ extension Input {
       let input = Input(type: self.type, name: self.name)
       input.visible = visible
       input.alignment = alignment
-
-      do {
-        try input.appendFields(fields.map{ $0.copyField() })
-      } catch let error as NSError {
-        bky_assertionFailure("Could not add copied fields to input: \(error)")
-      }
+      input.appendFields(fields.map{ $0.copyField() })
 
       if let connection = input.connection {
         connection.typeChecks = self.connectionTypeChecks

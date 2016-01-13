@@ -44,7 +44,7 @@ public class FieldLayout: Layout {
   public var measurer: FieldLayoutMeasurer.Type
 
   /// The target field to layout
-  public unowned let field: Field
+  public final let field: Field
 
   /// Convenience property returning `self.parentLayout` as an `InputLayout`
   public final var parentInputLayout: InputLayout? {
@@ -71,4 +71,9 @@ public class FieldLayout: Layout {
     // Force this field to be redisplayed
     scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
+}
+
+// MARK: - FieldDelegate implementation
+
+extension FieldLayout: FieldDelegate {
 }

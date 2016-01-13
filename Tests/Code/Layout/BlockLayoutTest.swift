@@ -31,7 +31,7 @@ class BlockLayoutTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _workspaceLayout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+    _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -153,7 +153,8 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
     let builder = Block.Builder(identifier: "test")
-    let block = builder.buildForWorkspace(_workspaceLayout.workspace)
+    let block = builder.build()
+    _workspaceLayout.workspace.addBlock(block)
 
     // Build layout tree
     do {
@@ -179,7 +180,8 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
-    let block = builder.buildForWorkspace(_workspaceLayout.workspace)
+    let block = builder.build()
+    _workspaceLayout.workspace.addBlock(block)
 
     // Build layout tree
     do {
@@ -211,7 +213,8 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutAfterLayoutEmpty() {
     // Create block with no inputs
     let builder = Block.Builder(identifier: "test")
-    let block = builder.buildForWorkspace(_workspaceLayout.workspace)
+    let block = builder.build()
+    _workspaceLayout.workspace.addBlock(block)
 
     // Build layout tree
     do {
@@ -237,7 +240,8 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
-    let block = builder.buildForWorkspace(_workspaceLayout.workspace)
+    let block = builder.build()
+    _workspaceLayout.workspace.addBlock(block)
 
     // Build layout tree
     do {
@@ -274,8 +278,10 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
-    let block1 = builder1.buildForWorkspace(_workspaceLayout.workspace)
-    let block2 = builder2.buildForWorkspace(_workspaceLayout.workspace)
+    let block1 = builder1.build()
+    let block2 = builder2.build()
+    _workspaceLayout.workspace.addBlock(block1)
+    _workspaceLayout.workspace.addBlock(block2)
 
     // Build layout tree
     do {
@@ -316,8 +322,10 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
-    let block1 = builder1.buildForWorkspace(_workspaceLayout.workspace)
-    let block2 = builder2.buildForWorkspace(_workspaceLayout.workspace)
+    let block1 = builder1.build()
+    let block2 = builder2.build()
+    _workspaceLayout.workspace.addBlock(block1)
+    _workspaceLayout.workspace.addBlock(block2)
 
     // Connect the blocks
     do {
@@ -367,8 +375,10 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
-    let block1 = builder1.buildForWorkspace(_workspaceLayout.workspace)
-    let block2 = builder2.buildForWorkspace(_workspaceLayout.workspace)
+    let block1 = builder1.build()
+    let block2 = builder2.build()
+    _workspaceLayout.workspace.addBlock(block1)
+    _workspaceLayout.workspace.addBlock(block2)
 
     // Build layout tree
     do {
@@ -420,8 +430,10 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
-    let block1 = builder1.buildForWorkspace(_workspaceLayout.workspace)
-    let block2 = builder2.buildForWorkspace(_workspaceLayout.workspace)
+    let block1 = builder1.build()
+    let block2 = builder2.build()
+    _workspaceLayout.workspace.addBlock(block1)
+    _workspaceLayout.workspace.addBlock(block2)
 
     // Connect the blocks
     do {

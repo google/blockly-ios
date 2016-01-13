@@ -23,8 +23,8 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Properties
 
-  /// The underlying workspace
-  public var workspace: Workspace?
+  /// The workspace layout
+  public var workspaceLayout: WorkspaceLayout?
   /// The underlying toolbox
   public var toolbox: Toolbox?
 
@@ -97,7 +97,7 @@ public class WorkbenchViewController: UIViewController {
   Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
   */
   public func refreshView() {
-    workspaceView.layout = workspace?.layout
+    workspaceView.layout = workspaceLayout
     workspaceView.refreshView()
 
     toolboxView.toolbox = toolbox
@@ -156,10 +156,7 @@ extension WorkbenchViewController {
    Pan gesture event handler for a block view inside `self.toolboxView`.
   */
   private dynamic func didRecognizeToolboxPanGesture(gesture: UIPanGestureRecognizer) {
-    guard let
-      toolboxBlockView = gesture.view as? BlockView,
-      workspaceLayout = self.workspace?.layout else
-    {
+    guard let toolboxBlockView = gesture.view as? BlockView else {
       return
     }
 

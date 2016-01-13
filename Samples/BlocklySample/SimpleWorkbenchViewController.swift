@@ -65,30 +65,20 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Private
 
   private func loadWorkspace() {
-    // Create a workspace
-    let workspace = Workspace()
-
     do {
+      // Create a workspace
+      let workspace = Workspace()
+
       // Add some blocks to the workspace
       // try addChainedBlocksToWorkspace(workspace)
       addSpaghettiBlocksToWorkspace(workspace)
 
-      // Create the workspace layout, which is required for viewing the workspace
-      workspace.layout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
-
-      // Build its layout tree, which creates layout objects for all of its blocks/inputs/fields
-      // (allowing them to show up in the workspace view)
-      try workspace.layout!.layoutBuilder.buildLayoutTree()
-
-      // TODO(vicng): Add method to automatically space out top-level blocks from overlapping
-
-      // Perform a layout update for the entire tree
-      workspace.layout!.updateLayoutDownTree()
+      // Create a layout for the workspace, which is required for viewing the workspace
+      self.workspaceLayout =
+        try WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     } catch let error as NSError {
       print("Couldn't build layout tree for workspace: \(error)")
     }
-
-    self.workspace = workspace
   }
 
   private func loadToolbox() {

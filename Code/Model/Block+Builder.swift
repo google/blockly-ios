@@ -92,7 +92,7 @@ extension Block {
 
     - Returns: A new block
     */
-    public func buildForWorkspace(workspace: Workspace) -> Block {
+    public func build() -> Block {
       var outputConnection: Connection?
       var nextConnection: Connection?
       var previousConnection: Connection?
@@ -110,7 +110,7 @@ extension Block {
       }
       let inputs = inputBuilders.map({ $0.build() })
 
-      let block = Block(workspace: workspace, identifier: identifier, category: category,
+      let block = Block(identifier: identifier, category: category,
         colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)

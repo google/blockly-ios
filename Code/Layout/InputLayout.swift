@@ -23,7 +23,7 @@ public class InputLayout: Layout {
   // MARK: - Properties
 
   /// The target `Input` to layout
-  public unowned let input: Input
+  public final let input: Input
 
   // TODO(vicng): Consider replacing all connections/relative positions with a ConnectionLayout
 
@@ -433,5 +433,24 @@ public class InputLayout: Layout {
     self.statementRowTopPadding = 0
     self.statementRowBottomPadding = 0
     self.statementMiddleHeight = 0
+  }
+}
+
+// MARK: - InputDelegate implementation
+
+extension InputLayout: InputDelegate {
+  public func input(input: Input, didAppendFields fields: [Field]) {
+    // For each new field that was added to the input, we need to append a new field layout
+    for field in fields {
+      do {
+        let fieldLayout = try workspaceLayout.layoutBuilder.buildLayoutForField(field)
+        appendFieldLayout(fieldLayout)
+        fieldLayout.updateLayoutDownTree()
+      } catch let error as NSError {
+        bky_assertionFailure("Could not create build layout for field: \(error)")
+      }
+    }
+
+    updateLayoutUpTree()
   }
 }

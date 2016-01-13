@@ -62,6 +62,7 @@ extension Toolbox {
     public unowned let toolbox: Toolbox
     /// Each category is essentially its own workspace of blocks
     public let workspace: Workspace
+    public private(set) var workspaceLayout: ToolboxCategoryLayout?
 
     /// List of all blocks that have been added to this category
     public private(set) var blockItems = [BlockItem]()
@@ -72,8 +73,11 @@ extension Toolbox {
       super.init()
 
       // Automatically create a layout for this category
-      self.workspace.layout =
-        ToolboxCategoryLayout(category: self, layoutBuilder: layoutBuilder)
+      do {
+        self.workspaceLayout = try ToolboxCategoryLayout(category: self, layoutBuilder: layoutBuilder)
+      } catch let error as NSError {
+        bky_assertionFailure("Could not build layout for toolbox category: \(error)")
+      }
     }
 
     /**

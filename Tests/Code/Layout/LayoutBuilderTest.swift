@@ -25,7 +25,7 @@ class LayoutBuilderTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _workspaceLayout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+    _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
   }

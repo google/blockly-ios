@@ -16,6 +16,13 @@
 import Foundation
 
 /**
+ Protocol for events that occur on a `Field` instance.
+ */
+@objc(BKYFieldDelegate)
+public protocol FieldDelegate: class {
+}
+
+/**
 Input field.  Used for editable titles, variables, etc. This is an abstract class that defines the
 UI on the block.  Actual instances would be `FieldLabel`, `FieldDropdown`, etc.
 */
@@ -25,9 +32,13 @@ public class Field: NSObject {
 
   public let name: String
 
-  // TODO(vicng): Consider replacing the layout reference with a delegate or listener
-  /// The layout used for rendering this field
-  public var layout: FieldLayout?
+  /// A delegate for listening to events on this field
+  public weak var delegate: FieldDelegate?
+
+  /// Convenience property for accessing `self.delegate` as a FieldLayout
+  public var layout: FieldLayout? {
+    return self.delegate as? FieldLayout
+  }
 
   // MARK: - Initializers
 
