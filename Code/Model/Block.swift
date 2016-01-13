@@ -16,6 +16,13 @@
 import Foundation
 
 /**
+Protocol for events that occur on a `Block` instance.
+*/
+@objc(BKYBlockDelegate)
+public protocol BlockDelegate: class {
+}
+
+/**
 Class that represents a single block.
 */
 @objc(BKYBlock)
@@ -28,7 +35,6 @@ public final class Block : NSObject {
   public let category: Int
   public let colourHue: Int
   public let inputsInline: Bool
-  public unowned let workspace: Workspace
   public let outputConnection: Connection?
   public var outputBlock: Block? {
     return outputConnection?.targetConnection?.sourceBlock
@@ -62,21 +68,24 @@ public final class Block : NSObject {
   public var collapsed: Bool = false
   public var rendered: Bool = false
 
-  // TODO(vicng): Consider replacing the layout reference with a delegate or listener
-  /// The layout used for rendering this block
-  public var layout: BlockLayout?
+  /// A delegate for listening to events on this block
+  public weak var delegate: BlockDelegate?
+
+  /// Convenience property for accessing `self.delegate` as a BlockLayout
+  public var layout: BlockLayout? {
+    return self.delegate as? BlockLayout
+  }
 
   // MARK: - Initializers
 
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(workspace: Workspace, identifier: String, category: Int,
+  internal init(identifier: String, category: Int,
     colourHue: Int, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = NSUUID().UUIDString
-    self.workspace = workspace
     self.identifier = identifier
     self.category = category
     self.colourHue = min(max(colourHue, 0), 360)
@@ -87,9 +96,6 @@ public final class Block : NSObject {
     self.nextConnection = nextConnection
 
     super.init()
-
-    // Automatically add this block to the workspace so it doesn't go out of reference
-    workspace.addBlock(self)
 
     // Finish updating model hierarchy for inputs and connections
     for input in inputs {

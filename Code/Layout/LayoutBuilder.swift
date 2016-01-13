@@ -68,9 +68,9 @@ public class LayoutBuilder: NSObject {
   */
   public func buildLayoutTreeForTopLevelBlock(block: Block) throws -> BlockGroupLayout? {
     // Check that block is part of this workspace and is a top-level block
-    if block.workspace != workspaceLayout.workspace {
+    if !workspaceLayout.workspace.containsBlock(block) {
       throw BlocklyError(.LayoutIllegalState,
-        "Can't build a layout tree for a block that is part of a different workspace")
+        "Can't build a layout tree for a block that has not been added to the workspace")
     }
 
     if !block.topLevel {
@@ -90,7 +90,7 @@ public class LayoutBuilder: NSObject {
   }
 
   /**
-  Builds the layout for a given field.
+  Builds the layout for a given field and assigns it to the field's `delegate` property.
 
   - Parameter field: The field
   - Returns: The associated layout for the field.
@@ -98,10 +98,9 @@ public class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
   */
   public func buildLayoutForField(field: Field) throws -> FieldLayout {
-    if field.layout == nil {
-      field.layout = try layoutFactory.layoutForField(field, workspaceLayout: workspaceLayout)
-    }
-    return field.layout!
+    let fieldLayout = try layoutFactory.layoutForField(field, workspaceLayout: workspaceLayout)
+    field.delegate = fieldLayout // Have the layout listen for events on the field
+    return fieldLayout
   }
 
   // MARK: - Private
@@ -128,7 +127,8 @@ public class LayoutBuilder: NSObject {
   }
 
   /**
-  Builds and returns a `BlockLayout` tree for a given block. This includes all connected blocks.
+  Builds a `BlockLayout` tree for a given block and assigns it to the block's `delegate` property.
+  This includes all connected blocks.
 
   - Parameter block: The block
   - Returns: The associated layout for the block.
@@ -137,22 +137,20 @@ public class LayoutBuilder: NSObject {
   */
   private func buildLayoutTreeForBlock(block: Block) throws -> BlockLayout
   {
-    if block.layout == nil {
-      block.layout = layoutFactory.layoutForBlock(block, workspaceLayout: workspaceLayout)
-    }
-    block.layout!.reset(updateLayout: false)
+    let blockLayout = layoutFactory.layoutForBlock(block, workspaceLayout: workspaceLayout)
+    block.delegate = blockLayout // Have the layout listen for events on the block
 
     // Build the input layouts for this block
     for input in block.inputs {
       let inputLayout = try buildLayoutTreeForInput(input)
-      block.layout!.appendInputLayout(inputLayout)
+      blockLayout.appendInputLayout(inputLayout)
     }
 
-    return block.layout!
+    return blockLayout
   }
 
   /**
-  Builds the `InputLayout` tree for a given input.
+  Builds an `InputLayout` tree for a given input and assigns it to the input's `delegate` property.
 
   - Parameter input: The input
   - Returns: The associated layout for the input.
@@ -160,22 +158,20 @@ public class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
   private func buildLayoutTreeForInput(input: Input) throws -> InputLayout {
-    if input.layout == nil {
-      input.layout = layoutFactory.layoutForInput(input, workspaceLayout: workspaceLayout)
-    }
-    input.layout!.reset(updateLayout: false)
+    let inputLayout = layoutFactory.layoutForInput(input, workspaceLayout: workspaceLayout)
+    input.delegate = inputLayout // Have the layout listen for events on the input
 
     // Build field layouts for this input
     for field in input.fields {
       let fieldLayout = try buildLayoutForField(field)
-      input.layout!.appendFieldLayout(fieldLayout)
+      inputLayout.appendFieldLayout(fieldLayout)
     }
 
     // Build the block group layout underneath this input
     if let connectedBlock = input.connectedBlock {
-      try buildLayoutTreeForBlockGroupLayout(input.layout!.blockGroupLayout, block: connectedBlock)
+      try buildLayoutTreeForBlockGroupLayout(inputLayout.blockGroupLayout, block: connectedBlock)
     }
 
-    return input.layout!
+    return inputLayout
   }
 }

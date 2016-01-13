@@ -16,23 +16,29 @@
 import Foundation
 
 /**
-Protocol for events that occur on a `Connection`.
+ Delegate for highlight events that occur on a `Connection`.
 */
-@objc(BKYConnectionListener)
-public protocol ConnectionListener {
-  /**
-  Event that is called when the target connection has changed for a given connection.
-
-  - Parameter connection: The connection whose `targetConnection` value has changed.
-  */
-  optional func didChangeTargetForConnection(connection: Connection)
-
+@objc(BKYConnectionHighlightDelegate)
+public protocol ConnectionHighlightDelegate {
   /**
   Event that is called when the highlighted value has changed for a given connection.
 
   - Parameter connection: The connection whose `highlighted` value has changed.
   */
-  optional func didChangeHighlightForConnection(connection: Connection)
+  func didChangeHighlightForConnection(connection: Connection)
+}
+
+/**
+ Delegate for events that modify the `targetConnection` of a `Connection`.
+ */
+@objc(BKYConnectionTargetDelegate)
+public protocol ConnectionTargetDelegate {
+  /**
+   Event that is called when the target connection has changed for a given connection.
+
+   - Parameter connection: The connection whose `targetConnection` value has changed.
+   */
+  func didChangeTargetForConnection(connection: Connection)
 }
 
 /**
@@ -131,11 +137,14 @@ public final class Connection : NSObject {
     return (self.type == .InputValue || self.type == .NextStatement)
   }
 
-  /// Connection listeners
-  private final var _listeners = Array<ConnectionListener>()
+  /// Connection highlight delegate
+  public final weak var highlightDelegate: ConnectionHighlightDelegate?
 
   /// Connection position delegate
   public final weak var positionDelegate: ConnectionPositionDelegate?
+
+  /// Connection target delegate
+  public final weak var targetDelegate: ConnectionTargetDelegate?
 
   /// Keeps track of all block uuid's that are telling this connection to be 
   /// highlighted
@@ -190,10 +199,8 @@ public final class Connection : NSObject {
       newTargetConnection.targetConnection = self
 
       // Send delegate events
-      _listeners.forEach { $0.didChangeTargetForConnection?(self) }
-      newTargetConnection._listeners.forEach {
-        $0.didChangeTargetForConnection?(newTargetConnection)
-      }
+      targetDelegate?.didChangeTargetForConnection(self)
+      newTargetConnection.targetDelegate?.didChangeTargetForConnection(newTargetConnection)
     }
   }
 
@@ -211,8 +218,8 @@ public final class Connection : NSObject {
     oldTargetConnection.targetConnection = nil
 
     // Send delegate events
-    _listeners.forEach { $0.didChangeTargetForConnection?(self) }
-    oldTargetConnection._listeners.forEach { $0.didChangeTargetForConnection?(oldTargetConnection) }
+    targetDelegate?.didChangeTargetForConnection(self)
+    oldTargetConnection.targetDelegate?.didChangeTargetForConnection(oldTargetConnection)
   }
 
   /**
@@ -273,7 +280,7 @@ public final class Connection : NSObject {
       _highlights.insert(block.uuid)
 
       if _highlights.count == 1 {
-        _listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+        highlightDelegate?.didChangeHighlightForConnection(self)
       }
     }
   }
@@ -289,7 +296,7 @@ public final class Connection : NSObject {
       _highlights.remove(block.uuid)
 
       if _highlights.count == 0 {
-        _listeners.forEach { $0.didChangeHighlightForConnection?(self) }
+        highlightDelegate?.didChangeHighlightForConnection(self)
       }
     }
   }
@@ -315,24 +322,6 @@ public final class Connection : NSObject {
     self.position.x = newX
     self.position.y = newY
     positionDelegate?.didChangePositionForConnection(self)
-  }
-
-  /**
-  Adds a listener for changes to the connection.
-
-  - Parameter listener: The listener to add
-  */
-  public func addListener(listener: ConnectionListener) {
-    _listeners.append(listener)
-  }
-
-  /**
-  Removes a listener for changes to the connection.
-
-  - Parameter listener: The listener to remove
-  */
-  public func removeListener(listener: ConnectionListener) {
-    _listeners.bky_removeAllOccurrencesOfElement(listener)
   }
 
   // MARK: - Internal - For testing only

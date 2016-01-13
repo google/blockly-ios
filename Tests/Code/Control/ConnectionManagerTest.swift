@@ -449,10 +449,15 @@ class ConnectionManagerTest: XCTestCase {
 
   private func createConnection(
     x: CGFloat, _ y: CGFloat, _ type: Connection.ConnectionType, sourceInput: Input? = nil)
-    -> Connection {
+    -> Connection
+  {
+      let block = Block.Builder(identifier: "test").build()
+      workspace.addBlock(block)
+
       let conn = Connection(type: type, sourceInput: sourceInput)
       conn.moveToPosition(WorkspacePointMake(x, y))
-      conn.sourceBlock = Block.Builder(identifier: "test").buildForWorkspace(workspace)
+      conn.sourceBlock = block
+
       return conn
   }
 }

@@ -40,7 +40,7 @@ public class BlockLayout: Layout {
   // MARK: - Properties
 
   /// The `Block` to layout.
-  public unowned let block: Block
+  public final let block: Block
 
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
@@ -156,7 +156,8 @@ public class BlockLayout: Layout {
     super.init(workspaceLayout: workspaceLayout)
 
     for connection in self.block.directConnections {
-      connection.addListener(self)
+      connection.targetDelegate = self
+      connection.highlightDelegate = self
 
       // Automatically let the workspace's connection manager track this connection
       workspaceLayout.connectionManager.trackConnection(connection)
@@ -370,28 +371,30 @@ public class BlockLayout: Layout {
   private func updateLayoutHierarchyForConnection(connection: Connection) throws {
     // TODO:(vicng) Optimize re-rendering all layouts affected by this method
 
+    if connection != self.block.previousConnection && connection != self.block.outputConnection {
+      // Only previous/output connectors are responsible for updating the block group
+      // layout hierarchy, not next/input connectors.
+      return
+    }
+
     // Check that there are layouts for both the source and target blocks of this connection
     if connection.sourceBlock.layout == nil ||
       (connection.sourceInput != nil && connection.sourceInput!.layout == nil) ||
-      (connection.targetBlock != nil && connection.targetBlock?.layout == nil) {
-        throw BlocklyError(.LayoutIllegalState,
-          "Can't connect a block without a layout. " +
-          "Did you call layoutBuilder.buildLayoutTreeForTopLevelBlock() on this block before " +
-          "adding it to workspace?")
+      (connection.targetBlock != nil && connection.targetBlock!.layout == nil)
+    {
+        throw BlocklyError(.LayoutIllegalState, "Can't connect a block without a layout. ")
     }
 
     // Check that this layout is connected to a block group layout
     if self.parentBlockGroupLayout == nil {
       throw BlocklyError(.LayoutIllegalState,
-        "Block layout is not connected to a parent block group layout. " +
-          "Did you call layoutBuilder.buildLayoutTreeForTopLevelBlock() on this block before " +
-        "adding it to workspace?")
+        "Block layout is not connected to a parent block group layout. ")
     }
 
-    if connection != self.block.previousConnection && connection != self.block.outputConnection {
-      // Only previous/output connectors are responsible for updating the block group
-      // layout hierarchy, not next/input connectors.
-      return
+    if (connection.targetBlock != nil &&
+      connection.targetBlock!.layout?.workspaceLayout != workspaceLayout)
+    {
+      throw BlocklyError(.LayoutIllegalState, "Can't connect blocks in different workspaces")
     }
 
     let workspace = workspaceLayout.workspace
@@ -443,13 +446,17 @@ public class BlockLayout: Layout {
   }
 }
 
-// MARK: - ConnectionListener
+// MARK: - ConnectionHighlightDelegate
 
-extension BlockLayout: ConnectionListener {
+extension BlockLayout: ConnectionHighlightDelegate {
   public func didChangeHighlightForConnection(connection: Connection) {
     scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
   }
+}
 
+// MARK: - ConnectionTargetDelegate
+
+extension BlockLayout: ConnectionTargetDelegate {
   public func didChangeTargetForConnection(connection: Connection) {
     do {
       try updateLayoutHierarchyForConnection(connection)
@@ -457,4 +464,9 @@ extension BlockLayout: ConnectionListener {
       bky_assertionFailure("Could not update layout for connection: \(error)")
     }
   }
+}
+
+// MARK: - BlockDelegate
+
+extension BlockLayout: BlockDelegate {
 }

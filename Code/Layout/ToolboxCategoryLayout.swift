@@ -19,11 +19,11 @@ import Foundation
  Stores information on how to render and position a `Toolbox.Category` on-screen.
 */
 public class ToolboxCategoryLayout: WorkspaceLayout {
-  public unowned let category: Toolbox.Category
+  public let category: Toolbox.Category
 
-  public init(category: Toolbox.Category, layoutBuilder: LayoutBuilder) {
+  public init(category: Toolbox.Category, layoutBuilder: LayoutBuilder) throws {
     self.category = category
-    super.init(workspace: category.workspace, layoutBuilder: layoutBuilder)
+    try super.init(workspace: category.workspace, layoutBuilder: layoutBuilder)
   }
 
   public override func performLayout(includeChildren includeChildren: Bool) {

@@ -25,7 +25,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _workspaceLayout = WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+    _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -248,9 +248,10 @@ class BlockGroupLayoutTest: XCTestCase {
   }
 
   func createBlockLayout() -> BlockLayout {
-    let block = Block.Builder(identifier: "test").buildForWorkspace(_workspaceLayout.workspace)
+    let block = Block.Builder(identifier: "test").build()
+    _workspaceLayout.workspace.addBlock(block)
     let layout = BlockLayout(block: block, workspaceLayout: _workspaceLayout)
-    block.layout = layout
+    block.delegate = layout
     return layout
   }
 }

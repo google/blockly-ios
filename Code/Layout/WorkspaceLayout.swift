@@ -63,7 +63,7 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(workspace: Workspace, layoutBuilder: LayoutBuilder) {
+  public init(workspace: Workspace, layoutBuilder: LayoutBuilder) throws {
     self.workspace = workspace
     self.layoutBuilder = layoutBuilder
     self.connectionManager = ConnectionManager()
@@ -71,6 +71,17 @@ public class WorkspaceLayout: Layout {
 
     self.workspaceLayout = self
     self.layoutBuilder.workspaceLayout = self
+
+    // Assign the layout as the workspace's delegate so it can listen for new events that
+    // occur on the workspace
+    workspace.delegate = self
+
+    // Build the layout tree, based on the existing state of the workspace. This creates a set of
+    // layout objects for all of its blocks/inputs/fields
+    try workspaceLayout.layoutBuilder.buildLayoutTree()
+
+    // Perform a layout update for the entire tree
+    workspaceLayout.updateLayoutDownTree()
   }
 
   // MARK: - Super
@@ -205,41 +216,41 @@ public class WorkspaceLayout: Layout {
   }
 
   /**
-   Creates the layout tree for a given top-level `block` and sets its parent's block group position
-   to a given `position`.
-
-   - Parameter block: The `Block` to add
-   - Parameter position: The position to place the top level block in the workspace.
-   - Throws:
-   `BlocklyError`: Thrown if the layout tree could not be properly constructed for `block`.
-   */
-  public func addLayoutTreeForTopLevelBlock(block: Block, atPosition position: WorkspacePoint)
-    throws
-  {
-    // Create the layout tree for this new block
-    try layoutBuilder.buildLayoutTreeForTopLevelBlock(block)
-
-    guard let blockGroupLayout = block.layout?.parentBlockGroupLayout else {
-      throw BlocklyError(.LayoutIllegalState, "Could not locate the parent block group layout")
-    }
-
-    // Set the position of the block group and perform a layout for the tree
-    blockGroupLayout.relativePosition = position
-    blockGroupLayout.updateLayoutDownTree()
-
-    // Update the content size
-    updateCanvasSize()
-
-    // This layout needs a complete refresh since a new block group layout was added
-    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
-  }
-
-  /**
    Updates the required size of this layout based on the current positions of all blocks.
    */
   public func updateCanvasSize() {
     performLayout(includeChildren: false)
+
+    // View positions need to be refreshed for the entire tree since in RTL, if the canvas size
+    // changes, the positions of block groups also change.
     refreshViewPositionsForTree()
+  }
+}
+
+// MARK: - WorkspaceDelegate implementation
+
+extension WorkspaceLayout: WorkspaceDelegate {
+  public func workspace(workspace: Workspace, didAddBlock block: Block) {
+    if !block.topLevel {
+      // We only need to create layout trees for top level blocks
+      return
+    }
+
+    do {
+      // Create the layout tree for this newly added block
+      if let blockGroupLayout = try layoutBuilder.buildLayoutTreeForTopLevelBlock(block) {
+        // Perform a layout for the tree
+        blockGroupLayout.updateLayoutDownTree()
+
+        // Update the content size
+        updateCanvasSize()
+
+        // This layout needs a complete refresh since a new block group layout was added
+        scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+      }
+    } catch let error as NSError {
+      bky_assertionFailure("Could not create the layout tree for block: \(error)")
+    }
   }
 }
 

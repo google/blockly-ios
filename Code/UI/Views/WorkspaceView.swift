@@ -142,6 +142,7 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Public
 
+  // TODO:(vicng) Move this method out into a controller object.
   /**
   Copies a block view into this workspace view. This is done by:
   1) Creating a copy of the view's block
@@ -168,7 +169,10 @@ public class WorkspaceView: LayoutView {
 
     // TODO:(vicng) Change this to do a deep copy of the block
     // Create a copy of the block
-    let newBlock = Block.Builder(block: blockLayout.block).buildForWorkspace(workspace)
+    let newBlock = Block.Builder(block: blockLayout.block).build()
+
+    // Add this block to the workspace (which will automatically create a layout tree for the block)
+    workspace.addBlock(newBlock)
 
     // Get the position of the block view relative to this view, and use that as
     // the position for the newly created block
@@ -182,9 +186,7 @@ public class WorkspaceView: LayoutView {
       blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
     let newWorkspacePosition = workspacePointFromViewPoint(workspaceViewPosition)
 
-    // Add the layout tree for the new block to the workspace layout
-    try workspaceLayout
-        .addLayoutTreeForTopLevelBlock(newBlock, atPosition: newWorkspacePosition)
+    newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
 
     // Send change events immediately, which will force the corresponding block view to be created
     LayoutEventManager.sharedInstance.immediatelySendChangeEvents()

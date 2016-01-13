@@ -259,8 +259,10 @@ public class Dragger: NSObject {
       removeHighlightedConnectionForDrag(drag)
 
       // Add the new highlight (if something was found)
-      if let newHighlightedConnection = connectionPair?.target {
-        newHighlightedConnection.addHighlightForBlock(drag.blockLayout.block)
+      if let blockLayout = drag.blockLayout,
+        let newHighlightedConnection = connectionPair?.target
+      {
+        newHighlightedConnection.addHighlightForBlock(blockLayout.block)
         drag.highlightedConnection = newHighlightedConnection
       }
     }
@@ -272,20 +274,25 @@ public class Dragger: NSObject {
   - Parameter drag: The drag.
   */
   private func removeHighlightedConnectionForDrag(drag: DragGestureData) {
-    drag.highlightedConnection?.removeHighlightForBlock(drag.blockLayout.block)
-    drag.highlightedConnection = nil
+    if let blockLayout = drag.blockLayout {
+      drag.highlightedConnection?.removeHighlightForBlock(blockLayout.block)
+      drag.highlightedConnection = nil
+    }
   }
 
   /**
   Returns the most suitable connection pair for a given drag, if one exists.
   */
   private func findBestConnectionForDrag(drag: DragGestureData)
-    -> ConnectionManager.ConnectionPair? {
-    let workspaceLayout = drag.blockLayout.workspaceLayout
-    let maxRadius = workspaceLayout.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
+    -> ConnectionManager.ConnectionPair?
+  {
+    if let workspaceLayout = drag.blockLayout?.workspaceLayout {
+      let maxRadius = workspaceLayout.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
 
-    return workspaceLayout.connectionManager.findBestConnectionForGroup(drag.connectionGroup,
-      maxRadius: maxRadius)
+      return workspaceLayout.connectionManager.findBestConnectionForGroup(drag.connectionGroup,
+        maxRadius: maxRadius)
+    }
+    return nil
   }
 }
 
@@ -294,7 +301,7 @@ Stores relevant data for the lifetime of a single drag.
 */
 private class DragGestureData {
   /// The block layout that is being dragged
-  private unowned let blockLayout: BlockLayout
+  private weak var blockLayout: BlockLayout?
 
   /// Stores the block layout's starting position when the drag began, in Workspace coordinates
   private let blockLayoutStartPosition: WorkspacePoint

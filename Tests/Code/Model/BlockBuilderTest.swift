@@ -32,7 +32,8 @@ class BlockBuilderTest: XCTestCase {
     let block3 = buildFrankenBlock(workspace)
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
-    let blockCopy = Block.Builder(block: block).buildForWorkspace(workspace)
+    let blockCopy = Block.Builder(block: block).build()
+    workspace.addBlock(blockCopy)
     validateFrankenblock(blockCopy)
 
     // Validate that the block was deep copied
@@ -138,6 +139,8 @@ class BlockBuilderTest: XCTestCase {
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
-    return bob.buildForWorkspace(workspace)
+    let block = bob.build()
+    workspace.addBlock(block)
+    return block
   }
 }

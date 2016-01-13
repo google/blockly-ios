@@ -28,7 +28,7 @@ public class FieldLabelLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldLabel` to layout.
-  public unowned let fieldLabel: FieldLabel
+  public let fieldLabel: FieldLabel
 
   // MARK: - Initializers
 

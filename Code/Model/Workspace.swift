@@ -45,6 +45,20 @@ public func WorkspaceEdgeInsetsMake(
 }
 
 /**
+ Protocol for events that occur on a `Workspace` instance.
+ */
+@objc(BKYWorkspaceDelegate)
+public protocol WorkspaceDelegate: class {
+  /**
+   Event that is called when a block has been added to a workspace.
+
+   - Parameter workspace: The workspace that added a block.
+   - Parameter block: The block that was added.
+  */
+  func workspace(workspace: Workspace, didAddBlock: Block)
+}
+
+/**
 Data structure that contains `Block` instances.
 */
 @objc(BKYWorkspace)
@@ -55,8 +69,13 @@ public class Workspace : NSObject {
   public let maxBlocks: Int?
   public private(set) var allBlocks = [String: Block]()
 
-  /// The layout used for rendering this workspace
-  public var layout: WorkspaceLayout?
+  /// The delegate for events that occur in this workspace
+  public weak var delegate: WorkspaceDelegate?
+
+  /// Convenience property for accessing `self.delegate` as a `WorkspaceLayout`
+  public var layout: WorkspaceLayout? {
+    return self.delegate as? WorkspaceLayout
+  }
 
   // MARK: - Initializers
 
@@ -89,6 +108,8 @@ public class Workspace : NSObject {
   */
   internal func addBlock(block: Block) {
     allBlocks[block.uuid] = block
+
+    delegate?.workspace(self, didAddBlock: block)
   }
 
   /**
