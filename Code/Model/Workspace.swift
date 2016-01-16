@@ -105,11 +105,20 @@ public class Workspace : NSObject {
   Add a given block to the workspace.
 
   - Parameter block: The block to add.
+  - Returns: True if the block was added.  False if the block was not added (because it was already
+  in the workspace).
   */
-  internal func addBlock(block: Block) {
+  internal func addBlock(block: Block) -> Bool {
+    if allBlocks[block.uuid] != nil {
+      // Block already exists, return false
+      return false
+    }
+
     allBlocks[block.uuid] = block
 
     delegate?.workspace(self, didAddBlock: block)
+
+    return true
   }
 
   /**

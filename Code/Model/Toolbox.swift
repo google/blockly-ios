@@ -21,21 +21,22 @@ import Foundation
  */
 @objc(BKYToolbox)
 public class Toolbox: NSObject {
-  public let isRTL: Bool
-  public private(set) var categories = [Category]()
-
-  public init(isRTL: Bool = false) {
-    self.isRTL = isRTL
-    super.init()
-  }
+  public private(set) var categoryLayouts = [WorkspaceListLayout]()
 
   public func addCategory(categoryName: String, color: UIColor,
     layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
   {
-    let category = Category(toolbox: self, layoutBuilder: layoutBuilder)
+    let category = Category()
     category.name = categoryName
     category.color = color
-    categories.append(category)
+
+    do {
+      let layout = try WorkspaceListLayout(workspaceList: category, layoutBuilder: layoutBuilder)
+      categoryLayouts.append(layout)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not create WorkspaceListLayout: \(error)")
+    }
+
     return category
   }
 }
@@ -45,55 +46,8 @@ extension Toolbox {
    Groups a collection of blocks together, for use in a `Toolbox`.
    */
   @objc(BKYToolboxCategory)
-  public class Category: NSObject {
-    /// Defines information on how to position blocks within the Category
-    public class BlockItem {
-      var block: Block
-      var gap: CGFloat
-
-      private init(block: Block, gap: CGFloat) {
-        self.block = block
-        self.gap = gap
-      }
-    }
-
+  public class Category: WorkspaceList {
     public var name = ""
     public var color: UIColor?
-    public unowned let toolbox: Toolbox
-    /// Each category is essentially its own workspace of blocks
-    public let workspace: Workspace
-    public private(set) var workspaceLayout: ToolboxCategoryLayout?
-
-    /// List of all blocks that have been added to this category
-    public private(set) var blockItems = [BlockItem]()
-
-    private init(toolbox: Toolbox, layoutBuilder: LayoutBuilder) {
-      self.toolbox = toolbox
-      self.workspace = Workspace()
-      super.init()
-
-      // Automatically create a layout for this category
-      do {
-        self.workspaceLayout = try ToolboxCategoryLayout(category: self, layoutBuilder: layoutBuilder)
-      } catch let error as NSError {
-        bky_assertionFailure("Could not build layout for toolbox category: \(error)")
-      }
-    }
-
-    /**
-     Adds a block to this category.
-
-     - Parameter block: The block to add.
-     - Parameter gap: The amount of space to separate this block and the next block that is added,
-     specified as a Workspace coordinate system unit. Defaults to
-     `BlockLayout.sharedConfig.ySeparatorSpace` if this value is not specified.
-     */
-    public func addBlock(block: Block, gap: CGFloat?) {
-      workspace.addBlock(block)
-
-      let gap = (gap ?? BlockLayout.sharedConfig.ySeparatorSpace)
-      let blockItem = BlockItem(block: block, gap: gap)
-      blockItems.append(blockItem)
-    }
   }
 }

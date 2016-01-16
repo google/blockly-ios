@@ -15,6 +15,8 @@
 
 import Foundation
 
+// TODO:(vicng) Refactor this into a view controller
+
 /**
  Handler for events that occur on `ToolboxCategoryListView`.
  */
@@ -93,8 +95,8 @@ public class ToolboxCategoryListView: UICollectionView {
       return nil
     }
 
-    for (var i = 0; i < toolbox!.categories.count; i++) {
-      if toolbox!.categories[i] == category {
+    for i in 0 ..< toolbox!.categoryLayouts.count {
+      if toolbox!.categoryLayouts[i] == category {
         return NSIndexPath(forRow: i, inSection: 0)
       }
     }
@@ -102,7 +104,7 @@ public class ToolboxCategoryListView: UICollectionView {
   }
 
   private func categoryForIndexPath(indexPath: NSIndexPath) -> Toolbox.Category {
-    return toolbox!.categories[indexPath.row]
+    return toolbox!.categoryLayouts[indexPath.row].workspace as! Toolbox.Category
   }
 }
 
@@ -115,7 +117,7 @@ extension ToolboxCategoryListView: UICollectionViewDataSource {
 
   public func collectionView(
     collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return toolbox?.categories.count ?? 0
+    return toolbox?.categoryLayouts.count ?? 0
   }
 
   public func collectionView(collectionView: UICollectionView,

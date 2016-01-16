@@ -112,7 +112,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   private func addBlock(
     blockName: String, toCategory category: Toolbox.Category, gap: CGFloat? = nil)
   {
-    if let block = _blockFactory.addBlock(blockName, toWorkspace: category.workspace) {
+    if let block = _blockFactory.buildBlock(blockName) {
       category.addBlock(block, gap: gap)
     }
   }
