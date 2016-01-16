@@ -105,6 +105,48 @@ class BlockTest: XCTestCase {
     XCTAssertEqual(block2, block2.lastBlockInChain())
   }
 
+  func testAllBlocksForTree() {
+    guard
+      let blockStatementOutputNoInput =
+      _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+      let blockInputOutput =
+      _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let blockStatementMultipleInputValueInput =
+      _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+      let blockStatementNoNext =
+      _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+      let blockStatementStatementInput =
+      _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+      else
+    {
+      XCTFail("Blocks couldn't be loaded")
+      return
+    }
+
+    // Connect into a megazord block
+    do {
+      try blockInputOutput.inputs[0].connection?.connectTo(
+        blockStatementOutputNoInput.outputConnection)
+      try blockStatementMultipleInputValueInput.inputs[0].connection?.connectTo(
+        blockInputOutput.outputConnection)
+      try blockStatementStatementInput.inputs[0].connection?.connectTo(
+        blockStatementNoNext.previousConnection)
+      try blockStatementStatementInput.nextConnection?.connectTo(
+        blockStatementMultipleInputValueInput.previousConnection)
+    } catch let error as NSError {
+      XCTFail("Couldn't connect blocks together: \(error)")
+    }
+
+    // Make sure that all blocks exist in the root
+    let allBlocks = blockStatementStatementInput.allBlocksForTree()
+    XCTAssertEqual(5, allBlocks.count)
+    XCTAssertTrue(allBlocks.contains(blockStatementOutputNoInput))
+    XCTAssertTrue(allBlocks.contains(blockInputOutput))
+    XCTAssertTrue(allBlocks.contains(blockStatementMultipleInputValueInput))
+    XCTAssertTrue(allBlocks.contains(blockStatementNoNext))
+    XCTAssertTrue(allBlocks.contains(blockStatementStatementInput))
+  }
+
   func testAllConnectionsForTree() {
     guard
       let blockNoConnections =
@@ -173,6 +215,47 @@ class BlockTest: XCTestCase {
         statementStatementInputCount, blockStatementStatementInput.allConnectionsForTree().count)
     } catch let error as NSError {
       XCTFail("Couldn't connect blocks together: \(error)")
+    }
+  }
+
+  func testDeepCopy() {
+    guard
+      let blockStatementOutputNoInput =
+      _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+      let blockInputOutput =
+      _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let blockStatementMultipleInputValueInput =
+      _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+      let blockStatementNoNext =
+      _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+      let blockStatementStatementInput =
+      _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+      else
+    {
+      XCTFail("Blocks couldn't be loaded")
+      return
+    }
+
+    // Connect into a megazord block
+    do {
+      try blockInputOutput.inputs[0].connection?.connectTo(
+        blockStatementOutputNoInput.outputConnection)
+      try blockStatementMultipleInputValueInput.inputs[0].connection?.connectTo(
+        blockInputOutput.outputConnection)
+      try blockStatementStatementInput.inputs[0].connection?.connectTo(
+        blockStatementNoNext.previousConnection)
+      try blockStatementStatementInput.nextConnection?.connectTo(
+        blockStatementMultipleInputValueInput.previousConnection)
+    } catch let error as NSError {
+      XCTFail("Couldn't connect blocks together: \(error)")
+    }
+
+    do {
+      let copyResult = try blockStatementStatementInput.deepCopy()
+      XCTAssertEqual(5, copyResult.copiedBlocks.count)
+      assertSimilarBlockTrees(copyResult.rootBlock, blockStatementStatementInput)
+    } catch let error as NSError {
+      XCTFail("Couldn't deep copy block: \(error)")
     }
   }
 
@@ -302,6 +385,49 @@ class BlockTest: XCTestCase {
       XCTAssertEqual(input[0], block.onlyValueInput())
     } else {
       XCTFail("Couldn't load block")
+    }
+  }
+
+  // MARK: - Helper methods
+
+  /**
+   Compares two trees of blocks and asserts that their tree of connections is the same.
+   */
+  func assertSimilarBlockTrees(block1: Block, _ block2: Block) {
+    // Test existence of all connections and follow next/input connections
+    XCTAssertTrue(
+      (block1.previousConnection == nil && block2.previousConnection == nil) ||
+      (block1.previousConnection != nil && block2.previousConnection != nil))
+
+    XCTAssertTrue(
+      (block1.outputConnection == nil && block2.outputConnection == nil) ||
+      (block1.outputConnection != nil && block2.outputConnection != nil))
+
+    XCTAssertTrue(
+      (block1.nextConnection == nil && block2.nextConnection == nil) ||
+      (block1.nextConnection != nil && block2.nextConnection != nil))
+
+    XCTAssertTrue(
+      (block1.nextBlock == nil && block2.nextBlock == nil) ||
+      (block1.nextBlock != nil && block2.nextBlock != nil))
+
+    if block1.nextBlock != nil && block2.nextBlock != nil {
+      assertSimilarBlockTrees(block1.nextBlock!, block2.nextBlock!)
+    }
+
+    XCTAssertEqual(block1.inputs.count, block2.inputs.count)
+    for i in 0 ..< block1.inputs.count {
+      XCTAssertTrue(
+        (block1.inputs[i].connection == nil && block2.inputs[i].connection == nil) ||
+        (block1.inputs[i].connection != nil && block2.inputs[i].connection != nil))
+
+      XCTAssertTrue(
+        (block1.inputs[i].connectedBlock == nil && block2.inputs[i].connectedBlock == nil) ||
+        (block1.inputs[i].connectedBlock != nil && block2.inputs[i].connectedBlock != nil))
+
+      if block1.inputs[i].connectedBlock != nil && block2.inputs[i].connectedBlock != nil {
+        assertSimilarBlockTrees(block1.inputs[i].connectedBlock!, block2.inputs[i].connectedBlock!)
+      }
     }
   }
 }

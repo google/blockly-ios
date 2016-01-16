@@ -21,7 +21,7 @@ import Foundation
  */
 @objc(BKYToolbox)
 public class Toolbox: NSObject {
-  public private(set) var categoryLayouts = [WorkspaceListLayout]()
+  public private(set) var categoryLayouts = [WorkspaceFlowLayout]()
 
   public func addCategory(categoryName: String, color: UIColor,
     layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
@@ -31,7 +31,8 @@ public class Toolbox: NSObject {
     category.color = color
 
     do {
-      let layout = try WorkspaceListLayout(workspaceList: category, layoutBuilder: layoutBuilder)
+      let layout = try WorkspaceFlowLayout(
+        workspace: category, layoutDirection: .Vertical, layoutBuilder: layoutBuilder)
       categoryLayouts.append(layout)
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceListLayout: \(error)")
@@ -46,7 +47,7 @@ extension Toolbox {
    Groups a collection of blocks together, for use in a `Toolbox`.
    */
   @objc(BKYToolboxCategory)
-  public class Category: WorkspaceList {
+  public class Category: WorkspaceFlow {
     public var name = ""
     public var color: UIColor?
   }

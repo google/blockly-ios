@@ -24,8 +24,8 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   // MARK: - Initializers
 
-  override init() {
-    super.init()
+  init() {
+    super.init(nibName: nil, bundle: nil)
     commonInit()
   }
 
@@ -51,6 +51,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     super.viewDidLoad()
 
     // Load data
+    self.enableTrashCan = true
     loadWorkspace()
     loadToolbox()
 
@@ -95,12 +96,14 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     let random = toolbox.addCategory("Random", color: UIColor.redColor())
     addBlock("simple_input_output", toCategory: random)
     addBlock("multiple_input_output", toCategory: random)
-    addBlock("output_no_input", toCategory: random, gap: 30)
+    addBlock("output_no_input", toCategory: random)
+    random.addGap(40)
 
     addBlock("statement_no_input", toCategory: random)
     addBlock("statement_value_input", toCategory: random)
     addBlock("statement_multiple_value_input", toCategory: random)
-    addBlock("statement_no_next", toCategory: random, gap: 30)
+    addBlock("statement_no_next", toCategory: random)
+    random.addGap(40)
 
     addBlock("statement_statement_input", toCategory: random)
     addBlock("block_statement", toCategory: random)
@@ -109,11 +112,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     self.toolbox = toolbox
   }
 
-  private func addBlock(
-    blockName: String, toCategory category: Toolbox.Category, gap: CGFloat? = nil)
-  {
+  private func addBlock(blockName: String, toCategory category: Toolbox.Category) {
     if let block = _blockFactory.buildBlock(blockName) {
-      category.addBlock(block, gap: gap)
+      category.addBlockTree(block)
     }
   }
 

@@ -29,6 +29,7 @@ public class BlocklyError: NSError {
   @objc
   public enum BKYBlocklyErrorCode: Int {
     case InvalidBlockDefinition = 100,
+    ModelIllegalState = 101,
     LayoutNotFound = 200,
     LayoutIllegalState = 201,
     ConnectionManagerError = 210,

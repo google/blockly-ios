@@ -92,12 +92,14 @@ public class WorkspaceView: LayoutView {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+    let allBlockLayouts = layout.allBlockLayoutsInWorkspace()
+
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_AddedBlockLayout]) {
       // Get blocks that are in the current viewport
-      for blockLayout in layout.allBlockLayoutsInWorkspace() {
+      for blockLayout in allBlockLayouts {
         let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
 
-        // TODO:(vicng) For now, always render blocks regardless of where they are on the screen.
+        // TODO:(#317) For now, always render blocks regardless of where they are on the screen.
         // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
         let shouldRenderBlockLayout = true
         if !shouldRenderBlockLayout {
@@ -111,6 +113,24 @@ public class WorkspaceView: LayoutView {
           addBlockViewForLayout(blockLayout)
         } else {
           // Do nothing. The block view will handle its own refreshing/repositioning.
+        }
+      }
+    }
+
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_RemovedBlockLayout]) {
+      // TODO:(#317) Remove block views more efficiently.
+      var blockLayoutSet = Set<BlockLayout>()
+      for blockLayout in allBlockLayouts {
+        blockLayoutSet.insert(blockLayout)
+      }
+
+      // For all block views, check if the layout exists in `self.workspaceLayout`. If it doesn't,
+      // then the block view has been removed.
+      for view in scrollView.blockGroupView.subviews {
+        if let blockView = view as? BlockView {
+          if blockView.blockLayout == nil || !blockLayoutSet.contains(blockView.blockLayout!) {
+            removeBlockView(blockView)
+          }
         }
       }
     }
@@ -140,6 +160,10 @@ public class WorkspaceView: LayoutView {
     updateCanvasSizeFromLayout()
   }
 
+  public override func intrinsicContentSize() -> CGSize {
+    return workspaceLayout?.viewFrame.size ?? CGSizeZero
+  }
+
   // MARK: - Public
 
   // TODO:(vicng) Move this method out into a controller object.
@@ -162,17 +186,14 @@ public class WorkspaceView: LayoutView {
       throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
     }
     guard let workspaceLayout = self.workspaceLayout else {
-      throw BlocklyError(.LayoutNotFound, "No workspace layout has been set for the `self.layout`")
+      throw BlocklyError(.LayoutNotFound, "No workspace layout has been set for `self.layout`")
     }
 
     let workspace = workspaceLayout.workspace
 
-    // TODO:(vicng) Change this to do a deep copy of the block
-    // Create a copy of the block
-    let newBlock = Block.Builder(block: blockLayout.block).build()
-
-    // Add this block to the workspace (which will automatically create a layout tree for the block)
-    workspace.addBlock(newBlock)
+    // Create a deep copy of this block in this workspace (which will automatically create a layout
+    // tree for the block)
+    let newBlock = try workspace.copyBlockTree(blockLayout.block)
 
     // Get the position of the block view relative to this view, and use that as
     // the position for the newly created block
@@ -184,7 +205,8 @@ public class WorkspaceView: LayoutView {
     }
     let workspaceViewPosition =
       blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
-    let newWorkspacePosition = workspacePointFromViewPoint(workspaceViewPosition)
+    let newWorkspacePosition =
+      workspaceLayout.workspacePositionFromViewPosition(workspaceViewPosition)
 
     newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
 
@@ -207,35 +229,17 @@ public class WorkspaceView: LayoutView {
    - Parameter gesture: The gesture
    - Returns: The corresponding `WorkspacePoint` for the gesture
    */
-  public func workspacePointFromGestureTouchLocation(gesture: UIGestureRecognizer) -> WorkspacePoint
+  public func workspacePositionFromGestureTouchLocation(gesture: UIGestureRecognizer)
+    -> WorkspacePoint
   {
-    let touchPosition = gesture.locationInView(self.scrollView.blockGroupView)
-    return workspacePointFromViewPoint(touchPosition)
-  }
-
-  // MARK: - Private
-
-  /**
-  Maps a `UIView` point relative to `self.scrollView.blockGroupView` to a logical Workspace
-  position.
-
-  - Parameter point: The `UIView` point
-  - Returns: The corresponding `WorkspacePoint`
-  */
-  private func workspacePointFromViewPoint(point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePointZero
     }
-
-    var viewPoint = point
-    if workspaceLayout.workspace.rtl {
-      // In RTL, the workspace position is relative to the top-right corner
-      viewPoint.x = self.scrollView.blockGroupView.bounds.size.width - viewPoint.x
-    }
-
-    // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
-    return workspaceLayout.scaledWorkspaceVectorFromViewVector(viewPoint)
+    let touchPosition = gesture.locationInView(self.scrollView.blockGroupView)
+    return workspaceLayout.workspacePositionFromViewPosition(touchPosition)
   }
+
+  // MARK: - Private
 
   private func updateCanvasSizeFromLayout() {
     guard let layout = self.workspaceLayout else {
@@ -249,7 +253,10 @@ public class WorkspaceView: LayoutView {
     // jump whenever the total canvas size shrinks (eg. after blocks are moved from higher value
     // coordinates to lower value ones)
     let canvasPadding = allowCanvasPadding ?
-      CGSizeMake(self.bounds.size.width, self.bounds.size.height) : CGSizeZero
+      CGSizeMake(self.bounds.size.width, self.bounds.size.height) :
+      // Always make the canvas width completely fill the entire scroll view frame.
+      // This is important in RTL to make sure that content appears right-aligned.
+      CGSizeMake(max(self.bounds.size.width - blockGroupSize.width, 0), 0)
 
     let oldContentSize = scrollView.contentSize
     let newContentSize = blockGroupSize + canvasPadding

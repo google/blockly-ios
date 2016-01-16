@@ -176,6 +176,90 @@ public final class Block : NSObject {
     }
   }
 
+  /**
+   Follows all input and next connections starting from this block and returns all blocks connected
+   to this block, including this block.
+
+   - Returns: A list of all blocks connected to this block, including this block.
+   */
+  public func allBlocksForTree() -> [Block] {
+    var blocks = [self]
+
+    // Follow input connections
+    for input in self.inputs {
+      if let connectedBlock = input.connectedBlock {
+        blocks.appendContentsOf(connectedBlock.allBlocksForTree())
+      }
+    }
+
+    // Follow next connection
+    if let nextBlock = self.nextBlock {
+      blocks.appendContentsOf(nextBlock.allBlocksForTree())
+    }
+
+    return blocks
+  }
+
+  /**
+   Copies this block and all of the blocks connected to it through its input or next connections.
+
+   - Returns: A tuple where `rootBlock` is a copy of this block, and `copiedBlocks` is a
+   list of all connected blocks that were copied (including `rootBlock`).
+   - Throws:
+   `BlocklyError`: Thrown if copied blocks could not be connected to each other.
+   */
+  public func deepCopy() throws -> (rootBlock: Block, copiedBlocks: [Block]) {
+    let newBlock = Block.Builder(block: self).build()
+    var copiedBlocks = [Block]()
+    copiedBlocks.append(newBlock)
+
+    // Copy block(s) from input connections
+    for i in 0 ..< self.inputs.count {
+      let inputConnection = self.inputs[i].connection
+      let copiedInputConnection = newBlock.inputs[i].connection
+
+      // Check that the input connections are consistent between the original and copied blocks
+      if inputConnection == nil && copiedInputConnection != nil {
+        throw BlocklyError(.ModelIllegalState,
+          "An input connection was created, but no such connection exists on the original block.")
+      } else if inputConnection != nil && copiedInputConnection == nil {
+        throw BlocklyError(.ModelIllegalState,
+          "An input connection was not copied from the original block.")
+      }
+
+      // Perform a copy of the connected block (if it exists)
+      if let connectedBlock = self.inputs[i].connectedBlock {
+        let copyResult = try connectedBlock.deepCopy()
+        if self.inputs[i].connection!.type == .NextStatement {
+          try copiedInputConnection!.connectTo(copyResult.rootBlock.previousConnection)
+        } else if self.inputs[i].connection!.type == .InputValue {
+          try copiedInputConnection!.connectTo(copyResult.rootBlock.outputConnection)
+        }
+        copiedBlocks.appendContentsOf(copyResult.copiedBlocks)
+      }
+    }
+
+    // Check that the next connections are consistent between the original and copied blocks
+    let nextConnection = self.nextConnection
+    let copiedNextConnection = newBlock.nextConnection
+    if nextConnection == nil && copiedNextConnection != nil {
+      throw BlocklyError(.ModelIllegalState,
+        "A next connection was created, but no such connection exists on the original block.")
+    } else if nextConnection != nil && copiedNextConnection == nil {
+      throw BlocklyError(.ModelIllegalState,
+        "The next connection was not copied from the original block.")
+    }
+
+    // Copy block(s) from next connection
+    if let nextBlock = self.nextBlock {
+      let copyResult = try nextBlock.deepCopy()
+      try copiedNextConnection!.connectTo(copyResult.rootBlock.previousConnection)
+      copiedBlocks.appendContentsOf(copyResult.copiedBlocks)
+    }
+
+    return (rootBlock: newBlock, copiedBlocks: copiedBlocks)
+  }
+
   // MARK: - Internal - For testing only
 
   /**

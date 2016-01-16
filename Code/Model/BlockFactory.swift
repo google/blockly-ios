@@ -64,7 +64,7 @@ public class BlockFactory : NSObject {
     guard let block = buildBlock(blockName) else {
       return nil
     }
-    workspace.addBlock(block)
+    workspace.addBlockTree(block)
     return block
   }
 

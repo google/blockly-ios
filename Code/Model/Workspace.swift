@@ -55,7 +55,15 @@ public protocol WorkspaceDelegate: class {
    - Parameter workspace: The workspace that added a block.
    - Parameter block: The block that was added.
   */
-  func workspace(workspace: Workspace, didAddBlock: Block)
+  func workspace(workspace: Workspace, didAddBlock block: Block)
+
+  /**
+   Event that is called when a block will be removed from a workspace.
+
+   - Parameter workspace: The workspace that will remove a block.
+   - Parameter block: The block that will be removed.
+   */
+  func workspace(workspace: Workspace, willRemoveBlock block: Block)
 }
 
 /**
@@ -95,47 +103,65 @@ public class Workspace : NSObject {
 
   // MARK: - Public
 
+  /**
+   Returns: A list of all blocks in the workspace whose `topLevel` property is true.
+   */
   public func topLevelBlocks() -> [Block] {
     return allBlocks.values.filter({ $0.topLevel })
   }
 
-  // MARK: - Internal
-
   /**
-  Add a given block to the workspace.
+   Adds a block and all of its connected blocks to the workspace.
 
-  - Parameter block: The block to add.
-  - Returns: True if the block was added.  False if the block was not added (because it was already
-  in the workspace).
-  */
-  internal func addBlock(block: Block) -> Bool {
-    if allBlocks[block.uuid] != nil {
-      // Block already exists, return false
-      return false
+   - Parameter rootBlock: The root block to add.
+   */
+  public func addBlockTree(rootBlock: Block) {
+    for block in rootBlock.allBlocksForTree() {
+      if !containsBlock(block) {
+        allBlocks[block.uuid] = block
+        delegate?.workspace(self, didAddBlock: block)
+      }
     }
-
-    allBlocks[block.uuid] = block
-
-    delegate?.workspace(self, didAddBlock: block)
-
-    return true
   }
 
   /**
-  Removes a given block from the workspace.
+   Disconnects a given block from its previous/output connections, and removes it and all of its
+   connected blocks from the workspace.
 
-  - Parameter block: The block to remove.
-  */
-  internal func removeBlock(block: Block) {
-    allBlocks[block.uuid] = nil
+   - Parameter rootBlock: The root block to remove.
+   */
+  public func removeBlockTree(rootBlock: Block) {
+    // Disconnect this block from anything
+    rootBlock.previousConnection?.disconnect()
+    rootBlock.outputConnection?.disconnect()
 
-    // TODO:(vicng) Generate change event
+    // Remove all blocks from this block tree
+    for block in rootBlock.allBlocksForTree() {
+      if containsBlock(block) {
+        delegate?.workspace(self, willRemoveBlock: block)
+        allBlocks[block.uuid] = nil
+      }
+    }
+  }
+
+  /**
+   Deep copies a block and adds all of the copied blocks into the workspace.
+
+   - Parameter rootBlock: The root block to copy
+   - Returns: The root block that was copied
+   - Throws:
+   `BlocklyError`: Thrown if the block could not be copied
+   */
+  public func copyBlockTree(rootBlock: Block) throws -> Block {
+    let copyResult = try rootBlock.deepCopy()
+    addBlockTree(copyResult.rootBlock)
+    return copyResult.rootBlock
   }
 
   /**
   Returns if this block has been added to the workspace.
   */
-  internal func containsBlock(block: Block) -> Bool {
+  public func containsBlock(block: Block) -> Bool {
     return (allBlocks[block.uuid] != nil)
   }
 }
