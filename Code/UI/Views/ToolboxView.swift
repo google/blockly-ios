@@ -15,6 +15,7 @@
 
 import Foundation
 
+// TODO:(vicng) Refactor this into a view controller
 /**
  A view for displaying a `Toolbox`, where categories are displayed in a vertical list and blocks for
  each category appear to its right when a category is selected.
@@ -37,10 +38,10 @@ public class ToolboxView: UIView {
 
       if toolbox != nil {
         // Build each category's workspace layout tree
-        for category in toolbox!.categories {
+        for categoryLayout in toolbox!.categoryLayouts {
           do {
-            try category.workspace.layout?.layoutBuilder.buildLayoutTree()
-            category.workspace.layout?.updateLayoutDownTree()
+            try categoryLayout.layoutBuilder.buildLayoutTree()
+            categoryLayout.updateLayoutDownTree()
           } catch let error as NSError {
             bky_assertionFailure("Couldn't create layout tree for toolbox category: \(error)")
           }
@@ -110,7 +111,7 @@ public class ToolboxView: UIView {
     // current category, if it's open
     var size = CGSizeMake(ToolboxView.CategoryListViewWidth, UIViewNoIntrinsicMetric)
 
-    if let blockListViewFrame = categoryListView.selectedCategory?.workspace.layout?.viewFrame {
+    if let blockListViewFrame = categoryListView.selectedCategory?.layout?.viewFrame {
       size.width += blockListViewFrame.size.width
     }
 
@@ -156,12 +157,12 @@ public class ToolboxView: UIView {
     blockListView.layout = nil
 
     // Set the new layout
-    blockListView.layout = category?.workspace.layout
+    blockListView.layout = category?.layout
     blockListView.refreshView()
 
     // Update the width of `self.blockListView`.
     let updateBlockListViewWidth = { () -> Void in
-      if let blockListViewFrame = category?.workspace.layout?.viewFrame {
+      if let blockListViewFrame = category?.layout?.viewFrame {
         self.blockListViewWidthConstraint.constant = blockListViewFrame.size.width
       } else {
         self.blockListViewWidthConstraint.constant = 0

@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		FA4BB55E1B7BEC36000980E9 /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; };
-		FA4BB55F1B7BEC36000980E9 /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA548C301B6312AE008BC59C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C2F1B6312AE008BC59C /* AppDelegate.swift */; };
 		FA548C321B6312AE008BC59C /* SimpleWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C311B6312AE008BC59C /* SimpleWorkbenchViewController.swift */; };
 		FA548C371B6312AE008BC59C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA548C361B6312AE008BC59C /* Images.xcassets */; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
+		FA9B45BC1C32EA59001EAE68 /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C6E1B631627008BC59C /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAA2916A1B9576650005F100 /* TestBlocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA291691B9576650005F100 /* TestBlocks.json */; };
 /* End PBXBuildFile section */
 
@@ -43,11 +43,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		FA4BB5621B7BEC36000980E9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA4BB55F1B7BEC36000980E9 /* Blockly.framework in Embed Frameworks */,
+				FA9B45BC1C32EA59001EAE68 /* Blockly.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;

@@ -66,10 +66,11 @@
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* JSONHelper.swift */; };
 		FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEEAB1B68657A00D0674B /* Logging.swift */; };
+		FA9B45B51C31EA20001EAE68 /* WorkspaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9B45B41C31EA20001EAE68 /* WorkspaceList.swift */; };
 		FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */; };
 		FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxView.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
-		FA9D2FBD1C111A1300D0E528 /* ToolboxCategoryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */; };
+		FA9D2FBD1C111A1300D0E528 /* WorkspaceListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* WorkspaceListLayout.swift */; };
 		FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */; };
 		FAA204141C0FE8E400B035C5 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA204131C0FE8E400B035C5 /* WorkbenchViewController.swift */; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
@@ -166,10 +167,11 @@
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONHelper.swift; path = Core/Common/JSONHelper.swift; sourceTree = "<group>"; };
 		FA8BEEAB1B68657A00D0674B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Core/Common/Logging.swift; sourceTree = "<group>"; };
+		FA9B45B41C31EA20001EAE68 /* WorkspaceList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceList.swift; sourceTree = "<group>"; };
 		FA9C7FB11BDAFE6200E39F9E /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocklyError.swift; path = Core/Common/BlocklyError.swift; sourceTree = "<group>"; };
 		FA9D2FB81C11166000D0E528 /* ToolboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxView.swift; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
-		FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryLayout.swift; sourceTree = "<group>"; };
+		FA9D2FBC1C111A1300D0E528 /* WorkspaceListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceListLayout.swift; sourceTree = "<group>"; };
 		FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryListView.swift; sourceTree = "<group>"; };
 		FAA204131C0FE8E400B035C5 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
@@ -224,8 +226,8 @@
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FAE557731BE028640019D0D4 /* LayoutEventManager.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
-				FA9D2FBC1C111A1300D0E528 /* ToolboxCategoryLayout.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
+				FA9D2FBC1C111A1300D0E528 /* WorkspaceListLayout.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -351,6 +353,7 @@
 			children = (
 				FA548C5E1B63144A008BC59C /* Code */,
 				FA548C591B63136F008BC59C /* Tests */,
+				FA9B45B81C32D966001EAE68 /* Resources */,
 				FA548C061B630BAC008BC59C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */,
 				FA9D2FBA1C11176700D0E528 /* Toolbox.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
+				FA9B45B41C31EA20001EAE68 /* WorkspaceList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -441,6 +445,13 @@
 				FAC590441B990E4B0079A6E3 /* Layout */,
 			);
 			name = Core;
+			sourceTree = "<group>";
+		};
+		FA9B45B81C32D966001EAE68 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		FAC590441B990E4B0079A6E3 /* Layout */ = {
@@ -581,7 +592,7 @@
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
-				FA9D2FBD1C111A1300D0E528 /* ToolboxCategoryLayout.swift in Sources */,
+				FA9D2FBD1C111A1300D0E528 /* WorkspaceListLayout.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA8BEEAC1B68657A00D0674B /* Logging.swift in Sources */,
 				FA9C7FB21BDAFE6200E39F9E /* BlocklyError.swift in Sources */,
@@ -591,6 +602,7 @@
 				FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAA204141C0FE8E400B035C5 /* WorkbenchViewController.swift in Sources */,
+				FA9B45B51C31EA20001EAE68 /* WorkspaceList.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
 				FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,

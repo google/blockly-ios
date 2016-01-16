@@ -16,14 +16,15 @@
 import Foundation
 
 /**
- Stores information on how to render and position a `Toolbox.Category` on-screen.
+ Layout for displaying a list of blocks defined in a `WorkspaceList`.
 */
-public class ToolboxCategoryLayout: WorkspaceLayout {
-  public let category: Toolbox.Category
+public class WorkspaceListLayout: WorkspaceLayout {
 
-  public init(category: Toolbox.Category, layoutBuilder: LayoutBuilder) throws {
-    self.category = category
-    try super.init(workspace: category.workspace, layoutBuilder: layoutBuilder)
+  public let workspaceList: WorkspaceList
+
+  public init(workspaceList: WorkspaceList, layoutBuilder: LayoutBuilder) throws {
+    self.workspaceList = workspaceList
+    try super.init(workspace: workspaceList, layoutBuilder: layoutBuilder)
   }
 
   public override func performLayout(includeChildren includeChildren: Bool) {
@@ -42,9 +43,11 @@ public class ToolboxCategoryLayout: WorkspaceLayout {
     }
 
     // Update relative position/size of blocks
-    for (var i = 0; i < category.blockItems.count; i++) {
-      let blockItem = self.category.blockItems[i]
-      guard let blockGroupLayout = blockItem.block.layout?.parentBlockGroupLayout else {
+    for blockItem in workspaceList.blockItems {
+      let block: Block! = workspaceList.allBlocks[blockItem.blockUUID]
+      let blockGroupLayout: BlockGroupLayout! = block.layout?.rootBlockGroupLayout
+
+      if block == nil || blockGroupLayout == nil || !block.topLevel {
         continue
       }
 
@@ -70,7 +73,7 @@ public class ToolboxCategoryLayout: WorkspaceLayout {
     self.contentSize = size
 
     // Update the canvas size
-    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+    scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 
   private func blockGroupLayoutHasOutputTab(blockGroupLayout: BlockGroupLayout) -> Bool {
