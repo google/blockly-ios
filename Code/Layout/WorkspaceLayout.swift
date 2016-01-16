@@ -25,6 +25,12 @@ public class WorkspaceLayout: Layout {
   /// Flag that should be used when the canvas size of the workspace has been updated.
   public static let Flag_UpdateCanvasSize = LayoutFlag(0)
 
+  /// Flag that should be used when a block layout has been added to the workspace
+  public static let Flag_AddedBlockLayout = LayoutFlag(1)
+
+  /// Flag that should be used when a block layout has been removed from the workspace
+  public static let Flag_RemovedBlockLayout = LayoutFlag(2)
+
   // MARK: - Properties
 
   /// The `Workspace` to layout
@@ -37,9 +43,7 @@ public class WorkspaceLayout: Layout {
   public final let layoutBuilder: LayoutBuilder
 
   /// All child `BlockGroupLayout` objects that have been appended to this layout
-  public final var blockGroupLayouts: [BlockGroupLayout] {
-    return childLayouts.map({$0}) as! [BlockGroupLayout]
-  }
+  public final var blockGroupLayouts = [BlockGroupLayout]()
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
@@ -75,6 +79,11 @@ public class WorkspaceLayout: Layout {
     // Assign the layout as the workspace's delegate so it can listen for new events that
     // occur on the workspace
     workspace.delegate = self
+
+    // Immediately start tracking all connections of blocks in the workspace
+    for (_, block) in workspace.allBlocks {
+      trackConnectionsForBlock(block)
+    }
 
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
@@ -136,12 +145,12 @@ public class WorkspaceLayout: Layout {
   */
   public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
-    // Setting the parentLayout automatically adds it to self.childLayouts
+    blockGroupLayouts.append(blockGroupLayout)
     blockGroupLayout.parentLayout = self
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
     }
   }
 
@@ -154,12 +163,12 @@ public class WorkspaceLayout: Layout {
   */
   public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
-    // Setting the parentLayout to nil automatically removes it from self.childLayouts
+    blockGroupLayouts = blockGroupLayouts.filter({ $0 != blockGroupLayout })
     blockGroupLayout.parentLayout = nil
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
     }
   }
 
@@ -169,11 +178,10 @@ public class WorkspaceLayout: Layout {
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   public func reset(updateLayout updateLayout: Bool = true) {
-    for layout in self.childLayouts {
-      if let blockGroupLayout = layout as? BlockGroupLayout {
-        removeBlockGroupLayout(blockGroupLayout, updateLayout: false)
-      }
+    for blockGroupLayout in self.blockGroupLayouts {
+      blockGroupLayout.parentLayout = nil
     }
+    blockGroupLayouts.removeAll()
 
     if updateLayout {
       updateLayoutUpTree()
@@ -225,12 +233,33 @@ public class WorkspaceLayout: Layout {
     // changes, the positions of block groups also change.
     refreshViewPositionsForTree()
   }
+
+  // MARK: - Private
+
+  private func trackConnectionsForBlock(block: Block) {
+    // Automatically track changes to the connection so we can update the layout hierarchy
+    // accordingly
+    for connection in block.directConnections {
+      connection.targetDelegate = self
+      connectionManager.trackConnection(connection)
+    }
+  }
+
+  private func untrackConnectionsForBlock(block: Block) {
+    // Detach connection tracking for the block
+    for connection in block.directConnections {
+      connection.targetDelegate = nil
+      connectionManager.untrackConnection(connection)
+    }
+  }
 }
 
 // MARK: - WorkspaceDelegate implementation
 
 extension WorkspaceLayout: WorkspaceDelegate {
   public func workspace(workspace: Workspace, didAddBlock block: Block) {
+    trackConnectionsForBlock(block)
+
     if !block.topLevel {
       // We only need to create layout trees for top level blocks
       return
@@ -245,11 +274,125 @@ extension WorkspaceLayout: WorkspaceDelegate {
         // Update the content size
         updateCanvasSize()
 
-        // This layout needs a complete refresh since a new block group layout was added
-        scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+        // Schedule change event for an added block layout
+        scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
       }
     } catch let error as NSError {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
+    }
+  }
+
+  public func workspace(workspace: Workspace, willRemoveBlock block: Block) {
+    untrackConnectionsForBlock(block)
+
+    if !block.topLevel {
+      // We only need to remove layout trees for top-level blocks
+      return
+    }
+
+    if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
+      removeBlockGroupLayout(blockGroupLayout)
+
+      // TODO:(vicng) Detach/unset connection listeners (call some sort of reset method?)
+
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
+    }
+  }
+}
+
+// MARK: - ConnectionTargetDelegate
+
+extension WorkspaceLayout: ConnectionTargetDelegate {
+  public func didChangeTargetForConnection(connection: Connection) {
+    do {
+      try updateLayoutHierarchyForConnection(connection)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not update layout for connection: \(error)")
+    }
+  }
+
+  /**
+   Whenever a connection has been changed for a block in the workspace, this method is called to
+   ensure that the layout hierarchy is properly kept in sync to reflect this change.
+  */
+  private func updateLayoutHierarchyForConnection(connection: Connection) throws {
+    // TODO:(vicng) Optimize re-rendering all layouts affected by this method
+
+    let sourceBlock = connection.sourceBlock
+    let sourceBlockLayout = sourceBlock.layout as BlockLayout!
+
+    if connection != sourceBlock.previousConnection && connection != sourceBlock.outputConnection {
+      // Only previous/output connectors are responsible for updating the block group
+      // layout hierarchy, not next/input connectors.
+      return
+    }
+
+    // Check that there are layouts for both the source and target blocks of this connection
+    if sourceBlockLayout == nil ||
+      (connection.sourceInput != nil && connection.sourceInput!.layout == nil) ||
+      (connection.targetBlock != nil && connection.targetBlock!.layout == nil)
+    {
+      throw BlocklyError(.LayoutIllegalState, "Can't connect a block without a layout. ")
+    }
+
+    // Check that this layout is connected to a block group layout
+    if sourceBlock.layout?.parentBlockGroupLayout == nil {
+      throw BlocklyError(.LayoutIllegalState,
+        "Block layout is not connected to a parent block group layout. ")
+    }
+
+    if (connection.targetBlock != nil &&
+      connection.targetBlock!.layout?.workspaceLayout != sourceBlockLayout.workspaceLayout)
+    {
+      throw BlocklyError(.LayoutIllegalState, "Can't connect blocks in different workspaces")
+    }
+
+    let workspaceLayout = sourceBlockLayout.workspaceLayout
+    let workspace = workspaceLayout.workspace
+
+    // Disconnect this block's layout and all subsequent block layouts from its block group layout,
+    // so they can be reattached to another block group layout
+    let layoutsToReattach: [BlockLayout]
+    if let oldParentLayout = sourceBlockLayout.parentBlockGroupLayout {
+      layoutsToReattach =
+        oldParentLayout.removeAllStartingFromBlockLayout(sourceBlockLayout, updateLayout: true)
+
+      if oldParentLayout.blockLayouts.count == 0 &&
+        oldParentLayout.parentLayout == workspace.layout {
+          // Remove this block's old parent group layout from the workspace level
+          workspaceLayout.removeBlockGroupLayout(oldParentLayout, updateLayout: true)
+      }
+    } else {
+      layoutsToReattach = [sourceBlockLayout]
+    }
+
+    if let targetConnection = connection.targetConnection {
+      // Block was connected to another block
+
+      if targetConnection.sourceInput != nil {
+        // Reattach block layouts to target input's block group layout
+        targetConnection.sourceInput!.layout?.blockGroupLayout
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      } else {
+        // Reattach block layouts to the target block's group layout
+        targetConnection.sourceBlock.layout?.parentBlockGroupLayout?
+          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      }
+    } else {
+      // Block was disconnected and added to the workspace level.
+      // Create a new block group layout and set its `relativePosition` to the current absolute
+      // position of the block that was disconnected
+      let layoutFactory = workspaceLayout.layoutBuilder.layoutFactory
+      let blockGroupLayout =
+      layoutFactory.layoutForBlockGroupLayout(workspaceLayout: workspaceLayout)
+      blockGroupLayout.relativePosition = sourceBlockLayout.absolutePosition
+
+      // Add this new block group layout to the workspace level
+      workspaceLayout.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+      workspaceLayout.bringBlockGroupLayoutToFront(blockGroupLayout)
+
+      // Reattach block layouts to a new block group layout
+      blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
     }
   }
 }
@@ -398,5 +541,23 @@ extension WorkspaceLayout {
         viewUnitFromWorkspaceUnit(size.width),
         viewUnitFromWorkspaceUnit(size.height))
     }
+  }
+
+  /**
+   Maps a `UIView` point relative to `self.scrollView.blockGroupView` to a logical Workspace
+   position.
+
+   - Parameter point: The `UIView` point
+   - Returns: The corresponding `WorkspacePoint`
+   */
+  public final func workspacePositionFromViewPosition(point: CGPoint) -> WorkspacePoint {
+    var viewPoint = point
+    if workspaceLayout.workspace.rtl {
+      // In RTL, the workspace position is relative to the top-right corner
+      viewPoint.x = viewUnitFromWorkspaceUnit(self.totalSize.width) - viewPoint.x
+    }
+
+    // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
+    return workspaceLayout.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
 }
