@@ -191,12 +191,10 @@ public class WorkspaceView: LayoutView {
 
     let workspace = workspaceLayout.workspace
 
-    // Create a deep copy of this block in this workspace (which will automatically create a layout
-    // tree for the block)
-    let newBlock = try workspace.copyBlockTree(blockLayout.block)
-
     // Get the position of the block view relative to this view, and use that as
-    // the position for the newly created block
+    // the position for the newly created block.
+    // Note: This is done before creating a new block since adding a new block might change the
+    // workspace's size, which would mess up this position calculation.
     var blockViewPoint = CGPointZero
     if workspaceLayout.workspace.rtl {
       // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
@@ -204,10 +202,15 @@ public class WorkspaceView: LayoutView {
       blockViewPoint = CGPointMake(blockView.bounds.size.width, 0)
     }
     let workspaceViewPosition =
-      blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
+    blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
     let newWorkspacePosition =
       workspaceLayout.workspacePositionFromViewPosition(workspaceViewPosition)
 
+    // Create a deep copy of this block in this workspace (which will automatically create a layout
+    // tree for the block)
+    let newBlock = try workspace.copyBlockTree(blockLayout.block)
+
+    // Set its new workspace position
     newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
 
     // Send change events immediately, which will force the corresponding block view to be created
@@ -261,20 +264,21 @@ public class WorkspaceView: LayoutView {
     let oldContentSize = scrollView.contentSize
     let newContentSize = blockGroupSize + canvasPadding
 
-    // Set the new size of the blockGroupView
-    scrollView.blockGroupView.frame = CGRectMake(0, 0, blockGroupSize.width, blockGroupSize.height)
-
     // Update the content size of the scroll view.
     if layout.workspace.rtl {
-      // Shift the scroll view so the canvas padding appears on the left side and not the right side
-      scrollView.contentInset = UIEdgeInsetsMake(0, canvasPadding.width, 0, -canvasPadding.width)
+      // Change the block group view frame to be positioned at the top-right corner of the scroll
+      // view
+      scrollView.blockGroupView.frame = CGRectMake(
+        newContentSize.width - blockGroupSize.width, 0, blockGroupSize.width, blockGroupSize.height)
 
-      // Because the block group view frame is always positioned at (0,0) in RTL, the viewport
-      // will appear to suddenly jump if the view frame's width changes (because all the blocks
-      // inside the block group are positioned relative to the top-right corner, not the top-left
-      // corner like in LTR). To correct this jumping problem, we need to change the scroll view
-      // offset to match the difference in view frame width.
+      // If the contentSize's width changes, the viewport will appear to suddenly jump because
+      // blockGroupView is positioned relative to the top-right corner, not the top-left corner like
+      // in LTR. To correct this jumping problem, we need to change the scroll view content offset
+      // to match the difference in contentSize width.
       scrollView.contentOffset.x += newContentSize.width - oldContentSize.width
+    } else {
+      scrollView.blockGroupView.frame =
+        CGRectMake(0, 0, blockGroupSize.width, blockGroupSize.height)
     }
 
     // Set the content size of the scroll view

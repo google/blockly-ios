@@ -46,8 +46,8 @@ public class WorkspaceFlow: Workspace {
   }
 
   public override func removeBlockTree(rootBlock: Block) {
-    // Remove item for this block
-    items = items.filter({ $0.rootBlock == rootBlock })
+    // Remove item for this block (by only keeping blocks that don't match this rootBlock)
+    items = items.filter({ $0.rootBlock != rootBlock })
     super.removeBlockTree(rootBlock)
   }
 
