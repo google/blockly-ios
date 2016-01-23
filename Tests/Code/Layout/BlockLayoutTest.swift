@@ -154,7 +154,7 @@ class BlockLayoutTest: XCTestCase {
     // Create block with no input's
     let builder = Block.Builder(identifier: "test")
     let block = builder.build()
-    _workspaceLayout.workspace.addBlock(block)
+    _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
     do {
@@ -181,7 +181,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
     let block = builder.build()
-    _workspaceLayout.workspace.addBlock(block)
+    _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
     do {
@@ -214,7 +214,7 @@ class BlockLayoutTest: XCTestCase {
     // Create block with no inputs
     let builder = Block.Builder(identifier: "test")
     let block = builder.build()
-    _workspaceLayout.workspace.addBlock(block)
+    _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
     do {
@@ -241,7 +241,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
     let block = builder.build()
-    _workspaceLayout.workspace.addBlock(block)
+    _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
     do {
@@ -280,8 +280,8 @@ class BlockLayoutTest: XCTestCase {
 
     let block1 = builder1.build()
     let block2 = builder2.build()
-    _workspaceLayout.workspace.addBlock(block1)
-    _workspaceLayout.workspace.addBlock(block2)
+    _workspaceLayout.workspace.addBlockTree(block1)
+    _workspaceLayout.workspace.addBlockTree(block2)
 
     // Build layout tree
     do {
@@ -324,8 +324,8 @@ class BlockLayoutTest: XCTestCase {
 
     let block1 = builder1.build()
     let block2 = builder2.build()
-    _workspaceLayout.workspace.addBlock(block1)
-    _workspaceLayout.workspace.addBlock(block2)
+    _workspaceLayout.workspace.addBlockTree(block1)
+    _workspaceLayout.workspace.addBlockTree(block2)
 
     // Connect the blocks
     do {
@@ -377,8 +377,8 @@ class BlockLayoutTest: XCTestCase {
 
     let block1 = builder1.build()
     let block2 = builder2.build()
-    _workspaceLayout.workspace.addBlock(block1)
-    _workspaceLayout.workspace.addBlock(block2)
+    _workspaceLayout.workspace.addBlockTree(block1)
+    _workspaceLayout.workspace.addBlockTree(block2)
 
     // Build layout tree
     do {
@@ -432,8 +432,8 @@ class BlockLayoutTest: XCTestCase {
 
     let block1 = builder1.build()
     let block2 = builder2.build()
-    _workspaceLayout.workspace.addBlock(block1)
-    _workspaceLayout.workspace.addBlock(block2)
+    _workspaceLayout.workspace.addBlockTree(block1)
+    _workspaceLayout.workspace.addBlockTree(block2)
 
     // Connect the blocks
     do {
