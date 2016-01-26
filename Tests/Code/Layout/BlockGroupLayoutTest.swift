@@ -203,12 +203,10 @@ class BlockGroupLayoutTest: XCTestCase {
     // Add a block to the workspace that has an input value (which automatically contains a block
     // group layout).
     let workspace = _workspaceLayout.workspace
-    guard
-      let blockInputOutput = _blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
-      else
-    {
-      XCTFail("Blocks couldn't be loaded into the workspace")
-      return
+    guard let blockInputOutput = try! _blockFactory.addBlock("simple_input_output",
+      toWorkspace: workspace) else {
+        XCTFail("Blocks couldn't be loaded into the workspace")
+        return
     }
 
     // Build its layout tree
@@ -248,7 +246,7 @@ class BlockGroupLayoutTest: XCTestCase {
   }
 
   func createBlockLayout() -> BlockLayout {
-    let block = Block.Builder(identifier: "test").build()
+    let block = try! Block.Builder(identifier: "test").build()
     _workspaceLayout.workspace.addBlockTree(block)
     let layout = BlockLayout(block: block, workspaceLayout: _workspaceLayout)
     block.delegate = layout

@@ -30,17 +30,17 @@ class BlockTest: XCTestCase {
   func testTopLevel() {
     guard
       let blockNoConnections =
-      _blockFactory.addBlock("no_connections", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("no_connections", toWorkspace: _workspace),
       let blockStatementOutputNoInput =
-      _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
       let blockInputOutput =
-      _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
       let blockStatementMultipleInputValueInput =
-      _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
       let blockStatementNoNext =
-      _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
       let blockStatementStatementInput =
-      _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -80,8 +80,8 @@ class BlockTest: XCTestCase {
   }
 
   func testLastBlockInChain() {
-    guard let block1 = _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace),
-          let block2 = _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace)
+    guard let block1 = try! _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace),
+          let block2 = try! _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -108,15 +108,15 @@ class BlockTest: XCTestCase {
   func testAllBlocksForTree() {
     guard
       let blockStatementOutputNoInput =
-      _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
       let blockInputOutput =
-      _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
       let blockStatementMultipleInputValueInput =
-      _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
       let blockStatementNoNext =
-      _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
       let blockStatementStatementInput =
-      _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -150,17 +150,17 @@ class BlockTest: XCTestCase {
   func testAllConnectionsForTree() {
     guard
       let blockNoConnections =
-        _blockFactory.addBlock("no_connections", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("no_connections", toWorkspace: _workspace),
       let blockStatementOutputNoInput =
-        _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
       let blockInputOutput =
-        _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
       let blockStatementMultipleInputValueInput =
-        _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
       let blockStatementNoNext =
-        _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
       let blockStatementStatementInput =
-        _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -221,15 +221,15 @@ class BlockTest: XCTestCase {
   func testDeepCopy() {
     guard
       let blockStatementOutputNoInput =
-      _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("output_no_input", toWorkspace: _workspace),
       let blockInputOutput =
-      _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
       let blockStatementMultipleInputValueInput =
-      _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace),
       let blockStatementNoNext =
-      _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
+        try! _blockFactory.addBlock("statement_no_next", toWorkspace: _workspace),
       let blockStatementStatementInput =
-      _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -261,8 +261,8 @@ class BlockTest: XCTestCase {
 
   func testLastInputValueConnectionInChainSimples() {
     guard
-      let block1 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
-      let block2 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace)
+      let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let block2 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace)
       else
     {
         XCTFail("Blocks couldn't be loaded")
@@ -282,7 +282,7 @@ class BlockTest: XCTestCase {
   }
 
   func testLastInputValueConnectionEmpty() {
-    guard let block = _blockFactory.addBlock("no_connections", toWorkspace: _workspace) else {
+    guard let block = try! _blockFactory.addBlock("no_connections", toWorkspace: _workspace) else {
       XCTFail("Block couldn't be loaded")
       return
     }
@@ -292,9 +292,9 @@ class BlockTest: XCTestCase {
 
   func testLastInputValueConnectionBranch() {
     guard
-      let block1 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
-      let block2 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
-      let block3 = _blockFactory.addBlock("multiple_input_output", toWorkspace: _workspace)
+      let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let block2 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let block3 = try! _blockFactory.addBlock("multiple_input_output", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -320,9 +320,9 @@ class BlockTest: XCTestCase {
 
   func testLastInputValueConnectionNoInput() {
     guard
-      let block1 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
-      let block2 = _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
-      let block3 = _blockFactory.addBlock("output_no_input", toWorkspace: _workspace)
+      let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let block2 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
+      let block3 = try! _blockFactory.addBlock("output_no_input", toWorkspace: _workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -348,14 +348,14 @@ class BlockTest: XCTestCase {
 
   func testOnlyValueInput() {
     // No value input
-    if let block = _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace) {
+    if let block = try! _blockFactory.addBlock("statement_no_input", toWorkspace: _workspace) {
       XCTAssertNil(block.onlyValueInput())
     } else {
       XCTFail("Couldn't load block")
     }
 
     // One value input.
-    if let block = _blockFactory.addBlock("statement_value_input", toWorkspace: _workspace) {
+    if let block = try! _blockFactory.addBlock("statement_value_input", toWorkspace: _workspace) {
       let input = block.inputs.filter({ $0.name == "value" })
       XCTAssertEqual(1, input.count)
       XCTAssertEqual(input[0], block.onlyValueInput())
@@ -364,22 +364,23 @@ class BlockTest: XCTestCase {
     }
 
     // Statement input, no value inputs.
-    if let block = _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace) {
-      XCTAssertNil(block.onlyValueInput())
-    } else {
-      XCTFail("Couldn't load block")
-    }
-
-    // Multiple value inputs.
-    if let block = _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: _workspace)
+    if let block = try! _blockFactory.addBlock("statement_statement_input", toWorkspace: _workspace)
     {
       XCTAssertNil(block.onlyValueInput())
     } else {
       XCTFail("Couldn't load block")
     }
 
+    // Multiple value inputs.
+    if let block = try! _blockFactory.addBlock("statement_multiple_value_input",
+      toWorkspace: _workspace) {
+      XCTAssertNil(block.onlyValueInput())
+    } else {
+      XCTFail("Couldn't load block")
+    }
+
     // Statement input, dummy input and value input.
-    if let block = _blockFactory.addBlock("controls_repeat_ext", toWorkspace: _workspace) {
+    if let block = try! _blockFactory.addBlock("controls_repeat_ext", toWorkspace: _workspace) {
       let input = block.inputs.filter({ $0.name == "TIMES" })
       XCTAssertEqual(1, input.count)
       XCTAssertEqual(input[0], block.onlyValueInput())

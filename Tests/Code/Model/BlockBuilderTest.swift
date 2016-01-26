@@ -32,7 +32,7 @@ class BlockBuilderTest: XCTestCase {
     let block3 = buildFrankenBlock(workspace)
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
-    let blockCopy = Block.Builder(block: block).build()
+    let blockCopy = try! Block.Builder(block: block).build()
     workspace.addBlockTree(blockCopy)
     validateFrankenblock(blockCopy)
 
@@ -139,7 +139,7 @@ class BlockBuilderTest: XCTestCase {
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
-    let block = bob.build()
+    let block = try! bob.build()
     workspace.addBlockTree(block)
     return block
   }

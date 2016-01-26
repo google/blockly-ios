@@ -32,6 +32,8 @@ public class BlockFactory : NSObject {
   - Parameter workspace: The workspace to associate all new blocks
   - Parameter jsonPath: Path to a file containing blocks in JSON.
   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
+  - Throws:
+  `BlocklyError`: Occurs if any of the blocks are invalid.
   */
   public init(jsonPath: String, bundle: NSBundle? = nil) throws {
     super.init()
@@ -45,6 +47,10 @@ public class BlockFactory : NSObject {
     let json = try JSONHelper.JSONArrayFromString(jsonString)
     for blockJson in json {
       let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
+      // Ensure the builder is valid
+      try blockBuilder.build()
+
+      // Save the block
       _blockBuilders[blockBuilder.identifier] = blockBuilder
       bky_debugPrint("Added block builder with name \(blockBuilder.identifier)")
     }
@@ -58,10 +64,12 @@ public class BlockFactory : NSObject {
 
   - Parameter blockName: The name of the block to obtain.
   - Parameter workspace: The workspace that should own the new block.
+  - Throws:
+  `BlocklyError`: Occurs if the block builder is missing any required pieces.
   - Returns: A new block if the name is known, nil otherwise.
   */
-  public func addBlock(blockName: String, toWorkspace workspace: Workspace) -> Block? {
-    guard let block = buildBlock(blockName) else {
+  public func addBlock(blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
+    guard let block = try buildBlock(blockName) else {
       return nil
     }
     workspace.addBlockTree(block)
@@ -69,12 +77,14 @@ public class BlockFactory : NSObject {
   }
 
   /**
-   Create a new instance of a block with the given name and returns it.
+  Create a new instance of a block with the given name and returns it.
 
-   - Parameter blockName: The name of the block to build.
-   - Returns: A new block if the name is known, nil otherwise.
-   */
-  public func buildBlock(blockName: String) -> Block? {
-    return _blockBuilders[blockName]?.build()
+  - Parameter blockName: The name of the block to build.
+  - Throws:
+  `BlocklyError`: Occurs if the block builder is missing any required pieces.
+  - Returns: A new block if the name is known, nil otherwise.
+  */
+  public func buildBlock(blockName: String) throws -> Block? {
+    return try _blockBuilders[blockName]?.build()
   }
 }
