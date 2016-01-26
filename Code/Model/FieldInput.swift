@@ -20,18 +20,6 @@ An editable text field.
 */
 @objc(BKYFieldInput)
 public final class FieldInput: Field {
-  // MARK: - Properties
-
-  public var text: String
-
-  // MARK: - Initializers
-
-  public init(name: String, text: String) {
-    self.text = text
-
-    super.init(name: name)
-  }
-
   // MARK: - Super
 
   public override func copyField() -> Field {

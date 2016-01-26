@@ -19,7 +19,7 @@ import Foundation
 View for rendering a `FieldLabelLayout`.
 */
 @objc(BKYFieldLabelView)
-public class FieldLabelView: LayoutView {
+public class FieldLabelView: FieldView {
   // MARK: - Properties
 
   /// Layout object to render
@@ -56,11 +56,7 @@ public class FieldLabelView: LayoutView {
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
       self.label.text = layout.fieldLabel.text
 
-      // TODO:(vicng) This is only for debugging. Remove this once block rendering is in a "good"
-      // state.
-      self.backgroundColor = UIColor.redColor()
-
-      // TODO:(vicng) Standardize this font
+      // TODO:(#335) Standardize this font
       self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -80,8 +76,7 @@ extension FieldLabelView: FieldLayoutMeasurer {
         "Expected type [FieldLabelLayout].")
       return CGSizeZero
     }
-    // TODO:(vicng) Return different values based on the scale
-    // TODO:(vicng) Use a standardized font size that can be configurable for the project
+    // TODO:(#335) Use a standardized font size that can be configurable for the project
     return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(
       UIFont.systemFontOfSize(14 * scale))
   }

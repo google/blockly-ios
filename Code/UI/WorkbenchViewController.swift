@@ -21,6 +21,11 @@ import UIKit
 @objc(BKYWorkbenchViewController)
 public class WorkbenchViewController: UIViewController {
 
+  /// Defines possible UI states that the view controller may be in
+  private enum UIState {
+    case Default, TrashCanOpen, CategoryOpen, EditingTextField, DraggingBlock
+  }
+
   // MARK: - Properties
 
   /// The main workspace view
@@ -68,6 +73,35 @@ public class WorkbenchViewController: UIViewController {
   /// Flag indicating if the `self._trashCanViewController` is being shown
   private var _trashCanVisible: Bool = false
 
+  // MARK: - Initializers
+
+  public convenience init() {
+    self.init(nibName: nil, bundle: nil)
+  }
+
+  public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    commonInit()
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    commonInit()
+  }
+
+  private func commonInit() {
+    // Register for keyboard notifications
+    NSNotificationCenter.defaultCenter().addObserver(self,
+      selector: "keyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self,
+      selector: "keyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+  }
+
+  deinit {
+    // Unregister all notifications
+    NSNotificationCenter.defaultCenter().removeObserver(self)
+  }
+
   // MARK: - Super
 
   public override func loadView() {
@@ -82,6 +116,9 @@ public class WorkbenchViewController: UIViewController {
     self.toolboxView = toolboxView
 
     workspaceView = WorkspaceView()
+    workspaceView.scrollView.panGestureRecognizer.addTarget(self, action: "didPanWorkspaceView:")
+    let tapGesture = UITapGestureRecognizer(target: self, action: "didTapWorkspaceView:")
+    workspaceView.scrollView.addGestureRecognizer(tapGesture)
     workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
 
     let bundle = NSBundle(forClass: WorkbenchViewController.self)
@@ -132,6 +169,14 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Public
 
+  private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
+    setUIState(.Default)
+  }
+
+  private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
+    setUIState(.Default)
+  }
+
   /**
   Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
   */
@@ -141,6 +186,29 @@ public class WorkbenchViewController: UIViewController {
 
     toolboxView?.toolbox = toolbox
     toolboxView?.refreshView()
+
+    setUIState(.Default)
+  }
+
+  /**
+   Sets the UI based on a given state.
+
+   - Parameter state: The state to set the UI
+   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   */
+  private func setUIState(state: UIState, animated: Bool = false) {
+    setTrashCanFolderVisible(state == .TrashCanOpen)
+
+    if state != .CategoryOpen {
+      // Hide the toolbox category
+      toolboxView?.hideCategory(animated: animated)
+    }
+
+    if state != .EditingTextField {
+      // Force all child text fields to end editing (which essentially dismisses the keyboard if
+      // it's currently visible)
+      self.view.endEditing(true)
+    }
   }
 }
 
@@ -156,7 +224,11 @@ extension WorkbenchViewController {
    */
   public func didTapTrashCan(sender: UIButton) {
     // Toggle trash can visibility
-    setTrashCanFolderVisible(!_trashCanVisible)
+    if !_trashCanVisible {
+      setUIState(.TrashCanOpen, animated: true)
+    } else {
+      setUIState(.Default, animated: true)
+    }
   }
 
   // MARK: - Private
@@ -300,14 +372,12 @@ extension WorkbenchViewController {
       {
         // Remove this block view from the trash can
         _trashCanViewController.workspace?.removeBlockTree(rootBlockView.blockLayout!.block)
-        setTrashCanFolderVisible(false)
       } else {
         // Re-add gesture tracking to the original block view for future drags
         addGestureTrackingForWorkspaceFolderBlockView(aBlockView)
-
-        // Hide the toolbox category
-        toolboxView?.hideCategory(animated: false)
       }
+
+      setUIState(.DraggingBlock)
     }
   }
 }
@@ -363,8 +433,10 @@ extension WorkbenchViewController {
     // on-going drags when the screen is rotated).
 
     if gesture.state == .Began {
+      setUIState(.DraggingBlock)
       _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
     } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
+      setUIState(.DraggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
       setTrashCanButtonHighlight(touchingTrashCan)
     }
@@ -390,6 +462,9 @@ extension WorkbenchViewController {
 
       // Close the trash can
       setTrashCanButtonHighlight(false)
+
+      // Set the UI state back to the default
+      setUIState(.Default)
     }
   }
 
@@ -402,5 +477,30 @@ extension WorkbenchViewController {
     }
 
     // TODO:(vicng) Set this block as "selected" within the workspace
+  }
+}
+
+// MARK: - UIKeyboard notifications
+
+extension WorkbenchViewController {
+  private dynamic func keyboardWillShowNotification(notification: NSNotification) {
+    setUIState(.EditingTextField)
+
+    if let keyboardEndSize = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
+      // Increase the canvas' bottom padding so the text field isn't hidden by the keyboard (when
+      // the user edits a text field, it is automatically scrolled into view by the system as long
+      // as there is enough scrolling space in its container scroll view).
+      // Note: workspaceView.scrollView.scrollIndicatorInsets isn't changed here since there
+      // doesn't seem to be a reliable way to check when the keyboard has been split or not (which
+      // would makes it hard for us to figure out where to place the scroll indicators)
+      let contentInsets = UIEdgeInsetsMake(0, 0, keyboardEndSize.height, 0)
+      workspaceView.scrollView.contentInset = contentInsets
+    }
+  }
+
+  private dynamic func keyboardWillHideNotification(notification: NSNotification) {
+    // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
+    let contentInsets = UIEdgeInsetsZero
+    workspaceView.scrollView.contentInset = contentInsets
   }
 }

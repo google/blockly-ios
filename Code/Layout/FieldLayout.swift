@@ -57,6 +57,8 @@ public class FieldLayout: Layout {
     self.field = field
     self.measurer = measurer
     super.init(workspaceLayout: workspaceLayout)
+
+    self.field.delegate = self
   }
 
   // MARK: - Super
@@ -76,4 +78,8 @@ public class FieldLayout: Layout {
 // MARK: - FieldDelegate implementation
 
 extension FieldLayout: FieldDelegate {
+  public func didUpdateField(field: Field) {
+    // Perform a layout up the tree
+    updateLayoutUpTree()
+  }
 }

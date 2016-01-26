@@ -45,9 +45,9 @@ extension Block {
     public var comment: String = ""
     public var helpURL: String = ""
     public var hasContextMenu: Bool = true
-    public var canDelete: Bool = true
-    public var canMove: Bool = true
-    public var canEdit: Bool = true
+    public var deletable: Bool = true
+    public var movable: Bool = true
+    public var editable: Bool = true
     public var collapsed: Bool = false
     public var disabled: Bool = false
     public var rendered: Bool = false
@@ -124,9 +124,9 @@ extension Block {
       block.comment = comment
       block.helpURL = helpURL
       block.hasContextMenu = hasContextMenu
-      block.canDelete = canDelete
-      block.canMove = canMove
-      block.canEdit = canEdit
+      block.deletable = deletable
+      block.movable = movable
+      block.editable = editable
       block.collapsed = collapsed
       block.disabled = disabled
       block.rendered = rendered

@@ -53,7 +53,7 @@ public class WorkspaceView: LayoutView {
   }
 
   /// Scroll view used to render the workspace
-  private var scrollView: WorkspaceView.ScrollView!
+  public private(set) var scrollView: WorkspaceView.ScrollView!
 
   /// Manager for acquiring and recycling views.
   private let _viewManager = ViewManager.sharedInstance

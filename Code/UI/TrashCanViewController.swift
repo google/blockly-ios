@@ -45,8 +45,11 @@ public class TrashCanViewController: UIViewController {
     super.loadView()
 
     do {
+      let workspace = WorkspaceFlow()
+      workspace.readOnly = true
+
       self.workspaceLayout = try WorkspaceFlowLayout(
-        workspace: WorkspaceFlow(), layoutDirection: .Horizontal, layoutBuilder: LayoutBuilder())
+        workspace: workspace, layoutDirection: .Horizontal, layoutBuilder: LayoutBuilder())
 
       let workspaceView = WorkspaceView()
       workspaceView.layout = workspaceLayout
