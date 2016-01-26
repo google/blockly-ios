@@ -1,5 +1,5 @@
 /*
-* Copyright 2015 Google Inc. All Rights Reserved.
+* Copyright 2016 Google Inc. All Rights Reserved.
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -16,13 +16,21 @@
 import Foundation
 
 /**
-Non-editable text field. Used for titles, labels, etc.
-*/
-@objc(BKYFieldLabel)
-public final class FieldLabel: Field {
+ Abstract view for rendering a `FieldLayout`.
+ */
+@objc(BKYFieldView)
+public class FieldView: LayoutView {
   // MARK: - Super
 
-  public override func copyField() -> Field {
-    return FieldLabel(name: name, text: text)
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
+    // Use this opportunity to enable/disable user interaction based on the field's editable
+    // property
+    guard let layout = self.layout as? FieldLayout else {
+      return
+    }
+
+    self.userInteractionEnabled = layout.field.editable
   }
 }

@@ -238,5 +238,20 @@
   "previousStatement": null,
   "tooltip": "",
   "helpUrl": "http://www.example.com/"
-  }
+  },
+ {
+ "id": "text_input_block",
+ "message0": "Input block 🍍 %1 🍅",
+ "args0": [
+           {
+           "type": "field_input",
+           "name": "Input",
+           "text": ""
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/"
+ }
+
 ]

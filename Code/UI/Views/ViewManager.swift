@@ -108,7 +108,11 @@ public class ViewManager: NSObject {
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout
 
     var fieldView: LayoutView?
-    if let fieldLabelLayout = layout as? FieldLabelLayout {
+    if let fieldInputLayout = layout as? FieldInputLayout {
+      let fieldInputView = viewForType(FieldInputView.self)
+      fieldInputView.layout = fieldInputLayout
+      fieldView = fieldInputView
+    } else if let fieldLabelLayout = layout as? FieldLabelLayout {
       let fieldLabelView = viewForType(FieldLabelView.self)
       fieldLabelView.layout = fieldLabelLayout
       fieldView = fieldLabelView

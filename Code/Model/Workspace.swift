@@ -76,6 +76,8 @@ public class Workspace : NSObject {
   public let rtl: Bool
   public let maxBlocks: Int?
   public private(set) var allBlocks = [String: Block]()
+  /// Flag indicating if this workspace is set to read-only
+  public var readOnly: Bool = false
 
   /// The delegate for events that occur in this workspace
   public weak var delegate: WorkspaceDelegate?
@@ -119,6 +121,7 @@ public class Workspace : NSObject {
     for block in rootBlock.allBlocksForTree() {
       if !containsBlock(block) {
         allBlocks[block.uuid] = block
+        block.sourceWorkspace = self
         delegate?.workspace(self, didAddBlock: block)
       }
     }
@@ -140,6 +143,7 @@ public class Workspace : NSObject {
       if containsBlock(block) {
         delegate?.workspace(self, willRemoveBlock: block)
         allBlocks[block.uuid] = nil
+        block.sourceWorkspace = nil
       }
     }
   }

@@ -69,7 +69,9 @@ public class LayoutFactory: NSObject {
   for the field.
   */
   public func layoutForField(field: Field, workspaceLayout: WorkspaceLayout) throws -> FieldLayout {
-    if let fieldLabel = field as? FieldLabel {
+    if let fieldInput = field as? FieldInput {
+      return FieldInputLayout(fieldInput: fieldInput, workspaceLayout: workspaceLayout)
+    } else if let fieldLabel = field as? FieldLabel {
       return FieldLabelLayout(fieldLabel: fieldLabel, workspaceLayout: workspaceLayout)
     }
 

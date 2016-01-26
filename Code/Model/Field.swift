@@ -20,6 +20,12 @@ import Foundation
  */
 @objc(BKYFieldDelegate)
 public protocol FieldDelegate: class {
+  /**
+   Event that is fired when one of a field's properties has changed.
+
+   - Parameter field: The field that changed.
+   */
+  func didUpdateField(field: Field)
 }
 
 /**
@@ -30,7 +36,23 @@ UI on the block.  Actual instances would be `FieldLabel`, `FieldDropdown`, etc.
 public class Field: NSObject {
   // MARK: - Properties
 
+  /// The name of the field
   public let name: String
+
+  /// The text representation of the field
+  public var text: String {
+    didSet {
+      if !self.editable {
+        self.text = oldValue
+      }
+      if text != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+
+  /// The input that owns this field
+  public weak var sourceInput: Input!
 
   /// A delegate for listening to events on this field
   public weak var delegate: FieldDelegate?
@@ -40,10 +62,26 @@ public class Field: NSObject {
     return self.delegate as? FieldLayout
   }
 
+  // TODO:(vicng) Update all fields so that this property is respected.
+  /// Flag indicating if this field can be edited
+  private var _editable: Bool = true
+  public var editable: Bool {
+    get {
+      return _editable && sourceInput.sourceBlock.editable
+    }
+    set {
+      if _editable != newValue {
+        _editable = newValue
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+
   // MARK: - Initializers
 
-  internal init(name: String) {
+  internal init(name: String, text: String = "") {
     self.name = name
+    self.text = text
     super.init()
   }
 

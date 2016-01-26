@@ -63,6 +63,8 @@
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232571B6C63F900F1EF42 /* Dictionary+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
+		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
+		FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA841FB21C485EC5004BC471 /* TrashCanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA841FB11C485EC5004BC471 /* TrashCanViewController.swift */; };
 		FA8BEE111B68511A00D0674B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BEE101B68511A00D0674B /* JSONHelper.swift */; };
@@ -78,6 +80,7 @@
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
 		FAA3F0A01BFD2E2100DB1C79 /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */; };
 		FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */; };
+		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
 		FABF966F1C123C91005B482E /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABF966E1C123C91005B482E /* UIView+AutoLayout.swift */; };
@@ -167,6 +170,8 @@
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232561B6C63F900F1EF42 /* Dictionary+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Helper.swift"; path = "Core/Common/Dictionary+Helper.swift"; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
+		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
+		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA841FB11C485EC5004BC471 /* TrashCanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashCanViewController.swift; sourceTree = "<group>"; };
 		FA8BEE101B68511A00D0674B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONHelper.swift; path = Core/Common/JSONHelper.swift; sourceTree = "<group>"; };
@@ -182,6 +187,7 @@
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAA3F09F1BFD2E2100DB1C79 /* Array+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+Helper.swift"; path = "Core/Common/Array+Helper.swift"; sourceTree = "<group>"; };
 		FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceFlow.swift; sourceTree = "<group>"; };
+		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
 		FABF966E1C123C91005B482E /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+AutoLayout.swift"; path = "Core/Common/UIView+AutoLayout.swift"; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FA2726771B83C54900777B49 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
+				FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */,
 				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
@@ -345,7 +352,9 @@
 				FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */,
 				FA4BB56A1B7C03EA000980E9 /* BlockView.swift */,
 				FAA291761B9674330005F100 /* BlockView+Render.swift */,
+				FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */,
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
+				FAB31CE11C571F730071EBF8 /* FieldView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
 				FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */,
 				FA9D2FB81C11166000D0E528 /* ToolboxView.swift */,
@@ -611,6 +620,7 @@
 				FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
 				FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */,
+				FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAA204141C0FE8E400B035C5 /* WorkbenchViewController.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
@@ -656,8 +666,10 @@
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FA2DFD5F1B7338570072A278 /* UIColor+Helper.swift in Sources */,
+				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
 				FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */,
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
+				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
 				FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -793,7 +805,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Code/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
@@ -814,7 +826,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Code/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";

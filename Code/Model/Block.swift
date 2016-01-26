@@ -54,10 +54,30 @@ public final class Block : NSObject {
   public var comment: String = ""
   public var helpURL: String = ""
   public var hasContextMenu: Bool = true
-  public var canDelete: Bool = true
-  public var canMove: Bool = true
-  public var canEdit: Bool = true
+  public var deletable: Bool = true
+  public var movable: Bool = true
+
+  // TODO:(#336) Update model so that this property is respected.
+  /// Flag indicating if this block can be edited. Updating this property automatically updates
+  /// the `editable` on all child fields.
+  private var _editable: Bool = true
+  public var editable: Bool {
+    get {
+      return _editable && !(sourceWorkspace?.readOnly ?? false)
+    }
+    set {
+      _editable = newValue
+      for input in self.inputs {
+        for field in input.fields {
+          field.editable = _editable
+        }
+      }
+    }
+  }
   public var disabled: Bool = false
+
+  /// The workspace that this block belongs to
+  public weak var sourceWorkspace: Workspace?
 
   /// Flag if this block is at the highest level in the workspace
   public var topLevel: Bool {

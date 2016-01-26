@@ -72,7 +72,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       // Add some blocks to the workspace
       // try addChainedBlocksToWorkspace(workspace)
-      addSpaghettiBlocksToWorkspace(workspace)
+//      addSpaghettiBlocksToWorkspace(workspace)
 
       // Create a layout for the workspace, which is required for viewing the workspace
       self.workspaceLayout =
@@ -95,6 +95,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       try addBlock("controls_whileUntil", toCategory: math)
 
       let random = toolbox.addCategory("Random", color: UIColor.redColor())
+      try addBlock("text_input_block", toCategory: random)
+      random.addGap(40)
+
       try addBlock("simple_input_output", toCategory: random)
       try addBlock("multiple_input_output", toCategory: random)
       try addBlock("output_no_input", toCategory: random)

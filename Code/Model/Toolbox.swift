@@ -23,10 +23,20 @@ import Foundation
 public class Toolbox: NSObject {
   public private(set) var categoryLayouts = [WorkspaceFlowLayout]()
 
+  /// Flag to set all categories in the toolbox to readOnly
+  public var readOnly: Bool = true {
+    didSet {
+      for categoryLayout in categoryLayouts {
+        categoryLayout.workspaceFlow.readOnly = self.readOnly
+      }
+    }
+  }
+
   public func addCategory(categoryName: String, color: UIColor,
     layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
   {
     let category = Category()
+    category.readOnly = self.readOnly
     category.name = categoryName
     category.color = color
 

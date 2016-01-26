@@ -64,8 +64,7 @@ public class LayoutView: UIView {
   - Parameter flags: Optionally refresh the view for only a given set of flags. By default, this
   value is set to include all flags (i.e. `LayoutFlag.All`).
   */
-  public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All)
-  {
+  public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     if flags.intersectsWith(Layout.Flag_UpdateViewFrame) {
       updateViewFrameFromLayout()
     }

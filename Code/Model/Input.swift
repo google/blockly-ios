@@ -150,6 +150,7 @@ public final class Input : NSObject {
   public func appendFields(fields: [Field]) {
     for field in fields {
       self.fields.append(field)
+      field.sourceInput = self
     }
 
     delegate?.input(self, didAppendFields: fields)
