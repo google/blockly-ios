@@ -45,15 +45,15 @@ class BlockLayoutTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let blockStatementOutputNoInput =
-        _blockFactory.addBlock("output_no_input", toWorkspace: workspace),
+        try! _blockFactory.addBlock("output_no_input", toWorkspace: workspace),
       let blockInputOutput =
-        _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
       let blockStatementMultipleInputValueInput =
-        _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace),
+        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace),
       let blockStatementNoNext =
-        _blockFactory.addBlock("statement_no_next", toWorkspace: workspace),
+        try! _blockFactory.addBlock("statement_no_next", toWorkspace: workspace),
       let blockStatementStatementInput =
-        _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
@@ -121,7 +121,7 @@ class BlockLayoutTest: XCTestCase {
     // Add block to the workspace
     let workspace = _workspaceLayout.workspace
     guard
-      let block = _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
+      let block = try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
@@ -153,7 +153,7 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
     let builder = Block.Builder(identifier: "test")
-    let block = builder.build()
+    let block = try! builder.build()
     _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -180,7 +180,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
-    let block = builder.build()
+    let block = try! builder.build()
     _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -213,7 +213,7 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutAfterLayoutEmpty() {
     // Create block with no inputs
     let builder = Block.Builder(identifier: "test")
-    let block = builder.build()
+    let block = try! builder.build()
     _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -240,7 +240,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input4"))
-    let block = builder.build()
+    let block = try! builder.build()
     _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -278,8 +278,8 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
-    let block1 = builder1.build()
-    let block2 = builder2.build()
+    let block1 = try! builder1.build()
+    let block2 = try! builder2.build()
     _workspaceLayout.workspace.addBlockTree(block1)
     _workspaceLayout.workspace.addBlockTree(block2)
 
@@ -322,8 +322,8 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
-    let block1 = builder1.build()
-    let block2 = builder2.build()
+    let block1 = try! builder1.build()
+    let block2 = try! builder2.build()
     _workspaceLayout.workspace.addBlockTree(block1)
     _workspaceLayout.workspace.addBlockTree(block2)
 
@@ -375,8 +375,8 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
-    let block1 = builder1.build()
-    let block2 = builder2.build()
+    let block1 = try! builder1.build()
+    let block2 = try! builder2.build()
     _workspaceLayout.workspace.addBlockTree(block1)
     _workspaceLayout.workspace.addBlockTree(block2)
 
@@ -430,8 +430,8 @@ class BlockLayoutTest: XCTestCase {
     let builder2 = Block.Builder(identifier: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
-    let block1 = builder1.build()
-    let block2 = builder2.build()
+    let block1 = try! builder1.build()
+    let block2 = try! builder2.build()
     _workspaceLayout.workspace.addBlockTree(block1)
     _workspaceLayout.workspace.addBlockTree(block2)
 

@@ -90,9 +90,14 @@ extension Block {
     /**
     Creates a new block given the current state of the builder.
 
+    - Throws:
+    `BlocklyError`: Occurs if the block is missing any required pieces.
     - Returns: A new block
     */
-    public func build() -> Block {
+    public func build() throws -> Block {
+      if identifier.isEmpty {
+        throw BlocklyError(.InvalidBlockDefinition, "Block identifier may not be empty")
+      }
       var outputConnection: Connection?
       var nextConnection: Connection?
       var previousConnection: Connection?

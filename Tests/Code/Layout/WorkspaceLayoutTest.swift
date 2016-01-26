@@ -38,17 +38,17 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let _ =
-        _blockFactory.addBlock("no_connections", toWorkspace: workspace),
+        try! _blockFactory.addBlock("no_connections", toWorkspace: workspace),
       let blockMathNumber =
-        _blockFactory.addBlock("math_number", toWorkspace: workspace),
+        try! _blockFactory.addBlock("math_number", toWorkspace: workspace),
       let blockInputOutput =
-        _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
+        try! _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
       let blockMultipleInputOutput =
-        _blockFactory.addBlock("multiple_input_output", toWorkspace: workspace),
+        try! _blockFactory.addBlock("multiple_input_output", toWorkspace: workspace),
       let blockStatementValueInput =
-        _blockFactory.addBlock("statement_value_input", toWorkspace: workspace),
+        try! _blockFactory.addBlock("statement_value_input", toWorkspace: workspace),
       let blockStatementStatementInput =
-        _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
