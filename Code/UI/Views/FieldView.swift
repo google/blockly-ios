@@ -20,6 +20,14 @@ import Foundation
  */
 @objc(BKYFieldView)
 public class FieldView: LayoutView {
+
+  // MARK: - Properties
+
+  /// The parent block view that owns this field
+  public var parentBlockView: BlockView? {
+    return self.superview as? BlockView
+  }
+
   // MARK: - Super
 
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {

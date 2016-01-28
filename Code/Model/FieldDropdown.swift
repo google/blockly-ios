@@ -20,21 +20,42 @@ An input field for selecting options from a dropdown menu.
 */
 @objc(BKYFieldDropdown)
 public final class FieldDropdown: Field {
+  public typealias Option = (displayName: String, value: String)
+
   // MARK: - Properties
 
   /// Drop-down options. First value is the display name, second value is the option value.
-  public var options: [(displayName: String, value: String)]
+  public var options: [Option] {
+    didSet {
+      delegate?.didUpdateField(self)
+    }
+  }
+
+  /// The currently selected index
+  public var selectedIndex: Int {
+    didSet {
+      if selectedIndex != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+
+  /// The option tuple of the currently selected index
+  public var selectedOption: Option? {
+    return 0 <= selectedIndex && selectedIndex < options.count ? options[selectedIndex] : nil
+  }
 
   // MARK: - Initializers
 
-  public init(name: String, options: [(displayName: String, value: String)]) {
+  public init(name: String, options: [(displayName: String, value: String)], selectedIndex: Int) {
     self.options = options
+    self.selectedIndex = selectedIndex
 
     super.init(name: name)
   }
 
   public convenience init(
-    name: String, displayNames: [String], values: [String]) throws {
+    name: String, displayNames: [String], values: [String], selectedIndex: Int) throws {
       if (displayNames.count != values.count) {
         throw BlocklyError(.InvalidBlockDefinition,
           "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
@@ -42,12 +63,12 @@ public final class FieldDropdown: Field {
       let options = Array(
         zip(displayNames, values) // Creates tuples of (displayNames[i], values[i])
         .map { (displayName: $0.0, value: $0.1) }) // Re-map each tuple as (displayName:, value:)
-      self.init(name: name, options: options)
+      self.init(name: name, options: options, selectedIndex: selectedIndex)
   }
 
   // MARK: - Super
 
   public override func copyField() -> Field {
-    return FieldDropdown(name: name, options: options)
+    return FieldDropdown(name: name, options: options, selectedIndex: selectedIndex)
   }
 }

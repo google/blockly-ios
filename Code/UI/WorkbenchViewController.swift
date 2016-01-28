@@ -22,8 +22,34 @@ import UIKit
 public class WorkbenchViewController: UIViewController {
 
   /// Defines possible UI states that the view controller may be in
-  private enum UIState {
-    case Default, TrashCanOpen, CategoryOpen, EditingTextField, DraggingBlock
+  public struct UIState : OptionSetType {
+    private static let Default = UIState(rawValue: 0)
+    private static let TrashCanOpen = UIState(value: Value.TrashCanOpen)
+    private static let TrashCanHighlighted = UIState(value: Value.TrashCanHighlighted)
+    private static let CategoryOpen = UIState(value: Value.CategoryOpen)
+    private static let EditingTextField = UIState(value: Value.EditingTextField)
+    private static let DraggingBlock = UIState(value: Value.DraggingBlock)
+    private static let PresentingPopover = UIState(value: Value.PresentingPopover)
+
+    public enum Value: Int {
+      case TrashCanOpen = 0,
+        TrashCanHighlighted,
+        CategoryOpen,
+        EditingTextField,
+        DraggingBlock,
+        PresentingPopover
+    }
+    public let rawValue : Int
+    public init(rawValue:Int) {
+      self.rawValue = rawValue
+    }
+    public init(value: Value) {
+      self.init(rawValue: 1 << value.rawValue)
+    }
+
+    public func intersectsWith(other: UIState) -> Bool {
+      return intersect(other) != .Default
+    }
   }
 
   // MARK: - Properties
@@ -72,6 +98,8 @@ public class WorkbenchViewController: UIViewController {
   private var _trashCanViewController = TrashCanViewController()
   /// Flag indicating if the `self._trashCanViewController` is being shown
   private var _trashCanVisible: Bool = false
+  /// The current state of the UI
+  private var _state = UIState.Default
 
   // MARK: - Initializers
 
@@ -121,14 +149,13 @@ public class WorkbenchViewController: UIViewController {
     workspaceView.scrollView.addGestureRecognizer(tapGesture)
     workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
 
-    let bundle = NSBundle(forClass: WorkbenchViewController.self)
-    // Note: Images aren't stored in .xcassets since there's no way to load an image from a
-    // framework's .xcassets file in iOS 7.x.
     let trashCanView = UIButton(type: .Custom)
     trashCanView.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
     trashCanView.contentMode = .ScaleAspectFit
-    if let imageFile = bundle.pathForResource("trash", ofType: "png") {
-      trashCanView.setImage(UIImage(contentsOfFile: imageFile), forState: .Normal)
+    if let image =
+      ImageLoader.loadImage(named: "trash_can", forClass: WorkbenchViewController.self)
+    {
+      trashCanView.setImage(image, forState: .Normal)
       trashCanView.sizeToFit()
     }
     self.trashCanView = trashCanView
@@ -170,11 +197,11 @@ public class WorkbenchViewController: UIViewController {
   // MARK: - Public
 
   private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
-    setUIState(.Default)
+    resetUIState()
   }
 
   private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
-    setUIState(.Default)
+    resetUIState()
   }
 
   /**
@@ -187,7 +214,66 @@ public class WorkbenchViewController: UIViewController {
     toolboxView?.toolbox = toolbox
     toolboxView?.refreshView()
 
-    setUIState(.Default)
+    resetUIState()
+  }
+}
+
+// MARK: - State Handling
+
+extension WorkbenchViewController {
+  // MARK: - Private
+
+  /**
+   Appends a state to the current state of the UI. This call should be matched a future call to
+   removeUIState(state:animated:).
+
+   - Parameter state: The state to append to `self.state`.
+   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   */
+  private func addUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
+    let state = UIState(value: stateValue)
+    let newState: UIState
+
+    // When adding a new state, check for compatability with existing states.
+
+    switch stateValue {
+    case .TrashCanHighlighted:
+      // This state can co-exist with anything, simply add it to the current state
+      newState = _state.union(state)
+    case .EditingTextField, .PresentingPopover:
+      // Allow .EditingTextField and .PresentingPopover to co-exist with each other, but nothing
+      // else
+      newState = _state.union(state).intersect([.PresentingPopover, .EditingTextField])
+    case .CategoryOpen, .TrashCanOpen, .DraggingBlock:
+      // Don't allow these states to co-exist with others. Simply set the new state to this state
+      // value.
+      newState = UIState(value: stateValue)
+    }
+
+    _setUIState(newState, animated: animated)
+  }
+
+  /**
+   Removes a state to the current state of the UI. This call should have matched a previous call to
+   addUIState(state:animated:).
+
+   - Parameter state: The state to remove from `self.state`.
+   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   */
+  private func removeUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
+    // When subtracting a state value, there is no need to check for compatability.
+    // Simply set the new state, minus the given state value.
+    let newState = _state.subtract(UIState(value: stateValue))
+    _setUIState(newState, animated: animated)
+  }
+
+  /**
+   Resets to the UI back to its default state.
+
+   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   */
+  private func resetUIState(animated: Bool = true) {
+    _setUIState(.Default, animated: animated)
   }
 
   /**
@@ -195,19 +281,33 @@ public class WorkbenchViewController: UIViewController {
 
    - Parameter state: The state to set the UI
    - Parameter animated: True if changes in UI state should be animated. False, if not.
+   - Note: This method should not be called directly. Instead, you should call addUIState(...),
+   removeUIState(...), or resetUIState(...).
    */
-  private func setUIState(state: UIState, animated: Bool = false) {
-    setTrashCanFolderVisible(state == .TrashCanOpen)
+  private func _setUIState(state: UIState, animated: Bool = true) {
+    if _state == state {
+      return
+    }
 
-    if state != .CategoryOpen {
+    _state = state
+
+    setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen))
+
+    setTrashCanButtonHighlight(state.intersectsWith(.TrashCanHighlighted))
+
+    if !state.intersectsWith(.CategoryOpen) {
       // Hide the toolbox category
       toolboxView?.hideCategory(animated: animated)
     }
 
-    if state != .EditingTextField {
+    if !state.intersectsWith(.EditingTextField) {
       // Force all child text fields to end editing (which essentially dismisses the keyboard if
       // it's currently visible)
       self.view.endEditing(true)
+    }
+
+    if !state.intersectsWith(.PresentingPopover) && self.presentedViewController != nil {
+      self.dismissViewControllerAnimated(animated, completion: nil)
     }
   }
 }
@@ -225,9 +325,9 @@ extension WorkbenchViewController {
   public func didTapTrashCan(sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
-      setUIState(.TrashCanOpen, animated: true)
+      addUIStateValue(.TrashCanOpen)
     } else {
-      setUIState(.Default, animated: true)
+      removeUIStateValue(.TrashCanOpen)
     }
   }
 
@@ -290,6 +390,8 @@ extension WorkbenchViewController: WorkspaceViewDelegate {
     {
       addGestureTrackingForWorkspaceFolderBlockView(blockView)
     }
+
+    blockView.delegate = self
   }
 
   public func workspaceView(
@@ -302,6 +404,8 @@ extension WorkbenchViewController: WorkspaceViewDelegate {
     {
       removeGestureTrackingForWorkspaceFolderBlockView(blockView)
     }
+
+    blockView.delegate = nil
   }
 }
 
@@ -377,7 +481,7 @@ extension WorkbenchViewController {
         addGestureTrackingForWorkspaceFolderBlockView(aBlockView)
       }
 
-      setUIState(.DraggingBlock)
+      addUIStateValue(.DraggingBlock)
     }
   }
 }
@@ -433,12 +537,15 @@ extension WorkbenchViewController {
     // on-going drags when the screen is rotated).
 
     if gesture.state == .Began {
-      setUIState(.DraggingBlock)
+      addUIStateValue(.DraggingBlock)
       _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
     } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
-      setUIState(.DraggingBlock)
+      addUIStateValue(.DraggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
-      setTrashCanButtonHighlight(touchingTrashCan)
+
+      if touchingTrashCan {
+        addUIStateValue(.TrashCanHighlighted)
+      }
     }
 
     if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
@@ -460,11 +567,9 @@ extension WorkbenchViewController {
       // them when dragging multiple blocks simultaneously
       addGestureTrackingForBlockView(blockView)
 
-      // Close the trash can
-      setTrashCanButtonHighlight(false)
-
-      // Set the UI state back to the default
-      setUIState(.Default)
+      // Update the UI state
+      removeUIStateValue(.DraggingBlock)
+      removeUIStateValue(.TrashCanHighlighted)
     }
   }
 
@@ -484,7 +589,7 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController {
   private dynamic func keyboardWillShowNotification(notification: NSNotification) {
-    setUIState(.EditingTextField)
+    addUIStateValue(.EditingTextField)
 
     if let keyboardEndSize = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
       // Increase the canvas' bottom padding so the text field isn't hidden by the keyboard (when
@@ -499,8 +604,67 @@ extension WorkbenchViewController {
   }
 
   private dynamic func keyboardWillHideNotification(notification: NSNotification) {
+    removeUIStateValue(.EditingTextField)
+
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
     let contentInsets = UIEdgeInsetsZero
     workspaceView.scrollView.contentInset = contentInsets
+  }
+}
+
+// MARK: - BlockViewDelegate
+
+extension WorkbenchViewController: BlockViewDelegate {
+  public func blockView(blockView: BlockView,
+    requestedToPresentPopoverViewController viewController: UIViewController,
+    fromView: UIView) -> Bool
+  {
+    guard !workspaceView.scrollView.dragging && !workspaceView.scrollView.decelerating &&
+      !(self.presentedViewController?.isBeingPresented() ?? false) else
+    {
+      // Don't present anything if the scroll view is being dragged or is decelerating, or if
+      // another view controller is being presented
+      return false
+    }
+
+    if self.presentedViewController != nil {
+      // Dismiss any other view controller that's being presented
+      self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    addUIStateValue(.PresentingPopover)
+
+    viewController.modalPresentationStyle = .Popover
+    viewController.popoverPresentationController?.sourceView = self.view
+    viewController.popoverPresentationController?.sourceRect =
+      self.view.convertRect(fromView.frame, fromView: fromView.superview)
+    viewController.popoverPresentationController?.permittedArrowDirections = .Any
+    viewController.popoverPresentationController?.delegate = self
+    viewController.popoverPresentationController?.passthroughViews = [self.view]
+
+    presentViewController(viewController, animated: true, completion: nil)
+
+    return true
+  }
+}
+
+extension WorkbenchViewController: UIPopoverPresentationControllerDelegate {
+  public func adaptivePresentationStyleForPresentationController(
+    controller: UIPresentationController) -> UIModalPresentationStyle
+  {
+    // Force this view controller to always show up in a popover
+    return UIModalPresentationStyle.None
+  }
+
+  public func popoverPresentationControllerDidDismissPopover(
+    popoverPresentationController: UIPopoverPresentationController)
+  {
+    removeUIStateValue(.PresentingPopover)
+  }
+
+  public override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
+    super.dismissViewControllerAnimated(flag, completion: completion)
+
+    removeUIStateValue(.PresentingPopover)
   }
 }
