@@ -96,6 +96,8 @@ public class BlockLayout: Layout {
         _previousConnection.moveToPosition(self.absolutePosition,
           withOffset: _previousConnectionRelativePosition)
       }
+      // TODO: (#334) Scale and offset correctly into the workspace
+      block.position = self.absolutePosition
     }
   }
 

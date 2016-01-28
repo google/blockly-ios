@@ -35,6 +35,7 @@ public final class Block : NSObject {
   public let category: Int
   public let colourHue: Int
   public let inputsInline: Bool
+  public internal(set) var position: WorkspacePoint = WorkspacePointZero
   public let outputConnection: Connection?
   public var outputBlock: Block? {
     return outputConnection?.targetConnection?.sourceBlock
