@@ -34,7 +34,7 @@ public class ViewManager: NSObject {
   private var _blockViews = [String: BlockView]()
 
   /// Dictionary of cached views for FieldLayouts
-  private var _fieldViews = [String: LayoutView]()
+  private var _fieldViews = [String: FieldView]()
 
   // MARK: - Public
 
@@ -96,19 +96,23 @@ public class ViewManager: NSObject {
   }
 
   /**
-  Returns a recycled or new `LayoutView` instance assigned to the given layout. This view is stored
+  Returns a recycled or new `FieldView` instance assigned to the given layout. This view is stored
   in the internal cache for future lookup.
 
   - Parameter layout: The given `FieldLayout`
-  - Returns: A `LayoutView` with the given layout assigned to it
+  - Returns: A `FieldView` with the given layout assigned to it
   - Throws:
-  `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
+  `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
   */
-  public func newFieldViewForLayout(layout: FieldLayout) throws -> LayoutView {
+  public func newFieldViewForLayout(layout: FieldLayout) throws -> FieldView {
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout
 
-    var fieldView: LayoutView?
-    if let fieldInputLayout = layout as? FieldInputLayout {
+    var fieldView: FieldView?
+    if let fieldDropdownLayout = layout as? FieldDropdownLayout {
+      let fieldDropdownView = viewForType(FieldDropdownView.self)
+      fieldDropdownView.layout = fieldDropdownLayout
+      fieldView = fieldDropdownView
+    } else if let fieldInputLayout = layout as? FieldInputLayout {
       let fieldInputView = viewForType(FieldInputView.self)
       fieldInputView.layout = fieldInputLayout
       fieldView = fieldInputView
