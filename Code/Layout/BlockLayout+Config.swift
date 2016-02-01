@@ -27,6 +27,9 @@ extension BlockLayout {
     /// Vertical space between elements, specified as a Workspace coordinate system unit.
     public final var ySeparatorSpace: CGFloat = 10
 
+    /// Horizontal padding around inline elements, specified as a Workspace coordinate system unit.
+    public final var inlineXPadding: CGFloat = 10
+
     /// Vertical padding around inline elements, specified as a Workspace coordinate system unit.
     public final var inlineYPadding: CGFloat = 5
 
@@ -67,5 +70,13 @@ extension BlockLayout {
     /// Width of jagged teeth at the end of collapsed blocks, specified as a Workspace coordinate
     /// system unit.
     public final var jaggedTeethWidth: CGFloat = 15
+
+    /// If necessary, the rounded corner radius of a field, specified as a Workspace coordinate
+    /// system unit.
+    public final var fieldCornerRadius: CGFloat = 5
+
+    /// If necessary, the line stroke width of a field, specified as a Workspace coordinate system
+    /// unit.
+    public final var fieldLineWidth: CGFloat = 1
   }
 }

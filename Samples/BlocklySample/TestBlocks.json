@@ -98,7 +98,7 @@
   "message0": "repeat %1 %2 %3",
   "args0": [
             {
-            "type": "field_label",
+            "type": "field_dropdown",
             "name": "MODE",
             "options": [
                         [
@@ -107,17 +107,17 @@
                          ],
                         [
                          "until",
-                         "Until"
+                         "UNTIL"
                          ]
                         ]
             },
             {
             "type": "input_value",
-            "name": "TIMES"
+            "name": "BOOL"
             },
             {
             "type": "input_statement",
-            "name": "NAME"
+            "name": "DO"
             }
             ],
   "tooltip": "",
@@ -239,19 +239,71 @@
   "tooltip": "",
   "helpUrl": "http://www.example.com/"
   },
- {
- "id": "text_input_block",
- "message0": "Input block 🍍 %1 🍅",
- "args0": [
+  {
+  "id": "text_input_block",
+  "message0": "Input block 🍍 %1 🍅",
+  "args0": [
            {
            "type": "field_input",
            "name": "Input",
            "text": ""
            },
            ],
- "output": null,
- "tooltip": "",
- "helpUrl": "http://www.example.com/"
+  "output": null,
+  "tooltip": "",
+  "helpUrl": "http://www.example.com/"
+  },
+  {
+  "id": "test_dropdown",
+  "message0": "%1",
+  "args0": [
+           {
+           "type": "field_dropdown",
+           "name": "Dropdown",
+           "options": [
+                       [
+                        "The Shawshank Redemption",
+                        "The Shawshank Redemption"
+                        ],
+                       [
+                        "The Godfather",
+                        "The Godfather"
+                        ],
+                       [
+                        "The Godfather: Part II",
+                        "The Godfather: Part II"
+                        ],
+                       [
+                        "The Dark Knight",
+                        "The Dark Knight"
+                        ],
+                       [
+                        "Pulp Fiction",
+                        "Pulp Fiction"
+                        ],
+                       [
+                        "Schindler's List",
+                        "Schindler's List"
+                        ],
+                       [
+                        "12 Angry Men",
+                        "12 Angry Men"
+                        ],
+                       [
+                        "The Lord of the Rings: The Return of the King",
+                        "The Lord of the Rings: The Return of the King"
+                        ],
+                       [
+                        "The Good, the Bad and the Ugly",
+                        "The Good, the Bad and the Ugly"
+                        ],
+                       [
+                        "Fight Club",
+                        "Fight Club"
+                        ]
+                      ]
+           }
+           ],
+  "output": null
  }
-
 ]
