@@ -78,5 +78,9 @@ extension BlockLayout {
     /// If necessary, the line stroke width of a field, specified as a Workspace coordinate system
     /// unit.
     public final var fieldLineWidth: CGFloat = 1
+
+    /// The button size to use when rendering a colour field, expressed as a Workspace coordinate
+    /// system unit.
+    public final var colourButtonSize = WorkspaceSizeMake(44, 44)
   }
 }
