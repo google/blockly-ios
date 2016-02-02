@@ -305,5 +305,19 @@
            }
            ],
   "output": null
- }
+ },
+ {
+ "id": "colour_picker",
+ "message0": "%1",
+ "args0": [
+           {
+           "type": "field_colour",
+           "name": "colour",
+           "text": ""
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/"
+ },
 ]

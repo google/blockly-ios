@@ -22,7 +22,11 @@ An input field for a colour value.
 public final class FieldColour: Field {
   // MARK: - Properties
 
-  public var colour: UIColor
+  public var colour: UIColor {
+    didSet {
+      delegate?.didUpdateField(self)
+    }
+  }
 
   // MARK: - Initializers
 
