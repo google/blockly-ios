@@ -57,6 +57,9 @@ public class BlockView: LayoutView {
   /// Field subviews
   private var _fieldViews = [FieldView]()
 
+  /// Flag determining if layer changes should be animated
+  private var _disableLayerChangeAnimations: Bool = true
+
   /// Delegate for events that occur on the block
   public weak var delegate: BlockViewDelegate?
 
@@ -107,15 +110,18 @@ public class BlockView: LayoutView {
       return
     }
 
+    CATransaction.begin()
+    CATransaction.setDisableActions(_disableLayerChangeAnimations)
+
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) {
       // Update background
-      // TODO:(vicng) Set the colours properly
-      _backgroundLayer.strokeColor = (layout.highlighted ?
-        UIColor.blueColor() : UIColor.darkGrayColor()).CGColor
+      _backgroundLayer.strokeColor = layout.highlighted ?
+        BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor :
+        BlockLayout.sharedConfig.blockStrokeDefaultColour.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
         BlockLayout.sharedConfig.blockLineWidthHighlight :
         BlockLayout.sharedConfig.blockLineWidthRegular
-      _backgroundLayer.fillColor = UIColor.greenColor().CGColor
+      _backgroundLayer.fillColor = layout.block.colour.CGColor
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()
       _backgroundLayer.frame = self.bounds
     }
@@ -158,10 +164,19 @@ public class BlockView: LayoutView {
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateZIndex]) {
       self.zIndex = layout.zIndex
     }
+
+    CATransaction.commit()
+
+    // Re-enable layer animations for any future changes
+    _disableLayerChangeAnimations = false
   }
 
   public override func internalPrepareForReuse() {
     self.frame = CGRectZero
+
+    // Disable animating layer changes, so that the next block layout that uses this view instance
+    // isn't animated into view based on the previous block layout.
+    _disableLayerChangeAnimations = true
 
     for fieldView in _fieldViews {
       fieldView.removeFromSuperview()
@@ -204,7 +219,7 @@ public class BlockView: LayoutView {
         workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
       let highlightLayer = BezierPathLayer()
       highlightLayer.lineWidth = lineWidth
-      highlightLayer.strokeColor = UIColor.blueColor().CGColor
+      highlightLayer.strokeColor = BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor
       highlightLayer.fillColor = nil
       // TODO:(vicng) The highlight view frame needs to be larger than this view since it uses a
       // larger line width

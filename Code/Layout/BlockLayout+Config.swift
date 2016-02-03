@@ -82,5 +82,23 @@ extension BlockLayout {
     /// The button size to use when rendering a colour field, expressed as a Workspace coordinate
     /// system unit.
     public final var colourButtonSize = WorkspaceSizeMake(44, 44)
+
+    /// The border width to use when rendering the colour button, expressed as a Workspace
+    /// coordinate system unit.
+    public final var colourButtonBorderWidth = CGFloat(2)
+
+    /// The colour to use for the `FieldCheckboxView` switch's "onTintColor". A value of nil means
+    /// that the system default should be used.
+    public final var checkboxSwitchOnTintColour: UIColor? = nil
+
+    /// The colour to use for the `FieldCheckboxView` switch "tintColor". A value of nil means
+    /// that the system default should be used.
+    public final var checkboxSwitchTintColour: UIColor? = nil
+
+    /// The default stroke colour to use when rendering a block
+    public final var blockStrokeDefaultColour: UIColor = UIColor.darkGrayColor()
+
+    /// The highlight stroke colour to use when rendering a block
+    public final var blockStrokeHighlightColour: UIColor = UIColor.blueColor()
   }
 }

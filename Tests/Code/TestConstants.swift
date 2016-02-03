@@ -14,8 +14,12 @@
 */
 
 import Foundation
+import UIKit
 
 public class TestConstants {
   /** Allow for this amount of difference when comparing two Floats together. */
-  public static let ACCURACY_F: Float = 0.001
+  public static let ACCURACY_F = Float(0.001)
+
+  /** Allow for this amount of difference when comparing two CGFloats together. */
+  public static let ACCURACY_CGF = CGFloat(0.001)
 }

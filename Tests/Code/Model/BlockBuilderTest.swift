@@ -51,7 +51,8 @@ class BlockBuilderTest: XCTestCase {
   internal func validateFrankenblock(block: Block) {
     XCTAssertEqual("frankenblock", block.identifier)
     XCTAssertEqual(3, block.inputs.count)
-    XCTAssertEqual(20, block.colourHue)
+    XCTAssertEqualWithAccuracy(
+      CGFloat(20.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual("http://www.example.com", block.helpURL)
     XCTAssertEqual("a tooltip", block.tooltip)
 
@@ -108,7 +109,8 @@ class BlockBuilderTest: XCTestCase {
     do {
       fields.append(try FieldDropdown(name: "dropdown",
         displayNames: ["option1", "option2", "option3"],
-        values: ["OPTION1", "OPTION2", "OPTION3"]))
+        values: ["OPTION1", "OPTION2", "OPTION3"],
+        selectedIndex: 0))
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
@@ -135,7 +137,7 @@ class BlockBuilderTest: XCTestCase {
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
-    bob.colourHue = 20
+    bob.setColourFromHue(20 / 360)
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
