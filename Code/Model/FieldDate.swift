@@ -23,7 +23,14 @@ public final class FieldDate: Field {
   // MARK: - Properties
 
   public var date: NSDate {
-    didSet { self.date = FieldDate.normalizeDate(self.date) }
+    didSet {
+      let normalizedDate = FieldDate.normalizeDate(self.date)
+      self.date = normalizedDate
+
+      if normalizedDate.timeIntervalSince1970 != oldValue.timeIntervalSince1970 {
+        delegate?.didUpdateField(self)
+      }
+    }
   }
 
   // MARK: - Initializers

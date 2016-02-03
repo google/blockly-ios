@@ -240,13 +240,11 @@ extension WorkbenchViewController {
     case .TrashCanHighlighted:
       // This state can co-exist with anything, simply add it to the current state
       newState = _state.union(state)
-    case .EditingTextField, .PresentingPopover:
-      // Allow .EditingTextField and .PresentingPopover to co-exist with each other, but nothing
-      // else
+    case .EditingTextField:
+      // Allow .EditingTextField to co-exist with .PresentingPopover, but nothing else
       newState = _state.union(state).intersect([.PresentingPopover, .EditingTextField])
-    case .CategoryOpen, .TrashCanOpen, .DraggingBlock:
-      // Don't allow these states to co-exist with others. Simply set the new state to this state
-      // value.
+    case .CategoryOpen, .TrashCanOpen, .DraggingBlock, .PresentingPopover:
+      // Whenever these states are added, clear out all existing state.
       newState = UIState(value: stateValue)
     }
 
@@ -640,7 +638,6 @@ extension WorkbenchViewController: BlockViewDelegate {
       self.view.convertRect(fromView.frame, fromView: fromView.superview)
     viewController.popoverPresentationController?.permittedArrowDirections = .Any
     viewController.popoverPresentationController?.delegate = self
-    viewController.popoverPresentationController?.passthroughViews = [self.view]
 
     presentViewController(viewController, animated: true, completion: nil)
 

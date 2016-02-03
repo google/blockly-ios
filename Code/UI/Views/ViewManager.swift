@@ -112,6 +112,10 @@ public class ViewManager: NSObject {
       let fieldColourView = viewForType(FieldColourView.self)
       fieldColourView.layout = fieldColourLayout
       fieldView = fieldColourView
+    } else if let fieldDateLayout = layout as? FieldDateLayout {
+      let fieldDateView = viewForType(FieldDateView.self)
+      fieldDateView.layout = fieldDateLayout
+      fieldView = fieldDateView
     } else if let fieldDropdownLayout = layout as? FieldDropdownLayout {
       let fieldDropdownView = viewForType(FieldDropdownView.self)
       fieldDropdownView.layout = fieldDropdownLayout

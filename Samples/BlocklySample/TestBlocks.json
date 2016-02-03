@@ -320,4 +320,18 @@
  "tooltip": "",
  "helpUrl": "http://www.example.com/"
  },
+ {
+ "id": "date_picker",
+ "message0": "%1",
+ "args0": [
+           {
+           "type": "field_date",
+           "name": "date",
+           "text": ""
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/"
+ },
 ]
