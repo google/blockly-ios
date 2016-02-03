@@ -30,7 +30,7 @@ public class FieldInputView: FieldView {
    to that calculated value (to account for the text decoration applied by the system when it draws
    the `.RoundedRect` borderStyle of the text field).
    */
-  public static var textFieldPadding = CGSizeMake(10, 6)
+  public static var textFieldPadding = CGSizeMake(14, 6)
 
   // MARK: - Properties
 
@@ -51,8 +51,7 @@ public class FieldInputView: FieldView {
     textField.delegate = self
     textField.borderStyle = .RoundedRect
     textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    textField.addTarget(self, action: "textFieldDidChange:",
-      forControlEvents: UIControlEvents.EditingChanged)
+    textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
     addSubview(textField)
   }
 
@@ -91,7 +90,7 @@ public class FieldInputView: FieldView {
   }
 }
 
-// MARK: - FieldInputViewDelegate
+// MARK: - UITextFieldDelegate
 
 extension FieldInputView: UITextFieldDelegate {
   public func textFieldShouldReturn(textField: UITextField) -> Bool {
