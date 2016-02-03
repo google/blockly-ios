@@ -38,8 +38,7 @@ public class FieldColourView: FieldView {
 
     button.frame = self.bounds
     button.clipsToBounds = true
-    button.layer.borderColor = UIColor.clearColor().CGColor
-    button.layer.borderWidth = 0
+    button.layer.borderColor = UIColor.whiteColor().CGColor
     button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
     addSubview(button)
@@ -59,6 +58,8 @@ public class FieldColourView: FieldView {
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+      self.button.layer.borderWidth = layout.workspaceLayout
+        .viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.colourButtonBorderWidth)
       self.button.layer.cornerRadius =
         layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
       self.button.backgroundColor = layout.fieldColour.colour

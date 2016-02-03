@@ -37,7 +37,8 @@ class BlockJSONTest: XCTestCase {
     }
 
     XCTAssertEqual("block_id_1", block.identifier)
-    XCTAssertEqual(135, block.colourHue)
+    XCTAssertEqualWithAccuracy(
+      CGFloat(135.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual(true, block.inputsInline)
     XCTAssertEqual("Click me", block.tooltip)
     XCTAssertEqual("http://www.example.com/", block.helpURL)

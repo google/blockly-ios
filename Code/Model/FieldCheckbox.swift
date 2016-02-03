@@ -22,7 +22,14 @@ An input field for a checkbox.
 public final class FieldCheckbox: Field {
   // MARK: - Properties
 
-  public var checked: Bool
+  public var checked: Bool {
+    didSet {
+      if checked == oldValue {
+        return
+      }
+      delegate?.didUpdateField(self)
+    }
+  }
 
   // MARK: - Initializers
 

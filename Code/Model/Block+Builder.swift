@@ -30,7 +30,7 @@ extension Block {
     // These values are publicly immutable in `Block`
     public var identifier: String = ""
     public var category: Int = 0
-    public var colourHue: Int = 0
+    public var colour: UIColor = UIColor.clearColor()
     public private(set) var outputConnectionEnabled: Bool = false
     public private(set) var outputConnectionTypeChecks: [String]?
     public private(set) var nextConnectionEnabled: Bool = false
@@ -55,7 +55,10 @@ extension Block {
     // MARK: - Initializers
 
     public init(identifier: String) {
+      super.init()
       self.identifier = identifier
+
+      setColourFromHue(0)
     }
 
     /**
@@ -66,7 +69,7 @@ extension Block {
     public init(block: Block) {
       identifier = block.identifier
       category = block.category
-      colourHue = block.colourHue
+      colour = block.colour
       inputsInline = block.inputsInline
 
       tooltip = block.tooltip
@@ -116,7 +119,7 @@ extension Block {
       let inputs = inputBuilders.map({ $0.build() })
 
       let block = Block(identifier: identifier, category: category,
-        colourHue: colourHue, inputs: inputs, inputsInline: inputsInline,
+        colour: colour, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)
 
@@ -156,6 +159,20 @@ extension Block {
       }
       self.previousConnectionEnabled = enabled
       self.previousConnectionTypeChecks = typeChecks
+    }
+
+    /**
+     Sets `self.colour` based on hue, saturation, brightness, and alpha values.
+
+     - Parameter hue: The hue
+     - Parameter saturation: (Optional) The saturation. Defaults to 0.45.
+     - Parameter brightness: (Optional) The brightness. Defaults to 0.65.
+     - Parameter alpha: (Optional) The alpha. Defaults to 1.0.
+     */
+    public func setColourFromHue(
+      hue: CGFloat, saturation: CGFloat = 0.45, brightness: CGFloat = 0.65, alpha: CGFloat = 1.0)
+    {
+       self.colour = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
   }
 }

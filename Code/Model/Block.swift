@@ -33,7 +33,6 @@ public final class Block : NSObject {
   public let uuid: String
   public let identifier: String
   public let category: Int
-  public let colourHue: Int
   public let inputsInline: Bool
   public internal(set) var position: WorkspacePoint = WorkspacePointZero
   public let outputConnection: Connection?
@@ -51,6 +50,7 @@ public final class Block : NSObject {
   /// List of connections directly attached to this block
   public private(set) var directConnections = [Connection]()
   public let inputs: [Input]
+  public private(set) var colour: UIColor
   public var tooltip: String = ""
   public var comment: String = ""
   public var helpURL: String = ""
@@ -103,13 +103,13 @@ public final class Block : NSObject {
   To create a Block, use Block.Builder instead.
   */
   internal init(identifier: String, category: Int,
-    colourHue: Int, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
+    colour: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = NSUUID().UUIDString
     self.identifier = identifier
     self.category = category
-    self.colourHue = min(max(colourHue, 0), 360)
+    self.colour = colour
     self.inputs = inputs
     self.inputsInline = inputsInline
     self.outputConnection = outputConnection

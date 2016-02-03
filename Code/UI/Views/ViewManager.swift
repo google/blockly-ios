@@ -108,7 +108,11 @@ public class ViewManager: NSObject {
     // TODO:(vicng) Implement a way for clients to customize the view based on the layout
 
     var fieldView: FieldView?
-    if let fieldColourLayout = layout as? FieldColourLayout {
+    if let fieldCheckboxLayout = layout as? FieldCheckboxLayout {
+      let fieldCheckboxView = viewForType(FieldCheckboxView.self)
+      fieldCheckboxView.layout = fieldCheckboxLayout
+      fieldView = fieldCheckboxView
+    } else if let fieldColourLayout = layout as? FieldColourLayout {
       let fieldColourView = viewForType(FieldColourView.self)
       fieldColourView.layout = fieldColourLayout
       fieldView = fieldColourView

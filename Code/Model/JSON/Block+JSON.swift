@@ -38,9 +38,15 @@ extension Block {
     let identifier = (json["id"] as? String) ?? ""
     let builder = Block.Builder(identifier: identifier)
 
-    if let colourHue = json["colour"] as? Int {
-      builder.colourHue = min(max(colourHue, 0), 360)
+    if let colourHue = json["colour"] as? CGFloat {
+      let hue = (min(max(colourHue, 0), 360)) / 360
+      builder.setColourFromHue(hue)
+    } else if let colourString = json["colour"] as? String,
+              let colour = UIColor.bky_colorFromRGB(colourString)
+    {
+      builder.colour = colour
     }
+
     if let output = json["output"] {
       if let typeCheck = output as? String {
         try builder.setOutputConnectionEnabled(true, typeChecks: [typeCheck])

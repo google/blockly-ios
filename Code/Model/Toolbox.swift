@@ -32,13 +32,11 @@ public class Toolbox: NSObject {
     }
   }
 
-  public func addCategory(categoryName: String, color: UIColor,
+  public func addCategory(categoryName: String, colour: UIColor,
     layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
   {
-    let category = Category()
+    let category = Category(name: categoryName, colour: colour)
     category.readOnly = self.readOnly
-    category.name = categoryName
-    category.color = color
 
     do {
       let layout = try WorkspaceFlowLayout(
@@ -58,7 +56,12 @@ extension Toolbox {
    */
   @objc(BKYToolboxCategory)
   public class Category: WorkspaceFlow {
-    public var name = ""
-    public var color: UIColor?
+    public var name: String
+    public var colour: UIColor
+
+    private init(name: String, colour: UIColor) {
+      self.name = name
+      self.colour = colour
+    }
   }
 }
