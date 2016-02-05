@@ -130,8 +130,8 @@ class WorkspaceLayoutTest: XCTestCase {
     }
 
     // Remove them
-    for (var i = allBlockGroupLayouts.count - 1; i >= 0; i--) {
-      let blockGroupLayout = allBlockGroupLayouts.removeAtIndex(i)
+    while allBlockGroupLayouts.count > 0 {
+      let blockGroupLayout = allBlockGroupLayouts.removeAtIndex(0)
       _workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
       XCTAssertEqual(allBlockGroupLayouts.count, _workspaceLayout.blockGroupLayouts.count)
       // The block group's parent should be nil now

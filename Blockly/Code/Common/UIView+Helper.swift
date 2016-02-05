@@ -23,8 +23,8 @@ extension UIView {
   */
   public func bky_removeAllGestureRecognizers() {
     let gestureRecognizers = (self.gestureRecognizers ?? [])
-    for (var i = gestureRecognizers.count - 1; i >= 0; i--) {
-      removeGestureRecognizer(gestureRecognizers[i])
+    for gestureRecognizer in gestureRecognizers {
+      removeGestureRecognizer(gestureRecognizer)
     }
   }
 }

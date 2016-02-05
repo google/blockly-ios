@@ -71,9 +71,9 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
-    for (var i: UInt = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       let blockLayout = createBlockLayout()
-      blockLayout.zIndex = i // Assign a different z-index to each
+      blockLayout.zIndex = UInt(i) // Assign a different z-index to each
       blockLayouts.append(blockLayout)
     }
     blockGroupLayout.appendBlockLayouts(blockLayouts)
@@ -236,7 +236,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
-    for (var i = 0; i < numberOfBlockLayouts; i++) {
+    for _ in 0 ..< numberOfBlockLayouts {
       let blockLayout = createBlockLayout()
       blockLayouts.append(blockLayout)
     }

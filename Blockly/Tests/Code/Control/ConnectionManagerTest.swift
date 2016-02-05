@@ -167,7 +167,7 @@ class ConnectionManagerTest: XCTestCase {
     let group2 = manager.startGroupForBlock(nil)
 
     var connections = [Connection]()
-    for (var i = 0; i < 12; i++) {
+    for i in 0 ..< 12 {
       let connectionType = Connection.ConnectionType(rawValue: i % 4)
       connections.append(createConnection(CGFloat(i), CGFloat(i), connectionType!))
       manager.trackConnection(connections[i], assignToGroup: group1)
@@ -213,7 +213,7 @@ class ConnectionManagerTest: XCTestCase {
 
   func testYSortedListFind() {
     let previousList = manager.mainGroup.connectionsForType(.PreviousStatement)
-    for (var i = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       previousList.addConnection(createConnection(CGFloat(i), 0, .PreviousStatement))
       previousList.addConnection(createConnection(0, CGFloat(i), .PreviousStatement))
     }
@@ -228,11 +228,11 @@ class ConnectionManagerTest: XCTestCase {
 
   func testYSortedListOrdered() {
     let list = manager.mainGroup.connectionsForType(.PreviousStatement)
-    for (var i = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       list.addConnection(createConnection(0, CGFloat(9 - i), .PreviousStatement))
     }
 
-    for (var i = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       XCTAssertEqual(CGFloat(i), list[i].position.y)
     }
 
@@ -250,11 +250,11 @@ class ConnectionManagerTest: XCTestCase {
       -23, 5, -2, -13, -9, 48, 74, -97, -11, 35, -79, -16, -77, 83, -57, -53, 35, -44,
       100, -27, -15, 5, 39, 33, -19, -20, -95]
 
-    for (var i = 0; i < xCoords.count; i++) {
+    for i in 0 ..< xCoords.count {
       list.addConnection(createConnection(xCoords[i], yCoords[i], .PreviousStatement))
     }
 
-    for (var i = 1; i < xCoords.count; i++) {
+    for i in 1 ..< xCoords.count {
       XCTAssertTrue(list[i].position.y >= list[i - 1].position.y)
     }
   }
@@ -270,7 +270,7 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertEqual(nil, searchList(list, x: 0, y: 0, radius: 5))
     list.removeAllConnections()
 
-    for (var i = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       list.addConnection(createConnection(0, CGFloat(i), .PreviousStatement))
     }
 
@@ -298,28 +298,28 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertTrue(getNeighbourHelper(list, x: 10, y: 10, radius: 100).isEmpty)
 
     // Make a list
-    for (var i = 0; i < 10; i++) {
+    for i in 0 ..< 10 {
       list.addConnection(createConnection(0, CGFloat(i), .PreviousStatement))
     }
 
     // Test block belongs at beginning
     var result = getNeighbourHelper(list, x: 0, y: 0, radius: 4)
     XCTAssertEqual(5, result.count)
-    for (var i = 0; i < result.count; i++) {
+    for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i]))
     }
 
     // Test block belongs at middle
     result = getNeighbourHelper(list, x: 0, y: 4, radius: 2)
     XCTAssertEqual(5, result.count)
-    for (var i = 0; i < result.count; i++) {
+    for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i + 2]))
     }
 
     // Test block belongs at end
     result = getNeighbourHelper(list, x: 0, y: 9, radius: 4)
     XCTAssertEqual(5, result.count)
-    for (var i = 0; i < result.count; i++) {
+    for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i + 5]))
     }
 
@@ -414,7 +414,7 @@ class ConnectionManagerTest: XCTestCase {
   private func createConnectionsForList(list: ConnectionManager.YSortedList, yCoords: [CGFloat])
     -> [Connection] {
       var connections = [Connection]()
-      for (var i = 0; i < yCoords.count; i++) {
+      for i in 0 ..< yCoords.count {
         let connection = createConnection(CGFloat(i), CGFloat(yCoords[i]), .PreviousStatement)
         list.addConnection(connection)
         connections.append(connection)
@@ -425,7 +425,7 @@ class ConnectionManagerTest: XCTestCase {
   private func isListSorted(list: ConnectionManager.YSortedList) -> Bool {
     var currentPosY: CGFloat?
 
-    for (var i = 0; i < list.count; i++) {
+    for i in 0 ..< list.count {
       if currentPosY != nil && list[i].position.y < currentPosY! {
         // The value at list[i] has a y-pos that is less than the previous value
         return false

@@ -85,7 +85,8 @@ extension Block {
     }
 
     // Interpolate any messages for the block
-    for (var i = 0; ; i++) {
+    var i = 0
+    while true {
       guard let message = json["message\(i)"] as? String else {
         // No message found for next value of i, stop interpolating messages.
         break
@@ -99,6 +100,8 @@ extension Block {
       // else (eg. localization)
       builder.inputBuilders += try interpolateMessage(
         message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
+
+      i += 1
     }
 
     return builder
@@ -225,8 +228,9 @@ extension Block {
     var state = State.BaseCase
     var currentTextToken = ""
     var currentNumber = 0
+    var i = message.startIndex
 
-    for (var i = message.startIndex; i < message.endIndex; i = i.successor()) {
+    while i < message.endIndex {
       let character = message[i]
 
       switch (state) {
@@ -267,6 +271,8 @@ extension Block {
           state = .BaseCase;
         }
       }
+
+      i = i.successor()
     }
 
     // Process any remaining values

@@ -155,7 +155,7 @@ public class InputLayout: Layout {
     var fieldMaximumYPoint: CGFloat = 0
 
     // Update relative position/size of fields
-    for (var i = 0; i < fieldLayouts.count; i++) {
+    for i in 0 ..< fieldLayouts.count {
       let fieldLayout = fieldLayouts[i]
       if includeChildren {
         fieldLayout.performLayout(includeChildren: true)
@@ -330,8 +330,8 @@ public class InputLayout: Layout {
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   public func reset(updateLayout updateLayout: Bool) {
-    for (var i = fieldLayouts.count - 1 ; i >= 0; i--) {
-      removeFieldLayoutAtIndex(i)
+    while fieldLayouts.count > 0 {
+      removeFieldLayoutAtIndex(0)
     }
 
     self.blockGroupLayout.reset(updateLayout: false)

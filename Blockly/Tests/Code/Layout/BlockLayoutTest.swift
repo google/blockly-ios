@@ -195,7 +195,7 @@ class BlockLayoutTest: XCTestCase {
       XCTAssertEqual(block.inputs.count, inputLayouts.count)
 
       // Test inputLayoutBeforeLayout() on each inputLayout
-      for (var i = 0; i < inputLayouts.count; i++) {
+      for i in 0 ..< inputLayouts.count {
         let previousInputLayout : InputLayout? = (i > 0 ? inputLayouts[i - 1] : nil)
         let currentInputLayout = inputLayouts[i]
         XCTAssertEqual(previousInputLayout, blockLayout.inputLayoutBeforeLayout(currentInputLayout))
@@ -255,7 +255,7 @@ class BlockLayoutTest: XCTestCase {
       XCTAssertEqual(block.inputs.count, inputLayouts.count)
 
       // Test inputLayoutAfterLayout() on each inputLayout
-      for (var i = 0; i < inputLayouts.count; i++) {
+      for i in 0 ..< inputLayouts.count {
         let currentInputLayout = inputLayouts[i]
         let nextInputLayout : InputLayout? =
           (i < inputLayouts.count - 1 ? inputLayouts[i + 1] : nil)
