@@ -220,7 +220,7 @@ class LayoutBuilderTest: XCTestCase {
   private func verifyBlockGroupLayoutTree(blockGroupLayout: BlockGroupLayout, firstBlock: Block?) {
     var currentBlock = firstBlock
 
-    for (var i = 0; i < blockGroupLayout.blockLayouts.count; i++) {
+    for i in 0 ..< blockGroupLayout.blockLayouts.count {
       guard let block = currentBlock else {
         XCTFail(
           "The number of block layouts in the group exceeds the number of blocks in the chain")
@@ -263,7 +263,7 @@ class LayoutBuilderTest: XCTestCase {
     // Make sure the number of inputLayouts matches the number of inputs
     XCTAssertEqual(block.inputs.count, blockLayout.inputLayouts.count)
 
-    for (var i = 0; i < blockLayout.inputLayouts.count && i < block.inputs.count; i++) {
+    for i in 0 ..< block.inputs.count {
       let inputLayout = blockLayout.inputLayouts[i]
 
       if block.inputs[i].layout == nil {
@@ -288,7 +288,7 @@ class LayoutBuilderTest: XCTestCase {
     // Make sure the number of fieldLayouts matches the number of fields
     XCTAssertEqual(input.fields.count, inputLayout.fieldLayouts.count)
 
-    for (var i = 0; i < inputLayout.fieldLayouts.count && i < input.fields.count; i++) {
+    for i in 0 ..< input.fields.count {
       let fieldLayout = inputLayout.fieldLayouts[i]
 
       if input.fields[i].layout == nil {

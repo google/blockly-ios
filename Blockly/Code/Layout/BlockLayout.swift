@@ -317,8 +317,8 @@ public class BlockLayout: Layout {
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   public func reset(updateLayout updateLayout: Bool = true) {
-    for (var i = inputLayouts.count - 1 ; i >= 0; i--) {
-      removeInputLayoutAtIndex(i)
+    while inputLayouts.count > 0 {
+      removeInputLayoutAtIndex(0)
     }
 
     if updateLayout {
@@ -337,7 +337,7 @@ public class BlockLayout: Layout {
   `inputLayouts[i - 1]` is returned. Otherwise, nil is returned.
   */
   internal func inputLayoutBeforeLayout(layout: InputLayout) -> InputLayout? {
-    for (var i = 0; i < inputLayouts.count; i++) {
+    for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
         return i > 0 ? inputLayouts[i - 1] : nil
       }
@@ -354,9 +354,9 @@ public class BlockLayout: Layout {
   `i < inputLayouts.count - 1`, `inputLayouts[i + 1]` is returned. Otherwise, nil is returned.
   */
   internal func inputLayoutAfterLayout(layout: InputLayout) -> InputLayout? {
-    for (var i = 0; i < inputLayouts.count - 1; i++) {
+    for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
-        return inputLayouts[i + 1]
+        return i < (inputLayouts.count - 1) ? inputLayouts[i + 1] : nil
       }
     }
     return nil

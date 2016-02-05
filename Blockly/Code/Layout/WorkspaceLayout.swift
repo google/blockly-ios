@@ -209,7 +209,8 @@ public class WorkspaceLayout: Layout {
       return
     }
 
-    blockGroupLayout.zIndex = ++_zIndexCounter
+    _zIndexCounter += 1
+    blockGroupLayout.zIndex = _zIndexCounter
 
     if _zIndexCounter >= _maximumZIndexCounter {
       // The maximum z-position has been reached (unbelievable!). Normalize all block group layouts.
@@ -218,7 +219,8 @@ public class WorkspaceLayout: Layout {
       let ascendingBlockGroupLayouts = self.blockGroupLayouts.sort({ $0.zIndex < $1.zIndex })
 
       for blockGroupLayout in ascendingBlockGroupLayouts {
-        blockGroupLayout.zIndex = ++_zIndexCounter
+        _zIndexCounter += 1
+        blockGroupLayout.zIndex = _zIndexCounter
       }
     }
   }

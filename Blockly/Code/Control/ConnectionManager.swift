@@ -374,7 +374,7 @@ extension ConnectionManager {
     - Parameter toGroup: The new group
     */
     internal func transferConnectionsToGroup(toGroup: Group) {
-      for (var i = 0; i < _matchingLists.count; i++) {
+      for i in 0 ..< _matchingLists.count {
         let fromConnectionList = _matchingLists[i]
         let toConnectionList = toGroup._matchingLists[i]
 
@@ -518,13 +518,13 @@ extension ConnectionManager {
         if _connections[pointerMin] == connection {
           return pointerMin
         }
-        pointerMin--
+        pointerMin -= 1
       }
       while (pointerMax < _connections.count && _connections[pointerMax].position.y == yPos) {
         if _connections[pointerMax] == connection {
           return pointerMax
         }
-        pointerMax++
+        pointerMax += 1
       }
       return nil
     }
@@ -584,7 +584,7 @@ extension ConnectionManager {
             bestConnection = temp
             bestRadius = temp.distanceFromConnection(connection)
           }
-          pointerMin--
+          pointerMin -= 1
         }
 
         var pointerMax = closestIndex
@@ -595,7 +595,7 @@ extension ConnectionManager {
               bestConnection = temp
               bestRadius = temp.distanceFromConnection(connection)
             }
-            pointerMax++
+            pointerMax += 1
         }
         return bestConnection
     }
@@ -624,7 +624,7 @@ extension ConnectionManager {
             ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: maxRadius)) {
               neighbours.append(temp)
           }
-          pointerMin--
+          pointerMin -= 1
         }
 
         var pointerMax = closestIndex
@@ -635,7 +635,7 @@ extension ConnectionManager {
               ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: maxRadius)) {
                 neighbours.append(temp)
             }
-            pointerMax++
+            pointerMax += 1
         }
         return neighbours
     }
@@ -652,11 +652,12 @@ extension ConnectionManager {
         // Find the next insertion index
         while insertionIndex < toList.count &&
           toList[insertionIndex].position.y < connection.position.y  {
-            insertionIndex++
+            insertionIndex += 1
         }
 
         // Insert the connection and increment the insertion index
-        toList._connections.insert(connection, atIndex: insertionIndex++)
+        toList._connections.insert(connection, atIndex: insertionIndex)
+        insertionIndex += 1
       }
 
       // Finally, remove all connections from this list

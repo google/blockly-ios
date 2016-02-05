@@ -262,7 +262,7 @@ extension BlockView {
 
     path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
 
-    for (var i = 0; i < background.rows.count; i++) {
+    for i in 0 ..< background.rows.count {
       let row = background.rows[i]
 
       // DRAW THE TOP EDGES

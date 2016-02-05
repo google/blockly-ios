@@ -161,8 +161,8 @@ public class BlockGroupLayout: Layout {
    - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
    */
   public func reset(updateLayout updateLayout: Bool = true) {
-    for (var i = blockLayouts.count - 1; i >= 0; i--) {
-      removeBlockLayoutAtIndex(i, updateLayout: false)
+    while blockLayouts.count > 0 {
+      removeBlockLayoutAtIndex(0, updateLayout: false)
     }
 
     if updateLayout {

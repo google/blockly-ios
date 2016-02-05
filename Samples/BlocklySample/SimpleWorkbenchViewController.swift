@@ -173,7 +173,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   private func buildChainedStatementBlock(workspace: Workspace) throws -> Block? {
     if let block = try buildStatementBlock(workspace) {
       var previousBlock = block
-      for (var i = 0; i < 100; i++) {
+      for _ in 0 ..< 100 {
         if let nextBlock = try buildStatementBlock(workspace) {
           try previousBlock.nextConnection?.connectTo(nextBlock.previousConnection)
           previousBlock = nextBlock
@@ -194,7 +194,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     var firstBlock: Block?
     var previousBlock: Block? = nil
 
-    for (var i = 0; i < blocksPerLevel; i++) {
+    for i in 0 ..< blocksPerLevel {
       if let nextBlock = try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
       {
         if let spaghettiBlock =
