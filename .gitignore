@@ -40,7 +40,10 @@ xcuserdata
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
-Carthage/Build
+# Exclude all non-iOS build folders
+Carthage/Build/Mac
+Carthage/Build/tvOS
+Carthage/Build/watchOS
 
 # Mac OS - Generated files
 .DS_Store
