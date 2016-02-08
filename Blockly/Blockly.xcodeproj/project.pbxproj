@@ -70,7 +70,7 @@
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
 		FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
-		FA9C9AAB1C643352008524BF /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9C9A9E1C643349008524BF /* SWXMLHash.framework */; };
+		FA9518C21C695C7200B026FC /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9518C11C695C7200B026FC /* SWXMLHash.framework */; };
 		FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxView.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
 		FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */; };
@@ -117,55 +117,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FA548C041B630BAC008BC59C;
 			remoteInfo = Blockly;
-		};
-		FA9C9A9D1C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD6083EF196CA106000B4F8D;
-			remoteInfo = "SWXMLHash iOS";
-		};
-		FA9C9A9F1C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD6083FA196CA106000B4F8D;
-			remoteInfo = "SWXMLHash iOS Tests";
-		};
-		FA9C9AA11C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD9D052C1A757D8B003CCB21;
-			remoteInfo = "SWXMLHash OSX";
-		};
-		FA9C9AA31C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD9D05361A757D8B003CCB21;
-			remoteInfo = "SWXMLHash OSX Tests";
-		};
-		FA9C9AA51C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CDDEC74C1BF6311A00AB138B;
-			remoteInfo = "SWXMLHash tvOS";
-		};
-		FA9C9AA71C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CDDEC7551BF6311B00AB138B;
-			remoteInfo = "SWXMLHash tvOS Tests";
-		};
-		FA9C9AA91C643349008524BF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CDDEC7681BF6316C00AB138B;
-			remoteInfo = "SWXMLHash watchOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -237,7 +188,7 @@
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
 		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
-		FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SWXMLHash.xcodeproj; path = ../../Carthage/Checkouts/SWXMLHash/SWXMLHash.xcodeproj; sourceTree = "<group>"; };
+		FA9518C11C695C7200B026FC /* SWXMLHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SWXMLHash.framework; path = ../Carthage/Build/iOS/SWXMLHash.framework; sourceTree = "<group>"; };
 		FA9D2FB81C11166000D0E528 /* ToolboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxView.swift; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
 		FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceFlowLayout.swift; sourceTree = "<group>"; };
@@ -281,7 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA9C9AAB1C643352008524BF /* SWXMLHash.framework in Frameworks */,
+				FA9518C21C695C7200B026FC /* SWXMLHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,23 +479,9 @@
 		FA9C9A911C6432A4008524BF /* External */ = {
 			isa = PBXGroup;
 			children = (
-				FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */,
+				FA9518C11C695C7200B026FC /* SWXMLHash.framework */,
 			);
 			name = External;
-			sourceTree = "<group>";
-		};
-		FA9C9A941C643349008524BF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA9C9A9E1C643349008524BF /* SWXMLHash.framework */,
-				FA9C9AA01C643349008524BF /* SWXMLHash iOS Tests.xctest */,
-				FA9C9AA21C643349008524BF /* SWXMLHash.framework */,
-				FA9C9AA41C643349008524BF /* SWXMLHash OSX Tests.xctest */,
-				FA9C9AA61C643349008524BF /* SWXMLHash.framework */,
-				FA9C9AA81C643349008524BF /* SWXMLHash tvOS Tests.xctest */,
-				FA9C9AAA1C643349008524BF /* SWXMLHash.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		FAA86FF21C64272C000C7C61 /* Common */ = {
@@ -666,12 +603,6 @@
 			mainGroup = FA548BFB1B630BAC008BC59C;
 			productRefGroup = FA548C061B630BAC008BC59C /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = FA9C9A941C643349008524BF /* Products */;
-					ProjectRef = FA9C9A931C643349008524BF /* SWXMLHash.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				FA548C041B630BAC008BC59C /* Blockly */,
@@ -679,58 +610,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		FA9C9A9E1C643349008524BF /* SWXMLHash.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SWXMLHash.framework;
-			remoteRef = FA9C9A9D1C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AA01C643349008524BF /* SWXMLHash iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SWXMLHash iOS Tests.xctest";
-			remoteRef = FA9C9A9F1C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AA21C643349008524BF /* SWXMLHash.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SWXMLHash.framework;
-			remoteRef = FA9C9AA11C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AA41C643349008524BF /* SWXMLHash OSX Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SWXMLHash OSX Tests.xctest";
-			remoteRef = FA9C9AA31C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AA61C643349008524BF /* SWXMLHash.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SWXMLHash.framework;
-			remoteRef = FA9C9AA51C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AA81C643349008524BF /* SWXMLHash tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SWXMLHash tvOS Tests.xctest";
-			remoteRef = FA9C9AA71C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA9C9AAA1C643349008524BF /* SWXMLHash.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SWXMLHash.framework;
-			remoteRef = FA9C9AA91C643349008524BF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FA548C031B630BAC008BC59C /* Resources */ = {
