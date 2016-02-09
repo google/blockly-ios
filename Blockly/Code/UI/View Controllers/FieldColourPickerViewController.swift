@@ -125,7 +125,7 @@ public class FieldColourPickerViewController: UICollectionViewController {
 
     // Update the selected colour after the view has appeared (it doesn't work if called from
     // viewWillAppear)
-    updateSelectedColour()
+    updateSelectedColour(animated: true)
   }
 
   public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -167,12 +167,12 @@ public class FieldColourPickerViewController: UICollectionViewController {
     // Refresh the collection view
     self.collectionView?.reloadData()
 
-    updateSelectedColour()
+    updateSelectedColour(animated: false)
   }
 
   // MARK: - Private
 
-  private func updateSelectedColour() {
+  private func updateSelectedColour(animated animated: Bool) {
     guard let selectedColour = self.fieldColour?.colour else {
       return
     }
@@ -182,7 +182,7 @@ public class FieldColourPickerViewController: UICollectionViewController {
       if selectedColour == UIColor.bky_colorFromRGB(colours[i]) {
         let indexPath = NSIndexPath(forRow: i, inSection: 0)
         self.collectionView?.selectItemAtIndexPath(
-          indexPath, animated: false, scrollPosition: .CenteredVertically)
+          indexPath, animated: animated, scrollPosition: .CenteredVertically)
         break
       }
     }
