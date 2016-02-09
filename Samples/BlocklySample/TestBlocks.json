@@ -365,4 +365,40 @@
  "helpUrl": "http://www.example.com/",
  "colour": "#ffff00",
  },
+ {
+ "id": "local_image",
+ "message0": "Local image: %1",
+ "args0": [
+           {
+           "type": "field_image",
+           "name": "local_camera_image",
+           "text": "",
+           "src": "camera",
+           "width": 36,
+           "height": 36,
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/",
+ "colour": "#ffff00",
+ },
+ {
+ "id": "web_image",
+ "message0": "Web image: %1",
+ "args0": [
+           {
+           "type": "field_image",
+           "name": "web_star_image",
+           "text": "",
+           "src": "https://www.gstatic.com/codesite/ph/images/star_on.gif",
+           "width": 15,
+           "height": 15,
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/",
+ "colour": "#ffff00",
+ },
 ]

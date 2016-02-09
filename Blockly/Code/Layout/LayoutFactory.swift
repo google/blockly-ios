@@ -77,6 +77,8 @@ public class LayoutFactory: NSObject {
       return FieldDateLayout(fieldDate: fieldDate, workspaceLayout: workspaceLayout)
     } else if let fieldDropdown = field as? FieldDropdown {
       return FieldDropdownLayout(fieldDropdown: fieldDropdown, workspaceLayout: workspaceLayout)
+    } else if let fieldImage = field as? FieldImage {
+      return FieldImageLayout(fieldImage: fieldImage, workspaceLayout: workspaceLayout)
     } else if let fieldInput = field as? FieldInput {
       return FieldInputLayout(fieldInput: fieldInput, workspaceLayout: workspaceLayout)
     } else if let fieldLabel = field as? FieldLabel {
