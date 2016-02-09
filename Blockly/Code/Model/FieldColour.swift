@@ -24,7 +24,12 @@ public final class FieldColour: Field {
 
   public var colour: UIColor {
     didSet {
-      delegate?.didUpdateField(self)
+      if !self.editable {
+        self.colour = oldValue
+      }
+      if self.colour != oldValue {
+        delegate?.didUpdateField(self)
+      }
     }
   }
 

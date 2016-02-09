@@ -365,4 +365,19 @@
  "helpUrl": "http://www.example.com/",
  "colour": "#ffff00",
  },
+ {
+ "id": "angle",
+ "message0": "Angle: %1",
+ "args0": [
+           {
+           "type": "field_angle",
+           "name": "angle",
+           "text": "true"
+           },
+           ],
+ "output": null,
+ "tooltip": "",
+ "helpUrl": "http://www.example.com/",
+ "colour": "#ffff00",
+ },
 ]

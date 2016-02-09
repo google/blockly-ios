@@ -69,7 +69,9 @@ public class LayoutFactory: NSObject {
   for the field.
   */
   public func layoutForField(field: Field, workspaceLayout: WorkspaceLayout) throws -> FieldLayout {
-    if let fieldCheckbox = field as? FieldCheckbox {
+    if let fieldAngle = field as? FieldAngle {
+      return FieldAngleLayout(fieldAngle: fieldAngle, workspaceLayout: workspaceLayout)
+    } else if let fieldCheckbox = field as? FieldCheckbox {
       return FieldCheckboxLayout(fieldCheckbox: fieldCheckbox, workspaceLayout: workspaceLayout)
     } else if let fieldColour = field as? FieldColour {
       return FieldColourLayout(fieldColour: fieldColour, workspaceLayout: workspaceLayout)

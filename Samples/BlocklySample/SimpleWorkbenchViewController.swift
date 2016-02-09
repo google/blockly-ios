@@ -95,6 +95,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       try addBlock("controls_whileUntil", toCategory: math)
 
       let random = toolbox.addCategory("Random", colour: UIColor.orangeColor())
+      try addBlock("angle", toCategory: random)
       try addBlock("checkbox", toCategory: random)
       try addBlock("date_picker", toCategory: random)
       try addBlock("colour_picker", toCategory: random)
