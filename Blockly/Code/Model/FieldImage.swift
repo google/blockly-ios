@@ -22,8 +22,26 @@ An image field used for titles, labels, etc.
 public final class FieldImage: Field {
   // MARK: - Properties
 
-  public var size: WorkspaceSize
-  public var imageURL: String
+  public var size: WorkspaceSize {
+    didSet {
+      if !self.editable {
+        self.size = oldValue
+      }
+      if self.size != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+  public var imageURL: String {
+    didSet {
+      if !self.editable {
+        self.imageURL = oldValue
+      }
+      if self.imageURL != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
   public var altText: String
 
   // MARK: - Initializers

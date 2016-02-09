@@ -124,6 +124,10 @@ public class ViewManager: NSObject {
       let fieldDropdownView = viewForType(FieldDropdownView.self)
       fieldDropdownView.layout = fieldDropdownLayout
       fieldView = fieldDropdownView
+    } else if let fieldImageLayout = layout as? FieldImageLayout {
+      let fieldImageView = viewForType(FieldImageView.self)
+      fieldImageView.layout = fieldImageLayout
+      fieldView = fieldImageView
     } else if let fieldInputLayout = layout as? FieldInputLayout {
       let fieldInputView = viewForType(FieldInputView.self)
       fieldInputView.layout = fieldInputLayout
