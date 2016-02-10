@@ -23,7 +23,19 @@ public final class FieldAngle: Field {
   // MARK: - Properties
 
   public var angle: Int {
-    didSet { self.angle = FieldAngle.normalizeAngle(self.angle) }
+    didSet {
+      if self.editable {
+        // Normalize the value that was set
+        self.angle = FieldAngle.normalizeAngle(self.angle)
+      } else {
+        // Revert the change
+        self.angle = oldValue
+      }
+
+      if self.angle != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
   }
 
   // MARK: - Initializers
