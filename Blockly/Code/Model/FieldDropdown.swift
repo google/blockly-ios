@@ -27,14 +27,21 @@ public final class FieldDropdown: Field {
   /// Drop-down options. First value is the display name, second value is the option value.
   public var options: [Option] {
     didSet {
-      delegate?.didUpdateField(self)
+      if !self.editable {
+        self.options = oldValue
+      } else {
+        delegate?.didUpdateField(self)
+      }
     }
   }
 
   /// The currently selected index
   public var selectedIndex: Int {
     didSet {
-      if selectedIndex != oldValue {
+      if !self.editable {
+        self.selectedIndex = oldValue
+      }
+      if self.selectedIndex != oldValue {
         delegate?.didUpdateField(self)
       }
     }
