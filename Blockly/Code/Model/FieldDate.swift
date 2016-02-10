@@ -24,10 +24,15 @@ public final class FieldDate: Field {
 
   public var date: NSDate {
     didSet {
-      let normalizedDate = FieldDate.normalizeDate(self.date)
-      self.date = normalizedDate
+      if self.editable {
+        // Normalize the new date
+        self.date = FieldDate.normalizeDate(self.date)
+      } else {
+        // Revert the change
+        self.date = oldValue
+      }
 
-      if normalizedDate.timeIntervalSince1970 != oldValue.timeIntervalSince1970 {
+      if self.date.timeIntervalSince1970 != oldValue.timeIntervalSince1970 {
         delegate?.didUpdateField(self)
       }
     }

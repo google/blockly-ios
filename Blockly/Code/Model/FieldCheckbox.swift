@@ -24,10 +24,12 @@ public final class FieldCheckbox: Field {
 
   public var checked: Bool {
     didSet {
-      if checked == oldValue {
-        return
+      if !self.editable {
+        self.checked = oldValue
       }
-      delegate?.didUpdateField(self)
+      if self.checked != oldValue {
+        delegate?.didUpdateField(self)
+      }
     }
   }
 
