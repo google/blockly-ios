@@ -10,6 +10,8 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
+		FA10E3EC1C696A8E0095F088 /* FieldAngleLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */; };
+		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
 		FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726771B83C54900777B49 /* InputLayout.swift */; };
@@ -176,6 +178,8 @@
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA10E3C91C6965BA0095F088 /* SWXMLHash.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SWXMLHash.xcodeproj; path = ../Carthage/Checkouts/SWXMLHash/SWXMLHash.xcodeproj; sourceTree = "<group>"; };
+		FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleLayout.swift; sourceTree = "<group>"; };
+		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
 		FA2726771B83C54900777B49 /* InputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLayout.swift; sourceTree = "<group>"; };
@@ -321,6 +325,7 @@
 				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FA2726771B83C54900777B49 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
+				FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */,
 				FA42D7F21C61B404000C8EB4 /* FieldCheckboxLayout.swift */,
 				FA42D7DE1C5AD390000C8EB4 /* FieldColourLayout.swift */,
 				FA42D7E81C605A0F000C8EB4 /* FieldDateLayout.swift */,
@@ -446,6 +451,7 @@
 				FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */,
 				FA4BB56A1B7C03EA000980E9 /* BlockView.swift */,
 				FAA291761B9674330005F100 /* BlockView+Render.swift */,
+				FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */,
 				FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */,
 				FA42D7E01C5AD3C9000C8EB4 /* FieldColourView.swift */,
 				FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */,
@@ -780,10 +786,12 @@
 				FAA870061C64272C000C7C61 /* Dictionary+Helper.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
 				FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */,
+				FA10E3EC1C696A8E0095F088 /* FieldAngleLayout.swift in Sources */,
 				FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */,
 				FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
+				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
 				FA42D7E91C605A0F000C8EB4 /* FieldDateLayout.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
