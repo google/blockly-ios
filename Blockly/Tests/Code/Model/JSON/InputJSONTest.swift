@@ -25,7 +25,7 @@ class InputJSONTest: XCTestCase {
     workspace = Workspace()
     let builder = Block.Builder(identifier: "Test")
     block = try! builder.build()
-    workspace.addBlockTree(block)
+    try! workspace.addBlockTree(block)
 
     super.setUp()
   }

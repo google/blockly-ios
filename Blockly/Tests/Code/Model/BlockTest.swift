@@ -252,7 +252,7 @@ class BlockTest: XCTestCase {
 
     do {
       let copyResult = try blockStatementStatementInput.deepCopy()
-      XCTAssertEqual(5, copyResult.copiedBlocks.count)
+      XCTAssertEqual(5, copyResult.allBlocks.count)
       assertSimilarBlockTrees(copyResult.rootBlock, blockStatementStatementInput)
     } catch let error as NSError {
       XCTFail("Couldn't deep copy block: \(error)")
