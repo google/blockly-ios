@@ -62,10 +62,10 @@ extension BlockLayout {
         // If this block is in the middle of a stack, square the corners.
         let previousBlock = layout.block.previousConnection?.targetConnection?.sourceBlock
         if previousBlock?.nextBlock == self {
-          self.squareTopLeftCorner = true;
+          self.squareTopLeftCorner = true
         }
         if layout.block.nextBlock != nil {
-          self.squareBottomLeftCorner = true;
+          self.squareBottomLeftCorner = true
         }
       }
     }
