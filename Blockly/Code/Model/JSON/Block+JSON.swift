@@ -267,8 +267,8 @@ extension Block {
           // Not a number, add the current number token
           tokens.append(currentNumber)
           currentNumber = 0
-          i = i.predecessor();  // Parse this char again.
-          state = .BaseCase;
+          i = i.predecessor()  // Parse this char again.
+          state = .BaseCase
         }
       }
 
