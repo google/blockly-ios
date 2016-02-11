@@ -27,6 +27,15 @@ Class that represents a single block.
 */
 @objc(BKYBlock)
 public final class Block : NSObject {
+  // MARK: - Aliases
+
+  /**
+   A tuple representing a tree of connected blocks where:
+   - `rootBlock` is the root of the tree
+   - `allBlocks` is a list of all connected blocks (including `rootBlock`).
+   */
+  public typealias BlockTree = (rootBlock: Block, allBlocks: [Block])
+
   // MARK: - Properties
 
   /// A unique identifier used to identify this block for its lifetime
@@ -102,11 +111,11 @@ public final class Block : NSObject {
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(identifier: String, category: Int,
+  internal init(uuid: String?, identifier: String, category: Int,
     colour: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
-    self.uuid = NSUUID().UUIDString
+    self.uuid = uuid ?? NSUUID().UUIDString
     self.identifier = identifier
     self.category = category
     self.colour = colour
@@ -222,14 +231,51 @@ public final class Block : NSObject {
   }
 
   /**
+   Finds the first input with a given name.
+   
+   - Parameter name: The input name
+   - Returns: The first input with that name or nil.
+   */
+  public func firstInputWithName(name: String) -> Input? {
+    if name == "" {
+      return nil
+    }
+    for input in inputs {
+      if input.name == name {
+        return input
+      }
+    }
+    return nil
+  }
+
+  /**
+   Finds the first field with a given name.
+
+   - Parameter name: The field name
+   - Returns: The first field with that name or nil.
+   */
+  public func firstFieldWithName(name: String) -> Field? {
+    if name == "" {
+      return nil
+    }
+    for input in inputs {
+      for field in input.fields {
+        if field.name == name {
+          return field
+        }
+      }
+    }
+    return nil
+  }
+
+  /**
    Copies this block and all of the blocks connected to it through its input or next connections.
 
-   - Returns: A tuple where `rootBlock` is a copy of this block, and `copiedBlocks` is a
-   list of all connected blocks that were copied (including `rootBlock`).
+   - Returns: A `BlockTree` tuple of the copied block tree.
    - Throws:
    `BlocklyError`: Thrown if copied blocks could not be connected to each other.
    */
-  public func deepCopy() throws -> (rootBlock: Block, copiedBlocks: [Block]) {
+  public func deepCopy() throws -> BlockTree {
     let newBlock = try Block.Builder(block: self).build()
     var copiedBlocks = [Block]()
     copiedBlocks.append(newBlock)
@@ -256,7 +302,7 @@ public final class Block : NSObject {
         } else if self.inputs[i].connection!.type == .InputValue {
           try copiedInputConnection!.connectTo(copyResult.rootBlock.outputConnection)
         }
-        copiedBlocks.appendContentsOf(copyResult.copiedBlocks)
+        copiedBlocks.appendContentsOf(copyResult.allBlocks)
       }
     }
 
@@ -275,10 +321,27 @@ public final class Block : NSObject {
     if let nextBlock = self.nextBlock {
       let copyResult = try nextBlock.deepCopy()
       try copiedNextConnection!.connectTo(copyResult.rootBlock.previousConnection)
-      copiedBlocks.appendContentsOf(copyResult.copiedBlocks)
+      copiedBlocks.appendContentsOf(copyResult.allBlocks)
     }
 
-    return (rootBlock: newBlock, copiedBlocks: copiedBlocks)
+    return BlockTree(rootBlock: newBlock, allBlocks: copiedBlocks)
+  }
+
+  /**
+   Automatically connects a given superior connection (input/next) to this block's inferior
+   connection (output/input).
+
+   - Parameter superior: The superior connection to attach this block to. If this connection is
+   not a superior connection (input/next), nothing happens.
+   - Throws:
+   `BlocklyError`: Occurs if the connection cannot be made.
+   */
+  public func connectToSuperiorConnection(superior: Connection) throws {
+    if superior.type == .InputValue {
+      try superior.connectTo(self.outputConnection)
+    } else if superior.type == .NextStatement {
+      try superior.connectTo(self.previousConnection)
+    }
   }
 
   // MARK: - Internal - For testing only

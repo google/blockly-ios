@@ -201,7 +201,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     self.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.translatesAutoresizingMaskIntoConstraints = true
 
-    self.contentView.frame = self.bounds;
+    self.contentView.frame = self.bounds
     self.contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.contentView.translatesAutoresizingMaskIntoConstraints = true
 
