@@ -93,11 +93,13 @@ extension Block {
     /**
     Creates a new block given the current state of the builder.
 
+    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
+    assigned to the block.
     - Throws:
     `BlocklyError`: Occurs if the block is missing any required pieces.
     - Returns: A new block
     */
-    public func build() throws -> Block {
+    public func build(uuid uuid: String? = nil) throws -> Block {
       if identifier.isEmpty {
         throw BlocklyError(.InvalidBlockDefinition, "Block identifier may not be empty")
       }
@@ -118,7 +120,7 @@ extension Block {
       }
       let inputs = inputBuilders.map({ $0.build() })
 
-      let block = Block(identifier: identifier, category: category,
+      let block = Block(uuid: uuid, identifier: identifier, category: category,
         colour: colour, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)

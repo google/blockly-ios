@@ -36,7 +36,9 @@ public class BlocklyError: NSError {
     ConnectionInvalid = 211,
     ViewNotFound = 300,
     JSONParsing = 400,
-    JSONInvalidTypecast = 401
+    JSONInvalidTypecast = 401,
+    XMLParsing = 500,
+    XMLUnknownBlock = 501
   }
   public typealias Code = BKYBlocklyErrorCode
 
