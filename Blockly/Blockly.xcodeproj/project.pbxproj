@@ -56,6 +56,12 @@
 		FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */; };
 		FA4D548F1C69982D00F95084 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */; };
 		FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54971C69983B00F95084 /* FieldImageView.swift */; };
+		FA4D54AB1C6AAE5000F95084 /* Block+XMLParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */; };
+		FA4D54B11C6AAED400F95084 /* BlockXMLParsingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */; };
+		FA4D54C81C6AD0E500F95084 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10E3D41C6965BA0095F088 /* SWXMLHash.framework */; };
+		FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */; };
+		FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */; };
+		FA4D54D81C6BFBAC00F95084 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10E3D41C6965BA0095F088 /* SWXMLHash.framework */; };
 		FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D21BFE9016000C621F /* BlockTest.swift */; };
 		FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4EE3D41BFE9342000C621F /* all_test_blocks.json */; };
 		FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */; };
@@ -69,6 +75,8 @@
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
 		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */; };
+		FA6085F71C6D469F003B6076 /* Workspace+XMLParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */; };
+		FA6086001C6D7049003B6076 /* WorkspaceXMLParsingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
@@ -224,6 +232,10 @@
 		FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
 		FA4D54971C69983B00F95084 /* FieldImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageView.swift; sourceTree = "<group>"; };
+		FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+XMLParsing.swift"; sourceTree = "<group>"; };
+		FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockXMLParsingTest.swift; sourceTree = "<group>"; };
+		FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTestStrings.swift; sourceTree = "<group>"; };
+		FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xml_parsing_test.json; sourceTree = "<group>"; };
 		FA4EE3D21BFE9016000C621F /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
 		FA4EE3D41BFE9342000C621F /* all_test_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all_test_blocks.json; sourceTree = "<group>"; };
 		FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionTest.swift; sourceTree = "<group>"; };
@@ -240,6 +252,8 @@
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayoutTest.swift; sourceTree = "<group>"; };
+		FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XMLParsing.swift"; sourceTree = "<group>"; };
+		FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLParsingTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
@@ -288,6 +302,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4D54C81C6AD0E500F95084 /* SWXMLHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4D54D81C6BFBAC00F95084 /* SWXMLHash.framework in Frameworks */,
 				FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +365,7 @@
 			children = (
 				FA2DFC061B7174350072A278 /* block_json_test.json */,
 				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
+				FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */,
 				FA4EE3D41BFE9342000C621F /* all_test_blocks.json */,
 			);
 			path = Resources;
@@ -398,9 +415,11 @@
 			isa = PBXGroup;
 			children = (
 				FA4BB4081B744A8E000980E9 /* JSON */,
+				FA4D549D1C6AAE1000F95084 /* XML */,
 				F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */,
 				F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */,
 				FA4EE3D21BFE9016000C621F /* BlockTest.swift */,
+				FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */,
 				FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */,
 				FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */,
 				FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */,
@@ -469,6 +488,24 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		FA4D549D1C6AAE1000F95084 /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */,
+				FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */,
+			);
+			path = XML;
+			sourceTree = "<group>";
+		};
+		FA4D54A71C6AAE5000F95084 /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */,
+				FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */,
+			);
+			path = XML;
+			sourceTree = "<group>";
+		};
 		FA548BFB1B630BAC008BC59C = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +555,7 @@
 			isa = PBXGroup;
 			children = (
 				FA2DFC0C1B7177760072A278 /* JSON */,
+				FA4D54A71C6AAE5000F95084 /* XML */,
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* Block+Builder.swift */,
 				F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */,
@@ -755,6 +793,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
 				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
 				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
 				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
@@ -772,12 +811,14 @@
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
+				FA6085F71C6D469F003B6076 /* Workspace+XMLParsing.swift in Sources */,
 				FAA8700E1C64272C000C7C61 /* UIView+Helper.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
 				FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */,
+				FA4D54AB1C6AAE5000F95084 /* Block+XMLParsing.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */,
 				FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */,
@@ -856,6 +897,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4D54B11C6AAED400F95084 /* BlockXMLParsingTest.swift in Sources */,
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
@@ -867,9 +909,11 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				FA6086001C6D7049003B6076 /* WorkspaceXMLParsingTest.swift in Sources */,
 				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
+				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,

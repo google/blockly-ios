@@ -33,7 +33,7 @@ class BlockBuilderTest: XCTestCase {
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
     let blockCopy = try! Block.Builder(block: block).build()
-    workspace.addBlockTree(blockCopy)
+    try! workspace.addBlockTree(blockCopy)
     validateFrankenblock(blockCopy)
 
     // Validate that the block was deep copied
@@ -142,7 +142,7 @@ class BlockBuilderTest: XCTestCase {
     bob.tooltip = "a tooltip"
 
     let block = try! bob.build()
-    workspace.addBlockTree(block)
+    try! workspace.addBlockTree(block)
     return block
   }
 }

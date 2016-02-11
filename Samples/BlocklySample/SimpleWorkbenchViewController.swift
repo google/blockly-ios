@@ -130,7 +130,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func addBlock(blockName: String, toCategory category: Toolbox.Category) throws {
     if let block = try _blockFactory.buildBlock(blockName) {
-      category.addBlockTree(block)
+      try category.addBlockTree(block)
     }
   }
 

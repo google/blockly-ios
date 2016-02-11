@@ -14,6 +14,7 @@
 */
 
 import Foundation
+import SWXMLHash
 
 /**
 General error class for all Blockly errors.
@@ -36,7 +37,9 @@ public class BlocklyError: NSError {
     ConnectionInvalid = 211,
     ViewNotFound = 300,
     JSONParsing = 400,
-    JSONInvalidTypecast = 401
+    JSONInvalidTypecast = 401,
+    XMLParsing = 500,
+    XMLUnknownBlock = 501
   }
   public typealias Code = BKYBlocklyErrorCode
 
@@ -51,5 +54,9 @@ public class BlocklyError: NSError {
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  internal convenience init(_ code: Code, _ description: String, _ xml: XMLIndexer) {
+    self.init(code, "\(description)\nXML:\n\(xml)")
   }
 }
