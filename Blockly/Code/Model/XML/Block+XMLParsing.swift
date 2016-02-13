@@ -14,7 +14,7 @@
 */
 
 import Foundation
-import SWXMLHash
+import AEXML
 
 // MARK: - XML Parsing
 
@@ -31,18 +31,15 @@ extension Block {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func blockTreeFromXML(xml: XMLIndexer, factory: BlockFactory) throws -> BlockTree {
-    guard let element = xml.element else {
-      throw BlocklyError(.XMLUnknownBlock, "No attributes were set for the block.", xml)
-    }
-    guard let type = element.attributes["type"] else {
+  public class func blockTreeFromXML(xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree {
+    guard let type = xml.attributes["type"] else {
       throw BlocklyError(.XMLUnknownBlock, "The block type may not be nil.", xml)
     }
     if type == "" {
       throw BlocklyError(.XMLUnknownBlock, "The block type may not be empty.", xml)
     }
 
-    let id = element.attributes["id"]
+    let id = xml.attributes["id"]
 
     guard let block = try factory.buildBlock(type, uuid: id) else {
       throw BlocklyError(.XMLUnknownBlock, "The block type \(type) does not exist.", xml)
@@ -50,8 +47,8 @@ extension Block {
 
     var allBlocks = [block]
     let formatter = NSNumberFormatter()
-    if let xString = element.attributes["x"],
-      let yString = element.attributes["y"],
+    if let xString = xml.attributes["x"],
+      let yString = xml.attributes["y"],
       let x = formatter.numberFromString(xString),
       let y = formatter.numberFromString(yString)
     {
@@ -59,10 +56,7 @@ extension Block {
     }
 
     for child in xml.children {
-      guard let element = child.element else {
-        continue
-      }
-      switch element.name {
+      switch child.name {
       case "value", "statement":
         let subBlockTree = try setInputOnBlock(block, fromXML: child, factory: factory)
         allBlocks.appendContentsOf(subBlockTree.allBlocks)
@@ -72,11 +66,11 @@ extension Block {
       case "field":
         setFieldOnBlock(block, fromXML: child)
       case "comment":
-        if let commentText = child.element?.text {
+        if let commentText = child.value {
           block.comment = commentText
         }
       default:
-        bky_print("Unknown node name: \(element.name)")
+        bky_print("Unknown node name: \(child.name)")
       }
     }
 
@@ -95,13 +89,11 @@ extension Block {
   - Throws:
   `BlocklyError`: Occurs if the block doesn't have that input or the xml is invalid.
   */
-  private class func setInputOnBlock(block: Block, fromXML xml: XMLIndexer, factory: BlockFactory)
+  private class func setInputOnBlock(block: Block, fromXML xml: AEXMLElement, factory: BlockFactory)
     throws -> BlockTree
   {
     // Figure out which connection we're connecting to
-    guard let element = xml.element,
-      let inputName = element.attributes["name"] else
-    {
+    guard let inputName = xml.attributes["name"] else {
       throw BlocklyError(.XMLParsing, "Missing \"name\" attribute for input.", xml)
     }
     guard let input = block.firstInputWithName(inputName) else {
@@ -114,18 +106,14 @@ extension Block {
     var subBlockTree: BlockTree!
 
     for child in xml.children {
-      guard let name = child.element?.name else {
-        continue
-      }
-
-      switch name {
+      switch child.name {
         // TODO: (#340) Handle case "shadow"
       case "block":
         // Create the child block tree from xml and connect it to this input connection
         subBlockTree = try Block.blockTreeFromXML(child, factory: factory)
         try subBlockTree.rootBlock.connectToSuperiorConnection(inputConnection)
       default:
-        bky_print("Unknown element: \(name)")
+        bky_print("Unknown element: \(child.name)")
       }
     }
 
@@ -146,7 +134,7 @@ extension Block {
    - Throws:
    `BlocklyError`: Occurs if the block doesn't have a next connection or the xml is invalid.
    */
-  private class func setNextBlockOnBlock(block: Block, fromXML xml: XMLIndexer,
+  private class func setNextBlockOnBlock(block: Block, fromXML xml: AEXMLElement,
     factory: BlockFactory) throws -> BlockTree
   {
     guard let nextConnection = block.nextConnection else {
@@ -156,16 +144,13 @@ extension Block {
     var subBlockTree: BlockTree!
 
     for child in xml.children {
-      guard let element = child.element else {
-        continue
-      }
-      switch element.name {
+      switch child.name {
       case "block":
         // Create the child block tree from xml and connect it to this next connection
         subBlockTree = try blockTreeFromXML(xml, factory: factory)
         try subBlockTree.rootBlock.connectToSuperiorConnection(nextConnection)
       default:
-        bky_print("Unkown element: \(element.name)")
+        bky_print("Unkown element: \(xml.name)")
       }
     }
 
@@ -182,11 +167,10 @@ extension Block {
    - Parameter block: The block to update.
    - Parameter xml: The xml that describes the field to update.
    */
-  private class func setFieldOnBlock(block: Block, fromXML xml: XMLIndexer) {
+  private class func setFieldOnBlock(block: Block, fromXML xml: AEXMLElement) {
     // A missing or unknown field name isn't an error, it's just ignored.
-    if let element = xml.element,
-      let value = element.text,
-      let fieldName = element.attributes["name"],
+    if let value = xml.value,
+      let fieldName = xml.attributes["name"],
       let field = block.firstFieldWithName(fieldName)
     {
       field.text = value

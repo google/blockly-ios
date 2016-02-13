@@ -14,7 +14,7 @@ $ brew install carthage
 To integrate Blockly into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "RoboErikG/blocklypp"
+github "RoboErikG/blockly-ios"
 ```
 
 Run `carthage update` to build the framework and drag the built `Blockly.framework` into your Xcode project.
@@ -35,7 +35,7 @@ To integrate Blockly into your Xcode project using CocoaPods, specify it in your
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-pod 'Blockly', :git => 'https://github.com/RoboErikG/blocklypp.git'
+pod 'Blockly', :git => 'https://github.com/RoboErikG/blockly-ios.git'
 ```
 
 Then, run the following command:
