@@ -27,14 +27,14 @@ public class BlockFactory : NSObject {
   // MARK: - Initializers
 
   /**
-  Creates a BlockFactory with an initial set of blocks loaded from a json file.
+   Creates a BlockFactory with an initial set of blocks loaded from a json file.
 
-  - Parameter workspace: The workspace to associate all new blocks
-  - Parameter jsonPath: Path to a file containing blocks in JSON.
-  - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
-  - Throws:
-  `BlocklyError`: Occurs if any of the blocks are invalid.
-  */
+   - Parameter workspace: The workspace to associate all new blocks
+   - Parameter jsonPath: Path to a file containing blocks in JSON.
+   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
+   - Throws:
+   `BlocklyError`: Occurs if any of the blocks are invalid.
+   */
   public init(jsonPath: String, bundle: NSBundle? = nil) throws {
     super.init()
 
@@ -59,32 +59,34 @@ public class BlockFactory : NSObject {
   // MARK: - Public
 
   /**
-  Create a new instance of a block with the given name, adds it to a specific workspace, and returns
-  it.
+   Creates a new instance of a block with the given name, adds it to a specific workspace, and
+   returns it.
 
-  - Parameter blockName: The name of the block to obtain.
-  - Parameter workspace: The workspace that should own the new block.
-  - Throws:
-  `BlocklyError`: Occurs if the block builder is missing any required pieces.
-  - Returns: A new block if the name is known, nil otherwise.
-  */
+   - Parameter blockName: The name of the block to obtain.
+   - Parameter workspace: The workspace that should own the new block.
+   - Throws:
+   `BlocklyError`: Occurs if the block builder is missing any required pieces.
+   - Returns: A new block if the name is known, nil otherwise.
+   */
   public func addBlock(blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
     guard let block = try buildBlock(blockName) else {
       return nil
     }
-    workspace.addBlockTree(block)
+    try workspace.addBlockTree(block)
     return block
   }
 
   /**
-  Create a new instance of a block with the given name and returns it.
+   Creates a new instance of a block with the given name and returns it.
 
-  - Parameter blockName: The name of the block to build.
-  - Throws:
-  `BlocklyError`: Occurs if the block builder is missing any required pieces.
-  - Returns: A new block if the name is known, nil otherwise.
-  */
-  public func buildBlock(blockName: String) throws -> Block? {
-    return try _blockBuilders[blockName]?.build()
+   - Parameter blockName: The name of the block to build.
+   - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
+   assigned to the block.
+   - Throws:
+   `BlocklyError`: Occurs if the block builder is missing any required pieces.
+   - Returns: A new block if the name is known, nil otherwise.
+   */
+  public func buildBlock(blockName: String, uuid: String? = nil) throws -> Block? {
+    return try _blockBuilders[blockName]?.build(uuid: uuid)
   }
 }

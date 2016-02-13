@@ -171,7 +171,7 @@ public final class Connection : NSObject {
   `BlocklyError`: Thrown if the connection could not be made, with error code .ConnectionInvalid
   */
   public func connectTo(connection: Connection?) throws {
-    if connection == targetConnection {
+    if connection != nil && connection == targetConnection {
       // Already connected
       return
     }

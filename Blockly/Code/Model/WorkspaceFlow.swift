@@ -40,9 +40,9 @@ public class WorkspaceFlow: Workspace {
 
   // MARK: - Super
 
-  public override func addBlockTree(rootBlock: Block) {
+  public override func addBlockTree(rootBlock: Block) throws {
     items.append(Item(rootBlock: rootBlock))
-    super.addBlockTree(rootBlock)
+    try super.addBlockTree(rootBlock)
   }
 
   public override func removeBlockTree(rootBlock: Block) {
