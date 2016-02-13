@@ -116,14 +116,26 @@ public class Workspace : NSObject {
    Adds a block and all of its connected blocks to the workspace.
 
    - Parameter rootBlock: The root block to add.
+   - Throws:
+   `BlocklyError`: Thrown if one of the blocks uses a uuid that is already being used by another
+   block in the workspace.
    */
-  public func addBlockTree(rootBlock: Block) {
+  public func addBlockTree(rootBlock: Block) throws {
     for block in rootBlock.allBlocksForTree() {
-      if !containsBlock(block) {
-        allBlocks[block.uuid] = block
-        block.sourceWorkspace = self
-        delegate?.workspace(self, didAddBlock: block)
+      if let existingBlock = allBlocks[block.uuid] {
+        if existingBlock == block {
+          // The block is already in the workspace
+          continue
+        } else {
+          throw BlocklyError(.ModelIllegalState,
+            "Cannot add a block into the workspace with a uuid that is already being used by " +
+            "another block")
+        }
       }
+
+      allBlocks[block.uuid] = block
+      block.sourceWorkspace = self
+      delegate?.workspace(self, didAddBlock: block)
     }
   }
 
@@ -158,7 +170,7 @@ public class Workspace : NSObject {
    */
   public func copyBlockTree(rootBlock: Block) throws -> Block {
     let copyResult = try rootBlock.deepCopy()
-    addBlockTree(copyResult.rootBlock)
+    try addBlockTree(copyResult.rootBlock)
     return copyResult.rootBlock
   }
 
@@ -166,6 +178,6 @@ public class Workspace : NSObject {
   Returns if this block has been added to the workspace.
   */
   public func containsBlock(block: Block) -> Bool {
-    return (allBlocks[block.uuid] != nil)
+    return (allBlocks[block.uuid] == block)
   }
 }

@@ -247,7 +247,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func createBlockLayout() -> BlockLayout {
     let block = try! Block.Builder(identifier: "test").build()
-    _workspaceLayout.workspace.addBlockTree(block)
+    try! _workspaceLayout.workspace.addBlockTree(block)
     let layout = BlockLayout(block: block, workspaceLayout: _workspaceLayout)
     block.delegate = layout
     return layout

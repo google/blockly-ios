@@ -236,7 +236,7 @@ class ConnectionTest: XCTestCase {
     -> Connection
   {
     let block = try! Block.Builder(identifier: "test").build()
-    _workspace.addBlockTree(block)
+    try! _workspace.addBlockTree(block)
 
     let connection = Connection(type: type, sourceInput: nil)
     connection.moveToPosition(WorkspacePointMake(x, y))

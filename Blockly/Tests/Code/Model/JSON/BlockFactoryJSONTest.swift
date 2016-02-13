@@ -18,25 +18,25 @@ import XCTest
 
 class BlockFactoryJSONTest: XCTestCase {
 
-    func testLoadBlocks() {
-      let workspace = Workspace()
-      do {
-        let factory = try BlockFactory(jsonPath: "block_factory_json_test",
-          bundle: NSBundle(forClass: self.dynamicType))
-        if let _ = try! factory.addBlock("block_id_1", toWorkspace: workspace) {
-          // expected
-        } else {
-          XCTFail("Factory is missing block_id_1")
-        }
-        if let _ = try! factory.addBlock("block_id_2", toWorkspace: workspace) {
-          // expected
-        } else {
-          XCTFail("Factory is missing block_id_2");
-        }
-      } catch let error as NSError {
-        XCTFail("Error: \(error.localizedDescription)")
+  func testLoadBlocks() {
+    let workspace = Workspace()
+    do {
+      let factory = try BlockFactory(jsonPath: "block_factory_json_test",
+        bundle: NSBundle(forClass: self.dynamicType))
+      if let _ = try! factory.addBlock("block_id_1", toWorkspace: workspace) {
+        // expected
+      } else {
+        XCTFail("Factory is missing block_id_1")
       }
+      if let _ = try! factory.addBlock("block_id_2", toWorkspace: workspace) {
+        // expected
+      } else {
+        XCTFail("Factory is missing block_id_2")
+      }
+    } catch let error as NSError {
+      XCTFail("Error: \(error.localizedDescription)")
     }
+  }
 
   func testMultipleBlocks() {
     let workspace = Workspace()
@@ -45,7 +45,7 @@ class BlockFactoryJSONTest: XCTestCase {
         bundle: NSBundle(forClass: self.dynamicType))
       if let block1 = try! factory.addBlock("block_id_1", toWorkspace: workspace) {
         let block2 = try! factory.addBlock("block_id_1", toWorkspace: workspace)
-        XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice");
+        XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice")
       } else {
         XCTFail("Factory is missing block_id_1")
       }
