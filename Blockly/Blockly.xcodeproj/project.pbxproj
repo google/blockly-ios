@@ -56,8 +56,7 @@
 		FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */; };
 		FA4D548F1C69982D00F95084 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */; };
 		FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54971C69983B00F95084 /* FieldImageView.swift */; };
-		FA4D54AB1C6AAE5000F95084 /* Block+XMLParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */; };
-		FA4D54B11C6AAED400F95084 /* BlockXMLParsingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */; };
+		FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */; };
 		FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */; };
 		FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */; };
 		FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D21BFE9016000C621F /* BlockTest.swift */; };
@@ -73,8 +72,8 @@
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
 		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */; };
-		FA6085F71C6D469F003B6076 /* Workspace+XMLParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */; };
-		FA6086001C6D7049003B6076 /* WorkspaceXMLParsingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */; };
+		FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XML.swift */; };
+		FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
@@ -82,7 +81,9 @@
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
 		FA99C3B61C6EE3B600FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
-		FA99C3B81C6EE65100FA5A02 /* AEXML+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C3B71C6EE65100FA5A02 /* AEXML+Init.swift */; };
+		FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */; };
+		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
+		FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4031C73DE1800FA5A02 /* Input+XML.swift */; };
 		FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxView.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
 		FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */; };
@@ -115,6 +116,8 @@
 		FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */; };
 		FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
+		FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */; };
+		FAE2A5EE1C741D2A0085D36B /* FieldXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */; };
 		FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */; };
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; };
@@ -239,8 +242,7 @@
 		FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
 		FA4D54971C69983B00F95084 /* FieldImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageView.swift; sourceTree = "<group>"; };
-		FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+XMLParsing.swift"; sourceTree = "<group>"; };
-		FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockXMLParsingTest.swift; sourceTree = "<group>"; };
+		FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockXMLTest.swift; sourceTree = "<group>"; };
 		FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTestStrings.swift; sourceTree = "<group>"; };
 		FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xml_parsing_test.json; sourceTree = "<group>"; };
 		FA4EE3D21BFE9016000C621F /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
@@ -259,15 +261,17 @@
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayoutTest.swift; sourceTree = "<group>"; };
-		FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XMLParsing.swift"; sourceTree = "<group>"; };
-		FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLParsingTest.swift; sourceTree = "<group>"; };
+		FA6085F61C6D469F003B6076 /* Workspace+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XML.swift"; sourceTree = "<group>"; };
+		FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
 		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
-		FA99C3B71C6EE65100FA5A02 /* AEXML+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Init.swift"; sourceTree = "<group>"; };
+		FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Helper.swift"; sourceTree = "<group>"; };
+		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
+		FA99C4031C73DE1800FA5A02 /* Input+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+XML.swift"; sourceTree = "<group>"; };
 		FA9D2FB81C11166000D0E528 /* ToolboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxView.swift; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
 		FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceFlowLayout.swift; sourceTree = "<group>"; };
@@ -300,6 +304,8 @@
 		FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+Builder.swift"; sourceTree = "<group>"; };
 		FAC590E41BA728D00079A6E3 /* BlockLayout+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Background.swift"; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
+		FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+XML.swift"; sourceTree = "<group>"; };
+		FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldXMLTest.swift; sourceTree = "<group>"; };
 		FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
@@ -486,8 +492,9 @@
 		FA4D549D1C6AAE1000F95084 /* XML */ = {
 			isa = PBXGroup;
 			children = (
-				FA4D54AF1C6AAEB700F95084 /* BlockXMLParsingTest.swift */,
-				FA6085FF1C6D7049003B6076 /* WorkspaceXMLParsingTest.swift */,
+				FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */,
+				FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */,
+				FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */,
 			);
 			path = XML;
 			sourceTree = "<group>";
@@ -495,8 +502,10 @@
 		FA4D54A71C6AAE5000F95084 /* XML */ = {
 			isa = PBXGroup;
 			children = (
-				FA4D54A81C6AAE5000F95084 /* Block+XMLParsing.swift */,
-				FA6085F61C6D469F003B6076 /* Workspace+XMLParsing.swift */,
+				FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */,
+				FA99C4011C73DE0600FA5A02 /* Field+XML.swift */,
+				FA99C4031C73DE1800FA5A02 /* Input+XML.swift */,
+				FA6085F61C6D469F003B6076 /* Workspace+XML.swift */,
 			);
 			path = XML;
 			sourceTree = "<group>";
@@ -608,7 +617,7 @@
 		FAA86FF21C64272C000C7C61 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FA99C3B71C6EE65100FA5A02 /* AEXML+Init.swift */,
+				FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */,
 				FAA86FF31C64272C000C7C61 /* Array+Helper.swift */,
 				FAA86FF41C64272C000C7C61 /* Assertions.swift */,
 				FAA86FF51C64272C000C7C61 /* BlocklyError.swift */,
@@ -829,20 +838,20 @@
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
-				FA6085F71C6D469F003B6076 /* Workspace+XMLParsing.swift in Sources */,
+				FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */,
 				FAA8700E1C64272C000C7C61 /* UIView+Helper.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
 				FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */,
-				FA4D54AB1C6AAE5000F95084 /* Block+XMLParsing.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
 				FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */,
 				FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */,
 				FAA8700A1C64272C000C7C61 /* ObjectPool.swift in Sources */,
 				FAA870041C64272C000C7C61 /* CGPoint+Operators.swift in Sources */,
 				FAA870061C64272C000C7C61 /* Dictionary+Helper.swift in Sources */,
+				FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
 				FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */,
 				FA10E3EC1C696A8E0095F088 /* FieldAngleLayout.swift in Sources */,
@@ -869,6 +878,7 @@
 				FA42D7E11C5AD3C9000C8EB4 /* FieldColourView.swift in Sources */,
 				FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */,
 				FAA8701A1C642805000C7C61 /* TrashCanViewController.swift in Sources */,
+				FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */,
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FAA870181C642805000C7C61 /* FieldColourPickerViewController.swift in Sources */,
 				FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */,
@@ -879,6 +889,7 @@
 				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
 				FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */,
 				FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */,
+				FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */,
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
 				FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */,
 				FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */,
@@ -894,7 +905,7 @@
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
 				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
-				FA99C3B81C6EE65100FA5A02 /* AEXML+Init.swift in Sources */,
+				FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
@@ -916,7 +927,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA4D54B11C6AAED400F95084 /* BlockXMLParsingTest.swift in Sources */,
+				FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */,
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
@@ -928,13 +939,14 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
-				FA6086001C6D7049003B6076 /* WorkspaceXMLParsingTest.swift in Sources */,
+				FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */,
 				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
 				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
+				FAE2A5EE1C741D2A0085D36B /* FieldXMLTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* UIColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -78,4 +78,28 @@ public final class FieldDropdown: Field {
   public override func copyField() -> Field {
     return FieldDropdown(name: name, options: options, selectedIndex: selectedIndex)
   }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    // Update the selection index to the first available option that has the given value. If
+    // there are no options the index will be set to -1. If the value given is empty or does
+    // not exist the index will be set to 0.
+    if self.options.count == 0 {
+      self.selectedIndex = -1
+    } else if text == "" {
+      self.selectedIndex = 0
+    } else {
+      var index = 0
+      for i in 0 ..< self.options.count {
+        if self.options[i].value == text {
+          index = i
+          break
+        }
+      }
+      self.selectedIndex = index
+    }
+  }
+
+  public override func serializedText() throws -> String? {
+    return self.selectedOption?.value ?? ""
+  }
 }
