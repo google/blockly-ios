@@ -64,7 +64,7 @@ extension Block {
         let subBlockTree = try setNextBlockOnBlock(block, fromXML: child, factory: factory)
         allBlocks.appendContentsOf(subBlockTree.allBlocks)
       case "field":
-        setFieldOnBlock(block, fromXML: child)
+        try setFieldOnBlock(block, fromXML: child)
       case "comment":
         if let commentText = child.value {
           block.comment = commentText
@@ -167,13 +167,50 @@ extension Block {
    - Parameter block: The block to update.
    - Parameter xml: The xml that describes the field to update.
    */
-  private class func setFieldOnBlock(block: Block, fromXML xml: AEXMLElement) {
+  private class func setFieldOnBlock(block: Block, fromXML xml: AEXMLElement) throws {
     // A missing or unknown field name isn't an error, it's just ignored.
     if let value = xml.value,
       let fieldName = xml.attributes["name"],
       let field = block.firstFieldWithName(fieldName)
     {
-      field.text = value
+      try field.setValueFromSerializedText(value)
     }
+  }
+}
+
+// MARK: - XML Serialization
+
+extension Block {
+  // MARK: - Public
+
+  /**
+   Creates an XML element representing this block and all of its descendants.
+
+   - Returns: An XML element.
+   - Throws:
+   `BlocklyError`: Thrown if there was an error serializing this block or any of its descendants.
+   */
+  public func toXML() throws -> AEXMLElement {
+    let blockXML = AEXMLElement("block", value: nil, attributes: nil)
+    blockXML.attributes["type"] = self.name
+    blockXML.attributes["id"] = self.uuid
+
+    if topLevel {
+      blockXML.attributes["x"] = String(Int(floor(position.x)))
+      blockXML.attributes["y"] = String(Int(floor(position.y)))
+    }
+
+    for input in inputs {
+      for inputXMLElement in try input.toXML() {
+        blockXML.addChild(inputXMLElement)
+      }
+    }
+
+    if let nextBlock = self.nextBlock {
+      let nextChild = blockXML.addChild(name: "next")
+      nextChild.addChild(try nextBlock.toXML())
+    }
+
+    return blockXML
   }
 }
