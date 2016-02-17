@@ -15,6 +15,9 @@
 
 import AEXML
 
+/**
+ Convenience methods for AEXMLDocument.
+ */
 extension AEXMLDocument {
   public convenience init(string: String) throws {
     guard let data = string.dataUsingEncoding(NSUTF8StringEncoding) else {

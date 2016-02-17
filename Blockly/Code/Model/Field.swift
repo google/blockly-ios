@@ -39,18 +39,6 @@ public class Field: NSObject {
   /// The name of the field
   public let name: String
 
-  /// The text representation of the field
-  public var text: String {
-    didSet {
-      if !self.editable {
-        self.text = oldValue
-      }
-      if text != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
-  }
-
   /// The input that owns this field
   public weak var sourceInput: Input!
 
@@ -79,9 +67,8 @@ public class Field: NSObject {
 
   // MARK: - Initializers
 
-  internal init(name: String, text: String = "") {
+  internal init(name: String) {
     self.name = name
-    self.text = text
     super.init()
   }
 
@@ -97,5 +84,29 @@ public class Field: NSObject {
   public func copyField() -> Field {
     bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
     return Field(name: name) // This shouldn't happen.
+  }
+
+  /**
+   Sets the native value of this field from a serialized text value.
+
+   - Parameter text: The serialized text value
+   - Throws:
+   `BlocklyError`: Thrown if the serialized text value could not be converted into the field's
+   native value.
+   */
+  public func setValueFromSerializedText(text: String) throws {
+    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+  }
+
+  /**
+   Converts the native value of this field to a serialized text value.
+
+   - Returns: The serialized text value
+   - Throws:
+   `BlocklyError`: Thrown if the field's native value could not be serialized into a text value.
+   */
+  public func serializedText() throws -> String {
+    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    return ""
   }
 }

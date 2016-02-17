@@ -60,4 +60,13 @@ public final class FieldImage: Field {
   public override func copyField() -> Field {
     return FieldImage(name: name, imageURL: imageURL, size: size, altText: altText)
   }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    throw BlocklyError(.ModelIllegalState, "Image field cannot be set from string.")
+  }
+
+  public override func serializedText() throws -> String {
+    // Return nothing -- images shouldn't be serialized
+    return ""
+  }
 }

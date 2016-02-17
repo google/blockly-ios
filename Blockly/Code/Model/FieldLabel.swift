@@ -20,9 +20,39 @@ Non-editable text field. Used for titles, labels, etc.
 */
 @objc(BKYFieldLabel)
 public final class FieldLabel: Field {
+  // MARK: - Properties
+
+  /// The text label of the field
+  public var text: String {
+    didSet {
+      if !self.editable {
+        self.text = oldValue
+      }
+      if text != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+
+  // MARK: - Initializers
+
+  public init(name: String, text: String) {
+    self.text = text
+    super.init(name: name)
+  }
+
   // MARK: - Super
 
   public override func copyField() -> Field {
     return FieldLabel(name: name, text: text)
+  }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    throw BlocklyError(.ModelIllegalState, "Label field text cannot be set after construction.")
+  }
+
+  public override func serializedText() throws -> String {
+    // Return nothing -- labels shouldn't be serialized
+    return ""
   }
 }

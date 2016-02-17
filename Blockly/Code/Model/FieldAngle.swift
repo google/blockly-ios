@@ -52,6 +52,19 @@ public final class FieldAngle: Field {
     return FieldAngle(name: name, angle: angle)
   }
 
+  public override func setValueFromSerializedText(text: String) throws {
+    if let angle = Int(text) {
+      self.angle = angle
+    } else {
+      throw BlocklyError(.XMLParsing,
+        "Could not parse '\(text)' into an angle. The value must be a valid integer.")
+    }
+  }
+
+  public override func serializedText() throws -> String {
+    return String(self.angle)
+  }
+
   // MARK: - Internal - For testing only
 
   internal class func normalizeAngle(var angle: Int) -> Int {

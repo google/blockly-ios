@@ -37,4 +37,16 @@ public final class FieldVariable: Field {
   public override func copyField() -> Field {
     return FieldVariable(name: name, variable: variable)
   }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    if text != "" {
+      self.variable = text
+    } else {
+      throw BlocklyError(.XMLParsing, "Cannot set a variable to empty text")
+    }
+  }
+
+  public override func serializedText() throws -> String {
+    return self.variable
+  }
 }
