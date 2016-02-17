@@ -23,7 +23,7 @@ class InputJSONTest: XCTestCase {
 
   override func setUp() {
     workspace = Workspace()
-    let builder = Block.Builder(identifier: "Test")
+    let builder = Block.Builder(name: "Test")
     block = try! builder.build()
     try! workspace.addBlockTree(block)
 
