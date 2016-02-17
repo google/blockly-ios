@@ -35,8 +35,8 @@ extension Block {
     }
 
     // Build the block
-    let identifier = (json["id"] as? String) ?? ""
-    let builder = Block.Builder(identifier: identifier)
+    let blockName = (json["id"] as? String) ?? ""
+    let builder = Block.Builder(name: blockName)
 
     if let colourHue = json["colour"] as? CGFloat {
       let hue = (min(max(colourHue, 0), 360)) / 360

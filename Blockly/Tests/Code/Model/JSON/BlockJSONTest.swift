@@ -36,7 +36,7 @@ class BlockJSONTest: XCTestCase {
       return
     }
 
-    XCTAssertEqual("block_id_1", block.identifier)
+    XCTAssertEqual("block_id_1", block.name)
     XCTAssertEqualWithAccuracy(
       CGFloat(135.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual(true, block.inputsInline)

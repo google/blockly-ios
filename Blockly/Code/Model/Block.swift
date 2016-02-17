@@ -40,7 +40,7 @@ public final class Block : NSObject {
 
   /// A unique identifier used to identify this block for its lifetime
   public let uuid: String
-  public let identifier: String
+  public let name: String
   public let category: Int
   public let inputsInline: Bool
   public internal(set) var position: WorkspacePoint = WorkspacePointZero
@@ -111,12 +111,12 @@ public final class Block : NSObject {
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(uuid: String?, identifier: String, category: Int,
+  internal init(uuid: String?, name: String, category: Int,
     colour: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = uuid ?? NSUUID().UUIDString
-    self.identifier = identifier
+    self.name = name
     self.category = category
     self.colour = colour
     self.inputs = inputs

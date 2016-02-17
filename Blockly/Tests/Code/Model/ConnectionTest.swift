@@ -235,7 +235,7 @@ class ConnectionTest: XCTestCase {
   private func createConnection(type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0)
     -> Connection
   {
-    let block = try! Block.Builder(identifier: "test").build()
+    let block = try! Block.Builder(name: "test").build()
     try! _workspace.addBlockTree(block)
 
     let connection = Connection(type: type, sourceInput: nil)
