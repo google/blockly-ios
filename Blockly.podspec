@@ -27,13 +27,13 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc     = true
 
-  s.source_files     = 'iOS/Blockly/Code/**/*'
+  s.source_files     = 'Blockly/Code/**/*'
 
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
   # is why we include Blockly.xcassets through '.resources', instead of '.resource_bundles'.
-  s.resources = ['iOS/Blockly/Resources/Blockly.xcassets']
+  s.resources = ['Blockly/Resources/Blockly.xcassets']
 
-  s.ios.dependency 'SWXMLHash', '~> 2.1' # Include versions up to, but not including 3.0
+  s.ios.dependency 'AEXML', '~> 2.1'
 
   # Enable whole-module-optimization for all builds except for Debug builds
   s.pod_target_xcconfig = {

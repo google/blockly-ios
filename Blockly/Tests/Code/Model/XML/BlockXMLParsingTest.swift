@@ -15,7 +15,7 @@
 
 @testable import Blockly
 import XCTest
-import SWXMLHash
+import AEXML
 
 class BlockXMLParsingTest: XCTestCase {
 
@@ -143,15 +143,10 @@ class BlockXMLParsingTest: XCTestCase {
   // MARK: - Helper methods
 
   func parseBlockFromXML(xmlString: String, _ factory: BlockFactory) -> Block.BlockTree? {
-    let xml = SWXMLHash.parse(xmlString)
-
-    // SWXMLHash always creates a root element around xml string, so pick its first child to pass
-    // into blockTreeFromXML(...).
-    if let blockXML = xml.children.first {
-      do {
-        return try Block.blockTreeFromXML(blockXML, factory: factory)
-      } catch {
-      }
+    do {
+      let xmlDoc = try AEXMLDocument(string: xmlString)
+      return try Block.blockTreeFromXML(xmlDoc.root, factory: factory)
+    } catch {
     }
 
     return nil
