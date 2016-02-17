@@ -152,7 +152,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
-    let builder = Block.Builder(identifier: "test")
+    let builder = Block.Builder(name: "test")
     let block = try! builder.build()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -175,7 +175,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutBeforeLayoutMultipleValues() {
     // Create block with many inputs
-    let builder = Block.Builder(identifier: "test")
+    let builder = Block.Builder(name: "test")
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input1"))
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
@@ -212,7 +212,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutAfterLayoutEmpty() {
     // Create block with no inputs
-    let builder = Block.Builder(identifier: "test")
+    let builder = Block.Builder(name: "test")
     let block = try! builder.build()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -235,7 +235,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutAfterLayoutMultipleValues()  {
     // Create block with many inputs
-    let builder = Block.Builder(identifier: "test")
+    let builder = Block.Builder(name: "test")
     builder.inputBuilders.append(Input.Builder(type: .Value, name: "input1"))
     builder.inputBuilders.append(Input.Builder(type: .Dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .Statement, name: "input3"))
@@ -273,9 +273,9 @@ class BlockLayoutTest: XCTestCase {
 
   func testConnectValueConnections() {
     // Create blocks with opposite value connections
-    let builder1 = Block.Builder(identifier: "test1")
+    let builder1 = Block.Builder(name: "test1")
     builder1.inputBuilders.append(Input.Builder(type: .Value, name: "input1"))
-    let builder2 = Block.Builder(identifier: "test2")
+    let builder2 = Block.Builder(name: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
     let block1 = try! builder1.build()
@@ -317,9 +317,9 @@ class BlockLayoutTest: XCTestCase {
 
   func testDisconnectValueConnections() {
     // Create blocks with opposite value connections
-    let builder1 = Block.Builder(identifier: "test1")
+    let builder1 = Block.Builder(name: "test1")
     builder1.inputBuilders.append(Input.Builder(type: .Value, name: "input1"))
-    let builder2 = Block.Builder(identifier: "test2")
+    let builder2 = Block.Builder(name: "test2")
     try! builder2.setOutputConnectionEnabled(true)
 
     let block1 = try! builder1.build()
@@ -370,9 +370,9 @@ class BlockLayoutTest: XCTestCase {
 
   func testConnectStatementConnections() {
     // Create blocks with opposite value connections
-    let builder1 = Block.Builder(identifier: "test1")
+    let builder1 = Block.Builder(name: "test1")
     try! builder1.setNextConnectionEnabled(true)
-    let builder2 = Block.Builder(identifier: "test2")
+    let builder2 = Block.Builder(name: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
     let block1 = try! builder1.build()
@@ -425,9 +425,9 @@ class BlockLayoutTest: XCTestCase {
 
   func testDisconnectStatementConnections() {
     // Create blocks with opposite value connections
-    let builder1 = Block.Builder(identifier: "test1")
+    let builder1 = Block.Builder(name: "test1")
     try! builder1.setNextConnectionEnabled(true)
-    let builder2 = Block.Builder(identifier: "test2")
+    let builder2 = Block.Builder(name: "test2")
     try! builder2.setPreviousConnectionEnabled(true)
 
     let block1 = try! builder1.build()

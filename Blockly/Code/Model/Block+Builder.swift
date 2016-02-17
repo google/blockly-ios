@@ -28,7 +28,7 @@ extension Block {
     // MARK: - Properties
 
     // These values are publicly immutable in `Block`
-    public var identifier: String = ""
+    public var name: String = ""
     public var category: Int = 0
     public var colour: UIColor = UIColor.clearColor()
     public private(set) var outputConnectionEnabled: Bool = false
@@ -54,9 +54,9 @@ extension Block {
 
     // MARK: - Initializers
 
-    public init(identifier: String) {
+    public init(name: String) {
       super.init()
-      self.identifier = identifier
+      self.name = name
 
       setColourFromHue(0)
     }
@@ -67,7 +67,7 @@ extension Block {
     copied into the builder.
     */
     public init(block: Block) {
-      identifier = block.identifier
+      name = block.name
       category = block.category
       colour = block.colour
       inputsInline = block.inputsInline
@@ -100,8 +100,8 @@ extension Block {
     - Returns: A new block
     */
     public func build(uuid uuid: String? = nil) throws -> Block {
-      if identifier.isEmpty {
-        throw BlocklyError(.InvalidBlockDefinition, "Block identifier may not be empty")
+      if name == "" {
+        throw BlocklyError(.InvalidBlockDefinition, "Block name may not be empty")
       }
       var outputConnection: Connection?
       var nextConnection: Connection?
@@ -120,7 +120,7 @@ extension Block {
       }
       let inputs = inputBuilders.map({ $0.build() })
 
-      let block = Block(uuid: uuid, identifier: identifier, category: category,
+      let block = Block(uuid: uuid, name: name, category: category,
         colour: colour, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)

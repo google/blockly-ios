@@ -49,7 +49,7 @@ class BlockBuilderTest: XCTestCase {
   }
 
   internal func validateFrankenblock(block: Block) {
-    XCTAssertEqual("frankenblock", block.identifier)
+    XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
     XCTAssertEqualWithAccuracy(
       CGFloat(20.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
@@ -94,7 +94,7 @@ class BlockBuilderTest: XCTestCase {
   }
 
   internal func buildFrankenBlock(workspace: Workspace) -> Block {
-    let bob = Block.Builder(identifier: "frankenblock")
+    let bob = Block.Builder(name: "frankenblock")
 
     var inputBuilder = Input.Builder(type: Input.InputType.Value, name: "value_input")
     var fields = [
