@@ -46,4 +46,22 @@ public final class FieldColour: Field {
   public override func copyField() -> Field {
     return FieldColour(name: name, colour: colour)
   }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    if let colour = UIColor.bky_colorFromRGB(text) {
+      self.colour = colour
+    } else {
+      throw BlocklyError(.XMLParsing,
+        "Could not parse '\(text)' into a colour. The value must be of the form '#RRGGBB'.")
+    }
+  }
+
+  public override func serializedText() throws -> String? {
+    // Returns a string of the form "#rrggbb"
+    let rgba = self.colour.bky_rgba()
+    return String(format: "#%02x%02x%02x", arguments: [
+      UInt(round(rgba.red * 255)),
+      UInt(round(rgba.green * 255)),
+      UInt(round(rgba.blue * 255))])
+  }
 }
