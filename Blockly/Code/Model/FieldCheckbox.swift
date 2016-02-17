@@ -46,4 +46,12 @@ public final class FieldCheckbox: Field {
   public override func copyField() -> Field {
     return FieldCheckbox(name: name, checked: checked)
   }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    self.checked = (text.caseInsensitiveCompare("true") == .OrderedSame)
+  }
+
+  public override func serializedText() throws -> String? {
+    return self.checked ? "true" : "false"
+  }
 }

@@ -20,9 +20,38 @@ An editable text field.
 */
 @objc(BKYFieldInput)
 public final class FieldInput: Field {
+  // MARK: - Properties
+
+  /// The text value for the field
+  public var text: String {
+    didSet {
+      if !self.editable {
+        self.text = oldValue
+      }
+      if text != oldValue {
+        delegate?.didUpdateField(self)
+      }
+    }
+  }
+
+  // MARK: - Initializers
+
+  public init(name: String, text: String) {
+    self.text = text
+    super.init(name: name)
+  }
+
   // MARK: - Super
 
   public override func copyField() -> Field {
     return FieldInput(name: name, text: text)
+  }
+
+  public override func setValueFromSerializedText(text: String) throws {
+    self.text = text
+  }
+
+  public override func serializedText() throws -> String? {
+    return self.text
   }
 }

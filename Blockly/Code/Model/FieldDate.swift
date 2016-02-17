@@ -20,6 +20,9 @@ An input field for picking a date.
 */
 @objc(BKYFieldDate)
 public final class FieldDate: Field {
+  /// The date format to use for serialization purposes
+  private static let DATE_FORMAT = "yyyy-MM-dd"
+
   // MARK: - Properties
 
   public var date: NSDate {
@@ -64,6 +67,19 @@ public final class FieldDate: Field {
     return FieldDate(name: name, date: date)
   }
 
+  public override func setValueFromSerializedText(text: String) throws {
+    if let date = FieldDate.dateFromString(text) {
+      self.date = date
+    } else {
+      throw BlocklyError(.XMLParsing,
+        "Could not parse '\(text)' into a date. The format of the date must be 'yyyy-MM-dd'.")
+    }
+  }
+
+  public override func serializedText() throws -> String? {
+    return FieldDate.stringFromDate(self.date)
+  }
+
   // MARK: - Public
 
   /**
@@ -89,8 +105,18 @@ public final class FieldDate: Field {
     }
     let dateFormatter = NSDateFormatter()
     dateFormatter.timeZone = NSTimeZone.localTimeZone()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
+    dateFormatter.dateFormat = FieldDate.DATE_FORMAT
     return dateFormatter.dateFromString(string)
+  }
+
+  /**
+   Returns a string representation of a date in the format "yyyy-MM-dd".
+   */
+  internal class func stringFromDate(date: NSDate) -> String {
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.timeZone = NSTimeZone.localTimeZone()
+    dateFormatter.dateFormat = FieldDate.DATE_FORMAT
+    return dateFormatter.stringFromDate(date)
   }
 
   /**
