@@ -14,7 +14,7 @@
 */
 
 import Foundation
-import SWXMLHash
+import AEXML
 
 /**
 General error class for all Blockly errors.
@@ -56,7 +56,7 @@ public class BlocklyError: NSError {
     super.init(coder: aDecoder)
   }
 
-  internal convenience init(_ code: Code, _ description: String, _ xml: XMLIndexer) {
+  internal convenience init(_ code: Code, _ description: String, _ xml: AEXMLElement) {
     self.init(code, "\(description)\nXML:\n\(xml)")
   }
 }

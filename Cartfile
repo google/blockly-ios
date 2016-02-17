@@ -1,1 +1,1 @@
-github "drmohundro/SWXMLHash" ~> 2.1 # Include versions up to, but not including 3.0
+github "tadija/AEXML" ~> 2.1

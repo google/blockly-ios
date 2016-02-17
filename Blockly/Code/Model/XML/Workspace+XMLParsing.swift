@@ -14,7 +14,7 @@
 */
 
 import Foundation
-import SWXMLHash
+import AEXML
 
 // MARK: - XML Parsing
 
@@ -31,8 +31,8 @@ extension Workspace {
   malformed data, or contradictory data).
   */
   public func loadBlocksFromXMLString(xmlString: String, factory: BlockFactory) throws {
-    let xml = SWXMLHash.parse(xmlString)
-    try loadBlocksFromXML(xml, factory: factory)
+    let xmlDoc = try AEXMLDocument(string: xmlString)
+    try loadBlocksFromXML(xmlDoc.root, factory: factory)
   }
 
   /**
@@ -44,8 +44,8 @@ extension Workspace {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public func loadBlocksFromXML(xml: XMLIndexer, factory: BlockFactory) throws {
-    if let allBlocksXML = xml.children.first?["block"] {
+  public func loadBlocksFromXML(xml: AEXMLElement, factory: BlockFactory) throws {
+    if let allBlocksXML = xml["block"].all {
       for blockXML in allBlocksXML {
         let blockTree = try Block.blockTreeFromXML(blockXML, factory: factory)
         try addBlockTree(blockTree.rootBlock)

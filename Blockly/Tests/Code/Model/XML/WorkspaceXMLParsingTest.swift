@@ -15,7 +15,6 @@
 
 @testable import Blockly
 import XCTest
-import SWXMLHash
 
 class WorkspaceXMLParsingTest: XCTestCase {
   var workspace: Workspace!
@@ -85,9 +84,21 @@ class WorkspaceXMLParsingTest: XCTestCase {
   }
 
   func testBadXml() {
-    let xml = assembleWorkspace("<type=\"xmlahsdjkf<><J><JJ>Ji23j.,zxcj123.;;.?>?.//>?..<><")
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
-    XCTAssertEqual(0, workspace.allBlocks.count)
+    do {
+      let xml = assembleWorkspace("<ty\"xmlahsdjkf<><J><JJ>Ji23j.,zxcj123.;;.?>?.//>?..<><")
+      try workspace.loadBlocksFromXMLString(xml, factory: factory)
+      XCTFail("Should not have been able to load bad xml")
+    } catch {
+      // Success!
+    }
+
+    do {
+      let xml = assembleWorkspace("<type=\"xml_no_name\">")
+      try workspace.loadBlocksFromXMLString(xml, factory: factory)
+      XCTFail("Should not have been able to load bad xml")
+    } catch {
+      // Success!
+    }
   }
 
   // MARK: - Helper methods
