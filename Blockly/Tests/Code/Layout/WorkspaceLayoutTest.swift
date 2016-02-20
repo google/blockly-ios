@@ -27,7 +27,7 @@ class WorkspaceLayoutTest: XCTestCase {
     let workspace = Workspace()
     _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks", bundle: NSBundle(forClass: self.dynamicType))
+      jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
   }
 
   // MARK: - Tests

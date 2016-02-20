@@ -27,9 +27,14 @@ public class BlockFactory : NSObject {
   // MARK: - Initializers
 
   /**
+   Creates a BlockFactory.
+   */
+  public override init() {
+  }
+
+  /**
    Creates a BlockFactory with an initial set of blocks loaded from a json file.
 
-   - Parameter workspace: The workspace to associate all new blocks
    - Parameter jsonPath: Path to a file containing blocks in JSON.
    - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
    - Throws:
@@ -38,10 +43,19 @@ public class BlockFactory : NSObject {
   public init(jsonPath: String, bundle: NSBundle? = nil) throws {
     super.init()
 
+    try loadFromJSONPath(jsonPath, bundle: bundle)
+  }
+
+  /**
+   Loads a set of blocks from a json file.
+
+   - Parameter jsonPath: Path to a file containing blocks in JSON.
+   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
+   */
+  public func loadFromJSONPath(jsonPath: String, bundle: NSBundle? = nil) throws {
     let aBundle = (bundle ?? NSBundle.mainBundle())
-    guard let path = aBundle.pathForResource(jsonPath, ofType: "json") else {
-      bky_debugPrint("Could not find \"\(jsonPath).json\" in bundle [\(aBundle)]")
-      return
+    guard let path = aBundle.pathForResource(jsonPath, ofType: nil) else {
+      throw BlocklyError(.FileNotFound, "Could not find \"\(jsonPath)\" in bundle [\(aBundle)]")
     }
     let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
     let json = try JSONHelper.JSONArrayFromString(jsonString)

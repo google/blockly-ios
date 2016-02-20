@@ -37,18 +37,20 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   private func commonInit() {
     // Load the block factory
     do {
-      _blockFactory = try BlockFactory(jsonPath: "TestBlocks")
+      _blockFactory = try BlockFactory(jsonPath: "Blocks/simple_workbench_blocks.json")
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
     }
-
-    // TODO:(vicng) Read in layout direction from system
   }
 
   // MARK: - Super
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    // Don't allow the navigation controller bar cover this view controller
+    self.edgesForExtendedLayout = .None
+    self.navigationItem.title = "Simple Workbench Demo"
 
     // Load data
     self.enableTrashCan = true

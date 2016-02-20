@@ -241,9 +241,21 @@ extension WorkbenchViewController {
       // This state can co-exist with anything, simply add it to the current state
       newState = _state.union(state)
     case .EditingTextField:
-      // Allow .EditingTextField to co-exist with .PresentingPopover, but nothing else
-      newState = _state.union(state).intersect([.PresentingPopover, .EditingTextField])
-    case .CategoryOpen, .TrashCanOpen, .DraggingBlock, .PresentingPopover:
+      // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
+      // else
+      // TODO:(#9) Since .CategoryOpen has not been implemented yet, we've had to add code here to
+      // add the .CategoryOpen state (so that users can edit text for toolbox blocks).
+      // Once the toolbox is refactored and .CategoryOpen is implemented, remove this union to
+      // .CategoryOpen.
+      newState = _state.union(state).union(.CategoryOpen).intersect(
+        [.PresentingPopover, .EditingTextField, .CategoryOpen])
+    case .PresentingPopover:
+      // TODO:(#9) We've temporarily allowed popovers to co-exist with any state, since
+      // .CategoryOpen has not been implemented yet. (so that users can edit blocks in the toolbox).
+      // Once the toolbox is refactored and .CategoryOpen is implemented, fix this logic so the
+      // .PresentingPopover state only can co-exist with .CategoryOpen.
+      newState = _state.union(state).union(UIState.CategoryOpen)
+    case .CategoryOpen, .TrashCanOpen, .DraggingBlock:
       // Whenever these states are added, clear out all existing state.
       newState = UIState(value: stateValue)
     }
