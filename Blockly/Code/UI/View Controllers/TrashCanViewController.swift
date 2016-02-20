@@ -32,12 +32,18 @@ public class TrashCanViewController: UIViewController {
   }
 
   /// The view for displaying each category's set of blocks
-  public var workspaceView: WorkspaceView {
+  public var workspaceView: WorkspaceView! {
     return self.view as! WorkspaceView
   }
 
   /// The constraint for resizing the width of `self.blockListView`
   private var blockListViewWidthConstraint: NSLayoutConstraint!
+
+  // MARK: - Initializers/Deinitializers
+
+  deinit {
+    self.workspaceView?.removeObserver(self, forKeyPath: "bounds")
+  }
 
   // MARK: - Super
 
