@@ -160,6 +160,39 @@ class WorkspaceXMLTest: XCTestCase {
     XCTAssertEqual(2, xml.root["block"].all?.count)
   }
 
+  func testSerializeXML_NestedBlocks() {
+    let workspace = Workspace()
+    let parent = try! factory.buildBlock("simple_input_output", uuid: "parentBlock") as Block!
+    let child = try! factory.buildBlock("output_no_input", uuid: "childBlock") as Block!
+    try! child?.connectToSuperiorConnection(parent!.firstInputWithName("value")!.connection!)
+    try! workspace.addBlockTree(parent)
+    let xml = try! workspace.toXML()
+
+    // Expected:
+    // <xml xmlns="http://www.w3.org/1999/xhtml">
+    // <block x="0" id="parentBlock" y="0" type="simple_input_output">
+    //   <value name="value">
+    //     <block id="childBlock" type="output_no_input" />
+    //   </value>
+    // </block>
+    // </xml>
+
+    XCTAssertEqual("xml", xml.root.name)
+    XCTAssertEqual(1, xml.root.attributes.count)
+    XCTAssertEqual("http://www.w3.org/1999/xhtml", xml.root.attributes["xmlns"])
+    XCTAssertEqual(1, xml.root.children.count)
+
+    let parentBlockXML = xml.root["block"]
+    XCTAssertEqual(1, xml.root["block"].all?.count)
+    XCTAssertEqual("parentBlock", parentBlockXML.attributes["id"])
+    XCTAssertEqual(1, parentBlockXML.children.count)
+
+    if parentBlockXML.children.count >= 1 {
+      let childBlockXML = parentBlockXML.children[0]["block"]
+      XCTAssertEqual("childBlock", childBlockXML.attributes["id"])
+    }
+  }
+
   // MARK: - Helper methods
 
   private func assembleWorkspace(interiorXML: String) -> String {
