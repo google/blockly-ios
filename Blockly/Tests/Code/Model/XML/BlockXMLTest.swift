@@ -24,7 +24,7 @@ class BlockXMLTest: XCTestCase {
   var factory: BlockFactory!
 
   override func setUp() {
-    factory = try! BlockFactory(jsonPath: "xml_parsing_test",
+    factory = try! BlockFactory(jsonPath: "xml_parsing_test.json",
       bundle: NSBundle(forClass: self.dynamicType))
 
     super.setUp()
