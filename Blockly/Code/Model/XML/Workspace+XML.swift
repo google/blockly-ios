@@ -71,7 +71,7 @@ extension Workspace {
     let rootXML = xmlDoc.addChild(name: "xml", value: nil,
       attributes: ["xmlns": "http://www.w3.org/1999/xhtml"])
 
-    for (_, block) in self.allBlocks {
+    for block in topLevelBlocks() {
       rootXML.addChild(try block.toXML())
     }
 

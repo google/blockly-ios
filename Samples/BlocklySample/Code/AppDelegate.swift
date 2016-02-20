@@ -28,9 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let frame = UIScreen.mainScreen().bounds
     self.window = UIWindow(frame: frame)
 
-    // Set workbench view controller as the starting point
-    let viewController = SimpleWorkbenchViewController()
-    self.window!.rootViewController = viewController
+    let navigationController = UINavigationController()
+    navigationController.pushViewController(DemoPickerViewController(), animated: false)
+
+    self.window!.rootViewController = navigationController
     self.window!.makeKeyAndVisible()
 
     return true
