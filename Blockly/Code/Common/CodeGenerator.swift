@@ -141,7 +141,7 @@ public class CodeGenerator: NSObject {
 
   /**
    Generates code for workspace XML.
-   
+
    - Note: Only one request may be made at a time. If another request is still pending, this method
    will immediately execute the `error` block.
 
@@ -167,7 +167,7 @@ public class CodeGenerator: NSObject {
       self.currentWorkspaceXML = workspaceXML
       self.onCompletion = completion
       self.onError = error
-      
+
       let generator = self.jsContext.evaluateScript(self.jsGeneratorObject)
       let method = self.jsContext.evaluateScript("CodeGeneratorBridge.generateCodeForWorkspace")
       let returnValue = method.callWithArguments([workspaceXML, generator])
