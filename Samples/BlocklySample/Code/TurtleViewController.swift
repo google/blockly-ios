@@ -23,6 +23,7 @@ import Blockly
 class TurtleViewController: UIViewController {
   // MARK: - Properties
 
+  // TODO:(#15) Replace UIWebView with WKWebView
   /// The web view that runs the turtle code
   @IBOutlet private var webView: UIWebView!
   /// The button for executing the block code
@@ -37,8 +38,8 @@ class TurtleViewController: UIViewController {
 
   /// The block editor
   private var workbenchViewController: WorkbenchViewController!
-  /// Code generator
-  private var _codeGenerator: CodeGenerator!
+  /// Code generator service
+  private var _codeGeneratorService: CodeGeneratorService!
 
   /// Factory that produces block instances from a parsed json file
   private var _blockFactory: BlockFactory!
@@ -69,33 +70,26 @@ class TurtleViewController: UIViewController {
       print("An error occurred loading the test blocks: \(error)")
     }
 
-    // Create the code generator
-    do {
-      _codeGenerator = try CodeGenerator(jsGeneratorObject: "Blockly.JavaScript",
-        jsDependencies: [
-        /// The JS file containing the Blockly engine
-        "Turtle/blockly_web/blockly_compressed.js",
-        /// The JS file containing all Blockly default blocks
-        "Turtle/blockly_web/blocks_compressed.js",
-        /// The JS file containing methods used for generating JavaScript code
-        "Turtle/blockly_web/javascript_compressed.js",
-        /// The JS file containing a list of internationalized messages
-        "Turtle/blockly_web/msg/js/en.js",
-        ])
-      try _codeGenerator.importBlockGeneratorsFromFile("Turtle/generators.js")
-      try _codeGenerator.importBlockDefinitionsFromFile("Turtle/turtle_blocks.json")
-    } catch let error as NSError {
-      print("An error occurred loading the code generator: \(error)")
-    }
+    // Create the code generator service
+    _codeGeneratorService = CodeGeneratorService(
+      jsCoreDependencies: [
+        // The JS file containing the Blockly engine
+        (file: "Turtle/blockly_web/blockly_compressed.js", bundle: nil),
+        // The JS file containing all Blockly default blocks
+        (file: "Turtle/blockly_web/blocks_compressed.js", bundle: nil),
+        // The JS file containing a list of internationalized messages
+        (file: "Turtle/blockly_web/msg/js/en.js", bundle: nil)
+      ])
   }
 
   deinit {
     // If the Turtle code is currently executing, we need to reset it before deallocating this
     // instance.
     if let webView = self.webView {
+      webView.stopLoading()
       webView.stringByEvaluatingJavaScriptFromString("Turtle.reset();")
     }
-    _codeGenerator.cancelAllRequests()
+    _codeGeneratorService.cancelAllRequests()
   }
 
   // MARK: - Super
@@ -198,16 +192,23 @@ class TurtleViewController: UIViewController {
     do {
       if let workspace = workbenchViewController.workspaceLayout?.workspace {
         // Cancel pending requests
-        _codeGenerator.cancelAllRequests()
+        _codeGeneratorService.cancelAllRequests()
 
         // Request code generation.
+        let request = try CodeGeneratorService.Request(workspace: workspace,
+          jsGeneratorObject: "Blockly.JavaScript",
+          jsBlockGenerators: [
+            (file: "Turtle/blockly_web/javascript_compressed.js", bundle: nil),
+            (file: "Turtle/generators.js", bundle: nil)
+          ],
+          jsonBlockDefinitions: [(file: "Turtle/turtle_blocks.json", bundle: nil)])
+
         // Note: A single set of request listeners like this is sufficient for most cases, but
         // dynamic completion and error listeners may be created for each call if needed.
-        let request = try CodeGenerator.Request(workspace: workspace)
         request.onCompletion = self.codeGenerationCompletedWithCode
         request.onError = self.codeGenerationFailedWithError
 
-        _codeGenerator.generateCodeForRequest(request)
+        _codeGeneratorService.generateCodeForRequest(request)
       }
     } catch let error as NSError {
       print("An error occurred generating code for the workspace: \(error)")

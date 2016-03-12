@@ -17,10 +17,10 @@ import Foundation
 @testable import Blockly
 import XCTest
 
-/** Tests for the `CodeGenerator` class. */
-class CodeGeneratorTest: XCTestCase {
+/** Tests for the `CodeGeneratorService` class. */
+class CodeGeneratorServiceTest: XCTestCase {
 
-  var _codeGenerator: CodeGenerator!
+  var _codeGeneratorService: CodeGeneratorService!
 
   var _blockFactory: BlockFactory!
 
@@ -29,17 +29,15 @@ class CodeGeneratorTest: XCTestCase {
 
     let testBundle = NSBundle(forClass: self.dynamicType)
     // Create the code generator
-    _codeGenerator = try! CodeGenerator(jsGeneratorObject: "Blockly.Python",
-      jsDependencies: [
+    _codeGeneratorService = CodeGeneratorService(
+      jsCoreDependencies: [
         /// The JS file containing the Blockly engine
-        "blockly_web/blockly_compressed.js",
+        (file: "blockly_web/blockly_compressed.js", bundle: testBundle),
         /// The JS file containing all Blockly default blocks
-        "blockly_web/blocks_compressed.js",
-        /// The JS file containing methods used for generating Python code
-        "blockly_web/python_compressed.js",
+        (file: "blockly_web/blocks_compressed.js", bundle: testBundle),
         /// The JS file containing a list of internationalized messages
-        "blockly_web/msg/js/en.js",
-      ], bundle: testBundle)
+        (file: "blockly_web/msg/js/en.js", bundle: testBundle),
+      ])
 
     // Create the block factory
     _blockFactory = try! BlockFactory(jsonPath: "all_test_blocks.json", bundle: testBundle)
@@ -63,7 +61,11 @@ class CodeGeneratorTest: XCTestCase {
     let expectation = expectationWithDescription("Code Generation")
 
     // Execute request
-    let request = try! CodeGenerator.Request(workspace: workspace)
+    let testBundle = NSBundle(forClass: self.dynamicType)
+    let request = try! CodeGeneratorService.Request(workspace: workspace,
+      jsGeneratorObject: "Blockly.Python",
+      jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+      jsonBlockDefinitions: [])
     request.onCompletion = { code in
       XCTAssertEqual("for count in range(10):  pass",
         code.stringByReplacingOccurrencesOfString("\n", withString: ""))
@@ -73,7 +75,7 @@ class CodeGeneratorTest: XCTestCase {
       XCTFail("Error occurred during code generation: \(error)")
       expectation.fulfill()
     }
-    _codeGenerator.generateCodeForRequest(request)
+    _codeGeneratorService.generateCodeForRequest(request)
 
     // Wait 10s for code generation to finish
     waitForExpectationsWithTimeout(10.0, handler: { error in
@@ -95,12 +97,17 @@ class CodeGeneratorTest: XCTestCase {
 
     try! workspace.addBlockTree(loopBlock)
 
+    let testBundle = NSBundle(forClass: self.dynamicType)
+
     for _ in 0 ..< 100 {
       // Set up timeout expectation
       let expectation = expectationWithDescription("Code Generation")
 
       // Execute request
-      let request = try! CodeGenerator.Request(workspace: workspace)
+      let request = try! CodeGeneratorService.Request(workspace: workspace,
+        jsGeneratorObject: "Blockly.Python",
+        jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+        jsonBlockDefinitions: [])
       request.onCompletion = { code in
         XCTAssertEqual("for count in range(10):  pass",
           code.stringByReplacingOccurrencesOfString("\n", withString: ""))
@@ -110,7 +117,7 @@ class CodeGeneratorTest: XCTestCase {
         XCTFail("Error occurred during code generation: \(error)")
         expectation.fulfill()
       }
-      _codeGenerator.generateCodeForRequest(request)
+      _codeGeneratorService.generateCodeForRequest(request)
     }
 
     // Wait 100s for code generation to finish
