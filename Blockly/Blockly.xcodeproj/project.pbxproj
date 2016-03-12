@@ -79,7 +79,7 @@
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
 		FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */; };
-		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorTest.swift */; };
+		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
 		FA99C3B61C6EE3B600FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
@@ -128,6 +128,7 @@
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; };
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 		FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FAFD37211C8F5C5F00C77049 /* blockly_web */; };
+		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,7 +274,7 @@
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
 		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
-		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorTest.swift; sourceTree = "<group>"; };
+		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 		FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Helper.swift"; sourceTree = "<group>"; };
@@ -320,6 +321,7 @@
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
 		FAFD37211C8F5C5F00C77049 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
+		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,7 +465,7 @@
 			children = (
 				FA4BB4B11B754D87000980E9 /* UIColorHelper.swift */,
 				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
-				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorTest.swift */,
+				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -639,6 +641,7 @@
 				FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */,
 				FAA86FF71C64272C000C7C61 /* CGSize+Operators.swift */,
 				FAE2A6191C753F310085D36B /* CodeGenerator.swift */,
+				FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -860,6 +863,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */,
 				FA27267E1B83C54900777B49 /* WorkspaceLayout.swift in Sources */,
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
@@ -966,7 +970,7 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
-				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorTest.swift in Sources */,
+				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */,
 				FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */,
 				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,
