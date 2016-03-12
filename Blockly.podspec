@@ -31,8 +31,9 @@ Pod::Spec.new do |s|
 
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
   # is why we include Blockly.xcassets through '.resources', instead of '.resource_bundles'.
-  s.resources = ['Blockly/Resources/Blockly.xcassets']
+  s.resources = ['Blockly/Resources/Blockly.xcassets', 'Blockly/Resources/code_generator']
 
+  s.framework        = 'JavascriptCore'
   s.ios.dependency 'AEXML', '~> 2.1'
 
   # Enable whole-module-optimization for all builds except for Debug builds

@@ -72,12 +72,14 @@
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
 		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */; };
+		FA5F2BC61C76A2E6008384BE /* code_generator in Resources */ = {isa = PBXBuildFile; fileRef = FA5F2BC51C76A2E6008384BE /* code_generator */; };
 		FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XML.swift */; };
 		FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
 		FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */; };
+		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
 		FA99C3B61C6EE3B600FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
@@ -118,11 +120,15 @@
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */; };
 		FAE2A5EE1C741D2A0085D36B /* FieldXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */; };
+		FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6191C753F310085D36B /* CodeGenerator.swift */; };
+		FAE2A61C1C7550B60085D36B /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */; };
 		FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */; };
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; };
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; };
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
+		FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FAFD37211C8F5C5F00C77049 /* blockly_web */; };
+		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,12 +267,14 @@
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayoutTest.swift; sourceTree = "<group>"; };
+		FA5F2BC51C76A2E6008384BE /* code_generator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = code_generator; sourceTree = "<group>"; };
 		FA6085F61C6D469F003B6076 /* Workspace+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XML.swift"; sourceTree = "<group>"; };
 		FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
 		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
+		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 		FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Helper.swift"; sourceTree = "<group>"; };
@@ -306,10 +314,14 @@
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+XML.swift"; sourceTree = "<group>"; };
 		FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldXMLTest.swift; sourceTree = "<group>"; };
+		FAE2A6191C753F310085D36B /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
+		FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
+		FAFD37211C8F5C5F00C77049 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
+		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */,
+				FAE2A61C1C7550B60085D36B /* JavaScriptCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +377,7 @@
 		FA2DFC051B71740E0072A278 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FAFD37211C8F5C5F00C77049 /* blockly_web */,
 				FA2DFC061B7174350072A278 /* block_json_test.json */,
 				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
 				FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */,
@@ -451,6 +465,7 @@
 			children = (
 				FA4BB4B11B754D87000980E9 /* UIColorHelper.swift */,
 				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
+				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -517,6 +532,7 @@
 				FA548C591B63136F008BC59C /* Tests */,
 				FA9B45B81C32D966001EAE68 /* Resources */,
 				FA9C9A911C6432A4008524BF /* External */,
+				FAE2A61D1C7551070085D36B /* Frameworks */,
 				FA548C061B630BAC008BC59C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -602,6 +618,7 @@
 			isa = PBXGroup;
 			children = (
 				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
+				FA5F2BC51C76A2E6008384BE /* code_generator */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -623,6 +640,8 @@
 				FAA86FF51C64272C000C7C61 /* BlocklyError.swift */,
 				FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */,
 				FAA86FF71C64272C000C7C61 /* CGSize+Operators.swift */,
+				FAE2A6191C753F310085D36B /* CodeGenerator.swift */,
+				FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -645,6 +664,14 @@
 				FAA870171C642805000C7C61 /* WorkbenchViewController.swift */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		FAE2A61D1C7551070085D36B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FAE5576C1BE0219C0019D0D4 /* Control */ = {
@@ -813,6 +840,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
+				FA5F2BC61C76A2E6008384BE /* code_generator in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +850,7 @@
 			files = (
 				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
 				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
+				FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */,
 				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
 				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
 			);
@@ -834,6 +863,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */,
 				FA27267E1B83C54900777B49 /* WorkspaceLayout.swift in Sources */,
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
@@ -912,6 +942,7 @@
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
 				FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */,
 				FA42D7DF1C5AD390000C8EB4 /* FieldColourLayout.swift in Sources */,
+				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
 				FAA870071C64272C000C7C61 /* ImageLoader.swift in Sources */,
 				FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */,
@@ -939,6 +970,7 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */,
 				FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */,
 				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,

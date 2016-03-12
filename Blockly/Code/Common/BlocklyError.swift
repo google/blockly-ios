@@ -39,7 +39,9 @@ public class BlocklyError: NSError {
     JSONParsing = 400,
     JSONInvalidTypecast = 401,
     XMLParsing = 500,
-    XMLUnknownBlock = 501
+    XMLUnknownBlock = 501,
+    FileNotFound = 600,
+    FileNotReadable = 601
   }
   public typealias Code = BKYBlocklyErrorCode
 
