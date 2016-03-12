@@ -27,10 +27,15 @@ public class BlockFactory : NSObject {
   // MARK: - Initializers
 
   /**
-   Creates a BlockFactory with an initial set of blocks loaded from a json file.
+   Creates a BlockFactory.
+   */
+  public override init() {
+  }
 
-   - Parameter workspace: The workspace to associate all new blocks
-   - Parameter jsonPath: Path to a file containing blocks in JSON.
+  /**
+   Creates a BlockFactory with blocks loaded from a json file.
+
+   - Parameter jsonPath: Path to file containing blocks in JSON.
    - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
    - Throws:
    `BlocklyError`: Occurs if any of the blocks are invalid.
@@ -38,21 +43,47 @@ public class BlockFactory : NSObject {
   public init(jsonPath: String, bundle: NSBundle? = nil) throws {
     super.init()
 
-    let aBundle = (bundle ?? NSBundle.mainBundle())
-    guard let path = aBundle.pathForResource(jsonPath, ofType: "json") else {
-      bky_debugPrint("Could not find \"\(jsonPath).json\" in bundle [\(aBundle)]")
-      return
-    }
-    let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-    let json = try JSONHelper.JSONArrayFromString(jsonString)
-    for blockJson in json {
-      let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
-      // Ensure the builder is valid
-      try blockBuilder.build()
+    try loadFromJSONPaths([jsonPath], bundle: bundle)
+  }
 
-      // Save the block
-      _blockBuilders[blockBuilder.name] = blockBuilder
-      bky_debugPrint("Added block builder with name \(blockBuilder.name)")
+  /**
+   Creates a BlockFactory with blocks loaded from a list of json files.
+
+   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
+   - Parameter bundle: The bundle to find the json files. If nil, NSBundle.mainBundle() is used.
+   - Throws:
+   `BlocklyError`: Occurs if any of the blocks are invalid.
+   */
+  public init(jsonPaths: [String], bundle: NSBundle? = nil) throws {
+    super.init()
+
+    try loadFromJSONPaths(jsonPaths, bundle: bundle)
+  }
+
+  /**
+   Loads blocks from a list of json files.
+
+   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
+   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
+   */
+  public func loadFromJSONPaths(jsonPaths: [String], bundle: NSBundle? = nil) throws {
+    let aBundle = (bundle ?? NSBundle.mainBundle())
+
+    for jsonPath in jsonPaths {
+      guard let path = aBundle.pathForResource(jsonPath, ofType: nil) else {
+        throw BlocklyError(.FileNotFound, "Could not find \"\(jsonPath)\" in bundle [\(aBundle)]")
+      }
+      let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+      let json = try JSONHelper.JSONArrayFromString(jsonString)
+      for blockJson in json {
+        let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
+        // Ensure the builder is valid
+        try blockBuilder.build()
+
+        // Save the block
+        _blockBuilders[blockBuilder.name] = blockBuilder
+        bky_debugPrint("Added block builder with name \(blockBuilder.name)")
+      }
     }
   }
 
