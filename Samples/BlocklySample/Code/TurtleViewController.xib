@@ -12,7 +12,7 @@
                 <outlet property="editorView" destination="hlr-l4-ZK6" id="CGs-Af-nNG"/>
                 <outlet property="playButton" destination="t5G-8l-hVk" id="gkr-aO-00g"/>
                 <outlet property="view" destination="F31-zb-6fR" id="PD3-BP-cWt"/>
-                <outlet property="webView" destination="aPx-0O-xkT" id="Rnz-cL-XL1"/>
+                <outlet property="webViewContainer" destination="yB9-Zi-GcW" id="Dbd-3m-Ern"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -20,10 +20,6 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
-                    <rect key="frame" x="0.0" y="0.0" width="360" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qta-1E-It5">
                     <rect key="frame" x="360" y="0.0" width="240" height="64"/>
                     <subviews>
@@ -46,14 +42,16 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="t5G-8l-hVk" firstAttribute="leading" secondItem="qta-1E-It5" secondAttribute="leading" constant="8" id="doR-MA-N8E"/>
+                        <constraint firstAttribute="width" constant="240" id="jOi-51-ssV"/>
                         <constraint firstAttribute="bottom" secondItem="t5G-8l-hVk" secondAttribute="bottom" constant="8" id="sSD-98-bhA"/>
                         <constraint firstItem="t5G-8l-hVk" firstAttribute="top" secondItem="qta-1E-It5" secondAttribute="top" constant="8" id="teW-6R-CxT"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="jOi-51-ssV"/>
+                        </mask>
+                    </variation>
                 </view>
-                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPx-0O-xkT">
-                    <rect key="frame" x="360" y="64" width="240" height="268"/>
-                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                </webView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybU-Pj-zgv">
                     <rect key="frame" x="360" y="332" width="240" height="268"/>
                     <subviews>
@@ -73,26 +71,40 @@
                         <constraint firstAttribute="bottom" secondItem="dy5-Ed-Mca" secondAttribute="bottom" constant="8" id="wsJ-YO-RuG"/>
                     </constraints>
                 </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yB9-Zi-GcW" userLabel="Web View Container">
+                    <rect key="frame" x="360" y="64" width="240" height="268"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
+                    <rect key="frame" x="0.0" y="0.0" width="360" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="qta-1E-It5" firstAttribute="top" secondItem="F31-zb-6fR" secondAttribute="top" id="1PX-6c-lBR"/>
                 <constraint firstAttribute="bottom" secondItem="ybU-Pj-zgv" secondAttribute="bottom" id="4eF-da-151"/>
+                <constraint firstItem="yB9-Zi-GcW" firstAttribute="leading" secondItem="hlr-l4-ZK6" secondAttribute="trailing" id="4td-EL-jjj"/>
                 <constraint firstAttribute="trailing" secondItem="ybU-Pj-zgv" secondAttribute="trailing" id="61B-dA-UGA"/>
+                <constraint firstItem="yB9-Zi-GcW" firstAttribute="top" secondItem="qta-1E-It5" secondAttribute="bottom" id="9nA-37-Hqb"/>
                 <constraint firstAttribute="trailing" secondItem="qta-1E-It5" secondAttribute="trailing" id="Bt8-1B-Elk"/>
-                <constraint firstItem="ybU-Pj-zgv" firstAttribute="height" secondItem="aPx-0O-xkT" secondAttribute="height" id="DUC-yk-tMG"/>
-                <constraint firstItem="aPx-0O-xkT" firstAttribute="width" secondItem="F31-zb-6fR" secondAttribute="width" multiplier="0.4" id="Fmm-5U-af2"/>
-                <constraint firstItem="qta-1E-It5" firstAttribute="width" secondItem="aPx-0O-xkT" secondAttribute="width" id="H09-Lw-1Au"/>
-                <constraint firstItem="aPx-0O-xkT" firstAttribute="top" secondItem="qta-1E-It5" secondAttribute="bottom" id="VZp-VQ-hGB"/>
+                <constraint firstItem="ybU-Pj-zgv" firstAttribute="width" secondItem="qta-1E-It5" secondAttribute="width" id="QVB-IW-Elv"/>
+                <constraint firstItem="ybU-Pj-zgv" firstAttribute="width" secondItem="yB9-Zi-GcW" secondAttribute="width" id="VdP-V8-PFH"/>
+                <constraint firstItem="ybU-Pj-zgv" firstAttribute="top" secondItem="yB9-Zi-GcW" secondAttribute="bottom" id="Xfq-q6-FUZ"/>
                 <constraint firstItem="hlr-l4-ZK6" firstAttribute="leading" secondItem="F31-zb-6fR" secondAttribute="leading" id="bnh-3v-jpz"/>
                 <constraint firstAttribute="bottom" secondItem="hlr-l4-ZK6" secondAttribute="bottom" id="bqw-Eg-Gyl"/>
-                <constraint firstItem="ybU-Pj-zgv" firstAttribute="top" secondItem="aPx-0O-xkT" secondAttribute="bottom" id="gMN-wy-5Wp"/>
-                <constraint firstAttribute="trailing" secondItem="aPx-0O-xkT" secondAttribute="trailing" id="ijb-DS-eqq"/>
-                <constraint firstItem="hlr-l4-ZK6" firstAttribute="trailing" secondItem="aPx-0O-xkT" secondAttribute="leading" id="kuj-tg-6Qs"/>
-                <constraint firstItem="ybU-Pj-zgv" firstAttribute="width" secondItem="aPx-0O-xkT" secondAttribute="width" id="olT-aV-3TM"/>
+                <constraint firstAttribute="trailing" secondItem="yB9-Zi-GcW" secondAttribute="trailing" id="oIL-RD-gwN"/>
                 <constraint firstItem="hlr-l4-ZK6" firstAttribute="top" secondItem="F31-zb-6fR" secondAttribute="top" id="osE-8J-6FD"/>
+                <constraint firstItem="qta-1E-It5" firstAttribute="width" secondItem="F31-zb-6fR" secondAttribute="width" multiplier="0.4" id="tCP-Hr-BGY"/>
+                <constraint firstItem="yB9-Zi-GcW" firstAttribute="width" secondItem="qta-1E-It5" secondAttribute="width" id="xBq-8W-LQH"/>
+                <constraint firstItem="ybU-Pj-zgv" firstAttribute="height" secondItem="yB9-Zi-GcW" secondAttribute="height" id="zMa-lA-TUQ"/>
             </constraints>
-            <point key="canvasLocation" x="750" y="553"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="VdP-V8-PFH"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="777" y="536"/>
         </view>
     </objects>
     <resources>

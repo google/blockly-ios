@@ -19,18 +19,26 @@ CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
 }
 
 CodeGeneratorBridge.generateCodeForWorkspace = function(workspaceXML, generator) {
-  // Parse the XML into a tree.
-  var dom = Blockly.Xml.textToDom(workspaceXML);
+  try {
+    // Parse the XML into a tree.
+    var dom = Blockly.Xml.textToDom(workspaceXML);
 
-  // Create a headless workspace.
-  var workspace = new Blockly.Workspace();
-  Blockly.Xml.domToWorkspace(workspace, dom);
+    // Create a headless workspace.
+    var workspace = new Blockly.Workspace();
+    Blockly.Xml.domToWorkspace(workspace, dom);
 
-  // Generate the code
-  var code = generator.workspaceToCode(workspace);
+    // Generate the code
+    var code = generator.workspaceToCode(workspace);
 
-  // Clear workspace (this will clear any global state that was set)
-  workspace.clear();
+    // Clear workspace (this will clear any global state that was set)
+    workspace.clear();
 
-  return code;
+    // Send success message to iOS
+    window.webkit.messageHandlers.CodeGenerator.postMessage(
+      {method: "generateCodeForWorkspace", code: code});
+  } catch (error) {
+    // Send failure message to iOS
+    window.webkit.messageHandlers.CodeGenerator.postMessage(
+      {method: "generateCodeForWorkspace", error: error});
+  }
 }

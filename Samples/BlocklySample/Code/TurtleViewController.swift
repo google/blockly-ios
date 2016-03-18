@@ -14,8 +14,8 @@
 */
 
 import UIKit
-import JavaScriptCore
 import Blockly
+import WebKit
 
 /**
  Demo app for using blocks to move a cute little turtle.
@@ -23,9 +23,8 @@ import Blockly
 class TurtleViewController: UIViewController {
   // MARK: - Properties
 
-  // TODO:(#15) Replace UIWebView with WKWebView
-  /// The web view that runs the turtle code
-  @IBOutlet private var webView: UIWebView!
+  /// The view for holding `self.webView`
+  @IBOutlet private var webViewContainer: UIView!
   /// The button for executing the block code
   @IBOutlet private var playButton: UIButton!
   /// Text to show generated code
@@ -33,16 +32,19 @@ class TurtleViewController: UIViewController {
   /// The view for holding `self.workbenchViewController.view`
   @IBOutlet private var editorView: UIView!
 
-  /// JS Context of the web view
-  private var _jsContext: JSContext!
-
+  /// The web view that runs the turtle code (this is not an outlet because WKWebView isn't
+  /// supported by Interface Builder)
+  private var _webView: WKWebView!
   /// The block editor
-  private var workbenchViewController: WorkbenchViewController!
+  private var _workbenchViewController: WorkbenchViewController!
   /// Code generator service
   private var _codeGeneratorService: CodeGeneratorService!
 
   /// Factory that produces block instances from a parsed json file
   private var _blockFactory: BlockFactory!
+
+  /// Date formatter for timestamping events
+  private var _dateFormatter = NSDateFormatter()
 
   // MARK: - Initializers
 
@@ -85,10 +87,8 @@ class TurtleViewController: UIViewController {
   deinit {
     // If the Turtle code is currently executing, we need to reset it before deallocating this
     // instance.
-    if let webView = self.webView {
-      webView.stopLoading()
-      webView.stringByEvaluatingJavaScriptFromString("Turtle.reset();")
-    }
+    _webView?.stopLoading()
+    resetTurtleCode()
     _codeGeneratorService.cancelAllRequests()
   }
 
@@ -102,15 +102,15 @@ class TurtleViewController: UIViewController {
     self.navigationItem.title = "Turtle Demo"
 
     // Load the block editor
-    self.workbenchViewController = WorkbenchViewController()
-    workbenchViewController.enableTrashCan = true
+    self._workbenchViewController = WorkbenchViewController()
+    _workbenchViewController.enableTrashCan = true
 
     // Create a workspace
     do {
       let workspace = Workspace()
 
       // Create a layout for the workspace, which is required for viewing the workspace
-      workbenchViewController.workspaceLayout =
+      _workbenchViewController.workspaceLayout =
         try WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
     } catch let error as NSError {
       print("Couldn't build layout tree for workspace: \(error)")
@@ -147,39 +147,46 @@ class TurtleViewController: UIViewController {
       let math = toolbox.addCategory("Math", colour: UIColor.blueColor())
       try addBlock("math_number", toCategory: math)
 
-      workbenchViewController.toolbox = toolbox
+      _workbenchViewController.toolbox = toolbox
     } catch let error as NSError {
       print("An error occurred loading the toolbox: \(error)")
     }
 
     self.editorView.autoresizesSubviews = true
-    workbenchViewController.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-    workbenchViewController.view.frame = self.editorView.bounds
-    self.editorView.addSubview(workbenchViewController.view)
-    self.addChildViewController(workbenchViewController)
+    _workbenchViewController.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    _workbenchViewController.view.frame = self.editorView.bounds
+    self.editorView.addSubview(_workbenchViewController.view)
+    self.addChildViewController(_workbenchViewController)
+
+    // Programmatically create WKWebView
+    _webView = WKWebView(frame: webViewContainer.bounds)
+    _webView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    _webView.translatesAutoresizingMaskIntoConstraints = true
+    webViewContainer.autoresizesSubviews = true
+    webViewContainer.addSubview(_webView)
 
     // Load the turtle executable code
     if let url = NSBundle.mainBundle().URLForResource("Turtle/turtle", withExtension: "html") {
-      webView.loadRequest(NSURLRequest(URL: url))
+      _webView.loadRequest(NSURLRequest(URL: url))
     } else {
       print("Couldn't load Turtle/turtle.html")
     }
 
     // Make things a bit prettier
-    webView.layer.borderColor = UIColor.lightGrayColor().CGColor
-    webView.layer.borderWidth = 1
+    _webView.layer.borderColor = UIColor.lightGrayColor().CGColor
+    _webView.layer.borderWidth = 1
     codeText.superview?.layer.borderColor = UIColor.lightGrayColor().CGColor
     codeText.superview?.layer.borderWidth = 1
-
-    // Set the jsContext from the webview
-    _jsContext = self.webView
-      .valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as! JSContext
-    _jsContext.exceptionHandler = { context, exception in
-      print("JS Exception: \(exception)")
-    }
+    _dateFormatter.dateFormat = "HH:mm:ss.SSS"
 
     // Refresh the view
-    workbenchViewController.refreshView()
+    _workbenchViewController.refreshView()
+  }
+
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    _codeGeneratorService.cancelAllRequests()
   }
 
   override func prefersStatusBarHidden() -> Bool {
@@ -190,9 +197,15 @@ class TurtleViewController: UIViewController {
 
   @IBAction private dynamic func didPressPlayButton(button: UIButton) {
     do {
-      if let workspace = workbenchViewController.workspaceLayout?.workspace {
+      if let workspace = _workbenchViewController.workspaceLayout?.workspace {
         // Cancel pending requests
         _codeGeneratorService.cancelAllRequests()
+
+        // Reset the turtle
+        resetTurtleCode()
+
+        self.codeText.text = ""
+        addTimestampedText("Generating code...")
 
         // Request code generation.
         let request = try CodeGeneratorService.Request(workspace: workspace,
@@ -216,17 +229,29 @@ class TurtleViewController: UIViewController {
   }
 
   private func codeGenerationCompletedWithCode(code: String) {
-    self.codeText.text = "GENERATED CODE:\n\n\(code)"
+    self.addTimestampedText("Generated code:\n\n====CODE====\n\n\(code)")
 
-    dispatch_async(dispatch_get_main_queue()) {
-      // Run the generated code in the web view by calling `Turtle.execute(<code>)`
-      let method = self._jsContext.evaluateScript("Turtle.execute")
-      method.callWithArguments([code])
-    }
+    // Run the generated code in the web view by calling `Turtle.execute(<code>)`
+    let codeParam = code.bky_escapedJavaScriptParameter()
+    self._webView.evaluateJavaScript("Turtle.execute(\"\(codeParam)\")",
+      completionHandler: { _, error -> Void in
+        if error != nil {
+          self.codeGenerationFailedWithError("\(error)")
+        }
+      })
   }
 
   private func codeGenerationFailedWithError(error: String) {
-    self.codeText.text = "An error occurred generating the code:\n\n\(error)"
+    self.addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
+  }
+
+  private func resetTurtleCode() {
+    _webView?.evaluateJavaScript("Turtle.reset();", completionHandler: nil)
+  }
+
+  private func addTimestampedText(text: String) {
+    self.codeText.text = (self.codeText.text ?? "") +
+      "[\(_dateFormatter.stringFromDate(NSDate()))] \(text)\n"
   }
 
   /**
