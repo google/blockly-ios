@@ -100,19 +100,19 @@ public class CodeGeneratorService: NSObject {
     } else {
       // Use a new code generator (`CodeGenerator` must be instantiated on the main thread)
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        do {
-          self.codeGenerator = try CodeGenerator(
-            jsCoreDependencies: self.jsCoreDependencies,
-            jsGeneratorObject: request.jsGeneratorObject,
-            jsBlockGenerators: request.jsBlockGenerators,
-            jsonBlockDefinitions: request.jsonBlockDefinitions)
-
-          self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
-            completion: request.completeRequestWithCode,
-            error: request.completeRequestWithError)
-        } catch let error as NSError {
-          request.completeRequestWithError("Could not create CodeGenerator instance:\n\(error)")
-        }
+        self.codeGenerator = CodeGenerator(
+          jsCoreDependencies: self.jsCoreDependencies,
+          jsGeneratorObject: request.jsGeneratorObject,
+          jsBlockGenerators: request.jsBlockGenerators,
+          jsonBlockDefinitions: request.jsonBlockDefinitions,
+          onLoadCompletion: {
+            self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
+              completion: request.completeRequestWithCode,
+              error: request.completeRequestWithError)
+          }, onLoadFailure: { error in
+            self.codeGenerator = nil // Nil out this self.codeGenerator so we don't use it again
+            request.completeRequestWithError(error)
+          })
       })
     }
   }
@@ -155,9 +155,11 @@ extension CodeGeneratorService {
     public let jsBlockGenerators: [CodeGenerator.BundledFile]
     /// List of JSON files containing block definitions
     public let jsonBlockDefinitions: [CodeGenerator.BundledFile]
-    /// Callback that is executed when code generation completes successfully
+    /// Callback that is executed when code generation completes successfully. This is always
+    /// executed off the main thread.
     public var onCompletion: CompletionClosure?
-    /// Callback that is executed when code generation fails
+    /// Callback that is executed when code generation fails. This is always executed off the main
+    /// thread.
     public var onError: ErrorClosure?
     /// The code generator service used for executing this request.
     private weak var codeGeneratorService: CodeGeneratorService?
@@ -239,20 +241,26 @@ extension CodeGeneratorService {
     // MARK: - Private
 
     private func completeRequestWithCode(code: String) {
-      if !self.cancelled {
-        self.onCompletion?(code: code)
+      dispatch_async(dispatch_get_main_queue()) {
+        if !self.cancelled {
+          self.onCompletion?(code: code)
+        }
+        self.finishOperation()
       }
-      finishOperation()
     }
 
     private func completeRequestWithError(error: String) {
-      if !self.cancelled {
-        self.onError?(error: error)
+      dispatch_async(dispatch_get_main_queue()) {
+        if !self.cancelled {
+          self.onError?(error: error)
+        }
+        self.finishOperation()
       }
-      finishOperation()
     }
 
     private func finishOperation() {
+      self.onCompletion = nil
+      self.onError = nil
       self.executing = false
       self.finished = true
     }

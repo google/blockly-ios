@@ -85,7 +85,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     })
   }
 
-  func testCodeGenerationConcurrency() {
+  func testCodeGenerationWithManyRequests() {
     // Build workspace with simple repeat loop
     let workspace = Workspace()
 
