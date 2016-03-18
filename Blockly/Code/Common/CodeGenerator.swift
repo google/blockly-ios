@@ -15,7 +15,7 @@
 
 import Foundation
 import AEXML
-import JavaScriptCore
+import WebKit
 
 // MARK: - CodeGenerator Class
 
@@ -26,15 +26,19 @@ import JavaScriptCore
  code via JavaScript. For more information on how this works, see:
  https://developers.google.com/blockly/installation/code-generators
 
- Users should not use this class directly and instead should use `CodeGeneratorService`.
-
- - Note: This object must be instantiated on the main thread, as it internally instantiates a
-`UIWebView` object (which has to be done on the main thread).
+ - Note:
+ - This object must be instantiated on the main thread, as it internally instantiates a
+ `WKWebView` object (which has to be done on the main thread).
+ - This object is not thread-safe.
+ - Users should not use this class directly and instead should use `CodeGeneratorService`, which
+ handles these problems.
  */
 @objc(BKYCodeGenerator)
 public class CodeGenerator: NSObject {
 
   // MARK: - Typealiases
+  public typealias LoadCompletionClosure = (Void) -> Void
+  public typealias LoadFailureClosure = (error: String) -> Void
   public typealias CompletionClosure = (code: String) -> Void
   public typealias ErrorClosure = (error: String) -> Void
   /**
@@ -46,9 +50,17 @@ public class CodeGenerator: NSObject {
   */
   public typealias BundledFile = (file: String, bundle: NSBundle?)
 
+  // MARK: - Enum - State
+  public enum State {
+    case Initialized, Loading, ReadyForUse, Unusable, GeneratingCode
+  }
+
   // MARK: - Static Properties
   /// Internal JS file that is used to communicate between the iOS code and JS code
   private static let CODE_GENERATOR_BRIDGE_JS = "code_generator/code_generator_bridge.js"
+  /// The name used to reference this iOS object when executing callbacks from the JS code.
+  /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
+  private static let JS_CALLBACK_NAME = "CodeGenerator"
 
   // MARK: - Properties
 
@@ -60,15 +72,21 @@ public class CodeGenerator: NSObject {
   public let jsBlockGenerators: [BundledFile]
   /// List of JSON files containing block definitions
   public let jsonBlockDefinitions: [BundledFile]
+  /// The current state of the code generator
+  public private(set) var state: State = .Initialized
 
-  // TODO:(#15) Replace UIWebView with WKWebView
   /// The webview used for generating code
-  private var webView: UIWebView!
-  /// The underlying JSContext of `self.webView`
-  private var jsContext: JSContext!
+  private var webView: WKWebView!
+  /// Handler responsible for interpreting messages from the JS code
+  private var scriptMessageHandler: ScriptMessageHandler!
+  /// Object for tracking the webview's initial load event
+  private weak var loadingNavigation: WKNavigation?
 
-  /// Current workspaceXML being processed
-  private var currentWorkspaceXML: String?
+  /// Callback that is executed when the web view has finished loading all necessary resources and
+  /// the code generator is ready for use
+  private var onLoadCompletion: LoadCompletionClosure?
+  /// Callback that is executed when the web view has failed to load all necessary resources
+  private var onLoadFailure: LoadFailureClosure?
   /// Callback that is executed when code generation completes successfully
   private var onCompletion: CompletionClosure?
   /// Callback that is executed when code generation fails
@@ -77,7 +95,7 @@ public class CodeGenerator: NSObject {
   // MARK: - Initializers
 
   /**
-   Initializer for a code generator.
+   Creates a code generator, loading all specified JavaScript and JSON resources asynchronously.
 
    - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies. This
    list must contain the following files:
@@ -89,55 +107,49 @@ public class CodeGenerator: NSObject {
    - Parameter jsBlockGenerators: Paths to JS generator files (e.g. 'python_compressed.js' for
    generating Python code)
    - Parameter jsonBlockDefinitions: Paths to JSON files containing block definitions
-   - Throws:
-   `BlocklyError`: Thrown if any JS/JSON resource could not be loaded.
+   - Parameter onLoadCompletion: Callback that is executed when all JavaScript and JSON resources
+   have been successfully loaded (which indicates that this code generator is ready for use).
+   - Parameter onLoadFailure: Callback that is executed when there was a failure loading all
+   JavaScript and JSON resources. If this callback is executed, this code generator's state is set
+   to `.Unusable` and it should be discarded.
    */
-  public init(jsCoreDependencies: [BundledFile], jsGeneratorObject: String,
-    jsBlockGenerators: [BundledFile], jsonBlockDefinitions: [BundledFile]) throws
+  internal init(jsCoreDependencies: [BundledFile], jsGeneratorObject: String,
+    jsBlockGenerators: [BundledFile], jsonBlockDefinitions: [BundledFile],
+    onLoadCompletion: LoadCompletionClosure?, onLoadFailure: LoadFailureClosure?)
   {
-    self.webView = UIWebView()
-    self.webView.loadHTMLString("", baseURL: NSURL(string: "about:blank")!)
-    self.jsContext =
-      webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as! JSContext
     self.jsCoreDependencies = jsCoreDependencies
     self.jsGeneratorObject = jsGeneratorObject
     self.jsBlockGenerators = jsBlockGenerators
     self.jsonBlockDefinitions = jsonBlockDefinitions
+    self.onLoadCompletion = onLoadCompletion
+    self.onLoadFailure = onLoadFailure
 
     super.init()
 
-    // Register a handler if an exception is thrown in the JS code
-    jsContext.exceptionHandler = { context, exception in
-      let onError = self.onError
-      self.reset()
-      onError?(error: "JS Exception occurred: \(exception)")
-    }
+    // Create the handler for interpreting messages from the JS code
+    let userContentController = WKUserContentController()
+    self.scriptMessageHandler = ScriptMessageHandler(codeGenerator: self,
+      userContentController: userContentController)
 
-    // Load our special bridge file
-    try loadJSFile((file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
-      bundle: NSBundle(forClass: CodeGenerator.self)))
+    let configuration = WKWebViewConfiguration()
+    configuration.userContentController = userContentController
 
-    // Load JS dependencies
-    for bundledFile in jsCoreDependencies {
-      try loadJSFile(bundledFile)
-    }
+    // Create the web view
+    self.webView = WKWebView(frame: CGRectZero, configuration: configuration)
+    self.webView.navigationDelegate = self
 
-    // Load block generators
-    for bundledFile in jsBlockGenerators {
-      try loadJSFile(bundledFile)
-    }
-
-    // Load block definitions
-    for bundledFile in jsonBlockDefinitions {
-      try importBlockDefinitionsFromFile(bundledFile)
-    }
+    // Set the initial state and load a blank page
+    self.state = .Loading
+    self.loadingNavigation = self.webView.loadHTMLString("", baseURL: NSURL(string: "about:blank")!)
   }
 
   deinit {
+    self.webView.navigationDelegate = nil
     self.webView.stopLoading()
+    self.scriptMessageHandler.cleanUp()
   }
 
-  // MARK: - Public
+  // MARK: - Internal
 
   /**
    Generates code for workspace XML.
@@ -147,95 +159,224 @@ public class CodeGenerator: NSObject {
 
    - Parameter workspaceXML: The workspace XML
    */
-  public func generateCodeForWorkspaceXML(
+  internal func generateCodeForWorkspaceXML(
     workspaceXML: String, completion: CompletionClosure, error: ErrorClosure)
   {
-    // Generate the code.
-    // Note: If this request is called on a background thread, it can sometimes cause an
-    // EXC_BAD_ACCESS to be thrown on a WebCore thread. Therefore, we have chosen to execute this
-    // on the main thread as it doesn't seem to crash out. Luckily, generating code for a workspace
-    // is a fast operation, so this *shouldn't* be a big performance hit.
-    // TODO:(#14) Investigate the performance of this on a large workspace and look into using
-    // Web Workers in the JS code instead.
-    dispatch_async(dispatch_get_main_queue()) {
-      if self.currentWorkspaceXML != nil {
-        error(error: "Another code generation request is still being processed. " +
-          "Maybe you should try using `CodeGeneratorService` instead.")
-        return
-      }
-
-      self.currentWorkspaceXML = workspaceXML
-      self.onCompletion = completion
-      self.onError = error
-
-      let generator = self.jsContext.evaluateScript(self.jsGeneratorObject)
-      let method = self.jsContext.evaluateScript("CodeGeneratorBridge.generateCodeForWorkspace")
-      let returnValue = method.callWithArguments([workspaceXML, generator])
-
-      if let code = returnValue.toString() {
-        // Success!
-        let onCompletion = self.onCompletion
-        self.reset()
-        onCompletion?(code: code)
-      } else {
-        // Fail :(
-        let onError = self.onError
-        self.reset()
-        onError?(error: "Could not convert return value into a String.")
-      }
+    var errorMessage: String?
+    switch (self.state) {
+    case .GeneratingCode:
+      errorMessage = "Another code generation request is still being processed. " +
+        "Please wait until `self.state == .ReadyForUse`."
+    case .Initialized, .Loading:
+      errorMessage = "The code generator is not ready for use yet. " +
+        "Please wait until `self.state == .ReadyForUse`."
+    case .Unusable:
+      errorMessage = "This code generator is unusable. " +
+        "Please check the JS/JSON dependencies used to create this `CodeGenerator`."
+    case .ReadyForUse:
+      break
     }
+
+    if  errorMessage != nil {
+      error(error: errorMessage!)
+      return
+    }
+
+    self.state = .GeneratingCode
+    self.onCompletion = completion
+    self.onError = error
+
+    // Remove unnecessary whitespace from the XML
+    let trimmedXML = workspaceXML
+      .stringByReplacingOccurrencesOfString("\r", withString: "")
+      .stringByReplacingOccurrencesOfString("\n", withString: "")
+      .stringByReplacingOccurrencesOfString("\t", withString: "")
+
+    let js =
+      "CodeGeneratorBridge.generateCodeForWorkspace(" +
+        "\"\(trimmedXML.bky_escapedJavaScriptParameter())\", \(self.jsGeneratorObject))"
+
+    self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
+      if error != nil {
+        self.codeGenerationFailed("An error occurred generating code: \(error)")
+      }
+    })
   }
 
   // MARK: - Private
 
-  private func reset() {
-    self.currentWorkspaceXML = nil
-    self.onCompletion = nil
-    self.onError = nil
-  }
-
   /**
-   Imports block definitions from a given JSON file.
+  Returns the `String` contents from a given file.
 
-   - Parameter bundledFile: The path to the JSON file.
-   - Throws:
-   `BlocklyError`: Thrown if there was an error loading the JSON file.
-   */
-  private func importBlockDefinitionsFromFile(bundledFile: BundledFile) throws {
-    let fromBundle = bundledFile.bundle ?? NSBundle.mainBundle()
-    let file = bundledFile.file
-    guard let path = fromBundle.pathForResource(file, ofType: nil) else {
-      throw BlocklyError(.FileNotFound, "JSON file could not be found ('\(file)').")
-    }
-
-    do {
-      let string = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-      let method = jsContext.evaluateScript("CodeGeneratorBridge.importBlockDefinitions")
-      method.callWithArguments([string])
-    } catch let error as NSError {
-      throw BlocklyError(.FileNotReadable, "JSON file could not be read ('\(file)'):\n\(error)")
-    }
-  }
-
-  /**
-   Loads a JS file into `self.webView`.
-
-   - Parameter bundledFile: The path to the JS file.
-   - Throws:
-   `BlocklyError`: Thrown if there was an error loading the JS file.
-   */
-  private func loadJSFile(bundledFile: BundledFile) throws {
+  - Parameter bundledFile: The path to the file.
+  - Returns: The contents of the file.
+  - Throws:
+  `BlocklyError`: Thrown if there was an error loading the file.
+  */
+  private func contentsOfFile(bundledFile: BundledFile) throws -> String {
     let fromBundle = bundledFile.bundle ?? NSBundle.mainBundle()
     let file = bundledFile.file
     if let path = fromBundle.pathForResource(file, ofType: nil) {
       do {
         let string = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-        jsContext.evaluateScript(string)
+        return string
       } catch let error as NSError {
-        throw BlocklyError(.FileNotReadable, "JS file could not be read ('\(file)'):\n\(error)")
+        throw BlocklyError(.FileNotReadable, "File could not be read ('\(file)'):\n\(error)")
       }
     } else {
-      throw BlocklyError(.FileNotFound, "JS file could not be found ('\(file)').")
+      throw BlocklyError(.FileNotFound, "File could not be found ('\(file)').")
+    }
+  }
+
+  private func loadCompleted() {
+    let onLoadCompletion = self.onLoadCompletion
+    self.state = .ReadyForUse
+    self.onLoadCompletion = nil
+    self.onLoadFailure = nil
+    onLoadCompletion?()
+  }
+
+  private func loadFailed(error: String) {
+    let onLoadFailure = self.onLoadFailure
+    self.state = .Unusable
+    self.onLoadCompletion = nil
+    self.onLoadFailure = nil
+    onLoadFailure?(error: error)
+  }
+
+  private func codeGenerationCompleted(code: String) {
+    let onCompletion = self.onCompletion
+    self.state = .ReadyForUse
+    self.onCompletion = nil
+    self.onError = nil
+    onCompletion?(code: code)
+  }
+
+  private func codeGenerationFailed(error: String) {
+    let onError = self.onError
+    self.state = .ReadyForUse
+    self.onCompletion = nil
+    self.onError = nil
+    onError?(error: error)
+  }
+}
+
+// MARK: - WKNavigationDelegate implementation
+
+/**
+ Methods that are executed when `self.webView` has finished loading.
+ */
+extension CodeGenerator: WKNavigationDelegate {
+  public func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    if self.loadingNavigation != navigation {
+      return
+    }
+
+    self.loadingNavigation = nil
+
+    do {
+      // Load the JS/JSON dependencies into the web view.
+      // NOTE: These resources aren't loaded using `WKUserScript`s as they don't seem to
+      // consistently work (i.e. they don't always run after the web view has finished loading).
+      // So instead, we just load all the resources through `webView.evaluateJavaScript(...)`.
+
+      var jsScripts = [String]()
+
+      // Load our special bridge file
+      jsScripts.append(try contentsOfFile((file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
+        bundle: NSBundle(forClass: CodeGenerator.self))))
+
+      // Load JS dependencies
+      for bundledFile in jsCoreDependencies {
+        jsScripts.append(try contentsOfFile(bundledFile))
+      }
+
+      // Load block generators
+      for bundledFile in jsBlockGenerators {
+        jsScripts.append(try contentsOfFile(bundledFile))
+      }
+
+      // Finally, import all the block definitions
+      for bundledFile in jsonBlockDefinitions {
+        let fileContents = try contentsOfFile(bundledFile)
+        let fileContentsParameter = fileContents.bky_escapedJavaScriptParameter()
+        let js = "CodeGeneratorBridge.importBlockDefinitions(\"\(fileContentsParameter)\")"
+        jsScripts.append(js)
+      }
+
+      // The JS passed into webView.evaluateJavaScript(...) needs to return something that is
+      // recognized, or else it will error out (WKErrorDomain = 5). Therefore, we add "0;" to
+      // the very end of the scripts, which is what will be returned on completion.
+      jsScripts.append("0;")
+
+      let js = jsScripts.joinWithSeparator("\n")
+
+      self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
+        if error != nil {
+          self.loadFailed("Could not evaluate JavaScript resource files: \(error)")
+        } else {
+          self.loadCompleted()
+        }
+      })
+    } catch let error as NSError {
+      self.loadFailed("Could not load resource files: \(error)")
+    }
+  }
+
+  public func webView(
+    webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError)
+  {
+    loadFailed("Could not load WKWebView: \(error)")
+  }
+}
+
+// MARK: - CodeGenerator.ScriptMessageHandler class
+
+extension CodeGenerator {
+  /**
+   Class for handling messages between the CodeGenerator's `webView` and iOS.
+
+   - Note: Because `WKUserContentController` keeps a strong reference to its message handlers, it is
+   easier to separate message handling out of `CodeGenerator` and into its own class. This way,
+   `CodeGenerator` can handle the task of breaking the strong reference cycle between
+   `WKUserContentController` and `ScriptMessageHandler`, instead of relying on users of
+   `CodeGenerator` to do this.
+   */
+  @objc(BKYCodeGeneratorScriptMessageHandler)
+  private class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
+    /// The code generator that owns this message handler
+    private unowned let codeGenerator: CodeGenerator
+    /// The user content controller this message handler attaches itself to
+    private unowned let userContentController: WKUserContentController
+
+    private init(codeGenerator: CodeGenerator, userContentController: WKUserContentController) {
+      self.codeGenerator = codeGenerator
+      self.userContentController = userContentController
+      super.init()
+
+      // Register self to handle messages from the JS code
+      self.userContentController.addScriptMessageHandler(self, name: CodeGenerator.JS_CALLBACK_NAME)
+    }
+
+    private func cleanUp() {
+      // Unregister self from handling messages from the JS code
+      self.userContentController.removeScriptMessageHandlerForName(CodeGenerator.JS_CALLBACK_NAME)
+    }
+
+    @objc func userContentController(userContentController: WKUserContentController,
+      didReceiveScriptMessage message: WKScriptMessage)
+    {
+      if let dictionary = message.body as? [String: AnyObject]
+        where (dictionary["method"] as? String) == "generateCodeForWorkspace"
+      {
+        if let code = dictionary["code"] as? String {
+          codeGenerator.codeGenerationCompleted(code)
+        } else {
+          let error = (dictionary["error"] as? String) ?? ""
+          let message = "A JavaScript error occurred generating code for the workspace: \(error)"
+          codeGenerator.codeGenerationFailed(message)
+        }
+      }
     }
   }
 }
