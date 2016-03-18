@@ -121,7 +121,6 @@
 		FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */; };
 		FAE2A5EE1C741D2A0085D36B /* FieldXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */; };
 		FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6191C753F310085D36B /* CodeGenerator.swift */; };
-		FAE2A61C1C7550B60085D36B /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */; };
 		FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */; };
 		FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557731BE028640019D0D4 /* LayoutEventManager.swift */; };
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; };
@@ -129,6 +128,8 @@
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 		FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FAFD37211C8F5C5F00C77049 /* blockly_web */; };
 		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
+		FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37581C93C75A00C77049 /* WebKit.framework */; };
+		FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD377F1C9A55F800C77049 /* String+Encoding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -322,6 +323,8 @@
 		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
 		FAFD37211C8F5C5F00C77049 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
 		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
+		FAFD37581C93C75A00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		FAFD377F1C9A55F800C77049 /* String+Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,8 +332,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */,
 				FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */,
-				FAE2A61C1C7550B60085D36B /* JavaScriptCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,6 +650,7 @@
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
 				FAA86FFB1C64272C000C7C61 /* Logging.swift */,
 				FAA86FFC1C64272C000C7C61 /* ObjectPool.swift */,
+				FAFD377F1C9A55F800C77049 /* String+Encoding.swift */,
 				FAA86FFD1C64272C000C7C61 /* String+LayoutHelper.swift */,
 				FAA86FFE1C64272C000C7C61 /* UIColor+Helper.swift */,
 				FAA86FFF1C64272C000C7C61 /* UIView+AutoLayout.swift */,
@@ -669,6 +673,7 @@
 		FAE2A61D1C7551070085D36B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FAFD37581C93C75A00C77049 /* WebKit.framework */,
 				FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */,
 			);
 			name = Frameworks;
@@ -945,6 +950,7 @@
 				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
 				FAA870071C64272C000C7C61 /* ImageLoader.swift in Sources */,
+				FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */,
 				FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */,
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
 				FA41C4191C582A3800D46967 /* FieldDropdownLayout.swift in Sources */,

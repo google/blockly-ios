@@ -100,19 +100,19 @@ public class CodeGeneratorService: NSObject {
     } else {
       // Use a new code generator (`CodeGenerator` must be instantiated on the main thread)
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        do {
-          self.codeGenerator = try CodeGenerator(
-            jsCoreDependencies: self.jsCoreDependencies,
-            jsGeneratorObject: request.jsGeneratorObject,
-            jsBlockGenerators: request.jsBlockGenerators,
-            jsonBlockDefinitions: request.jsonBlockDefinitions)
-
-          self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
-            completion: request.completeRequestWithCode,
-            error: request.completeRequestWithError)
-        } catch let error as NSError {
-          request.completeRequestWithError("Could not create CodeGenerator instance:\n\(error)")
-        }
+        self.codeGenerator = CodeGenerator(
+          jsCoreDependencies: self.jsCoreDependencies,
+          jsGeneratorObject: request.jsGeneratorObject,
+          jsBlockGenerators: request.jsBlockGenerators,
+          jsonBlockDefinitions: request.jsonBlockDefinitions,
+          onLoadCompletion: {
+            self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
+              completion: request.completeRequestWithCode,
+              error: request.completeRequestWithError)
+          }, onLoadFailure: { error in
+            self.codeGenerator = nil // Nil out this self.codeGenerator so we don't use it again
+            request.completeRequestWithError(error)
+          })
       })
     }
   }
@@ -253,6 +253,8 @@ extension CodeGeneratorService {
     }
 
     private func finishOperation() {
+      self.onCompletion = nil
+      self.onError = nil
       self.executing = false
       self.finished = true
     }
