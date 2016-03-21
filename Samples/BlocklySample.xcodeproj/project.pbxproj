@@ -13,7 +13,6 @@
 		FA433FCA1C78162D0009FDC2 /* AEXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA433FBA1C78161B0009FDC2 /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
 		FA5F28B11C756B73008384BE /* TurtleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F28B01C756B73008384BE /* TurtleViewController.swift */; };
-		FA5F28B41C757826008384BE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5F28B31C757826008384BE /* JavaScriptCore.framework */; };
 		FA5F2BC41C7692D0008384BE /* DemoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */; };
 		FAA870261C642850000C7C61 /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA870231C642849000C7C61 /* Blockly.framework */; };
 		FAE2A63A1C756A750085D36B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE2A6301C756A750085D36B /* Images.xcassets */; };
@@ -21,6 +20,7 @@
 		FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6441C756AA20085D36B /* AppDelegate.swift */; };
 		FAE2A6491C756AA20085D36B /* SimpleWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */; };
 		FAFD372C1C8F747F00C77049 /* Blocks in Resources */ = {isa = PBXBuildFile; fileRef = FAFD372B1C8F747F00C77049 /* Blocks */; };
+		FAFD37631C93C76C00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37621C93C76C00C77049 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +142,7 @@
 		FAE2A6461C756AA20085D36B /* SampleObjCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleObjCObject.h; sourceTree = "<group>"; };
 		FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleWorkbenchViewController.swift; sourceTree = "<group>"; };
 		FAFD372B1C8F747F00C77049 /* Blocks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Blocks; sourceTree = "<group>"; };
+		FAFD37621C93C76C00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,7 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA5F28B41C757826008384BE /* JavaScriptCore.framework in Frameworks */,
+				FAFD37631C93C76C00C77049 /* WebKit.framework in Frameworks */,
 				FA433FC91C78162D0009FDC2 /* AEXML.framework in Frameworks */,
 				FAA870261C642850000C7C61 /* Blockly.framework in Frameworks */,
 			);
@@ -213,6 +214,7 @@
 		FA5F28B51C7578CF008384BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FAFD37621C93C76C00C77049 /* WebKit.framework */,
 				FA5F28B31C757826008384BE /* JavaScriptCore.framework */,
 			);
 			name = Frameworks;
