@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   # is why we include Blockly.xcassets through '.resources', instead of '.resource_bundles'.
   s.resources = ['Blockly/Resources/Blockly.xcassets', 'Blockly/Resources/code_generator']
 
-  s.framework        = 'JavascriptCore'
+  s.frameworks        = 'WebKit'
   s.ios.dependency 'AEXML', '~> 2.1'
 
   # Enable whole-module-optimization for all builds except for Debug builds
