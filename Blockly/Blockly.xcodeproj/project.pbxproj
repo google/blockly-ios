@@ -86,10 +86,9 @@
 		FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
 		FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4031C73DE1800FA5A02 /* Input+XML.swift */; };
-		FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxView.swift */; };
+		FA9D2FB91C11166000D0E528 /* ToolboxCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
 		FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */; };
-		FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */; };
 		FAA291771B9674330005F100 /* BlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA291761B9674330005F100 /* BlockView+Render.swift */; };
 		FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF31C64272C000C7C61 /* Array+Helper.swift */; };
 		FAA870021C64272C000C7C61 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF41C64272C000C7C61 /* Assertions.swift */; };
@@ -130,6 +129,8 @@
 		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
 		FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37581C93C75A00C77049 /* WebKit.framework */; };
 		FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD377F1C9A55F800C77049 /* String+Encoding.swift */; };
+		FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */; };
+		FAFD37AB1C9CEC6900C77049 /* TrashCanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -281,10 +282,9 @@
 		FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Helper.swift"; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
 		FA99C4031C73DE1800FA5A02 /* Input+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+XML.swift"; sourceTree = "<group>"; };
-		FA9D2FB81C11166000D0E528 /* ToolboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxView.swift; sourceTree = "<group>"; };
+		FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryView.swift; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
 		FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceFlowLayout.swift; sourceTree = "<group>"; };
-		FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryListView.swift; sourceTree = "<group>"; };
 		FAA291761B9674330005F100 /* BlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockView+Render.swift"; sourceTree = "<group>"; };
 		FAA86FF31C64272C000C7C61 /* Array+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
 		FAA86FF41C64272C000C7C61 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assertions.swift; sourceTree = "<group>"; };
@@ -325,6 +325,8 @@
 		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
 		FAFD37581C93C75A00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		FAFD377F1C9A55F800C77049 /* String+Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
+		FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryListViewController.swift; sourceTree = "<group>"; };
+		FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashCanButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -499,8 +501,8 @@
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
 				FAB31CE11C571F730071EBF8 /* FieldView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
-				FA9D2FC01C11270E00D0E528 /* ToolboxCategoryListView.swift */,
-				FA9D2FB81C11166000D0E528 /* ToolboxView.swift */,
+				FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */,
+				FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */,
 				FAE557751BE028840019D0D4 /* ViewManager.swift */,
 				FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */,
 			);
@@ -664,6 +666,7 @@
 			children = (
 				FAA870141C642805000C7C61 /* FieldColourPickerViewController.swift */,
 				FAA870151C642805000C7C61 /* FieldDropdownOptionsViewController.swift */,
+				FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */,
 				FAA870161C642805000C7C61 /* TrashCanViewController.swift */,
 				FAA870171C642805000C7C61 /* WorkbenchViewController.swift */,
 			);
@@ -900,6 +903,7 @@
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
+				FAFD37AB1C9CEC6900C77049 /* TrashCanButton.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
 				FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */,
@@ -911,7 +915,7 @@
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA42D7E11C5AD3C9000C8EB4 /* FieldColourView.swift in Sources */,
-				FA9D2FB91C11166000D0E528 /* ToolboxView.swift in Sources */,
+				FA9D2FB91C11166000D0E528 /* ToolboxCategoryView.swift in Sources */,
 				FAA8701A1C642805000C7C61 /* TrashCanViewController.swift in Sources */,
 				FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */,
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
@@ -945,7 +949,6 @@
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
-				FA9D2FC11C11270E00D0E528 /* ToolboxCategoryListView.swift in Sources */,
 				FA42D7DF1C5AD390000C8EB4 /* FieldColourLayout.swift in Sources */,
 				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
@@ -956,6 +959,7 @@
 				FA41C4191C582A3800D46967 /* FieldDropdownLayout.swift in Sources */,
 				FAA870021C64272C000C7C61 /* Assertions.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
+				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,
 				FAC590E51BA728D00079A6E3 /* BlockLayout+Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
