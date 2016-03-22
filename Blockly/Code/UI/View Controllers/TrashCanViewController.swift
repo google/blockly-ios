@@ -36,8 +36,8 @@ public class TrashCanViewController: UIViewController {
     return self.view as! WorkspaceView
   }
 
-  /// The constraint for resizing the width of `self.blockListView`
-  private var blockListViewWidthConstraint: NSLayoutConstraint!
+  /// The constraint for resizing the height of `self.workspaceView`
+  private var _workspaceViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - Initializers/Deinitializers
 
@@ -64,6 +64,10 @@ public class TrashCanViewController: UIViewController {
       workspaceView.addObserver(self,
         forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &kvoContextBounds)
 
+      _workspaceViewHeightConstraint = NSLayoutConstraint(item: workspaceView, attribute: .Height,
+          relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+      workspaceView.addConstraint(_workspaceViewHeightConstraint)
+
       self.view = workspaceView
 
       updateMaximumLineBlockSize()
@@ -85,6 +89,27 @@ public class TrashCanViewController: UIViewController {
     }
   }
 
+  public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
+    if self._workspaceViewHeightConstraint.constant == height {
+      return
+    }
+
+    // Force pending layout changes to complete
+    self.workspaceView.superview?.layoutIfNeeded()
+
+    // Update height constraint
+    self._workspaceViewHeightConstraint.constant = height
+    self.workspaceView.setNeedsUpdateConstraints()
+
+    if animated {
+      UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: {
+        self.workspaceView.superview?.layoutIfNeeded()
+      }, completion: nil)
+    } else {
+      self.workspaceView.superview?.layoutIfNeeded()
+    }
+  }
+
   // MARK: - Private
 
   private func updateMaximumLineBlockSize() {
@@ -93,6 +118,5 @@ public class TrashCanViewController: UIViewController {
       workspaceLayout.workspaceUnitFromViewUnit(workspaceView.bounds.size.width)
     workspaceLayout.updateLayoutDownTree()
     workspaceView.refreshView()
-    workspaceView.invalidateIntrinsicContentSize()
   }
 }

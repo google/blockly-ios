@@ -160,10 +160,6 @@ public class WorkspaceView: LayoutView {
     updateCanvasSizeFromLayout()
   }
 
-  public override func intrinsicContentSize() -> CGSize {
-    return workspaceLayout?.viewFrame.size ?? CGSizeZero
-  }
-
   // MARK: - Public
 
   // TODO:(vicng) Move this method out into a controller object.

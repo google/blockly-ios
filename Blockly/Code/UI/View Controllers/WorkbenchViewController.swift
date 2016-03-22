@@ -52,29 +52,33 @@ public class WorkbenchViewController: UIViewController {
     }
   }
 
+  // MARK: - Static Properties
+  /// The size of the touch area for dragging blocks into the trash
+  private static let TRASH_AREA_SIZE = CGSizeMake(125, 125)
+
   // MARK: - Properties
 
   /// The main workspace view
-  @IBOutlet public var workspaceView: WorkspaceView! {
+  public private(set) var workspaceView: WorkspaceView! {
     didSet {
       oldValue?.delegate = nil
       workspaceView?.delegate = self
     }
   }
 
-  // The toolbox view
-  @IBOutlet public var toolboxView: ToolboxView? {
+  // Button for viewing the trash can
+  public private(set) var trashCanButton: TrashCanButton?
+
+  // The toolbox category view
+  public private(set) var toolboxCategoryView: ToolboxCategoryView? {
     didSet {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
       // the workspace)
-      oldValue?.blockListView.delegate = nil
-      toolboxView?.blockListView.delegate = self
+      oldValue?.delegate = nil
+      toolboxCategoryView?.delegate = self
     }
   }
-
-  // Trash can view
-  @IBOutlet public var trashCanView: UIButton?
 
   /// The workspace layout
   public var workspaceLayout: WorkspaceLayout?
@@ -87,13 +91,15 @@ public class WorkbenchViewController: UIViewController {
 
       if !enableTrashCan {
         // Hide trash can folder
-        setTrashCanFolderVisible(false)
+        setTrashCanFolderVisible(false, animated: false)
       }
     }
   }
 
   /// Controls logic for dragging blocks around in the workspace
   private var _dragger = Dragger()
+  /// Controller for listing the toolbox categories
+  private var _toolboxCategoryListViewController = ToolboxCategoryListViewController()
   /// Controller for managing the trash can workspace
   private var _trashCanViewController = TrashCanViewController()
   /// Flag indicating if the `self._trashCanViewController` is being shown
@@ -135,49 +141,52 @@ public class WorkbenchViewController: UIViewController {
   public override func loadView() {
     super.loadView()
 
-    self.view.backgroundColor = UIColor.whiteColor()
+    self.view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     self.view.autoresizesSubviews = true
     self.view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
 
-    // Create views if ones weren't supplied by a xib file
-    let toolboxView = ToolboxView()
-    self.toolboxView = toolboxView
+    // Create toolbox views
+    let toolboxCategoryView = ToolboxCategoryView()
+    self.toolboxCategoryView = toolboxCategoryView
+    _toolboxCategoryListViewController.delegate = self
 
+    // Create main workspace view
     workspaceView = WorkspaceView()
     workspaceView.scrollView.panGestureRecognizer.addTarget(self, action: "didPanWorkspaceView:")
     let tapGesture = UITapGestureRecognizer(target: self, action: "didTapWorkspaceView:")
     workspaceView.scrollView.addGestureRecognizer(tapGesture)
-    workspaceView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
+    workspaceView.backgroundColor = UIColor.clearColor()
 
-    let trashCanView = UIButton(type: .Custom)
-    trashCanView.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
-    trashCanView.contentMode = .ScaleAspectFit
-    if let image =
-      ImageLoader.loadImage(named: "trash_can", forClass: WorkbenchViewController.self)
-    {
-      trashCanView.setImage(image, forState: .Normal)
-      trashCanView.sizeToFit()
-    }
-    self.trashCanView = trashCanView
+    // Create trash can button
+    let trashCanButton = TrashCanButton(imageNamed: "trash_can")
+    trashCanButton.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
+    self.trashCanButton = trashCanButton
+
+    // Set up trash can folder view
+    addChildViewController(_trashCanViewController)
 
     // Set up auto-layout constraints
-    let views = [
-      "toolboxView": toolboxView,
+    let views: [String: UIView] = [
+      "toolboxCategoriesListView": _toolboxCategoryListViewController.view,
+      "toolboxCategoryView": toolboxCategoryView,
       "workspaceView": workspaceView,
-      "trashCanView": trashCanView,
+      "trashCanButton": trashCanButton,
+      "trashCanFolderView": _trashCanViewController.workspaceView,
     ]
-    let metrics = ["toolboxWidth": ToolboxView.CategoryListViewWidth]
     let constraints = [
-      "H:|[toolboxView]",
-      "V:|[toolboxView]|",
-      "H:|-toolboxWidth-[workspaceView]|",
+      "H:|[toolboxCategoriesListView(35)]",
+      "V:|[toolboxCategoriesListView]|",
+      "H:[toolboxCategoriesListView][workspaceView]|",
       "V:|[workspaceView]|",
-      "H:[trashCanView(50)]-25-|",
-      "V:[trashCanView(50)]-25-|",
+      "H:[toolboxCategoriesListView][toolboxCategoryView]",
+      "V:|[toolboxCategoryView]|",
+      "H:[trashCanButton]-25-|",
+      "V:[trashCanButton]-25-|",
+      "H:[toolboxCategoriesListView]-[trashCanFolderView]-[trashCanButton]",
+      "V:[trashCanFolderView]|",
     ]
-
     self.view.bky_addSubviews(Array(views.values))
-    self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
+    self.view.bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
 
     self.view.sendSubviewToBack(workspaceView)
   }
@@ -192,28 +201,31 @@ public class WorkbenchViewController: UIViewController {
 
     // Hide/show trash can
     setTrashCanButtonVisible(self.enableTrashCan)
+    setTrashCanFolderVisible(false, animated: false)
   }
 
   // MARK: - Public
+
+  /**
+   Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
+   */
+  public func refreshView() {
+    workspaceView.layout = workspaceLayout
+    workspaceView.refreshView()
+
+    _toolboxCategoryListViewController.toolbox = toolbox
+    _toolboxCategoryListViewController.refreshView()
+
+    resetUIState()
+  }
+
+  // MARK: - Private
 
   private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
     resetUIState()
   }
 
   private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
-    resetUIState()
-  }
-
-  /**
-  Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
-  */
-  public func refreshView() {
-    workspaceView.layout = workspaceLayout
-    workspaceView.refreshView()
-
-    toolboxView?.toolbox = toolbox
-    toolboxView?.refreshView()
-
     resetUIState()
   }
 }
@@ -237,25 +249,22 @@ extension WorkbenchViewController {
     // When adding a new state, check for compatability with existing states.
 
     switch stateValue {
+    case .DraggingBlock:
+      // Dragging a block can only co-exist with highlighting the trash can
+      newState = _state.union(state).intersect([.DraggingBlock, .TrashCanHighlighted])
     case .TrashCanHighlighted:
       // This state can co-exist with anything, simply add it to the current state
       newState = _state.union(state)
     case .EditingTextField:
       // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
       // else
-      // TODO:(#9) Since .CategoryOpen has not been implemented yet, we've had to add code here to
-      // add the .CategoryOpen state (so that users can edit text for toolbox blocks).
-      // Once the toolbox is refactored and .CategoryOpen is implemented, remove this union to
-      // .CategoryOpen.
-      newState = _state.union(state).union(.CategoryOpen).intersect(
+      newState = _state.union(state).intersect(
         [.PresentingPopover, .EditingTextField, .CategoryOpen])
     case .PresentingPopover:
-      // TODO:(#9) We've temporarily allowed popovers to co-exist with any state, since
-      // .CategoryOpen has not been implemented yet. (so that users can edit blocks in the toolbox).
-      // Once the toolbox is refactored and .CategoryOpen is implemented, fix this logic so the
-      // .PresentingPopover state only can co-exist with .CategoryOpen.
-      newState = _state.union(state).union(UIState.CategoryOpen)
-    case .CategoryOpen, .TrashCanOpen, .DraggingBlock:
+      // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
+      // blocks from inside the toolbox). Disallow everything else.
+      newState = _state.union(state).intersect([.PresentingPopover, .CategoryOpen])
+    case .CategoryOpen, .TrashCanOpen:
       // Whenever these states are added, clear out all existing state.
       newState = UIState(value: stateValue)
     }
@@ -301,13 +310,14 @@ extension WorkbenchViewController {
 
     _state = state
 
-    setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen))
+    setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen), animated: animated)
 
-    setTrashCanButtonHighlight(state.intersectsWith(.TrashCanHighlighted))
+    trashCanButton?.setHighlighted(state.intersectsWith(.TrashCanHighlighted), animated: animated)
 
     if !state.intersectsWith(.CategoryOpen) {
       // Hide the toolbox category
-      toolboxView?.hideCategory(animated: animated)
+      toolboxCategoryView?.hideCategory(animated: animated)
+      _toolboxCategoryListViewController.selectedCategory = nil
     }
 
     if !state.intersectsWith(.EditingTextField) {
@@ -344,48 +354,35 @@ extension WorkbenchViewController {
   // MARK: - Private
 
   private func setTrashCanButtonVisible(visible: Bool) {
-    trashCanView?.hidden = !visible
+    trashCanButton?.hidden = !visible
   }
 
-  private func setTrashCanButtonHighlight(open: Bool) {
-    // For now, simply change the opacity of the trash can to indicate if it's open
-    trashCanView?.layer.opacity = open ? 0.7 : 1.0
-  }
-
-  private func setTrashCanFolderVisible(visible: Bool) {
-    if _trashCanVisible == visible && trashCanView != nil {
+  private func setTrashCanFolderVisible(visible: Bool, animated: Bool) {
+    if _trashCanVisible == visible && trashCanButton != nil {
       return
     }
 
     if visible {
-      addChildViewController(_trashCanViewController)
-
-      var views: [String: UIView] = [
-        "trashCanFolderView": _trashCanViewController.workspaceView,
-        "trashCanView": trashCanView!
-      ]
-      var constraints = [
-        "V:[trashCanFolderView(300)]|"
-      ]
-
-      if let toolboxView = self.toolboxView {
-        // Horizontally constrain the left edge to where the toolbox ends
-        views["toolboxView"] = toolboxView
-        constraints.append("H:[toolboxView]-[trashCanFolderView]-[trashCanView]")
-      } else {
-        // Horizontally constrain the left edge to its parent view
-        constraints.append("H:|-[trashCanFolderView]-[trashCanView]")
-      }
-
-      self.view.bky_addSubviews([_trashCanViewController.view])
-      self.view.bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
+      _trashCanViewController.setWorkspaceViewHeight(300, animated: animated)
       _trashCanVisible = true
     } else {
-      _trashCanViewController.view.removeConstraints(_trashCanViewController.view.constraints)
-      _trashCanViewController.view.removeFromSuperview()
-      _trashCanViewController.removeFromParentViewController()
+      _trashCanViewController.setWorkspaceViewHeight(0, animated: animated)
       _trashCanVisible = false
     }
+  }
+
+  private func isGestureTouchingTrashCan(gesture: UIGestureRecognizer) -> Bool {
+    if trashCanButton != nil && !trashCanButton!.hidden {
+      // Define the trash area as being the bottom-right (or bottom-left in RTL) of the workspace view
+      let trashAreaSize = WorkbenchViewController.TRASH_AREA_SIZE
+      let originX = UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft ?
+        0 : workspaceView.bounds.size.width - trashAreaSize.width
+      let originY = workspaceView.bounds.size.height - trashAreaSize.height
+      let trashArea = CGRectMake(originX, originY, trashAreaSize.width, trashAreaSize.height)
+      return CGRectContainsPoint(trashArea, gesture.locationInView(self.workspaceView))
+    }
+
+    return false
   }
 }
 
@@ -395,7 +392,7 @@ extension WorkbenchViewController: WorkspaceViewDelegate {
   public func workspaceView(workspaceView: WorkspaceView, didAddBlockView blockView: BlockView) {
     if workspaceView == self.workspaceView {
       addGestureTrackingForBlockView(blockView)
-    } else if workspaceView == toolboxView?.blockListView ||
+    } else if workspaceView == toolboxCategoryView ||
         workspaceView == _trashCanViewController.workspaceView
     {
       addGestureTrackingForWorkspaceFolderBlockView(blockView)
@@ -409,7 +406,7 @@ extension WorkbenchViewController: WorkspaceViewDelegate {
   {
     if workspaceView == self.workspaceView {
       removeGestureTrackingForBlockView(blockView)
-    } else if workspaceView == toolboxView?.blockListView ||
+    } else if workspaceView == toolboxCategoryView ||
         workspaceView == _trashCanViewController.workspaceView
     {
       removeGestureTrackingForWorkspaceFolderBlockView(blockView)
@@ -540,8 +537,7 @@ extension WorkbenchViewController {
     }
 
     let touchPosition = self.workspaceView.workspacePositionFromGestureTouchLocation(gesture)
-    let touchingTrashCan = trashCanView != nil && !trashCanView!.hidden &&
-      CGRectContainsPoint(trashCanView!.bounds, gesture.locationInView(trashCanView!))
+    let touchingTrashCan = isGestureTouchingTrashCan(gesture)
 
     // TODO:(vicng) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
@@ -555,6 +551,8 @@ extension WorkbenchViewController {
 
       if touchingTrashCan {
         addUIStateValue(.TrashCanHighlighted)
+      } else {
+        removeUIStateValue(.TrashCanHighlighted)
       }
     }
 
@@ -622,7 +620,7 @@ extension WorkbenchViewController {
   }
 }
 
-// MARK: - BlockViewDelegate
+// MARK: - BlockViewDelegate implementation
 
 extension WorkbenchViewController: BlockViewDelegate {
   public func blockView(blockView: BlockView,
@@ -657,6 +655,8 @@ extension WorkbenchViewController: BlockViewDelegate {
   }
 }
 
+// MARK: - UIPopoverPresentationControllerDelegate implementation
+
 extension WorkbenchViewController: UIPopoverPresentationControllerDelegate {
   public func adaptivePresentationStyleForPresentationController(
     controller: UIPresentationController) -> UIModalPresentationStyle
@@ -675,5 +675,22 @@ extension WorkbenchViewController: UIPopoverPresentationControllerDelegate {
     super.dismissViewControllerAnimated(flag, completion: completion)
 
     removeUIStateValue(.PresentingPopover)
+  }
+}
+
+// MARK: - ToolboxCategoryListViewControllerDelegate implementation
+
+extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
+  public func toolboxCategoryListViewController(
+    controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
+  {
+    toolboxCategoryView?.showCategory(category, animated: true)
+    addUIStateValue(.CategoryOpen, animated: true)
+  }
+
+  public func toolboxCategoryListViewControllerDidDeselectCategory(
+    controller: ToolboxCategoryListViewController)
+  {
+    removeUIStateValue(.CategoryOpen, animated: true)
   }
 }
