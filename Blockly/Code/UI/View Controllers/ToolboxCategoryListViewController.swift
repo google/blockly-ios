@@ -1,5 +1,5 @@
 /*
-* Copyright 2015 Google Inc. All Rights Reserved.
+* Copyright 2016 Google Inc. All Rights Reserved.
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -15,28 +15,31 @@
 
 import Foundation
 
-// TODO:(vicng) Refactor this into a view controller
+// MARK: - ToolboxCategoryListViewControllerDelegate (Protocol)
 
 /**
- Handler for events that occur on `ToolboxCategoryListView`.
+ Handler for events that occur on `ToolboxCategoryListViewController`.
  */
-public protocol ToolboxCategoryListViewDelegate: class {
+public protocol ToolboxCategoryListViewControllerDelegate: class {
   /**
   Event that occurs when a category has been selected.
   */
-  func toolboxCategoryListView(
-    listView: ToolboxCategoryListView, didSelectCategory category: Toolbox.Category)
+  func toolboxCategoryListViewController(
+    controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
 
   /**
   Event that occurs when the category selection has been deselected.
   */
-  func toolboxCategoryListViewDidDeselectCategory(listView: ToolboxCategoryListView)
+  func toolboxCategoryListViewControllerDidDeselectCategory(
+    controller: ToolboxCategoryListViewController)
 }
+
+// MARK: - ToolboxCategoryListViewController (Class)
 
 /**
  A view for displaying a vertical list of categories from a `Toolbox`.
  */
-public class ToolboxCategoryListView: UICollectionView {
+public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Properties
 
@@ -50,42 +53,98 @@ public class ToolboxCategoryListView: UICollectionView {
         return
       }
 
-      let indexPath = indexPathForCategory(selectedCategory)
-      self.selectItemAtIndexPath(
-        indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+      if let indexPath = indexPathForCategory(selectedCategory),
+        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) where !cell.selected
+      {
+        // Select new value
+        self.collectionView?.selectItemAtIndexPath(
+          indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+      } else if let indexPath = indexPathForCategory(oldValue),
+        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) where cell.selected
+      {
+        // De-select previous value
+        self.collectionView?.deselectItemAtIndexPath(indexPath, animated: true)
+      }
     }
   }
 
   /// Delegate for handling category selection events
-  public weak var listViewDelegate: ToolboxCategoryListViewDelegate?
+  public weak var delegate: ToolboxCategoryListViewControllerDelegate?
 
   // MARK: - Initializers
 
-  public convenience init() {
-    self.init(frame: CGRectZero)
-  }
-
-  public required init(frame: CGRect) {
+  public required init() {
     let flowLayout = UICollectionViewFlowLayout()
     flowLayout.scrollDirection = .Vertical
-    super.init(frame: frame, collectionViewLayout: flowLayout)
-
-    self.dataSource = self
-    self.delegate = self
-    commonInit()
+    super.init(collectionViewLayout: flowLayout)
   }
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    commonInit()
   }
 
-  private func commonInit() {
-    self.backgroundColor = UIColor.whiteColor()
-    self.registerClass(ToolboxCategoryListViewCell.self,
+  // MARK: - Super
+
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+
+    guard let collectionView = self.collectionView else {
+      return
+    }
+
+    collectionView.backgroundColor = UIColor.whiteColor()
+    collectionView.registerClass(ToolboxCategoryListViewCell.self,
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
-    self.showsVerticalScrollIndicator = false
-    self.showsHorizontalScrollIndicator = false
+    collectionView.showsVerticalScrollIndicator = false
+    collectionView.showsHorizontalScrollIndicator = false
+  }
+
+  // MARK: - Public
+
+  /**
+   Refreshes the UI based on the current version of `self.toolbox`.
+   */
+  public func refreshView() {
+    self.collectionView?.reloadData()
+  }
+
+  // MARK: - UICollectionViewDataSource overrides
+
+  public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 1
+  }
+
+  public override func collectionView(
+    collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+      return toolbox?.categoryLayouts.count ?? 0
+  }
+
+  public override func collectionView(collectionView: UICollectionView,
+    cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+      let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
+        ToolboxCategoryListViewCell.ReusableCellIdentifier,
+        forIndexPath: indexPath) as! ToolboxCategoryListViewCell
+      cell.loadCategory(categoryForIndexPath(indexPath))
+      cell.selected = (self.selectedCategory == cell.category)
+      return cell
+  }
+
+  // MARK: - UICollectionViewDelegate overrides
+
+  public override func collectionView(
+    collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+  {
+    let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ToolboxCategoryListViewCell
+
+    if self.selectedCategory == cell.category {
+      // If the category has already been selected, de-select it
+      self.selectedCategory = nil
+      delegate?.toolboxCategoryListViewControllerDidDeselectCategory(self)
+    } else {
+      // Select the new category
+      self.selectedCategory = cell.category
+      delegate?.toolboxCategoryListViewController(self, didSelectCategory: cell.category)
+    }
   }
 
   // MARK: - Private
@@ -96,7 +155,7 @@ public class ToolboxCategoryListView: UICollectionView {
     }
 
     for i in 0 ..< toolbox!.categoryLayouts.count {
-      if toolbox!.categoryLayouts[i] == category {
+      if toolbox!.categoryLayouts[i].workspace == category {
         return NSIndexPath(forRow: i, inSection: 0)
       }
     }
@@ -108,48 +167,8 @@ public class ToolboxCategoryListView: UICollectionView {
   }
 }
 
-// MARK: - Delegate - UICollectionViewDataSource
-
-extension ToolboxCategoryListView: UICollectionViewDataSource {
-  public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return 1
-  }
-
-  public func collectionView(
-    collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return toolbox?.categoryLayouts.count ?? 0
-  }
-
-  public func collectionView(collectionView: UICollectionView,
-    cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-      let cell = self.dequeueReusableCellWithReuseIdentifier(
-        ToolboxCategoryListViewCell.ReusableCellIdentifier,
-        forIndexPath: indexPath) as! ToolboxCategoryListViewCell
-      cell.loadCategory(categoryForIndexPath(indexPath))
-      cell.selected = (self.selectedCategory == cell.category)
-      return cell
-  }
-}
-
-// MARK: - Delegate - UICollectionViewDelegateFlowLayout
-
-extension ToolboxCategoryListView: UICollectionViewDelegateFlowLayout {
-  public func collectionView(
-    collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
-  {
-    let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ToolboxCategoryListViewCell
-
-    if self.selectedCategory == cell.category {
-      // If the category has already been selected, de-select it
-      self.selectedCategory = nil
-      collectionView.deselectItemAtIndexPath(indexPath, animated: true)
-      listViewDelegate?.toolboxCategoryListViewDidDeselectCategory(self)
-    } else {
-      // Select the new category
-      self.selectedCategory = cell.category
-      listViewDelegate?.toolboxCategoryListView(self, didSelectCategory: cell.category)
-    }
-  }
+extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout {
+  // MARK: - UICollectionViewDelegateFlowLayout implementation
 
   public func collectionView(collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
@@ -162,6 +181,8 @@ extension ToolboxCategoryListView: UICollectionViewDelegateFlowLayout {
     return CGSizeMake(size.height, size.width)
   }
 }
+
+// MARK: - ToolboxCategoryListViewCell (Class)
 
 /**
  An individual cell category list view cell.
