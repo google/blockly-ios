@@ -113,15 +113,23 @@ public class BlockView: LayoutView {
     CATransaction.begin()
     CATransaction.setDisableActions(_disableLayerChangeAnimations)
 
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) {
+    if flags.intersectsWith(
+      [BlockLayout.Flag_NeedsDisplay,
+       BlockLayout.Flag_UpdateHighlight,
+       BlockLayout.Flag_UpdateDragging])
+    {
       // Update background
-      _backgroundLayer.strokeColor = layout.highlighted ?
-        BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor :
-        BlockLayout.sharedConfig.blockStrokeDefaultColour.CGColor
+      let strokeColor = layout.highlighted ?
+        BlockLayout.sharedConfig.blockStrokeHighlightColour :
+        BlockLayout.sharedConfig.blockStrokeDefaultColour
+      _backgroundLayer.strokeColor = layout.dragging ?
+        strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
         BlockLayout.sharedConfig.blockLineWidthHighlight :
         BlockLayout.sharedConfig.blockLineWidthRegular
-      _backgroundLayer.fillColor = layout.block.colour.CGColor
+      let fillColor = layout.block.colour
+      _backgroundLayer.fillColor = layout.dragging ?
+        fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()
       _backgroundLayer.frame = self.bounds
     }

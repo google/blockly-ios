@@ -52,6 +52,20 @@ public class BlockGroupLayout: Layout {
     }
   }
 
+  /// Flag indicating if this block group is being dragged
+  public var dragging: Bool = false {
+    didSet {
+      if dragging == oldValue {
+        return
+      }
+
+      // Update dragged property for all of its block children
+      for blockLayout in self.blockLayouts {
+        blockLayout.dragging = dragging
+      }
+    }
+  }
+
   // MARK: - Initializers
 
   public override init(workspaceLayout: WorkspaceLayout) {
@@ -98,8 +112,9 @@ public class BlockGroupLayout: Layout {
       blockLayout.parentLayout = self
       self.blockLayouts.append(blockLayout)
 
-      // Set the block (and its child blocks) to match the zPosition of this group
+      // Set the block (and its child blocks) to match the zIndex/dragging values of this group
       blockLayout.zIndex = zIndex
+      blockLayout.dragging = dragging
     }
 
     if updateLayout {

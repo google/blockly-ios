@@ -58,6 +58,7 @@ public class Dragger: NSObject {
 
     // Highlight this block
     layout.highlighted = true
+    layout.rootBlockGroupLayout?.dragging = true
 
     // Bring its block group layout to the front
     layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
@@ -114,6 +115,7 @@ public class Dragger: NSObject {
   public func finishDraggingBlockLayout(layout: BlockLayout) {
     // Remove the highlight for this block
     layout.highlighted = false
+    layout.rootBlockGroupLayout?.dragging = false
 
     // If this block can be connected to anything, connect it.
     if let drag = _dragGestureData[layout.uuid],
