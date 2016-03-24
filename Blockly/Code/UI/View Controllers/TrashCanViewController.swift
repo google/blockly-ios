@@ -36,8 +36,8 @@ public class TrashCanViewController: UIViewController {
     return self.view as! WorkspaceView
   }
 
-  /// The constraint for resizing the width of `self.blockListView`
-  private var blockListViewWidthConstraint: NSLayoutConstraint!
+  /// The constraint for resizing the height of `self.workspaceView`
+  private var _workspaceViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - Initializers/Deinitializers
 
@@ -64,6 +64,10 @@ public class TrashCanViewController: UIViewController {
       workspaceView.addObserver(self,
         forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &kvoContextBounds)
 
+      _workspaceViewHeightConstraint = NSLayoutConstraint(item: workspaceView, attribute: .Height,
+          relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+      workspaceView.addConstraint(_workspaceViewHeightConstraint)
+
       self.view = workspaceView
 
       updateMaximumLineBlockSize()
@@ -85,6 +89,38 @@ public class TrashCanViewController: UIViewController {
     }
   }
 
+  // MARK: - Public
+
+  /**
+   Sets the height of `self.workspaceView`.
+
+   - Parameter height: The new height
+   - Parameter animated: Flag determining if the new height should be animated.
+   */
+  public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
+    if self._workspaceViewHeightConstraint.constant == height {
+      return
+    }
+
+    let updateView = {
+      // Update height constraint
+      self._workspaceViewHeightConstraint.constant = height
+      self.workspaceView.setNeedsUpdateConstraints()
+      self.workspaceView.superview?.layoutIfNeeded()
+    }
+
+    if animated {
+      // Force pending layout changes to complete
+      self.workspaceView.superview?.layoutIfNeeded()
+
+      UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: {
+        updateView()
+      }, completion: nil)
+    } else {
+      updateView()
+    }
+  }
+
   // MARK: - Private
 
   private func updateMaximumLineBlockSize() {
@@ -93,6 +129,5 @@ public class TrashCanViewController: UIViewController {
       workspaceLayout.workspaceUnitFromViewUnit(workspaceView.bounds.size.width)
     workspaceLayout.updateLayoutDownTree()
     workspaceView.refreshView()
-    workspaceView.invalidateIntrinsicContentSize()
   }
 }
