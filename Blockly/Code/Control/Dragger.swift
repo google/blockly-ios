@@ -58,6 +58,7 @@ public class Dragger: NSObject {
 
     // Highlight this block
     layout.highlighted = true
+    layout.rootBlockGroupLayout?.dragging = true
 
     // Bring its block group layout to the front
     layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
@@ -114,6 +115,7 @@ public class Dragger: NSObject {
   public func finishDraggingBlockLayout(layout: BlockLayout) {
     // Remove the highlight for this block
     layout.highlighted = false
+    layout.rootBlockGroupLayout?.dragging = false
 
     // If this block can be connected to anything, connect it.
     if let drag = _dragGestureData[layout.uuid],
@@ -209,15 +211,16 @@ public class Dragger: NSObject {
       rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
     }
 
-    if let previousOutputConnection = previouslyConnectedBlock?.outputConnection {
-      // Try to reconnect previously connected block to the end of the input value chain
-      if let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain()
+    if previouslyConnectedBlock != nil {
+      if let previousOutputConnection = previouslyConnectedBlock?.outputConnection,
+        let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain()
         where lastInputConnection.canConnectTo(previousOutputConnection)
       {
+        // Try to reconnect previously connected block to the end of the input value chain
         try lastInputConnection.connectTo(previousOutputConnection)
-      } else {
+      } else if let previouslyConnectedBlockLayout = previouslyConnectedBlock?.layout {
         // Bump previously connected block away from the superior connection
-        _blockBumper.bumpBlockFromConnection(previousOutputConnection, awayFromConnection: superior)
+        _blockBumper.bumpBlockLayout(previouslyConnectedBlockLayout, awayFromConnection: superior)
       }
     }
   }
@@ -248,15 +251,16 @@ public class Dragger: NSObject {
       rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
     }
 
-    if let previousConnection = previouslyConnectedBlock?.previousConnection {
-      // Reconnect previously connected block to the end of the block chain
-      if let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection
+    if previouslyConnectedBlock != nil {
+      if let previousConnection = previouslyConnectedBlock?.previousConnection,
+        let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection
         where lastConnection.canConnectTo(previousConnection)
       {
+        // Reconnect previously connected block to the end of the block chain
         try lastConnection.connectTo(previousConnection)
-      } else {
+      } else if let previouslyConnectedBlockLayout = previouslyConnectedBlock?.layout {
         // Bump previously connected block away from the superior connection
-        _blockBumper.bumpBlockFromConnection(previousConnection, awayFromConnection: superior)
+        _blockBumper.bumpBlockLayout(previouslyConnectedBlockLayout, awayFromConnection: superior)
       }
     }
   }

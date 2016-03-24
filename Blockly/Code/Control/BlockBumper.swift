@@ -35,39 +35,38 @@ public class BlockBumper: NSObject {
   // MARK: - Public
 
   /**
-   Bumps the block belonging to a given connection away from another connection.
-   
-   - Parameter impingingConnection: The connection of the block being bumped away.
-   - Parameter stationaryConnection: The connection that is being used as the source location for
-   the bump.
+   Bumps a given block layout away from a given connection.
+
+   - Parameter blockLayout: The block layout to bump away.
+   - Parameter stationaryConnection: The connection that the block should be bumped away from.
    */
-  public func bumpBlockFromConnection(
-    impingingConnection: Connection, awayFromConnection stationaryConnection: Connection)
+  public func bumpBlockLayout(blockLayout: BlockLayout,
+    awayFromConnection stationaryConnection: Connection)
   {
-    guard let blockGroupLayout = impingingConnection.sourceBlock.layout?.rootBlockGroupLayout else {
+    guard let rootBlockGroupLayout = blockLayout.rootBlockGroupLayout else {
       return
     }
 
     let newPosition = WorkspacePointMake(
       stationaryConnection.position.x + self.bumpDistance,
       stationaryConnection.position.y + self.bumpDistance)
-    blockGroupLayout.moveToWorkspacePosition(newPosition)
-    blockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
+    rootBlockGroupLayout.moveToWorkspacePosition(newPosition)
+    rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
   }
 
   /**
    Move all neighbours of the given block layout and its sub-blocks so that they don't appear to be
-   connected to the given block.
+   connected to the given block layout.
 
    - Parameter blockLayout: The `BlockLayout` to bump others away from.
    */
   public func bumpNeighboursOfBlockLayout(blockLayout: BlockLayout) {
     // Move this block before trying to bump others
     if let previousConnection = blockLayout.block.previousConnection {
-      bumpFirstBlockNearConnection(previousConnection)
+      bumpBlockLayout(blockLayout, awayFromNeighbourOfConnection: previousConnection)
     }
     if let outputConnection = blockLayout.block.outputConnection {
-      bumpFirstBlockNearConnection(outputConnection)
+      bumpBlockLayout(blockLayout, awayFromNeighbourOfConnection: outputConnection)
     }
 
     // Bump blocks away from high priority connections on this block
@@ -84,25 +83,40 @@ public class BlockBumper: NSObject {
 
   // MARK: - Private
 
-  private func bumpFirstBlockNearConnection(connection: Connection) {
-    bumpBlocksNearConnection(connection, maximumBumps: 1)
-  }
+  /**
+  Bumps a given block layout away from the first neighbour of a given connection.
 
-  private func bumpAllBlocksNearConnection(connection: Connection) {
-    bumpBlocksNearConnection(connection, maximumBumps: nil)
+  - Parameter connection: The connection connected to the block that is being bumped away.
+  */
+  private func bumpBlockLayout(blockLayout: BlockLayout,
+    awayFromNeighbourOfConnection connection: Connection)
+  {
+    guard
+      let connectionManager = blockLayout.workspaceLayout?.connectionManager,
+      let rootBlockGroupLayout = blockLayout.rootBlockGroupLayout else
+    {
+      return
+    }
+
+    let neighbours =
+      connectionManager.stationaryNeighboursForConnection(connection, maxRadius: self.bumpDistance)
+
+    for neighbour in neighbours {
+      // Bump away from the first neighbour that isn't in the same block group as the target
+      // connection's block group
+      if neighbour.sourceBlock.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
+        bumpBlockLayout(blockLayout, awayFromConnection: neighbour)
+        return
+      }
+    }
   }
 
   /**
    Finds all connections near a given connection and bumps their blocks away.
-   
+
    - Parameter connection: The connection that is at the center of the current bump operation
-   - Parameter maximumBumps: If specified, the maximum number of bumps that should be performed by
-   this method. If nil, no maximum is enforced and all block bumps are performed.
    */
-  private func bumpBlocksNearConnection(connection: Connection, maximumBumps: Int?) {
-    if maximumBumps != nil && maximumBumps! <= 0 {
-      return
-    }
+  private func bumpAllBlocksNearConnection(connection: Connection) {
     guard
       let connectionManager = connection.sourceBlock.layout?.workspaceLayout?.connectionManager,
       let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
@@ -112,17 +126,13 @@ public class BlockBumper: NSObject {
 
     let neighbours =
       connectionManager.stationaryNeighboursForConnection(connection, maxRadius: self.bumpDistance)
-    var totalBumps = 0
 
     for neighbour in neighbours {
       // Only bump blocks that aren't in the same block group as the target connection's block group
-      if neighbour.sourceBlock.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
-        bumpBlockFromConnection(neighbour, awayFromConnection: connection)
-        totalBumps += 1
-
-        if maximumBumps != nil && totalBumps >= maximumBumps! {
-          return
-        }
+      if let neighbourLayout = neighbour.sourceBlock.layout
+       where neighbourLayout.rootBlockGroupLayout != rootBlockGroupLayout
+      {
+        bumpBlockLayout(neighbourLayout, awayFromConnection: connection)
       }
     }
   }
