@@ -34,6 +34,8 @@ public class Dragger: NSObject {
   /// Stores the data for each active drag gesture, keyed by the corresponding block view's layout
   /// uuid
   private var _dragGestureData = [String: DragGestureData]()
+  /// Object responsible for bumping blocks out of the way
+  private let _blockBumper = BlockBumper(bumpDistance: Dragger.MAX_SNAP_DISTANCE)
 
   // MARK: - Public
 
@@ -119,14 +121,14 @@ public class Dragger: NSObject {
     {
       connectPair(connectionPair)
 
-      // Bring the entire block group layout to the front
-      layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
-
       clearGestureDataForBlockLayout(layout,
         moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
     } else {
       clearGestureDataForBlockLayout(layout)
     }
+
+    // Bump any neighbours of the block layout
+    _blockBumper.bumpNeighboursOfBlockLayout(layout)
 
     // Update the highlighted connections for all other drags (due to potential changes in block
     // sizes)
@@ -184,7 +186,6 @@ public class Dragger: NSObject {
       case .PreviousStatement:
         try connectStatementConnections(superior: target, inferior: moving)
       }
-
     } catch let error as NSError {
       bky_assertionFailure("Could not connect pair together: \(error)")
     }
@@ -203,17 +204,21 @@ public class Dragger: NSObject {
     inferior.disconnect()
     try superior.connectTo(inferior)
 
-    if previouslyConnectedBlock != nil {
-      // Try to reconnect previously connected block to the end of the input value chain
-      if let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain(),
-        previousOutputConnection = previouslyConnectedBlock!.outputConnection {
-          if lastInputConnection.canConnectTo(previousOutputConnection) {
-            try lastInputConnection.connectTo(previousOutputConnection)
-            return
-          }
-      }
+    // Bring the entire block group layout to the front
+    if let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout {
+      rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
+    }
 
-      // TODO:(vicng) Bump previouslyConnectedBlock
+    if let previousOutputConnection = previouslyConnectedBlock?.outputConnection {
+      // Try to reconnect previously connected block to the end of the input value chain
+      if let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain()
+        where lastInputConnection.canConnectTo(previousOutputConnection)
+      {
+        try lastInputConnection.connectTo(previousOutputConnection)
+      } else {
+        // Bump previously connected block away from the superior connection
+        _blockBumper.bumpBlockFromConnection(previousOutputConnection, awayFromConnection: superior)
+      }
     }
   }
 
@@ -229,22 +234,31 @@ public class Dragger: NSObject {
   the previously disconnected block could not be re-connected to the end of the block chain.
   */
   private func connectStatementConnections(superior superior: Connection, inferior: Connection)
-    throws {
-      let previouslyConnectedBlock = superior.targetBlock
+    throws
+  {
+    let previouslyConnectedBlock = superior.targetBlock
 
-      // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
-      superior.disconnect()
-      inferior.disconnect()
-      try superior.connectTo(inferior)
+    // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
+    superior.disconnect()
+    inferior.disconnect()
+    try superior.connectTo(inferior)
 
-      if previouslyConnectedBlock != nil {
-        // Reconnect previously connected block to the end of the block chain
-        if let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection {
-          try lastConnection.connectTo(previouslyConnectedBlock!.previousConnection!)
-        } else {
-          // TODO:(vicng) Bump previouslyConnectedBlock
-        }
+    // Bring the entire block group layout to the front
+    if let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout {
+      rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
+    }
+
+    if let previousConnection = previouslyConnectedBlock?.previousConnection {
+      // Reconnect previously connected block to the end of the block chain
+      if let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection
+        where lastConnection.canConnectTo(previousConnection)
+      {
+        try lastConnection.connectTo(previousConnection)
+      } else {
+        // Bump previously connected block away from the superior connection
+        _blockBumper.bumpBlockFromConnection(previousConnection, awayFromConnection: superior)
       }
+    }
   }
 
   /**
