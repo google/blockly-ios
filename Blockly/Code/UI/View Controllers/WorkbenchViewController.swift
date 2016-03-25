@@ -547,7 +547,7 @@ extension WorkbenchViewController {
     let touchPosition = self.workspaceView.workspacePositionFromGestureTouchLocation(gesture)
     let touchingTrashCan = isGestureTouchingTrashCan(gesture)
 
-    // TODO:(vicng) Handle screen rotations (either lock the screen during drags or stop any
+    // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
 
     if gesture.state == .Began {
@@ -596,8 +596,6 @@ extension WorkbenchViewController {
     guard let blockView = gesture.view as? BlockView else {
       return
     }
-
-    // TODO:(vicng) Set this block as "selected" within the workspace
   }
 }
 

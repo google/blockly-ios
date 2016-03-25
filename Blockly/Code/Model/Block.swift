@@ -67,7 +67,7 @@ public final class Block : NSObject {
   public var deletable: Bool = true
   public var movable: Bool = true
 
-  // TODO:(#336) Update model so that this property is respected.
+  // TODO:(#26) Update model so that this property is respected.
   /// Flag indicating if this block can be edited. Updating this property automatically updates
   /// the `editable` on all child fields.
   private var _editable: Bool = true
@@ -94,7 +94,6 @@ public final class Block : NSObject {
     return previousConnection?.targetConnection == nil && outputConnection?.targetConnection == nil
   }
 
-  // TODO:(vicng) Potentially move these properties into a view class
   public var collapsed: Bool = false
   public var rendered: Bool = false
 

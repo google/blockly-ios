@@ -96,7 +96,7 @@ extension Block {
       let lastDummyAlignment =
       Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.Left
 
-      // TODO:(vicng) If the message is a reference, we need to load the reference from somewhere
+      // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
       builder.inputBuilders += try interpolateMessage(
         message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)

@@ -105,7 +105,7 @@ public class ViewManager: NSObject {
   `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
   */
   public func newFieldViewForLayout(layout: FieldLayout) throws -> FieldView {
-    // TODO:(vicng) Implement a way for clients to customize the view based on the layout
+    // TODO:(#43) Implement a way for clients to customize the view based on the layout
 
     var fieldView: FieldView?
     if let fieldAngleLayout = layout as? FieldAngleLayout {

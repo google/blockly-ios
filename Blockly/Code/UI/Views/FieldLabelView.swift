@@ -56,7 +56,7 @@ public class FieldLabelView: FieldView {
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
       self.label.text = layout.fieldLabel.text
 
-      // TODO:(#335) Standardize this font
+      // TODO:(#27) Standardize this font
       self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -76,7 +76,7 @@ extension FieldLabelView: FieldLayoutMeasurer {
         "Expected type [FieldLabelLayout].")
       return CGSizeZero
     }
-    // TODO:(#335) Use a standardized font size that can be configurable for the project
+    // TODO:(#27) Use a standardized font size that can be configurable for the project
     return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(
       UIFont.systemFontOfSize(14 * scale))
   }

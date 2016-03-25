@@ -83,7 +83,7 @@ public class FieldAngleView: FieldView {
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
       updateTextFieldFromFieldAngle()
 
-      // TODO:(#335) Standardize this font
+      // TODO:(#27) Standardize this font
       self.textField.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -147,7 +147,7 @@ extension FieldAngleView: FieldLayoutMeasurer {
         "Expected type [FieldAngleLayout].")
       return CGSizeZero
     }
-    // TODO:(#335) Use a standardized font size that can be configurable for the project
+    // TODO:(#27) Use a standardized font size that can be configurable for the project
     // Use a size that can accomodate 3 digits and °.
     let measureText = "000°"
     let font = UIFont.systemFontOfSize(14 * scale)
