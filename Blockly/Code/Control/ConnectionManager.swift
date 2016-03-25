@@ -173,16 +173,19 @@ public final class ConnectionManager: NSObject {
   }
 
   /**
-  Find all compatible connections within the given radius.  This function is used for
-  bumping so type checking does not apply.
+  Finds all compatible connections within the given radius, that are not currently being dragged.
+  This function is used for bumping so type checking does not apply.
 
   - Parameter connection: The base connection for the search.
   - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
   coordinate system unit
   - Returns: A list of all nearby compatible connections.
   */
-  public func neighboursForConnection(connection: Connection, maxRadius: CGFloat) -> [Connection] {
-    return _groups.flatMap({ $0.neighboursForConnection(connection, maxRadius: maxRadius)})
+  public func stationaryNeighboursForConnection(connection: Connection, maxRadius: CGFloat)
+    -> [Connection]
+  {
+    return _groups.filter({ $0.dragMode == false })
+      .flatMap({ $0.neighboursForConnection(connection, maxRadius: maxRadius)})
   }
 
   // MARK: - Internal - For testing only

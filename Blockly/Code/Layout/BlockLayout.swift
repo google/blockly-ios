@@ -26,9 +26,10 @@ public class BlockLayout: Layout {
 
   /// Flag that should be used when `self.zIndex` has been updated
   public static let Flag_UpdateZIndex = LayoutFlag(0)
-
   /// Flag that should be used when `self.highlighted` has been updated
   public static let Flag_UpdateHighlight = LayoutFlag(1)
+  /// Flag that should be used when `self.dragging` has been updated
+  public static let Flag_UpdateDragging = LayoutFlag(2)
 
   /// Flag that should be used when any direct connection on this block has updated its highlight
   /// value
@@ -145,6 +146,22 @@ public class BlockLayout: Layout {
       }
 
       scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateZIndex)
+    }
+  }
+
+  /// Flag indicating if this block is being dragged
+  public var dragging: Bool = false {
+    didSet {
+      if dragging == oldValue {
+        return
+      }
+
+      // Update dragging for all of its block group children
+      for inputLayout in self.inputLayouts {
+        inputLayout.blockGroupLayout.dragging = dragging
+      }
+
+      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateDragging)
     }
   }
 
