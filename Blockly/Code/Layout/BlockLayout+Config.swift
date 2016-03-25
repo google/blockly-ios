@@ -15,6 +15,7 @@
 
 import Foundation
 
+// TODO:(#48) Refactor this into WorkspaceLayout
 /**
 UI configuration for elements within a block, based within the Workspace coordinate system.
 */

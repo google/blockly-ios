@@ -87,10 +87,10 @@ public class WorkspaceLayout: Layout {
 
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
-    try workspaceLayout.layoutBuilder.buildLayoutTree()
+    try layoutBuilder.buildLayoutTree()
 
     // Perform a layout update for the entire tree
-    workspaceLayout.updateLayoutDownTree()
+    updateLayoutDownTree()
   }
 
   // MARK: - Super
@@ -295,8 +295,6 @@ extension WorkspaceLayout: WorkspaceDelegate {
     if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
       removeBlockGroupLayout(blockGroupLayout)
 
-      // TODO:(vicng) Detach/unset connection listeners (call some sort of reset method?)
-
       scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
     }
   }
@@ -318,7 +316,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
    ensure that the layout hierarchy is properly kept in sync to reflect this change.
   */
   private func updateLayoutHierarchyForConnection(connection: Connection) throws {
-    // TODO:(vicng) Optimize re-rendering all layouts affected by this method
+    // TODO:(#29) Optimize re-rendering all layouts affected by this method
 
     let sourceBlock = connection.sourceBlock
     let sourceBlockLayout = sourceBlock.layout as BlockLayout!
@@ -399,13 +397,6 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
   }
 }
 
-// TODO:(vicng) Consider pulling these methods out into another class and so each layout could
-// directly reference a single instance of that class (defined for a workspace). It should
-// theoretically boost performance.
-// TODO:(vicng) Consider removing methods that scale between Workspace points and View points.
-// Users may think they represent direct translations between the two, which is wrong (because
-// of RTL).
-
 // MARK: - Layout Scaling
 
 extension WorkspaceLayout {
@@ -422,7 +413,7 @@ extension WorkspaceLayout {
   calculation would need to be done to get the UIView point's translated Workspace point.
   */
   public final func scaledWorkspaceVectorFromViewVector(point: CGPoint) -> WorkspacePoint {
-    // TODO:(vicng) Handle the offset of the viewport relative to the workspace
+    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return WorkspacePointZero
     } else if scale == 1 {
@@ -497,7 +488,7 @@ extension WorkspaceLayout {
   - Returns: A point in the UIView coordinate system.
   */
   public final func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
-    // TODO:(vicng) Handle the offset of the viewport relative to the workspace
+    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
     } else if scale == 1 {
@@ -516,7 +507,7 @@ extension WorkspaceLayout {
   - Returns: A point in the UIView coordinate system.
   */
   public final func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
-    // TODO:(vicng) Handle the offset of the viewport relative to the workspace
+    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
     } else if scale == 1 {

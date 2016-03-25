@@ -81,7 +81,7 @@ public class LayoutBuilder: NSObject {
     let blockGroupLayout =
     layoutFactory.layoutForBlockGroupLayout(workspaceLayout: workspaceLayout)
     let position = block.position
-    // TODO: (#334) Correctly convert position to the local workspace (scale and offset).
+    // TODO:(#28) Correctly convert position to the local workspace (scale and offset).
     // If this Block has a position use it to initialize the layout's position.
     blockGroupLayout.moveToWorkspacePosition(position)
 

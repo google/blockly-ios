@@ -25,14 +25,14 @@ public class InputLayout: Layout {
   /// The target `Input` to layout
   public final let input: Input
 
-  // TODO(vicng): Consider replacing all connections/relative positions with a ConnectionLayout
+  // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the input.connection
   private var _connection: Connection!
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
-      // TODO(vicng): This is method is eating into performance. During method execution,
+      // TODO:(#29) This is method is eating into performance. During method execution,
       // "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
       // often and take about 15% of CPU time.
 
@@ -204,7 +204,7 @@ public class InputLayout: Layout {
     // InputLayout.
     switch (self.input.type) {
     case .Value:
-      // TODO:(vicng) Handle stroke widths for the inline connector cut-out
+      // TODO:(#41) Handle stroke widths for the inline connector cut-out
 
       // Position the block group
       blockGroupLayout.relativePosition.x = fieldXOffset
@@ -277,7 +277,7 @@ public class InputLayout: Layout {
       self.blockGroupLayout.relativePosition.x = statementIndent
       self.blockGroupLayout.relativePosition.y = statementRowTopPadding
 
-      // TODO:(vicng) If more blocks can be added to the last block in the group, add a bit of
+      // TODO:(#41) If more blocks can be added to the last block in the group, add a bit of
       // space to the bottom of the middle part to show this is possible
       self.statementMiddleHeight = max(
         blockGroupLayout.totalSize.height, fieldMaximumHeight,

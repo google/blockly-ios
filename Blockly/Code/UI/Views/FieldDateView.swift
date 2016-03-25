@@ -15,7 +15,7 @@
 
 import Foundation
 
-// TODO:(#360) Change this view so it is a button that opens a date picker in a popover
+// TODO:(#25) Change this view so it is a button that opens a date picker in a popover
 /**
  View for rendering a `FieldDateLayout`.
  */
@@ -90,7 +90,7 @@ public class FieldDateView: FieldView {
       let dateString = FieldDateView.stringFromDate(layout.fieldDate.date)
       self.textField.text = dateString
 
-      // TODO:(#335) Standardize this font
+      // TODO:(#27) Standardize this font
       self.textField.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -152,7 +152,7 @@ extension FieldDateView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    // TODO:(#335) Use a standardized font size that can be configurable for the project
+    // TODO:(#27) Use a standardized font size that can be configurable for the project
     let textSize = FieldDateView.stringFromDate(fieldLayout.fieldDate.date)
       .bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
     return textSize + self.textFieldPadding

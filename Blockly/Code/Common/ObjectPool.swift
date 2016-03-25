@@ -112,5 +112,5 @@ public class ObjectPool: NSObject {
     }
   }
 
-  // TODO:(vicng) Add a method to prune the pool if it gets too big.
+  // TODO:(#42) Add a method to prune the pool if it gets too big.
 }
