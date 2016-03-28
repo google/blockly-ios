@@ -45,8 +45,8 @@ public class ObjectPool: NSObject {
   // MARK: - Properties
 
   /// Keeps track of all recycled objects. Objects of the same type are keyed by their class name
-  /// and stored in an array.
-  private var _recycledObjects = [String: Array<Recyclable>]()
+  /// and stored in a cache.
+  private let _recycledObjects = NSCache()
 
   // MARK: - Public
 
@@ -78,10 +78,12 @@ public class ObjectPool: NSObject {
   public func recyclableObjectForType(type: Recyclable.Type) -> Recyclable {
     let className = String(type)
 
-    // Note: _recycledObjects[className] is purposely not assigned to a variable here since that
-    // means we will end up modifying a copy of the array, and not the original array
-    if (_recycledObjects[className]?.count ?? 0) > 0 {
-      return _recycledObjects[className]!.removeLast()
+    if var list = _recycledObjects.objectForKey(className) as? Array<Recyclable>
+      where list.count > 0
+    {
+      let recycledObject = list.removeFirst()
+      _recycledObjects.setObject(list, forKey: className)
+      return recycledObject
     }
 
     // Couldn't find a recycled object, create a new instance
@@ -101,16 +103,20 @@ public class ObjectPool: NSObject {
 
     let className = String(object.dynamicType)
 
-    // Note: _recycledObjects[className] is purposely not assigned to a variable here since that
-    // means we will end up modifying a copy of the array, and not the original array
-    if _recycledObjects[className] != nil {
+    if var list = _recycledObjects.objectForKey(className) as? Array<Recyclable> {
       // Append to the array
-      _recycledObjects[className]!.append(object)
+      list.append(object)
+      _recycledObjects.setObject(list, forKey: className)
     } else {
       // Create a new array
-      _recycledObjects[className] = [object]
+      _recycledObjects.setObject([object], forKey: className)
     }
   }
 
-  // TODO:(#42) Add a method to prune the pool if it gets too big.
+  /**
+   Removes all recycled objects from memory.
+   */
+  public func removeAllRecycledObjects() {
+    _recycledObjects.removeAllObjects()
+  }
 }
