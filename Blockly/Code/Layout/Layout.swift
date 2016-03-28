@@ -27,8 +27,6 @@ public protocol LayoutDelegate: class {
   the UI side.
   */
   func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag)
-
-  // TODO:(vicng) Add an event for when a layout is deleted
 }
 
 /**
@@ -91,7 +89,7 @@ public class Layout: NSObject {
     }
   }
 
-  // TODO(vicng): If ConnectionLayout is created, change absolutePosition to be final
+  // TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final
   /// Absolute position of this layout, relative to the root node, in the Workspace coordinate
   /// system.
   internal var absolutePosition: WorkspacePoint = WorkspacePointZero
@@ -117,8 +115,6 @@ public class Layout: NSObject {
   /// All flags that this layout's corresponding view needs to update when a change event is sent.
   private final var layoutFlags = LayoutFlag.None
 
-  // TODO:(vicng) Consider making the LayoutView a property of the layout instead of using a
-  // delegate.
   /// The delegate for events that occur on this instance
   public final weak var delegate: LayoutDelegate?
 
@@ -256,7 +252,7 @@ public class Layout: NSObject {
     parentContentSize: WorkspaceSize,
     rtl: Bool, includeFields: Bool)
   {
-    // TODO:(vicng) Optimize this method so it only recalculates view positions for layouts that
+    // TODO:(#29) Optimize this method so it only recalculates view positions for layouts that
     // are "dirty"
 
     // Update the layout's absolute position in the workspace
