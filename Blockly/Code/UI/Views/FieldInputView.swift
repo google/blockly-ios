@@ -73,7 +73,7 @@ public class FieldInputView: FieldView {
         self.textField.text = layout.fieldInput.text
       }
 
-      // TODO:(#335) Standardize this font
+      // TODO:(#27) Standardize this font
       self.textField.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -109,7 +109,7 @@ extension FieldInputView: FieldLayoutMeasurer {
         "Expected type [FieldInputLayout].")
       return CGSizeZero
     }
-    // TODO:(#335) Use a standardized font size that can be configurable for the project
+    // TODO:(#27) Use a standardized font size that can be configurable for the project
     let measureText = fieldLayout.fieldInput.text + "   "
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)

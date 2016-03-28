@@ -55,7 +55,7 @@ public class BlockLayout: Layout {
     }
   }
 
-  // TODO(vicng): Consider replacing all connections/relative positions with a ConnectionLayout
+  // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the block.outputConnection
   private var _outputConnection: Connection!
@@ -97,7 +97,7 @@ public class BlockLayout: Layout {
         _previousConnection.moveToPosition(self.absolutePosition,
           withOffset: _previousConnectionRelativePosition)
       }
-      // TODO: (#334) Scale and offset correctly into the workspace
+      // TODO:(#28) Scale and offset correctly into the workspace
       block.position = self.absolutePosition
     }
   }
@@ -182,8 +182,9 @@ public class BlockLayout: Layout {
   // MARK: - Super
 
   public override func performLayout(includeChildren includeChildren: Bool) {
-    // TODO:(vicng) Potentially move logic from this method into Block.Background to make things
+    // TODO:(#41) Potentially move logic from this method into Block.Background to make things
     // easier to follow.
+    // TODO:(#41) Handle stroke widths for the background.
 
     let outputPuzzleTabXOffset = block.outputConnection != nil ?
       BlockLayout.sharedConfig.puzzleTabWidth : 0
@@ -287,7 +288,7 @@ public class BlockLayout: Layout {
       _nextConnectionRelativePosition =
         WorkspacePointMake(notchXOffset, blockBottomEdge + BlockLayout.sharedConfig.notchHeight)
 
-      // TODO:(vicng) Make the size.height a property of self.background
+      // TODO:(#41) Make the size.height a property of self.background
       // Create room to draw the notch height at the bottom
       size.height += BlockLayout.sharedConfig.notchHeight
     }

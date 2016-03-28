@@ -46,7 +46,7 @@ public final class LayoutEventManager: NSObject {
     _layouts.addObject(layout)
 
     if !_scheduledSendChangeEvents {
-      // TODO(vicng): Consider scheduling these events to execute at the end of the current run loop
+      // TODO:(#35) Consider scheduling these events to execute at the end of the current run loop
       // Schedule to send out all the change events at the beginning of the next run loop
       self.performSelector("internalSendChangeEvents", withObject: nil, afterDelay: 0.0)
       _scheduledSendChangeEvents = true

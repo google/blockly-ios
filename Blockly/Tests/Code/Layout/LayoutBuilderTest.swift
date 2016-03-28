@@ -176,7 +176,7 @@ class LayoutBuilderTest: XCTestCase {
     }
   }
 
-  // TODO(vicng): Add tests for other field layouts once they're implemented
+  // TODO:(#37) Add tests for other field layouts once they're implemented
 
   // MARK: - Helper methods
 

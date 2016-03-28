@@ -166,7 +166,7 @@ public class BlockView: LayoutView {
         }
       }
 
-      // TODO:(vicng) Remove any field views that no longer have field layouts associated with it
+      // TODO:(#29) Remove any field views that no longer have field layouts associated with it
     }
 
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateZIndex]) {
@@ -229,7 +229,7 @@ public class BlockView: LayoutView {
       highlightLayer.lineWidth = lineWidth
       highlightLayer.strokeColor = BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor
       highlightLayer.fillColor = nil
-      // TODO:(vicng) The highlight view frame needs to be larger than this view since it uses a
+      // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
       // larger line width
       highlightLayer.frame = self.bounds
       // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
@@ -248,7 +248,7 @@ public class BlockView: LayoutView {
   }
 }
 
-// TODO(vicng): Move this code into BlockBackgroundLayer and BlockHighlightLayer classes
+// TODO:(#36) Move this code into BlockBackgroundLayer and BlockHighlightLayer classes
 
 // MARK: - Bezier Path Builders
 
@@ -446,8 +446,6 @@ extension BlockView {
   private func applyRtlTransformToBezierPath(path: UIBezierPath, layout: BlockLayout) {
     var transform = CGAffineTransformIdentity
     transform = CGAffineTransformScale(transform, CGFloat(-1.0), CGFloat(1.0))
-    // TODO(vicng): Need to store the actual block size in the layout (the layout.viewFrame is
-    // sometimes larger for blocks with external values)
     transform = CGAffineTransformTranslate(transform, -layout.viewFrame.size.width, CGFloat(0))
     path.applyTransform(transform)
   }

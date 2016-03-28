@@ -82,7 +82,7 @@ public class FieldDropdownView: FieldView {
         self.label.text = layout.fieldDropdown.selectedOption?.displayName
       }
 
-      // TODO:(#335) Standardize this font
+      // TODO:(#27) Standardize this font
       self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
     }
   }
@@ -164,7 +164,7 @@ extension FieldDropdownView: FieldLayoutMeasurer {
       layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
 
     // Measure text size
-    // TODO:(#335) Use a standardized font size that can be configurable for the project
+    // TODO:(#27) Use a standardized font size that can be configurable for the project
     let measureText = (fieldLayout.fieldDropdown.selectedOption?.displayName ?? "")
     let font = UIFont.systemFontOfSize(14 * scale)
     let textSize = measureText.bky_singleLineSizeForFont(font)

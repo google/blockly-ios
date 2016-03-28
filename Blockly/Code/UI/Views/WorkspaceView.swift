@@ -36,10 +36,6 @@ public protocol WorkspaceViewDelegate: class {
   func workspaceView(workspaceView: WorkspaceView, willRemoveBlockView blockView: BlockView)
 }
 
-// TODO:(vicng) By default, Blockly is configured to support auto-layout. Create an option to
-// disable it, so it only uses frame-based layouts (which should theoretically result in faster
-// rendering).
-
 /**
 View for rendering a `WorkspaceLayout`.
 */
@@ -99,7 +95,7 @@ public class WorkspaceView: LayoutView {
       for blockLayout in allBlockLayouts {
         let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
 
-        // TODO:(#317) For now, always render blocks regardless of where they are on the screen.
+        // TODO:(#29) For now, always render blocks regardless of where they are on the screen.
         // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
         let shouldRenderBlockLayout = true
         if !shouldRenderBlockLayout {
@@ -118,7 +114,7 @@ public class WorkspaceView: LayoutView {
     }
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_RemovedBlockLayout]) {
-      // TODO:(#317) Remove block views more efficiently.
+      // TODO:(#29) Remove block views more efficiently.
       var blockLayoutSet = Set<BlockLayout>()
       for blockLayout in allBlockLayouts {
         blockLayoutSet.insert(blockLayout)
@@ -162,7 +158,7 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Public
 
-  // TODO:(vicng) Move this method out into a controller object.
+  // TODO:(#45) Move this method out into a controller object.
   /**
   Copies a block view into this workspace view. This is done by:
   1) Creating a copy of the view's block
@@ -341,7 +337,8 @@ public class WorkspaceView: LayoutView {
   }
 }
 
-// TODO:(vicng) Distinguish between swipe vs pan gestures
+// TODO:(#46) Distinguish between swipe vs pan gestures
+
 extension WorkspaceView {
   /**
   A custom version of UIScrollView that can properly distinguish between dragging blocks and
@@ -439,7 +436,6 @@ extension WorkspaceView {
 }
 
 extension WorkspaceView {
-  // TODO(vicng): Handle removing block views
   /**
   UIView which *only* holds `BlockView` instances, where instances are ordered in the subview list
   by their `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
