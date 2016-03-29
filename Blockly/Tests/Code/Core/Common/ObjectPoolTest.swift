@@ -38,6 +38,23 @@ class ObjectPoolTest: XCTestCase {
     let freshOne = pool.objectForType(CokeCan.self)
     XCTAssertEqual(false, freshOne.recycled)
   }
+
+  func testPerformance() {
+    let pool = ObjectPool()
+
+    measureBlock() {
+      let count = 10000
+
+      for _ in 0 ..< count {
+        let cokeCan = CokeCan()
+        pool.recycleObject(cokeCan)
+      }
+
+      for _ in 0 ..< count {
+        pool.recyclableObjectForType(CokeCan.self)
+      }
+    }
+  }
 }
 
 class CokeCan: NSObject, Recyclable {
