@@ -32,6 +32,7 @@ public class Toolbox: NSObject {
     }
   }
 
+  // TODO:(#55) Remove layoutBuilder and make it an instance variable
   public func addCategory(categoryName: String, colour: UIColor,
     layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
   {

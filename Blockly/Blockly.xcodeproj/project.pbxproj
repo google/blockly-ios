@@ -10,14 +10,12 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
-		FA10E3EC1C696A8E0095F088 /* FieldAngleLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
 		FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726771B83C54900777B49 /* InputLayout.swift */; };
 		FA27267D1B83C54900777B49 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726781B83C54900777B49 /* Layout.swift */; };
 		FA27267E1B83C54900777B49 /* WorkspaceLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726791B83C54900777B49 /* WorkspaceLayout.swift */; };
-		FA2726821B83F86000777B49 /* FieldLabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726811B83F86000777B49 /* FieldLabelLayout.swift */; };
 		FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726831B83F99300777B49 /* FieldLayout.swift */; };
 		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
 		FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */; };
@@ -35,14 +33,10 @@
 		FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD581B72EBEE0072A278 /* FieldInput.swift */; };
 		FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */; };
 		FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */; };
-		FA41C4191C582A3800D46967 /* FieldDropdownLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C4181C582A3800D46967 /* FieldDropdownLayout.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
 		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
-		FA42D7DF1C5AD390000C8EB4 /* FieldColourLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7DE1C5AD390000C8EB4 /* FieldColourLayout.swift */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColourView.swift */; };
-		FA42D7E91C605A0F000C8EB4 /* FieldDateLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E81C605A0F000C8EB4 /* FieldDateLayout.swift */; };
 		FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */; };
-		FA42D7F31C61B404000C8EB4 /* FieldCheckboxLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7F21C61B404000C8EB4 /* FieldCheckboxLayout.swift */; };
 		FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */; };
 		FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */; };
 		FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */; };
@@ -54,7 +48,6 @@
 		FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56A1B7C03EA000980E9 /* BlockView.swift */; };
 		FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */; };
 		FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */; };
-		FA4D548F1C69982D00F95084 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */; };
 		FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54971C69983B00F95084 /* FieldImageView.swift */; };
 		FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */; };
 		FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */; };
@@ -78,7 +71,6 @@
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
-		FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */; };
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
@@ -205,14 +197,12 @@
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
-		FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleLayout.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* BlockLayout+Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockLayout+Config.swift"; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
 		FA2726771B83C54900777B49 /* InputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLayout.swift; sourceTree = "<group>"; };
 		FA2726781B83C54900777B49 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		FA2726791B83C54900777B49 /* WorkspaceLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayout.swift; sourceTree = "<group>"; };
-		FA2726811B83F86000777B49 /* FieldLabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelLayout.swift; sourceTree = "<group>"; };
 		FA2726831B83F99300777B49 /* FieldLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLayout.swift; sourceTree = "<group>"; };
 		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
 		FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolTest.swift; sourceTree = "<group>"; };
@@ -230,14 +220,10 @@
 		FA2DFD581B72EBEE0072A278 /* FieldInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInput.swift; sourceTree = "<group>"; };
 		FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilderTest.swift; sourceTree = "<group>"; };
 		FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
-		FA41C4181C582A3800D46967 /* FieldDropdownLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownLayout.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
 		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
-		FA42D7DE1C5AD390000C8EB4 /* FieldColourLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColourLayout.swift; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColourView.swift; sourceTree = "<group>"; };
-		FA42D7E81C605A0F000C8EB4 /* FieldDateLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateLayout.swift; sourceTree = "<group>"; };
 		FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateView.swift; sourceTree = "<group>"; };
-		FA42D7F21C61B404000C8EB4 /* FieldCheckboxLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxLayout.swift; sourceTree = "<group>"; };
 		FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxView.swift; sourceTree = "<group>"; };
 		FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
 		FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldJSONTest.swift; sourceTree = "<group>"; };
@@ -249,7 +235,6 @@
 		FA4BB56A1B7C03EA000980E9 /* BlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelView.swift; sourceTree = "<group>"; };
 		FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
-		FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
 		FA4D54971C69983B00F95084 /* FieldImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageView.swift; sourceTree = "<group>"; };
 		FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockXMLTest.swift; sourceTree = "<group>"; };
 		FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTestStrings.swift; sourceTree = "<group>"; };
@@ -276,7 +261,6 @@
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
-		FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
@@ -362,14 +346,6 @@
 				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FA2726771B83C54900777B49 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
-				FA10E3EB1C696A8E0095F088 /* FieldAngleLayout.swift */,
-				FA42D7F21C61B404000C8EB4 /* FieldCheckboxLayout.swift */,
-				FA42D7DE1C5AD390000C8EB4 /* FieldColourLayout.swift */,
-				FA42D7E81C605A0F000C8EB4 /* FieldDateLayout.swift */,
-				FA41C4181C582A3800D46967 /* FieldDropdownLayout.swift */,
-				FA4D548E1C69982D00F95084 /* FieldImageLayout.swift */,
-				FA67AEBA1C4F212300274A73 /* FieldInputLayout.swift */,
-				FA2726811B83F86000777B49 /* FieldLabelLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FAE557731BE028640019D0D4 /* LayoutEventManager.swift */,
@@ -895,14 +871,11 @@
 				FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColour.swift in Sources */,
 				FA27267C1B83C54900777B49 /* InputLayout.swift in Sources */,
-				FA10E3EC1C696A8E0095F088 /* FieldAngleLayout.swift in Sources */,
-				FA67AEBB1C4F212300274A73 /* FieldInputLayout.swift in Sources */,
 				FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
 				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
-				FA42D7E91C605A0F000C8EB4 /* FieldDateLayout.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
@@ -910,7 +883,6 @@
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
 				FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */,
-				FA42D7F31C61B404000C8EB4 /* FieldCheckboxLayout.swift in Sources */,
 				FA548C8C1B66E861008BC59C /* Input.swift in Sources */,
 				FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */,
 				FA271CEA1B8E6D430015CE38 /* BlockLayout+Config.swift in Sources */,
@@ -924,7 +896,6 @@
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FAA870181C642805000C7C61 /* FieldColourPickerViewController.swift in Sources */,
 				FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */,
-				FA2726821B83F86000777B49 /* FieldLabelLayout.swift in Sources */,
 				FAA870081C64272C000C7C61 /* JSONHelper.swift in Sources */,
 				FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */,
 				FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */,
@@ -939,7 +910,6 @@
 				FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */,
 				FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */,
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
-				FA4D548F1C69982D00F95084 /* FieldImageLayout.swift in Sources */,
 				FAA870191C642805000C7C61 /* FieldDropdownOptionsViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */,
@@ -952,7 +922,6 @@
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
-				FA42D7DF1C5AD390000C8EB4 /* FieldColourLayout.swift in Sources */,
 				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
 				FAA870071C64272C000C7C61 /* ImageLoader.swift in Sources */,
@@ -960,7 +929,6 @@
 				FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */,
 				FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */,
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
-				FA41C4191C582A3800D46967 /* FieldDropdownLayout.swift in Sources */,
 				FAA870021C64272C000C7C61 /* Assertions.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
 				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,

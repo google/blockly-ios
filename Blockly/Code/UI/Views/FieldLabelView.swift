@@ -22,9 +22,9 @@ View for rendering a `FieldLabelLayout`.
 public class FieldLabelView: FieldView {
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldLabelLayout: FieldLabelLayout? {
-    return layout as? FieldLabelLayout
+  /// The `FieldLabel` backing this view
+  public var fieldLabel: FieldLabel? {
+    return fieldLayout?.field as? FieldLabel
   }
 
   /// The label to render
@@ -49,12 +49,14 @@ public class FieldLabelView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldLabelLayout else {
+    guard let layout = self.fieldLayout,
+      let fieldLabel = self.fieldLabel else
+    {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.label.text = layout.fieldLabel.text
+      self.label.text = fieldLabel.text
 
       // TODO:(#27) Standardize this font
       self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
@@ -71,13 +73,13 @@ public class FieldLabelView: FieldView {
 
 extension FieldLabelView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldLabelLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldLabelLayout].")
+    guard let fieldLabel = layout.field as? FieldLabel else {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldLabel`.")
       return CGSizeZero
     }
+
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    return fieldLayout.fieldLabel.text.bky_singleLineSizeForFont(
-      UIFont.systemFontOfSize(14 * scale))
+    return fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
   }
 }

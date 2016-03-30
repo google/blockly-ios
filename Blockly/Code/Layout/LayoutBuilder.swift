@@ -30,6 +30,7 @@ public class LayoutBuilder: NSObject {
 
   // MARK: - Initializer
 
+  // TODO:(#55) Remove the default value for layoutFactory
   public init(layoutFactory: LayoutFactory? = nil) {
     self.layoutFactory = (layoutFactory ?? LayoutFactory())
   }
