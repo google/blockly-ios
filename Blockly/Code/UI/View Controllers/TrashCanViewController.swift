@@ -16,7 +16,7 @@
 import Foundation
 
 /**
- A view controller for displaying blocks .
+ A view controller for displaying blocks in a trash can.
  */
 public class TrashCanViewController: UIViewController {
 

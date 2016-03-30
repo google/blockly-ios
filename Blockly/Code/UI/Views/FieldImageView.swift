@@ -22,9 +22,9 @@ import Foundation
 public class FieldImageView: FieldView {
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldImageLayout: FieldImageLayout? {
-    return layout as? FieldImageLayout
+  /// The `FieldImage` backing this view
+  public var fieldImage: FieldImage? {
+    return fieldLayout?.field as? FieldImage
   }
 
   /// The image to render
@@ -50,12 +50,12 @@ public class FieldImageView: FieldView {
   // MARK: - Super
 
   public override func internalRefreshView(forFlags flags: LayoutFlag) {
-    guard let layout = self.layout as? FieldImageLayout else {
+    guard let fieldImage = self.fieldImage else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      loadImageURL(layout.fieldImage.imageURL)
+      loadImageURL(fieldImage.imageURL)
     }
   }
 
@@ -98,12 +98,12 @@ public class FieldImageView: FieldView {
 
 extension FieldImageView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldImageLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldImageLayout].")
+    guard let fieldImage = layout.field as? FieldImage else {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldImage`.")
       return CGSizeZero
     }
 
-    return fieldLayout.workspaceLayout.viewSizeFromWorkspaceSize(fieldLayout.fieldImage.size)
+    return layout.workspaceLayout.viewSizeFromWorkspaceSize(fieldImage.size)
   }
 }
