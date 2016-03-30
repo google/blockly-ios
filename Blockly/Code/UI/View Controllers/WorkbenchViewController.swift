@@ -95,9 +95,9 @@ public class WorkbenchViewController: UIViewController {
   /// Controls logic for dragging blocks around in the workspace
   private var _dragger = Dragger()
   /// Controller for listing the toolbox categories
-  private var _toolboxCategoryListViewController = ToolboxCategoryListViewController()
+  private var _toolboxCategoryListViewController: ToolboxCategoryListViewController!
   /// Controller for managing the trash can workspace
-  private var _trashCanViewController = TrashCanViewController()
+  private var _trashCanViewController: TrashCanViewController!
   /// Flag indicating if the `self._trashCanViewController` is being shown
   private var _trashCanVisible: Bool = false
   /// The current state of the UI
@@ -144,7 +144,10 @@ public class WorkbenchViewController: UIViewController {
     // Create toolbox views
     let toolboxCategoryView = ToolboxCategoryView()
     self.toolboxCategoryView = toolboxCategoryView
+
+    _toolboxCategoryListViewController = ToolboxCategoryListViewController()
     _toolboxCategoryListViewController.delegate = self
+    addChildViewController(_toolboxCategoryListViewController)
 
     // Create main workspace view
     workspaceView = WorkspaceView()
@@ -159,6 +162,7 @@ public class WorkbenchViewController: UIViewController {
     self.trashCanButton = trashCanButton
 
     // Set up trash can folder view
+    _trashCanViewController = TrashCanViewController()
     addChildViewController(_trashCanViewController)
 
     // Set up auto-layout constraints
@@ -288,7 +292,7 @@ extension WorkbenchViewController {
   }
 
   /**
-   Resets to the UI back to its default state.
+   Resets the UI back to its default state.
 
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */

@@ -34,9 +34,9 @@ public class FieldInputView: FieldView {
 
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldInputLayout: FieldInputLayout? {
-    return layout as? FieldInputLayout
+  /// The `FieldInput` backing this view
+  public var fieldInput: FieldInput? {
+    return fieldLayout?.field as? FieldInput
   }
 
   /// The text field to render
@@ -64,13 +64,15 @@ public class FieldInputView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldInputLayout else {
+    guard let layout = self.fieldLayout,
+      let fieldInput = self.fieldInput else
+    {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      if self.textField.text != layout.fieldInput.text {
-        self.textField.text = layout.fieldInput.text
+      if self.textField.text != fieldInput.text {
+        self.textField.text = fieldInput.text
       }
 
       // TODO:(#27) Standardize this font
@@ -86,7 +88,7 @@ public class FieldInputView: FieldView {
   // MARK: - Private
 
   private dynamic func textFieldDidChange(sender: UITextField) {
-    self.fieldInputLayout?.fieldInput.text = self.textField.text ?? ""
+    self.fieldInput?.text = self.textField.text ?? ""
   }
 }
 
@@ -104,13 +106,14 @@ extension FieldInputView: UITextFieldDelegate {
 
 extension FieldInputView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldInputLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldInputLayout].")
+    guard let fieldInput = layout.field as? FieldInput else {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldInput`.")
       return CGSizeZero
     }
+
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let measureText = fieldLayout.fieldInput.text + "   "
+    let measureText = fieldInput.text + "   "
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
     measureSize.height = measureSize.height + textFieldPadding.height

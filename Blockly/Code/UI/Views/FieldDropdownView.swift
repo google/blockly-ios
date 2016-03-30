@@ -22,9 +22,9 @@ import Foundation
 public class FieldDropdownView: FieldView {
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldDropdownLayout: FieldDropdownLayout? {
-    return layout as? FieldDropdownLayout
+  /// The `FieldDropdown` backing this view
+  public var fieldDropdown: FieldDropdown? {
+    return fieldLayout?.field as? FieldDropdown
   }
 
   /// The text field to render
@@ -64,7 +64,9 @@ public class FieldDropdownView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldDropdownLayout else {
+    guard let layout = self.fieldLayout,
+      let fieldDropdown = self.fieldDropdown else
+    {
       return
     }
 
@@ -78,8 +80,8 @@ public class FieldDropdownView: FieldView {
       self.layer.cornerRadius =
         layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
 
-      if self.label.text != layout.fieldDropdown.selectedOption?.displayName {
-        self.label.text = layout.fieldDropdown.selectedOption?.displayName
+      if self.label.text != fieldDropdown.selectedOption?.displayName {
+        self.label.text = fieldDropdown.selectedOption?.displayName
       }
 
       // TODO:(#27) Standardize this font
@@ -95,7 +97,7 @@ public class FieldDropdownView: FieldView {
   // MARK: - Private
 
   private func refreshConstraints() {
-    guard let layout = self.layout as? FieldDropdownLayout else {
+    guard let layout = self.fieldLayout else {
       return
     }
 
@@ -129,7 +131,7 @@ public class FieldDropdownView: FieldView {
   }
 
   private dynamic func didTapButton(sender: UIButton) {
-    guard let field = fieldDropdownLayout?.fieldDropdown,
+    guard let field = self.fieldDropdown,
       let parentBlockView = self.parentBlockView else
     {
       return
@@ -150,9 +152,9 @@ public class FieldDropdownView: FieldView {
 
 extension FieldDropdownView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldDropdownLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldDropdownLayout].")
+    guard let fieldDropdown = layout.field as? FieldDropdown else {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldDropdown`.")
       return CGSizeZero
     }
 
@@ -165,7 +167,7 @@ extension FieldDropdownView: FieldLayoutMeasurer {
 
     // Measure text size
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let measureText = (fieldLayout.fieldDropdown.selectedOption?.displayName ?? "")
+    let measureText = (fieldDropdown.selectedOption?.displayName ?? "")
     let font = UIFont.systemFontOfSize(14 * scale)
     let textSize = measureText.bky_singleLineSizeForFont(font)
 
@@ -188,11 +190,7 @@ extension FieldDropdownView: FieldDropdownOptionsViewControllerDelegate {
   public func fieldDropdownOptionsViewController(viewController: FieldDropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)
   {
-    guard let field = fieldDropdownLayout?.fieldDropdown else {
-      return
-    }
-
-    field.selectedIndex = optionIndex
+    self.fieldDropdown?.selectedIndex = optionIndex
     viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 }

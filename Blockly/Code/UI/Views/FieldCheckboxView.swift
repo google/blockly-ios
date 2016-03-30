@@ -24,9 +24,9 @@ import Foundation
 public class FieldCheckboxView: FieldView {
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldCheckboxLayout: FieldCheckboxLayout? {
-    return layout as? FieldCheckboxLayout
+  /// The `FieldCheckbox` backing this view
+  public var fieldCheckbox: FieldCheckbox? {
+    return fieldLayout?.field as? FieldCheckbox
   }
 
   /// The switch button (i.e. the "checkbox")
@@ -53,12 +53,12 @@ public class FieldCheckboxView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldCheckboxLayout else {
+    guard let fieldCheckbox = self.fieldCheckbox else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.switchButton.on = layout.fieldCheckbox.checked
+      self.switchButton.on = fieldCheckbox.checked
     }
   }
 
@@ -69,11 +69,7 @@ public class FieldCheckboxView: FieldView {
   // MARK: - Private
 
   private dynamic func switchValueDidChange(sender: UISwitch) {
-    guard let field = self.fieldCheckboxLayout?.fieldCheckbox else {
-      return
-    }
-
-    field.checked = self.switchButton.on
+    self.fieldCheckbox?.checked = self.switchButton.on
   }
 }
 
@@ -83,9 +79,9 @@ extension FieldCheckboxView: FieldLayoutMeasurer {
   private static var switchButtonSize = CGSizeZero
 
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout is FieldCheckboxLayout) {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldCheckboxLayout].")
+    if !(layout.field is FieldCheckbox) {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldCheckbox`.")
       return CGSizeZero
     }
 
