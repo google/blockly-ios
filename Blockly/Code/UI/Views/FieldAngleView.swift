@@ -34,9 +34,9 @@ public class FieldAngleView: FieldView {
 
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldAngleLayout: FieldAngleLayout? {
-    return layout as? FieldAngleLayout
+  /// The `FieldAngle` backing this view
+  public var fieldAngle: FieldAngle? {
+    return fieldLayout?.field as? FieldAngle
   }
 
   /// The text field to render
@@ -76,7 +76,7 @@ public class FieldAngleView: FieldView {
   // MARK: - Super
 
   public override func internalRefreshView(forFlags flags: LayoutFlag) {
-    guard let layout = self.layout as? FieldAngleLayout else {
+    guard let layout = self.fieldLayout where layout.field is FieldAngle else {
       return
     }
 
@@ -101,7 +101,7 @@ public class FieldAngleView: FieldView {
   }
 
   private func updateTextFieldFromFieldAngle() {
-    self.textField.text = String(self.fieldAngleLayout?.fieldAngle.angle ?? 0) + "°"
+    self.textField.text = String(self.fieldAngle?.angle ?? 0) + "°"
   }
 }
 
@@ -126,7 +126,7 @@ extension FieldAngleView: UITextFieldDelegate {
   public func textFieldDidEndEditing(textField: UITextField) {
     // Only commit the change after the user has finished editing the field
     if let newAngle = Int(self.textField.text ?? "") { // Only update it if it's a valid value
-      self.fieldAngleLayout?.fieldAngle.angle = newAngle
+      self.fieldAngle?.angle = newAngle
     }
     updateTextFieldFromFieldAngle()
   }
@@ -142,11 +142,12 @@ extension FieldAngleView: UITextFieldDelegate {
 
 extension FieldAngleView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout is FieldAngleLayout) {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldAngleLayout].")
+    if !(layout.field is FieldAngle) {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldAngle`.")
       return CGSizeZero
     }
+
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     // Use a size that can accomodate 3 digits and °.
     let measureText = "000°"

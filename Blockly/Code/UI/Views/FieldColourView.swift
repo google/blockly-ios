@@ -22,9 +22,9 @@ import Foundation
 public class FieldColourView: FieldView {
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldColourLayout: FieldColourLayout? {
-    return layout as? FieldColourLayout
+  /// The `FieldColour` backing this view
+  public var fieldColour: FieldColour? {
+    return fieldLayout?.field as? FieldColour
   }
 
   /// The colour button to render
@@ -53,7 +53,7 @@ public class FieldColourView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldColourLayout else {
+    guard let layout = self.fieldLayout where layout.field is FieldColour else {
       return
     }
 
@@ -62,7 +62,7 @@ public class FieldColourView: FieldView {
         .viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.colourButtonBorderWidth)
       self.button.layer.cornerRadius =
         layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
-      self.button.backgroundColor = layout.fieldColour.colour
+      self.button.backgroundColor = self.fieldColour?.colour
     }
   }
 
@@ -79,7 +79,7 @@ public class FieldColourView: FieldView {
 
     // Show the colour picker
     let viewController = FieldColourPickerViewController()
-    viewController.fieldColour = self.fieldColourLayout?.fieldColour
+    viewController.fieldColour = self.fieldColour
     viewController.delegate = self
     parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
   }
@@ -89,14 +89,14 @@ public class FieldColourView: FieldView {
 
 extension FieldColourView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldColourLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldColourLayout].")
+    if !(layout.field is FieldColour) {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldColour`.")
       return CGSizeZero
     }
 
-    return fieldLayout.workspaceLayout.viewSizeFromWorkspaceSize(
-      BlockLayout.sharedConfig.colourButtonSize)
+    return
+      layout.workspaceLayout.viewSizeFromWorkspaceSize(BlockLayout.sharedConfig.colourButtonSize)
   }
 }
 
@@ -106,11 +106,7 @@ extension FieldColourView: FieldColourPickerViewControllerDelegate {
   public func fieldColourPickerViewController(
     viewController: FieldColourPickerViewController, didPickColour colour: UIColor)
   {
-    guard let field = fieldColourLayout?.fieldColour else {
-      return
-    }
-
-    field.colour = colour
+    self.fieldColour?.colour = colour
     viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 }

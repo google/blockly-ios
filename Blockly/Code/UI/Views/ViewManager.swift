@@ -20,6 +20,7 @@ Handles the management of recyclable views.
 */
 @objc(BKYViewManager)
 public class ViewManager: NSObject {
+
   // MARK: - Static Properties
 
   /// Shared instance.
@@ -36,7 +37,25 @@ public class ViewManager: NSObject {
   /// Dictionary of cached views for FieldLayouts
   private var _fieldViews = [String: FieldView]()
 
-  // MARK: - Public
+  /// Dictionary that maps `Field` subclasses (using their class' `hash()` value) to their
+  /// `FieldView` type
+  private var _fieldViewMapping = [Int: Recyclable.Type]()
+
+  public override init() {
+    super.init()
+
+    // Register the default views for known fields
+    registerViewTypeForFieldType(FieldAngle.self, viewType: FieldAngleView.self)
+    registerViewTypeForFieldType(FieldCheckbox.self, viewType: FieldCheckboxView.self)
+    registerViewTypeForFieldType(FieldColour.self, viewType: FieldColourView.self)
+    registerViewTypeForFieldType(FieldDate.self, viewType: FieldDateView.self)
+    registerViewTypeForFieldType(FieldDropdown.self, viewType: FieldDropdownView.self)
+    registerViewTypeForFieldType(FieldImage.self, viewType: FieldImageView.self)
+    registerViewTypeForFieldType(FieldInput.self, viewType: FieldInputView.self)
+    registerViewTypeForFieldType(FieldLabel.self, viewType: FieldLabelView.self)
+  }
+
+  // MARK: - Public - Block View
 
   /**
   Returns the `BlockView` that has been cached for the given layout. If the view could not be found
@@ -80,6 +99,8 @@ public class ViewManager: NSObject {
     _blockViews[layout.uuid] = nil
   }
 
+  // MARK: - Public - Field View
+
   /**
   Returns the `LayoutView` that has been cached for the given layout. If the view could not be found
   in the cache, nil is returned.
@@ -96,59 +117,28 @@ public class ViewManager: NSObject {
   }
 
   /**
-  Returns a recycled or new `FieldView` instance assigned to the given layout. This view is stored
-  in the internal cache for future lookup.
+   Returns a recycled `FieldView` instance assigned to the given layout's `field`.
+   If one isn't found, a new one is created based on the `FieldView` type that was registered via
+   `registerFieldViewType(:, fieldType:)`. This view is then stored in the internal cache for
+   future lookup.
 
-  - Parameter layout: The given `FieldLayout`
-  - Returns: A `FieldView` with the given layout assigned to it
-  - Throws:
-  `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
-  */
+   - Parameter layout: The given `FieldLayout`
+   - Returns: A `FieldView` with the given layout assigned to it
+   - Throws:
+   `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
+   */
   public func newFieldViewForLayout(layout: FieldLayout) throws -> FieldView {
-    // TODO:(#43) Implement a way for clients to customize the view based on the layout
-
-    var fieldView: FieldView?
-    if let fieldAngleLayout = layout as? FieldAngleLayout {
-      let fieldAngleView = viewForType(FieldAngleView.self)
-      fieldAngleView.layout = fieldAngleLayout
-      fieldView = fieldAngleView
-    } else if let fieldCheckboxLayout = layout as? FieldCheckboxLayout {
-      let fieldCheckboxView = viewForType(FieldCheckboxView.self)
-      fieldCheckboxView.layout = fieldCheckboxLayout
-      fieldView = fieldCheckboxView
-    } else if let fieldColourLayout = layout as? FieldColourLayout {
-      let fieldColourView = viewForType(FieldColourView.self)
-      fieldColourView.layout = fieldColourLayout
-      fieldView = fieldColourView
-    } else if let fieldDateLayout = layout as? FieldDateLayout {
-      let fieldDateView = viewForType(FieldDateView.self)
-      fieldDateView.layout = fieldDateLayout
-      fieldView = fieldDateView
-    } else if let fieldDropdownLayout = layout as? FieldDropdownLayout {
-      let fieldDropdownView = viewForType(FieldDropdownView.self)
-      fieldDropdownView.layout = fieldDropdownLayout
-      fieldView = fieldDropdownView
-    } else if let fieldImageLayout = layout as? FieldImageLayout {
-      let fieldImageView = viewForType(FieldImageView.self)
-      fieldImageView.layout = fieldImageLayout
-      fieldView = fieldImageView
-    } else if let fieldInputLayout = layout as? FieldInputLayout {
-      let fieldInputView = viewForType(FieldInputView.self)
-      fieldInputView.layout = fieldInputLayout
-      fieldView = fieldInputView
-    } else if let fieldLabelLayout = layout as? FieldLabelLayout {
-      let fieldLabelView = viewForType(FieldLabelView.self)
-      fieldLabelView.layout = fieldLabelLayout
-      fieldView = fieldLabelView
+    let fieldType = layout.field.dynamicType
+    if let viewType = _fieldViewMapping[fieldType.hash()],
+      let layoutView = recyclableViewForType(viewType) as? FieldView
+    {
+      layoutView.layout = layout
+      // Cache it for future lookups
+      _fieldViews[layout.uuid] = layoutView
+      return layoutView
+    } else {
+      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(fieldType)")
     }
-
-    if fieldView == nil {
-      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(layout.dynamicType)")
-    }
-
-    // Cache it for future lookups
-    _fieldViews[layout.uuid] = fieldView!
-    return fieldView!
   }
 
   /**
@@ -159,6 +149,33 @@ public class ViewManager: NSObject {
   public func uncacheFieldViewForLayout(layout: FieldLayout) {
     _fieldViews[layout.uuid] = nil
   }
+
+  /**
+   Registers the type of `FieldView` instances that should be created when requesting a specific
+   `Field` type.
+
+   - Parameter fieldType: The `Field.Type` key
+   - Parameter viewType: A view type that is a subclass of `FieldView` that conforms to
+   `Recyclable`
+   */
+  public func registerViewTypeForFieldType
+    <LayoutView where LayoutView: FieldView, LayoutView: Recyclable>
+    (fieldType: Field.Type, viewType: LayoutView.Type)
+  {
+    _fieldViewMapping[fieldType.hash()] = viewType
+  }
+
+  /**
+   Unregisters the type of `FieldView` instance that should be created when requesting a specific
+   `Field` type.
+
+   - Parameter fieldType: The `Field.Type` key
+   */
+  public func unregisterViewTypeForFieldType(fieldType: Field.Type) {
+    _fieldViewMapping[fieldType.hash()] = nil
+  }
+
+  // MARK: - Public - Recyclable Views
 
   /**
   If a recycled view is available for re-use, that view is returned.
