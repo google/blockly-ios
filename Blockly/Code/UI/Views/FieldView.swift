@@ -28,6 +28,11 @@ public class FieldView: LayoutView {
     return self.superview as? BlockView
   }
 
+  /// The layout object to render
+  public var fieldLayout: FieldLayout? {
+    return layout as? FieldLayout
+  }
+
   // MARK: - Super
 
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
@@ -35,10 +40,10 @@ public class FieldView: LayoutView {
 
     // Use this opportunity to enable/disable user interaction based on the field's editable
     // property
-    guard let layout = self.layout as? FieldLayout else {
+    guard let fieldLayout = self.fieldLayout else {
       return
     }
 
-    self.userInteractionEnabled = layout.field.editable
+    self.userInteractionEnabled = fieldLayout.field.editable
   }
 }

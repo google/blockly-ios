@@ -32,9 +32,9 @@ public class FieldDateView: FieldView {
 
   // MARK: - Properties
 
-  /// Layout object to render
-  public var fieldDateLayout: FieldDateLayout? {
-    return layout as? FieldDateLayout
+  /// The `FieldDate` backing this view
+  public var fieldDate: FieldDate? {
+    return fieldLayout?.field as? FieldDate
   }
 
   /// The text field to render the date
@@ -82,12 +82,14 @@ public class FieldDateView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let layout = self.layout as? FieldDateLayout else {
+    guard let layout = self.fieldLayout,
+      let fieldDate = self.fieldDate else
+    {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      let dateString = FieldDateView.stringFromDate(layout.fieldDate.date)
+      let dateString = FieldDateView.stringFromDate(fieldDate.date)
       self.textField.text = dateString
 
       // TODO:(#27) Standardize this font
@@ -123,11 +125,7 @@ public class FieldDateView: FieldView {
   }
 
   private func updateDateFromDatePicker() {
-    guard let field = self.fieldDateLayout?.fieldDate else {
-      return
-    }
-
-    field.date = datePicker.date
+    self.fieldDate?.date = datePicker.date
   }
 }
 
@@ -146,14 +144,14 @@ extension FieldDateView: UITextFieldDelegate {
 
 extension FieldDateView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLayout = layout as? FieldDateLayout else {
-      bky_assertionFailure("Cannot measure layout of type [\(layout.dynamicType.description)]. " +
-        "Expected type [FieldDateLayout].")
+    guard let fieldDate = layout.field as? FieldDate else {
+      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
+        "Expected type `FieldDate`.")
       return CGSizeZero
     }
 
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let textSize = FieldDateView.stringFromDate(fieldLayout.fieldDate.date)
+    let textSize = FieldDateView.stringFromDate(fieldDate.date)
       .bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
     return textSize + self.textFieldPadding
   }
