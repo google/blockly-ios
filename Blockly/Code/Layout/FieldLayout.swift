@@ -53,10 +53,10 @@ public class FieldLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(field: Field, workspaceLayout: WorkspaceLayout, measurer: FieldLayoutMeasurer.Type) {
+  public init(field: Field, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.field = field
     self.measurer = measurer
-    super.init(workspaceLayout: workspaceLayout)
+    super.init(engine: engine)
 
     self.field.delegate = self
   }
@@ -65,10 +65,10 @@ public class FieldLayout: Layout {
 
   public override func performLayout(includeChildren includeChildren: Bool) {
     // Measure the layout in the UIView coordinate system
-    let layoutSize: CGSize = measurer.measureLayout(self, scale: self.workspaceLayout.scale)
+    let layoutSize: CGSize = measurer.measureLayout(self, scale: self.engine.scale)
 
     // Convert the layout size back into the Workspace coordinate system
-    self.contentSize = workspaceLayout.workspaceSizeFromViewSize(layoutSize)
+    self.contentSize = self.engine.workspaceSizeFromViewSize(layoutSize)
 
     // Force this field to be redisplayed
     scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)

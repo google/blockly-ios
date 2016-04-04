@@ -44,7 +44,8 @@ public class BlockBumper: NSObject {
   public func bumpBlockLayoutOfConnection(
     impingingConnection: Connection, awayFromConnection stationaryConnection: Connection)
   {
-    guard let blockGroupLayout = impingingConnection.sourceBlock.layout?.rootBlockGroupLayout else {
+    guard let blockLayout = impingingConnection.sourceBlock.layout,
+      let blockGroupLayout = blockLayout.rootBlockGroupLayout else {
       return
     }
 
@@ -54,7 +55,7 @@ public class BlockBumper: NSObject {
       blockGroupLayout.absolutePosition.x + dx,
       blockGroupLayout.absolutePosition.y + dy)
     blockGroupLayout.moveToWorkspacePosition(newPosition)
-    blockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
+    blockLayout.workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
   }
 
   /**

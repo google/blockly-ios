@@ -15,41 +15,43 @@
 
 import Foundation
 
+// MARK: - Toolbox Class
+
 /**
  An object for grouping categories of template blocks together, so users can add them to a
  workspace.
  */
 @objc(BKYToolbox)
 public class Toolbox: NSObject {
-  public private(set) var categoryLayouts = [WorkspaceFlowLayout]()
+
+  // MARK: - Properties
+
+  /// A list of all categories in the toolbox
+  public private(set) var categories = [Category]()
 
   /// Flag to set all categories in the toolbox to readOnly
   public var readOnly: Bool = true {
     didSet {
-      for categoryLayout in categoryLayouts {
-        categoryLayout.workspaceFlow.readOnly = self.readOnly
+      for category in categories {
+        category.readOnly = self.readOnly
       }
     }
   }
 
+  // MARK: - Public
+
   // TODO:(#55) Remove layoutBuilder and make it an instance variable
-  public func addCategory(categoryName: String, colour: UIColor,
-    layoutBuilder: LayoutBuilder = LayoutBuilder()) -> Category
-  {
+  public func addCategory(categoryName: String, colour: UIColor) -> Category {
     let category = Category(name: categoryName, colour: colour)
     category.readOnly = self.readOnly
 
-    do {
-      let layout = try WorkspaceFlowLayout(
-        workspace: category, layoutDirection: .Vertical, layoutBuilder: layoutBuilder)
-      categoryLayouts.append(layout)
-    } catch let error as NSError {
-      bky_assertionFailure("Could not create WorkspaceListLayout: \(error)")
-    }
+    self.categories.append(category)
 
     return category
   }
 }
+
+// MARK: - Toolbox.Category Class
 
 extension Toolbox {
   /**
@@ -57,8 +59,15 @@ extension Toolbox {
    */
   @objc(BKYToolboxCategory)
   public class Category: WorkspaceFlow {
+
+    // MARK: - Properties
+
+    /// The name of the category
     public var name: String
+    /// The colour of the category
     public var colour: UIColor
+
+    // MARK: - Initializers
 
     private init(name: String, colour: UIColor) {
       self.name = name
