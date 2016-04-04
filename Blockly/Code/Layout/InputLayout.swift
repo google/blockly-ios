@@ -136,11 +136,11 @@ public class InputLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, workspaceLayout: WorkspaceLayout) {
+  public required init(input: Input, engine: LayoutEngine) {
     self.input = input
-    self.blockGroupLayout = BlockGroupLayout(workspaceLayout: workspaceLayout)
+    self.blockGroupLayout = BlockGroupLayout(engine: engine)
     self._connection = self.input.connection
-    super.init(workspaceLayout: workspaceLayout)
+    super.init(engine: engine)
 
     self.blockGroupLayout.parentLayout = self
   }
@@ -439,18 +439,4 @@ public class InputLayout: Layout {
 // MARK: - InputDelegate implementation
 
 extension InputLayout: InputDelegate {
-  public func input(input: Input, didAppendFields fields: [Field]) {
-    // For each new field that was added to the input, we need to append a new field layout
-    for field in fields {
-      do {
-        let fieldLayout = try workspaceLayout.layoutBuilder.buildLayoutForField(field)
-        appendFieldLayout(fieldLayout)
-        fieldLayout.updateLayoutDownTree()
-      } catch let error as NSError {
-        bky_assertionFailure("Could not create build layout for field: \(error)")
-      }
-    }
-
-    updateLayoutUpTree()
-  }
 }

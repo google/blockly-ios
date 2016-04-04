@@ -61,20 +61,22 @@ public class Dragger: NSObject {
     layout.rootBlockGroupLayout?.dragging = true
 
     // Bring its block group layout to the front
-    layout.workspaceLayout.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+    layout.workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
 
     // Start a new connection group for this block group layout
-    let newConnectionGroup = layout.workspaceLayout.connectionManager.startGroupForBlock(block)
+    if let newConnectionGroup =
+      layout.workspaceLayout?.connectionManager.startGroupForBlock(block)
+    {
+      // Keep track of the gesture data for this drag
+      let dragGestureData = DragGestureData(
+        blockLayout: layout,
+        blockLayoutStartPosition: layout.absolutePosition,
+        touchStartPosition: touchPosition,
+        connectionGroup: newConnectionGroup
+      )
 
-    // Keep track of the gesture data for this drag
-    let dragGestureData = DragGestureData(
-      blockLayout: layout,
-      blockLayoutStartPosition: layout.absolutePosition,
-      touchStartPosition: touchPosition,
-      connectionGroup: newConnectionGroup
-    )
-
-    _dragGestureData[layout.uuid] = dragGestureData
+      _dragGestureData[layout.uuid] = dragGestureData
+    }
   }
 
   /**
@@ -140,7 +142,7 @@ public class Dragger: NSObject {
 
     // Update the workspace canvas size since it may have changed (this was purposely skipped
     // during the drag for performance reasons, so we have to update it now)
-    layout.workspaceLayout.updateCanvasSize()
+    layout.workspaceLayout?.updateCanvasSize()
   }
 
   /**
@@ -158,7 +160,7 @@ public class Dragger: NSObject {
       }
 
       // Move connections to a different group in the connection manager
-      layout.workspaceLayout.connectionManager
+      layout.workspaceLayout?.connectionManager
         .mergeGroup(gestureData.connectionGroup, intoGroup: group)
 
       removeHighlightedConnectionForDrag(gestureData)
@@ -207,8 +209,10 @@ public class Dragger: NSObject {
     try superior.connectTo(inferior)
 
     // Bring the entire block group layout to the front
-    if let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout {
-      rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
+    if let workspaceLayout = superior.sourceBlock?.layout?.workspaceLayout,
+      let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
+    {
+      workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
     }
 
     if let previousOutputConnection = previouslyConnectedBlock?.outputConnection {
@@ -247,8 +251,10 @@ public class Dragger: NSObject {
     try superior.connectTo(inferior)
 
     // Bring the entire block group layout to the front
-    if let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout {
-      rootBlockGroupLayout.workspaceLayout?.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
+    if let workspaceLayout = superior.sourceBlock?.layout?.workspaceLayout,
+      let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
+    {
+      workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
     }
 
     if let previousConnection = previouslyConnectedBlock?.previousConnection {
@@ -304,7 +310,7 @@ public class Dragger: NSObject {
     -> ConnectionManager.ConnectionPair?
   {
     if let workspaceLayout = drag.blockLayout?.workspaceLayout {
-      let maxRadius = workspaceLayout.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
+      let maxRadius = workspaceLayout.engine.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
 
       return workspaceLayout.connectionManager.findBestConnectionForGroup(drag.connectionGroup,
         maxRadius: maxRadius)
