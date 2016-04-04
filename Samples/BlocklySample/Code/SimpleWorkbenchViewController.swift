@@ -25,11 +25,12 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Initializers
 
   init() {
-    super.init(nibName: nil, bundle: nil)
+    super.init(engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
     commonInit()
   }
 
   required init?(coder aDecoder: NSCoder) {
+    assertionFailure("Called unsupported initializer")
     super.init(coder: aDecoder)
     commonInit()
   }
@@ -53,12 +54,8 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     self.navigationItem.title = "Simple Workbench Demo"
 
     // Load data
-    self.enableTrashCan = true
     loadWorkspace()
     loadToolbox()
-
-    // Refresh the view
-    refreshView()
   }
 
   override func prefersStatusBarHidden() -> Bool {
@@ -76,9 +73,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       // try addChainedBlocksToWorkspace(workspace)
 //      addSpaghettiBlocksToWorkspace(workspace)
 
-      // Create a layout for the workspace, which is required for viewing the workspace
-      self.workspaceLayout =
-        try WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+      try loadWorkspace(workspace)
     } catch let error as NSError {
       print("Couldn't build layout tree for workspace: \(error)")
     }
@@ -124,7 +119,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       try addBlock("block_statement", toCategory: random)
       try addBlock("block_output", toCategory: random)
 
-      self.toolbox = toolbox
+      try loadToolbox(toolbox)
     } catch let error as NSError {
       print("An error occurred loading the toolbox: \(error)")
     }

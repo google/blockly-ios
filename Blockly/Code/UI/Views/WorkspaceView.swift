@@ -174,6 +174,10 @@ public class WorkspaceView: LayoutView {
   */
   public func copyBlockView(blockView: BlockView) throws -> BlockView
   {
+    // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
+    // causing a performance hit. Try to create an alternate method that performs an optimized
+    // "cut" operation.
+
     guard let blockLayout = blockView.blockLayout else {
       throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
     }
@@ -188,7 +192,7 @@ public class WorkspaceView: LayoutView {
     // Note: This is done before creating a new block since adding a new block might change the
     // workspace's size, which would mess up this position calculation.
     var blockViewPoint = CGPointZero
-    if workspaceLayout.workspace.rtl {
+    if workspaceLayout.engine.rtl {
       // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
       // it is the top-left corner point in LTR)
       blockViewPoint = CGPointMake(blockView.bounds.size.width, 0)
@@ -242,7 +246,7 @@ public class WorkspaceView: LayoutView {
     }
 
     // Get the total canvas size in UIView sizing
-    let blockGroupSize = layout.viewSizeFromWorkspaceSize(layout.totalSize)
+    let blockGroupSize = layout.engine.viewSizeFromWorkspaceSize(layout.totalSize)
 
     // Canvas padding must be at least one full screen width/height or else blocks will appear to
     // jump whenever the total canvas size shrinks (eg. after blocks are moved from higher value
@@ -257,7 +261,7 @@ public class WorkspaceView: LayoutView {
     let newContentSize = blockGroupSize + canvasPadding
 
     // Update the content size of the scroll view.
-    if layout.workspace.rtl {
+    if layout.engine.rtl {
       // Change the block group view frame to be positioned at the top-right corner of the scroll
       // view
       scrollView.blockGroupView.frame = CGRectMake(

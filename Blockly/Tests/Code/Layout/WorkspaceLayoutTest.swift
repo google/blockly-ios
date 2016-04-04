@@ -25,7 +25,8 @@ class WorkspaceLayoutTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+    _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
+      engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -57,7 +58,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Build the layout tree
     do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree()
+      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
     } catch let error as NSError {
       XCTFail("Couldn't build the layout tree: \(error)")
     }
@@ -104,7 +105,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Add block group layouts
     for _ in 0 ..< 10 {
-      let blockGroupLayout = BlockGroupLayout(workspaceLayout: _workspaceLayout)
+      let blockGroupLayout = BlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts[blockGroupLayout.uuid] = blockGroupLayout
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
       // The block group's parent should be set to the _workspaceLayout now
@@ -124,7 +125,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Add block group layouts
     for _ in 0 ..< 10 {
-      let blockGroupLayout = BlockGroupLayout(workspaceLayout: _workspaceLayout)
+      let blockGroupLayout = BlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts.append(blockGroupLayout)
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
@@ -146,7 +147,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Add block group layouts
     for _ in 0 ..< 10 {
-      let blockGroupLayout = BlockGroupLayout(workspaceLayout: _workspaceLayout)
+      let blockGroupLayout = BlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts.append(blockGroupLayout)
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
@@ -166,7 +167,7 @@ class WorkspaceLayoutTest: XCTestCase {
   func testBringBlockGroupLayoutToFront() {
     // Add block group layouts
     for _ in 0 ..< 10 {
-      let blockGroupLayout = BlockGroupLayout(workspaceLayout: _workspaceLayout)
+      let blockGroupLayout = BlockGroupLayout(engine: _workspaceLayout.engine)
       blockGroupLayout.zIndex = 0
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }

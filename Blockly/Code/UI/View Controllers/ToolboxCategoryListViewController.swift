@@ -43,8 +43,8 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Properties
 
-  /// The toolbox to display
-  public var toolbox: Toolbox?
+  /// The toolbox layout to display
+  public var toolboxLayout: ToolboxLayout?
 
   /// The category that the user has currently selected
   public var selectedCategory: Toolbox.Category? {
@@ -120,7 +120,7 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   public override func collectionView(
     collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      return toolbox?.categoryLayouts.count ?? 0
+      return toolboxLayout?.categoryLayouts.count ?? 0
   }
 
   public override func collectionView(collectionView: UICollectionView,
@@ -154,12 +154,12 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
   // MARK: - Private
 
   private func indexPathForCategory(category: Toolbox.Category?) -> NSIndexPath? {
-    if toolbox == nil || category == nil {
+    if toolboxLayout == nil || category == nil {
       return nil
     }
 
-    for i in 0 ..< toolbox!.categoryLayouts.count {
-      if toolbox!.categoryLayouts[i].workspace == category {
+    for i in 0 ..< toolboxLayout!.categoryLayouts.count {
+      if toolboxLayout!.categoryLayouts[i].workspace == category {
         return NSIndexPath(forRow: i, inSection: 0)
       }
     }
@@ -167,7 +167,7 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
   }
 
   private func categoryForIndexPath(indexPath: NSIndexPath) -> Toolbox.Category {
-    return toolbox!.categoryLayouts[indexPath.row].workspace as! Toolbox.Category
+    return toolboxLayout!.categoryLayouts[indexPath.row].workspace as! Toolbox.Category
   }
 }
 
