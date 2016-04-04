@@ -25,21 +25,42 @@ public class TrashCanViewController: UIViewController {
   private var kvoContextBounds = 0
 
   /// The trash can to display
-  public private(set) var workspaceLayout: WorkspaceFlowLayout!
-
+  public private(set) var workspaceLayout: WorkspaceFlowLayout?
+  /// The associated workspace of the trash can
   public var workspace: Workspace? {
     return workspaceLayout?.workspace
   }
-
   /// The view for displaying each category's set of blocks
   public var workspaceView: WorkspaceView! {
     return self.view as! WorkspaceView
   }
+  /// The layout engine to use for `self.workspaceLayout`
+  public var engine: LayoutEngine!
+  /// The layout builder to create layout hierarchies
+  public var layoutBuilder: LayoutBuilder!
+  /// The layout direction to use for `self.workspaceLayout`
+  public var layoutDirection: WorkspaceFlowLayout.LayoutDirection!
 
   /// The constraint for resizing the height of `self.workspaceView`
   private var _workspaceViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - Initializers/Deinitializers
+
+  init(engine: LayoutEngine, layoutBuilder: LayoutBuilder,
+    layoutDirection: WorkspaceFlowLayout.LayoutDirection)
+  {
+    self.engine = engine
+    self.layoutBuilder = layoutBuilder
+    self.layoutDirection = layoutDirection
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    // TODO:(#52) Support the ability to create view controllers from XIBs.
+    // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
+    bky_assertionFailure("Called unsupported initializer")
+    super.init(coder: aDecoder)
+  }
 
   deinit {
     self.workspaceView?.removeObserver(self, forKeyPath: "bounds")
@@ -50,30 +71,30 @@ public class TrashCanViewController: UIViewController {
   public override func loadView() {
     super.loadView()
 
+    let workspace = WorkspaceFlow()
+    workspace.readOnly = true
+
+    let workspaceView = WorkspaceView()
+    workspaceView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
+    workspaceView.allowCanvasPadding = false
+    workspaceView.addObserver(self,
+      forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &kvoContextBounds)
+
     do {
-      let workspace = WorkspaceFlow()
-      workspace.readOnly = true
-
-      self.workspaceLayout = try WorkspaceFlowLayout(
-        workspace: workspace, layoutDirection: .Horizontal, layoutBuilder: LayoutBuilder())
-
-      let workspaceView = WorkspaceView()
+      self.workspaceLayout = try WorkspaceFlowLayout(workspace: workspace,
+        layoutDirection: .Horizontal, engine: engine, layoutBuilder: layoutBuilder)
       workspaceView.layout = workspaceLayout
-      workspaceView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
-      workspaceView.allowCanvasPadding = false
-      workspaceView.addObserver(self,
-        forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &kvoContextBounds)
-
-      _workspaceViewHeightConstraint = NSLayoutConstraint(item: workspaceView, attribute: .Height,
-          relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
-      workspaceView.addConstraint(_workspaceViewHeightConstraint)
-
-      self.view = workspaceView
-
-      updateMaximumLineBlockSize()
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }
+
+    _workspaceViewHeightConstraint = NSLayoutConstraint(item: workspaceView, attribute: .Height,
+        relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+    workspaceView.addConstraint(_workspaceViewHeightConstraint)
+
+    self.view = workspaceView
+
+    updateMaximumLineBlockSize()
   }
 
   public override func observeValueForKeyPath(
@@ -124,9 +145,13 @@ public class TrashCanViewController: UIViewController {
   // MARK: - Private
 
   private func updateMaximumLineBlockSize() {
+    guard let workspaceLayout = self.workspaceLayout else {
+      return
+    }
+
     // Constrain the workspace layout width to the view's width
     workspaceLayout.maximumLineBlockSize =
-      workspaceLayout.workspaceUnitFromViewUnit(workspaceView.bounds.size.width)
+      workspaceLayout.engine.workspaceUnitFromViewUnit(workspaceView.bounds.size.width)
     workspaceLayout.updateLayoutDownTree()
     workspaceView.refreshView()
   }

@@ -54,8 +54,11 @@ public class Layout: NSObject {
 
   /// A unique identifier used to identify this layout for its lifetime
   public final let uuid: String
-  /// The workspace node which this node belongs to.
-  public final weak var workspaceLayout: WorkspaceLayout!
+
+  /// The `LayoutEngine` used for layout related functions such as unit scaling, layout creation, and
+  /// UI configuration.
+  public let engine: LayoutEngine
+
   /// The parent node of this layout. If this value is nil, this layout is the root node.
   public internal(set) final weak var parentLayout: Layout? {
     didSet {
@@ -120,9 +123,9 @@ public class Layout: NSObject {
 
   // MARK: - Initializers
 
-  public init(workspaceLayout: WorkspaceLayout!) {
+  public init(engine: LayoutEngine) {
     self.uuid = NSUUID().UUIDString
-    self.workspaceLayout = workspaceLayout
+    self.engine = engine
     super.init()
   }
 
@@ -205,7 +208,7 @@ public class Layout: NSObject {
       parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
       parentViewAbsolutePosition: (parentLayout?.viewAbsolutePosition ?? CGPointZero),
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
-      rtl: self.workspaceLayout.workspace.rtl,
+      rtl: self.engine.rtl,
       includeFields: includeFields)
   }
 
@@ -264,13 +267,13 @@ public class Layout: NSObject {
     var viewRelativePosition = CGPointZero
     if rtl {
       // In RTL, the x position is calculated relative to the top-right corner of its parent
-      viewRelativePosition.x = workspaceLayout.viewUnitFromWorkspaceUnit(
+      viewRelativePosition.x = self.engine.viewUnitFromWorkspaceUnit(
         parentContentSize.width - (relativePosition.x + edgeInsets.left + contentSize.width))
     } else {
       viewRelativePosition.x =
-        workspaceLayout.viewUnitFromWorkspaceUnit(relativePosition.x + edgeInsets.left)
+        self.engine.viewUnitFromWorkspaceUnit(relativePosition.x + edgeInsets.left)
     }
-    viewRelativePosition.y = workspaceLayout.viewUnitFromWorkspaceUnit(
+    viewRelativePosition.y = self.engine.viewUnitFromWorkspaceUnit(
       relativePosition.y + edgeInsets.top)
     self.viewAbsolutePosition = parentViewAbsolutePosition + viewRelativePosition
 
@@ -290,7 +293,7 @@ public class Layout: NSObject {
         }
       }
 
-      let viewSize = workspaceLayout.viewSizeFromWorkspaceSize(self.contentSize)
+      let viewSize = self.engine.viewSizeFromWorkspaceSize(self.contentSize)
       self.viewFrame =
         CGRectMake(viewFrameOrigin.x, viewFrameOrigin.y, viewSize.width, viewSize.height)
     }

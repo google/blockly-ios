@@ -76,16 +76,16 @@ public class FieldDropdownView: FieldView {
       // Decorate this view
       self.layer.borderColor = UIColor.grayColor().CGColor
       self.layer.borderWidth =
-        layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
+        layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
       self.layer.cornerRadius =
-        layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
+        layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
 
       if self.label.text != fieldDropdown.selectedOption?.displayName {
         self.label.text = fieldDropdown.selectedOption?.displayName
       }
 
       // TODO:(#27) Standardize this font
-      self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+      self.label.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
     }
   }
 
@@ -103,9 +103,9 @@ public class FieldDropdownView: FieldView {
 
     // Get separator space in UIView units
     let xPadding =
-      layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
+      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
     let yPadding =
-      layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
+      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
 
     let views = [
       "label": self.label,
@@ -159,11 +159,11 @@ extension FieldDropdownView: FieldLayoutMeasurer {
     }
 
     let fieldLineWidth =
-      layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
+      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
     let xPadding =
-      layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
+      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
     let yPadding =
-      layout.workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
+      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
 
     // Measure text size
     // TODO:(#27) Use a standardized font size that can be configurable for the project
