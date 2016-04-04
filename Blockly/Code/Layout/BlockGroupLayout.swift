@@ -66,12 +66,6 @@ public class BlockGroupLayout: Layout {
     }
   }
 
-  // MARK: - Initializers
-
-  public override init(workspaceLayout: WorkspaceLayout) {
-    super.init(workspaceLayout: workspaceLayout)
-  }
-
   // MARK: - Super
 
   public override func performLayout(includeChildren includeChildren: Bool) {

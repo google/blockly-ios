@@ -286,10 +286,10 @@ public final class Block : NSObject {
 
       // Check that the input connections are consistent between the original and copied blocks
       if inputConnection == nil && copiedInputConnection != nil {
-        throw BlocklyError(.ModelIllegalState,
+        throw BlocklyError(.IllegalState,
           "An input connection was created, but no such connection exists on the original block.")
       } else if inputConnection != nil && copiedInputConnection == nil {
-        throw BlocklyError(.ModelIllegalState,
+        throw BlocklyError(.IllegalState,
           "An input connection was not copied from the original block.")
       }
 
@@ -309,10 +309,10 @@ public final class Block : NSObject {
     let nextConnection = self.nextConnection
     let copiedNextConnection = newBlock.nextConnection
     if nextConnection == nil && copiedNextConnection != nil {
-      throw BlocklyError(.ModelIllegalState,
+      throw BlocklyError(.IllegalState,
         "A next connection was created, but no such connection exists on the original block.")
     } else if nextConnection != nil && copiedNextConnection == nil {
-      throw BlocklyError(.ModelIllegalState,
+      throw BlocklyError(.IllegalState,
         "The next connection was not copied from the original block.")
     }
 

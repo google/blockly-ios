@@ -93,7 +93,7 @@ public class FieldDateView: FieldView {
       self.textField.text = dateString
 
       // TODO:(#27) Standardize this font
-      self.textField.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+      self.textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
     }
   }
 

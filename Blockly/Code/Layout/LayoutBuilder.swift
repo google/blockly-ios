@@ -24,10 +24,6 @@ public class LayoutBuilder: NSObject {
   /// Factory responsible for creating new `Layout` instances
   public let layoutFactory: LayoutFactory
 
-  /// The workspace layout that owns this layout builder. This value is automatically set
-  /// during initialization of `WorkspaceLayout`.
-  public weak var workspaceLayout: WorkspaceLayout!
-
   // MARK: - Initializer
 
   // TODO:(#55) Remove the default value for layoutFactory
@@ -46,7 +42,7 @@ public class LayoutBuilder: NSObject {
   - Note: To increase performance during initialization, this should only be called after the entire
   workspace model has been constructed.
   */
-  public func buildLayoutTree() throws {
+  public func buildLayoutTree(workspaceLayout: WorkspaceLayout) throws {
     let workspace = workspaceLayout.workspace
 
     // Remove all child layouts
@@ -54,7 +50,7 @@ public class LayoutBuilder: NSObject {
 
     // Create layouts for every top-level block in the workspace
     for topLevelBlock in workspace.topLevelBlocks() {
-      try buildLayoutTreeForTopLevelBlock(topLevelBlock)
+      try buildLayoutTreeForTopLevelBlock(topLevelBlock, workspaceLayout: workspaceLayout)
     }
   }
 
@@ -67,10 +63,12 @@ public class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown if the block is not part of the workspace this builder is associated with,
   or if the layout tree could not be created for this block.
   */
-  public func buildLayoutTreeForTopLevelBlock(block: Block) throws -> BlockGroupLayout? {
+  public func buildLayoutTreeForTopLevelBlock(block: Block, workspaceLayout: WorkspaceLayout)
+    throws -> BlockGroupLayout?
+  {
     // Check that block is part of this workspace and is a top-level block
     if !workspaceLayout.workspace.containsBlock(block) {
-      throw BlocklyError(.LayoutIllegalState,
+      throw BlocklyError(.IllegalState,
         "Can't build a layout tree for a block that has not been added to the workspace")
     }
 
@@ -80,7 +78,7 @@ public class LayoutBuilder: NSObject {
     }
 
     let blockGroupLayout =
-    layoutFactory.layoutForBlockGroupLayout(workspaceLayout: workspaceLayout)
+      layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
     let position = block.position
     // TODO:(#28) Correctly convert position to the local workspace (scale and offset).
     // If this Block has a position use it to initialize the layout's position.
@@ -94,24 +92,13 @@ public class LayoutBuilder: NSObject {
     return blockGroupLayout
   }
 
-  /**
-  Builds the layout for a given field and assigns it to the field's `delegate` property.
-
-  - Parameter field: The field
-  - Returns: The associated layout for the field.
-  - Throws:
-  `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
-  */
-  public func buildLayoutForField(field: Field) throws -> FieldLayout {
-    let fieldLayout = try layoutFactory.layoutForField(field, workspaceLayout: workspaceLayout)
-    field.delegate = fieldLayout // Have the layout listen for events on the field
-    return fieldLayout
-  }
-
   // MARK: - Private
 
   /**
   Builds an entire `BlockGroupLayout` tree from a given top-level block.
+
+  - Parameter blockGroupLayout: The block group layout to build
+  - Parameter block: The top-level block to use as the first child of `blockGroupLayout`.
   */
   private func buildLayoutTreeForBlockGroupLayout(blockGroupLayout: BlockGroupLayout, block: Block)
     throws
@@ -122,7 +109,7 @@ public class LayoutBuilder: NSObject {
     var blockLayouts = [BlockLayout]()
     var currentBlock: Block? = block
     while let block = currentBlock {
-      let blockLayout = try buildLayoutTreeForBlock(block)
+      let blockLayout = try buildLayoutTreeForBlock(block, engine: blockGroupLayout.engine)
       blockLayouts.append(blockLayout)
       currentBlock = currentBlock?.nextBlock
     }
@@ -136,18 +123,19 @@ public class LayoutBuilder: NSObject {
   This includes all connected blocks.
 
   - Parameter block: The block
+  - Parameter engine: The `LayoutEngine` to associate with the returned `BlockLayout`.
   - Returns: The associated layout for the block.
   - Throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the block's inputs.
   */
-  private func buildLayoutTreeForBlock(block: Block) throws -> BlockLayout
+  private func buildLayoutTreeForBlock(block: Block, engine: LayoutEngine) throws -> BlockLayout
   {
-    let blockLayout = layoutFactory.layoutForBlock(block, workspaceLayout: workspaceLayout)
+    let blockLayout = layoutFactory.layoutForBlock(block, engine: engine)
     block.delegate = blockLayout // Have the layout listen for events on the block
 
     // Build the input layouts for this block
     for input in block.inputs {
-      let inputLayout = try buildLayoutTreeForInput(input)
+      let inputLayout = try buildLayoutTreeForInput(input, engine: engine)
       blockLayout.appendInputLayout(inputLayout)
     }
 
@@ -158,17 +146,18 @@ public class LayoutBuilder: NSObject {
   Builds an `InputLayout` tree for a given input and assigns it to the input's `delegate` property.
 
   - Parameter input: The input
+  - Parameter engine: The `LayoutEngine` to associate with the returned `InputLayout`.
   - Returns: The associated layout for the input.
   - Throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
-  private func buildLayoutTreeForInput(input: Input) throws -> InputLayout {
-    let inputLayout = layoutFactory.layoutForInput(input, workspaceLayout: workspaceLayout)
+  private func buildLayoutTreeForInput(input: Input, engine: LayoutEngine) throws -> InputLayout {
+    let inputLayout = layoutFactory.layoutForInput(input, engine: engine)
     input.delegate = inputLayout // Have the layout listen for events on the input
 
     // Build field layouts for this input
     for field in input.fields {
-      let fieldLayout = try buildLayoutForField(field)
+      let fieldLayout = try buildLayoutForField(field, engine: engine)
       inputLayout.appendFieldLayout(fieldLayout)
     }
 
@@ -178,5 +167,20 @@ public class LayoutBuilder: NSObject {
     }
 
     return inputLayout
+  }
+
+  /**
+   Builds the layout for a given field and assigns it to the field's `delegate` property.
+
+   - Parameter field: The field
+   - Parameter engine: The `LayoutEngine` to associate with the returned `FieldLayout`.
+   - Returns: The associated layout for the field.
+   - Throws:
+   `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
+   */
+  private func buildLayoutForField(field: Field, engine: LayoutEngine) throws -> FieldLayout {
+    let fieldLayout = try layoutFactory.layoutForField(field, engine: engine)
+    field.delegate = fieldLayout // Have the layout listen for events on the field
+    return fieldLayout
   }
 }
