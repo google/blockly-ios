@@ -48,7 +48,7 @@ public final class FieldLabel: Field {
   }
 
   public override func setValueFromSerializedText(text: String) throws {
-    throw BlocklyError(.ModelIllegalState, "Label field text cannot be set after construction.")
+    throw BlocklyError(.IllegalState, "Label field text cannot be set after construction.")
   }
 
   public override func serializedText() throws -> String? {

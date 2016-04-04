@@ -218,13 +218,13 @@ public class BlockView: LayoutView {
   // MARK: - Private
 
   private func addHighlightLayerWithPath(path: UIBezierPath) {
-    guard let workspaceLayout = layout?.workspaceLayout else {
+    guard let layoutEngine = layout?.engine else {
       return
     }
 
     if _highlightLayer == nil {
       let lineWidth =
-        workspaceLayout.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
+        layoutEngine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
       let highlightLayer = BezierPathLayer()
       highlightLayer.lineWidth = lineWidth
       highlightLayer.strokeColor = BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor
@@ -258,7 +258,7 @@ extension BlockView {
       return nil
     }
 
-    let path = WorkspaceBezierPath(layout: layout.workspaceLayout)
+    let path = WorkspaceBezierPath(engine: layout.engine)
     let background = layout.background
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset: CGFloat // Note: this is the right edge in RTL layouts
@@ -386,7 +386,7 @@ extension BlockView {
     }
 
     let viewBezierPath = path.viewBezierPath
-    if layout.workspaceLayout.workspace.rtl {
+    if layout.engine.rtl {
       applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
     }
 
@@ -404,7 +404,7 @@ extension BlockView {
     }
 
     // Build path for each highlighted connection
-    let path = WorkspaceBezierPath(layout: layout.workspaceLayout)
+    let path = WorkspaceBezierPath(engine: layout.engine)
 
     for connection in layout.block.directConnections {
       if !connection.highlighted {
@@ -436,7 +436,7 @@ extension BlockView {
     }
 
     let viewBezierPath = path.viewBezierPath
-    if layout.workspaceLayout.workspace.rtl {
+    if layout.engine.rtl {
       applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
     }
 

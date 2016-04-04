@@ -43,6 +43,11 @@ public class BlockLayout: Layout {
   /// The `Block` to layout.
   public final let block: Block
 
+  /// Convenience property for accessing `self.block.sourceWorkspace?.layout`
+  public var workspaceLayout: WorkspaceLayout? {
+    return self.block.sourceWorkspace?.layout
+  }
+
   /// The information for rendering the background for this block.
   public let background = BlockLayout.Background()
 
@@ -167,12 +172,12 @@ public class BlockLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(block: Block, workspaceLayout: WorkspaceLayout) {
+  public required init(block: Block, engine: LayoutEngine) {
     self.block = block
     _outputConnection = block.outputConnection
     _nextConnection = block.nextConnection
     _previousConnection = block.previousConnection
-    super.init(workspaceLayout: workspaceLayout)
+    super.init(engine: engine)
 
     for connection in self.block.directConnections {
       connection.highlightDelegate = self

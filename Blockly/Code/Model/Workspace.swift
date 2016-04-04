@@ -73,7 +73,6 @@ Data structure that contains `Block` instances.
 public class Workspace : NSObject {
   // MARK: - Properties
 
-  public let rtl: Bool
   public let maxBlocks: Int?
   public private(set) var allBlocks = [String: Block]()
   /// Flag indicating if this workspace is set to read-only
@@ -92,13 +91,9 @@ public class Workspace : NSObject {
   /**
   Initializer for a Workspace.
 
-  - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
-  is automatically set using the system's layout direction.
   - Parameter maxBlocks: Optional parameter for setting `self.maxBlocks`.
   */
   public init(rtl: Bool? = nil, maxBlocks: Int? = nil) {
-    self.rtl =
-      rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
     self.maxBlocks = maxBlocks
     super.init()
   }
@@ -127,7 +122,7 @@ public class Workspace : NSObject {
           // The block is already in the workspace
           continue
         } else {
-          throw BlocklyError(.ModelIllegalState,
+          throw BlocklyError(.IllegalState,
             "Cannot add a block into the workspace with a uuid that is already being used by " +
             "another block")
         }

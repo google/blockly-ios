@@ -62,7 +62,7 @@ public final class FieldImage: Field {
   }
 
   public override func setValueFromSerializedText(text: String) throws {
-    throw BlocklyError(.ModelIllegalState, "Image field cannot be set from string.")
+    throw BlocklyError(.IllegalState, "Image field cannot be set from string.")
   }
 
   public override func serializedText() throws -> String? {

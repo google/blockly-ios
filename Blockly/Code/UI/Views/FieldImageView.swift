@@ -104,6 +104,6 @@ extension FieldImageView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    return layout.workspaceLayout.viewSizeFromWorkspaceSize(fieldImage.size)
+    return layout.engine.viewSizeFromWorkspaceSize(fieldImage.size)
   }
 }
