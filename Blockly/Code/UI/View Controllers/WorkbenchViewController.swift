@@ -17,6 +17,8 @@ import UIKit
 
 /**
  View controller for editing a workspace.
+
+ TODO:(#61) Refactor this view controller into smaller pieces.
  */
 @objc(BKYWorkbenchViewController)
 public class WorkbenchViewController: UIViewController {
@@ -76,10 +78,23 @@ public class WorkbenchViewController: UIViewController {
     }
   }
 
-  /// The workspace layout
-  public var workspaceLayout: WorkspaceLayout?
-  /// The underlying toolbox
-  public var toolbox: Toolbox?
+  /// The layout engine to use for all views
+  public var engine: LayoutEngine!
+  /// The layout builder to create layout hierarchies
+  public var layoutBuilder: LayoutBuilder!
+  /// The workspace that has been loaded via `loadWorkspace(:)`
+  public var workspace: Workspace? {
+    return _workspaceLayout?.workspace
+  }
+  /// The toolbox that has been loaded via `loadToolbox(:)`
+  public var toolbox: Toolbox? {
+    return _toolboxLayout?.toolbox
+  }
+  /// The underlying workspace layout
+  private var _workspaceLayout: WorkspaceLayout?
+  /// The underlying toolbox layout
+  private var _toolboxLayout: ToolboxLayout?
+
   /// Flag for enabling trash can functionality
   public var enableTrashCan: Bool = true {
     didSet {
@@ -87,7 +102,7 @@ public class WorkbenchViewController: UIViewController {
 
       if !enableTrashCan {
         // Hide trash can folder
-        setTrashCanFolderVisible(false, animated: false)
+        removeUIStateValue(.TrashCanOpen, animated: false)
       }
     }
   }
@@ -105,21 +120,32 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Initializers
 
-  public convenience init() {
-    self.init(nibName: nil, bundle: nil)
-  }
-
-  public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  public init(engine: LayoutEngine, layoutBuilder: LayoutBuilder) {
+    self.engine = engine
+    self.layoutBuilder = layoutBuilder
+    super.init(nibName: nil, bundle: nil)
     commonInit()
   }
 
   public required init?(coder aDecoder: NSCoder) {
+    // TODO:(#52) Support the ability to create view controllers from XIBs.
+    // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
+    bky_assertionFailure("Called unsupported initializer")
     super.init(coder: aDecoder)
     commonInit()
   }
 
   private func commonInit() {
+    // Set up trash can folder view controller
+    _trashCanViewController = TrashCanViewController(
+      engine: self.engine, layoutBuilder: layoutBuilder, layoutDirection: .Horizontal)
+    addChildViewController(_trashCanViewController)
+
+    // Set up toolbox category list view controller
+    _toolboxCategoryListViewController = ToolboxCategoryListViewController()
+    _toolboxCategoryListViewController.delegate = self
+    addChildViewController(_toolboxCategoryListViewController)
+
     // Register for keyboard notifications
     NSNotificationCenter.defaultCenter().addObserver(self,
       selector: "keyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
@@ -145,10 +171,6 @@ public class WorkbenchViewController: UIViewController {
     let toolboxCategoryView = ToolboxCategoryView()
     self.toolboxCategoryView = toolboxCategoryView
 
-    _toolboxCategoryListViewController = ToolboxCategoryListViewController()
-    _toolboxCategoryListViewController.delegate = self
-    addChildViewController(_toolboxCategoryListViewController)
-
     // Create main workspace view
     workspaceView = WorkspaceView()
     workspaceView.scrollView.panGestureRecognizer.addTarget(self, action: "didPanWorkspaceView:")
@@ -160,10 +182,6 @@ public class WorkbenchViewController: UIViewController {
     let trashCanButton = TrashCanButton(imageNamed: "trash_can")
     trashCanButton.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
     self.trashCanButton = trashCanButton
-
-    // Set up trash can folder view
-    _trashCanViewController = TrashCanViewController()
-    addChildViewController(_trashCanViewController)
 
     // Set up auto-layout constraints
     let views: [String: UIView] = [
@@ -206,20 +224,68 @@ public class WorkbenchViewController: UIViewController {
 
     // Hide/show trash can
     setTrashCanButtonVisible(self.enableTrashCan)
-    setTrashCanFolderVisible(false, animated: false)
+
+    refreshView()
   }
 
   // MARK: - Public
 
   /**
+  Automatically creates a `WorkspaceLayout` for a given `Workspace` (using both the `self.engine`
+  and `self.layoutBuilder` instances) and loads it into the view controller.
+
+   - Parameter workspace: The `Workspace` to load
+   - Throws:
+   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
+   */
+  public func loadWorkspace(workspace: Workspace) throws {
+    guard let layoutEngine = self.engine,
+      let layoutBuilder = self.layoutBuilder else
+    {
+      throw BlocklyError(.IllegalState,
+        "`self.layoutEngine` and `self.layoutBuilder` need to be set before loading the workspace")
+    }
+
+    // Create a layout for the workspace, which is required for viewing the workspace
+    let workspaceLayout = try WorkspaceLayout(workspace: workspace, engine: layoutEngine,
+      layoutBuilder: layoutBuilder)
+    _workspaceLayout = workspaceLayout
+
+    refreshView()
+  }
+
+  /**
+   Automatically creates a `ToolboxLayout` for a given `Toolbox` (using both the `self.engine`
+   and `self.layoutBuilder` instances) and loads it into the view controller.
+
+   - Parameter toolbox: The `Toolbox` to load
+   - Throws:
+   `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
+   */
+  public func loadToolbox(toolbox: Toolbox) throws {
+    guard let layoutEngine = self.engine,
+      let layoutBuilder = self.layoutBuilder else
+    {
+      throw BlocklyError(.IllegalState,
+        "`self.layoutEngine` and `self.layoutBuilder` need to be set before loading the toolbox")
+    }
+
+    let toolboxLayout = ToolboxLayout(toolbox: toolbox, layoutDirection: .Vertical,
+      engine: layoutEngine, layoutBuilder: layoutBuilder)
+    _toolboxLayout = toolboxLayout
+
+    refreshView()
+  }
+
+  /**
    Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
    */
   public func refreshView() {
-    workspaceView.layout = workspaceLayout
-    workspaceView.refreshView()
+    workspaceView?.layout = _workspaceLayout
+    workspaceView?.refreshView()
 
-    _toolboxCategoryListViewController.toolbox = toolbox
-    _toolboxCategoryListViewController.refreshView()
+    _toolboxCategoryListViewController?.toolboxLayout = _toolboxLayout
+    _toolboxCategoryListViewController?.refreshView()
 
     resetUIState()
   }
@@ -575,7 +641,7 @@ extension WorkbenchViewController {
 
         do {
           try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block)
-          blockLayout.workspaceLayout.workspace.removeBlockTree(blockLayout.block)
+          blockLayout.workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
         } catch let error as NSError {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }

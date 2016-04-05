@@ -31,8 +31,8 @@ public class WorkspaceBezierPath: NSObject {
   public let viewBezierPath: UIBezierPath
   /// The current point of the bezier path, specified in the Workspace coordinate system.
   public private(set) var currentWorkspacePoint: WorkspacePoint = WorkspacePointZero
-  /// The workspace layout used to calculate scaling between a Workspace and the UIView
-  private let _layout: WorkspaceLayout
+  /// The `LayoutEngine` used to calculate scaling between a Workspace and the UIView
+  private let _layoutEngine: LayoutEngine
   /**
   This value is used to support SVG-equivalent methods for "smooth curveto" and
   "smooth quadratic curveto", and is specified in the UIView coordinate system.
@@ -49,11 +49,11 @@ public class WorkspaceBezierPath: NSObject {
   /**
   Designated initializer.
 
-  - Parameter layout: The workspace layout used to calculate scaling between a Workspace and the
+  - Parameter engine: The `LayoutEngine` used to calculate scaling between a Workspace and the
   UIView
   */
-  public required init(layout: WorkspaceLayout) {
-    self._layout = layout
+  public required init(engine: LayoutEngine) {
+    self._layoutEngine = engine
     self.viewBezierPath = UIBezierPath()
   }
 
@@ -106,13 +106,13 @@ public class WorkspaceBezierPath: NSObject {
     endAngle: CGFloat, clockwise: Bool, relative: Bool) {
       viewBezierPath.addArcWithCenter(
         viewPointFromWorkspacePoint(center, relative: relative),
-        radius: radius * _layout.scale,
+        radius: radius * _layoutEngine.scale,
         startAngle: startAngle,
         endAngle: endAngle,
         clockwise: clockwise)
 
       setCurrentWorkspacePoint(
-        _layout.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint),
+        _layoutEngine.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint),
         relative: relative)
       _reflectionOfLastCurveControlPoint = nil
   }
@@ -231,7 +231,7 @@ public class WorkspaceBezierPath: NSObject {
     viewBezierPath.closePath()
 
     self.currentWorkspacePoint =
-      _layout.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint)
+      _layoutEngine.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint)
     _reflectionOfLastCurveControlPoint = nil
   }
 
@@ -283,7 +283,7 @@ public class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   private func viewPointFromWorkspacePoint(point: WorkspacePoint, relative: Bool) -> CGPoint {
-    let viewPoint = _layout.viewPointFromWorkspacePoint(point)
+    let viewPoint = _layoutEngine.viewPointFromWorkspacePoint(point)
     return relative && !viewBezierPath.empty ?
       (viewBezierPath.currentPoint + viewPoint) : viewPoint
   }
