@@ -25,7 +25,8 @@ class LayoutBuilderTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _workspaceLayout = try! WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+    _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
+      engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -71,7 +72,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree
     do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree()
+      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
     } catch let error as NSError {
       XCTFail("Couldn't build layout tree: \(error)")
     }
@@ -119,7 +120,7 @@ class LayoutBuilderTest: XCTestCase {
       // Build layout tree for the only top-level block
       if let blockGroupLayout =
         try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
-          blockStatementStatementInput)
+          blockStatementStatementInput, workspaceLayout: _workspaceLayout)
       {
         verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
       } else {
@@ -128,19 +129,20 @@ class LayoutBuilderTest: XCTestCase {
 
       // Try building layout trees for non top-level blocks (these should all return nil)
       var emptyBlockGroup =
-        try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput)
+        try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
+          workspaceLayout: _workspaceLayout)
       XCTAssertNil(emptyBlockGroup)
 
-      emptyBlockGroup = try _workspaceLayout.layoutBuilder
-        .buildLayoutTreeForTopLevelBlock(blockStatementMultipleInputValueInput)
+      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementMultipleInputValueInput, workspaceLayout: _workspaceLayout)
       XCTAssertNil(emptyBlockGroup)
 
-      emptyBlockGroup =
-        try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockStatementNoNext)
+      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementNoNext, workspaceLayout: _workspaceLayout)
       XCTAssertNil(emptyBlockGroup)
 
-      emptyBlockGroup = try _workspaceLayout.layoutBuilder
-        .buildLayoutTreeForTopLevelBlock(blockStatementOutputNoInput)
+      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementOutputNoInput, workspaceLayout: _workspaceLayout)
       XCTAssertNil(emptyBlockGroup)
     } catch let error as NSError {
       XCTFail("Couldn't build layout tree: \(error)")
@@ -158,21 +160,11 @@ class LayoutBuilderTest: XCTestCase {
 
     do {
       // Try building the layout tree this block, but in the wrong workspace
-      try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(block)
+      try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
+        workspaceLayout: _workspaceLayout)
       XCTFail("A layout tree was built for a block in the wrong workspace")
     } catch _ as NSError {
       // An error should have been thrown. Everything is awesome.
-    }
-  }
-
-  func testBuildLayoutTreeForFieldLabel() {
-    let field = FieldLabel(name: "testy", text: "testerson")
-
-    do {
-      let layout = try _workspaceLayout.layoutBuilder.buildLayoutForField(field)
-      verifyFieldLayout(layout)
-    } catch let error as NSError {
-      XCTFail("Couldn't build layout for field: \(error)")
     }
   }
 

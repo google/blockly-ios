@@ -59,7 +59,7 @@ public class FieldLabelView: FieldView {
       self.label.text = fieldLabel.text
 
       // TODO:(#27) Standardize this font
-      self.label.font = UIFont.systemFontOfSize(14 * layout.workspaceLayout.scale)
+      self.label.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
     }
   }
 

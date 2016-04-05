@@ -102,18 +102,16 @@ class TurtleViewController: UIViewController {
     self.navigationItem.title = "Turtle Demo"
 
     // Load the block editor
-    self._workbenchViewController = WorkbenchViewController()
-    _workbenchViewController.enableTrashCan = true
+    self._workbenchViewController =
+      WorkbenchViewController(engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
 
     // Create a workspace
     do {
       let workspace = Workspace()
 
-      // Create a layout for the workspace, which is required for viewing the workspace
-      _workbenchViewController.workspaceLayout =
-        try WorkspaceLayout(workspace: workspace, layoutBuilder: LayoutBuilder())
+      try _workbenchViewController.loadWorkspace(workspace)
     } catch let error as NSError {
-      print("Couldn't build layout tree for workspace: \(error)")
+      print("Couldn't load the workspace: \(error)")
     }
 
     // TODO:(#11) Read this toolbox from XML
@@ -147,7 +145,7 @@ class TurtleViewController: UIViewController {
       let math = toolbox.addCategory("Math", colour: UIColor.blueColor())
       try addBlock("math_number", toCategory: math)
 
-      _workbenchViewController.toolbox = toolbox
+      try _workbenchViewController.loadToolbox(toolbox)
     } catch let error as NSError {
       print("An error occurred loading the toolbox: \(error)")
     }
@@ -178,9 +176,6 @@ class TurtleViewController: UIViewController {
     codeText.superview?.layer.borderColor = UIColor.lightGrayColor().CGColor
     codeText.superview?.layer.borderWidth = 1
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
-
-    // Refresh the view
-    _workbenchViewController.refreshView()
   }
 
   override func viewWillDisappear(animated: Bool) {
@@ -197,7 +192,7 @@ class TurtleViewController: UIViewController {
 
   @IBAction private dynamic func didPressPlayButton(button: UIButton) {
     do {
-      if let workspace = _workbenchViewController.workspaceLayout?.workspace {
+      if let workspace = _workbenchViewController.workspace {
         // Cancel pending requests
         _codeGeneratorService.cancelAllRequests()
 

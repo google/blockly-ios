@@ -20,13 +20,6 @@ import Foundation
  */
 @objc(BKYInputDelegate)
 public protocol InputDelegate: class {
-  /**
-   Event that is fired when a list of fields have been appended to an input.
-   
-   - Parameter input: The target input
-   - Parameter fields: The list of appended fields
-   */
-  func input(input: Input, didAppendFields fields: [Field])
 }
 
 /**
@@ -133,6 +126,8 @@ public final class Input : NSObject {
 
   // MARK: - Public
 
+  // TODO:(#60) Remove dynamic fields
+
   /**
   Appends a field to `self.fields[]`.
 
@@ -152,7 +147,5 @@ public final class Input : NSObject {
       self.fields.append(field)
       field.sourceInput = self
     }
-
-    delegate?.input(self, didAppendFields: fields)
   }
 }

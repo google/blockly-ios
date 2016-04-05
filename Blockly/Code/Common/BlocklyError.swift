@@ -26,13 +26,13 @@ public class BlocklyError: NSError {
   /// Domain to use when throwing an error from this class
   public static let Domain = "com.google.blockly.Blockly"
 
+  // TODO:(#59) Clean up error codes to follow some sort of convention.
+
   // MARK: - Enum - Code
   @objc
   public enum BKYBlocklyErrorCode: Int {
     case InvalidBlockDefinition = 100,
-    ModelIllegalState = 101,
     LayoutNotFound = 200,
-    LayoutIllegalState = 201,
     ConnectionManagerError = 210,
     ConnectionInvalid = 211,
     ViewNotFound = 300,
@@ -41,7 +41,8 @@ public class BlocklyError: NSError {
     XMLParsing = 500,
     XMLUnknownBlock = 501,
     FileNotFound = 600,
-    FileNotReadable = 601
+    FileNotReadable = 601,
+    IllegalState = 700
   }
   public typealias Code = BKYBlocklyErrorCode
 

@@ -45,20 +45,6 @@ public class WorkspaceLayout: Layout {
   /// All child `BlockGroupLayout` objects that have been appended to this layout
   public final var blockGroupLayouts = [BlockGroupLayout]()
 
-  /// The current scale of the UI, relative to the Workspace coordinate system.
-  /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
-  public final var scale: CGFloat = 1.0 {
-    didSet {
-      // Do not allow a scale less than 0.5
-      if scale < 0.5 {
-        scale = 0.5
-      }
-      if scale != oldValue {
-        updateLayoutDownTree()
-      }
-    }
-  }
-
   /// z-index counter used to layer blocks in a specific order.
   private var _zIndexCounter: UInt = 1
 
@@ -67,14 +53,11 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(workspace: Workspace, layoutBuilder: LayoutBuilder) throws {
+  public init(workspace: Workspace, engine: LayoutEngine, layoutBuilder: LayoutBuilder) throws {
     self.workspace = workspace
     self.layoutBuilder = layoutBuilder
     self.connectionManager = ConnectionManager()
-    super.init(workspaceLayout: nil)
-
-    self.workspaceLayout = self
-    self.layoutBuilder.workspaceLayout = self
+    super.init(engine: engine)
 
     // Assign the layout as the workspace's delegate so it can listen for new events that
     // occur on the workspace
@@ -87,7 +70,7 @@ public class WorkspaceLayout: Layout {
 
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
-    try layoutBuilder.buildLayoutTree()
+    try self.layoutBuilder.buildLayoutTree(self)
 
     // Perform a layout update for the entire tree
     updateLayoutDownTree()
@@ -269,7 +252,9 @@ extension WorkspaceLayout: WorkspaceDelegate {
 
     do {
       // Create the layout tree for this newly added block
-      if let blockGroupLayout = try layoutBuilder.buildLayoutTreeForTopLevelBlock(block) {
+      if let blockGroupLayout =
+        try self.layoutBuilder.buildLayoutTreeForTopLevelBlock(block, workspaceLayout: self)
+      {
         // Perform a layout for the tree
         blockGroupLayout.updateLayoutDownTree()
 
@@ -332,23 +317,20 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       (connection.sourceInput != nil && connection.sourceInput!.layout == nil) ||
       (connection.targetBlock != nil && connection.targetBlock!.layout == nil)
     {
-      throw BlocklyError(.LayoutIllegalState, "Can't connect a block without a layout. ")
+      throw BlocklyError(.IllegalState, "Can't connect a block without a layout. ")
     }
 
     // Check that this layout is connected to a block group layout
     if sourceBlock.layout?.parentBlockGroupLayout == nil {
-      throw BlocklyError(.LayoutIllegalState,
+      throw BlocklyError(.IllegalState,
         "Block layout is not connected to a parent block group layout. ")
     }
 
     if (connection.targetBlock != nil &&
       connection.targetBlock!.layout?.workspaceLayout != sourceBlockLayout.workspaceLayout)
     {
-      throw BlocklyError(.LayoutIllegalState, "Can't connect blocks in different workspaces")
+      throw BlocklyError(.IllegalState, "Can't connect blocks in different workspaces")
     }
-
-    let workspaceLayout = sourceBlockLayout.workspaceLayout
-    let workspace = workspaceLayout.workspace
 
     // Disconnect this block's layout and all subsequent block layouts from its block group layout,
     // so they can be reattached to another block group layout
@@ -360,7 +342,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       if oldParentLayout.blockLayouts.count == 0 &&
         oldParentLayout.parentLayout == workspace.layout {
           // Remove this block's old parent group layout from the workspace level
-          workspaceLayout.removeBlockGroupLayout(oldParentLayout, updateLayout: true)
+          removeBlockGroupLayout(oldParentLayout, updateLayout: true)
       }
     } else {
       layoutsToReattach = [sourceBlockLayout]
@@ -382,157 +364,16 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       // Block was disconnected and added to the workspace level.
       // Create a new block group layout and set its `relativePosition` to the current absolute
       // position of the block that was disconnected
-      let layoutFactory = workspaceLayout.layoutBuilder.layoutFactory
-      let blockGroupLayout =
-      layoutFactory.layoutForBlockGroupLayout(workspaceLayout: workspaceLayout)
+      let layoutFactory = self.layoutBuilder.layoutFactory
+      let blockGroupLayout = layoutFactory.layoutForBlockGroupLayout(engine: self.engine)
       blockGroupLayout.relativePosition = sourceBlockLayout.absolutePosition
 
       // Add this new block group layout to the workspace level
-      workspaceLayout.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
-      workspaceLayout.bringBlockGroupLayoutToFront(blockGroupLayout)
+      appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
+      bringBlockGroupLayoutToFront(blockGroupLayout)
 
       // Reattach block layouts to a new block group layout
       blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
-    }
-  }
-}
-
-// MARK: - Layout Scaling
-
-extension WorkspaceLayout {
-  // MARK: - Public
-
-  /**
-  Using the current `scale` value, this method scales a point from the UIView coordinate system to
-  the Workspace coordinate system.
-
-  - Parameter point: A point from the UIView coordinate system.
-  - Returns: A point in the Workspace coordinate system.
-  - Note: This does not translate a UIView point directly into a Workspace point, it only scales the
-  magnitude of a UIView point into the Workspace coordinate system. For example, in RTL, more
-  calculation would need to be done to get the UIView point's translated Workspace point.
-  */
-  public final func scaledWorkspaceVectorFromViewVector(point: CGPoint) -> WorkspacePoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
-    if scale == 0 {
-      return WorkspacePointZero
-    } else if scale == 1 {
-      return point
-    } else {
-      return WorkspacePointMake(
-        workspaceUnitFromViewUnit(point.x),
-        workspaceUnitFromViewUnit(point.y))
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method scales a size from the UIView coordinate system
-  to the Workspace coordinate system.
-
-  - Parameter size: A size from the UIView coordinate system.
-  - Returns: A size in the Workspace coordinate system.
-  */
-  public final func workspaceSizeFromViewSize(size: CGSize) -> WorkspaceSize {
-    if scale == 0 {
-      return WorkspaceSizeZero
-    } else if scale == 1 {
-      return size
-    } else {
-      return WorkspaceSizeMake(
-        workspaceUnitFromViewUnit(size.width),
-        workspaceUnitFromViewUnit(size.height))
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method scales a unit value from the UIView coordinate
-  system to the Workspace coordinate system.
-
-  - Parameter unit: A unit value from the UIView coordinate system.
-  - Returns: A unit value in the Workspace coordinate system.
-  */
-  public final func workspaceUnitFromViewUnit(unit: CGFloat) -> CGFloat {
-    if scale == 0 {
-      return 0
-    } else if scale == 1 {
-      return unit
-    } else {
-      return unit / scale
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method scales a unit value from the Workspace coordinate
-  system to the UIView coordinate system.
-
-  - Parameter unit: A unit value from the Workspace coordinate system.
-  - Returns: A unit value in the UIView coordinate system.
-  */
-  public final func viewUnitFromWorkspaceUnit(unit: CGFloat) -> CGFloat {
-    if scale == 0 {
-      return 0
-    } else if scale == 1 {
-      return unit
-    } else {
-      // Round unit values when going from workspace to view coordinates. This helps keep
-      // things consistent when scaling points and sizes.
-      return round(unit * scale)
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method a left-to-right point from the Workspace
-  coordinate system to the UIView coordinate system.
-
-  - Parameter point: A point from the Workspace coordinate system.
-  - Returns: A point in the UIView coordinate system.
-  */
-  public final func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
-    if scale == 0 {
-      return CGPointZero
-    } else if scale == 1 {
-      return point
-    } else {
-      return CGPointMake(viewUnitFromWorkspaceUnit(point.x), viewUnitFromWorkspaceUnit(point.y))
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method scales a (x, y) point from the Workspace coordinate
-  system to the UIView coordinate system.
-
-  - Parameter x: The x-coordinate of the point
-  - Parameter y: The y-coordinate of the point
-  - Returns: A point in the UIView coordinate system.
-  */
-  public final func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
-    if scale == 0 {
-      return CGPointZero
-    } else if scale == 1 {
-      return CGPointMake(x, y)
-    } else {
-      return CGPointMake(viewUnitFromWorkspaceUnit(x), viewUnitFromWorkspaceUnit(y))
-    }
-  }
-
-  /**
-  Using the current `scale` value, this method scales a size from the Workspace coordinate
-  system to the UIView coordinate system.
-
-  - Parameter size: A size from the Workspace coordinate system.
-  - Returns: A size in the UIView coordinate system.
-  */
-  public final func viewSizeFromWorkspaceSize(size: WorkspaceSize) -> CGSize {
-    if scale == 0 {
-      return CGSizeZero
-    } else if scale == 1 {
-      return size
-    } else {
-      return CGSizeMake(
-        viewUnitFromWorkspaceUnit(size.width),
-        viewUnitFromWorkspaceUnit(size.height))
     }
   }
 
@@ -545,12 +386,12 @@ extension WorkspaceLayout {
    */
   public final func workspacePositionFromViewPosition(point: CGPoint) -> WorkspacePoint {
     var viewPoint = point
-    if workspaceLayout.workspace.rtl {
+    if self.engine.rtl {
       // In RTL, the workspace position is relative to the top-right corner
-      viewPoint.x = viewUnitFromWorkspaceUnit(self.totalSize.width) - viewPoint.x
+      viewPoint.x = self.engine.viewUnitFromWorkspaceUnit(self.totalSize.width) - viewPoint.x
     }
 
     // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
-    return workspaceLayout.scaledWorkspaceVectorFromViewVector(viewPoint)
+    return self.engine.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
 }
