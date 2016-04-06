@@ -63,10 +63,9 @@ extension Input {
     - Returns: A new input
     */
     public func build() -> Input {
-      let input = Input(type: self.type, name: self.name)
+      let input = Input(type: self.type, name: self.name, fields: fields.map{ $0.copyField() })
       input.visible = visible
       input.alignment = alignment
-      input.appendFields(fields.map{ $0.copyField() })
 
       if let connection = input.connection {
         connection.typeChecks = self.connectionTypeChecks
