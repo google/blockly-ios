@@ -38,8 +38,6 @@ public class FieldCheckboxView: FieldView {
     super.init(frame: CGRectZero)
 
     switchButton = UISwitch()
-    switchButton.tintColor = BlockLayout.sharedConfig.checkboxSwitchTintColour
-    switchButton.onTintColor = BlockLayout.sharedConfig.checkboxSwitchOnTintColour
     switchButton.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
     addSubview(switchButton)
   }
@@ -53,12 +51,16 @@ public class FieldCheckboxView: FieldView {
 
   public override func internalRefreshView(forFlags flags: LayoutFlag)
   {
-    guard let fieldCheckbox = self.fieldCheckbox else {
+    guard let fieldLayout = self.fieldLayout,
+      let fieldCheckbox = self.fieldCheckbox else
+    {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
       self.switchButton.on = fieldCheckbox.checked
+      self.switchButton.tintColor =  fieldLayout.config.fieldCheckboxSwitchTintColour
+      self.switchButton.onTintColor = fieldLayout.config.fieldCheckboxSwitchOnTintColour
     }
   }
 

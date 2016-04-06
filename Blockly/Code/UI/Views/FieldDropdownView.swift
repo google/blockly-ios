@@ -75,10 +75,8 @@ public class FieldDropdownView: FieldView {
 
       // Decorate this view
       self.layer.borderColor = UIColor.grayColor().CGColor
-      self.layer.borderWidth =
-        layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
-      self.layer.cornerRadius =
-        layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldCornerRadius)
+      self.layer.borderWidth = layout.config.fieldLineWidth.viewUnit
+      self.layer.cornerRadius = layout.config.fieldCornerRadius.viewUnit
 
       if self.label.text != fieldDropdown.selectedOption?.displayName {
         self.label.text = fieldDropdown.selectedOption?.displayName
@@ -101,18 +99,15 @@ public class FieldDropdownView: FieldView {
       return
     }
 
-    // Get separator space in UIView units
-    let xPadding =
-      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
-    let yPadding =
-      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
-
     let views = [
       "label": self.label,
       "dropDownArrow": self.dropDownArrow,
       "button": self.button,
     ]
-    let metrics = ["xPadding": xPadding, "yPadding": yPadding]
+    let metrics = [
+      "xPadding": layout.config.inlineXPadding.viewUnit,
+      "yPadding": layout.config.inlineYPadding.viewUnit,
+    ]
     let constraints = [
       "H:|-(xPadding)-[label]-(xPadding)-[dropDownArrow]-(xPadding)-|",
       "H:|[button]|",
@@ -158,12 +153,9 @@ extension FieldDropdownView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    let fieldLineWidth =
-      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.fieldLineWidth)
-    let xPadding =
-      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineXPadding)
-    let yPadding =
-      layout.engine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.inlineYPadding)
+    let fieldLineWidth = layout.config.fieldLineWidth.viewUnit
+    let xPadding = layout.config.inlineXPadding.viewUnit
+    let yPadding = layout.config.inlineYPadding.viewUnit
 
     // Measure text size
     // TODO:(#27) Use a standardized font size that can be configurable for the project
