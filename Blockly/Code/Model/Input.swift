@@ -83,6 +83,7 @@ public final class Input : NSObject {
 
   public let type: BKYInputType
   public let name: String
+  public let fields: [Field]
   public weak var sourceBlock: Block! {
     didSet {
       self.connection?.sourceBlock = sourceBlock
@@ -96,7 +97,6 @@ public final class Input : NSObject {
 
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
-  public private(set) var fields: [Field] = []
 
   /// A delegate for listening to events on this input
   public weak var delegate: InputDelegate?
@@ -111,9 +111,10 @@ public final class Input : NSObject {
   /**
   To create an Input, use Input.Builder instead.
   */
-  internal init(type: InputType, name: String) {
+  internal init(type: InputType, name: String, fields: [Field]) {
     self.name = name
     self.type = type
+    self.fields = fields
 
     super.init()
 
@@ -122,29 +123,8 @@ public final class Input : NSObject {
     } else if (type == .Statement) {
       self.connection = Connection(type: .NextStatement, sourceInput: self)
     }
-  }
 
-  // MARK: - Public
-
-  // TODO:(#60) Remove dynamic fields
-
-  /**
-  Appends a field to `self.fields[]`.
-
-  - Parameter field: The field to append.
-  */
-  public func appendField(field: Field) {
-    appendFields([field])
-  }
-
-  /**
-  Appends a given list of fields to the end of `self.fields[]`.
-
-  - Parameter fields: The fields to append.
-  */
-  public func appendFields(fields: [Field]) {
     for field in fields {
-      self.fields.append(field)
       field.sourceInput = self
     }
   }
