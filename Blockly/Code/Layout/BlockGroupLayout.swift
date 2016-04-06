@@ -83,7 +83,7 @@ public class BlockGroupLayout: Layout {
 
       // Blocks are technically overlapping, so the actual amount that the next block is offset by
       // must take into account the size of the notch height
-      yOffset += blockLayout.totalSize.height - BlockLayout.sharedConfig.notchHeight
+      yOffset += blockLayout.totalSize.height - blockLayout.config.notchHeight.workspaceUnit
 
       size = LayoutHelper.sizeThatFitsLayout(blockLayout, fromInitialSize: size)
     }

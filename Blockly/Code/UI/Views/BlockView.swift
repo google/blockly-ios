@@ -120,13 +120,12 @@ public class BlockView: LayoutView {
     {
       // Update background
       let strokeColor = layout.highlighted ?
-        BlockLayout.sharedConfig.blockStrokeHighlightColour :
-        BlockLayout.sharedConfig.blockStrokeDefaultColour
+        layout.config.blockStrokeHighlightColour : layout.config.blockStrokeDefaultColour
       _backgroundLayer.strokeColor = layout.dragging ?
         strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
-        BlockLayout.sharedConfig.blockLineWidthHighlight :
-        BlockLayout.sharedConfig.blockLineWidthRegular
+        layout.config.blockLineWidthHighlight.viewUnit :
+        layout.config.blockLineWidthRegular.viewUnit
       let fillColor = layout.block.colour
       _backgroundLayer.fillColor = layout.dragging ?
         fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
@@ -218,16 +217,14 @@ public class BlockView: LayoutView {
   // MARK: - Private
 
   private func addHighlightLayerWithPath(path: UIBezierPath) {
-    guard let layoutEngine = layout?.engine else {
+    guard let layout = self.layout else {
       return
     }
 
     if _highlightLayer == nil {
-      let lineWidth =
-        layoutEngine.viewUnitFromWorkspaceUnit(BlockLayout.sharedConfig.blockLineWidthHighlight)
       let highlightLayer = BezierPathLayer()
-      highlightLayer.lineWidth = lineWidth
-      highlightLayer.strokeColor = BlockLayout.sharedConfig.blockStrokeHighlightColour.CGColor
+      highlightLayer.lineWidth = layout.config.blockLineWidthHighlight.viewUnit
+      highlightLayer.strokeColor = layout.config.blockStrokeHighlightColour.CGColor
       highlightLayer.fillColor = nil
       // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
       // larger line width
@@ -263,7 +260,7 @@ extension BlockView {
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset: CGFloat // Note: this is the right edge in RTL layouts
     if background.maleOutputConnector {
-      xLeftEdgeOffset = BlockLayout.sharedConfig.puzzleTabWidth
+      xLeftEdgeOffset = layout.config.puzzleTabWidth.workspaceUnit
     } else {
       xLeftEdgeOffset = 0
     }
@@ -277,7 +274,7 @@ extension BlockView {
 
       if i == 0 && background.femalePreviousStatementConnector {
         // Draw previous statement connector
-        addNotchToPath(path, drawLeftToRight: true)
+        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
       }
 
       path.addLineToPoint(
@@ -296,11 +293,11 @@ extension BlockView {
 
         // Inner-ceiling of "C"
         path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent + BlockLayout.sharedConfig.notchWidth,
+          xLeftEdgeOffset + row.statementIndent + layout.config.notchWidth.workspaceUnit,
           path.currentWorkspacePoint.y, relative: false)
 
         // Draw notch
-        addNotchToPath(path, drawLeftToRight: false)
+        addNotchToPath(path, drawLeftToRight: false, config: layout.config)
 
         path.addLineToPoint(
           xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
@@ -320,7 +317,7 @@ extension BlockView {
       } else if row.femaleOutputConnector {
         // Draw female output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y
-        addPuzzleTabToPath(path, drawTopToBottom: true)
+        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
         let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
         bky_assert(restOfVerticalEdge >= 0,
           message: "Middle height for the block layout is less than the space needed")
@@ -342,9 +339,9 @@ extension BlockView {
 
     if background.maleNextStatementConnector {
       path.addLineToPoint(
-        xLeftEdgeOffset + BlockLayout.sharedConfig.notchWidth, path.currentWorkspacePoint.y,
+        xLeftEdgeOffset + layout.config.notchWidth.workspaceUnit, path.currentWorkspacePoint.y,
         relative: false)
-      addNotchToPath(path, drawLeftToRight: false)
+      addNotchToPath(path, drawLeftToRight: false, config: layout.config)
     }
 
     path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
@@ -354,9 +351,9 @@ extension BlockView {
     if background.maleOutputConnector {
       // Add male connector
       path.addLineToPoint(
-        0, BlockLayout.sharedConfig.puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
+        0, layout.config.puzzleTabHeight.workspaceUnit - path.currentWorkspacePoint.y, relative: true)
 
-      addPuzzleTabToPath(path, drawTopToBottom: false)
+      addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
     }
 
     path.closePath()
@@ -366,11 +363,11 @@ extension BlockView {
     for backgroundRow in background.rows {
       for inlineConnector in backgroundRow.inlineConnectors {
         path.moveToPoint(
-          inlineConnector.relativePosition.x + BlockLayout.sharedConfig.puzzleTabWidth,
+          inlineConnector.relativePosition.x + layout.config.puzzleTabWidth.workspaceUnit,
           inlineConnector.relativePosition.y,
           relative: false)
 
-        let xEdgeWidth = inlineConnector.size.width - BlockLayout.sharedConfig.puzzleTabWidth
+        let xEdgeWidth = inlineConnector.size.width - layout.config.puzzleTabWidth.workspaceUnit
         // Top edge
         path.addLineToPoint(xEdgeWidth, 0, relative: true)
         // Right edge
@@ -379,9 +376,9 @@ extension BlockView {
         path.addLineToPoint(-xEdgeWidth, 0, relative: true)
         // Left edge
         path.addLineToPoint(0,
-          -(inlineConnector.size.height - BlockLayout.sharedConfig.puzzleTabHeight), relative: true)
+          -(inlineConnector.size.height - layout.config.puzzleTabHeight.workspaceUnit), relative: true)
         // Puzzle notch
-        addPuzzleTabToPath(path, drawTopToBottom: false)
+        addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
       }
     }
 
@@ -419,18 +416,18 @@ extension BlockView {
         // The connection point is set to the apex of the puzzle tab's curve. Move the point before
         // drawing it.
         path.moveToPoint(connectionRelativePosition +
-          WorkspacePointMake(BlockLayout.sharedConfig.puzzleTabWidth,
-            -BlockLayout.sharedConfig.puzzleTabHeight / 2),
+          WorkspacePointMake(layout.config.puzzleTabWidth.workspaceUnit,
+            -layout.config.puzzleTabHeight.workspaceUnit / 2),
           relative: false)
-        addPuzzleTabToPath(path, drawTopToBottom: true)
+        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
         break
       case .PreviousStatement, .NextStatement:
         // The connection point is set to the bottom of the notch. Move the point before drawing it.
         path.moveToPoint(connectionRelativePosition -
-          WorkspacePointMake(BlockLayout.sharedConfig.notchWidth / 2,
-            BlockLayout.sharedConfig.notchHeight),
+          WorkspacePointMake(layout.config.notchWidth.workspaceUnit / 2,
+            layout.config.notchHeight.workspaceUnit),
           relative: false)
-        addNotchToPath(path, drawLeftToRight: true)
+        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
         break
       }
     }

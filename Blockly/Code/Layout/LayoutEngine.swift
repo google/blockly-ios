@@ -42,21 +42,33 @@ public class LayoutEngine: NSObject {
 
   /// Flag determining if `Layout` instances associated with this layout engine should be rendered
   /// in right-to-left (`true`) or left-to-right (`false`)..
-  public var rtl: Bool
+  public final var rtl: Bool
+
+  /// The UI configuration to use for this layout engine
+  public final var config: LayoutEngine.Config {
+    didSet {
+      oldValue.engine = nil
+      config.engine = self
+    }
+  }
 
   // MARK: - Initializers
 
   /**
    Creates a `LayoutEngine` instance.
 
-    - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
-    is automatically set using the system's layout direction.
+   - Parameter config: Optional parameter for setting `self.config`. If no value is specified,
+   a `LayoutEngine.Config` is created automatically.
+   - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
+   is automatically set using the system's layout direction.
    */
-  public init(rtl: Bool? = nil) {
-    // TODO:(#48) Add layout config
+  public init(config: LayoutEngine.Config = LayoutEngine.Config(), rtl: Bool? = nil) {
+    self.config = config
     self.rtl =
       rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
     super.init()
+
+    self.config.engine = self
   }
 
   // MARK: - Public
@@ -140,7 +152,7 @@ public class LayoutEngine: NSObject {
   }
 
   /**
-   Using the current `scale` value, this method a left-to-right point from the Workspace
+   Using the current `scale` value, this method scales a left-to-right point from the Workspace
    coordinate system to the UIView coordinate system.
 
    - Parameter point: A point from the Workspace coordinate system.
