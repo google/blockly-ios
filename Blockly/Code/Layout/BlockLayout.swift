@@ -35,9 +35,6 @@ public class BlockLayout: Layout {
   /// value
   public static let Flag_UpdateConnectionHighlight = LayoutFlag(2)
 
-  /// The shared instance used to configure all instances of `BlockLayout`.
-  public static let sharedConfig = Config()
-
   // MARK: - Properties
 
   /// The `Block` to layout.
@@ -192,7 +189,7 @@ public class BlockLayout: Layout {
     // TODO:(#41) Handle stroke widths for the background.
 
     let outputPuzzleTabXOffset = block.outputConnection != nil ?
-      BlockLayout.sharedConfig.puzzleTabWidth : 0
+      self.config.puzzleTabWidth.workspaceUnit : 0
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
     var minimalFieldWidthRequired: CGFloat = 0
@@ -281,26 +278,26 @@ public class BlockLayout: Layout {
     }
 
     // Update connection relative positions
-    let notchXOffset = outputPuzzleTabXOffset + BlockLayout.sharedConfig.notchWidth / 2
+    let notchXOffset = outputPuzzleTabXOffset + self.config.notchWidth.workspaceUnit / 2
 
     if block.previousConnection != nil {
       _previousConnectionRelativePosition =
-        WorkspacePointMake(notchXOffset, BlockLayout.sharedConfig.notchHeight)
+        WorkspacePointMake(notchXOffset, self.config.notchHeight.workspaceUnit)
     }
 
     if block.nextConnection != nil {
       let blockBottomEdge = background.rows.reduce(0, combine: { $0 + $1.rowHeight})
       _nextConnectionRelativePosition =
-        WorkspacePointMake(notchXOffset, blockBottomEdge + BlockLayout.sharedConfig.notchHeight)
+        WorkspacePointMake(notchXOffset, blockBottomEdge + self.config.notchHeight.workspaceUnit)
 
       // TODO:(#41) Make the size.height a property of self.background
       // Create room to draw the notch height at the bottom
-      size.height += BlockLayout.sharedConfig.notchHeight
+      size.height += self.config.notchHeight.workspaceUnit
     }
 
     if block.outputConnection != nil {
       _outputConnectionRelativePosition =
-        WorkspacePointMake(0, BlockLayout.sharedConfig.puzzleTabHeight / 2)
+        WorkspacePointMake(0, self.config.puzzleTabHeight.workspaceUnit / 2)
     }
 
     // Update the size required for this block
