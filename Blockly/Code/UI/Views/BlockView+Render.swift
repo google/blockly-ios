@@ -27,18 +27,21 @@ extension BlockView {
   - Parameter path: The Bezier path to add to.
   - Parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
   should be drawn right-to-left.
+  - Parameter config: The `LayoutEngine.Config` to use to draw this path
   */
-  public func addNotchToPath(path: WorkspaceBezierPath, drawLeftToRight: Bool) {
+  public func addNotchToPath(path: WorkspaceBezierPath, drawLeftToRight: Bool,
+    config: LayoutEngine.Config)
+  {
     if drawLeftToRight {
-      path.addLineToPoint(BlockLayout.sharedConfig.notchWidth - 15, 0, relative: true)
-      path.addLineToPoint(6, BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(config.notchWidth.workspaceUnit - 15, 0, relative: true)
+      path.addLineToPoint(6, config.notchHeight.workspaceUnit, relative: true)
       path.addLineToPoint(3, 0, relative: true)
-      path.addLineToPoint(6, -BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(6, -config.notchHeight.workspaceUnit, relative: true)
     } else {
-      path.addLineToPoint(-6, BlockLayout.sharedConfig.notchHeight, relative: true)
+      path.addLineToPoint(-6, config.notchHeight.workspaceUnit, relative: true)
       path.addLineToPoint(-3, 0, relative: true)
-      path.addLineToPoint(-6, -BlockLayout.sharedConfig.notchHeight, relative: true)
-      path.addLineToPoint(-(BlockLayout.sharedConfig.notchWidth - 15), 0, relative: true)
+      path.addLineToPoint(-6, -config.notchHeight.workspaceUnit, relative: true)
+      path.addLineToPoint(-(config.notchWidth.workspaceUnit - 15), 0, relative: true)
     }
   }
 
@@ -75,10 +78,13 @@ extension BlockView {
   - Parameter path: The Bezier path to add to.
   - Parameter drawTopToBottom: True if the path should be drawn from top-to-bottom. False if it
   should be drawn bottom-to-top.
+  - Parameter config: The `LayoutEngine.Config` to use to draw this path
   */
-  public func addPuzzleTabToPath(path: WorkspaceBezierPath, drawTopToBottom: Bool) {
-    let tabWidth = BlockLayout.sharedConfig.puzzleTabWidth
-    let totalPuzzleTabHeight = BlockLayout.sharedConfig.puzzleTabHeight
+  public func addPuzzleTabToPath(path: WorkspaceBezierPath, drawTopToBottom: Bool,
+    config: LayoutEngine.Config)
+  {
+    let tabWidth = config.puzzleTabWidth.workspaceUnit
+    let totalPuzzleTabHeight = config.puzzleTabHeight.workspaceUnit
     let verticalLineHeight = totalPuzzleTabHeight * 0.2
     let roundedHalfPieceHeight = totalPuzzleTabHeight * 0.3
 
@@ -107,9 +113,12 @@ extension BlockView {
 
   /**
   Moves the path to start drawing the top-left corner
+   
+  - Parameter path: The Bezier path.
+  - Parameter config: The `LayoutEngine.Config` to use to draw this path
   */
-  public func movePathToTopLeftCornerStart(path: WorkspaceBezierPath) {
-    path.moveToPoint(0, BlockLayout.sharedConfig.blockCornerRadius, relative: true)
+  public func movePathToTopLeftCornerStart(path: WorkspaceBezierPath, config: LayoutEngine.Config) {
+    path.moveToPoint(0, config.blockCornerRadius.workspaceUnit, relative: true)
   }
 
   /**
@@ -119,9 +128,10 @@ extension BlockView {
           /
          |
   ```
+  - Parameter config: The `LayoutEngine.Config` to use to draw this path
   */
-  public func addTopLeftCornerToPath(path: WorkspaceBezierPath) {
-    let cornerRadius = BlockLayout.sharedConfig.blockCornerRadius
+  public func addTopLeftCornerToPath(path: WorkspaceBezierPath, config: LayoutEngine.Config) {
+    let cornerRadius = config.blockCornerRadius.workspaceUnit
 
     path.addArcWithCenter(WorkspacePointMake(cornerRadius, 0),
       radius: cornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),

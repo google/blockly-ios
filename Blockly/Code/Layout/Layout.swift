@@ -57,7 +57,12 @@ public class Layout: NSObject {
 
   /// The `LayoutEngine` used for layout related functions such as unit scaling and
   /// UI configuration.
-  public let engine: LayoutEngine
+  public final let engine: LayoutEngine
+
+  /// Convenience property for accessing `self.engine.config`
+  public var config: LayoutEngine.Config {
+    return engine.config
+  }
 
   /// The parent node of this layout. If this value is nil, this layout is the root node.
   public internal(set) final weak var parentLayout: Layout? {
