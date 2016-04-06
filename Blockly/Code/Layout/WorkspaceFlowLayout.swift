@@ -60,8 +60,8 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
   }
 
   public override func performLayout(includeChildren includeChildren: Bool) {
-    let xSeparatorSpace = BlockLayout.sharedConfig.xSeparatorSpace
-    let ySeparatorSpace = BlockLayout.sharedConfig.ySeparatorSpace
+    let xSeparatorSpace = self.config.xSeparatorSpace.workspaceUnit
+    let ySeparatorSpace = self.config.ySeparatorSpace.workspaceUnit
 
     var size = WorkspaceSizeZero
     var outputBlockExists = false
@@ -97,7 +97,7 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
       if self.layoutDirection == .Vertical {
         // Account for aligning block groups with output tabs
         let outputTabSpacer = outputBlockExists && !blockGroupLayoutHasOutputTab(blockGroupLayout) ?
-          BlockLayout.sharedConfig.puzzleTabWidth : 0
+          self.config.puzzleTabWidth.workspaceUnit : 0
 
         blockGroupLayout.edgeInsets =
           WorkspaceEdgeInsetsMake(0, outputTabSpacer, ySeparatorSpace, xSeparatorSpace)
