@@ -79,9 +79,9 @@ public class WorkbenchViewController: UIViewController {
   }
 
   /// The layout engine to use for all views
-  public var engine: LayoutEngine!
+  public private(set) final var engine: LayoutEngine!
   /// The layout builder to create layout hierarchies
-  public var layoutBuilder: LayoutBuilder!
+  public private(set) final var layoutBuilder: LayoutBuilder!
   /// The workspace that has been loaded via `loadWorkspace(:)`
   public var workspace: Workspace? {
     return _workspaceLayout?.workspace
@@ -535,7 +535,7 @@ extension WorkbenchViewController {
       // block. We want to do a deep copy on the root block (not just the current block).
       let rootBlockLayout = aBlockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
       let rootBlockView: BlockView! =
-        ViewManager.sharedInstance.cachedBlockViewForLayout(rootBlockLayout!)
+        ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout!)
 
       // Copy the block view into the workspace view
       let newBlockView: BlockView
