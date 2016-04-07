@@ -45,9 +45,6 @@ public class BlockView: LayoutView {
     return layout as? BlockLayout
   }
 
-  /// Manager for acquiring and recycling views.
-  private let _viewManager = ViewManager.sharedInstance
-
   /// Layer for rendering the block's background
   private let _backgroundLayer = BezierPathLayer()
 
@@ -149,11 +146,11 @@ public class BlockView: LayoutView {
     if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
       // Update field views
       for fieldLayout in layout.fieldLayouts {
-        let cachedFieldView = ViewManager.sharedInstance.cachedFieldViewForLayout(fieldLayout)
+        let cachedFieldView = ViewManager.sharedInstance.findFieldViewForLayout(fieldLayout)
 
         if cachedFieldView == nil {
           do {
-            let fieldView = try ViewManager.sharedInstance.newFieldViewForLayout(fieldLayout)
+            let fieldView = try ViewFactory.sharedInstance.fieldViewForLayout(fieldLayout)
             _fieldViews.append(fieldView)
 
             addSubview(fieldView)
@@ -187,11 +184,7 @@ public class BlockView: LayoutView {
 
     for fieldView in _fieldViews {
       fieldView.removeFromSuperview()
-
-      if let fieldLayout = fieldView.layout as? FieldLayout {
-        _viewManager.uncacheFieldViewForLayout(fieldLayout)
-      }
-      _viewManager.recycleView(fieldView)
+      ViewFactory.sharedInstance.recycleView(fieldView)
     }
     _fieldViews = []
 

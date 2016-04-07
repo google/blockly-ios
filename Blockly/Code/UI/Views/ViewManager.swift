@@ -16,11 +16,10 @@
 import Foundation
 
 /**
-Handles the management of recyclable views.
-*/
+ Manages the set `LayoutView` instances that have been created.
+ */
 @objc(BKYViewManager)
 public class ViewManager: NSObject {
-
   // MARK: - Static Properties
 
   /// Shared instance.
@@ -28,196 +27,60 @@ public class ViewManager: NSObject {
 
   // MARK: - Properties
 
-  /// Object pool for holding reusable views.
-  private let _objectPool = ObjectPool()
+  /// Dictionary mapping instances of `LayoutView` keyed by their `layout.uuid`
+  private var _views = [String: LayoutView]()
 
-  /// Dictionary of cached BlockViews
-  private var _blockViews = [String: BlockView]()
-
-  /// Dictionary of cached views for FieldLayouts
-  private var _fieldViews = [String: FieldView]()
-
-  /// Dictionary that maps `Field` subclasses (using their class' `hash()` value) to their
-  /// `FieldView` type
-  private var _fieldViewMapping = [Int: Recyclable.Type]()
-
-  public override init() {
-    super.init()
-
-    // Register the default views for known fields
-    registerViewTypeForFieldType(FieldAngle.self, viewType: FieldAngleView.self)
-    registerViewTypeForFieldType(FieldCheckbox.self, viewType: FieldCheckboxView.self)
-    registerViewTypeForFieldType(FieldColour.self, viewType: FieldColourView.self)
-    registerViewTypeForFieldType(FieldDate.self, viewType: FieldDateView.self)
-    registerViewTypeForFieldType(FieldDropdown.self, viewType: FieldDropdownView.self)
-    registerViewTypeForFieldType(FieldImage.self, viewType: FieldImageView.self)
-    registerViewTypeForFieldType(FieldInput.self, viewType: FieldInputView.self)
-    registerViewTypeForFieldType(FieldLabel.self, viewType: FieldLabelView.self)
-  }
-
-  // MARK: - Public - Block View
+  // MARK: - Public
 
   /**
-  Returns the `BlockView` that has been cached for the given layout. If the view could not be found
-  in the cache, nil is returned.
-
-  - Parameter layout: The given `BlockLayout`
-  - Returns: A `BlockView` with the given layout assigned to it, or nil
-  */
-  public func cachedBlockViewForLayout(layout: BlockLayout) -> BlockView? {
-    // Try to see if the view already exists
-    if let cachedView = _blockViews[layout.uuid] {
-      return cachedView
-    }
-    return nil
-  }
-
-  /**
-  Returns a recycled or new `BlockView` instance assigned to the given layout. This view is stored
-  in the internal cache for future lookup.
-
-  - Parameter layout: The given `BlockLayout`
-  - Returns: A `BlockView` with the given layout assigned to it
-  */
-  public func newBlockViewForLayout(layout: BlockLayout) -> BlockView {
-    // Get a fresh view and populate it with the layout
-    let blockView = viewForType(BlockView.self)
-    blockView.layout = layout
-
-    // Cache it for future lookups
-    _blockViews[layout.uuid] = blockView
-
-    return blockView
-  }
-
-  /**
-  If it exists, removes the block view associated with a given block layout.
-
-  - Parameter layout: The given layout
-  */
-  public func uncacheBlockViewForLayout(layout: BlockLayout) {
-    _blockViews[layout.uuid] = nil
-  }
-
-  // MARK: - Public - Field View
-
-  /**
-  Returns the `LayoutView` that has been cached for the given layout. If the view could not be found
-  in the cache, nil is returned.
-
-  - Parameter layout: The given `FieldLayout`
-  - Returns: A `LayoutView` with the given layout assigned to it, or nil
-  */
-  public func cachedFieldViewForLayout(layout: FieldLayout) -> LayoutView? {
-    // Try to see if the view already exists
-    if let cachedView = _fieldViews[layout.uuid] {
-      return cachedView
-    }
-    return nil
-  }
-
-  /**
-   Returns a recycled `FieldView` instance assigned to the given layout's `field`.
-   If one isn't found, a new one is created based on the `FieldView` type that was registered via
-   `registerFieldViewType(:, fieldType:)`. This view is then stored in the internal cache for
-   future lookup.
-
-   - Parameter layout: The given `FieldLayout`
-   - Returns: A `FieldView` with the given layout assigned to it
-   - Throws:
-   `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
+   Caches a `LayoutView` instance to a specific `Layout`.
+   
+   - Parameter layoutView: The `LayoutView` to cache
+   - Parameter layout: The `Layout` associated with the view
    */
-  public func newFieldViewForLayout(layout: FieldLayout) throws -> FieldView {
-    let fieldType = layout.field.dynamicType
-    if let viewType = _fieldViewMapping[fieldType.hash()],
-      let layoutView = recyclableViewForType(viewType) as? FieldView
-    {
-      layoutView.layout = layout
-      // Cache it for future lookups
-      _fieldViews[layout.uuid] = layoutView
-      return layoutView
-    } else {
-      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(fieldType)")
-    }
+  public func cacheView(layoutView: LayoutView, forLayout layout: Layout) {
+    _views[layout.uuid] = layoutView
   }
 
   /**
-  If it exists, removes the field view associated with a given field layout.
+   Uncaches the `LayoutView` associated with a given block layout.
 
-  - Parameter layout: The given layout
-  */
-  public func uncacheFieldViewForLayout(layout: FieldLayout) {
-    _fieldViews[layout.uuid] = nil
-  }
-
-  /**
-   Registers the type of `FieldView` instances that should be created when requesting a specific
-   `Field` type.
-
-   - Parameter fieldType: The `Field.Type` key
-   - Parameter viewType: A view type that is a subclass of `FieldView` that conforms to
-   `Recyclable`
+   - Parameter layout: The given layout
    */
-  public func registerViewTypeForFieldType
-    <LayoutView where LayoutView: FieldView, LayoutView: Recyclable>
-    (fieldType: Field.Type, viewType: LayoutView.Type)
-  {
-    _fieldViewMapping[fieldType.hash()] = viewType
+  public func uncacheViewForLayout(layout: Layout) {
+    _views[layout.uuid] = nil
   }
 
   /**
-   Unregisters the type of `FieldView` instance that should be created when requesting a specific
-   `Field` type.
+   Returns the `BlockView` that has been cached for a given `BlockLayout`. If the view could not
+   be found in the cache, nil is returned.
 
-   - Parameter fieldType: The `Field.Type` key
+   - Parameter layout: The `BlockLayout` to look for
+   - Returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func unregisterViewTypeForFieldType(fieldType: Field.Type) {
-    _fieldViewMapping[fieldType.hash()] = nil
-  }
-
-  // MARK: - Public - Recyclable Views
-
-  /**
-  If a recycled view is available for re-use, that view is returned.
-  If not, a new view of the given type is instantiated.
-
-  - Parameter type: The type of UIView<Recyclable> object to retrieve.
-  - Note: Views obtained through this method should be recycled through `recycleView(:)`.
-  - Returns: A view of the given type.
-  */
-  public func viewForType<RecyclableView where RecyclableView: UIView, RecyclableView: Recyclable>
-    (type: RecyclableView.Type) -> RecyclableView {
-      return _objectPool.objectForType(type)
+  public func findBlockViewForLayout(layout: BlockLayout) -> BlockView? {
+    return (_views[layout.uuid] as? BlockView) ?? nil
   }
 
   /**
-  If a recycled view is available for re-use, that view is returned.
-  If not, a new view of the given type is instantiated.
+   Returns the `FieldView` that has been cached for a given `FieldLayout`. If the view could not
+   be found in the cache, nil is returned.
 
-  - Parameter type: The type of Recyclable object to retrieve.
-  - Note: Views obtained through this method should be recycled through `recycleView(:)`.
-  - Warning: This method should only be called by Objective-C code. Swift code should use
-  `viewForType(:)` instead.
-  - Returns: A view of the given type, if it is a UIView. Otherwise, nil is returned.
-  */
-  public func recyclableViewForType(type: Recyclable.Type) -> UIView? {
-    return _objectPool.recyclableObjectForType(type) as? UIView
+   - Parameter layout: The `FieldLayout` to look for
+   - Returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
+   */
+  public func findFieldViewForLayout(layout: FieldLayout) -> FieldView? {
+    return (_views[layout.uuid] as? FieldView) ?? nil
   }
 
   /**
-  If the view conforms to the protocol `Recyclable`, calls `recycle()` on the view and stores it
-  for re-use later. Otherwise, nothing happens.
+   Returns the `LayoutView` that has been cached for a given `Layout`. If the view could not
+   be found in the cache, nil is returned.
 
-  - Parameter view: The view to recycle.
-  - Note: Views recycled through this method should be re-obtained through `viewForType(:)`
-  or `recyclableViewForType`.
-  */
-  public func recycleView(view: UIView) {
-    if let recyclableView = view as? Recyclable {
-      _objectPool.recycleObject(recyclableView)
-    } else {
-      bky_print(
-        "Cannot recycle view [\(view.dynamicType)] that does not conform to protocol [Recyclable]")
-    }
+   - Parameter layout: The `Layout` to look for
+   - Returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
+   */
+  public func findViewForLayout(layout: Layout) -> LayoutView? {
+    return _views[layout.uuid]
   }
 }
