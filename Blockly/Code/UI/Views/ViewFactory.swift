@@ -43,7 +43,7 @@ public class ViewFactory: NSObject {
     super.init()
 
     // Register the default views for known block views
-    registerViewTypeForBlockLayoutType(BlockLayout.self, viewType: BlockView.self)
+    registerViewTypeForBlockLayoutType(DefaultBlockLayout.self, viewType: DefaultBlockView.self)
 
     // Register the default views for known fields
     registerViewTypeForFieldType(FieldAngle.self, viewType: FieldAngleView.self)

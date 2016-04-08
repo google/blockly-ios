@@ -49,6 +49,9 @@ public class LayoutView: UIView {
 
   // MARK: - Abstract
 
+  // TODO:(#69) Remove internalRefreshView and internalPrepareForReuse, and have
+  // subclasses just override refreshView and prepareForReuse.
+
   /**
   Refreshes the view based on the current state `self.layout` and a given set of flags.
 
@@ -74,7 +77,7 @@ public class LayoutView: UIView {
   value is set to include all flags (i.e. `LayoutFlag.All`).
   */
   public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    if flags.intersectsWith(Layout.Flag_UpdateViewFrame) {
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
       updateViewFrameFromLayout()
     }
     if flags.subtract(Layout.Flag_UpdateViewFrame).hasFlagSet() {

@@ -26,13 +26,15 @@ class BlockLayoutTest: XCTestCase {
 
   var _workspaceLayout: WorkspaceLayout!
   var _blockFactory: BlockFactory!
+  var _layoutFactory: LayoutFactory!
 
   // MARK: - Setup
 
   override func setUp() {
     let workspace = Workspace()
+    _layoutFactory = LayoutFactory()
     _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
-      engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
+      engine: LayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: _layoutFactory))
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -167,7 +169,8 @@ class BlockLayoutTest: XCTestCase {
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .Dummy, name: "test").build()
-      let dummyInputLayout = InputLayout(input: dummyInput, engine: _workspaceLayout.engine)
+      let dummyInputLayout =
+        _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayoutBeforeLayout(dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -204,7 +207,8 @@ class BlockLayoutTest: XCTestCase {
 
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .Dummy, name: "test").build()
-      let dummyInputLayout = InputLayout(input: dummyInput, engine: _workspaceLayout.engine)
+      let dummyInputLayout =
+        _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayoutBeforeLayout(dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -227,7 +231,8 @@ class BlockLayoutTest: XCTestCase {
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .Dummy, name: "test").build()
-      let dummyInputLayout = InputLayout(input: dummyInput, engine: _workspaceLayout.engine)
+      let dummyInputLayout =
+        _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayoutAfterLayout(dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -265,7 +270,8 @@ class BlockLayoutTest: XCTestCase {
 
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .Dummy, name: "test").build()
-      let dummyInputLayout = InputLayout(input: dummyInput, engine: _workspaceLayout.engine)
+      let dummyInputLayout =
+        _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayoutAfterLayout(dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
