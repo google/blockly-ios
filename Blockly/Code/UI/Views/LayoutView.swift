@@ -25,15 +25,24 @@ public class LayoutView: UIView {
   /// Layout object to render
   public final weak var layout: Layout? {
     didSet {
-      if layout != oldValue {
-        oldValue?.delegate = nil
-        layout?.delegate = self
+      if layout == oldValue {
+        return
+      }
 
-        if layout != nil {
-          refreshView()
-        } else {
-          prepareForReuse()
-        }
+      if let previousValue = oldValue {
+        previousValue.delegate = nil
+        // Automatically untrack this view in the ViewManager
+        ViewManager.sharedInstance.uncacheViewForLayout(previousValue)
+      }
+
+      if let newValue = layout {
+        newValue.delegate = self
+        // Automatically track this view in the ViewManager
+        ViewManager.sharedInstance.cacheView(self, forLayout: newValue)
+
+        refreshView()
+      } else {
+        prepareForReuse()
       }
     }
   }
