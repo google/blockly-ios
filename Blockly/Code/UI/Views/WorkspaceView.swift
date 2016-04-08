@@ -43,16 +43,13 @@ View for rendering a `WorkspaceLayout`.
 public class WorkspaceView: LayoutView {
   // MARK: - Properties
 
-  /// Layout object to render
+  /// Convenience property for accessing `self.layout` as a `WorkspaceLayout`
   public var workspaceLayout: WorkspaceLayout? {
     return layout as? WorkspaceLayout
   }
 
   /// Scroll view used to render the workspace
   public private(set) var scrollView: WorkspaceView.ScrollView!
-
-  /// Manager for acquiring and recycling views.
-  private let _viewManager = ViewManager.sharedInstance
 
   /// Delegate for events that occur on this view
   public weak var delegate: WorkspaceViewDelegate?
@@ -93,7 +90,7 @@ public class WorkspaceView: LayoutView {
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_AddedBlockLayout]) {
       // Get blocks that are in the current viewport
       for blockLayout in allBlockLayouts {
-        let blockView = _viewManager.cachedBlockViewForLayout(blockLayout)
+        let blockView = ViewManager.sharedInstance.findBlockViewForLayout(blockLayout)
 
         // TODO:(#29) For now, always render blocks regardless of where they are on the screen.
         // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
@@ -105,8 +102,12 @@ public class WorkspaceView: LayoutView {
             removeBlockView(blockView!)
           }
         } else if blockView == nil {
-          // Create a new block view for this layout
-          addBlockViewForLayout(blockLayout)
+          do {
+            // Create a new block view for this layout
+            try addBlockViewForLayout(blockLayout)
+          } catch let error {
+            bky_assertionFailure("\(error)")
+          }
         } else {
           // Do nothing. The block view will handle its own refreshing/repositioning.
         }
@@ -214,7 +215,7 @@ public class WorkspaceView: LayoutView {
 
     guard
       let newBlockLayout = newBlock.layout,
-      let newBlockView = ViewManager.sharedInstance.cachedBlockViewForLayout(newBlockLayout) else
+      let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
     {
       throw BlocklyError(.ViewNotFound, "View could not be located for the copied block")
     }
@@ -315,14 +316,15 @@ public class WorkspaceView: LayoutView {
   Creates a block view for a given layout and adds it to the scroll view.
 
   - Parameter layout: The given layout
+  - Throws:
+  `BlocklyError`: Thrown if the block view could not be added
   */
-  private func addBlockViewForLayout(layout: BlockLayout) {
-    let newBlockView = _viewManager.newBlockViewForLayout(layout)
+  private func addBlockViewForLayout(layout: BlockLayout) throws {
+    let newBlockView = try ViewFactory.sharedInstance.blockViewForLayout(layout)
     scrollView.blockGroupView.upsertBlockView(newBlockView)
 
     delegate?.workspaceView(self, didAddBlockView: newBlockView)
   }
-
 
   /**
   Removes a given block view from the scroll view and recycles it.
@@ -333,11 +335,7 @@ public class WorkspaceView: LayoutView {
     delegate?.workspaceView(self, willRemoveBlockView: blockView)
 
     blockView.removeFromSuperview()
-
-    if let blockLayout = blockView.blockLayout {
-      _viewManager.uncacheBlockViewForLayout(blockLayout)
-    }
-    _viewManager.recycleView(blockView)
+    ViewFactory.sharedInstance.recycleView(blockView)
   }
 }
 
