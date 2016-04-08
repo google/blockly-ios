@@ -80,9 +80,6 @@ public class BlockView: LayoutView {
     // `WorkspaceView.ScrollView` to distinguish between dragging blocks and scrolling the
     // workspace.
     self.userInteractionEnabled = true
-
-    // Add background layer
-    self.layer.addSublayer(_backgroundLayer)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -90,17 +87,19 @@ public class BlockView: LayoutView {
     super.init(coder: aDecoder)
   }
 
-  // MARK: - Super
+  // MARK: - Abstract
 
-  public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
-    // Override this method so that this only returns true if the point is inside the
-    // block background bezier path
-    if let bezierPath = _backgroundLayer.bezierPath {
-      return bezierPath.containsPoint(point)
-    } else {
-      return false
-    }
+  /**
+   Updates the background UI of the block based on the layout flags.
+
+   - Parameter flags: Refresh the background UI for the given set of flags
+   - Note: This method needs to be implemented by a subclass.
+   */
+  public func refreshBackgroundUI(forFlags flags: LayoutFlag) {
+    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
   }
+
+  // MARK: - Super
 
   public override func internalRefreshView(forFlags flags: LayoutFlag) {
     guard let layout = self.blockLayout else {
@@ -110,38 +109,7 @@ public class BlockView: LayoutView {
     CATransaction.begin()
     CATransaction.setDisableActions(_disableLayerChangeAnimations)
 
-    if flags.intersectsWith(
-      [BlockLayout.Flag_NeedsDisplay,
-       BlockLayout.Flag_UpdateHighlight,
-       BlockLayout.Flag_UpdateDragging])
-    {
-      // Update background
-      let strokeColor = layout.highlighted ?
-        layout.config.blockStrokeHighlightColour : layout.config.blockStrokeDefaultColour
-      _backgroundLayer.strokeColor = layout.dragging ?
-        strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
-      _backgroundLayer.lineWidth = layout.highlighted ?
-        layout.config.blockLineWidthHighlight.viewUnit :
-        layout.config.blockLineWidthRegular.viewUnit
-      let fillColor = layout.block.colour
-      _backgroundLayer.fillColor = layout.dragging ?
-        fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
-      _backgroundLayer.bezierPath = blockBackgroundBezierPath()
-      _backgroundLayer.frame = self.bounds
-    }
-
-    if flags.intersectsWith(
-      [BlockLayout.Flag_NeedsDisplay,
-        BlockLayout.Flag_UpdateHighlight,
-        BlockLayout.Flag_UpdateConnectionHighlight])
-    {
-      // Update highlight
-      if let path = blockHighlightBezierPath() {
-        addHighlightLayerWithPath(path)
-      } else {
-        removeHighlightLayer()
-      }
-    }
+    refreshBackgroundUI(forFlags: flags)
 
     if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
       // Update field views
@@ -185,8 +153,6 @@ public class BlockView: LayoutView {
       ViewFactory.sharedInstance.recycleView(fieldView)
     }
     _fieldViews = []
-
-    removeHighlightLayer()
   }
 
   // MARK: - Public
@@ -203,238 +169,5 @@ public class BlockView: LayoutView {
   {
     return delegate?.blockView(
       self, requestedToPresentPopoverViewController: viewController, fromView: fromView) ?? false
-  }
-
-  // MARK: - Private
-
-  private func addHighlightLayerWithPath(path: UIBezierPath) {
-    guard let layout = self.layout else {
-      return
-    }
-
-    if _highlightLayer == nil {
-      let highlightLayer = BezierPathLayer()
-      highlightLayer.lineWidth = layout.config.blockLineWidthHighlight.viewUnit
-      highlightLayer.strokeColor = layout.config.blockStrokeHighlightColour.CGColor
-      highlightLayer.fillColor = nil
-      // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
-      // larger line width
-      highlightLayer.frame = self.bounds
-      // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
-      highlightLayer.zPosition = 1
-      layer.addSublayer(highlightLayer)
-      _highlightLayer = highlightLayer
-    }
-    _highlightLayer!.bezierPath = path
-  }
-
-  private func removeHighlightLayer() {
-    if let highlightLayer = _highlightLayer {
-      highlightLayer.removeFromSuperlayer()
-      _highlightLayer = nil
-    }
-  }
-}
-
-// TODO:(#36) Move this code into BlockBackgroundLayer and BlockHighlightLayer classes
-
-// MARK: - Bezier Path Builders
-
-extension BlockView {
-  private func blockBackgroundBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout as? BlockLayout else {
-      return nil
-    }
-
-    let path = WorkspaceBezierPath(engine: layout.engine)
-    let background = layout.background
-    var previousBottomPadding: CGFloat = 0
-    let xLeftEdgeOffset: CGFloat // Note: this is the right edge in RTL layouts
-    if background.maleOutputConnector {
-      xLeftEdgeOffset = layout.config.puzzleTabWidth.workspaceUnit
-    } else {
-      xLeftEdgeOffset = 0
-    }
-
-    path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
-
-    for i in 0 ..< background.rows.count {
-      let row = background.rows[i]
-
-      // DRAW THE TOP EDGES
-
-      if i == 0 && background.femalePreviousStatementConnector {
-        // Draw previous statement connector
-        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
-      }
-
-      path.addLineToPoint(
-        xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y, relative: false)
-
-      // Draw top padding
-      let topPadding = row.topPadding + previousBottomPadding
-      if topPadding > 0 {
-        path.addLineToPoint(0, topPadding, relative: true)
-      }
-
-      // DRAW THE RIGHT EDGES
-
-      if row.isStatement {
-        // Draw the "C" part of a statement block
-
-        // Inner-ceiling of "C"
-        path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent + layout.config.notchWidth.workspaceUnit,
-          path.currentWorkspacePoint.y, relative: false)
-
-        // Draw notch
-        addNotchToPath(path, drawLeftToRight: false, config: layout.config)
-
-        path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
-
-        // Inner-left side of "C"
-        path.addLineToPoint(0, row.middleHeight, relative: true)
-
-        if i == (background.rows.count - 1) {
-          // If there is no other row after this, draw the inner-floor of the "C".
-          path.addLineToPoint(
-            xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y,
-            relative: false)
-        } else {
-          // If there is another row after this, the inner-floor of the "C" is drawn by the
-          // right edge of the next row.
-        }
-      } else if row.femaleOutputConnector {
-        // Draw female output connector and then the rest of the middle height
-        let startingY = path.currentWorkspacePoint.y
-        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
-        let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
-        bky_assert(restOfVerticalEdge >= 0,
-          message: "Middle height for the block layout is less than the space needed")
-        path.addLineToPoint(0, restOfVerticalEdge, relative: true)
-      } else {
-        // Simply draw the middle height for the vertical edge
-        path.addLineToPoint(0, row.middleHeight, relative: true)
-      }
-
-      // Store bottom padding (to draw into the the top padding of the next row)
-      previousBottomPadding = row.bottomPadding
-    }
-
-    if previousBottomPadding > 0 {
-      path.addLineToPoint(0, previousBottomPadding, relative: true)
-    }
-
-    // DRAW THE BOTTOM EDGES
-
-    if background.maleNextStatementConnector {
-      path.addLineToPoint(
-        xLeftEdgeOffset + layout.config.notchWidth.workspaceUnit, path.currentWorkspacePoint.y,
-        relative: false)
-      addNotchToPath(path, drawLeftToRight: false, config: layout.config)
-    }
-
-    path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
-
-    // DRAW THE LEFT EDGES
-
-    if background.maleOutputConnector {
-      // Add male connector
-      path.addLineToPoint(
-        0, layout.config.puzzleTabHeight.workspaceUnit - path.currentWorkspacePoint.y, relative: true)
-
-      addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
-    }
-
-    path.closePath()
-
-    // DRAW INLINE CONNECTORS
-    path.viewBezierPath.usesEvenOddFillRule = true
-    for backgroundRow in background.rows {
-      for inlineConnector in backgroundRow.inlineConnectors {
-        path.moveToPoint(
-          inlineConnector.relativePosition.x + layout.config.puzzleTabWidth.workspaceUnit,
-          inlineConnector.relativePosition.y,
-          relative: false)
-
-        let xEdgeWidth = inlineConnector.size.width - layout.config.puzzleTabWidth.workspaceUnit
-        // Top edge
-        path.addLineToPoint(xEdgeWidth, 0, relative: true)
-        // Right edge
-        path.addLineToPoint(0, inlineConnector.size.height, relative: true)
-        // Bottom edge
-        path.addLineToPoint(-xEdgeWidth, 0, relative: true)
-        // Left edge
-        path.addLineToPoint(0,
-          -(inlineConnector.size.height - layout.config.puzzleTabHeight.workspaceUnit), relative: true)
-        // Puzzle notch
-        addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
-      }
-    }
-
-    let viewBezierPath = path.viewBezierPath
-    if layout.engine.rtl {
-      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
-    }
-
-    return viewBezierPath
-  }
-
-  private func blockHighlightBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout as? BlockLayout else {
-      return nil
-    }
-
-    let hasConnectionHighlight = layout.block.directConnections.filter { $0.highlighted }.count > 0
-    if !hasConnectionHighlight {
-      return nil
-    }
-
-    // Build path for each highlighted connection
-    let path = WorkspaceBezierPath(engine: layout.engine)
-
-    for connection in layout.block.directConnections {
-      if !connection.highlighted {
-        continue
-      }
-
-      let connectionRelativePosition = connection.position - layout.absolutePosition
-
-      // Highlight specific connection
-      switch connection.type {
-      case .InputValue, .OutputValue:
-        // The connection point is set to the apex of the puzzle tab's curve. Move the point before
-        // drawing it.
-        path.moveToPoint(connectionRelativePosition +
-          WorkspacePointMake(layout.config.puzzleTabWidth.workspaceUnit,
-            -layout.config.puzzleTabHeight.workspaceUnit / 2),
-          relative: false)
-        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
-        break
-      case .PreviousStatement, .NextStatement:
-        // The connection point is set to the bottom of the notch. Move the point before drawing it.
-        path.moveToPoint(connectionRelativePosition -
-          WorkspacePointMake(layout.config.notchWidth.workspaceUnit / 2,
-            layout.config.notchHeight.workspaceUnit),
-          relative: false)
-        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
-        break
-      }
-    }
-
-    let viewBezierPath = path.viewBezierPath
-    if layout.engine.rtl {
-      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
-    }
-
-    return viewBezierPath
-  }
-
-  private func applyRtlTransformToBezierPath(path: UIBezierPath, layout: BlockLayout) {
-    var transform = CGAffineTransformIdentity
-    transform = CGAffineTransformScale(transform, CGFloat(-1.0), CGFloat(1.0))
-    transform = CGAffineTransformTranslate(transform, -layout.viewFrame.size.width, CGFloat(0))
-    path.applyTransform(transform)
   }
 }

@@ -59,8 +59,17 @@ public class FieldCheckboxView: FieldView {
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
       self.switchButton.on = fieldCheckbox.checked
-      self.switchButton.tintColor =  fieldLayout.config.fieldCheckboxSwitchTintColour
-      self.switchButton.onTintColor = fieldLayout.config.fieldCheckboxSwitchOnTintColour
+
+      if self.switchButton.tintColor != fieldLayout.config.fieldCheckboxSwitchTintColour {
+        // Whenever `tintColor` is set, it messes up the switch's transition animation.
+        // Therefore, it's only set if the value changes.
+        self.switchButton.tintColor = fieldLayout.config.fieldCheckboxSwitchTintColour
+      }
+      if self.switchButton.onTintColor != fieldLayout.config.fieldCheckboxSwitchOnTintColour {
+        // Whenever `onTintColor` is set, it messes up the switch's transition animation.
+        // Therefore, it's only set if the value changes.
+        self.switchButton.onTintColor = fieldLayout.config.fieldCheckboxSwitchOnTintColour
+      }
     }
   }
 

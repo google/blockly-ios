@@ -15,6 +15,7 @@
 
 import Foundation
 
+// TODO:(#68) Convert LayoutFactory into a protocol
 /**
 Factory responsible for returning new instances of Layout objects.
 */
@@ -91,7 +92,7 @@ public class LayoutFactory: NSObject {
   layout could be found for the block.
   */
   public func layoutForBlock(block: Block, engine: LayoutEngine) -> BlockLayout {
-    return BlockLayout(block: block, engine: engine)
+    return DefaultBlockLayout(block: block, engine: engine)
   }
 
   /**
@@ -100,10 +101,8 @@ public class LayoutFactory: NSObject {
   - Parameter engine: The `LayoutEngine` to associate with the new layout.
   - Returns: A new `BlockGroupLayout` instance.
   */
-  public func layoutForBlockGroupLayout(engine engine: LayoutEngine)
-    -> BlockGroupLayout
-  {
-    return BlockGroupLayout(engine: engine)
+  public func layoutForBlockGroupLayout(engine engine: LayoutEngine) -> BlockGroupLayout {
+    return DefaultBlockGroupLayout(engine: engine)
   }
 
   /**
@@ -114,7 +113,7 @@ public class LayoutFactory: NSObject {
   - Returns: A new `InputLayout` instance.
   */
   public func layoutForInput(input: Input, engine: LayoutEngine) -> InputLayout {
-    return InputLayout(input: input, engine: engine)
+    return DefaultInputLayout(input: input, engine: engine, factory: self)
   }
 
   /**
