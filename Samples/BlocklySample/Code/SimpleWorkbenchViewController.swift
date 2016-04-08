@@ -25,7 +25,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Initializers
 
   init() {
-    super.init(engine: LayoutEngine(), layoutBuilder: LayoutBuilder())
+    super.init()
     commonInit()
   }
 

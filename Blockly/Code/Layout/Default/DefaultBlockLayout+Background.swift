@@ -15,11 +15,11 @@
 
 import Foundation
 
-extension BlockLayout {
+extension DefaultBlockLayout {
   /**
-  Information for rendering a block.
+  Information for rendering the background of a `DefaultBlockLayout`.
   */
-  @objc(BKYBlockLayoutBackground)
+  @objc(BKYDefaultBlockLayoutBackground)
   public final class Background: NSObject {
     // MARK: - Properties
 
@@ -150,7 +150,7 @@ extension BlockLayout {
 
       resetRenderProperties()
 
-      let lastInputLayout = inputLayouts.last!
+      let lastInputLayout = inputLayouts.last! as! DefaultInputLayout
 
       if lastInputLayout.input.type == .Statement {
         self.isStatement = true
@@ -167,7 +167,7 @@ extension BlockLayout {
       } else {
         // The right edge for inline dummy/value inputs is the total width of all combined
         var rightEdge: CGFloat = 0
-        for inputLayout in inputLayouts {
+        for inputLayout in (inputLayouts as! [DefaultInputLayout]) {
           rightEdge += inputLayout.totalSize.width
 
           // Add inline connector locations
