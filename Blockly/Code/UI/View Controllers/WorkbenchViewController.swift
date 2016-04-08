@@ -120,7 +120,16 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Initializers
 
-  public init(engine: LayoutEngine, layoutBuilder: LayoutBuilder) {
+  /**
+   Creates the workbench.
+
+   - Parameter engine: Optionally sets `self.layoutEngine`. If no value is specified, a new
+   `LayoutEngine` is automatically created.
+   - Parameter layoutBuilder: Optionally sets `self.layoutBuilder`. If no value is specified, a new
+   `LayoutBuilder` is automatically created.
+   */
+  public init(engine: LayoutEngine = LayoutEngine(), layoutBuilder: LayoutBuilder = LayoutBuilder())
+  {
     self.engine = engine
     self.layoutBuilder = layoutBuilder
     super.init(nibName: nil, bundle: nil)
@@ -534,6 +543,8 @@ extension WorkbenchViewController {
       // The block the user is dragging out of the toolbox/trash may be a child of a large nested
       // block. We want to do a deep copy on the root block (not just the current block).
       let rootBlockLayout = aBlockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+
+      // TODO:(#45) This should be copying the root block layout, not the root block view.
       let rootBlockView: BlockView! =
         ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout!)
 

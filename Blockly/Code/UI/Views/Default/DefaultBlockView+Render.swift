@@ -15,7 +15,7 @@
 
 import UIKit
 
-extension BlockView {
+extension DefaultBlockView {
   // MARK: - Public
 
   /**
