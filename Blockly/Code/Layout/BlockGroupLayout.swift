@@ -16,9 +16,9 @@
 import Foundation
 
 /**
-Stores information on how to render and position a group of sequential `Block` objects (ie. those
-that are connecting via previous/next connections).
-*/
+ Abstract class that stores information on how to render and position a group of sequential
+ `Block` objects (ie. those that are connecting via previous/next connections).
+ */
 @objc(BKYBlockGroupLayout)
 public class BlockGroupLayout: Layout {
   // MARK: - Properties
@@ -64,32 +64,6 @@ public class BlockGroupLayout: Layout {
         blockLayout.dragging = dragging
       }
     }
-  }
-
-  // MARK: - Super
-
-  public override func performLayout(includeChildren includeChildren: Bool) {
-    var yOffset: CGFloat = 0
-    var size = WorkspaceSizeZero
-
-    // Update relative position/size of inputs
-    for blockLayout in blockLayouts {
-      if includeChildren {
-        blockLayout.performLayout(includeChildren: true)
-      }
-
-      blockLayout.relativePosition.x = 0
-      blockLayout.relativePosition.y = yOffset
-
-      // Blocks are technically overlapping, so the actual amount that the next block is offset by
-      // must take into account the size of the notch height
-      yOffset += blockLayout.totalSize.height - blockLayout.config.notchHeight.workspaceUnit
-
-      size = LayoutHelper.sizeThatFitsLayout(blockLayout, fromInitialSize: size)
-    }
-
-    // Update the size required for this block
-    self.contentSize = size
   }
 
   // MARK: - Public
