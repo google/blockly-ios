@@ -31,7 +31,7 @@ public class InputLayout: Layout {
   }
 
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
-  public final let blockGroupLayout: BlockGroupLayout
+  public private(set) final var blockGroupLayout: BlockGroupLayout!
 
   /// The corresponding layouts for `self.input.fields[]`
   public private(set) final var fieldLayouts = [FieldLayout]()
@@ -53,11 +53,13 @@ public class InputLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, engine: LayoutEngine, factory: LayoutFactory) {
+  public init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
     self.input = input
-    self.blockGroupLayout = factory.layoutForBlockGroupLayout(engine: engine)
     super.init(engine: engine)
 
+    // Create `self.blockGroupLayout` (this is done after super.init because you can't call a
+    // throwing method prior to initialization)
+    self.blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
     self.blockGroupLayout.parentLayout = self
   }
 

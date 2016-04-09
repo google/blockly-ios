@@ -20,15 +20,15 @@ Class for building a `Layout` hierarchy from a model object.
 */
 @objc(BKYLayoutBuilder)
 public class LayoutBuilder: NSObject {
+  // MARK: - Properties
 
   /// Factory responsible for creating new `Layout` instances
   public let layoutFactory: LayoutFactory
 
   // MARK: - Initializer
 
-  // TODO:(#55) Remove the default value for layoutFactory
-  public init(layoutFactory: LayoutFactory? = nil) {
-    self.layoutFactory = (layoutFactory ?? LayoutFactory())
+  public init(layoutFactory: LayoutFactory) {
+    self.layoutFactory = layoutFactory
   }
 
   // MARK: - Public
@@ -78,7 +78,7 @@ public class LayoutBuilder: NSObject {
     }
 
     let blockGroupLayout =
-      layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
+      try layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
     let position = block.position
     // TODO:(#28) Correctly convert position to the local workspace (scale and offset).
     // If this Block has a position use it to initialize the layout's position.
@@ -130,7 +130,7 @@ public class LayoutBuilder: NSObject {
   */
   private func buildLayoutTreeForBlock(block: Block, engine: LayoutEngine) throws -> BlockLayout
   {
-    let blockLayout = layoutFactory.layoutForBlock(block, engine: engine)
+    let blockLayout = try layoutFactory.layoutForBlock(block, engine: engine)
     block.delegate = blockLayout // Have the layout listen for events on the block
 
     // Build the input layouts for this block
@@ -152,7 +152,7 @@ public class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
   private func buildLayoutTreeForInput(input: Input, engine: LayoutEngine) throws -> InputLayout {
-    let inputLayout = layoutFactory.layoutForInput(input, engine: engine)
+    let inputLayout = try layoutFactory.layoutForInput(input, engine: engine)
     input.delegate = inputLayout // Have the layout listen for events on the input
 
     // Build field layouts for this input

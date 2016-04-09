@@ -365,7 +365,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       // Create a new block group layout and set its `relativePosition` to the current absolute
       // position of the block that was disconnected
       let layoutFactory = self.layoutBuilder.layoutFactory
-      let blockGroupLayout = layoutFactory.layoutForBlockGroupLayout(engine: self.engine)
+      let blockGroupLayout = try layoutFactory.layoutForBlockGroupLayout(engine: self.engine)
       blockGroupLayout.relativePosition = sourceBlockLayout.absolutePosition
 
       // Add this new block group layout to the workspace level

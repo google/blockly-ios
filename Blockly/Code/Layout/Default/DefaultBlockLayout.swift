@@ -19,7 +19,7 @@ import Foundation
  A default implementation of `BlockLayout`.
  */
 @objc(BKYDefaultBlockLayout)
-public final class DefaultBlockLayout: BlockLayout {
+public final class DefaultBlockLayout: BlockLayout, DefaultLayoutEngineConsumer {
   // MARK: - Properties
 
   /// The information for rendering the background for this block.
@@ -71,11 +71,11 @@ public final class DefaultBlockLayout: BlockLayout {
 
   // MARK: - Initializers
 
-  public required init(block: Block, engine: LayoutEngine) {
+  public init(block: Block, defaultEngine: DefaultLayoutEngine) {
     _outputConnection = block.outputConnection
     _nextConnection = block.nextConnection
     _previousConnection = block.previousConnection
-    super.init(block: block, engine: engine)
+    super.init(block: block, engine: defaultEngine)
   }
 
   // MARK: - Super

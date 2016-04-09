@@ -122,7 +122,7 @@ public class BlockLayout: Layout {
 
   // MARK: - Initializers
 
-  public required init(block: Block, engine: LayoutEngine) {
+  public init(block: Block, engine: LayoutEngine) {
     self.block = block
     super.init(engine: engine)
 
