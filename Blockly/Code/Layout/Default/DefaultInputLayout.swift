@@ -107,9 +107,9 @@ public final class DefaultInputLayout: InputLayout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, engine: LayoutEngine, factory: LayoutFactory) {
+  public override init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
     self._connection = input.connection
-    super.init(input: input, engine: engine, factory: factory)
+    try super.init(input: input, engine: engine, factory: factory)
   }
 
   // MARK: - Super
