@@ -19,7 +19,7 @@ import UIKit
  A default implementation of `InputLayout`.
  */
 @objc(BKYDefaultInputLayout)
-public final class DefaultInputLayout: InputLayout {
+public final class DefaultInputLayout: InputLayout, DefaultLayoutEngineConsumer {
   // MARK: - Properties
 
   // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
@@ -107,9 +107,12 @@ public final class DefaultInputLayout: InputLayout {
 
   // MARK: - Initializers
 
-  public required init(input: Input, engine: LayoutEngine, factory: LayoutFactory) {
+  public init(input: Input,
+    defaultEngine: DefaultLayoutEngine,
+    defaultFactory: DefaultLayoutFactory) throws
+  {
     self._connection = input.connection
-    super.init(input: input, engine: engine, factory: factory)
+    try super.init(input: input, engine: defaultEngine, factory: defaultFactory)
   }
 
   // MARK: - Super

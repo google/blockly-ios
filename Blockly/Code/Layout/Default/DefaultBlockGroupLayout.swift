@@ -19,7 +19,13 @@ import Foundation
  A default implementation of `BlockGroupLayout`.
  */
 @objc(BKYDefaultBlockGroupLayout)
-public final class DefaultBlockGroupLayout: BlockGroupLayout {
+public final class DefaultBlockGroupLayout: BlockGroupLayout, DefaultLayoutEngineConsumer {
+
+  // MARK: - Initializers
+
+  public init(defaultEngine: DefaultLayoutEngine) {
+    super.init(engine: defaultEngine)
+  }
 
   // MARK: - Super
 

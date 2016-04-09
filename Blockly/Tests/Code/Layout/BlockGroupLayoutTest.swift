@@ -26,9 +26,9 @@ class BlockGroupLayoutTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _layoutFactory = LayoutFactory()
+    _layoutFactory = DefaultLayoutFactory()
     _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
-      engine: LayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: _layoutFactory))
+      engine: DefaultLayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: _layoutFactory))
     _blockFactory = try! BlockFactory(
       jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
   }
@@ -36,7 +36,8 @@ class BlockGroupLayoutTest: XCTestCase {
   // MARK: - Tests
 
   func testZIndex() {
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
     blockGroupLayout.zIndex = 0
 
     // Add a bunch of block layouts
@@ -58,7 +59,8 @@ class BlockGroupLayoutTest: XCTestCase {
   }
 
   func testAppendBlockLayoutsEmpty() {
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
 
     XCTAssertEqual(0, blockGroupLayout.blockLayouts.count)
 
@@ -69,7 +71,8 @@ class BlockGroupLayoutTest: XCTestCase {
   }
 
   func testAppendBlockLayoutsNonEmpty() {
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
     blockGroupLayout.zIndex = 2
 
     // Add a bunch of block layouts
@@ -172,7 +175,8 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func testReset() {
     // Create block group with a bunch of block layouts
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
     var blockLayouts = [BlockLayout]()
     for _ in 0 ..< 10 {
       blockLayouts.append(createBlockLayout())
@@ -188,7 +192,8 @@ class BlockGroupLayoutTest: XCTestCase {
   }
 
   func testMoveToWorkspacePositionForTopLevelBlockGroup() {
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
     blockGroupLayout.relativePosition = WorkspacePointMake(30, 30)
 
     // Add block group to workspace
@@ -235,7 +240,8 @@ class BlockGroupLayoutTest: XCTestCase {
   // MARK: - Helper methods
 
   func createBlockGroupLayout(numberOfBlockLayouts numberOfBlockLayouts: Int) -> BlockGroupLayout {
-    let blockGroupLayout = _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+    let blockGroupLayout =
+      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
@@ -251,7 +257,7 @@ class BlockGroupLayoutTest: XCTestCase {
   func createBlockLayout() -> BlockLayout {
     let block = try! Block.Builder(name: "test").build()
     try! _workspaceLayout.workspace.addBlockTree(block)
-    let layout = _layoutFactory.layoutForBlock(block, engine: _workspaceLayout.engine)
+    let layout = try! _layoutFactory.layoutForBlock(block, engine: _workspaceLayout.engine)
     block.delegate = layout
     return layout
   }
