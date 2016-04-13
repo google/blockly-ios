@@ -120,6 +120,12 @@ public class BlockLayout: Layout {
     }
   }
 
+  /// The position of the block's leading edge X offset, specified as a Workspace coordinate
+  /// system unit.
+  public var leadingEdgeXOffset: CGFloat {
+    return 0
+  }
+
   // MARK: - Initializers
 
   public init(block: Block, engine: LayoutEngine) {
