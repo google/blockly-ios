@@ -58,8 +58,9 @@ public class FieldColourView: FieldView {
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.button.layer.borderWidth = layout.config.fieldColourButtonBorderWidth.viewUnit
-      self.button.layer.cornerRadius = layout.config.fieldCornerRadius.viewUnit
+      self.button.layer.borderWidth =
+        layout.config.viewUnitFor(LayoutConfig.FieldColourButtonBorderWidth)
+      self.button.layer.cornerRadius = layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
       self.button.backgroundColor = self.fieldColour?.colour
     }
   }
@@ -93,7 +94,7 @@ extension FieldColourView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    return layout.config.fieldColourButtonSize.viewSize
+    return layout.config.viewSizeFor(LayoutConfig.FieldColourButtonSize)
   }
 }
 

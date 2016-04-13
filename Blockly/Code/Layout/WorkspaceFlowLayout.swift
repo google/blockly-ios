@@ -60,20 +60,25 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
   }
 
   public override func performLayout(includeChildren includeChildren: Bool) {
-    let xSeparatorSpace = self.config.xSeparatorSpace.workspaceUnit
-    let ySeparatorSpace = self.config.ySeparatorSpace.workspaceUnit
+    let xSeparatorSpace =
+      self.config.workspaceUnitFor(LayoutConfig.WorkspaceFlowXSeparatorSpace)
+    let ySeparatorSpace =
+      self.config.workspaceUnitFor(LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
     var size = WorkspaceSizeZero
-    var outputBlockExists = false
     var xPosition = CGFloat(xSeparatorSpace)
     var yPosition = CGFloat(ySeparatorSpace)
 
-    // Check if there are some blocks with output tabs
+    // Perform the layout for each block individual block group first. This is so we can try to
+    // gather their layout info, when we align the leading edges
+    var largestLeadingEdgeXOffset = CGFloat(0)
     for blockGroupLayout in self.blockGroupLayouts {
-      if blockGroupLayoutHasOutputTab(blockGroupLayout) {
-        outputBlockExists = true
-        break
+      if includeChildren {
+        blockGroupLayout.performLayout(includeChildren: true)
       }
+
+      largestLeadingEdgeXOffset =
+        max(largestLeadingEdgeXOffset, blockGroupLayout.largestLeadingEdgeXOffset)
     }
 
     // Update relative position/size of blocks. We iterate through workspaceFlow.items instead of
@@ -90,14 +95,9 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
         continue
       }
 
-      if includeChildren {
-        blockGroupLayout.performLayout(includeChildren: true)
-      }
-
       if self.layoutDirection == .Vertical {
         // Account for aligning block groups with output tabs
-        let outputTabSpacer = outputBlockExists && !blockGroupLayoutHasOutputTab(blockGroupLayout) ?
-          self.config.puzzleTabWidth.workspaceUnit : 0
+        let outputTabSpacer = largestLeadingEdgeXOffset - blockGroupLayout.largestLeadingEdgeXOffset
 
         blockGroupLayout.edgeInsets =
           WorkspaceEdgeInsetsMake(0, outputTabSpacer, ySeparatorSpace, xSeparatorSpace)
@@ -140,14 +140,5 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
 
     // Update the canvas size
     scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
-  }
-
-  private func blockGroupLayoutHasOutputTab(blockGroupLayout: BlockGroupLayout) -> Bool {
-    for blockLayout in blockGroupLayout.blockLayouts {
-      if blockLayout.block.outputConnection != nil {
-        return true
-      }
-    }
-    return false
   }
 }
