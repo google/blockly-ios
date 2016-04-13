@@ -66,6 +66,11 @@ public class BlockGroupLayout: Layout {
     }
   }
 
+  /// The largest leading edge X offset for every `BlockLayout` in `self.blockLayouts`
+  public var largestLeadingEdgeXOffset: CGFloat {
+    return blockLayouts.map({ $0.leadingEdgeXOffset }).maxElement() ?? CGFloat(0)
+  }
+
   // MARK: - Public
 
   /**

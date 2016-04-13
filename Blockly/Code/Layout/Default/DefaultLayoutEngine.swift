@@ -23,7 +23,7 @@ import Foundation
 @objc(BKYDefaultLayoutEngine)
 public class DefaultLayoutEngine: LayoutEngine {
   // MARK: - Initializers
-  public override init(config: LayoutEngine.Config = DefaultLayoutEngineConfig(), rtl: Bool? = nil)
+  public override init(config: LayoutConfig = DefaultLayoutConfig(), rtl: Bool? = nil)
   {
     super.init(config: config, rtl: rtl)
   }

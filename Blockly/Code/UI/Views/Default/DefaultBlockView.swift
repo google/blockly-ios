@@ -67,13 +67,15 @@ public class DefaultBlockView: BlockView {
         BlockLayout.Flag_UpdateDragging])
     {
       // Update background
-      let strokeColor = layout.highlighted ?
-        layout.config.blockStrokeHighlightColour : layout.config.blockStrokeDefaultColour
+      let strokeColor = (layout.highlighted ?
+        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
+        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
+        UIColor.clearColor()
       _backgroundLayer.strokeColor = layout.dragging ?
         strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
-        layout.config.blockLineWidthHighlight.viewUnit :
-        layout.config.blockLineWidthRegular.viewUnit
+        layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
+        layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
       let fillColor = layout.block.colour
       _backgroundLayer.fillColor = layout.dragging ?
         fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
@@ -104,14 +106,16 @@ public class DefaultBlockView: BlockView {
   // MARK: - Private
 
   private func addHighlightLayerWithPath(path: UIBezierPath) {
-    guard let layout = self.layout else {
+    guard let layout = self.defaultBlockLayout else {
       return
     }
 
     if _highlightLayer == nil {
       let highlightLayer = BezierPathLayer()
-      highlightLayer.lineWidth = layout.config.blockLineWidthHighlight.viewUnit
-      highlightLayer.strokeColor = layout.config.blockStrokeHighlightColour.CGColor
+      highlightLayer.lineWidth = layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight)
+      highlightLayer.strokeColor =
+        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.CGColor ??
+        UIColor.clearColor().CGColor
       highlightLayer.fillColor = nil
       // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
       // larger line width
@@ -132,19 +136,18 @@ public class DefaultBlockView: BlockView {
   }
 
   private func blockBackgroundBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout as? DefaultBlockLayout else {
+    guard let layout = self.defaultBlockLayout else {
       return nil
     }
 
     let path = WorkspaceBezierPath(engine: layout.engine)
     let background = layout.background
     var previousBottomPadding: CGFloat = 0
-    let xLeftEdgeOffset: CGFloat // Note: this is the right edge in RTL layouts
-    if background.maleOutputConnector {
-      xLeftEdgeOffset = layout.config.puzzleTabWidth.workspaceUnit
-    } else {
-      xLeftEdgeOffset = 0
-    }
+    let xLeftEdgeOffset = background.leadingEdgeXOffset // Note: this is the right edge in RTL
+    let notchWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth)
+    let notchHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight)
+    let puzzleTabWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
+    let puzzleTabHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight)
 
     path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
 
@@ -155,7 +158,8 @@ public class DefaultBlockView: BlockView {
 
       if i == 0 && background.femalePreviousStatementConnector {
         // Draw previous statement connector
-        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
+        addNotchToPath(
+          path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
       }
 
       path.addLineToPoint(
@@ -174,11 +178,12 @@ public class DefaultBlockView: BlockView {
 
         // Inner-ceiling of "C"
         path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent + layout.config.notchWidth.workspaceUnit,
+          xLeftEdgeOffset + row.statementIndent + notchWidth,
           path.currentWorkspacePoint.y, relative: false)
 
         // Draw notch
-        addNotchToPath(path, drawLeftToRight: false, config: layout.config)
+        addNotchToPath(
+          path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineToPoint(
           xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
@@ -198,7 +203,8 @@ public class DefaultBlockView: BlockView {
       } else if row.femaleOutputConnector {
         // Draw female output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y
-        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
+        addPuzzleTabToPath(path, drawTopToBottom: true,
+          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
         bky_assert(restOfVerticalEdge >= 0,
           message: "Middle height for the block layout is less than the space needed")
@@ -220,9 +226,8 @@ public class DefaultBlockView: BlockView {
 
     if background.maleNextStatementConnector {
       path.addLineToPoint(
-        xLeftEdgeOffset + layout.config.notchWidth.workspaceUnit, path.currentWorkspacePoint.y,
-        relative: false)
-      addNotchToPath(path, drawLeftToRight: false, config: layout.config)
+        xLeftEdgeOffset + notchWidth, path.currentWorkspacePoint.y, relative: false)
+      addNotchToPath(path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
     path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
@@ -231,10 +236,10 @@ public class DefaultBlockView: BlockView {
 
     if background.maleOutputConnector {
       // Add male connector
-      path.addLineToPoint(0,
-        layout.config.puzzleTabHeight.workspaceUnit - path.currentWorkspacePoint.y, relative: true)
+      path.addLineToPoint(0, puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
 
-      addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
+      addPuzzleTabToPath(path, drawTopToBottom: false,
+        puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
     }
 
     path.closePath()
@@ -244,11 +249,11 @@ public class DefaultBlockView: BlockView {
     for backgroundRow in background.rows {
       for inlineConnector in backgroundRow.inlineConnectors {
         path.moveToPoint(
-          inlineConnector.relativePosition.x + layout.config.puzzleTabWidth.workspaceUnit,
+          inlineConnector.relativePosition.x + puzzleTabWidth,
           inlineConnector.relativePosition.y,
           relative: false)
 
-        let xEdgeWidth = inlineConnector.size.width - layout.config.puzzleTabWidth.workspaceUnit
+        let xEdgeWidth = inlineConnector.size.width - puzzleTabWidth
         // Top edge
         path.addLineToPoint(xEdgeWidth, 0, relative: true)
         // Right edge
@@ -256,11 +261,10 @@ public class DefaultBlockView: BlockView {
         // Bottom edge
         path.addLineToPoint(-xEdgeWidth, 0, relative: true)
         // Left edge
-        path.addLineToPoint(0,
-          -(inlineConnector.size.height - layout.config.puzzleTabHeight.workspaceUnit),
-          relative: true)
+        path.addLineToPoint(0, -(inlineConnector.size.height - puzzleTabHeight), relative: true)
         // Puzzle notch
-        addPuzzleTabToPath(path, drawTopToBottom: false, config: layout.config)
+        addPuzzleTabToPath(path, drawTopToBottom: false,
+          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
       }
     }
 
@@ -273,7 +277,7 @@ public class DefaultBlockView: BlockView {
   }
 
   private func blockHighlightBezierPath() -> UIBezierPath? {
-    guard let layout = self.layout as? BlockLayout else {
+    guard let layout = self.defaultBlockLayout else {
       return nil
     }
 
@@ -281,6 +285,11 @@ public class DefaultBlockView: BlockView {
     if !hasConnectionHighlight {
       return nil
     }
+
+    let notchWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth)
+    let notchHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight)
+    let puzzleTabWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
+    let puzzleTabHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight)
 
     // Build path for each highlighted connection
     let path = WorkspaceBezierPath(engine: layout.engine)
@@ -298,18 +307,18 @@ public class DefaultBlockView: BlockView {
         // The connection point is set to the apex of the puzzle tab's curve. Move the point before
         // drawing it.
         path.moveToPoint(connectionRelativePosition +
-          WorkspacePointMake(layout.config.puzzleTabWidth.workspaceUnit,
-            -layout.config.puzzleTabHeight.workspaceUnit / 2),
+          WorkspacePointMake(puzzleTabWidth, -puzzleTabHeight / 2),
           relative: false)
-        addPuzzleTabToPath(path, drawTopToBottom: true, config: layout.config)
+        addPuzzleTabToPath(path, drawTopToBottom: true,
+          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         break
       case .PreviousStatement, .NextStatement:
         // The connection point is set to the bottom of the notch. Move the point before drawing it.
         path.moveToPoint(connectionRelativePosition -
-          WorkspacePointMake(layout.config.notchWidth.workspaceUnit / 2,
-            layout.config.notchHeight.workspaceUnit),
+          WorkspacePointMake(notchWidth / 2, notchHeight),
           relative: false)
-        addNotchToPath(path, drawLeftToRight: true, config: layout.config)
+        addNotchToPath(
+          path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         break
       }
     }

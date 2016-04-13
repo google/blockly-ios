@@ -60,7 +60,7 @@ public class Layout: NSObject {
   public final let engine: LayoutEngine
 
   /// Convenience property for accessing `self.engine.config`
-  public var config: LayoutEngine.Config {
+  public var config: LayoutConfig {
     return engine.config
   }
 
