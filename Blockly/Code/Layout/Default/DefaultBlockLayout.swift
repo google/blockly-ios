@@ -71,7 +71,7 @@ public final class DefaultBlockLayout: BlockLayout {
 
   // MARK: - Initializers
 
-  public required init(block: Block, engine: LayoutEngine) {
+  public override init(block: Block, engine: LayoutEngine) {
     _outputConnection = block.outputConnection
     _nextConnection = block.nextConnection
     _previousConnection = block.previousConnection

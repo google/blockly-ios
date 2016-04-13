@@ -20,7 +20,6 @@ import Foundation
  */
 @objc(BKYDefaultBlockGroupLayout)
 public final class DefaultBlockGroupLayout: BlockGroupLayout {
-
   // MARK: - Super
 
   public override func performLayout(includeChildren includeChildren: Bool) {
