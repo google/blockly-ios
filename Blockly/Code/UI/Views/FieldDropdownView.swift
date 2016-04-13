@@ -75,8 +75,8 @@ public class FieldDropdownView: FieldView {
 
       // Decorate this view
       self.layer.borderColor = UIColor.grayColor().CGColor
-      self.layer.borderWidth = layout.config.fieldLineWidth.viewUnit
-      self.layer.cornerRadius = layout.config.fieldCornerRadius.viewUnit
+      self.layer.borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+      self.layer.cornerRadius = layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
 
       if self.label.text != fieldDropdown.selectedOption?.displayName {
         self.label.text = fieldDropdown.selectedOption?.displayName
@@ -105,8 +105,8 @@ public class FieldDropdownView: FieldView {
       "button": self.button,
     ]
     let metrics = [
-      "xPadding": layout.config.inlineXPadding.viewUnit,
-      "yPadding": layout.config.inlineYPadding.viewUnit,
+      "xPadding": layout.config.viewUnitFor(LayoutConfig.InlineXPadding),
+      "yPadding": layout.config.viewUnitFor(LayoutConfig.InlineYPadding),
     ]
     let constraints = [
       "H:|-(xPadding)-[label]-(xPadding)-[dropDownArrow]-(xPadding)-|",
@@ -153,9 +153,9 @@ extension FieldDropdownView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    let fieldLineWidth = layout.config.fieldLineWidth.viewUnit
-    let xPadding = layout.config.inlineXPadding.viewUnit
-    let yPadding = layout.config.inlineYPadding.viewUnit
+    let fieldLineWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+    let xPadding = layout.config.viewUnitFor(LayoutConfig.InlineXPadding)
+    let yPadding = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
 
     // Measure text size
     // TODO:(#27) Use a standardized font size that can be configurable for the project

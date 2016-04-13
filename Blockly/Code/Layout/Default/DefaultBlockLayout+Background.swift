@@ -38,6 +38,11 @@ extension DefaultBlockLayout {
     /// Flag if a male output connector should be rendered on the left side of the block
     public private(set) var maleOutputConnector: Bool = false
 
+    /// The position of the block's leading X edge offset, specified as a Workspace coordinate
+    /// system unit, relative to its entire bounding box.
+    /// (e.g. In LTR, this is the X offset of the block's left edge.)
+    public var leadingEdgeXOffset: CGFloat = 0
+
     /// The rows for this block
     public private(set) var rows = [BackgroundRow]()
 
@@ -45,11 +50,13 @@ extension DefaultBlockLayout {
 
     /**
     Updates all render properties from a given block layout.
-    
+
     - Parameter layout: The block layout.
     */
-    public func updateRenderPropertiesFromBlockLayout(layout: BlockLayout) {
+    public func updateRenderPropertiesFromBlockLayout(layout: DefaultBlockLayout) {
       self.maleOutputConnector = (layout.block.outputConnection != nil)
+      self.leadingEdgeXOffset = maleOutputConnector ?
+        layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) : 0
       self.femalePreviousStatementConnector = (layout.block.previousConnection != nil)
       self.maleNextStatementConnector = (layout.block.nextConnection != nil)
 

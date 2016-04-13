@@ -37,6 +37,11 @@ public class LayoutEngine: NSObject {
       if scale < 0.5 {
         scale = 0.5
       }
+
+      if scale != oldValue {
+        // Now that the scale has changed, update all the view values in the config,
+        config.updateViewValuesFromEngine(self)
+      }
     }
   }
 
@@ -45,12 +50,7 @@ public class LayoutEngine: NSObject {
   public final var rtl: Bool
 
   /// The UI configuration to use for this layout engine
-  public final var config: LayoutEngine.Config {
-    didSet {
-      oldValue.engine = nil
-      config.engine = self
-    }
-  }
+  public final var config: LayoutConfig
 
   // MARK: - Initializers
 
@@ -58,17 +58,17 @@ public class LayoutEngine: NSObject {
    Creates a `LayoutEngine` instance.
 
    - Parameter config: Optional parameter for setting `self.config`. If no value is specified,
-   a `LayoutEngine.Config` is created automatically.
+   a `LayoutConfig` is created automatically.
    - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
    is automatically set using the system's layout direction.
    */
-  public init(config: LayoutEngine.Config = LayoutEngine.Config(), rtl: Bool? = nil) {
+  public init(config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil) {
     self.config = config
     self.rtl =
       rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
     super.init()
 
-    self.config.engine = self
+    config.updateViewValuesFromEngine(self)
   }
 
   // MARK: - Public
