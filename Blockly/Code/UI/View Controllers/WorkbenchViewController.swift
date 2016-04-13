@@ -128,10 +128,10 @@ public class WorkbenchViewController: UIViewController {
    - Parameter layoutBuilder: Optionally sets `self.layoutBuilder`. If no value is specified, a new
    `LayoutBuilder` is automatically created.
    */
-  public init(engine: LayoutEngine = LayoutEngine(), layoutBuilder: LayoutBuilder = LayoutBuilder())
+  public init(engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil)
   {
-    self.engine = engine
-    self.layoutBuilder = layoutBuilder
+    self.engine = (engine ?? DefaultLayoutEngine())
+    self.layoutBuilder = (layoutBuilder ?? LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
