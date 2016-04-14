@@ -76,7 +76,7 @@ public class DefaultBlockView: BlockView {
       _backgroundLayer.lineWidth = layout.highlighted ?
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
-      let fillColor = layout.block.colour
+      let fillColor = layout.block.color
       _backgroundLayer.fillColor = layout.dragging ?
         fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()

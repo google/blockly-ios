@@ -18,27 +18,27 @@ import Foundation
 /**
  Delegate for events that occur on `FieldDropdownOptionsViewController`.
  */
-public protocol FieldColourPickerViewControllerDelegate: class {
+public protocol FieldColorPickerViewControllerDelegate: class {
   /**
-   Event that is called when the user has selected a colour for a colour field.
+   Event that is called when the user has selected a color for a color field.
 
    - Parameter viewController: The view controller where this event occurred.
-   - Parameter colouur: The selected colour.
+   - Parameter colouur: The selected color.
    */
-  func fieldColourPickerViewController(viewController: FieldColourPickerViewController,
-    didPickColour colour: UIColor)
+  func fieldColorPickerViewController(viewController: FieldColorPickerViewController,
+    didPickColor color: UIColor)
 }
 
 /**
- View controller for selecting a colour for a `FieldColour`.
+ View controller for selecting a color for a `FieldColor`.
  */
-@objc(BKYFieldColourPickerViewController)
-public class FieldColourPickerViewController: UICollectionViewController {
+@objc(BKYFieldColorPickerViewController)
+public class FieldColorPickerViewController: UICollectionViewController {
   // MARK: - Properties
 
   /// Array of colors for a simple-grid color picker.
   /// From: https://github.com/google/closure-library/blob/master/closure/goog/ui/colorpicker.js
-  public var colours = [
+  public var colors = [
     // grays
     "#ffffff", "#cccccc", "#c0c0c0", "#999999", "#666666", "#333333", "#000000",
     // reds
@@ -66,28 +66,28 @@ public class FieldColourPickerViewController: UICollectionViewController {
     }
   }
 
-  /// Preferred number of colours to display per row (this value may not be respected if there is
+  /// Preferred number of colors to display per row (this value may not be respected if there is
   /// not enough space available).
-  public var preferredColoursPerRow = 7
+  public var preferredColorsPerRow = 7
 
-  /// The size of each colour button
+  /// The size of each color button
   public var buttonSize: CGSize = CGSizeMake(44, 44) {
     didSet {
       _flowLayout.itemSize = self.buttonSize
     }
   }
 
-  /// The colour field to display
-  public var fieldColour: FieldColour?
+  /// The color field to display
+  public var fieldColor: FieldColor?
 
   /// Delegate for events that occur on this controller
-  public weak var delegate: FieldColourPickerViewControllerDelegate?
+  public weak var delegate: FieldColorPickerViewControllerDelegate?
 
   /// The flow layout used for this collection view
   private var _flowLayout: UICollectionViewFlowLayout!
 
-  /// Reusable cell ID for each colour picker cell
-  private let _reusableCellIdentifier = "FieldColourPickerViewCell"
+  /// Reusable cell ID for each color picker cell
+  private let _reusableCellIdentifier = "FieldColorPickerViewCell"
 
   // MARK: - Initializers
 
@@ -110,7 +110,7 @@ public class FieldColourPickerViewController: UICollectionViewController {
     super.viewDidLoad()
 
     self.collectionView?.backgroundColor = UIColor.clearColor()
-    self.collectionView?.registerClass(FieldColourPickerViewCell.self,
+    self.collectionView?.registerClass(FieldColorPickerViewCell.self,
       forCellWithReuseIdentifier: _reusableCellIdentifier)
   }
 
@@ -123,9 +123,9 @@ public class FieldColourPickerViewController: UICollectionViewController {
   public override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
 
-    // Update the selected colour after the view has appeared (it doesn't work if called from
+    // Update the selected color after the view has appeared (it doesn't work if called from
     // viewWillAppear)
-    updateSelectedColour(animated: true)
+    updateSelectedColor(animated: true)
   }
 
   public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -135,23 +135,23 @@ public class FieldColourPickerViewController: UICollectionViewController {
   public override func collectionView(
     collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
   {
-    return self.colours.count
+    return self.colors.count
   }
 
   public override func collectionView(collectionView: UICollectionView,
     cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
   {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-      _reusableCellIdentifier, forIndexPath: indexPath) as! FieldColourPickerViewCell
-    cell.colour = colourForIndexPath(indexPath)
+      _reusableCellIdentifier, forIndexPath: indexPath) as! FieldColorPickerViewCell
+    cell.color = colorForIndexPath(indexPath)
     return cell
   }
 
   public override func collectionView(
     collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
   {
-    if let colour = colourForIndexPath(indexPath) {
-      delegate?.fieldColourPickerViewController(self, didPickColour: colour)
+    if let color = colorForIndexPath(indexPath) {
+      delegate?.fieldColorPickerViewController(self, didPickColor: color)
     }
   }
 
@@ -159,27 +159,27 @@ public class FieldColourPickerViewController: UICollectionViewController {
 
   public func refreshView() {
     // Set the preferred content size when this view controller is displayed in a popover
-    let rows = ceil(CGFloat(self.colours.count) / CGFloat(self.preferredColoursPerRow))
+    let rows = ceil(CGFloat(self.colors.count) / CGFloat(self.preferredColorsPerRow))
     self.preferredContentSize = CGSizeMake(
-      CGFloat(self.preferredColoursPerRow) * _flowLayout.itemSize.width,
+      CGFloat(self.preferredColorsPerRow) * _flowLayout.itemSize.width,
       CGFloat(rows) * _flowLayout.itemSize.height)
 
     // Refresh the collection view
     self.collectionView?.reloadData()
 
-    updateSelectedColour(animated: false)
+    updateSelectedColor(animated: false)
   }
 
   // MARK: - Private
 
-  private func updateSelectedColour(animated animated: Bool) {
-    guard let selectedColour = self.fieldColour?.colour else {
+  private func updateSelectedColor(animated animated: Bool) {
+    guard let selectedColor = self.fieldColor?.color else {
       return
     }
 
-    // Set the selected colour, if it exists in the colour picker
-    for i in 0 ..< colours.count {
-      if selectedColour == UIColor.bky_colorFromRGB(colours[i]) {
+    // Set the selected color, if it exists in the color picker
+    for i in 0 ..< colors.count {
+      if selectedColor == UIColor.bky_colorFromRGB(colors[i]) {
         let indexPath = NSIndexPath(forRow: i, inSection: 0)
         self.collectionView?.selectItemAtIndexPath(
           indexPath, animated: animated, scrollPosition: .CenteredVertically)
@@ -188,15 +188,15 @@ public class FieldColourPickerViewController: UICollectionViewController {
     }
   }
 
-  private func colourForIndexPath(indexPath: NSIndexPath) -> UIColor? {
-    return UIColor.bky_colorFromRGB(self.colours[indexPath.row])
+  private func colorForIndexPath(indexPath: NSIndexPath) -> UIColor? {
+    return UIColor.bky_colorFromRGB(self.colors[indexPath.row])
   }
 }
 
-// MARK: - FieldColourPickerViewCell
+// MARK: - FieldColorPickerViewCell
 
-private class FieldColourPickerViewCell: UICollectionViewCell {
-  var colour: UIColor? {
+private class FieldColorPickerViewCell: UICollectionViewCell {
+  var color: UIColor? {
     didSet { refreshView() }
   }
   override var selected: Bool {
@@ -216,7 +216,7 @@ private class FieldColourPickerViewCell: UICollectionViewCell {
   // MARK: - Public
 
   func refreshView() {
-    self.backgroundColor = self.colour
+    self.backgroundColor = self.color
 
     if self.selected {
       self.layer.borderColor = UIColor.whiteColor().CGColor

@@ -205,7 +205,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   override var selected: Bool {
     didSet {
       self.backgroundColor = self.selected ?
-        self.category.colour.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
+        self.category.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
     }
   }
 
@@ -277,7 +277,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
 
     nameLabel.text = category.name
-    colorTagView.backgroundColor = category.colour
+    colorTagView.backgroundColor = category.color
 
     // Rotate so the category appears vertically
     rotationView.center = self.contentView.center // We need the rotation to occur in the center

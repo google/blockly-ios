@@ -56,7 +56,7 @@ class FieldJSONTest: XCTestCase {
       if let fieldCheckbox = try Field.fieldFromJSON(json) as? FieldCheckbox {
         field = fieldCheckbox
       } else {
-        XCTFail("Could not parse json into a FieldColour")
+        XCTFail("Could not parse json into a FieldColor")
         return
       }
     } catch let error as NSError {
@@ -68,16 +68,16 @@ class FieldJSONTest: XCTestCase {
     XCTAssertEqual(true, field.checked)
   }
 
-  // MARK: - fieldFromJSON - Colour
+  // MARK: - fieldFromJSON - Color
 
-  func testFieldFromJSON_ColourValid() {
+  func testFieldFromJSON_ColorValid() {
     let json = ["type": "field_colour", "name": "ABC", "colour": "#00fFAa"]
-    let field: FieldColour
+    let field: FieldColor
     do {
-      if let fieldColour = try Field.fieldFromJSON(json) as? FieldColour {
-        field = fieldColour
+      if let fieldColor = try Field.fieldFromJSON(json) as? FieldColor {
+        field = fieldColor
       } else {
-        XCTFail("Could not parse json into a FieldColour")
+        XCTFail("Could not parse json into a FieldColor")
         return
       }
     } catch let error as NSError {
@@ -90,7 +90,7 @@ class FieldJSONTest: XCTestCase {
     var green:CGFloat = 0
     var blue:CGFloat = 0
     var alpha:CGFloat = 0
-    field.colour.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    field.color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
     XCTAssertEqualWithAccuracy(Float(0.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
     XCTAssertEqualWithAccuracy(Float(255.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
     XCTAssertEqualWithAccuracy(Float(170.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)
