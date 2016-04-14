@@ -84,14 +84,14 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     do {
       let toolbox = Toolbox()
 
-      let loops = toolbox.addCategory("Loops", colour: UIColor.yellowColor())
+      let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor())
       try addBlock("controls_repeat_ext", toCategory: loops)
       try addBlock("controls_whileUntil", toCategory: loops)
 
-      let math = toolbox.addCategory("Math", colour: UIColor.greenColor())
+      let math = toolbox.addCategory("Math", color: UIColor.greenColor())
       try addBlock("controls_whileUntil", toCategory: math)
 
-      let random = toolbox.addCategory("Random", colour: UIColor.orangeColor())
+      let random = toolbox.addCategory("Random", color: UIColor.orangeColor())
       try addBlock("web_image", toCategory: random)
       try addBlock("local_image", toCategory: random)
       try addBlock("angle", toCategory: random)

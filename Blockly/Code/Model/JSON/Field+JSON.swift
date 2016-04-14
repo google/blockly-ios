@@ -18,11 +18,25 @@ import Foundation
 extension Field {
   // MARK: - Static Properties
 
+  // Field types
+  private static let FIELD_TYPE_ANGLE = "field_angle"
+  private static let FIELD_TYPE_CHECKBOX = "field_checkbox"
+  // To maintain compatibility with Web Blockly, this value is spelled as "field_colour" and not
+  // "field_color"
+  private static let FIELD_TYPE_COLOR = "field_colour"
+  private static let FIELD_TYPE_DATE = "field_date"
+  private static let FIELD_TYPE_DROPDOWN = "field_dropdown"
+  private static let FIELD_TYPE_IMAGE = "field_image"
+  private static let FIELD_TYPE_INPUT = "field_input"
+  private static let FIELD_TYPE_LABEL = "field_label"
+  private static let FIELD_TYPE_VARIABLE = "field_variable"
+
   // JSON parameters
   private static let PARAMETER_ALT_TEXT = "alt"
   private static let PARAMETER_ANGLE = "angle"
   private static let PARAMETER_CHECKED = "checked"
-  private static let PARAMETER_COLOUR = "colour"
+  // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
+  private static let PARAMETER_COLOR = "colour"
   private static let PARAMETER_DATE = "date"
   private static let PARAMETER_HEIGHT = "height"
   private static let PARAMETER_IMAGE_URL = "src"
@@ -85,7 +99,7 @@ extension Field {
       super.init()
 
       // Angle
-      registerType("field_angle") {
+      registerType(FIELD_TYPE_ANGLE) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldAngle(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
@@ -93,24 +107,24 @@ extension Field {
       }
 
       // Checkbox
-      registerType("field_checkbox") {
+      registerType(FIELD_TYPE_CHECKBOX) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldCheckbox(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
       }
 
-      // Colour
-      registerType("field_colour") {
+      // Color
+      registerType(FIELD_TYPE_COLOR) {
         (json: [String: AnyObject]) throws -> Field in
-        let colour = UIColor.bky_colorFromRGB(json[PARAMETER_COLOUR] as? String ?? "")
-        return FieldColour(
+        let color = UIColor.bky_colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
+        return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          colour: (colour ?? UIColor.redColor()))
+          color: (color ?? UIColor.redColor()))
       }
 
       // Date
-      registerType("field_date") {
+      registerType(FIELD_TYPE_DATE) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldDate(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
@@ -118,7 +132,7 @@ extension Field {
       }
 
       // Dropdown
-      registerType("field_dropdown") {
+      registerType(FIELD_TYPE_DROPDOWN) {
         (json: [String: AnyObject]) throws -> Field in
         // Options should be an array of string arrays.
         // eg. [["Name 1", "Value 1"], ["Name 2", "Value 2"]]
@@ -140,7 +154,7 @@ extension Field {
       }
 
       // Image
-      registerType("field_image") {
+      registerType(FIELD_TYPE_IMAGE) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldImage(
           name: (json[PARAMETER_NAME] as? String ?? ""),
@@ -153,7 +167,7 @@ extension Field {
       }
 
       // Input
-      registerType("field_input") {
+      registerType(FIELD_TYPE_INPUT) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldInput(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
@@ -161,7 +175,7 @@ extension Field {
       }
 
       // Label
-      registerType("field_label") {
+      registerType(FIELD_TYPE_LABEL) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldLabel(
           name: (json[PARAMETER_NAME] as? String ?? ""),
@@ -169,7 +183,7 @@ extension Field {
       }
 
       // Variable
-      registerType("field_variable") {
+      registerType(FIELD_TYPE_VARIABLE) {
         (json: [String: AnyObject]) throws -> Field in
         return FieldVariable(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),

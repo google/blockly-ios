@@ -326,7 +326,7 @@ extension WorkbenchViewController {
     let state = UIState(value: stateValue)
     let newState: UIState
 
-    // When adding a new state, check for compatability with existing states.
+    // When adding a new state, check for compatibility with existing states.
 
     switch stateValue {
     case .DraggingBlock:
@@ -360,7 +360,7 @@ extension WorkbenchViewController {
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
   private func removeUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
-    // When subtracting a state value, there is no need to check for compatability.
+    // When subtracting a state value, there is no need to check for compatibility.
     // Simply set the new state, minus the given state value.
     let newState = _state.subtract(UIState(value: stateValue))
     refreshUIState(newState, animated: animated)

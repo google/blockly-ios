@@ -47,8 +47,8 @@ class FieldXMLTest: XCTestCase {
     XCTAssertEqual(0, fieldXML?.children.count)
   }
 
-  func testSerializeXML_FieldColour() {
-    let field = FieldColour(name: "a_field", colour: UIColor.redColor())
+  func testSerializeXML_FieldColor() {
+    let field = FieldColor(name: "a_field", color: UIColor.redColor())
     let fieldXML = try! field.toXML()
 
     // Expected: <field name="a_field">#FF0000</field>

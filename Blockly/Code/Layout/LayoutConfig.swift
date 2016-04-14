@@ -87,11 +87,11 @@ public class LayoutConfig: NSObject {
   /// [`Unit`] If necessary, the line stroke width of a field
   public static let FieldLineWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] The border width to use when rendering the `FieldColour` button
-  public static let FieldColourButtonBorderWidth = LayoutConfig.newPropertyKey()
+  /// [`Unit`] The border width to use when rendering the `FieldColor` button
+  public static let FieldColorButtonBorderWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Size`] The button size to use when rendering a `FieldColour`
-  public static let FieldColourButtonSize = LayoutConfig.newPropertyKey()
+  /// [`Size`] The button size to use when rendering a `FieldColor`
+  public static let FieldColorButtonSize = LayoutConfig.newPropertyKey()
 
   /// [`UIColor`] The color to use for the `FieldCheckboxView` switch's "onTintColor". A value of
   /// `nil` means that the system default should be used.
@@ -129,8 +129,8 @@ public class LayoutConfig: NSObject {
     setUnit(Unit(18), forKey: LayoutConfig.FieldMinimumHeight)
     setUnit(Unit(5), forKey: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), forKey: LayoutConfig.FieldLineWidth)
-    setSize(Size(WorkspaceSizeMake(44, 44)), forKey: LayoutConfig.FieldColourButtonSize)
-    setUnit(Unit(2), forKey: LayoutConfig.FieldColourButtonBorderWidth)
+    setSize(Size(WorkspaceSizeMake(44, 44)), forKey: LayoutConfig.FieldColorButtonSize)
+    setUnit(Unit(2), forKey: LayoutConfig.FieldColorButtonBorderWidth)
 
     // Use the default system colors by setting these config values to nil
     setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchOnTintColor)
@@ -203,7 +203,7 @@ public class LayoutConfig: NSObject {
    Maps a `Size` value to a specific `PropertyKey`.
 
    - Parameter size: The `Size` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColourButtonSize`)
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
    - Returns: The `size` that was set.
    */
   public func setSize(size: Size?, forKey key: PropertyKey) -> Size? {
@@ -214,7 +214,7 @@ public class LayoutConfig: NSObject {
   /**
    Returns the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColourButtonSize`)
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
    - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - Returns: The mapped `Size` value.
@@ -227,7 +227,7 @@ public class LayoutConfig: NSObject {
   /**
    Returns the `viewSize` of the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColourButtonSize`)
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
    - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - Returns: The `viewSize` of the mapped `Size` value.
@@ -241,7 +241,7 @@ public class LayoutConfig: NSObject {
   /**
    Returns the `workspaceSize` of the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColourButtonSize`)
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
    - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - Returns: The `workspaceSize` of the mapped `Size` value.

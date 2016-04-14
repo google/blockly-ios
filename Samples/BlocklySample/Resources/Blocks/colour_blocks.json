@@ -16,7 +16,7 @@
   },
   {
     "id": "colour_random",
-    "message0": "random colour",
+    "message0": "random color",
     "args0": [],
     "output": null,
     "colour": 20,

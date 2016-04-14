@@ -50,9 +50,9 @@ public class DefaultLayoutFactory: NSObject {
       return FieldLayout(field: field, engine: engine, measurer: FieldCheckboxView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldColour.self) {
+    registerLayoutCreatorForFieldType(FieldColor.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldColourView.self)
+      return FieldLayout(field: field, engine: engine, measurer: FieldColorView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldDate.self) {
