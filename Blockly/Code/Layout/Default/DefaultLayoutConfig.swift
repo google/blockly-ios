@@ -56,10 +56,10 @@ public class DefaultLayoutConfig: LayoutConfig {
   /// including the statement's notch width).
   public static let StatementMinimumConnectorWidth = LayoutConfig.newPropertyKey()
 
-  /// [`UIColor`] The default stroke colour to use when rendering a block
+  /// [`UIColor`] The default stroke color to use when rendering a block
   public static let BlockStrokeDefaultColor = LayoutConfig.newPropertyKey()
 
-  /// [`UIColor`] The highlight stroke colour to use when rendering a block
+  /// [`UIColor`] The highlight stroke color to use when rendering a block
   public static let BlockStrokeHighlightColor = LayoutConfig.newPropertyKey()
 
   /// [`Size`] Minimum size of the inline connector

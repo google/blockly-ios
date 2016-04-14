@@ -22,7 +22,7 @@ extension Field {
   private static let PARAMETER_ALT_TEXT = "alt"
   private static let PARAMETER_ANGLE = "angle"
   private static let PARAMETER_CHECKED = "checked"
-  private static let PARAMETER_COLOUR = "colour"
+  private static let PARAMETER_COLOR = "colour"
   private static let PARAMETER_DATE = "date"
   private static let PARAMETER_HEIGHT = "height"
   private static let PARAMETER_IMAGE_URL = "src"
@@ -100,13 +100,13 @@ extension Field {
           checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
       }
 
-      // Colour
+      // Color
       registerType("field_colour") {
         (json: [String: AnyObject]) throws -> Field in
-        let colour = UIColor.bky_colorFromRGB(json[PARAMETER_COLOUR] as? String ?? "")
-        return FieldColour(
+        let color = UIColor.bky_colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
+        return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          colour: (colour ?? UIColor.redColor()))
+          color: (color ?? UIColor.redColor()))
       }
 
       // Date

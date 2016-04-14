@@ -30,7 +30,7 @@ extension Block {
     // These values are publicly immutable in `Block`
     public var name: String = ""
     public var category: Int = 0
-    public var colour: UIColor = UIColor.clearColor()
+    public var color: UIColor = UIColor.clearColor()
     public private(set) var outputConnectionEnabled: Bool = false
     public private(set) var outputConnectionTypeChecks: [String]?
     public private(set) var nextConnectionEnabled: Bool = false
@@ -58,7 +58,7 @@ extension Block {
       super.init()
       self.name = name
 
-      setColourFromHue(0)
+      setColorFromHue(0)
     }
 
     /**
@@ -69,7 +69,7 @@ extension Block {
     public init(block: Block) {
       name = block.name
       category = block.category
-      colour = block.colour
+      color = block.color
       inputsInline = block.inputsInline
 
       tooltip = block.tooltip
@@ -121,7 +121,7 @@ extension Block {
       let inputs = inputBuilders.map({ $0.build() })
 
       let block = Block(uuid: uuid, name: name, category: category,
-        colour: colour, inputs: inputs, inputsInline: inputsInline,
+        color: color, inputs: inputs, inputsInline: inputsInline,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)
 
@@ -164,17 +164,17 @@ extension Block {
     }
 
     /**
-     Sets `self.colour` based on hue, saturation, brightness, and alpha values.
+     Sets `self.color` based on hue, saturation, brightness, and alpha values.
 
      - Parameter hue: The hue
      - Parameter saturation: (Optional) The saturation. Defaults to 0.45.
      - Parameter brightness: (Optional) The brightness. Defaults to 0.65.
      - Parameter alpha: (Optional) The alpha. Defaults to 1.0.
      */
-    public func setColourFromHue(
+    public func setColorFromHue(
       hue: CGFloat, saturation: CGFloat = 0.45, brightness: CGFloat = 0.65, alpha: CGFloat = 1.0)
     {
-       self.colour = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+       self.color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
   }
 }

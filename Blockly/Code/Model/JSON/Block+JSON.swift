@@ -38,13 +38,13 @@ extension Block {
     let blockName = (json["id"] as? String) ?? ""
     let builder = Block.Builder(name: blockName)
 
-    if let colourHue = json["colour"] as? CGFloat {
-      let hue = (min(max(colourHue, 0), 360)) / 360
-      builder.setColourFromHue(hue)
-    } else if let colourString = json["colour"] as? String,
-              let colour = UIColor.bky_colorFromRGB(colourString)
+    if let colorHue = json["colour"] as? CGFloat {
+      let hue = (min(max(colorHue, 0), 360)) / 360
+      builder.setColorFromHue(hue)
+    } else if let colorString = json["colour"] as? String,
+              let color = UIColor.bky_colorFromRGB(colorString)
     {
-      builder.colour = colour
+      builder.color = color
     }
 
     if let output = json["output"] {
