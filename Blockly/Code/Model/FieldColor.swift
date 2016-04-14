@@ -16,18 +16,18 @@
 import Foundation
 
 /**
-An input field for a colour value.
+An input field for a color value.
 */
-@objc(BKYFieldColour)
-public final class FieldColour: Field {
+@objc(BKYFieldColor)
+public final class FieldColor: Field {
   // MARK: - Properties
 
-  public var colour: UIColor {
+  public var color: UIColor {
     didSet {
       if !self.editable {
-        self.colour = oldValue
+        self.color = oldValue
       }
-      if self.colour != oldValue {
+      if self.color != oldValue {
         delegate?.didUpdateField(self)
       }
     }
@@ -35,8 +35,8 @@ public final class FieldColour: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, colour: UIColor) {
-    self.colour = colour
+  public init(name: String, color: UIColor) {
+    self.color = color
 
     super.init(name: name)
   }
@@ -44,21 +44,21 @@ public final class FieldColour: Field {
   // MARK: - Super
 
   public override func copyField() -> Field {
-    return FieldColour(name: name, colour: colour)
+    return FieldColor(name: name, color: color)
   }
 
   public override func setValueFromSerializedText(text: String) throws {
-    if let colour = UIColor.bky_colorFromRGB(text) {
-      self.colour = colour
+    if let color = UIColor.bky_colorFromRGB(text) {
+      self.color = color
     } else {
       throw BlocklyError(.XMLParsing,
-        "Could not parse '\(text)' into a colour. The value must be of the form '#RRGGBB'.")
+        "Could not parse '\(text)' into a color. The value must be of the form '#RRGGBB'.")
     }
   }
 
   public override func serializedText() throws -> String? {
     // Returns a string of the form "#rrggbb"
-    let rgba = self.colour.bky_rgba()
+    let rgba = self.color.bky_rgba()
     return String(format: "#%02x%02x%02x", arguments: [
       UInt(round(rgba.red * 255)),
       UInt(round(rgba.green * 255)),

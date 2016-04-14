@@ -40,8 +40,8 @@ public class Toolbox: NSObject {
 
   // MARK: - Public
 
-  public func addCategory(categoryName: String, colour: UIColor) -> Category {
-    let category = Category(name: categoryName, colour: colour)
+  public func addCategory(categoryName: String, color: UIColor) -> Category {
+    let category = Category(name: categoryName, color: color)
     category.readOnly = self.readOnly
 
     self.categories.append(category)
@@ -63,14 +63,14 @@ extension Toolbox {
 
     /// The name of the category
     public var name: String
-    /// The colour of the category
-    public var colour: UIColor
+    /// The color of the category
+    public var color: UIColor
 
     // MARK: - Initializers
 
-    private init(name: String, colour: UIColor) {
+    private init(name: String, color: UIColor) {
       self.name = name
-      self.colour = colour
+      self.color = color
     }
   }
 }

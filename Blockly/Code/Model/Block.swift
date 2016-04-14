@@ -59,7 +59,7 @@ public final class Block : NSObject {
   /// List of connections directly attached to this block
   public private(set) var directConnections = [Connection]()
   public let inputs: [Input]
-  public private(set) var colour: UIColor
+  public private(set) var color: UIColor
   public var tooltip: String = ""
   public var comment: String = ""
   public var helpURL: String = ""
@@ -111,13 +111,13 @@ public final class Block : NSObject {
   To create a Block, use Block.Builder instead.
   */
   internal init(uuid: String?, name: String, category: Int,
-    colour: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
+    color: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = uuid ?? NSUUID().UUIDString
     self.name = name
     self.category = category
-    self.colour = colour
+    self.color = color
     self.inputs = inputs
     self.inputsInline = inputsInline
     self.outputConnection = outputConnection

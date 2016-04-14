@@ -52,7 +52,7 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
     XCTAssertEqualWithAccuracy(
-      CGFloat(20.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
+      CGFloat(20.0 / 360.0), block.color.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual("http://www.example.com", block.helpURL)
     XCTAssertEqual("a tooltip", block.tooltip)
 
@@ -89,7 +89,7 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertEqual(block, input.sourceBlock)
     XCTAssertNil(input.connection) // Dummy inputs have nil connections
     XCTAssertNotNil(input.fields[0] as? FieldAngle)
-    XCTAssertNotNil(input.fields[1] as? FieldColour)
+    XCTAssertNotNil(input.fields[1] as? FieldColor)
     XCTAssertNotNil(input.fields[2] as? FieldImage)
   }
 
@@ -122,7 +122,7 @@ class BlockBuilderTest: XCTestCase {
     inputBuilder = Input.Builder(type: Input.InputType.Dummy, name: "dummy_input")
     fields = [
       FieldAngle(name: "angle", angle: 90),
-      FieldColour(name: "colour", colour: UIColor.magentaColor()),
+      FieldColor(name: "color", color: UIColor.magentaColor()),
       FieldImage(name: "no name",
         imageURL: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
         size: WorkspaceSize(width: 15, height: 20), altText: "*")
@@ -137,7 +137,7 @@ class BlockBuilderTest: XCTestCase {
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
-    bob.setColourFromHue(20 / 360)
+    bob.setColorFromHue(20 / 360)
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 

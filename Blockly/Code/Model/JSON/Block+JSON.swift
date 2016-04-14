@@ -16,6 +16,24 @@
 import Foundation
 
 extension Block {
+  // MARK: - Static Properties
+
+  // JSON parameters
+  private static let PARAMETER_ID = "id"
+  // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
+  private static let PARAMETER_COLOR = "colour"
+  private static let PARAMETER_OUTPUT = "output"
+  private static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
+  private static let PARAMETER_NEXT_STATEMENT = "nextStatement"
+  private static let PARAMETER_INPUTS_INLINE = "inputsInline"
+  private static let PARAMETER_TOOLTIP = "tooltip"
+  private static let PARAMETER_HELP_URL = "helpUrl"
+  private static let PARAMETER_MESSAGE = "message"
+  private static let PARAMETER_ARGUMENTS = "args"
+  private static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
+  private static let MESSAGE_PARAMETER_ALT = "alt"
+  private static let MESSAGE_PARAMETER_TYPE = "type"
+
   // MARK: - Public
 
   /**
@@ -29,25 +47,25 @@ extension Block {
   */
   public class func builderFromJSON(json: [String: AnyObject]) throws -> Block.Builder
   {
-    if (json["output"] != nil && json["previousStatement"] != nil) {
+    if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.InvalidBlockDefinition,
         "Must not have both an output and a previousStatement.")
     }
 
     // Build the block
-    let blockName = (json["id"] as? String) ?? ""
+    let blockName = (json[PARAMETER_ID] as? String) ?? ""
     let builder = Block.Builder(name: blockName)
 
-    if let colourHue = json["colour"] as? CGFloat {
-      let hue = (min(max(colourHue, 0), 360)) / 360
-      builder.setColourFromHue(hue)
-    } else if let colourString = json["colour"] as? String,
-              let colour = UIColor.bky_colorFromRGB(colourString)
+    if let colorHue = json[PARAMETER_COLOR] as? CGFloat {
+      let hue = (min(max(colorHue, 0), 360)) / 360
+      builder.setColorFromHue(hue)
+    } else if let colorString = json[PARAMETER_COLOR] as? String,
+              let color = UIColor.bky_colorFromRGB(colorString)
     {
-      builder.colour = colour
+      builder.color = color
     }
 
-    if let output = json["output"] {
+    if let output = json[PARAMETER_OUTPUT] {
       if let typeCheck = output as? String {
         try builder.setOutputConnectionEnabled(true, typeChecks: [typeCheck])
       } else if let typeChecks = output as? [String] {
@@ -56,7 +74,7 @@ extension Block {
         try builder.setOutputConnectionEnabled(true)
       }
     }
-    if let previousStatement = json["previousStatement"] {
+    if let previousStatement = json[PARAMETER_PREVIOUS_STATEMENT] {
       if let typeCheck = previousStatement as? String {
         try builder.setPreviousConnectionEnabled(true, typeChecks: [typeCheck])
       } else if let typeChecks = previousStatement as? [String] {
@@ -65,7 +83,7 @@ extension Block {
         try builder.setPreviousConnectionEnabled(true)
       }
     }
-    if let nextStatement = json["nextStatement"] {
+    if let nextStatement = json[PARAMETER_NEXT_STATEMENT] {
       if let typeCheck = nextStatement as? String {
         try builder.setNextConnectionEnabled(true, typeChecks: [typeCheck])
       } else if let typeChecks = nextStatement as? [String] {
@@ -74,27 +92,28 @@ extension Block {
         try builder.setNextConnectionEnabled(true)
       }
     }
-    if let inputsInline = json["inputsInline"] as? Bool {
+    if let inputsInline = json[PARAMETER_INPUTS_INLINE] as? Bool {
       builder.inputsInline = inputsInline
     }
-    if let tooltip = json["tooltip"] as? String {
+    if let tooltip = json[PARAMETER_TOOLTIP] as? String {
       builder.tooltip = tooltip
     }
-    if let helpURL = json["helpUrl"] as? String {
+    if let helpURL = json[PARAMETER_HELP_URL] as? String {
       builder.helpURL = helpURL
     }
 
     // Interpolate any messages for the block
     var i = 0
     while true {
-      guard let message = json["message\(i)"] as? String else {
+      guard let message = json[PARAMETER_MESSAGE + "\(i)"] as? String else {
         // No message found for next value of i, stop interpolating messages.
         break
       }
-      let arguments = (json["args\(i)"] as? Array<[String: AnyObject]>) ?? []
-      let lastDummyAlignmentString = (json["lastDummyAlign\(i)"] as? String) ?? ""
+      let arguments = (json[PARAMETER_ARGUMENTS + "\(i)"] as? Array<[String: AnyObject]>) ?? []
+      let lastDummyAlignmentString =
+        (json[PARAMETER_LAST_DUMMY_ALIGNMENT + "\(i)"] as? String) ?? ""
       let lastDummyAlignment =
-      Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.Left
+        Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.Left
 
       // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
@@ -148,7 +167,7 @@ extension Block {
         var element: [String: AnyObject]! = arguments[index]
 
         while (element != nil) {
-          guard let argumentType = element["type"] as? String else {
+          guard let argumentType = element[MESSAGE_PARAMETER_TYPE] as? String else {
             throw BlocklyError(
               .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
@@ -166,7 +185,7 @@ extension Block {
           } else {
             // Try getting the fallback block if it exists
             bky_print("Unknown element type [\"\(argumentType)\"]")
-            element = element["alt"] as? [String: AnyObject]
+            element = element[MESSAGE_PARAMETER_ALT] as? [String: AnyObject]
           }
         }
 
