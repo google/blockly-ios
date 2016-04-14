@@ -38,7 +38,7 @@ class BlockJSONTest: XCTestCase {
 
     XCTAssertEqual("block_id_1", block.name)
     XCTAssertEqualWithAccuracy(
-      CGFloat(135.0 / 360.0), block.colour.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
+      CGFloat(135.0 / 360.0), block.color.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual(true, block.inputsInline)
     XCTAssertEqual("Click me", block.tooltip)
     XCTAssertEqual("http://www.example.com/", block.helpURL)
@@ -72,17 +72,17 @@ class BlockJSONTest: XCTestCase {
     XCTAssertEqual("!@#$%^&*()-={}:/.,\"'`", fieldVariable.name)
     XCTAssertEqual("A variable", fieldVariable.variable)
 
-    // Colour
-    guard let fieldColour = input0.fields[2] as? FieldColour else {
-      XCTFail("input[0].fields[2] is not a FieldColour")
+    // Color
+    guard let fieldColor = input0.fields[2] as? FieldColor else {
+      XCTFail("input[0].fields[2] is not a FieldColor")
       return
     }
-    XCTAssertEqual("Colour", fieldColour.name)
+    XCTAssertEqual("Colour", fieldColor.name)
     var red:CGFloat = 0
     var green:CGFloat = 0
     var blue:CGFloat = 0
     var alpha:CGFloat = 0
-    fieldColour.colour.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    fieldColor.color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
     XCTAssertEqualWithAccuracy(Float(3.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
     XCTAssertEqualWithAccuracy(Float(154.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
     XCTAssertEqualWithAccuracy(Float(223.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)

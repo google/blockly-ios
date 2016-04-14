@@ -118,7 +118,7 @@ class TurtleViewController: UIViewController {
       let toolbox = Toolbox()
       toolbox.readOnly = false
 
-      let turtle = toolbox.addCategory("Turtle", colour: UIColor.cyanColor())
+      let turtle = toolbox.addCategory("Turtle", color: UIColor.cyanColor())
       let moveBlock = try addBlock("turtle_move", inputBlockName: "math_number", toCategory: turtle)
       (moveBlock.inputs[0].connectedBlock?.inputs[0].fields[0] as! FieldInput).text = "50"
       let turnBlock = try addBlock("turtle_turn", inputBlockName: "math_number", toCategory: turtle)
@@ -128,20 +128,20 @@ class TurtleViewController: UIViewController {
         try addBlock("turtle_width", inputBlockName: "math_number", toCategory: turtle)
       (widthBlock.inputs[0].connectedBlock?.inputs[0].fields[0] as? FieldInput)?.text = "4"
 
-      let colour = toolbox.addCategory("Colour", colour: UIColor.brownColor())
-      let colourBlock =
-        try addBlock("turtle_colour", inputBlockName: "colour_picker", toCategory: colour)
-      (colourBlock.inputs[0].connectedBlock?.inputs[0].fields[0] as? FieldColour)?.colour =
+      let color = toolbox.addCategory("Colour", color: UIColor.brownColor())
+      let colorBlock =
+        try addBlock("turtle_colour", inputBlockName: "colour_picker", toCategory: color)
+      (colorBlock.inputs[0].connectedBlock?.inputs[0].fields[0] as? FieldColor)?.color =
         UIColor.redColor()
-      try addBlock("colour_picker", toCategory: colour)
-      try addBlock("colour_random", toCategory: colour)
+      try addBlock("colour_picker", toCategory: color)
+      try addBlock("colour_random", toCategory: color)
 
-      let loops = toolbox.addCategory("Loops", colour: UIColor.greenColor())
+      let loops = toolbox.addCategory("Loops", color: UIColor.greenColor())
       let repeatBlock =
         try addBlock("controls_repeat_ext", inputBlockName: "math_number", toCategory: loops)
       (repeatBlock.inputs[0].connectedBlock?.inputs[0].fields[0] as? FieldInput)?.text = "10"
 
-      let math = toolbox.addCategory("Math", colour: UIColor.blueColor())
+      let math = toolbox.addCategory("Math", color: UIColor.blueColor())
       try addBlock("math_number", toCategory: math)
 
       try _workbenchViewController.loadToolbox(toolbox)

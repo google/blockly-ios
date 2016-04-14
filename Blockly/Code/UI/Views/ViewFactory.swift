@@ -48,7 +48,7 @@ public class ViewFactory: NSObject {
     // Register the default views for known fields
     registerViewTypeForFieldType(FieldAngle.self, viewType: FieldAngleView.self)
     registerViewTypeForFieldType(FieldCheckbox.self, viewType: FieldCheckboxView.self)
-    registerViewTypeForFieldType(FieldColour.self, viewType: FieldColourView.self)
+    registerViewTypeForFieldType(FieldColor.self, viewType: FieldColorView.self)
     registerViewTypeForFieldType(FieldDate.self, viewType: FieldDateView.self)
     registerViewTypeForFieldType(FieldDropdown.self, viewType: FieldDropdownView.self)
     registerViewTypeForFieldType(FieldImage.self, viewType: FieldImageView.self)
