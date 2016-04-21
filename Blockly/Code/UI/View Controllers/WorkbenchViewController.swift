@@ -458,7 +458,7 @@ extension WorkbenchViewController {
       // view
       if UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft {
         let trashArea = CGRectMake(0, trashCanButton.frame.origin.y,
-          trashCanButton.frame.size.width,
+          trashCanButton.frame.origin.x + trashCanButton.frame.size.width,
           self.view.bounds.size.height - trashCanButton.frame.origin.y)
         return CGRectContainsPoint(trashArea, gesture.locationInView(self.view))
       } else {
