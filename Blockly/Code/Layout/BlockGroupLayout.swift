@@ -170,7 +170,7 @@ public class BlockGroupLayout: Layout {
   public func moveToWorkspacePosition(position: WorkspacePoint, updateCanvasSize: Bool = true) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
       self.relativePosition = position
-      self.refreshViewPositionsForTree(includeFields: false)
+      refreshViewPositionsForTree(includeFields: false)
 
       if updateCanvasSize {
         workspaceLayout.updateCanvasSize()
