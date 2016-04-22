@@ -209,9 +209,25 @@ public class Layout: NSObject {
   skip them.
   */
   internal final func refreshViewPositionsForTree(includeFields includeFields: Bool = true) {
+    var parentViewAbsolutePosition = (parentLayout?.viewAbsolutePosition ?? CGPointZero)
+
+    if let workspaceLayout = self as? WorkspaceLayout where parentLayout == nil {
+      // This is a special case for when all view positions are being refreshed at the root
+      // workspace.
+      // Because UIScrollView is limited to scrolling positive coordiates, we must offset all
+      // block view origin coordinates so they are >= (0, 0). To do this, we simply set the
+      // `parentViewAbsolutePosition` for all blocks to be offset by the
+      // `workspaceLayout.contentOrigin`
+      let viewContentOrigin = self.engine.viewPointFromWorkspacePoint(workspaceLayout.contentOrigin)
+
+      // Note that in RTL, we must flip the X offset
+      parentViewAbsolutePosition.x = self.engine.rtl ? viewContentOrigin.x : -viewContentOrigin.x
+      parentViewAbsolutePosition.y = -viewContentOrigin.y
+    }
+
     refreshViewPositionsForTree(
       parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
-      parentViewAbsolutePosition: (parentLayout?.viewAbsolutePosition ?? CGPointZero),
+      parentViewAbsolutePosition: parentViewAbsolutePosition,
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
       rtl: self.engine.rtl,
       includeFields: includeFields)

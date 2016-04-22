@@ -51,6 +51,9 @@ public class WorkspaceLayout: Layout {
   /// Maximum value that the z-index counter should reach
   private var _maximumZIndexCounter: UInt = (UInt.max - 1)
 
+  /// The origin (x, y) coordinates of where all blocks are positioned in the workspace
+  internal final var contentOrigin: WorkspacePoint = WorkspacePointZero
+
   // MARK: - Initializers
 
   public init(workspace: Workspace, engine: LayoutEngine, layoutBuilder: LayoutBuilder) throws {
@@ -79,19 +82,37 @@ public class WorkspaceLayout: Layout {
   // MARK: - Super
 
   public override func performLayout(includeChildren includeChildren: Bool) {
-    var size = WorkspaceSizeZero
+    var topLeftMostPoint = WorkspacePointZero
+    var bottomRightMostPoint = WorkspacePointZero
 
     // Update relative position/size of blocks
-    for blockGroupLayout in self.blockGroupLayouts {
+    for i in 0 ..< self.blockGroupLayouts.count {
+      let blockGroupLayout = self.blockGroupLayouts[i]
       if includeChildren {
         blockGroupLayout.performLayout(includeChildren: true)
       }
 
-      size = LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: size)
+      if i == 0 {
+        topLeftMostPoint = blockGroupLayout.relativePosition
+        bottomRightMostPoint.x =
+          blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width
+        bottomRightMostPoint.y =
+          blockGroupLayout.relativePosition.y + blockGroupLayout.totalSize.height
+      } else {
+        topLeftMostPoint.x = min(topLeftMostPoint.x, blockGroupLayout.relativePosition.x)
+        topLeftMostPoint.y = min(topLeftMostPoint.y, blockGroupLayout.relativePosition.y)
+        bottomRightMostPoint.x = max(bottomRightMostPoint.x,
+          blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width)
+        bottomRightMostPoint.y = max(bottomRightMostPoint.y,
+          blockGroupLayout.relativePosition.y + blockGroupLayout.totalSize.height)
+      }
     }
 
     // Update size required for the workspace
-    self.contentSize = size
+    self.contentOrigin = topLeftMostPoint
+    self.contentSize = WorkspaceSizeMake(
+      bottomRightMostPoint.x - topLeftMostPoint.x,
+      bottomRightMostPoint.y - topLeftMostPoint.y)
 
     // Update the canvas size
     scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
@@ -214,8 +235,8 @@ public class WorkspaceLayout: Layout {
   public func updateCanvasSize() {
     performLayout(includeChildren: false)
 
-    // View positions need to be refreshed for the entire tree since in RTL, if the canvas size
-    // changes, the positions of block groups also change.
+    // View positions need to be refreshed for the entire tree since if the canvas size changes, the
+    // positions of block groups also change.
     refreshViewPositionsForTree()
   }
 
@@ -375,23 +396,5 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       // Reattach block layouts to a new block group layout
       blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
     }
-  }
-
-  /**
-   Maps a `UIView` point relative to `self.scrollView.blockGroupView` to a logical Workspace
-   position.
-
-   - Parameter point: The `UIView` point
-   - Returns: The corresponding `WorkspacePoint`
-   */
-  public final func workspacePositionFromViewPosition(point: CGPoint) -> WorkspacePoint {
-    var viewPoint = point
-    if self.engine.rtl {
-      // In RTL, the workspace position is relative to the top-right corner
-      viewPoint.x = self.engine.viewUnitFromWorkspaceUnit(self.totalSize.width) - viewPoint.x
-    }
-
-    // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
-    return self.engine.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
 }
