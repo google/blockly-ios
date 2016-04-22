@@ -57,8 +57,7 @@ extension Block {
     public init(name: String) {
       super.init()
       self.name = name
-
-      setColorFromHue(0)
+      self.color = ColorHelper.colorFromHue(0)
     }
 
     /**
@@ -161,20 +160,6 @@ extension Block {
       }
       self.previousConnectionEnabled = enabled
       self.previousConnectionTypeChecks = typeChecks
-    }
-
-    /**
-     Sets `self.color` based on hue, saturation, brightness, and alpha values.
-
-     - Parameter hue: The hue
-     - Parameter saturation: (Optional) The saturation. Defaults to 0.45.
-     - Parameter brightness: (Optional) The brightness. Defaults to 0.65.
-     - Parameter alpha: (Optional) The alpha. Defaults to 1.0.
-     */
-    public func setColorFromHue(
-      hue: CGFloat, saturation: CGFloat = 0.45, brightness: CGFloat = 0.65, alpha: CGFloat = 1.0)
-    {
-       self.color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
   }
 }

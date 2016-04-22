@@ -48,7 +48,7 @@ public final class FieldColor: Field {
   }
 
   public override func setValueFromSerializedText(text: String) throws {
-    if let color = UIColor.bky_colorFromRGB(text) {
+    if let color = ColorHelper.colorFromRGB(text) {
       self.color = color
     } else {
       throw BlocklyError(.XMLParsing,
