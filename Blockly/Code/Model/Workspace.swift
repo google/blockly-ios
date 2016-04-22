@@ -73,8 +73,14 @@ Data structure that contains `Block` instances.
 public class Workspace : NSObject {
   // MARK: - Properties
 
+  // TODO:(#85) Enforce this property
+  /// The maximum number of blocks that this workspace may contain. If this value is set to `nil`,
+  /// no maximum limit is enforced.
   public let maxBlocks: Int?
+
+  /// Dictionary mapping all `Block` instances in this workspace to their `uuid` value
   public private(set) var allBlocks = [String: Block]()
+
   /// Flag indicating if this workspace is set to read-only
   public var readOnly: Bool = false
 
