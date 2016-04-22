@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.license          = 'Apache License, Version 2.0'
   s.author           = 'Google Inc.'
   s.source           = {
-                         :git => 'https://github.com/RoboErikG/blocklypp.git',
+                         :git => 'https://github.com/google/blockly-ios.git',
                          #:tag => s.version.to_s
                        }
 
