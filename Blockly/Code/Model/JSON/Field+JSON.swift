@@ -117,7 +117,7 @@ extension Field {
       // Color
       registerType(FIELD_TYPE_COLOR) {
         (json: [String: AnyObject]) throws -> Field in
-        let color = UIColor.bky_colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
+        let color = ColorHelper.colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
         return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           color: (color ?? UIColor.redColor()))
