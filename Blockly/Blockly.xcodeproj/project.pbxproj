@@ -64,6 +64,9 @@
 		FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
 		FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D261B6708F2008BC59C /* Block+Builder.swift */; };
 		FA57C3921CCADADB00952BFB /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57C3911CCADADB00952BFB /* ColorHelper.swift */; };
+		FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57C39C1CCADD2E00952BFB /* ToolboxXMLTest.swift */; };
+		FA57C3A71CCADD8300952BFB /* toolbox_test.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA57C3A61CCADD8300952BFB /* toolbox_test.xml */; };
+		FA57C3A91CCADDC600952BFB /* Toolbox+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57C3A81CCADDC600952BFB /* Toolbox+XML.swift */; };
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
 		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */; };
@@ -265,6 +268,9 @@
 		FA548C891B66E861008BC59C /* Workspace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		FA548D261B6708F2008BC59C /* Block+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Builder.swift"; sourceTree = "<group>"; };
 		FA57C3911CCADADB00952BFB /* ColorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
+		FA57C39C1CCADD2E00952BFB /* ToolboxXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxXMLTest.swift; sourceTree = "<group>"; };
+		FA57C3A61CCADD8300952BFB /* toolbox_test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = toolbox_test.xml; sourceTree = "<group>"; };
+		FA57C3A81CCADDC600952BFB /* Toolbox+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Toolbox+XML.swift"; sourceTree = "<group>"; };
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayoutTest.swift; sourceTree = "<group>"; };
@@ -385,10 +391,11 @@
 			isa = PBXGroup;
 			children = (
 				FAFD37211C8F5C5F00C77049 /* blockly_web */,
+				FA4EE3D41BFE9342000C621F /* all_test_blocks.json */,
 				FA2DFC061B7174350072A278 /* block_json_test.json */,
 				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
+				FA57C3A61CCADD8300952BFB /* toolbox_test.xml */,
 				FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */,
-				FA4EE3D41BFE9342000C621F /* all_test_blocks.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -517,6 +524,7 @@
 			children = (
 				FA4D54AF1C6AAEB700F95084 /* BlockXMLTest.swift */,
 				FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */,
+				FA57C39C1CCADD2E00952BFB /* ToolboxXMLTest.swift */,
 				FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */,
 			);
 			path = XML;
@@ -528,6 +536,7 @@
 				FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */,
 				FA99C4011C73DE0600FA5A02 /* Field+XML.swift */,
 				FA99C4031C73DE1800FA5A02 /* Input+XML.swift */,
+				FA57C3A81CCADDC600952BFB /* Toolbox+XML.swift */,
 				FA6085F61C6D469F003B6076 /* Workspace+XML.swift */,
 			);
 			path = XML;
@@ -887,6 +896,7 @@
 				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
 				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
 				FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */,
+				FA57C3A71CCADD8300952BFB /* toolbox_test.xml in Resources */,
 				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
 				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
 			);
@@ -991,6 +1001,7 @@
 				FAE557741BE028640019D0D4 /* LayoutEventManager.swift in Sources */,
 				FAA870021C64272C000C7C61 /* Assertions.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
+				FA57C3A91CCADDC600952BFB /* Toolbox+XML.swift in Sources */,
 				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,
 				FAD6524D1CB7211500F73F11 /* DefaultBlockView.swift in Sources */,
 			);
@@ -1002,6 +1013,7 @@
 			files = (
 				FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */,
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
+				FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
 				FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */,

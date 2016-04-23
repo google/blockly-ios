@@ -59,7 +59,7 @@ public class WorkspaceFlow: Workspace {
    - Parameter gap: The gap space, expressed as a Workspace coordinate system unit
    - Note: Trailing gaps are truncated and ignored on layout.
    */
-  public func addGap(gap: CGFloat) {
+  public func addGap(gap: CGFloat = 24) {
     items.append(Item(gap: gap))
     layout?.updateLayoutUpTree()
   }
