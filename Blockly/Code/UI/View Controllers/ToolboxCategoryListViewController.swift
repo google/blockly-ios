@@ -101,6 +101,13 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
     collectionView.showsVerticalScrollIndicator = false
     collectionView.showsHorizontalScrollIndicator = false
+
+    // Automatically constrain this view to a certain width
+    // (`ToolboxCategoryListViewCell.CellHeight` is used since cells are rotated by 90 degrees).
+    let widthConstraint = NSLayoutConstraint(item: self.view, attribute: .Width,
+      relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1,
+      constant: ToolboxCategoryListViewCell.CellHeight)
+    self.view.addConstraint(widthConstraint)
   }
 
   // MARK: - Public
@@ -194,12 +201,15 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
 private class ToolboxCategoryListViewCell: UICollectionViewCell {
   static let ReusableCellIdentifier = "ToolboxCategoryListViewCell"
 
-  static let ColorTagViewHeight = CGFloat(5)
-  static let LabelPadding = CGFloat(5)
+  static let ColorTagViewHeight = CGFloat(8)
+  static let LabelInsets = UIEdgeInsetsMake(4, 8, 4, 8)
+  static let CellHeight = CGFloat(48)
+  static let IconSize = CGSizeMake(48, 48)
 
   var category: Toolbox.Category!
   var rotationView: UIView!
   var nameLabel: UILabel!
+  var iconView: UIImageView!
   var colorTagView: UIView!
 
   override var selected: Bool {
@@ -250,14 +260,26 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     rotationView.addSubview(colorTagView)
 
     // Create category name label for the bottom of the view
-    let labelPadding = ToolboxCategoryListViewCell.LabelPadding
+    let labelInsets = ToolboxCategoryListViewCell.LabelInsets
     nameLabel = UILabel()
-    nameLabel.frame = CGRectMake(labelPadding, colorTagView.bounds.size.height + labelPadding,
-      rotationView.bounds.size.width - labelPadding * 2,
-      rotationView.bounds.size.height - colorTagView.bounds.size.height - labelPadding * 2)
+    nameLabel.frame = CGRectMake(labelInsets.left,
+      colorTagView.bounds.size.height + labelInsets.top,
+      rotationView.bounds.size.width - labelInsets.left - labelInsets.right,
+      rotationView.bounds.size.height - colorTagView.bounds.size.height
+        - labelInsets.top - labelInsets.bottom)
     nameLabel.autoresizingMask = [.FlexibleWidth]
     nameLabel.font = ToolboxCategoryListViewCell.fontForNameLabel()
     rotationView.addSubview(nameLabel)
+
+    // Create category name label for the bottom of the view
+    iconView = UIImageView()
+    iconView.frame = nameLabel.frame
+    iconView.contentMode = .ScaleAspectFit
+    iconView.autoresizingMask = [.FlexibleWidth]
+    // We want icons to appear right-side up, so we un-rotate them by 90 degrees (the rotationView
+    // is rotated by -90 degrees).
+    iconView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+    rotationView.addSubview(iconView)
   }
 
   // MARK: - Super
@@ -265,6 +287,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   override func prepareForReuse() {
     rotationView.transform = CGAffineTransformIdentity
     nameLabel.text = ""
+    iconView.image = nil
     colorTagView.backgroundColor = UIColor.clearColor()
     self.selected = false
   }
@@ -276,7 +299,11 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
 
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
 
-    nameLabel.text = category.name
+    if let icon = category.icon {
+      iconView.image = icon
+    } else {
+      nameLabel.text = category.name
+    }
     colorTagView.backgroundColor = category.color
 
     // Rotate so the category appears vertically
@@ -286,13 +313,15 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   }
 
   static func sizeRequiredForCategory(category: Toolbox.Category) -> CGSize {
-    let nameSize = category.name.bky_singleLineSizeForFont(fontForNameLabel())
+    let size: CGSize
+    if let icon = category.icon {
+      size =
+        CGSizeMake(max(icon.size.width, IconSize.width), max(icon.size.height, IconSize.height))
+    } else {
+      size = category.name.bky_singleLineSizeForFont(fontForNameLabel())
+    }
 
-    let totalSize = CGSizeMake(
-      nameSize.width + (self.LabelPadding * 2),
-      self.ColorTagViewHeight + nameSize.height + (self.LabelPadding * 2))
-
-    return totalSize
+    return CGSizeMake(size.width + LabelInsets.left + LabelInsets.right, CellHeight)
   }
 
   static func fontForNameLabel() -> UIFont {

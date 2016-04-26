@@ -84,14 +84,23 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     do {
       let toolbox = Toolbox()
 
-      let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor())
+      let loopIcon = UIImage(named: "icon_loop")
+      let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor(), icon: loopIcon)
       try addBlock("controls_repeat_ext", toCategory: loops)
       try addBlock("controls_whileUntil", toCategory: loops)
 
-      let math = toolbox.addCategory("Math", color: UIColor.greenColor())
-      try addBlock("controls_whileUntil", toCategory: math)
+      let prevNextIcon = UIImage(named: "icon_prevnext")
+      let prevNextCategory =
+        toolbox.addCategory("Prev / Next", color: UIColor.greenColor(), icon: prevNextIcon)
+      try addBlock("statement_no_input", toCategory: prevNextCategory)
+      try addBlock("statement_value_input", toCategory: prevNextCategory)
+      try addBlock("statement_multiple_value_input", toCategory: prevNextCategory)
+      try addBlock("statement_no_next", toCategory: prevNextCategory)
+      try addBlock("statement_statement_input", toCategory: prevNextCategory)
+      try addBlock("block_statement", toCategory: prevNextCategory)
 
-      let random = toolbox.addCategory("Random", color: UIColor.orangeColor())
+      let blockIcon = UIImage(named: "icon_block")
+      let random = toolbox.addCategory("Random", color: UIColor.orangeColor(), icon: blockIcon)
       try addBlock("web_image", toCategory: random)
       try addBlock("local_image", toCategory: random)
       try addBlock("angle", toCategory: random)
@@ -99,24 +108,11 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       try addBlock("date_picker", toCategory: random)
       try addBlock("colour_picker", toCategory: random)
       try addBlock("test_dropdown", toCategory: random)
-      random.addGap(40)
-
       try addBlock("text_input_block", toCategory: random)
       random.addGap(40)
-
       try addBlock("simple_input_output", toCategory: random)
       try addBlock("multiple_input_output", toCategory: random)
       try addBlock("output_no_input", toCategory: random)
-      random.addGap(40)
-
-      try addBlock("statement_no_input", toCategory: random)
-      try addBlock("statement_value_input", toCategory: random)
-      try addBlock("statement_multiple_value_input", toCategory: random)
-      try addBlock("statement_no_next", toCategory: random)
-      random.addGap(40)
-
-      try addBlock("statement_statement_input", toCategory: random)
-      try addBlock("block_statement", toCategory: random)
       try addBlock("block_output", toCategory: random)
 
       try loadToolbox(toolbox)

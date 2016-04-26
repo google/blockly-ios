@@ -241,7 +241,7 @@
 		FA4BB4091B744A8E000980E9 /* BlockJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONTest.swift; sourceTree = "<group>"; };
 		FA4BB40A1B744A8E000980E9 /* FieldJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldJSONTest.swift; sourceTree = "<group>"; };
 		FA4BB40B1B744A8E000980E9 /* InputJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputJSONTest.swift; sourceTree = "<group>"; };
-		FA4BB40C1B744A8E000980E9 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestConstants.swift; path = Code/TestConstants.swift; sourceTree = "<group>"; };
+		FA4BB40C1B744A8E000980E9 /* TestConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConstants.swift; sourceTree = "<group>"; };
 		FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FieldAngleTest.swift; path = Tests/Code/Model/FieldAngleTest.swift; sourceTree = SOURCE_ROOT; };
 		FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateTest.swift; sourceTree = "<group>"; };
 		FA4BB4B11B754D87000980E9 /* ColorHelperTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorHelperTest.swift; path = Tests/Code/Core/Common/ColorHelperTest.swift; sourceTree = SOURCE_ROOT; };
@@ -436,6 +436,7 @@
 				FA4BB4071B744A8E000980E9 /* Model */,
 				FA3786A21BFFDD69009D18DF /* Layout */,
 				FA3786A51C00093B009D18DF /* Control */,
+				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -567,7 +568,6 @@
 			isa = PBXGroup;
 			children = (
 				FA4BB4061B744A8E000980E9 /* Code */,
-				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 				FA2DFC051B71740E0072A278 /* Resources */,
 				FA548C5B1B63136F008BC59C /* Info.plist */,
 			);
