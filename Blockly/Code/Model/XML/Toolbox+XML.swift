@@ -73,11 +73,16 @@ extension Toolbox {
         }
       }
 
+      var icon: UIImage?
+      if let iconString = categoryNode.attributes["icon"] {
+        icon = ImageLoader.loadImage(named: iconString, forClass: Toolbox.self)
+      }
+
       if let custom = categoryNode.attributes["custom"] {
         bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
       }
 
-      let category = toolbox.addCategory(name, color: color ?? UIColor.clearColor())
+      let category = toolbox.addCategory(name, color: color ?? UIColor.clearColor(), icon: icon)
 
       for subNode in categoryNode.children {
         switch subNode.name {
