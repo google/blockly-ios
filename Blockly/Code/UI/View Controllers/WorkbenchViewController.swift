@@ -203,7 +203,7 @@ public class WorkbenchViewController: UIViewController {
     let constraints = [
       // Position the toolbox category list along the leading margin, and let the workspace view
       // fill the rest of the space
-      "H:|[toolboxCategoriesListView(35)][workspaceView]|",
+      "H:|[toolboxCategoriesListView][workspaceView]|",
       "V:|[toolboxCategoriesListView]|",
       "V:|[workspaceView]|",
       // Position the toolbox category view beside the category list

@@ -101,6 +101,13 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
     collectionView.showsVerticalScrollIndicator = false
     collectionView.showsHorizontalScrollIndicator = false
+
+    // Automatically constrain this view to a certain width
+    // (`ToolboxCategoryListViewCell.CellHeight` is used since cells are rotated by 90 degrees).
+    let widthConstraint = NSLayoutConstraint(item: self.view, attribute: .Width,
+      relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1,
+      constant: ToolboxCategoryListViewCell.CellHeight)
+    self.view.addConstraint(widthConstraint)
   }
 
   // MARK: - Public
@@ -147,7 +154,10 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
     } else {
       // Select the new category
       self.selectedCategory = cell.category
-      delegate?.toolboxCategoryListViewController(self, didSelectCategory: cell.category)
+
+      if let category = cell.category {
+        delegate?.toolboxCategoryListViewController(self, didSelectCategory: category)
+      }
     }
   }
 
@@ -194,18 +204,38 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
 private class ToolboxCategoryListViewCell: UICollectionViewCell {
   static let ReusableCellIdentifier = "ToolboxCategoryListViewCell"
 
-  static let ColorTagViewHeight = CGFloat(5)
-  static let LabelPadding = CGFloat(5)
+  static let ColorTagViewHeight = CGFloat(8)
+  static let LabelInsets = UIEdgeInsetsMake(4, 8, 4, 8)
+  static let CellHeight = CGFloat(48)
+  static let IconSize = CGSizeMake(48, 48)
 
-  var category: Toolbox.Category!
-  var rotationView: UIView!
-  var nameLabel: UILabel!
-  var colorTagView: UIView!
+  /// The category this cell represents
+  var category: Toolbox.Category?
+
+  /// Subview holding all contents of the cell
+  let rotationView = UIView()
+
+  /// Label for the category name
+  let nameLabel: UILabel = {
+    let view = UILabel()
+    view.font = ToolboxCategoryListViewCell.fontForNameLabel()
+    return view
+  }()
+
+  /// Image for the category icon
+  let iconView: UIImageView = {
+    let view = UIImageView()
+    view.contentMode = .ScaleAspectFit
+    return view
+  }()
+
+  /// View representing the category's color
+  let colorTagView = UIView()
 
   override var selected: Bool {
     didSet {
       self.backgroundColor = self.selected ?
-        self.category.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
+        self.category?.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
     }
   }
 
@@ -213,15 +243,27 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    commonInit()
+    configureSubviews()
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    commonInit()
+    configureSubviews()
   }
 
-  func commonInit() {
+  // MARK: - Super
+
+  override func prepareForReuse() {
+    rotationView.transform = CGAffineTransformIdentity
+    nameLabel.text = ""
+    iconView.image = nil
+    colorTagView.backgroundColor = UIColor.clearColor()
+    self.selected = false
+  }
+
+  // MARK: - Private
+
+  func configureSubviews() {
     self.autoresizesSubviews = true
     self.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     self.translatesAutoresizingMaskIntoConstraints = true
@@ -232,9 +274,8 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
 
     // Create a view specifically dedicated to rotating its contents (rotating the contentView
     // causes problems)
-    rotationView = UIView()
     rotationView.frame =
-      CGRectMake(0, 0, self.contentView.bounds.size.height, self.contentView.bounds.size.width)
+      CGRectMake(0, 0, self.contentView.bounds.height, self.contentView.bounds.width)
     rotationView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     rotationView.autoresizesSubviews = true
     self.contentView.addSubview(rotationView)
@@ -243,40 +284,40 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     // well with `rotationView.transform`, which is required for rotating the view.
 
     // Create color tag for the top of the view
-    colorTagView = UIView()
-    colorTagView.frame = CGRectMake(0, 0, rotationView.bounds.size.width,
-        ToolboxCategoryListViewCell.ColorTagViewHeight)
+    colorTagView.frame = CGRectMake(0, 0, rotationView.bounds.width,
+                                    ToolboxCategoryListViewCell.ColorTagViewHeight)
     colorTagView.autoresizingMask = [.FlexibleWidth, .FlexibleBottomMargin]
     rotationView.addSubview(colorTagView)
 
     // Create category name label for the bottom of the view
-    let labelPadding = ToolboxCategoryListViewCell.LabelPadding
-    nameLabel = UILabel()
-    nameLabel.frame = CGRectMake(labelPadding, colorTagView.bounds.size.height + labelPadding,
-      rotationView.bounds.size.width - labelPadding * 2,
-      rotationView.bounds.size.height - colorTagView.bounds.size.height - labelPadding * 2)
-    nameLabel.autoresizingMask = [.FlexibleWidth]
-    nameLabel.font = ToolboxCategoryListViewCell.fontForNameLabel()
+    let labelInsets = ToolboxCategoryListViewCell.LabelInsets
+    nameLabel.frame = CGRectMake(labelInsets.left,
+                                 colorTagView.bounds.height + labelInsets.top,
+                                 rotationView.bounds.width - labelInsets.left - labelInsets.right,
+                                 rotationView.bounds.height - colorTagView.bounds.height
+                                  - labelInsets.top - labelInsets.bottom)
+    nameLabel.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
     rotationView.addSubview(nameLabel)
+
+    // Create category name label for the bottom of the view
+    iconView.frame = nameLabel.frame
+    iconView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    // We want icons to appear right-side up, so we un-rotate them by 90 degrees (the rotationView
+    // is rotated by -90 degrees).
+    iconView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+    rotationView.addSubview(iconView)
   }
-
-  // MARK: - Super
-
-  override func prepareForReuse() {
-    rotationView.transform = CGAffineTransformIdentity
-    nameLabel.text = ""
-    colorTagView.backgroundColor = UIColor.clearColor()
-    self.selected = false
-  }
-
-  // MARK: - Private
 
   func loadCategory(category: Toolbox.Category) {
     self.category = category
 
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
 
-    nameLabel.text = category.name
+    if let icon = category.icon {
+      iconView.image = icon
+    } else {
+      nameLabel.text = category.name
+    }
     colorTagView.backgroundColor = category.color
 
     // Rotate so the category appears vertically
@@ -286,13 +327,15 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   }
 
   static func sizeRequiredForCategory(category: Toolbox.Category) -> CGSize {
-    let nameSize = category.name.bky_singleLineSizeForFont(fontForNameLabel())
+    let size: CGSize
+    if let icon = category.icon {
+      size =
+        CGSizeMake(max(icon.size.width, IconSize.width), max(icon.size.height, IconSize.height))
+    } else {
+      size = category.name.bky_singleLineSizeForFont(fontForNameLabel())
+    }
 
-    let totalSize = CGSizeMake(
-      nameSize.width + (self.LabelPadding * 2),
-      self.ColorTagViewHeight + nameSize.height + (self.LabelPadding * 2))
-
-    return totalSize
+    return CGSizeMake(size.width + LabelInsets.left + LabelInsets.right, CellHeight)
   }
 
   static func fontForNameLabel() -> UIFont {
