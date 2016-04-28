@@ -23,6 +23,44 @@ import UIKit
 @objc(BKYWorkbenchViewController)
 public class WorkbenchViewController: UIViewController {
 
+  // MARK: - Style Enum
+
+  /// Defines the style of the workbench
+  public enum Style {
+    /// Style where the toolbox is positioned vertically, the trash can is located in the
+    /// bottom-right corner, and the trash folder flies out from the bottom
+    case Default,
+    /// Style where the toolbox is positioned horizontally on the bottom, the trash can is
+    /// located in the top-right corner, and the trash folder flies out from the trailing edge of the
+    /// screen
+      Alternate
+
+    /// The `WorkspaceFlowLayout.LayoutDirection` to use for the trash folder
+    private var trashLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
+      switch self {
+      case Default, Alternate: return .Horizontal
+      }
+    }
+
+    /// The `WorkspaceFlowLayout.LayoutDirection` to use for the toolbox category
+    private var toolboxCategoryLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
+      switch self {
+      case Default: return .Vertical
+      case Alternate: return .Horizontal
+      }
+    }
+
+    /// The `ToolboxCategoryListViewController.Orientation` to use for the toolbox
+    private var toolboxOrientation: ToolboxCategoryListViewController.Orientation {
+      switch self {
+      case Default: return .Vertical
+      case Alternate: return .Horizontal
+      }
+    }
+  }
+
+  // MARK: - UIState Struct
+
   /// Defines possible UI states that the view controller may be in
   public struct UIState : OptionSetType {
     private static let Default = UIState(rawValue: 0)
@@ -64,8 +102,8 @@ public class WorkbenchViewController: UIViewController {
     }
   }
 
-  // Button for viewing the trash can
-  public private(set) var trashCanButton: TrashCanButton?
+  // The trash can view
+  public private(set) var trashCanView: TrashCanView?
 
   // The toolbox category view
   public private(set) var toolboxCategoryView: ToolboxCategoryView? {
@@ -82,6 +120,8 @@ public class WorkbenchViewController: UIViewController {
   public private(set) final var engine: LayoutEngine!
   /// The layout builder to create layout hierarchies
   public private(set) final var layoutBuilder: LayoutBuilder!
+  /// The current style of workbench
+  public private(set) final var style: Style!
   /// The workspace that has been loaded via `loadWorkspace(:)`
   public var workspace: Workspace? {
     return _workspaceLayout?.workspace
@@ -98,7 +138,7 @@ public class WorkbenchViewController: UIViewController {
   /// Flag for enabling trash can functionality
   public var enableTrashCan: Bool = true {
     didSet {
-      setTrashCanButtonVisible(self.enableTrashCan)
+      setTrashCanViewVisible(enableTrashCan)
 
       if !enableTrashCan {
         // Hide trash can folder
@@ -123,13 +163,14 @@ public class WorkbenchViewController: UIViewController {
   /**
    Creates the workbench.
 
-   - Parameter engine: Optionally sets `self.layoutEngine`. If no value is specified, a new
-   `LayoutEngine` is automatically created.
-   - Parameter layoutBuilder: Optionally sets `self.layoutBuilder`. If no value is specified, a new
-   `LayoutBuilder` is automatically created.
+   - Parameter style: The `Style` to use for this laying out items in this view controller.
+   - Parameter engine: [Optional] Value used for `self.layoutEngine`. If no value is specified, a
+   new `LayoutEngine` is automatically created.
+   - Parameter layoutBuilder: [Optional] Value used for `self.layoutBuilder`. If no value is
+   specified, a new `LayoutBuilder` is automatically created.
    */
-  public init(engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil)
-  {
+  public init(style: Style, engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil) {
+    self.style = style
     self.engine = (engine ?? DefaultLayoutEngine())
     self.layoutBuilder = (layoutBuilder ?? LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
     super.init(nibName: nil, bundle: nil)
@@ -147,11 +188,12 @@ public class WorkbenchViewController: UIViewController {
   private func commonInit() {
     // Set up trash can folder view controller
     _trashCanViewController = TrashCanViewController(
-      engine: self.engine, layoutBuilder: layoutBuilder, layoutDirection: .Horizontal)
+      engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection)
     addChildViewController(_trashCanViewController)
 
     // Set up toolbox category list view controller
-    _toolboxCategoryListViewController = ToolboxCategoryListViewController()
+    _toolboxCategoryListViewController = ToolboxCategoryListViewController(
+      orientation: style.toolboxOrientation)
     _toolboxCategoryListViewController.delegate = self
     addChildViewController(_toolboxCategoryListViewController)
 
@@ -188,37 +230,72 @@ public class WorkbenchViewController: UIViewController {
     workspaceView.backgroundColor = UIColor.clearColor()
 
     // Create trash can button
-    let trashCanButton = TrashCanButton(imageNamed: "trash_can")
-    trashCanButton.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
-    self.trashCanButton = trashCanButton
+    let trashCanView = TrashCanView(imageNamed: "trash_can")
+    trashCanView.button.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
+    self.trashCanView = trashCanView
 
     // Set up auto-layout constraints
+    let trashCanPadding = CGFloat(25)
     let views: [String: UIView] = [
       "toolboxCategoriesListView": _toolboxCategoryListViewController.view,
       "toolboxCategoryView": toolboxCategoryView,
       "workspaceView": workspaceView,
-      "trashCanButton": trashCanButton,
+      "trashCanView": trashCanView,
       "trashCanFolderView": _trashCanViewController.workspaceView,
     ]
-    let constraints = [
-      // Position the toolbox category list along the leading margin, and let the workspace view
-      // fill the rest of the space
-      "H:|[toolboxCategoriesListView][workspaceView]|",
-      "V:|[toolboxCategoriesListView]|",
-      "V:|[workspaceView]|",
-      // Position the toolbox category view beside the category list
-      "H:[toolboxCategoriesListView][toolboxCategoryView]",
-      "V:|[toolboxCategoryView]|",
-      // Position the trash can button along the bottom-trailing margin
-      "H:[trashCanButton]-25-|",
-      "V:[trashCanButton]-25-|",
-      // Position the trash can folder view on the bottom of the view, between the toolbox category
-      // list and trash can button
-      "H:[toolboxCategoriesListView]-[trashCanFolderView]-[trashCanButton]",
-      "V:[trashCanFolderView]|",
+    let metrics = [
+      "trashCanPadding": trashCanPadding,
     ]
+    let constraints: [String]
+
+    if style == .Alternate {
+      // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
+      // away from the top-trailing corner.
+      trashCanView.setButtonPadding(
+        top: trashCanPadding, leading: 0, bottom: 0, trailing: trashCanPadding)
+      constraints = [
+        // Position the toolbox category list along the bottom margin, and let the workspace view
+        // fill the rest of the space
+        "H:|[workspaceView]|",
+        "H:|[toolboxCategoriesListView]|",
+        "V:|[workspaceView][toolboxCategoriesListView]|",
+        // Position the toolbox category view above the list view
+        "H:|[toolboxCategoryView]|",
+        "V:[toolboxCategoryView][toolboxCategoriesListView]",
+        // Position the trash can button along the top-trailing margin
+        "H:[trashCanView]|",
+        "V:|[trashCanView]",
+        // Position the trash can folder view on the trailing edge of the view, between the toolbox
+        // category list and trash can button
+        "H:[trashCanFolderView]|",
+        "V:[trashCanView]-(trashCanPadding)-[trashCanFolderView]-[toolboxCategoriesListView]",
+      ]
+    } else {
+      // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
+      // away from the bottom-trailing corner.
+      trashCanView.setButtonPadding(
+        top: 0, leading: 0, bottom: trashCanPadding, trailing: trashCanPadding)
+      constraints = [
+        // Position the toolbox category list along the leading margin, and let the workspace view
+        // fill the rest of the space
+        "H:|[toolboxCategoriesListView][workspaceView]|",
+        "V:|[toolboxCategoriesListView]|",
+        "V:|[workspaceView]|",
+        // Position the toolbox category view beside the category list
+        "H:[toolboxCategoriesListView][toolboxCategoryView]",
+        "V:|[toolboxCategoryView]|",
+        // Position the trash can button along the bottom-trailing margin
+        "H:[trashCanView]|",
+        "V:[trashCanView]|",
+        // Position the trash can folder view on the bottom of the view, between the toolbox
+        // category list and trash can button
+        "H:[toolboxCategoriesListView]-[trashCanFolderView]-(trashCanPadding)-[trashCanView]",
+        "V:[trashCanFolderView]|",
+      ]
+    }
+
     self.view.bky_addSubviews(Array(views.values))
-    self.view.bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
+    self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
     self.view.sendSubviewToBack(workspaceView)
   }
@@ -229,10 +306,10 @@ public class WorkbenchViewController: UIViewController {
     // We need to listen for when block views are added/removed from the block list
     // so we can attach pan gesture recognizers to those blocks (for dragging them onto
     // the workspace)
-    self._trashCanViewController.workspaceView.delegate = self
+    _trashCanViewController.workspaceView.delegate = self
 
     // Hide/show trash can
-    setTrashCanButtonVisible(self.enableTrashCan)
+    setTrashCanViewVisible(enableTrashCan)
 
     refreshView()
   }
@@ -279,7 +356,8 @@ public class WorkbenchViewController: UIViewController {
         "`self.layoutEngine` and `self.layoutBuilder` need to be set before loading the toolbox")
     }
 
-    let toolboxLayout = ToolboxLayout(toolbox: toolbox, layoutDirection: .Vertical,
+    let toolboxLayout = ToolboxLayout(
+      toolbox: toolbox, layoutDirection: style.toolboxCategoryLayoutDirection,
       engine: layoutEngine, layoutBuilder: layoutBuilder)
     _toolboxLayout = toolboxLayout
 
@@ -388,7 +466,7 @@ extension WorkbenchViewController {
 
     setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen), animated: animated)
 
-    trashCanButton?.setHighlighted(state.intersectsWith(.TrashCanHighlighted), animated: animated)
+    trashCanView?.setHighlighted(state.intersectsWith(.TrashCanHighlighted), animated: animated)
 
     if let selectedCategory = _toolboxCategoryListViewController.selectedCategory
       where state.intersectsWith(.CategoryOpen)
@@ -408,7 +486,7 @@ extension WorkbenchViewController {
     }
 
     if !state.intersectsWith(.PresentingPopover) && self.presentedViewController != nil {
-      self.dismissViewControllerAnimated(animated, completion: nil)
+      dismissViewControllerAnimated(animated, completion: nil)
     }
   }
 }
@@ -434,39 +512,27 @@ extension WorkbenchViewController {
 
   // MARK: - Private
 
-  private func setTrashCanButtonVisible(visible: Bool) {
-    trashCanButton?.hidden = !visible
+  private func setTrashCanViewVisible(visible: Bool) {
+    trashCanView?.hidden = !visible
   }
 
   private func setTrashCanFolderVisible(visible: Bool, animated: Bool) {
-    if _trashCanVisible == visible && trashCanButton != nil {
+    if _trashCanVisible == visible && trashCanView != nil {
       return
     }
 
-    if visible {
-      _trashCanViewController.setWorkspaceViewHeight(300, animated: animated)
-      _trashCanVisible = true
+    let size: CGFloat = visible ? 300 : 0
+    if style == .Default {
+      _trashCanViewController.setWorkspaceViewHeight(size, animated: animated)
     } else {
-      _trashCanViewController.setWorkspaceViewHeight(0, animated: animated)
-      _trashCanVisible = false
+      _trashCanViewController.setWorkspaceViewWidth(size, animated: animated)
     }
+    _trashCanVisible = visible
   }
 
   private func isGestureTouchingTrashCan(gesture: UIGestureRecognizer) -> Bool {
-    if let trashCanButton = self.trashCanButton where !trashCanButton.hidden {
-      // Define the trash area as being the bottom-right (or bottom-left in RTL) of the workspace
-      // view
-      if UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft {
-        let trashArea = CGRectMake(0, trashCanButton.frame.minY,
-          trashCanButton.frame.maxX,
-          self.view.bounds.size.height - trashCanButton.frame.origin.y)
-        return CGRectContainsPoint(trashArea, gesture.locationInView(self.view))
-      } else {
-        let trashArea = CGRectMake(trashCanButton.frame.minX, trashCanButton.frame.minY,
-          self.view.bounds.size.width - trashCanButton.frame.minX,
-          self.view.bounds.size.height - trashCanButton.frame.minY)
-        return CGRectContainsPoint(trashArea, gesture.locationInView(self.view))
-      }
+    if let trashCanView = self.trashCanView where !trashCanView.hidden {
+      return CGRectContainsPoint(trashCanView.bounds, gesture.locationInView(trashCanView))
     }
 
     return false
@@ -625,7 +691,7 @@ extension WorkbenchViewController {
         return
     }
 
-    let touchPosition = self.workspaceView.workspacePositionFromGestureTouchLocation(gesture)
+    let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
     let touchingTrashCan = isGestureTouchingTrashCan(gesture)
 
     // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
@@ -724,7 +790,7 @@ extension WorkbenchViewController: BlockViewDelegate {
 
     if self.presentedViewController != nil {
       // Dismiss any other view controller that's being presented
-      self.dismissViewControllerAnimated(true, completion: nil)
+      dismissViewControllerAnimated(true, completion: nil)
     }
 
     addUIStateValue(.PresentingPopover)
