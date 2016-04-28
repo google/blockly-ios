@@ -39,6 +39,8 @@ public class TrashCanViewController: UIViewController {
   /// The layout direction to use for `self.workspaceLayout`
   public private(set) var layoutDirection: WorkspaceFlowLayout.LayoutDirection!
 
+  /// The constraint for resizing the width of `self.workspaceView`
+  private var _workspaceViewWidthConstraint: NSLayoutConstraint?
   /// The constraint for resizing the height of `self.workspaceView`
   private var _workspaceViewHeightConstraint: NSLayoutConstraint?
   /// Pointer used for distinguishing changes in `self.bounds`
@@ -94,10 +96,6 @@ public class TrashCanViewController: UIViewController {
       forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &_kvoContextBounds)
     workspaceView.layout = workspaceLayout
 
-    _workspaceViewHeightConstraint = NSLayoutConstraint(item: workspaceView, attribute: .Height,
-        relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
-    workspaceView.addConstraint(_workspaceViewHeightConstraint!)
-
     self.view = workspaceView
   }
 
@@ -129,30 +127,32 @@ public class TrashCanViewController: UIViewController {
    - Parameter animated: Flag determining if the new height should be animated.
    */
   public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
-    guard let workspaceViewHeightConstraint = _workspaceViewHeightConstraint else {
-      return
+    if _workspaceViewHeightConstraint == nil {
+      _workspaceViewHeightConstraint = workspaceView.bky_addHeightConstraint(0)
     }
 
-    if workspaceViewHeightConstraint.constant == height {
-      return
+    if let constraint = _workspaceViewHeightConstraint where constraint.constant != height {
+      self.workspaceView.bky_updateConstraints(animated: animated, updateConstraints: {
+        constraint.constant = height
+      })
+    }
+  }
+
+  /**
+   Sets the width of `self.workspaceView`.
+
+   - Parameter width: The new width
+   - Parameter animated: Flag determining if the new width should be animated.
+   */
+  public func setWorkspaceViewWidth(width: CGFloat, animated: Bool) {
+    if _workspaceViewWidthConstraint == nil {
+      _workspaceViewWidthConstraint = workspaceView.bky_addWidthConstraint(0)
     }
 
-    let updateView = {
-      // Update height constraint
-      workspaceViewHeightConstraint.constant = height
-      self.workspaceView.setNeedsUpdateConstraints()
-      self.workspaceView.superview?.layoutIfNeeded()
-    }
-
-    if animated {
-      // Force pending layout changes to complete
-      self.workspaceView.superview?.layoutIfNeeded()
-
-      UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: {
-        updateView()
-      }, completion: nil)
-    } else {
-      updateView()
+    if let constraint = _workspaceViewWidthConstraint where constraint.constant != width {
+      self.workspaceView.bky_updateConstraints(animated: animated, updateConstraints: {
+        constraint.constant = width
+      })
     }
   }
 
