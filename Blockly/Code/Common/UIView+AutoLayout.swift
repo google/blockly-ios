@@ -81,4 +81,82 @@ extension UIView {
       addConstraints(constraints)
     }
   }
+
+  /**
+   Adds a `NSLayoutAttribute.Width` constraint to this view, where this view's width must equal
+   a constant value.
+
+   - Parameter width: The width of the view
+   - Returns: The constraint that was added.
+   */
+  internal func bky_addWidthConstraint(width: CGFloat) -> NSLayoutConstraint {
+    let constraint =
+      NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil,
+                         attribute: .NotAnAttribute, multiplier: 1, constant: width)
+    addConstraint(constraint)
+    return constraint
+  }
+
+  /**
+   Adds a `NSLayoutAttribute.Height` constraint to this view, where this view's height must equal
+   a constant value.
+
+   - Parameter height: The height of the view
+   - Returns: The constraint that was added.
+   */
+  internal func bky_addHeightConstraint(height: CGFloat) -> NSLayoutConstraint {
+    let constraint =
+      NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil,
+                         attribute: .NotAnAttribute, multiplier: 1, constant: height)
+    addConstraint(constraint)
+
+    return constraint
+  }
+
+  /**
+   Convenience method for updating constraint values related to this view.
+
+   - Parameter animated: Flag indicating whether the update of constraints should be animated. If
+   set to `true`, this method calls
+   `UIView.animateWithDuration(:delay:options:animations:completion:)`.
+   - Parameter duration: [Optional] If `animated` is set to `true`, this is the value that is passed
+   to `UIView.animateWithDuration(...)` for its `duration` value. By default, this value is set to
+   `0.3`.
+   - Parameter delay: [Optional] If `animated` is set to `true`, this is the value that is passed
+   to `UIView.animateWithDuration(...)` for its `delay` value. By default, this value is set to
+   `0.0`.
+   - Parameter options: [Optional] If `animated` is set to `true`, this is the value that is passed
+   to `UIView.animateWithDuration(...)` for its `options` value. By default, this value is set to
+   `.CurveEaseInOut`.
+   - Parameter update: A closure containing the changes to commit to the view (which is
+   where your constraints should be updated). If `animated` is set to `true`, this is the value
+   that is passed to `UIView.animateWithDuration(...)` for its `animations` value.
+   - Parameter completion: A closure that is executed when the `updateConstraints` closure ends.
+   If `animated` is set to `true`, this is the value that is passed to
+   `UIView.animateWithDuration(...)` for its `completion` value. By default, this value is set to
+   `nil`.
+   */
+  internal func bky_updateConstraints(
+    animated animated: Bool, duration: NSTimeInterval = 0.3, delay: NSTimeInterval = 0.0,
+    options: UIViewAnimationOptions = .CurveEaseInOut, update: () -> Void,
+    completion: ((Bool) -> Void)? = nil) {
+
+    let updateView = {
+      update()
+      self.setNeedsUpdateConstraints()
+      self.superview?.layoutIfNeeded()
+    }
+
+    if animated {
+      // Force pending layout changes to complete
+      self.superview?.layoutIfNeeded()
+
+      UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
+        updateView()
+        }, completion: completion)
+    } else {
+      updateView()
+      completion?(true)
+    }
+  }
 }

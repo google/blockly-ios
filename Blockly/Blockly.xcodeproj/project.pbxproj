@@ -76,6 +76,7 @@
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
 		FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232581B708D8E00F1EF42 /* FieldLabel.swift */; };
 		FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */; };
+		FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */; };
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
@@ -137,7 +138,7 @@
 		FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37581C93C75A00C77049 /* WebKit.framework */; };
 		FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD377F1C9A55F800C77049 /* String+Encoding.swift */; };
 		FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */; };
-		FAFD37AB1C9CEC6900C77049 /* TrashCanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */; };
+		FAFD37AB1C9CEC6900C77049 /* TrashCanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD37AA1C9CEC6900C77049 /* TrashCanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,6 +281,7 @@
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		FA6232581B708D8E00F1EF42 /* FieldLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabel.swift; sourceTree = "<group>"; };
 		FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputView.swift; sourceTree = "<group>"; };
+		FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Helper.swift"; sourceTree = "<group>"; };
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
@@ -340,7 +342,7 @@
 		FAFD37581C93C75A00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		FAFD377F1C9A55F800C77049 /* String+Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 		FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxCategoryListViewController.swift; sourceTree = "<group>"; };
-		FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashCanButton.swift; sourceTree = "<group>"; };
+		FAFD37AA1C9CEC6900C77049 /* TrashCanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashCanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,7 +514,7 @@
 				FAB31CE11C571F730071EBF8 /* FieldView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
 				FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */,
-				FAFD37AA1C9CEC6900C77049 /* TrashCanButton.swift */,
+				FAFD37AA1C9CEC6900C77049 /* TrashCanView.swift */,
 				FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */,
 				FAE557751BE028840019D0D4 /* ViewManager.swift */,
 				FA4BB56D1B7C03EA000980E9 /* WorkspaceView.swift */,
@@ -668,6 +670,7 @@
 				FAFD377F1C9A55F800C77049 /* String+Encoding.swift */,
 				FAA86FFD1C64272C000C7C61 /* String+LayoutHelper.swift */,
 				FAA86FFE1C64272C000C7C61 /* UIColor+Helper.swift */,
+				FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */,
 				FAA86FFF1C64272C000C7C61 /* UIView+AutoLayout.swift */,
 				FAA870001C64272C000C7C61 /* UIView+Helper.swift */,
 			);
@@ -939,7 +942,7 @@
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
-				FAFD37AB1C9CEC6900C77049 /* TrashCanButton.swift in Sources */,
+				FAFD37AB1C9CEC6900C77049 /* TrashCanView.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
 				FA57C3921CCADADB00952BFB /* ColorHelper.swift in Sources */,
@@ -981,6 +984,7 @@
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
 				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
+				FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */,
 				FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
