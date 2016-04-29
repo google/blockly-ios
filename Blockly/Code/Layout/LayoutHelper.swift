@@ -28,10 +28,10 @@ public class LayoutHelper: NSObject {
   - Parameter size: The initial workspace size
   - Returns: A workspace size that now accommodates the layout.
   */
-  internal static func sizeThatFitsLayout(layout: Layout, var fromInitialSize size: WorkspaceSize)
-    -> WorkspaceSize {
-      size.width = max(size.width, layout.relativePosition.x + layout.totalSize.width)
-      size.height = max(size.height, layout.relativePosition.y + layout.totalSize.height)
-      return size
+  internal static func sizeThatFitsLayout
+    (layout: Layout, fromInitialSize size: WorkspaceSize) -> WorkspaceSize {
+    return CGSizeMake(
+      max(size.width, layout.relativePosition.x + layout.totalSize.width),
+      max(size.height, layout.relativePosition.y + layout.totalSize.height))
   }
 }

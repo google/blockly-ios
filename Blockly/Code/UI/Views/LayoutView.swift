@@ -58,14 +58,14 @@ public class LayoutView: UIView {
   - Parameter flags: Only refresh the view for the flags that have been specified.
   */
   public func internalRefreshView(forFlags flags: LayoutFlag) {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
   /**
   Prepares this view to be re-used in the future.
   */
   public func internalPrepareForReuse() {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
   // MARK: - Public

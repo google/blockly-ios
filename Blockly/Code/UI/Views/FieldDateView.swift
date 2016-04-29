@@ -54,14 +54,16 @@ public class FieldDateView: FieldView {
     datePickerToolbar.translucent = true
     datePickerToolbar.items = [
       UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didTapDoneButton:")
+      UIBarButtonItem(barButtonSystemItem: .Done, target: self,
+        action: #selector(didTapDoneButton(_:)))
     ]
     datePickerToolbar.sizeToFit() // This is important or else the bar won't render!
 
     datePicker = UIDatePicker()
     datePicker.datePickerMode = .Date
     datePicker.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    datePicker.addTarget(self, action: "datePickerDidChange:", forControlEvents: .ValueChanged)
+    datePicker
+      .addTarget(self, action: #selector(datePickerDidChange(_:)), forControlEvents: .ValueChanged)
 
     textField = UITextField(frame: self.bounds)
     textField.delegate = self

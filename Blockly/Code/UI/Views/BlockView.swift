@@ -96,7 +96,7 @@ public class BlockView: LayoutView {
    - Note: This method needs to be implemented by a subclass.
    */
   public func refreshBackgroundUI(forFlags flags: LayoutFlag) {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
   // MARK: - Super

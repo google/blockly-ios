@@ -146,7 +146,7 @@ public class Layout: NSObject {
   - Note: This method needs to be implemented by a subclass of `Layout`.
   */
   public func performLayout(includeChildren includeChildren: Bool) {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
   // MARK: - Public

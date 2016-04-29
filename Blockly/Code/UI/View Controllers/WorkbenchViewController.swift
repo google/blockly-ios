@@ -196,10 +196,12 @@ public class WorkbenchViewController: UIViewController {
     addChildViewController(_toolboxCategoryListViewController)
 
     // Register for keyboard notifications
-    NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: "keyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: "keyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(
+      self, selector: #selector(keyboardWillShowNotification(_:)),
+      name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(
+      self, selector: #selector(keyboardWillHideNotification(_:)),
+      name: UIKeyboardWillHideNotification, object: nil)
   }
 
   deinit {
@@ -222,14 +224,17 @@ public class WorkbenchViewController: UIViewController {
 
     // Create main workspace view
     workspaceView = WorkspaceView()
-    workspaceView.scrollView.panGestureRecognizer.addTarget(self, action: "didPanWorkspaceView:")
-    let tapGesture = UITapGestureRecognizer(target: self, action: "didTapWorkspaceView:")
+    workspaceView.scrollView.panGestureRecognizer
+      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
+    let tapGesture =
+      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
     workspaceView.scrollView.addGestureRecognizer(tapGesture)
     workspaceView.backgroundColor = UIColor.clearColor()
 
     // Create trash can button
     let trashCanView = TrashCanView(imageNamed: "trash_can")
-    trashCanView.button.addTarget(self, action: "didTapTrashCan:", forControlEvents: .TouchUpInside)
+    trashCanView.button
+      .addTarget(self, action: #selector(didTapTrashCan(_:)), forControlEvents: .TouchUpInside)
     self.trashCanView = trashCanView
 
     // Set up auto-layout constraints
@@ -566,7 +571,7 @@ extension WorkbenchViewController {
     blockView.bky_removeAllGestureRecognizers()
 
     let panGesture = UIPanGestureRecognizer(
-      target: self, action: "didRecognizeWorkspaceFolderPanGesture:")
+      target: self, action: #selector(didRecognizeWorkspaceFolderPanGesture(_:)))
     panGesture.maximumNumberOfTouches = 1
     blockView.addGestureRecognizer(panGesture)
   }
@@ -608,9 +613,9 @@ extension WorkbenchViewController {
       }
 
       // Transfer this gesture recognizer from the original block view to the new block view
-      gesture.removeTarget(self, action: "didRecognizeWorkspaceFolderPanGesture:")
+      gesture.removeTarget(self, action: #selector(didRecognizeWorkspaceFolderPanGesture(_:)))
       aBlockView.removeGestureRecognizer(gesture)
-      gesture.addTarget(self, action: "didRecognizeWorkspacePanGesture:")
+      gesture.addTarget(self, action: #selector(didRecognizeWorkspacePanGesture(_:)))
       newBlockView.addGestureRecognizer(gesture)
 
       // Start the first step of dragging the block layout
@@ -644,12 +649,12 @@ extension WorkbenchViewController {
     blockView.bky_removeAllGestureRecognizers()
 
     let panGesture =
-      UIPanGestureRecognizer(target: self, action: "didRecognizeWorkspacePanGesture:")
+      UIPanGestureRecognizer(target: self, action: #selector(didRecognizeWorkspacePanGesture(_:)))
     panGesture.maximumNumberOfTouches = 1
     blockView.addGestureRecognizer(panGesture)
 
     let tapGesture =
-      UITapGestureRecognizer(target: self, action: "didRecognizeWorkspaceTapGesture:")
+      UITapGestureRecognizer(target: self, action: #selector(didRecognizeWorkspaceTapGesture(_:)))
     blockView.addGestureRecognizer(tapGesture)
   }
 
@@ -724,9 +729,6 @@ extension WorkbenchViewController {
    Tap gesture event handler for a block view inside `self.workspaceView`.
    */
   private dynamic func didRecognizeWorkspaceTapGesture(gesture: UITapGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView else {
-      return
-    }
   }
 }
 
