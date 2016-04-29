@@ -63,7 +63,7 @@ public class WorkbenchViewController: UIViewController {
 
   /// Defines possible UI states that the view controller may be in
   public struct UIState : OptionSetType {
-    private static let Default = UIState(rawValue: 0)
+    private static let Default = UIState(value: Value.Default)
     private static let TrashCanOpen = UIState(value: Value.TrashCanOpen)
     private static let TrashCanHighlighted = UIState(value: Value.TrashCanHighlighted)
     private static let CategoryOpen = UIState(value: Value.CategoryOpen)
@@ -72,7 +72,8 @@ public class WorkbenchViewController: UIViewController {
     private static let PresentingPopover = UIState(value: Value.PresentingPopover)
 
     public enum Value: Int {
-      case TrashCanOpen = 0,
+      case Default = 1,
+        TrashCanOpen,
         TrashCanHighlighted,
         CategoryOpen,
         EditingTextField,
@@ -88,7 +89,7 @@ public class WorkbenchViewController: UIViewController {
     }
 
     public func intersectsWith(other: UIState) -> Bool {
-      return intersect(other) != .Default
+      return intersect(other).rawValue != 0
     }
   }
 
@@ -146,6 +147,13 @@ public class WorkbenchViewController: UIViewController {
       }
     }
   }
+
+  /**
+  Flag for whether the toolbox drawer should stay visible once it has been opened (`true`)
+  or if it should automatically close itself when the user does something else (`false`).
+  By default, this value is set to `false`.
+  */
+  public var toolboxDrawerStaysOpen: Bool = false
 
   /// Controls logic for dragging blocks around in the workspace
   private var _dragger = Dragger()
@@ -269,9 +277,9 @@ public class WorkbenchViewController: UIViewController {
         "H:[trashCanView]|",
         "V:|[trashCanView]",
         // Position the trash can folder view on the trailing edge of the view, between the toolbox
-        // category list and trash can button
+        // category view and trash can button
         "H:[trashCanFolderView]|",
-        "V:[trashCanView]-(trashCanPadding)-[trashCanFolderView]-[toolboxCategoriesListView]",
+        "V:[trashCanView]-(trashCanPadding)-[trashCanFolderView]-[toolboxCategoryView]",
       ]
     } else {
       // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
@@ -291,8 +299,8 @@ public class WorkbenchViewController: UIViewController {
         "H:[trashCanView]|",
         "V:[trashCanView]|",
         // Position the trash can folder view on the bottom of the view, between the toolbox
-        // category list and trash can button
-        "H:[toolboxCategoriesListView]-[trashCanFolderView]-(trashCanPadding)-[trashCanView]",
+        // category view and trash can button
+        "H:[toolboxCategoryView]-[trashCanFolderView]-(trashCanPadding)-[trashCanView]",
         "V:[trashCanFolderView]|",
       ]
     }
@@ -390,30 +398,34 @@ extension WorkbenchViewController {
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
   private func addUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
-    let state = UIState(value: stateValue)
+    var state = UIState(value: stateValue)
     let newState: UIState
+
+    if toolboxDrawerStaysOpen && _state.intersectsWith(.CategoryOpen) {
+      // Always keep the .CategoryOpen state if it existed before
+      state = state.union(.CategoryOpen)
+    }
 
     // When adding a new state, check for compatibility with existing states.
 
     switch stateValue {
     case .DraggingBlock:
       // Dragging a block can only co-exist with highlighting the trash can
-      newState = _state.union(state).intersect([.DraggingBlock, .TrashCanHighlighted])
+      newState = _state.intersect([.TrashCanHighlighted]).union(state)
     case .TrashCanHighlighted:
       // This state can co-exist with anything, simply add it to the current state
       newState = _state.union(state)
     case .EditingTextField:
       // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
       // else
-      newState = _state.union(state).intersect(
-        [.PresentingPopover, .EditingTextField, .CategoryOpen])
+      newState = _state.intersect([.PresentingPopover, .CategoryOpen]).union(state)
     case .PresentingPopover:
       // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
       // blocks from inside the toolbox). Disallow everything else.
-      newState = _state.union(state).intersect([.PresentingPopover, .CategoryOpen])
-    case .CategoryOpen, .TrashCanOpen:
+      newState = _state.intersect([.CategoryOpen]).union(state)
+    case .Default, .CategoryOpen, .TrashCanOpen:
       // Whenever these states are added, clear out all existing state.
-      newState = UIState(value: stateValue)
+      newState = state
     }
 
     refreshUIState(newState, animated: animated)
@@ -439,7 +451,7 @@ extension WorkbenchViewController {
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
   private func resetUIState(animated: Bool = true) {
-    refreshUIState(.Default, animated: animated)
+    addUIStateValue(.Default, animated: animated)
   }
 
   /**
