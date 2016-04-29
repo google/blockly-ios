@@ -25,7 +25,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Initializers
 
   init() {
-    super.init(style: Style.Alternate)
+    super.init(style: .Default)
     commonInit()
   }
 
