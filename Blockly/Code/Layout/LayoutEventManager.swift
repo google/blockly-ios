@@ -48,7 +48,7 @@ public final class LayoutEventManager: NSObject {
     if !_scheduledSendChangeEvents {
       // TODO:(#35) Consider scheduling these events to execute at the end of the current run loop
       // Schedule to send out all the change events at the beginning of the next run loop
-      self.performSelector("internalSendChangeEvents", withObject: nil, afterDelay: 0.0)
+      self.performSelector(#selector(internalSendChangeEvents), withObject: nil, afterDelay: 0.0)
       _scheduledSendChangeEvents = true
     }
   }
@@ -64,7 +64,7 @@ public final class LayoutEventManager: NSObject {
     if _scheduledSendChangeEvents {
       // Cancel internalSendChangeEvents() from being called again in the future
       NSObject.cancelPreviousPerformRequestsWithTarget(self,
-        selector: "internalSendChangeEvents",
+        selector: #selector(internalSendChangeEvents),
         object: nil)
       _scheduledSendChangeEvents = false
     }

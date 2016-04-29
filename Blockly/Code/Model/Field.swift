@@ -82,7 +82,7 @@ public class Field: NSObject {
   a `Field` subclass does not implement this method.
   */
   public func copyField() -> Field {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
     return Field(name: name) // This shouldn't happen.
   }
 
@@ -97,7 +97,7 @@ public class Field: NSObject {
    a `Field` subclass does not implement this method.
    */
   public func setValueFromSerializedText(text: String) throws {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
   /**
@@ -110,7 +110,7 @@ public class Field: NSObject {
    a `Field` subclass does not implement this method.
    */
   public func serializedText() throws -> String? {
-    bky_assertionFailure("\(__FUNCTION__) needs to be implemented by a subclass")
+    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
     return nil
   }
 }

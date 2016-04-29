@@ -38,7 +38,8 @@ public class FieldCheckboxView: FieldView {
     super.init(frame: CGRectZero)
 
     switchButton = UISwitch()
-    switchButton.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
+    switchButton
+      .addTarget(self, action: #selector(switchValueDidChange(_:)), forControlEvents: .ValueChanged)
     addSubview(switchButton)
   }
 

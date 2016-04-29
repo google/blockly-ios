@@ -27,22 +27,23 @@ public class ColorHelper: NSObject {
    - Parameter alpha: The alpha to set on the color. Defaults to 1.0, if none specified.
    - Returns: A parsed RGB color, or nil if the string could not be parsed.
    */
-  public static func colorFromRGB(var rgb: String, alpha: Float = 1.0) -> UIColor? {
-    rgb = rgb.uppercaseString
+  public static func colorFromRGB(rgb: String, alpha: Float = 1.0) -> UIColor? {
+    var rgbUpper = rgb.uppercaseString
 
     // Strip "#" if it exists
-    if rgb.hasPrefix("#") {
-      rgb = rgb.substringFromIndex(rgb.startIndex.successor())
+    if rgbUpper.hasPrefix("#") {
+      rgbUpper = rgbUpper.substringFromIndex(rgbUpper.startIndex.successor())
     }
 
     // Verify that the string contains 6 valid hexidecimal characters
     let invalidCharacters = NSCharacterSet(charactersInString: "0123456789ABCDEF").invertedSet
-    if (rgb.characters.count != 6 || rgb.rangeOfCharacterFromSet(invalidCharacters) != nil) {
+    if rgbUpper.characters.count != 6 ||
+      rgbUpper.rangeOfCharacterFromSet(invalidCharacters) != nil {
       return nil
     }
 
     // Parse rgb as a hex value and return the color
-    let scanner = NSScanner(string: rgb)
+    let scanner = NSScanner(string: rgbUpper)
     var rgbValue: UInt32 = 0
     scanner.scanHexInt(&rgbValue)
 

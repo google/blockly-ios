@@ -40,7 +40,7 @@ public class FieldColorView: FieldView {
     button.clipsToBounds = true
     button.layer.borderColor = UIColor.whiteColor().CGColor
     button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
+    button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
     addSubview(button)
   }
 

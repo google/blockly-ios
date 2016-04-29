@@ -67,13 +67,14 @@ public final class FieldAngle: Field {
 
   // MARK: - Internal - For testing only
 
-  internal class func normalizeAngle(var angle: Int) -> Int {
-    if (angle != 360) {
-      angle = angle % 360
-      if (angle < 0) {
-        angle += 360
+  internal class func normalizeAngle(angle: Int) -> Int {
+    var normalizedAngle = angle
+    if normalizedAngle != 360 {
+      normalizedAngle = normalizedAngle % 360
+      if normalizedAngle < 0 {
+        normalizedAngle += 360
       }
     }
-    return angle
+    return normalizedAngle
   }
 }

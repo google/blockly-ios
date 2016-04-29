@@ -46,7 +46,7 @@ public class FieldDropdownView: FieldView {
     self.label = UILabel(frame: CGRectZero)
 
     self.button = UIButton(type: .Custom)
-    button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
+    button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
     button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
 
     bky_addSubviews([self.label, self.button, self.dropDownArrow])

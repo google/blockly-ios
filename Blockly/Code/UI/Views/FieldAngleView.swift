@@ -55,7 +55,8 @@ public class FieldAngleView: FieldView {
     toolbar.translucent = true
     toolbar.items = [
       UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "didTapDoneButton:")
+      UIBarButtonItem(barButtonSystemItem: .Done, target: self,
+        action: #selector(didTapDoneButton(_:)))
     ]
     toolbar.sizeToFit() // This is important or else the bar won't render!
 

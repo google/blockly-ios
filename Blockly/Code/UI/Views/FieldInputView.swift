@@ -51,7 +51,8 @@ public class FieldInputView: FieldView {
     textField.delegate = self
     textField.borderStyle = .RoundedRect
     textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+    textField
+      .addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: .EditingChanged)
     addSubview(textField)
   }
 
