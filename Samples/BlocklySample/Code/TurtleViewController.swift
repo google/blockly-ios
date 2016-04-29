@@ -102,7 +102,7 @@ class TurtleViewController: UIViewController {
     self.navigationItem.title = "Turtle Demo"
 
     // Load the block editor
-    self._workbenchViewController = WorkbenchViewController()
+    self._workbenchViewController = WorkbenchViewController(style: .Default)
 
     // Create a workspace
     do {

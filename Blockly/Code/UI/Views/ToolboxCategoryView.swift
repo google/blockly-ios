@@ -26,6 +26,8 @@ public class ToolboxCategoryView: WorkspaceView {
   public private(set) var category: Toolbox.Category?
   /// Width constraint for this view
   private var _widthConstraint: NSLayoutConstraint!
+  /// Height constraint for this view
+  private var _heightConstraint: NSLayoutConstraint!
 
   // MARK: - Initializers
 
@@ -44,31 +46,35 @@ public class ToolboxCategoryView: WorkspaceView {
     self.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
     self.allowCanvasPadding = false
 
-    // Add width constraint
-    _widthConstraint = NSLayoutConstraint(item: self, attribute: .Width,
-      relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
-    addConstraint(_widthConstraint)
+    // Add low priority size constraints. This allows this view to automatically resize itself
+    // if no other higher priority size constraints have been set elsewhere.
+    _widthConstraint = self.bky_addWidthConstraint(0)
+    _widthConstraint.priority = UILayoutPriorityDefaultLow
+
+    _heightConstraint = self.bky_addHeightConstraint(0)
+    _heightConstraint.priority = UILayoutPriorityDefaultLow
+
     setNeedsUpdateConstraints()
   }
 
   // MARK: - Public
 
   /**
-   Shows the contents of a given category and automatically resizes view's width to completely fit
-   the size of the contents.
+   Shows the contents of a given category and automatically resizes view's size to
+   completely fit the size of the contents.
 
    - Parameter category: The `Category` to show.
-   - Parameter animated: Flag indicating if resizing the view's width should be animated.
+   - Parameter animated: Flag indicating if resizing the view's size should be animated.
    */
   public func showCategory(category: Toolbox.Category, animated: Bool) {
     setCategory(category, animated: animated)
   }
 
   /**
-   Hides the contents of a given category and automatically resizes the view's width to `0`.
+   Hides the contents of a given category and automatically resizes the view's size to `(0, 0)`.
 
    - Parameter category: The `Category` to hide.
-   - Parameter animated: Flag indicating if resizing the view's width should be animated.
+   - Parameter animated: Flag indicating if resizing the view's size should be animated.
    */
   public func hideCategory(animated animated: Bool) {
     setCategory(nil, animated: animated)
@@ -90,29 +96,16 @@ public class ToolboxCategoryView: WorkspaceView {
     self.layout = category?.layout
     self.refreshView()
 
-    // Update the width of the toolbox, if needed
+    // Update the size of the toolbox, if needed
     let newWidth = category?.layout?.viewFrame.size.width ?? 0
-    if _widthConstraint.constant == newWidth {
+    let newHeight = category?.layout?.viewFrame.size.height ?? 0
+    if _widthConstraint.constant == newWidth && _heightConstraint.constant == newHeight {
       return
     }
 
-    let updateView = {
-      // Update width constraint
+    self.bky_updateConstraints(animated: animated, update: {
       self._widthConstraint.constant = newWidth
-      self.setNeedsUpdateConstraints()
-      self.superview?.layoutIfNeeded()
-    }
-
-    if animated {
-      // Force pending layout changes to complete
-      self.superview?.layoutIfNeeded()
-
-      UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut,
-        animations: { Void -> () in
-          updateView()
-        }, completion: nil)
-    } else {
-      updateView()
-    }
+      self._heightConstraint.constant = newHeight
+    })
   }
 }

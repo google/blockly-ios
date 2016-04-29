@@ -41,7 +41,15 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
  */
 public class ToolboxCategoryListViewController: UICollectionViewController {
 
+  // MARK: - Orientation Enum
+  public enum Orientation {
+    case Horizontal, Vertical
+  }
+
   // MARK: - Properties
+
+  /// The orientation of how the categories should be laid out
+  public let orientation: Orientation
 
   /// The toolbox layout to display
   public var toolboxLayout: ToolboxLayout?
@@ -76,14 +84,22 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Initializers
 
-  public required init() {
+  public required init(orientation: Orientation) {
+    self.orientation = orientation
+
     let flowLayout = UICollectionViewFlowLayout()
-    flowLayout.scrollDirection = .Vertical
+    switch orientation {
+    case .Horizontal:
+      flowLayout.scrollDirection = .Horizontal
+    case .Vertical:
+      flowLayout.scrollDirection = .Vertical
+    }
+
     super.init(collectionViewLayout: flowLayout)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -102,12 +118,14 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
     collectionView.showsVerticalScrollIndicator = false
     collectionView.showsHorizontalScrollIndicator = false
 
-    // Automatically constrain this view to a certain width
-    // (`ToolboxCategoryListViewCell.CellHeight` is used since cells are rotated by 90 degrees).
-    let widthConstraint = NSLayoutConstraint(item: self.view, attribute: .Width,
-      relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1,
-      constant: ToolboxCategoryListViewCell.CellHeight)
-    self.view.addConstraint(widthConstraint)
+    // Automatically constrain this view to a certain size
+    if orientation == .Horizontal {
+      self.view.bky_addHeightConstraint(ToolboxCategoryListViewCell.CellHeight)
+    } else {
+      // `ToolboxCategoryListViewCell.CellHeight` is used since in the vertical orientation,
+      // cells are rotated by 90 degrees
+      self.view.bky_addWidthConstraint(ToolboxCategoryListViewCell.CellHeight)
+    }
   }
 
   // MARK: - Public
@@ -135,8 +153,8 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
       let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
         ToolboxCategoryListViewCell.ReusableCellIdentifier,
         forIndexPath: indexPath) as! ToolboxCategoryListViewCell
-      cell.loadCategory(categoryForIndexPath(indexPath))
-      cell.selected = (self.selectedCategory == cell.category)
+      cell.loadCategory(categoryForIndexPath(indexPath), orientation: orientation)
+      cell.selected = (selectedCategory == cell.category)
       return cell
   }
 
@@ -147,7 +165,7 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
   {
     let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ToolboxCategoryListViewCell
 
-    if self.selectedCategory == cell.category {
+    if selectedCategory == cell.category {
       // If the category has already been selected, de-select it
       self.selectedCategory = nil
       delegate?.toolboxCategoryListViewControllerDidDeselectCategory(self)
@@ -191,8 +209,8 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
     let category = categoryForIndexPath(indexPath)
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
 
-    // Flip width/height (its contents are actually rotated 90 degrees)
-    return CGSizeMake(size.height, size.width)
+    // Flip width/height for the vertical orientation (its contents are actually rotated 90 degrees)
+    return (orientation == .Vertical) ? CGSizeMake(size.height, size.width) : size
   }
 }
 
@@ -234,8 +252,8 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
 
   override var selected: Bool {
     didSet {
-      self.backgroundColor = self.selected ?
-        self.category?.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
+      self.backgroundColor = selected ?
+        category?.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
     }
   }
 
@@ -258,7 +276,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     nameLabel.text = ""
     iconView.image = nil
     colorTagView.backgroundColor = UIColor.clearColor()
-    self.selected = false
+    selected = false
   }
 
   // MARK: - Private
@@ -302,16 +320,15 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     // Create category name label for the bottom of the view
     iconView.frame = nameLabel.frame
     iconView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-    // We want icons to appear right-side up, so we un-rotate them by 90 degrees (the rotationView
-    // is rotated by -90 degrees).
-    iconView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
     rotationView.addSubview(iconView)
   }
 
-  func loadCategory(category: Toolbox.Category) {
-    self.category = category
+  // MARK: - Private
 
-    let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
+  func loadCategory(category: Toolbox.Category,
+    orientation: ToolboxCategoryListViewController.Orientation)
+  {
+    self.category = category
 
     if let icon = category.icon {
       iconView.image = icon
@@ -320,10 +337,17 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     }
     colorTagView.backgroundColor = category.color
 
-    // Rotate so the category appears vertically
+    let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
     rotationView.center = self.contentView.center // We need the rotation to occur in the center
     rotationView.bounds = CGRectMake(0, 0, size.width, size.height)
-    rotationView.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI_2)) // Rotate -90 degrees
+
+    if orientation == .Vertical {
+      // Rotate so the category appears vertically
+      rotationView.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI_2)) // Rotate -90 degrees
+
+      // We want icons to appear right-side up, so we un-rotate them by 90 degrees
+      iconView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+    }
   }
 
   static func sizeRequiredForCategory(category: Toolbox.Category) -> CGSize {
