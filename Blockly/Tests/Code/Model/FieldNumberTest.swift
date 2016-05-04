@@ -34,7 +34,9 @@ class FieldNumberTest: XCTestCase {
     let MAX = 100.0
     let PRECISION = 0.1
 
-    try! fieldNumber.setConstraints(minimum: MIN, maximum: MAX, precision: PRECISION)
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: MIN, maximum: MAX, precision: PRECISION)
+    }
     XCTAssertEqual(MIN, fieldNumber.minimumValue)
     XCTAssertEqual(MAX, fieldNumber.maximumValue)
     XCTAssertEqual(PRECISION, fieldNumber.precision)
@@ -77,90 +79,63 @@ class FieldNumberTest: XCTestCase {
   }
 
   func testSetConstraints_IllegalArguments() {
-    do {
-      try fieldNumber.setConstraints(minimum: Double.NaN, maximum: 1.0, precision: 0.1)
-      XCTFail("NaN minimum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("NaN minimum is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: Double.NaN, maximum: 1.0, precision: 0.1)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: Double.infinity, maximum: 1.0, precision: 0.1)
-      XCTFail("`Double.infinity` minimum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("`Double.infinity` minimum is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: Double.infinity, maximum: 1.0, precision: 0.1)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -Double.infinity, maximum: 1.0, precision: 0.1)
-      XCTFail("Negative `Double.infinity` minimum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("Negative `Double.infinity` minimum is not allowed.",
+                   errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -Double.infinity, maximum: 1.0, precision: 0.1)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: Double.NaN, precision: 0.1)
-      XCTFail("NaN maximum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("NaN maximum is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: Double.NaN, precision: 0.1)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: Double.infinity, precision: 0.1)
-      XCTFail("`Double.infinity` maximum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("`Double.infinity` maximum is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: Double.infinity, precision: 0.1)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: -Double.infinity, precision: 0.1)
-      XCTFail("Negative `Double.infinity` maximum is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("Negative `Double.infinity` maximum is not allowed.",
+                   errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: -Double.infinity, precision: 0.1)
     }
 
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.NaN)
-      XCTFail("NaN precision is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("NaN precision is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.NaN)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.infinity)
-      XCTFail("`Double.infinity` precision is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("`Double.infinity` precision is not allowed.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.infinity)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: -Double.infinity)
-      XCTFail("Negative `Double.infinity` precision is not allowed.")
-    } catch {
-      // Expected
+    BKYAssertThrow("Negative `Double.infinity` precision is not allowed.",
+                   errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: -Double.infinity)
     }
   }
 
   func testSetConstraints_InvalidConstraintPairs() {
-    do {
-      try fieldNumber.setConstraints(minimum: 1.0, maximum: -1.0)
-      XCTFail("min must be less than max.")
-    } catch {
-      // Expected
+    BKYAssertThrow("min must be less than max.", errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: 1.0, maximum: -1.0, precision: nil)
     }
 
-    do {
-      try fieldNumber.setConstraints(minimum: 1.0, maximum: 4.0, precision: 5.0)
-      XCTFail("Check for no valid values with given constraints.")
-    } catch {
-      // Expected
+    BKYAssertThrow("Check for no valid values with given constraints.",
+                   errorType: BlocklyError.self) {
+      try self.fieldNumber.setConstraints(minimum: 1.0, maximum: 4.0, precision: 5.0)
     }
   }
 
   func testDecimalPrecisionLessThanOne() {
     let PRECISION = 0.25  // Two significant digits
-    try! fieldNumber.setConstraints(precision: PRECISION)
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: nil, maximum: nil, precision: PRECISION)
+    }
 
     XCTAssertFalse(fieldNumber.isInteger)
 
@@ -228,7 +203,9 @@ class FieldNumberTest: XCTestCase {
 
   func testIntegerPrecisionOne() {
     let PRECISION = 1.0
-    try! fieldNumber.setConstraints(precision: PRECISION)
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: nil, maximum: nil, precision: PRECISION)
+    }
 
     XCTAssertTrue(fieldNumber.isInteger)
 
@@ -320,7 +297,9 @@ class FieldNumberTest: XCTestCase {
 
   func testIntegerPrecisionTwo() {
     let PRECISION = 2.0
-    try! fieldNumber.setConstraints(precision: PRECISION)
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: nil, maximum: nil, precision: PRECISION)
+    }
 
     XCTAssertTrue(fieldNumber.isInteger)
 
@@ -370,7 +349,7 @@ class FieldNumberTest: XCTestCase {
 
     fieldNumber.value = -1.9
     XCTAssertEqual(-2.0, fieldNumber.value)
-    
+
     fieldNumber.value = -1.0
     XCTAssertEqual(-2.0, fieldNumber.value)
     
@@ -380,21 +359,23 @@ class FieldNumberTest: XCTestCase {
   
   func testSetFromLocalizedText_ExponentNotation() {
     // Use the default constraints
-    try! fieldNumber.setConstraints(minimum: nil, maximum: nil, precision: nil)
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: nil, maximum: nil, precision: nil)
+    }
 
-    try! fieldNumber.setValueFromLocalizedText("123e4")
+    XCTAssertTrue(fieldNumber.setValueFromLocalizedText("123e4"))
     XCTAssertEqual(1230000, fieldNumber.value)
 
-    try! fieldNumber.setValueFromLocalizedText("1.23e4")
+    XCTAssertTrue(fieldNumber.setValueFromLocalizedText("1.23e4"))
     XCTAssertEqual(12300, fieldNumber.value)
 
-    try! fieldNumber.setValueFromLocalizedText("-1.23e4")
+    XCTAssertTrue(fieldNumber.setValueFromLocalizedText("-1.23e4"))
     XCTAssertEqual(-12300, fieldNumber.value)
 
-    try! fieldNumber.setValueFromLocalizedText("123e-4")
+    XCTAssertTrue(fieldNumber.setValueFromLocalizedText("123e-4"))
     XCTAssertEqual(0.0123, fieldNumber.value)
 
-    try! fieldNumber.setValueFromLocalizedText("1.23e-4")
+    XCTAssertTrue(fieldNumber.setValueFromLocalizedText("1.23e-4"))
     XCTAssertEqual(0.000123, fieldNumber.value)
   }
 }
