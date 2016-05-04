@@ -42,7 +42,8 @@ public class BlocklyError: NSError {
     XMLUnknownBlock = 501,
     FileNotFound = 600,
     FileNotReadable = 601,
-    IllegalState = 700
+    IllegalState = 700,
+    IllegalArgument = 701
   }
   public typealias Code = BKYBlocklyErrorCode
 
