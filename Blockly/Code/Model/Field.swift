@@ -55,7 +55,7 @@ public class Field: NSObject {
   private var _editable: Bool = true
   public var editable: Bool {
     get {
-      return _editable && sourceInput.sourceBlock.editable
+      return _editable && (sourceInput?.sourceBlock.editable ?? true)
     }
     set {
       if _editable != newValue {
@@ -112,5 +112,43 @@ public class Field: NSObject {
   public func serializedText() throws -> String? {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
     return nil
+  }
+
+  // MARK: - Public
+
+  /**
+   A convenience method that should be called inside the `didSet { ... }` block of instance
+   properties from `Field` subclasses.
+
+   If `self.editable == true` and `editableProperty != oldValue`, this method will automatically
+   call `delegate?.didUpdateField(self)`.
+
+   If `self.editable == true` and `editableProperty == oldValue`, nothing happens.
+
+   If `self.editable == false`, this method automatically reverts `editableProperty` back to
+   `oldValue`.
+
+   Usage:
+   ```
+   var someInteger: Int {
+     didSet { didSetEditableProperty(&someInteger, oldValue) }
+   }
+   ```
+
+   - Parameter editableProperty: The instance property that had been set
+   - Parameter oldValue: The old value of the instance property
+   - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   */
+  public func didSetEditableProperty<T: Equatable>(inout editableProperty: T, _ oldValue: T)
+    -> Bool
+  {
+    if !self.editable {
+      editableProperty = oldValue
+    }
+    if editableProperty == oldValue {
+      return false
+    }
+    delegate?.didUpdateField(self)
+    return true
   }
 }

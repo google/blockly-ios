@@ -117,6 +117,19 @@ class FieldXMLTest: XCTestCase {
     XCTAssertNil(fieldXML)
   }
 
+  func testSerializeXML_FieldNumber() {
+    let field = FieldNumber(name: "a_field", value: -30.50)
+    let fieldXML = try! field.toXML()
+
+    // Expected: <field name="a_field">-30.5</field>
+    XCTAssertNotNil(fieldXML)
+    XCTAssertEqual("field", fieldXML?.name)
+    XCTAssertEqual(1, fieldXML?.attributes.count)
+    XCTAssertEqual("a_field", fieldXML?.attributes["name"])
+    XCTAssertEqual("-30.5", fieldXML?.value) // The trailing "0" should be chopped off
+    XCTAssertEqual(0, fieldXML?.children.count)
+  }
+
   func testSerializeXML_FieldVariable() {
     let field = FieldVariable(name: "a_field", variable: "variableName")
     let fieldXML = try! field.toXML()

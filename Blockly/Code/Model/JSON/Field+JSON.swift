@@ -29,6 +29,7 @@ extension Field {
   private static let FIELD_TYPE_IMAGE = "field_image"
   private static let FIELD_TYPE_INPUT = "field_input"
   private static let FIELD_TYPE_LABEL = "field_label"
+  private static let FIELD_TYPE_NUMBER = "field_number"
   private static let FIELD_TYPE_VARIABLE = "field_variable"
 
   // JSON parameters
@@ -40,10 +41,14 @@ extension Field {
   private static let PARAMETER_DATE = "date"
   private static let PARAMETER_HEIGHT = "height"
   private static let PARAMETER_IMAGE_URL = "src"
+  private static let PARAMETER_MINIMUM_VALUE = "min"
+  private static let PARAMETER_MAXIMUM_VALUE = "max"
   private static let PARAMETER_NAME = "name"
   private static let PARAMETER_OPTIONS = "options"
+  private static let PARAMETER_PRECISION = "precision"
   private static let PARAMETER_TEXT = "text"
   private static let PARAMETER_TYPE = "type"
+  private static let PARAMETER_VALUE = "value"
   private static let PARAMETER_VARIABLE = "variable"
   private static let PARAMETER_WIDTH = "width"
 
@@ -180,6 +185,20 @@ extension Field {
         return FieldLabel(
           name: (json[PARAMETER_NAME] as? String ?? ""),
           text: (json[PARAMETER_TEXT] as? String ?? ""))
+      }
+
+      // Number
+      registerType(FIELD_TYPE_NUMBER) {
+        (json: [String: AnyObject]) throws -> Field in
+
+        let value = (json[PARAMETER_VALUE] as? Double) ?? 0.0
+        let minimum = json[PARAMETER_MINIMUM_VALUE] as? Double
+        let maximum = json[PARAMETER_MAXIMUM_VALUE] as? Double
+        let precision = json[PARAMETER_PRECISION] as? Double
+
+        let fieldNumber = FieldNumber(name: (json[PARAMETER_NAME] as? String ?? ""), value: value)
+        try fieldNumber.setConstraints(minimum: minimum, maximum: maximum, precision: precision)
+        return fieldNumber
       }
 
       // Variable
