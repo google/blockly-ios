@@ -101,6 +101,14 @@ public class LayoutConfig: NSObject {
   /// `nil` means that the system default should be used.
   public static let FieldCheckboxSwitchTintColor = LayoutConfig.newPropertyKey()
 
+  /// [`UIEdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
+  /// should be used for each one
+  public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
+
+  /// [`CGFloat`] For fields that use a `UITextField`, this is the maximum width that should be
+  /// used for each one, specified as a UIView coordinate system unit.
+  public static let FieldTextFieldMaximumWidth = LayoutConfig.newPropertyKey()
+
   // MARK: - Properties
 
   // NOTE: Separate dictionaries were created for each type of value as casting specific values
@@ -114,6 +122,12 @@ public class LayoutConfig: NSObject {
 
   /// Dictionary mapping property keys to `UIColor` values
   private var _colors = Dictionary<PropertyKey, UIColor>()
+
+  /// Dictionary mapping property keys to `UIEdgeInsets` values
+  private var _edgeInsets = Dictionary<PropertyKey, UIEdgeInsets>()
+
+  /// Dictionary mapping property keys to `CGFloat` values
+  private var _floats = Dictionary<PropertyKey, CGFloat>()
 
   // MARK: - Initializers
 
@@ -135,6 +149,9 @@ public class LayoutConfig: NSObject {
     // Use the default system colors by setting these config values to nil
     setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchTintColor)
+
+    setEdgeInsets(UIEdgeInsetsMake(4, 8, 4, 8), forKey: LayoutConfig.FieldTextFieldInsetPadding)
+    setFloat(300, forKey: LayoutConfig.FieldTextFieldMaximumWidth)
   }
 
   // MARK: - Public
@@ -269,13 +286,65 @@ public class LayoutConfig: NSObject {
    Returns the `UIColor` value that is mapped to a specific `PropertyKey`.
 
    - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
-   - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   - Parameter defaultValue: [Optional] If no `UIColor` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - Returns: The `key`'s value
    */
   @inline(__always)
   public func colorFor(key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
     return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, forKey: key) : nil)
+  }
+
+  /**
+   Maps a `UIEdgeInsets` value to a specific `PropertyKey`.
+
+   - Parameter edgeInset: The `UIEdgeInsets` value
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - Returns: The `edgeInset` that was set.
+   */
+  public func setEdgeInsets(edgeInset: UIEdgeInsets, forKey key: PropertyKey) -> UIEdgeInsets {
+    _edgeInsets[key] = edgeInset
+    return edgeInset
+  }
+
+  /**
+   Returns the `UIEdgeInsets` value that is mapped to a specific `PropertyKey`.
+
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - Parameter defaultValue: [Optional] If no `UIEdgeInsets` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - Returns: The `key`'s value
+   */
+  @inline(__always)
+  public func edgeInsetFor(key: PropertyKey, defaultValue: UIEdgeInsets = UIEdgeInsetsZero)
+    -> UIEdgeInsets
+  {
+    return _edgeInsets[key] ?? setEdgeInsets(defaultValue, forKey: key)
+  }
+
+  /**
+   Maps a `CGFloat` value to a specific `PropertyKey`.
+
+   - Parameter float: The `CGFloat` value
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldMaximumWidth`)
+   - Returns: The `float` that was set.
+   */
+  public func setFloat(float: CGFloat, forKey key: PropertyKey) -> CGFloat {
+    _floats[key] = float
+    return float
+  }
+
+  /**
+   Returns the `CGFloat` value that is mapped to a specific `PropertyKey`.
+
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldMaximumWidth`)
+   - Parameter defaultValue: [Optional] If no `CGFloat` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - Returns: The `key`'s value
+   */
+  @inline(__always)
+  public func floatFor(key: PropertyKey, defaultValue: CGFloat = 0) -> CGFloat {
+    return _floats[key] ?? setFloat(defaultValue, forKey: key)
   }
 
   /**
