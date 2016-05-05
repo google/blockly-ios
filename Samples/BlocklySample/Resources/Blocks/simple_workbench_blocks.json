@@ -416,4 +416,44 @@
  "helpUrl": "http://www.example.com/",
  "colour": "#ffff00",
  },
+ {
+ "id": "any_number",
+ "message0": "Double: %1",
+ "args0": [
+           {
+           "type": "field_number",
+           "name": "number",
+           },
+           ],
+ "output": null,
+ "colour": "#ffff00",
+ },
+ {
+ "id": "currency",
+ "message0": "$ %1",
+ "args0": [
+           {
+           "type": "field_number",
+           "name": "currency",
+           "precision": 0.01,
+           },
+           ],
+ "output": null,
+ "colour": "#ffff00",
+ },
+ {
+ "id": "constrained_decimal",
+ "message0": "-50.0 < %1 < 50.0",
+ "args0": [
+           {
+           "type": "field_number",
+           "name": "constrained_decimal",
+           "precision": 0.1,
+           "min": -50,
+           "max": 50,
+           },
+           ],
+ "output": null,
+ "colour": "#ffff00",
+ },
 ]

@@ -136,6 +136,9 @@
 		FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE231CD81F4D00698179 /* FieldNumber.swift */; };
 		FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */; };
 		FAFAEE3B1CDA81F500698179 /* XCTestCase+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */; };
+		FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE521CDABED400698179 /* FieldNumberView.swift */; };
+		FAFAEE631CDAE4DB00698179 /* FieldNumberLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */; };
+		FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */; };
 		FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FAFD37211C8F5C5F00C77049 /* blockly_web */; };
 		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
 		FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37581C93C75A00C77049 /* WebKit.framework */; };
@@ -343,6 +346,9 @@
 		FAFAEE231CD81F4D00698179 /* FieldNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumber.swift; sourceTree = "<group>"; };
 		FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberTest.swift; sourceTree = "<group>"; };
 		FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Helper.swift"; sourceTree = "<group>"; };
+		FAFAEE521CDABED400698179 /* FieldNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberView.swift; sourceTree = "<group>"; };
+		FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberLayout.swift; sourceTree = "<group>"; };
+		FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
 		FAFD37211C8F5C5F00C77049 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
 		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
 		FAFD37581C93C75A00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -381,6 +387,7 @@
 				FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */,
 				FAD652501CB7266100F73F11 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
+				FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FA4E83EA1CACF00A009FB0CD /* LayoutEngine.swift */,
@@ -519,6 +526,7 @@
 				FA4D54971C69983B00F95084 /* FieldImageView.swift */,
 				FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */,
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
+				FAFAEE521CDABED400698179 /* FieldNumberView.swift */,
 				FAB31CE11C571F730071EBF8 /* FieldView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
 				FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */,
@@ -673,6 +681,7 @@
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
+				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
 				FAA86FFB1C64272C000C7C61 /* Logging.swift */,
 				FAA86FFC1C64272C000C7C61 /* ObjectPool.swift */,
@@ -932,6 +941,7 @@
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
+				FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
 				FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */,
 				FA2DFCBD1B72DD140072A278 /* FieldDropdown.swift in Sources */,
@@ -951,6 +961,7 @@
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
+				FAFAEE631CDAE4DB00698179 /* FieldNumberLayout.swift in Sources */,
 				FAFD37AB1C9CEC6900C77049 /* TrashCanView.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
@@ -963,6 +974,7 @@
 				FAD652741CB87B2200F73F11 /* DefaultLayoutEngine.swift in Sources */,
 				FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
+				FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */,
 				FA9D2FB91C11166000D0E528 /* ToolboxCategoryView.swift in Sources */,
