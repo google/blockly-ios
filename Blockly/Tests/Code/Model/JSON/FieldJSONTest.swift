@@ -235,6 +235,37 @@ class FieldJSONTest: XCTestCase {
     XCTAssertEqual("some label", field.text)
   }
 
+  // MARK: - fieldFromJSON - Number
+
+  func testFieldFromJSON_NumberValid() {
+    let json = [
+      "type": "field_number",
+      "name": "number",
+      "value": -25.30,
+      "min": -50,
+      "max": 50.500,
+      "precision": 0.1,
+      ]
+    let field: FieldNumber
+    do {
+      if let fieldNumber = try Field.fieldFromJSON(json) as? FieldNumber {
+        field = fieldNumber
+      } else {
+        XCTFail("Could not parse json into a FieldNumber")
+        return
+      }
+    } catch let error as NSError {
+      XCTFail("Error: \(error.localizedDescription)")
+      return
+    }
+
+    XCTAssertEqual("number", field.name)
+    XCTAssertEqual(-25.30, field.value)
+    XCTAssertEqual(-50, field.minimumValue)
+    XCTAssertEqual(50.5, field.maximumValue)
+    XCTAssertEqual(0.1, field.precision)
+  }
+
   // MARK: - fieldFromJSON - Variable
 
   func testFieldFromJSON_VariableValid() {
