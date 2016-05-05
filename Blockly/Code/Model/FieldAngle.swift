@@ -24,17 +24,9 @@ public final class FieldAngle: Field {
 
   public var angle: Int {
     didSet {
-      if self.editable {
-        // Normalize the value that was set
-        self.angle = FieldAngle.normalizeAngle(self.angle)
-      } else {
-        // Revert the change
-        self.angle = oldValue
-      }
-
-      if self.angle != oldValue {
-        delegate?.didUpdateField(self)
-      }
+      // Normalize the value that was set
+      angle = FieldAngle.normalizeAngle(angle)
+      didSetEditableProperty(&angle, oldValue)
     }
   }
 

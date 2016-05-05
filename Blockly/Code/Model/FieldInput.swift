@@ -24,14 +24,7 @@ public final class FieldInput: Field {
 
   /// The text value for the field
   public var text: String {
-    didSet {
-      if !self.editable {
-        self.text = oldValue
-      }
-      if text != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&text, oldValue) }
   }
 
   // MARK: - Initializers

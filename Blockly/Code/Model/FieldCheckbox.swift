@@ -23,14 +23,7 @@ public final class FieldCheckbox: Field {
   // MARK: - Properties
 
   public var checked: Bool {
-    didSet {
-      if !self.editable {
-        self.checked = oldValue
-      }
-      if self.checked != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&checked, oldValue) }
   }
 
   // MARK: - Initializers
