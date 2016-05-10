@@ -21,15 +21,6 @@ import Foundation
  */
 @objc(BKYFieldDateView)
 public class FieldDateView: FieldView {
-  // MARK: - Static Properties
-
-  /**
-   When measuring the size required to render this view's input text, this is the amount to pad
-   to that calculated value (to account for the text decoration applied by the system when it draws
-   the `.RoundedRect` borderStyle of the text field).
-   */
-  public static var textFieldPadding = CGSizeMake(14, 6)
-
   // MARK: - Properties
 
   /// The `FieldDate` backing this view
@@ -38,18 +29,30 @@ public class FieldDateView: FieldView {
   }
 
   /// The text field to render the date
-  private var textField: UITextField!
+  public private(set) lazy var textField: InsetTextField = {
+    let textField = InsetTextField(frame: self.bounds)
+    textField.delegate = self
+    textField.borderStyle = .RoundedRect
+    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    textField.inputView = self.datePicker
+    textField.inputAccessoryView = self.datePickerToolbar
+    textField.textAlignment = .Center
+    return textField
+  }()
+
   /// The picker for choosing a date
-  private var datePicker: UIDatePicker!
+  public private(set) lazy var datePicker: UIDatePicker = {
+    let datePicker = UIDatePicker()
+    datePicker.datePickerMode = .Date
+    datePicker.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    datePicker
+      .addTarget(self, action: #selector(datePickerDidChange(_:)), forControlEvents: .ValueChanged)
+    return datePicker
+  }()
+
   /// The toolbar that appears above the date picker
-  private var datePickerToolbar: UIToolbar!
-
-  // MARK: - Initializers
-
-  public required init() {
-    super.init(frame: CGRectZero)
-
-    datePickerToolbar = UIToolbar()
+  private private(set) lazy var datePickerToolbar: UIToolbar = {
+    let datePickerToolbar = UIToolbar()
     datePickerToolbar.barStyle = .Default
     datePickerToolbar.translucent = true
     datePickerToolbar.items = [
@@ -58,26 +61,19 @@ public class FieldDateView: FieldView {
         action: #selector(didTapDoneButton(_:)))
     ]
     datePickerToolbar.sizeToFit() // This is important or else the bar won't render!
+    return datePickerToolbar
+  }()
 
-    datePicker = UIDatePicker()
-    datePicker.datePickerMode = .Date
-    datePicker.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    datePicker
-      .addTarget(self, action: #selector(datePickerDidChange(_:)), forControlEvents: .ValueChanged)
+  // MARK: - Initializers
 
-    textField = UITextField(frame: self.bounds)
-    textField.delegate = self
-    textField.borderStyle = .RoundedRect
-    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    textField.inputView = datePicker
-    textField.inputAccessoryView = datePickerToolbar
-    textField.textAlignment = .Center
+  public required init() {
+    super.init(frame: CGRectZero)
+
     addSubview(textField)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -91,16 +87,16 @@ public class FieldDateView: FieldView {
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      let dateString = FieldDateView.stringFromDate(fieldDate.date)
-      self.textField.text = dateString
+      textField.text = FieldDateView.stringFromDate(fieldDate.date)
 
       // TODO:(#27) Standardize this font
-      self.textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.insetPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
   public override func internalPrepareForReuse() {
-    self.textField.text = ""
+    textField.text = ""
   }
 
   // MARK: - Private
@@ -118,7 +114,7 @@ public class FieldDateView: FieldView {
     updateDateFromDatePicker()
 
     // Stop editing the text field
-    self.textField.resignFirstResponder()
+    textField.resignFirstResponder()
   }
 
   private dynamic func datePickerDidChange(sender: UIDatePicker) {
@@ -127,7 +123,7 @@ public class FieldDateView: FieldView {
   }
 
   private func updateDateFromDatePicker() {
-    self.fieldDate?.date = datePicker.date
+    fieldDate?.date = datePicker.date
   }
 }
 
@@ -152,9 +148,12 @@ extension FieldDateView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
+    let textPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
+    let text = FieldDateView.stringFromDate(fieldDate.date)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let textSize = FieldDateView.stringFromDate(fieldDate.date)
-      .bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
-    return textSize + self.textFieldPadding
+    var measureSize = text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
+    measureSize.height += textPadding.top + textPadding.bottom
+    measureSize.width += textPadding.left + textPadding.right
+    return measureSize
   }
 }
