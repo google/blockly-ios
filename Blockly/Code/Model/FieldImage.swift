@@ -23,26 +23,14 @@ public final class FieldImage: Field {
   // MARK: - Properties
 
   public var size: WorkspaceSize {
-    didSet {
-      if !self.editable {
-        self.size = oldValue
-      }
-      if self.size != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&size, oldValue) }
   }
   public var imageURL: String {
-    didSet {
-      if !self.editable {
-        self.imageURL = oldValue
-      }
-      if self.imageURL != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&imageURL, oldValue) }
   }
-  public var altText: String
+  public var altText: String {
+    didSet { didSetEditableProperty(&altText, oldValue) }
+  }
 
   // MARK: - Initializers
 

@@ -37,14 +37,7 @@ public final class FieldDropdown: Field {
 
   /// The currently selected index
   public var selectedIndex: Int {
-    didSet {
-      if !self.editable {
-        self.selectedIndex = oldValue
-      }
-      if self.selectedIndex != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&selectedIndex, oldValue) }
   }
 
   /// The option tuple of the currently selected index

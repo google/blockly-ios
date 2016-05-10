@@ -23,14 +23,7 @@ public final class FieldColor: Field {
   // MARK: - Properties
 
   public var color: UIColor {
-    didSet {
-      if !self.editable {
-        self.color = oldValue
-      }
-      if self.color != oldValue {
-        delegate?.didUpdateField(self)
-      }
-    }
+    didSet { didSetEditableProperty(&color, oldValue) }
   }
 
   // MARK: - Initializers
