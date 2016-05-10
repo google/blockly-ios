@@ -20,18 +20,6 @@ import Foundation
  */
 @objc(BKYFieldAngleView)
 public class FieldAngleView: FieldView {
-  // MARK: - Static Properties
-
-  /// The maximum width that each instance can grow to, expressed as a UIView coordinate system unit
-  public static var maximumTextFieldWidth = CGFloat(300)
-
-  /**
-   When measuring the size required to render this view's input text, this is the amount to pad
-   to that calculated value (to account for the text decoration applied by the system when it draws
-   the `.RoundedRect` borderStyle of the text field).
-   */
-  public static var textFieldPadding = CGSizeMake(14, 6)
-
   // MARK: - Properties
 
   /// The `FieldAngle` backing this view
@@ -40,17 +28,20 @@ public class FieldAngleView: FieldView {
   }
 
   /// The text field to render
-  private var textField: UITextField!
+  public private(set) lazy var textField: InsetTextField = {
+    let textField = InsetTextField(frame: self.bounds)
+    textField.delegate = self
+    textField.borderStyle = .RoundedRect
+    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    textField.keyboardType = .NumbersAndPunctuation
+    textField.textAlignment = .Right
+    textField.inputAccessoryView = self.toolbar
+    return textField
+  }()
+
   /// A toolbar that appears above the input keyboard
-  private var toolbar: UIToolbar!
-
-  // MARK: - Initializers
-
-  public required init() {
-    self.textField = UITextField(frame: CGRectZero)
-    super.init(frame: CGRectZero)
-
-    toolbar = UIToolbar()
+  public private(set) lazy var toolbar: UIToolbar = {
+    let toolbar = UIToolbar()
     toolbar.barStyle = .Default
     toolbar.translucent = true
     toolbar.items = [
@@ -59,19 +50,19 @@ public class FieldAngleView: FieldView {
         action: #selector(didTapDoneButton(_:)))
     ]
     toolbar.sizeToFit() // This is important or else the bar won't render!
+    return toolbar
+  }()
 
-    textField.delegate = self
-    textField.borderStyle = .RoundedRect
-    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    textField.keyboardType = .NumbersAndPunctuation
-    textField.textAlignment = .Right
-    textField.inputAccessoryView = toolbar
+  // MARK: - Initializers
+
+  public required init() {
+    super.init(frame: CGRectZero)
+
     addSubview(textField)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -85,24 +76,24 @@ public class FieldAngleView: FieldView {
       updateTextFieldFromFieldAngle()
 
       // TODO:(#27) Standardize this font
-      self.textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.insetPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
   public override func internalPrepareForReuse() {
-    self.frame = CGRectZero
-    self.textField.text = ""
+    textField.text = ""
   }
 
   // MARK: - Private
 
   private dynamic func didTapDoneButton(sender: UITextField) {
     // Stop editing the text field
-    self.textField.resignFirstResponder()
+    textField.resignFirstResponder()
   }
 
   private func updateTextFieldFromFieldAngle() {
-    self.textField.text = String(self.fieldAngle?.angle ?? 0) + "°"
+    textField.text = String(fieldAngle?.angle ?? 0) + "°"
   }
 }
 
@@ -126,8 +117,8 @@ extension FieldAngleView: UITextFieldDelegate {
 
   public func textFieldDidEndEditing(textField: UITextField) {
     // Only commit the change after the user has finished editing the field
-    if let newAngle = Int(self.textField.text ?? "") { // Only update it if it's a valid value
-      self.fieldAngle?.angle = newAngle
+    if let newAngle = Int(textField.text ?? "") { // Only update it if it's a valid value
+      fieldAngle?.angle = newAngle
     }
     updateTextFieldFromFieldAngle()
   }
@@ -149,14 +140,15 @@ extension FieldAngleView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
+    let textPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
+    let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     // Use a size that can accomodate 3 digits and °.
     let measureText = "000°"
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
-    measureSize.height = measureSize.height + textFieldPadding.height
-    measureSize.width =
-      min(measureSize.width, FieldAngleView.maximumTextFieldWidth) + textFieldPadding.width
+    measureSize.height += textPadding.top + textPadding.bottom
+    measureSize.width = min(measureSize.width + textPadding.left + textPadding.right, maxWidth)
     return measureSize
   }
 }

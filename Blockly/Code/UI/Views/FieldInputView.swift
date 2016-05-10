@@ -20,18 +20,6 @@ import Foundation
  */
 @objc(BKYFieldInputView)
 public class FieldInputView: FieldView {
-  // MARK: - Static Properties
-
-  /// The maximum width that each instance can grow to, expressed as a UIView coordinate system unit
-  public static var maximumTextFieldWidth = CGFloat(300)
-
-  /**
-   When measuring the size required to render this view's input text, this is the amount to pad
-   to that calculated value (to account for the text decoration applied by the system when it draws
-   the `.RoundedRect` borderStyle of the text field).
-   */
-  public static var textFieldPadding = CGSizeMake(14, 6)
-
   // MARK: - Properties
 
   /// The `FieldInput` backing this view
@@ -40,25 +28,26 @@ public class FieldInputView: FieldView {
   }
 
   /// The text field to render
-  private var textField: UITextField!
-
-  // MARK: - Initializers
-
-  public required init() {
-    self.textField = UITextField(frame: CGRectZero)
-    super.init(frame: CGRectZero)
-
+  public private(set) lazy var textField: InsetTextField = {
+    let textField = InsetTextField(frame: CGRectZero)
     textField.delegate = self
     textField.borderStyle = .RoundedRect
     textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     textField
       .addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+    return textField
+  }()
+
+  // MARK: - Initializers
+
+  public required init() {
+    super.init(frame: CGRectZero)
+
     addSubview(textField)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -72,24 +61,24 @@ public class FieldInputView: FieldView {
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      if self.textField.text != fieldInput.text {
-        self.textField.text = fieldInput.text
+      if textField.text != fieldInput.text {
+        textField.text = fieldInput.text
       }
 
       // TODO:(#27) Standardize this font
-      self.textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      textField.insetPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
   public override func internalPrepareForReuse() {
-    self.frame = CGRectZero
-    self.textField.text = ""
+    textField.text = ""
   }
 
   // MARK: - Private
 
   private dynamic func textFieldDidChange(sender: UITextField) {
-    self.fieldInput?.text = self.textField.text ?? ""
+    fieldInput?.text = (textField.text ?? "")
   }
 }
 
@@ -113,13 +102,14 @@ extension FieldInputView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
+    let textPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
+    let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let measureText = fieldInput.text + "   "
+    let measureText = fieldInput.text + " "
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
-    measureSize.height = measureSize.height + textFieldPadding.height
-    measureSize.width =
-      min(measureSize.width, FieldInputView.maximumTextFieldWidth) + textFieldPadding.width
+    measureSize.height += textPadding.top + textPadding.bottom
+    measureSize.width = min(measureSize.width + textPadding.left + textPadding.right, maxWidth)
     return measureSize
   }
 }
