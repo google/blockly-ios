@@ -22,7 +22,11 @@ An input for specifying a variable.
 public final class FieldVariable: Field {
   // MARK: - Properties
 
-  public var variable: String
+  /// The variable in this field. All variables are considered global and must be unique.
+  /// Two variables with the same name will be considered the same variable at generation.
+  public var variable: String {
+    didSet { didSetEditableProperty(&variable, oldValue) }
+  }
 
   // MARK: - Initializers
 
