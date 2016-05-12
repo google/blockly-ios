@@ -67,7 +67,9 @@ public class FieldAngleView: FieldView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
     guard let layout = self.fieldLayout where layout.field is FieldAngle else {
       return
     }
@@ -81,7 +83,9 @@ public class FieldAngleView: FieldView {
     }
   }
 
-  public override func internalPrepareForReuse() {
+  public override func prepareForReuse() {
+    super.prepareForReuse()
+
     textField.text = ""
   }
 

@@ -97,8 +97,8 @@ public class DefaultBlockView: BlockView {
     }
   }
 
-  public override func internalPrepareForReuse() {
-    super.internalPrepareForReuse()
+  public override func prepareForReuse() {
+    super.prepareForReuse()
 
     removeHighlightLayer()
   }

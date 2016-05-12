@@ -23,7 +23,7 @@ public class LayoutView: UIView {
   // MARK: - Properties
 
   /// Layout object to render
-  public final weak var layout: Layout? {
+  public final var layout: Layout? {
     didSet {
       if layout == oldValue {
         return
@@ -47,26 +47,13 @@ public class LayoutView: UIView {
     }
   }
 
-  // MARK: - Abstract
+  /// Flag indicating if `self.frame.origin` should automatically be kept in sync with
+  /// `self.layout.viewFrame.origin`. Defaults to `true`.
+  public var updateOriginFromLayout = true
 
-  // TODO:(#69) Remove internalRefreshView and internalPrepareForReuse, and have
-  // subclasses just override refreshView and prepareForReuse.
-
-  /**
-  Refreshes the view based on the current state `self.layout` and a given set of flags.
-
-  - Parameter flags: Only refresh the view for the flags that have been specified.
-  */
-  public func internalRefreshView(forFlags flags: LayoutFlag) {
-    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
-  }
-
-  /**
-  Prepares this view to be re-used in the future.
-  */
-  public func internalPrepareForReuse() {
-    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
-  }
+  /// Flag indicating if `self.frame.size` should automatically be kept in sync with
+  /// `self.layout.viewFrame.size`. Defaults to `true`.
+  public var updateBoundsFromLayout = true
 
   // MARK: - Public
 
@@ -77,20 +64,18 @@ public class LayoutView: UIView {
   value is set to include all flags (i.e. `LayoutFlag.All`).
   */
   public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      updateViewFrameFromLayout()
+    guard let layout = self.layout else {
+      return
     }
-    if flags.subtract(Layout.Flag_UpdateViewFrame).hasFlagSet() {
-      internalRefreshView(forFlags: flags)
-    }
-  }
 
-  /**
-  Updates `self.frame` based on the current state of `self.layout`.
-  */
-  public func updateViewFrameFromLayout() {
-    if layout != nil {
-      self.frame = layout!.viewFrame
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+      if updateBoundsFromLayout && updateOriginFromLayout {
+        frame = layout.viewFrame
+      } else if updateBoundsFromLayout {
+        frame.size = layout.viewFrame.size
+      } else if updateOriginFromLayout {
+        frame.origin = layout.viewFrame.origin
+      }
     }
   }
 }
@@ -106,12 +91,9 @@ extension LayoutView: LayoutDelegate {
 // MARK: - Recyclable implementation
 
 extension LayoutView: Recyclable {
-  public final func prepareForReuse() {
+  public func prepareForReuse() {
     // NOTE: It is the responsibility of the superview to remove its subviews and not the other way
     // around. Thus, this method does not handle removing this view from its superview.
-
-    self.layout = nil
-
-    internalPrepareForReuse()
+    layout = nil
   }
 }

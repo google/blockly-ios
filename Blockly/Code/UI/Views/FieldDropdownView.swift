@@ -62,8 +62,9 @@ public class FieldDropdownView: FieldView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag)
-  {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
     guard let layout = self.fieldLayout,
       let fieldDropdown = self.fieldDropdown else
     {
@@ -87,7 +88,9 @@ public class FieldDropdownView: FieldView {
     }
   }
 
-  public override func internalPrepareForReuse() {
+  public override func prepareForReuse() {
+    super.prepareForReuse()
+
     self.frame = CGRectZero
     self.label.text = ""
   }
