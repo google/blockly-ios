@@ -50,8 +50,9 @@ public class FieldCheckboxView: FieldView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag)
-  {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
     guard let fieldLayout = self.fieldLayout,
       let fieldCheckbox = self.fieldCheckbox else
     {
@@ -77,7 +78,9 @@ public class FieldCheckboxView: FieldView {
     }
   }
 
-  public override func internalPrepareForReuse() {
+  public override func prepareForReuse() {
+    super.prepareForReuse()
+
     self.switchButton.on = false
   }
 
