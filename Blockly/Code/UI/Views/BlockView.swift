@@ -101,7 +101,15 @@ public class BlockView: LayoutView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
+    // super.refreshView() automatically handles updates for `Layout.Flag_UpdateViewFrame`.
+    // If that was the only flag that was set, then just exit early.
+    guard flags.subtract(Layout.Flag_UpdateViewFrame).hasFlagSet() else {
+      return
+    }
+
     guard let layout = self.blockLayout else {
       return
     }
@@ -141,7 +149,9 @@ public class BlockView: LayoutView {
     _disableLayerChangeAnimations = false
   }
 
-  public override func internalPrepareForReuse() {
+  public override func prepareForReuse() {
+    super.prepareForReuse()
+
     self.frame = CGRectZero
 
     // Disable animating layer changes, so that the next block layout that uses this view instance

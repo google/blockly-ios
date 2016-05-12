@@ -49,7 +49,9 @@ public class FieldImageView: FieldView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
     guard let fieldImage = self.fieldImage else {
       return
     }
@@ -59,7 +61,9 @@ public class FieldImageView: FieldView {
     }
   }
 
-  public override func internalPrepareForReuse() {
+  public override func prepareForReuse() {
+    super.prepareForReuse()
+
     self.frame = CGRectZero
     self.imageView.image = nil
   }

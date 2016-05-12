@@ -100,6 +100,10 @@ public class WorkspaceView: LayoutView {
     scrollView.autoresizesSubviews = false
     scrollView.delegate = self
     addSubview(scrollView)
+
+    // Don't automatically update `self.frame` based on `self.layout`
+    updateOriginFromLayout = false
+    updateBoundsFromLayout = false
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -109,7 +113,9 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Super
 
-  public override func internalRefreshView(forFlags flags: LayoutFlag) {
+  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
+    super.refreshView(forFlags: flags)
+
     guard let layout = self.workspaceLayout else {
       return
     }
@@ -166,12 +172,9 @@ public class WorkspaceView: LayoutView {
     }
   }
 
-  public override func updateViewFrameFromLayout() {
-    // Do nothing. This view is special in that its `self.frame` should not be set by
-    // `self.layout.viewFrame`.
-  }
+  public override func prepareForReuse() {
+    super.prepareForReuse()
 
-  public override func internalPrepareForReuse() {
     // Remove all block views
     for view in scrollView.blockGroupView.subviews {
       if let blockView = view as? BlockView {
@@ -199,7 +202,7 @@ public class WorkspaceView: LayoutView {
   2) Building its layout tree and setting its workspace position to be relative to where the given
   block view is currently on-screen.
   3) Immediately firing all change events that are pending on `LayoutEventManager.sharedInstance`,
-  which forces the block view to be created in `self.internalRefreshView(...)`.
+  which forces the block view to be created in `self.refreshView(...)`.
 
   - Parameter blockView: The block view to copy into this workspace.
   - Returns: The new block view that was added to this workspace.
