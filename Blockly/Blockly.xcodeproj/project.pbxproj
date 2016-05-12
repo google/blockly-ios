@@ -12,6 +12,7 @@
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
+		FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631631CE44285008DDBC8 /* DropdownView.swift */; };
 		FA271CEA1B8E6D430015CE38 /* LayoutConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
 		FA27267D1B83C54900777B49 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726781B83C54900777B49 /* Layout.swift */; };
@@ -108,7 +109,7 @@
 		FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */; };
 		FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870111C64276A000C7C61 /* WorkspaceBezierPath.swift */; };
 		FAA870181C642805000C7C61 /* FieldColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870141C642805000C7C61 /* FieldColorPickerViewController.swift */; };
-		FAA870191C642805000C7C61 /* FieldDropdownOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870151C642805000C7C61 /* FieldDropdownOptionsViewController.swift */; };
+		FAA870191C642805000C7C61 /* DropdownOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870151C642805000C7C61 /* DropdownOptionsViewController.swift */; };
 		FAA8701A1C642805000C7C61 /* TrashCanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870161C642805000C7C61 /* TrashCanViewController.swift */; };
 		FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870171C642805000C7C61 /* WorkbenchViewController.swift */; };
 		FAABDD631CA20BA400F9E7D4 /* BlockBumper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABDD621CA20BA400F9E7D4 /* BlockBumper.swift */; };
@@ -225,6 +226,7 @@
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
+		FA1631631CE44285008DDBC8 /* DropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownView.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConfig.swift; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
 		FA2726781B83C54900777B49 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
@@ -323,7 +325,7 @@
 		FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutHelper.swift; sourceTree = "<group>"; };
 		FAA870111C64276A000C7C61 /* WorkspaceBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceBezierPath.swift; sourceTree = "<group>"; };
 		FAA870141C642805000C7C61 /* FieldColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorPickerViewController.swift; sourceTree = "<group>"; };
-		FAA870151C642805000C7C61 /* FieldDropdownOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownOptionsViewController.swift; sourceTree = "<group>"; };
+		FAA870151C642805000C7C61 /* DropdownOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownOptionsViewController.swift; sourceTree = "<group>"; };
 		FAA870161C642805000C7C61 /* TrashCanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashCanViewController.swift; sourceTree = "<group>"; };
 		FAA870171C642805000C7C61 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		FAABDD621CA20BA400F9E7D4 /* BlockBumper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBumper.swift; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */,
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
+				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -712,8 +715,8 @@
 		FAA870131C642805000C7C61 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FAA870151C642805000C7C61 /* DropdownOptionsViewController.swift */,
 				FAA870141C642805000C7C61 /* FieldColorPickerViewController.swift */,
-				FAA870151C642805000C7C61 /* FieldDropdownOptionsViewController.swift */,
 				FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */,
 				FAA870161C642805000C7C61 /* TrashCanViewController.swift */,
 				FAA870171C642805000C7C61 /* WorkbenchViewController.swift */,
@@ -950,6 +953,7 @@
 				FA27267E1B83C54900777B49 /* WorkspaceLayout.swift in Sources */,
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
+				FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
 				FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */,
 				FAD652781CB88FEF00F73F11 /* DefaultLayoutConfig.swift in Sources */,
@@ -1016,7 +1020,7 @@
 				FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */,
 				FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */,
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
-				FAA870191C642805000C7C61 /* FieldDropdownOptionsViewController.swift in Sources */,
+				FAA870191C642805000C7C61 /* DropdownOptionsViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
