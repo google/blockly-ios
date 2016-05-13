@@ -28,11 +28,11 @@ public class FieldDropdownView: FieldView {
   }
 
   /// The text field to render
-  private var label: UILabel!
-
-  private var button: UIButton!
-
-  private var dropDownArrow: UIImageView!
+  private lazy var dropDownView: DropdownView = {
+    let dropDownView = DropdownView()
+    dropDownView.delegate = self
+    return dropDownView
+  }()
 
   // MARK: - Initializers
 
@@ -40,24 +40,11 @@ public class FieldDropdownView: FieldView {
     super.init(frame: CGRectZero)
 
     // Add subviews
-    self.dropDownArrow = UIImageView(image: FieldDropdownView.dropDownArrowImage())
-    dropDownArrow.contentMode = .Center
-
-    self.label = UILabel(frame: CGRectZero)
-
-    self.button = UIButton(type: .Custom)
-    button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
-    button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-
-    bky_addSubviews([self.label, self.button, self.dropDownArrow])
-    refreshConstraints()
-
-    sendSubviewToBack(button)
+    configureSubviews()
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -72,78 +59,35 @@ public class FieldDropdownView: FieldView {
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      refreshConstraints()
-
-      // Decorate this view
-      self.layer.borderColor = UIColor.grayColor().CGColor
-      self.layer.borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
-      self.layer.cornerRadius = layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
-
-      if self.label.text != fieldDropdown.selectedOption?.displayName {
-        self.label.text = fieldDropdown.selectedOption?.displayName
-      }
-
+      dropDownView.text = fieldDropdown.selectedOption?.displayName
+      dropDownView.borderWidth =
+        layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+      dropDownView.borderCornerRadius =
+        layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
       // TODO:(#27) Standardize this font
-      self.label.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      dropDownView.textFont = UIFont.systemFontOfSize(14 * layout.engine.scale)
     }
   }
 
   public override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRectZero
-    self.label.text = ""
+    dropDownView.text = ""
   }
 
   // MARK: - Private
 
-  private func refreshConstraints() {
-    guard let layout = self.fieldLayout else {
-      return
-    }
-
-    let views = [
-      "label": self.label,
-      "dropDownArrow": self.dropDownArrow,
-      "button": self.button,
-    ]
-    let metrics = [
-      "xPadding": layout.config.viewUnitFor(LayoutConfig.InlineXPadding),
-      "yPadding": layout.config.viewUnitFor(LayoutConfig.InlineYPadding),
-    ]
+  private func configureSubviews() {
+    let views: [String: UIView] = ["dropDownView": dropDownView]
     let constraints = [
-      "H:|-(xPadding)-[label]-(xPadding)-[dropDownArrow]-(xPadding)-|",
-      "H:|[button]|",
-      "V:|-(yPadding)-[label]-(yPadding)-|",
-      "V:|[dropDownArrow]|",
-      "V:|[button]|",
+      "H:|[dropDownView]|",
+      "V:|[dropDownView]|",
     ]
-
-    // Remove all current constraints
-    views.forEach({ $1.removeFromSuperview()})
-
     bky_addSubviews(Array(views.values))
-
-    // Add new constraints
-    bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
+    bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
   }
 
-  private dynamic func didTapButton(sender: UIButton) {
-    guard let field = self.fieldDropdown,
-      let parentBlockView = self.parentBlockView else
-    {
-      return
-    }
 
-    let viewController = FieldDropdownOptionsViewController()
-    viewController.field = field
-    viewController.delegate = self
-    parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
-  }
-
-  private class func dropDownArrowImage() -> UIImage? {
-    return ImageLoader.loadImage(named: "arrow_dropdown", forClass: FieldDropdownView.self)
-  }
 }
 
 // MARK: - FieldLayoutMeasurer implementation
@@ -156,33 +100,44 @@ extension FieldDropdownView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    let fieldLineWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
-    let xPadding = layout.config.viewUnitFor(LayoutConfig.InlineXPadding)
-    let yPadding = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
-
-    // Measure text size
-    // TODO:(#27) Use a standardized font size that can be configurable for the project
+    let borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+    let xSpacing = layout.config.viewUnitFor(LayoutConfig.InlineXPadding)
+    let ySpacing = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
     let measureText = (fieldDropdown.selectedOption?.displayName ?? "")
+    // TODO:(#27) Standardize this font
     let font = UIFont.systemFontOfSize(14 * scale)
-    let textSize = measureText.bky_singleLineSizeForFont(font)
 
-    // Measure drop down arrow image size
-    var imageSize = CGSizeZero
-    if let image = FieldDropdownView.dropDownArrowImage() {
-      imageSize = image.size
-    }
-
-    // Return size required
-    return CGSizeMake(
-      ceil(textSize.width + xPadding * 3 + imageSize.width + fieldLineWidth * 2),
-      ceil(max(textSize.height + yPadding * 2, imageSize.height) + fieldLineWidth * 2))
+    return DropdownView.measureSize(
+      text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
+      textFont: font, borderWidth: borderWidth, horizontalSpacing: xSpacing,
+      verticalSpacing: ySpacing)
   }
 }
 
-// MARK: - FieldDropdownOptionsViewControllerDelegate
+// MARK: - DropDownViewDelegate Implementation
 
-extension FieldDropdownView: FieldDropdownOptionsViewControllerDelegate {
-  public func fieldDropdownOptionsViewController(viewController: FieldDropdownOptionsViewController,
+extension FieldDropdownView: DropdownViewDelegate {
+  public func dropDownDidReceiveTap() {
+    guard let field = self.fieldDropdown,
+      let parentBlockView = self.parentBlockView else
+    {
+      return
+    }
+
+    let viewController = DropdownOptionsViewController()
+    viewController.delegate = self
+    viewController.options = field.options
+    viewController.selectedIndex = field.selectedIndex
+    // TODO:(#27) Standardize this font
+    viewController.textLabelFont = UIFont.systemFontOfSize(18)
+    parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
+  }
+}
+
+// MARK: - DropdownOptionsViewControllerDelegate
+
+extension FieldDropdownView: DropdownOptionsViewControllerDelegate {
+  public func dropdownOptionsViewController(viewController: DropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)
   {
     self.fieldDropdown?.selectedIndex = optionIndex
