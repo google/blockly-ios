@@ -55,6 +55,7 @@ public class ViewFactory: NSObject {
     registerViewTypeForFieldType(FieldInput.self, viewType: FieldInputView.self)
     registerViewTypeForFieldType(FieldLabel.self, viewType: FieldLabelView.self)
     registerViewTypeForFieldType(FieldNumber.self, viewType: FieldNumberView.self)
+    registerViewTypeForFieldType(FieldVariable.self, viewType: FieldVariableView.self)
   }
 
   // MARK: - Public - Block View

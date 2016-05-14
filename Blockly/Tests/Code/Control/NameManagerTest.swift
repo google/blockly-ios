@@ -45,6 +45,8 @@ class NameManagerTest: XCTestCase {
     XCTAssertEqual("foo3", _nameManager.generateUniqueName("foo2", addToList: true))
     XCTAssertEqual("222", _nameManager.generateUniqueName("222", addToList: true))
     XCTAssertEqual("223", _nameManager.generateUniqueName("222", addToList: true))
+    XCTAssertEqual("BAR10", _nameManager.generateUniqueName("BAR10", addToList: true))
+    XCTAssertEqual("BAR11", _nameManager.generateUniqueName("BAR10", addToList: true))
   }
 
   func testCaseInsensitiveUniqueName() {
@@ -67,11 +69,112 @@ class NameManagerTest: XCTestCase {
     XCTAssertEqual(0, _nameManager.count)
   }
 
-  func testRemoveName() {
+  func testAddName_Standard() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    _nameManager.addName("bar")
+    XCTAssertEqual(["bar"], _nameManager.names)
+    XCTAssertTrue(listener.addedName)
+  }
+
+  func testAddName_CaseInsensitiveName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    _nameManager.addName("foo")
+    XCTAssertEqual(["foo"], _nameManager.names)
+    XCTAssertTrue(listener.addedName)
+    listener.clearState()
+
+    _nameManager.addName("FOO")
+    XCTAssertEqual(["FOO"], _nameManager.names)
+    // No new name was actually added, so a rename event should be fired instead of add name event
+    XCTAssertFalse(listener.addedName)
+    XCTAssertTrue(listener.renamedName)
+  }
+
+  func testRequestRemovalForName() {
     _nameManager.addName("foo")
     XCTAssertTrue(_nameManager.containsName("FOO"))
-    XCTAssertTrue(_nameManager.removeName("Foo"))
+    XCTAssertTrue(_nameManager.requestRemovalForName("Foo"))
     XCTAssertFalse(_nameManager.containsName("foo"))
-    XCTAssertFalse(_nameManager.removeName("foo"))
+    XCTAssertFalse(_nameManager.requestRemovalForName("foo"))
+  }
+
+  func testRequestRemovalForName_BlockRemoval() {
+    let listener = NameManagerTestListener()
+    listener.allowRemoveName = false
+    _nameManager.listeners.add(listener)
+
+    _nameManager.addName("foo")
+    XCTAssertTrue(_nameManager.containsName("foo"))
+    XCTAssertFalse(_nameManager.requestRemovalForName("foo"))
+    XCTAssertTrue(_nameManager.containsName("foo"))
+  }
+
+  func testRenameName_Standard() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    _nameManager.addName("foo")
+    XCTAssertTrue(_nameManager.renameName("foo", toName: "BAR"))
+    XCTAssertEqual(["BAR"], _nameManager.names)
+    XCTAssertTrue(listener.renamedName)
+  }
+
+  func testRenameName_CaseInsensitive() {
+    _nameManager.addName("bar")
+    XCTAssertTrue(_nameManager.renameName("BAR", toName: "XYZ"))
+    XCTAssertEqual(["XYZ"], _nameManager.names)
+  }
+
+  func testRenameName_ToAnotherExistingName() {
+    _nameManager.addName("foo")
+    _nameManager.addName("bar")
+    XCTAssertTrue(_nameManager.renameName("bar", toName: "FOO"))
+    XCTAssertEqual(["FOO"], _nameManager.names) // There should only be one name now
+  }
+
+  func testRenameName_NonExistentName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    XCTAssertFalse(_nameManager.renameName("NON EXISTENT NAME", toName: "SOME NAME"))
+    XCTAssertFalse(listener.renamedName)
+  }
+}
+
+/**
+ Mock listener for testing `NameManagerListener`.
+ */
+class NameManagerTestListener: NameManagerListener {
+  var addedName = false
+  var renamedName = false
+  var removedName = false
+  var allowRemoveName = true
+
+  func clearState() {
+    addedName = false
+    renamedName = false
+    removedName = false
+  }
+
+  @objc func nameManager(nameManager: NameManager, didAddName name: String) {
+    addedName = true
+  }
+
+  @objc func nameManager(nameManager: NameManager, didRemoveName name: String) {
+    removedName = true
+  }
+
+  @objc func nameManager(
+    nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+  {
+    renamedName = true
+  }
+
+  @objc func nameManager(nameManager: NameManager, shouldRemoveName name: String) -> Bool {
+    return allowRemoveName
   }
 }

@@ -92,6 +92,21 @@ public class Workspace : NSObject {
     return self.delegate as? WorkspaceLayout
   }
 
+  /// Manager responsible for keeping track of all variable names under this workspace
+  public var variableNameManager: NameManager? = NameManager() {
+    didSet {
+      if variableNameManager == oldValue {
+        return
+      }
+      if oldValue != nil {
+        allBlocks.values.forEach { removeNameManagerFromBlock($0) }
+      }
+      if let newManager = variableNameManager {
+        allBlocks.values.forEach { addNameManager(newManager, toBlock: $0) }
+      }
+    }
+  }
+
   // MARK: - Initializers
 
   /**
@@ -137,6 +152,8 @@ public class Workspace : NSObject {
       allBlocks[block.uuid] = block
       block.sourceWorkspace = self
       delegate?.workspace(self, didAddBlock: block)
+
+      addNameManager(variableNameManager, toBlock: block)
     }
   }
 
@@ -155,6 +172,7 @@ public class Workspace : NSObject {
     for block in rootBlock.allBlocksForTree() {
       if containsBlock(block) {
         delegate?.workspace(self, willRemoveBlock: block)
+        removeNameManagerFromBlock(block)
         allBlocks[block.uuid] = nil
         block.sourceWorkspace = nil
       }
@@ -180,5 +198,35 @@ public class Workspace : NSObject {
   */
   public func containsBlock(block: Block) -> Bool {
     return (allBlocks[block.uuid] == block)
+  }
+
+  // MARK: - Private
+
+  /**
+   For all `FieldVariable` instances under a given `Block`, set their `nameManager` property to a
+   given `NameManager`.
+
+   - Parameter nameManager: The `NameManager` to set
+   - Parameter block: The `Block`
+   */
+  private func addNameManager(nameManager: NameManager?, toBlock block: Block) {
+    block.inputs.flatMap({ $0.fields }).forEach {
+      if let fieldVariable = $0 as? FieldVariable {
+        fieldVariable.nameManager = nameManager
+      }
+    }
+  }
+
+  /**
+   Sets the `nameManager` for all `FieldVariable` instances under the given `Block` to `nil`.
+
+   - Parameter block: The `Block`
+   */
+  private func removeNameManagerFromBlock(block: Block) {
+    block.inputs.flatMap({ $0.fields }).forEach {
+      if let fieldVariable = $0 as? FieldVariable {
+        fieldVariable.nameManager = nil
+      }
+    }
   }
 }

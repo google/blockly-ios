@@ -22,10 +22,23 @@ An input for specifying a variable.
 public final class FieldVariable: Field {
   // MARK: - Properties
 
-  /// The variable in this field. All variables are considered global and must be unique.
-  /// Two variables with the same name will be considered the same variable at generation.
-  public var variable: String {
+  /// The variable in this field
+  public private(set) var variable: String {
     didSet { didSetEditableProperty(&variable, oldValue) }
+  }
+
+  /// Optional name manager that this field is scoped to.
+  public weak var nameManager: NameManager? {
+    didSet {
+      // Remove this field as a listener from its previous nameManager and then request
+      // to remove the name it was using
+      oldValue?.listeners.remove(self) // Remove
+      oldValue?.requestRemovalForName(variable)
+
+      // Add name to new nameManager
+      nameManager?.listeners.add(self)
+      nameManager?.addName(variable)
+    }
   }
 
   // MARK: - Initializers
@@ -52,5 +65,58 @@ public final class FieldVariable: Field {
 
   public override func serializedText() throws -> String? {
     return self.variable
+  }
+
+  // MARK: - Public
+
+  /**
+   Sets `self.variable` to a new variable and calls `self.nameManager?.addName(variable)`.
+
+   - Parameter variable: The new variable name
+   */
+  public func addNewVariable(variable: String) {
+    self.variable = variable
+    nameManager?.addName(variable)
+  }
+
+  /**
+   Sets `self.variable` to a new variable and calls `self.nameManager?.renameName(variable)`.
+
+   - Parameter variable: The new variable name
+   */
+  public func renameVariable(variable: String) {
+    let oldName = self.variable
+    self.variable = variable
+    nameManager?.renameName(oldName, toName: variable)
+  }
+
+  /**
+   Sets `self.variable` to a new variable and calls `self.nameManager?.requestRemovalForName(:)`
+   with the previous value of `self.variable`.
+   */
+  public func changeToVariable(variable: String) {
+    let oldValue = self.variable
+    if oldValue != variable {
+      self.variable = variable
+      nameManager?.requestRemovalForName(oldValue)
+    }
+  }
+}
+
+// MARK: - NameManagerListener Implementation
+
+extension FieldVariable: NameManagerListener {
+  public func nameManager(nameManager: NameManager, shouldRemoveName name: String) -> Bool {
+    // Only approve this removal if this instance isn't using that variable
+    return !nameManager.namesAreEqual(variable, name)
+  }
+
+  public func nameManager(
+    nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+  {
+    if nameManager.namesAreEqual(oldName, variable) {
+      // This variable was renamed, update it
+      variable = newName
+    }
   }
 }
