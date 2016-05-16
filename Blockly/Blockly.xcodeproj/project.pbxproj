@@ -13,6 +13,7 @@
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
 		FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631631CE44285008DDBC8 /* DropdownView.swift */; };
+		FA16317A1CE54F89008DDBC8 /* FieldVariableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631791CE54F89008DDBC8 /* FieldVariableView.swift */; };
 		FA271CEA1B8E6D430015CE38 /* LayoutConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */; };
 		FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726751B83C54900777B49 /* BlockLayout.swift */; };
 		FA27267D1B83C54900777B49 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726781B83C54900777B49 /* Layout.swift */; };
@@ -227,6 +228,7 @@
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
 		FA1631631CE44285008DDBC8 /* DropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownView.swift; sourceTree = "<group>"; };
+		FA1631791CE54F89008DDBC8 /* FieldVariableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariableView.swift; sourceTree = "<group>"; };
 		FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConfig.swift; sourceTree = "<group>"; };
 		FA2726751B83C54900777B49 /* BlockLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayout.swift; sourceTree = "<group>"; };
 		FA2726781B83C54900777B49 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
@@ -349,7 +351,6 @@
 		FAE2A5D81C73FBFD0085D36B /* Block+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+XML.swift"; sourceTree = "<group>"; };
 		FAE2A5ED1C741D2A0085D36B /* FieldXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldXMLTest.swift; sourceTree = "<group>"; };
 		FAE2A6191C753F310085D36B /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
-		FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		FAE557731BE028640019D0D4 /* LayoutEventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEventManager.swift; sourceTree = "<group>"; };
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
@@ -540,6 +541,7 @@
 				FA67AEB81C4F20FB00274A73 /* FieldInputView.swift */,
 				FA4BB56B1B7C03EA000980E9 /* FieldLabelView.swift */,
 				FAFAEE521CDABED400698179 /* FieldNumberView.swift */,
+				FA1631791CE54F89008DDBC8 /* FieldVariableView.swift */,
 				FAB31CE11C571F730071EBF8 /* FieldView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
 				FA9D2FB81C11166000D0E528 /* ToolboxCategoryView.swift */,
@@ -578,8 +580,8 @@
 			isa = PBXGroup;
 			children = (
 				FA548C5E1B63144A008BC59C /* Code */,
-				FA548C591B63136F008BC59C /* Tests */,
 				FA9B45B81C32D966001EAE68 /* Resources */,
+				FA548C591B63136F008BC59C /* Tests */,
 				FA9C9A911C6432A4008524BF /* External */,
 				FAE2A61D1C7551070085D36B /* Frameworks */,
 				FA548C061B630BAC008BC59C /* Products */,
@@ -751,7 +753,6 @@
 			isa = PBXGroup;
 			children = (
 				FAFD37581C93C75A00C77049 /* WebKit.framework */,
-				FAE2A61B1C7550B60085D36B /* JavaScriptCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -973,6 +974,7 @@
 				FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColor.swift in Sources */,
 				FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */,
+				FA16317A1CE54F89008DDBC8 /* FieldVariableView.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAD652401CB7210C00F73F11 /* DefaultBlockLayout+Background.swift in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
@@ -1136,7 +1138,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1176,7 +1178,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -85,6 +85,11 @@ public class DefaultLayoutFactory: NSObject {
       return FieldNumberLayout(
         number: field as! FieldNumber, engine: engine, measurer: FieldNumberView.self)
     }
+
+    registerLayoutCreatorForFieldType(FieldVariable.self) {
+      (field: Field, engine: LayoutEngine) throws -> FieldLayout in
+      return FieldLayout(field: field, engine: engine, measurer: FieldVariableView.self)
+    }
   }
 
   // MARK: - Public
