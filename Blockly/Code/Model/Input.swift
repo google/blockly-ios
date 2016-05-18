@@ -92,9 +92,12 @@ public final class Input : NSObject {
   public private(set) var connection: Connection?
   /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
-    return connection?.targetConnection?.sourceBlock
+    return connection?.targetBlock
   }
-
+  /// The shadow block that is connected to this input, if it exists
+  public var connectedShadowBlock: Block? {
+    return connection?.targetShadowBlock
+  }
   public var visible: Bool = true
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
 

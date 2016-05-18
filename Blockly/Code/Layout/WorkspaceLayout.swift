@@ -128,12 +128,12 @@ public class WorkspaceLayout: Layout {
   // MARK: - Public
 
   /**
-  Returns all layouts associated with every block inside `self.workspace.allBlocks`.
+  Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
   */
-  public func allBlockLayoutsInWorkspace() -> [BlockLayout] {
+  public func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
     var descendants = [BlockLayout]()
     for (_, block) in workspace.allBlocks {
-      if let layout = block.layout {
+      if let layout = block.layout where layout.visible {
         descendants.append(layout)
       }
     }
@@ -311,9 +311,32 @@ extension WorkspaceLayout: WorkspaceDelegate {
 extension WorkspaceLayout: ConnectionTargetDelegate {
   public func didChangeTargetForConnection(connection: Connection) {
     do {
+      updateShadowBlockVisibilityForConnection(connection)
       try updateLayoutHierarchyForConnection(connection)
     } catch let error as NSError {
       bky_assertionFailure("Could not update layout for connection: \(error)")
+    }
+  }
+
+  public func didChangeTargetShadowForConnection(connection: Connection) {
+    updateShadowBlockVisibilityForConnection(connection)
+  }
+
+  /**
+   Updates the workspace to show/hide any shadow blocks connected to the given connection.
+   */
+  private func updateShadowBlockVisibilityForConnection(connection: Connection) {
+    guard connection.type == .InputValue && connection.targetShadowBlock != nil else {
+      // We only care about shadow blocks connected to input connections
+      return
+    }
+
+    if connection.targetBlock != nil {
+      // The shadow block is no longer visible. Send change event to (potentially) remove it.
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
+    } else {
+      // The shadow block will now be visible. Send change event add it.
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
     }
   }
 

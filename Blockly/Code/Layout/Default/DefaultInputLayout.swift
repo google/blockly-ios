@@ -119,6 +119,11 @@ public final class DefaultInputLayout: InputLayout {
   public override func performLayout(includeChildren includeChildren: Bool) {
     resetRenderProperties()
 
+    // Figure out which block group to render
+    let targetBlockGroupLayout = self.renderedBlockGroupLayout
+    shadowBlockGroupLayout.visible = (targetBlockGroupLayout == shadowBlockGroupLayout)
+    blockGroupLayout.visible = (targetBlockGroupLayout == blockGroupLayout)
+
     var fieldXOffset: CGFloat = 0
     var fieldMaximumHeight: CGFloat = 0
     var fieldMaximumYPoint: CGFloat = 0
@@ -169,7 +174,7 @@ public final class DefaultInputLayout: InputLayout {
 
     // Update block group layout size
     if includeChildren {
-      blockGroupLayout.performLayout(includeChildren: true)
+      targetBlockGroupLayout.performLayout(includeChildren: true)
     }
 
     // Reposition fields/groups based on the input type, set the render properties so
@@ -180,47 +185,47 @@ public final class DefaultInputLayout: InputLayout {
       // TODO:(#41) Handle stroke widths for the inline connector cut-out
 
       // Position the block group
-      blockGroupLayout.relativePosition.x = fieldXOffset
-      blockGroupLayout.relativePosition.y = 0
+      targetBlockGroupLayout.relativePosition.x = fieldXOffset
+      targetBlockGroupLayout.relativePosition.y = 0
 
       let widthRequired: CGFloat
       var inlineConnectorMaximumYPoint: CGFloat = 0
       if self.isInline {
-        blockGroupLayout.edgeInsets.top =
+        targetBlockGroupLayout.edgeInsets.top =
           self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
-        blockGroupLayout.edgeInsets.bottom =
+        targetBlockGroupLayout.edgeInsets.bottom =
           self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
 
         self.inlineConnectorPosition = WorkspacePointMake(
-          blockGroupLayout.relativePosition.x,
-          blockGroupLayout.relativePosition.y + blockGroupLayout.edgeInsets.top)
+          targetBlockGroupLayout.relativePosition.x,
+          targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
 
         let minimumInlineConnectorSize =
           self.config.workspaceSizeFor(DefaultLayoutConfig.MinimumInlineConnectorSize)
-        let inlineConnectorWidth = max(blockGroupLayout.contentSize.width,
+        let inlineConnectorWidth = max(targetBlockGroupLayout.contentSize.width,
           self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) +
           minimumInlineConnectorSize.width)
         let inlineConnectorHeight =
-          max(blockGroupLayout.contentSize.height, minimumInlineConnectorSize.height)
+          max(targetBlockGroupLayout.contentSize.height, minimumInlineConnectorSize.height)
         self.inlineConnectorSize = WorkspaceSizeMake(inlineConnectorWidth, inlineConnectorHeight)
         self.rightEdge = inlineConnectorPosition.x + inlineConnectorSize.width +
           self.config.workspaceUnitFor(DefaultLayoutConfig.InlineXPadding)
 
         inlineConnectorMaximumYPoint = inlineConnectorPosition.y + inlineConnectorSize.height +
-          blockGroupLayout.edgeInsets.bottom
+          targetBlockGroupLayout.edgeInsets.bottom
         widthRequired = self.rightEdge
       } else {
-        self.rightEdge = blockGroupLayout.relativePosition.x +
+        self.rightEdge = targetBlockGroupLayout.relativePosition.x +
           self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
         widthRequired = max(
-          blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width,
+          targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.totalSize.width,
           self.rightEdge)
       }
 
       let heightRequired = max(
         fieldMaximumYPoint,
         inlineConnectorMaximumYPoint,
-        blockGroupLayout.relativePosition.y + blockGroupLayout.totalSize.height,
+        targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.totalSize.height,
         self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight))
 
       self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
@@ -256,23 +261,24 @@ public final class DefaultInputLayout: InputLayout {
         self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight) : 0
 
       // Reposition block group layout
-      self.blockGroupLayout.relativePosition.x = statementIndent
-      self.blockGroupLayout.relativePosition.y = statementRowTopPadding
+      targetBlockGroupLayout.relativePosition.x = statementIndent
+      targetBlockGroupLayout.relativePosition.y = statementRowTopPadding
 
       // TODO:(#41) If more blocks can be added to the last block in the group, add a bit of
       // space to the bottom of the middle part to show this is possible
       self.statementMiddleHeight = max(
-        blockGroupLayout.totalSize.height, fieldMaximumHeight,
+        targetBlockGroupLayout.totalSize.height, fieldMaximumHeight,
         self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight))
 
       // Set total size
       var size = WorkspaceSizeZero
-      size.width = max(blockGroupLayout.relativePosition.x + blockGroupLayout.totalSize.width,
+      size.width =
+        max(targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.totalSize.width,
         self.rightEdge)
       size.height = statementRowTopPadding + statementMiddleHeight + statementRowBottomPadding
       self.contentSize = size
     case .Dummy:
-      blockGroupLayout.relativePosition = WorkspacePointZero
+      targetBlockGroupLayout.relativePosition = WorkspacePointZero
 
       self.rightEdge = fieldXOffset
       let widthRequired = self.rightEdge
@@ -316,9 +322,9 @@ public final class DefaultInputLayout: InputLayout {
     // Update block group layout and render properties
     if self.input.type == .Statement {
       self.statementIndent += widthDifference
-      self.blockGroupLayout.relativePosition.x += widthDifference
+      self.renderedBlockGroupLayout.relativePosition.x += widthDifference
     } else if self.input.type == .Value && !self.isInline {
-      self.blockGroupLayout.relativePosition.x += widthDifference
+      self.renderedBlockGroupLayout.relativePosition.x += widthDifference
     }
   }
 

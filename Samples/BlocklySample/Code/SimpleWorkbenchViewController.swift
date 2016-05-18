@@ -86,7 +86,15 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       let loopIcon = UIImage(named: "icon_loop")
       let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor(), icon: loopIcon)
-      try addBlock("controls_repeat_ext", toCategory: loops)
+      if let repeatBlock = try _blockFactory.buildBlock("controls_repeat_ext"),
+        repeatBlockInput = repeatBlock.firstInputWithName("TIMES"),
+        numberBlock = try _blockFactory.buildBlock("non_negative_integer")
+      {
+        // Add shadow block to repeat loop
+        numberBlock.shadow = true
+        try repeatBlockInput.connection?.connectTo(numberBlock.outputConnection)
+        try loops.addBlockTree(repeatBlock)
+      }
       try addBlock("controls_whileUntil", toCategory: loops)
 
       let prevNextIcon = UIImage(named: "icon_prevnext")

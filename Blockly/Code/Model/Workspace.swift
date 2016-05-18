@@ -183,13 +183,17 @@ public class Workspace : NSObject {
    Deep copies a block and adds all of the copied blocks into the workspace.
 
    - Parameter rootBlock: The root block to copy
+   - Parameter editable: Sets whether each block is `editable` or not
    - Returns: The root block that was copied
    - Throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
-  public func copyBlockTree(rootBlock: Block) throws -> Block {
+  public func copyBlockTree(rootBlock: Block, editable: Bool) throws -> Block {
     let copyResult = try rootBlock.deepCopy()
     try addBlockTree(copyResult.rootBlock)
+    for block in copyResult.allBlocks {
+      block.editable = editable
+    }
     return copyResult.rootBlock
   }
 

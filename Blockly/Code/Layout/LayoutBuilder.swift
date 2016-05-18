@@ -166,6 +166,12 @@ public class LayoutBuilder: NSObject {
       try buildLayoutTreeForBlockGroupLayout(inputLayout.blockGroupLayout, block: connectedBlock)
     }
 
+    // Build the shadow block group layout underneath this input
+    if let connectedShadowBlock = input.connectedShadowBlock {
+      try buildLayoutTreeForBlockGroupLayout(
+        inputLayout.shadowBlockGroupLayout, block: connectedShadowBlock)
+    }
+
     return inputLayout
   }
 

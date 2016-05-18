@@ -30,6 +30,8 @@ public class BlockLayout: Layout {
   public static let Flag_UpdateHighlight = LayoutFlag(1)
   /// Flag that should be used when `self.dragging` has been updated
   public static let Flag_UpdateDragging = LayoutFlag(2)
+  /// Flag that should be used when `self.visible` has been updated
+  public static let Flag_UpdateVisible = LayoutFlag(3)
 
   /// Flag that should be used when any direct connection on this block has updated its highlight
   /// value
@@ -88,20 +90,44 @@ public class BlockLayout: Layout {
 
   /// Z-index of the layout. Those with higher values should render on top of those with lower
   /// values. Setting this value automatically updates every value of
-  /// `self.inputLayouts[i].blockGroupLayout.zIndex` to use the same `zIndex`.
+  /// `self.inputLayouts[i].renderedBlockGroupLayout.zIndex` to use the same `zIndex`.
   public var zIndex: UInt = 0 {
     didSet {
       if zIndex == oldValue {
         return
       }
 
-      // Update the z-position for all of its block group children
-      for inputLayout in self.inputLayouts {
-        inputLayout.blockGroupLayout.zIndex = zIndex
+      // Update the z-position for all of its input layouts
+      for inputLayout in inputLayouts {
+        inputLayout.renderedBlockGroupLayout.zIndex = zIndex
       }
 
       scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateZIndex)
     }
+  }
+
+  /// The first draggable `BlockLayout` up the layout tree. Returns `nil` if there is
+  /// no `BlockLayout` that can be dragged.
+  public var draggableBlockLayout: BlockLayout? {
+    var layout: Layout? = self
+
+    while let currentLayout = layout {
+      // A block layout is considered draggable as long as it is not a shadow block
+      if let blockLayout = currentLayout as? BlockLayout
+        where !blockLayout.block.shadow
+      {
+        return blockLayout
+      } else if let blockGroupLayout = layout as? BlockGroupLayout
+        where blockGroupLayout.blockLayouts.count > 0 &&
+         !blockGroupLayout.blockLayouts[0].block.shadow
+      {
+        return blockGroupLayout.blockLayouts[0]
+      }
+
+      layout = currentLayout.parentLayout
+    }
+
+    return nil
   }
 
   /// Flag indicating if this block is being dragged
@@ -112,11 +138,27 @@ public class BlockLayout: Layout {
       }
 
       // Update dragging for all of its block group children
-      for inputLayout in self.inputLayouts {
-        inputLayout.blockGroupLayout.dragging = dragging
+      for inputLayout in inputLayouts {
+        inputLayout.renderedBlockGroupLayout.dragging = dragging
       }
 
       scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateDragging)
+    }
+  }
+
+  /// Flag indicating if this block should be visible
+  public var visible: Bool = true {
+    didSet {
+      if visible == oldValue {
+        return
+      }
+
+      // Update visible for all of its block group children
+      for inputLayout in inputLayouts {
+        inputLayout.renderedBlockGroupLayout.visible = visible
+      }
+
+      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateVisible)
     }
   }
 

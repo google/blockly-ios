@@ -66,6 +66,8 @@ public final class Block : NSObject {
   public var hasContextMenu: Bool = true
   public var deletable: Bool = true
   public var movable: Bool = true
+  /// Flag if this is a shadow block (`true`) or not (`false)
+  public var shadow: Bool = false
 
   // TODO:(#26) Update model so that this property is respected.
   /// Flag indicating if this block can be edited. Updating this property automatically updates
@@ -219,6 +221,9 @@ public final class Block : NSObject {
       if let connectedBlock = input.connectedBlock {
         blocks.appendContentsOf(connectedBlock.allBlocksForTree())
       }
+      if let connectedShadowBlock = input.connectedShadowBlock {
+        blocks.appendContentsOf(connectedShadowBlock.allBlocksForTree())
+      }
     }
 
     // Follow next connection
@@ -296,6 +301,17 @@ public final class Block : NSObject {
       // Perform a copy of the connected block (if it exists)
       if let connectedBlock = self.inputs[i].connectedBlock {
         let copyResult = try connectedBlock.deepCopy()
+        if self.inputs[i].connection!.type == .NextStatement {
+          try copiedInputConnection!.connectTo(copyResult.rootBlock.previousConnection)
+        } else if self.inputs[i].connection!.type == .InputValue {
+          try copiedInputConnection!.connectTo(copyResult.rootBlock.outputConnection)
+        }
+        copiedBlocks.appendContentsOf(copyResult.allBlocks)
+      }
+
+      // Perform a copy of the connected shadow block (if it exists)
+      if let connectedShadowBlock = self.inputs[i].connectedShadowBlock {
+        let copyResult = try connectedShadowBlock.deepCopy()
         if self.inputs[i].connection!.type == .NextStatement {
           try copiedInputConnection!.connectTo(copyResult.rootBlock.previousConnection)
         } else if self.inputs[i].connection!.type == .InputValue {

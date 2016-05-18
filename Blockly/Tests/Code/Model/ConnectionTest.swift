@@ -1,6 +1,6 @@
 /*
 * Copyright 2015 Google Inc. All Rights Reserved.
-* Licensed under the Apache License, Version 2.0 (the "License");
+* Licensed under the Apache License, Version 2.0 (the "License")
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
@@ -100,6 +100,40 @@ class ConnectionTest: XCTestCase {
     }
   }
 
+  func testConnect_shadowFailures() {
+    // Shadows hit the same checks as normal blocks.
+    // Do light verification to guard against that changing
+    let input = createConnection(.InputValue, shadow: false)
+    let shadowInput = createConnection(.InputValue, shadow: true)
+    let shadowInput2 = createConnection(.InputValue, shadow: true)
+    let shadowPrevious = createConnection(.PreviousStatement, shadow: true)
+    let shadowNext = createConnection(.NextStatement, shadow: true)
+
+    BKYAssertThrow("Connections cannot connect to themselves!", errorType: BlocklyError.self) {
+      try shadowInput.connectTo(shadowInput)
+    }
+
+    BKYAssertThrow("Input cannot connect to input!", errorType: BlocklyError.self) {
+      try input.connectTo(shadowInput)
+    }
+
+    BKYAssertThrow("Input cannot connect to previous!", errorType: BlocklyError.self) {
+      try input.connectTo(shadowPrevious)
+    }
+
+    BKYAssertThrow("Input cannot connect to input!", errorType: BlocklyError.self) {
+      try shadowInput2.connectTo(shadowInput2)
+    }
+
+    BKYAssertThrow("Input cannot connect to next!", errorType: BlocklyError.self) {
+      try shadowInput.connectTo(shadowNext)
+    }
+
+    BKYAssertThrow("Input cannot connect to previous!", errorType: BlocklyError.self) {
+      try shadowInput.connectTo(shadowPrevious)
+    }
+  }
+
   func testDisconnect() {
     do {
       let input = createConnection(.InputValue)
@@ -172,6 +206,32 @@ class ConnectionTest: XCTestCase {
       connection1.canConnectWithReasonTo(connection2))
   }
 
+  func testCanConnectWithReason_shadows() {
+    let input = createConnection(.InputValue, shadow: false)
+    let output = createConnection(.OutputValue, shadow: false)
+    let next = createConnection(.NextStatement, shadow: false)
+    let previous = createConnection(.PreviousStatement, shadow: false)
+    let shadowOutput = createConnection(.OutputValue, shadow: true)
+    let shadowOutput2 = createConnection(.OutputValue, shadow: true)
+    let shadowPrevious = createConnection(.PreviousStatement, shadow: true)
+
+    // Verify a shadow can connect
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, input.canConnectWithReasonTo(shadowOutput))
+
+    // Verify it can still connect after a non-shadow has been connected
+    BKYAssertDoesNotThrow { try input.connectTo(output) }
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, input.canConnectWithReasonTo(shadowOutput))
+
+    // And can't connect once another shadow is connected
+    BKYAssertDoesNotThrow { try input.connectTo(shadowOutput) }
+    XCTAssertEqual(
+      Connection.CheckResultType.ReasonMustDisconnect, input.canConnectWithReasonTo(shadowOutput2))
+
+    // Verify a normal connection can be made after a shadow connection
+    BKYAssertDoesNotThrow { try next.connectTo(shadowPrevious) }
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, next.canConnectWithReasonTo(previous))
+  }
+
   func testDistanceFromConnection() {
     let connection1 = createConnection(.NextStatement, 0, 0)
     let connection2 = createConnection(.InputValue, 0, 0)
@@ -232,10 +292,12 @@ class ConnectionTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func createConnection(type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0)
+  private func createConnection(
+    type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0, shadow: Bool = false)
     -> Connection
   {
     let block = try! Block.Builder(name: "test").build()
+    block.shadow = shadow
     try! _workspace.addBlockTree(block)
 
     let connection = Connection(type: type, sourceInput: nil)

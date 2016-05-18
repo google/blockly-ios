@@ -33,6 +33,18 @@ public class InputLayout: Layout {
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
   public private(set) final var blockGroupLayout: BlockGroupLayout!
 
+  /// The corresponding `BlockGroupLayout` object seeded by `self.input.connected`.
+  public private(set) final var shadowBlockGroupLayout: BlockGroupLayout!
+
+  /// The block group layout that should be rendered
+  public var renderedBlockGroupLayout: BlockGroupLayout {
+    if blockGroupLayout.blockLayouts.count == 0 && shadowBlockGroupLayout.blockLayouts.count > 0 {
+      return shadowBlockGroupLayout
+    }
+
+    return blockGroupLayout
+  }
+
   /// The corresponding layouts for `self.input.fields[]`
   public private(set) final var fieldLayouts = [FieldLayout]()
 
@@ -57,10 +69,13 @@ public class InputLayout: Layout {
     self.input = input
     super.init(engine: engine)
 
-    // Create `self.blockGroupLayout` (this is done after super.init because you can't call a
-    // throwing method prior to initialization)
-    self.blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
-    self.blockGroupLayout.parentLayout = self
+    // Create `self.blockGroupLayout` and `self.shadowBlockGroupLayout`.
+    // This is done after super.init because you can't call a throwing method prior to
+    // initialization.
+    blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
+    blockGroupLayout.parentLayout = self
+    shadowBlockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
+    shadowBlockGroupLayout.parentLayout = self
   }
 
   // MARK: - Public

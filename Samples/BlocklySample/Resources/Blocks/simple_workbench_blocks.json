@@ -429,6 +429,20 @@
  "colour": "#ffff00",
  },
  {
+ "id": "non_negative_integer",
+ "message0": "%1",
+ "args0": [
+           {
+           "type": "field_number",
+           "name": "number",
+           "precision": 1,
+           "min": 0,
+           },
+           ],
+ "output": null,
+ "colour": "#ffff00",
+ },
+ {
  "id": "currency",
  "message0": "$ %1",
  "args0": [

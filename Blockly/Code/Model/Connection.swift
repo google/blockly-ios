@@ -39,6 +39,13 @@ public protocol ConnectionTargetDelegate {
    - Parameter connection: The connection whose `targetConnection` value has changed.
    */
   func didChangeTargetForConnection(connection: Connection)
+
+  /**
+   Event that is called when the target shadow connection has changed for a given connection.
+
+   - Parameter connection: The connection whose `targetShadowConnection` value has changed.
+   */
+  func didChangeTargetShadowForConnection(connection: Connection)
 }
 
 /**
@@ -110,13 +117,23 @@ public final class Connection : NSObject {
   public private(set) var position: WorkspacePoint = WorkspacePointZero
   /// The connection that this one is connected to
   public private(set) weak var targetConnection: Connection?
-  /// The source block of the `targetConnection`
+  /// The shadow connection that this one is connected to
+  public private(set) weak var targetShadowConnection: Connection?
+  /// The source block of `self.targetConnection`
   public var targetBlock: Block? {
     return targetConnection?.sourceBlock
   }
-  /// True if the target connection is non-null, false otherwise.
+  /// The source block of `self.targetShadowConnection`
+  public var targetShadowBlock: Block? {
+    return targetShadowConnection?.sourceBlock
+  }
+  /// `true` if the target connection is non-nil. `false` otherwise.
   public var connected: Bool {
     return targetConnection != nil
+  }
+  /// `true` if the shadow target connection is non-nil. `false` otherwise
+  public var shadowConnected: Bool {
+    return targetShadowConnection != nil
   }
   /**
   The set of checks for this connection. Two Connections may be connected if one of them
@@ -126,9 +143,16 @@ public final class Connection : NSObject {
   */
   public var typeChecks: [String]? {
     didSet {
-      if targetConnection != nil && !typeChecksMatchWithConnection(targetConnection!) {
-        // The new value type is not compatible with the existing connection. Disconnect it.
-        disconnect()
+      // Disconnect connections that aren't compatible with the new `typeChecks` value.
+      if let targetConnection = self.targetConnection
+        where !typeChecksMatchWithConnection(targetConnection)
+      {
+        targetConnection.disconnect()
+      }
+      if let targetShadowConnection = self.targetShadowConnection
+        where !typeChecksMatchWithConnection(targetShadowConnection)
+      {
+        targetShadowConnection.disconnect()
       }
     }
   }
@@ -171,7 +195,9 @@ public final class Connection : NSObject {
   `BlocklyError`: Thrown if the connection could not be made, with error code .ConnectionInvalid
   */
   public func connectTo(connection: Connection?) throws {
-    if connection != nil && connection == targetConnection {
+    if let newConnection = connection where
+      (!newConnection.sourceBlock.shadow && newConnection == targetConnection) ||
+      (newConnection.sourceBlock.shadow && newConnection == targetShadowConnection) {
       // Already connected
       return
     }
@@ -193,14 +219,14 @@ public final class Connection : NSObject {
       break
     }
 
-    if let newTargetConnection = connection {
+    if let newConnection = connection {
       // Set targetConnections for both sides before sending out delegate event
-      self.targetConnection = newTargetConnection
-      newTargetConnection.targetConnection = self
+      let delegateEvent1 = _connectTo(newConnection)
+      let delegateEvent2 = newConnection._connectTo(self)
 
       // Send delegate events
-      targetDelegate?.didChangeTargetForConnection(self)
-      newTargetConnection.targetDelegate?.didChangeTargetForConnection(newTargetConnection)
+      delegateEvent1()
+      delegateEvent2()
     }
   }
 
@@ -248,7 +274,10 @@ public final class Connection : NSObject {
     if aTarget.type != Connection.OPPOSITE_TYPES[self.type.rawValue] {
       return .ReasonWrongType
     }
-    if self.targetConnection != nil {
+    if aTarget.sourceBlock.shadow && targetShadowConnection != nil {
+      return .ReasonMustDisconnect
+    }
+    if !aTarget.sourceBlock.shadow && targetConnection != nil {
       return .ReasonMustDisconnect
     }
     if !typeChecksMatchWithConnection(aTarget) {
@@ -348,5 +377,24 @@ public final class Connection : NSObject {
       }
     }
     return false
+  }
+
+  // MARK: - Private
+
+  /**
+   Connect this to another connection, based on whether that connection's `sourceBlock` is a
+   shadow block or not.
+
+   - Parameter connection: The other connection
+   - Returns: The appropriate delegate method that should be called on completion.
+   */
+  private func _connectTo(connection: Connection) -> () -> Void {
+    if connection.sourceBlock.shadow {
+      targetShadowConnection = connection
+      return { self.targetDelegate?.didChangeTargetShadowForConnection(connection) }
+    } else {
+      targetConnection = connection
+      return { self.targetDelegate?.didChangeTargetForConnection(connection) }
+    }
   }
 }

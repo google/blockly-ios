@@ -51,6 +51,7 @@ extension Block {
     public var collapsed: Bool = false
     public var disabled: Bool = false
     public var rendered: Bool = false
+    public var shadow: Bool = false
 
     // MARK: - Initializers
 
@@ -75,7 +76,13 @@ extension Block {
       comment = block.comment
       helpURL = block.helpURL
       hasContextMenu = block.hasContextMenu
+      deletable = block.deletable
+      movable = block.movable
+      editable = block.editable
       collapsed = block.collapsed
+      disabled = block.disabled
+      rendered = block.rendered
+      shadow = block.shadow
 
       outputConnectionEnabled = block.outputConnection != nil ? true : false
       outputConnectionTypeChecks = block.outputConnection?.typeChecks
@@ -134,6 +141,7 @@ extension Block {
       block.collapsed = collapsed
       block.disabled = disabled
       block.rendered = rendered
+      block.shadow = shadow
 
       return block
     }
