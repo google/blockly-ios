@@ -1,6 +1,6 @@
 /*
 * Copyright 2015 Google Inc. All Rights Reserved.
-* Licensed under the Apache License, Version 2.0 (the "License");
+* Licensed under the Apache License, Version 2.0 (the "License")
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
@@ -18,158 +18,311 @@ import XCTest
 
 class ConnectionTest: XCTestCase {
 
-  var _workspace: Workspace!
+  // MARK: - Properties
+
+  var allBlocks = [Block]()
+  // Test connections
+  var input: Connection!
+  var output: Connection!
+  var next: Connection!
+  var previous: Connection!
+  var shadowInput: Connection!
+  var shadowNext: Connection!
+  var shadowOutput: Connection!
+  var shadowPrevious: Connection!
 
   // MARK: - Setup
 
   override func setUp() {
-    _workspace = Workspace()
+    super.setUp()
+    input = createConnection(.InputValue, shadow: false)
+    output = createConnection(.OutputValue, shadow: false)
+    next = createConnection(.NextStatement, shadow: false)
+    previous = createConnection(.PreviousStatement, shadow: false)
+    shadowInput = createConnection(.InputValue, shadow: true)
+    shadowOutput = createConnection(.OutputValue, shadow: true)
+    shadowNext = createConnection(.NextStatement, shadow: true)
+    shadowPrevious = createConnection(.PreviousStatement, shadow: true)
   }
 
   // MARK: - Tests
 
   func testConnectInputOutput() {
-    do {
-      let input = createConnection(.InputValue)
-      let output = createConnection(.OutputValue)
-      XCTAssertFalse(input.connected)
-      XCTAssertFalse(output.connected)
+    XCTAssertFalse(input.connected)
+    XCTAssertFalse(output.connected)
 
-      try input.connectTo(output)
+    BKYAssertDoesNotThrow { try self.input.connectTo(self.output) }
 
-      XCTAssertTrue(input.connected)
-      XCTAssertTrue(output.connected)
-      XCTAssertEqual(output, input.targetConnection)
-      XCTAssertEqual(input, output.targetConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
+    XCTAssertTrue(input.connected)
+    XCTAssertTrue(output.connected)
+    XCTAssertEqual(output, input.targetConnection)
+    XCTAssertEqual(input, output.targetConnection)
+  }
+
+  func testConnect_OutputInput() {
+    XCTAssertFalse(input.connected)
+    XCTAssertFalse(output.connected)
+
+    BKYAssertDoesNotThrow { try self.output.connectTo(self.input) }
+
+    XCTAssertTrue(input.connected)
+    XCTAssertTrue(output.connected)
+    XCTAssertEqual(output, input.targetConnection)
+    XCTAssertEqual(input, output.targetConnection)
+  }
+
+  func testConnect_PreviousNext() {
+    XCTAssertFalse(previous.connected)
+    XCTAssertFalse(next.connected)
+
+    BKYAssertDoesNotThrow { try self.previous.connectTo(self.next) }
+
+    XCTAssertTrue(previous.connected)
+    XCTAssertTrue(next.connected)
+    XCTAssertEqual(next, previous.targetConnection)
+    XCTAssertEqual(previous, next.targetConnection)
+  }
+
+  func testConnect_NextPrevious() {
+    XCTAssertFalse(previous.connected)
+    XCTAssertFalse(next.connected)
+
+    BKYAssertDoesNotThrow { try self.next.connectTo(self.previous) }
+
+    XCTAssertTrue(previous.connected)
+    XCTAssertTrue(next.connected)
+    XCTAssertEqual(next, previous.targetConnection)
+    XCTAssertEqual(previous, next.targetConnection)
+  }
+
+  func testConnectShadow_InputShadowOutput() {
+    XCTAssertFalse(input.shadowConnected)
+    XCTAssertFalse(shadowOutput.shadowConnected)
+
+    BKYAssertDoesNotThrow { try self.input.connectShadowTo(self.shadowOutput) }
+
+    XCTAssertTrue(input.shadowConnected)
+    XCTAssertTrue(shadowOutput.shadowConnected)
+    XCTAssertEqual(shadowOutput, input.shadowConnection)
+    XCTAssertEqual(input, shadowOutput.shadowConnection)
+  }
+
+  func testConnectShadow_ShadowOutputToInput() {
+    XCTAssertFalse(input.shadowConnected)
+    XCTAssertFalse(shadowOutput.shadowConnected)
+
+    BKYAssertDoesNotThrow { try self.shadowOutput.connectShadowTo(self.input) }
+
+    XCTAssertTrue(input.shadowConnected)
+    XCTAssertTrue(shadowOutput.shadowConnected)
+    XCTAssertEqual(shadowOutput, input.shadowConnection)
+    XCTAssertEqual(input, shadowOutput.shadowConnection)
+  }
+
+  func testConnectShadow_ShadowNextShadowPrevious() {
+    XCTAssertFalse(shadowNext.shadowConnected)
+    XCTAssertFalse(shadowPrevious.shadowConnected)
+
+    BKYAssertDoesNotThrow { try self.shadowNext.connectShadowTo(self.shadowPrevious) }
+
+    XCTAssertTrue(shadowNext.shadowConnected)
+    XCTAssertTrue(shadowPrevious.shadowConnected)
+    XCTAssertEqual(shadowPrevious, shadowNext.shadowConnection)
+    XCTAssertEqual(shadowNext, shadowPrevious.shadowConnection)
+  }
+
+  func testConnectShadow_ShadowPreviousShadowNext() {
+    XCTAssertFalse(shadowNext.shadowConnected)
+    XCTAssertFalse(shadowPrevious.shadowConnected)
+
+    BKYAssertDoesNotThrow { try self.shadowPrevious.connectShadowTo(self.shadowNext) }
+
+    XCTAssertTrue(shadowNext.shadowConnected)
+    XCTAssertTrue(shadowPrevious.shadowConnected)
+    XCTAssertEqual(shadowPrevious, shadowNext.shadowConnection)
+    XCTAssertEqual(shadowNext, shadowPrevious.shadowConnection)
+  }
+
+  func testConnect_shadowFailures() {
+    // Shadows hit the same checks as normal blocks.
+    // Do light verification to guard against that changing
+    let shadowInput2 = createConnection(.InputValue, shadow: true)
+
+    BKYAssertThrow("Connections cannot connect to themselves!", errorType: BlocklyError.self) {
+      try self.shadowInput.connectTo(self.shadowInput)
+    }
+
+    BKYAssertThrow("Input cannot connect to input!", errorType: BlocklyError.self) {
+      try self.input.connectTo(self.shadowInput)
+    }
+
+    BKYAssertThrow("Input cannot connect to previous!", errorType: BlocklyError.self) {
+      try self.input.connectTo(self.shadowPrevious)
+    }
+
+    BKYAssertThrow("Input cannot connect to input!", errorType: BlocklyError.self) {
+      try self.shadowInput.connectTo(shadowInput2)
+    }
+
+    BKYAssertThrow("Input cannot connect to next!", errorType: BlocklyError.self) {
+      try self.shadowInput.connectTo(self.shadowNext)
+    }
+
+    BKYAssertThrow("Input cannot connect to previous!", errorType: BlocklyError.self) {
+      try self.shadowInput.connectTo(self.shadowPrevious)
     }
   }
 
-  func testConnectOutputInput() {
-    do {
-      let input = createConnection(.InputValue)
-      let output = createConnection(.OutputValue)
-      XCTAssertFalse(input.connected)
-      XCTAssertFalse(output.connected)
+  func testDisconnect_InputOutput() {
+    BKYAssertDoesNotThrow { try self.input.connectTo(self.output) }
 
-      try output.connectTo(input)
+    XCTAssertTrue(input.connected)
+    XCTAssertTrue(output.connected)
 
-      XCTAssertTrue(input.connected)
-      XCTAssertTrue(output.connected)
-      XCTAssertEqual(output, input.targetConnection)
-      XCTAssertEqual(input, output.targetConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
-    }
+    BKYAssertDoesNotThrow { self.input.disconnect() }
+
+    XCTAssertNil(input.targetConnection)
+    XCTAssertNil(output.targetConnection)
+    XCTAssertFalse(input.connected)
+    XCTAssertFalse(output.connected)
   }
 
-  func testConnectPreviousNext() {
-    do {
-      let previous = createConnection(.PreviousStatement)
-      let next = createConnection(.NextStatement)
-      XCTAssertFalse(previous.connected)
-      XCTAssertFalse(next.connected)
+  func testDisconnectShadow_NextShadowPrevious() {
+    BKYAssertDoesNotThrow { try self.next.connectShadowTo(self.shadowPrevious) }
 
-      try previous.connectTo(next)
+    XCTAssertTrue(next.shadowConnected)
+    XCTAssertTrue(shadowPrevious.shadowConnected)
 
-      XCTAssertTrue(previous.connected)
-      XCTAssertTrue(next.connected)
-      XCTAssertEqual(next, previous.targetConnection)
-      XCTAssertEqual(previous, next.targetConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
-    }
+    BKYAssertDoesNotThrow { self.shadowPrevious.disconnectShadow() }
+
+    XCTAssertFalse(next.shadowConnected)
+    XCTAssertFalse(shadowPrevious.shadowConnected)
   }
 
-  func testConnectNextPrevious() {
-    do {
-      let previous = createConnection(.PreviousStatement)
-      let next = createConnection(.NextStatement)
-      XCTAssertFalse(previous.connected)
-      XCTAssertFalse(next.connected)
-
-      try next.connectTo(previous)
-
-      XCTAssertTrue(previous.connected)
-      XCTAssertTrue(next.connected)
-      XCTAssertEqual(next, previous.targetConnection)
-      XCTAssertEqual(previous, next.targetConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
-    }
+  func testCanConnectWithReasonTo_Valid() {
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, previous.canConnectWithReasonTo(next))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, next.canConnectWithReasonTo(previous))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, output.canConnectWithReasonTo(input))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect, input.canConnectWithReasonTo(output))
   }
 
-  func testDisconnect() {
-    do {
-      let input = createConnection(.InputValue)
-      let output = createConnection(.OutputValue)
-      try input.connectTo(output)
-
-      XCTAssertTrue(input.connected)
-      XCTAssertTrue(output.connected)
-
-      input.disconnect()
-
-      XCTAssertNil(input.targetConnection)
-      XCTAssertNil(output.targetConnection)
-      XCTAssertFalse(input.connected)
-      XCTAssertFalse(output.connected)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
-    }
+  func testCanConnectWithReasonTo_InvalidNull() {
+    XCTAssertEqual(Connection.CheckResultType.ReasonTargetNull, output.canConnectWithReasonTo(nil))
   }
 
-  func testCanConnectWithReasonTo() {
-    // Valid - previous /next
-    var connection1 = createConnection(.PreviousStatement)
-    var connection2 = createConnection(.NextStatement)
-    XCTAssertEqual(Connection.CheckResultType.CanConnect,
-      connection1.canConnectWithReasonTo(connection2))
-
-    // Valid - output / input
-    connection1 = createConnection(.OutputValue)
-    connection2 = createConnection(.InputValue)
-    XCTAssertEqual(Connection.CheckResultType.CanConnect,
-      connection1.canConnectWithReasonTo(connection2))
-
-    // Invalid - null
-    connection1 = createConnection(.OutputValue)
-    XCTAssertEqual(Connection.CheckResultType.ReasonTargetNull,
-      connection1.canConnectWithReasonTo(nil))
-
-    // Invalid - same block
-    connection1 = createConnection(.OutputValue)
-    connection2 = createConnection(.OutputValue)
+  func testCanConnectWithReasonTo_InvalidSameBlock() {
+    let connection1 = createConnection(.InputValue)
+    let connection2 = createConnection(.OutputValue)
     connection2.sourceBlock = connection1.sourceBlock
     XCTAssertEqual(Connection.CheckResultType.ReasonSelfConnection,
       connection1.canConnectWithReasonTo(connection2))
+  }
 
-    // Invalid - wrong types
-    connection1 = createConnection(.OutputValue)
-    connection2 = createConnection(.OutputValue)
+  func testCanConnectWithReasonTo_InvalidWrongTypes() {
+    let connection1 = createConnection(.OutputValue)
+    let connection2 = createConnection(.OutputValue)
     XCTAssertEqual(Connection.CheckResultType.ReasonWrongType,
       connection1.canConnectWithReasonTo(connection2))
+  }
 
-    // Invalid - already connected
-    do {
-      connection1 = createConnection(.InputValue)
-      connection2 = createConnection(.OutputValue)
-      try connection1.connectTo(connection2)
-      let connection3 = createConnection(.OutputValue)
-      XCTAssertEqual(Connection.CheckResultType.ReasonMustDisconnect,
-        connection1.canConnectWithReasonTo(connection3))
-    } catch let error as NSError {
-      XCTFail("Couldn't connect connections together: \(error)")
-    }
+  func testCanConnectWithReasonTo_InvalidAlreadyConnected() {
+    BKYAssertDoesNotThrow { try self.output.connectTo(self.input) }
+    let output2 = createConnection(.OutputValue)
+    XCTAssertEqual(Connection.CheckResultType.ReasonMustDisconnect,
+      input.canConnectWithReasonTo(output2))
+  }
 
-    // Invalid - type checks
-    connection1 = createConnection(.InputValue)
-    connection1.typeChecks = ["string"]
-    connection2 = createConnection(.OutputValue)
-    connection2.typeChecks = ["bool"]
+  func testCanConnectWithReasonTo_InvalidTypeChecks() {
+    input.typeChecks = ["string"]
+    output.typeChecks = ["bool"]
+    XCTAssertEqual(
+      Connection.CheckResultType.ReasonChecksFailed, input.canConnectWithReasonTo(output))
+  }
+
+  func testCanConnectWithReasonTo_InvalidShadowBlockForTarget() {
+    XCTAssertEqual(Connection.CheckResultType.ReasonCannotSetShadowForTarget,
+                   next.canConnectWithReasonTo(shadowPrevious))
+    XCTAssertEqual(Connection.CheckResultType.ReasonCannotSetShadowForTarget,
+                   shadowPrevious.canConnectWithReasonTo(next))
+    XCTAssertEqual(Connection.CheckResultType.ReasonCannotSetShadowForTarget,
+                   shadowOutput.canConnectWithReasonTo(input))
+    XCTAssertEqual(Connection.CheckResultType.ReasonCannotSetShadowForTarget,
+                   input.canConnectWithReasonTo(shadowOutput))
+  }
+
+  func testCanConnectShadowWithReasonTo_Valid() {
+    XCTAssertEqual(Connection.CheckResultType.CanConnect,
+                   input.canConnectShadowWithReasonTo(shadowOutput))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect,
+                   shadowInput.canConnectShadowWithReasonTo(shadowOutput))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect,
+                   next.canConnectShadowWithReasonTo(shadowPrevious))
+    XCTAssertEqual(Connection.CheckResultType.CanConnect,
+                   shadowNext.canConnectShadowWithReasonTo(shadowPrevious))
+
+    // Verify it can still connect after a non-shadow has been connected
+    BKYAssertDoesNotThrow { try self.input.connectTo(self.output) }
+    XCTAssertEqual(
+      Connection.CheckResultType.CanConnect, input.canConnectShadowWithReasonTo(shadowOutput))
+
+    // Verify a normal connection can be made after a shadow connection
+    BKYAssertDoesNotThrow { try self.next.connectShadowTo(self.shadowPrevious) }
+    XCTAssertEqual(
+      Connection.CheckResultType.CanConnect, next.canConnectWithReasonTo(previous))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidNull() {
+    XCTAssertEqual(
+      Connection.CheckResultType.ReasonShadowNull, input.canConnectShadowWithReasonTo(nil))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidSameBlock() {
+    let connection1 = createConnection(.InputValue)
+    let connection2 = createConnection(.OutputValue, shadow: true)
+    connection2.sourceBlock = connection1.sourceBlock
+    XCTAssertEqual(Connection.CheckResultType.ReasonSelfConnection,
+                   connection1.canConnectWithReasonTo(connection2))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidWrongTypes() {
+    let connection1 = createConnection(.OutputValue, shadow: true)
+    let connection2 = createConnection(.OutputValue, shadow: true)
+    XCTAssertEqual(Connection.CheckResultType.ReasonWrongType,
+                   connection1.canConnectWithReasonTo(connection2))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidAlreadyConnected() {
+    let shadowOutput2 = createConnection(.OutputValue, shadow: true)
+    BKYAssertDoesNotThrow { try self.input.connectShadowTo(self.shadowOutput) }
+    XCTAssertEqual(Connection.CheckResultType.ReasonMustDisconnect,
+                   input.canConnectShadowWithReasonTo(shadowOutput2))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidTypeChecks() {
+    next.typeChecks = ["string"]
+    shadowPrevious.typeChecks = ["bool"]
     XCTAssertEqual(Connection.CheckResultType.ReasonChecksFailed,
-      connection1.canConnectWithReasonTo(connection2))
+                   next.canConnectShadowWithReasonTo(shadowPrevious))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidInferiorBlockShadowMismatch() {
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   next.canConnectShadowWithReasonTo(previous))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   previous.canConnectShadowWithReasonTo(next))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   shadowNext.canConnectShadowWithReasonTo(previous))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   previous.canConnectShadowWithReasonTo(shadowNext))
+
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   output.canConnectShadowWithReasonTo(input))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   input.canConnectShadowWithReasonTo(output))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   output.canConnectShadowWithReasonTo(shadowInput))
+    XCTAssertEqual(Connection.CheckResultType.ReasonInferiorBlockShadowMismatch,
+                   shadowInput.canConnectShadowWithReasonTo(output))
   }
 
   func testDistanceFromConnection() {
@@ -232,11 +385,12 @@ class ConnectionTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func createConnection(type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0)
+  private func createConnection(
+    type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0, shadow: Bool = false)
     -> Connection
   {
-    let block = try! Block.Builder(name: "test").build()
-    try! _workspace.addBlockTree(block)
+    let block = try! Block.Builder(name: "test").build(shadow: shadow)
+    allBlocks.append(block) // Keep a reference of the block so it doesn't get dealloced
 
     let connection = Connection(type: type, sourceInput: nil)
     connection.moveToPosition(WorkspacePointMake(x, y))

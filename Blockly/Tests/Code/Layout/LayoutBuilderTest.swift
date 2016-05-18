@@ -24,12 +24,18 @@ class LayoutBuilderTest: XCTestCase {
   // MARK: - Setup
 
   override func setUp() {
-    let workspace = Workspace()
-    let layoutFactory = DefaultLayoutFactory()
-    _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
-      engine: DefaultLayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: layoutFactory))
-    _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+    super.setUp()
+
+    _workspaceLayout = BKYAssertDoesNotThrow {
+      try WorkspaceLayout(
+        workspace: Workspace(),
+        engine: DefaultLayoutEngine(),
+        layoutBuilder: LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
+    }
+    _blockFactory = BKYAssertDoesNotThrow {
+      try BlockFactory(
+        jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+    }
   }
 
   // MARK: - Tests
@@ -39,26 +45,31 @@ class LayoutBuilderTest: XCTestCase {
 
     // Add blocks to the workspace
     guard
-      let _ =
-        try! _blockFactory.addBlock("no_connections", toWorkspace: workspace),
-      let blockStatementOutputNoInput =
-        try! _blockFactory.addBlock("output_no_input", toWorkspace: workspace),
-      let blockInputOutput =
-        try! _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
-      let blockStatementMultipleInputValueInput =
-        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace),
-      let blockStatementNoNext =
-        try! _blockFactory.addBlock("statement_no_next", toWorkspace: workspace),
-      let blockStatementStatementInput =
-        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
-      else
+      let _ = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("no_connections", toWorkspace: workspace)
+      }),
+      let blockStatementOutputNoInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace)
+      }),
+      let blockInputOutput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
+      }),
+      let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
+      }),
+      let blockStatementNoNext = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_no_next", toWorkspace: workspace)
+      }),
+      let blockStatementStatementInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+      }) else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
       return
     }
 
     // Connect some blocks together
-    do {
+    BKYAssertDoesNotThrow { () -> Void in
       try blockInputOutput.inputs[0].connection?.connectTo(
         blockStatementOutputNoInput.outputConnection)
 
@@ -67,44 +78,44 @@ class LayoutBuilderTest: XCTestCase {
 
       try blockStatementNoNext.previousConnection?.connectTo(
         blockStatementStatementInput.nextConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect blocks together: \(error)")
     }
 
     // Build layout tree
-    do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
-    } catch let error as NSError {
-      XCTFail("Couldn't build layout tree: \(error)")
+    BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTree(self._workspaceLayout)
     }
 
     // Verify it
     verifyWorkspaceLayoutTree(_workspaceLayout)
   }
 
-  func testBuildLayoutTreeForTopLevelBlockValid() {
+  func testBuildLayoutTreeForTopLevelBlock_ValidWithoutShadows() {
     let workspace = _workspaceLayout.workspace
 
     // Add blocks to the workspace
     guard
-      let blockStatementOutputNoInput =
-        try! _blockFactory.addBlock("output_no_input", toWorkspace: workspace),
-      let blockInputOutput =
-        try! _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
-      let blockStatementMultipleInputValueInput =
-        try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace),
-      let blockStatementNoNext =
-        try! _blockFactory.addBlock("statement_no_next", toWorkspace: workspace),
-      let blockStatementStatementInput =
-        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
-      else
+      let blockStatementOutputNoInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace)
+      }),
+      let blockInputOutput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
+      }),
+      let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
+      }),
+      let blockStatementNoNext = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_no_next", toWorkspace: workspace)
+      }),
+      let blockStatementStatementInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+      }) else
     {
       XCTFail("Blocks couldn't be loaded")
       return
     }
 
     // Connect into a megazord block 
-    do {
+    BKYAssertDoesNotThrow { () -> Void in
       try blockInputOutput.inputs[0].connection?.connectTo(
         blockStatementOutputNoInput.outputConnection)
       try blockStatementMultipleInputValueInput.inputs[0].connection?.connectTo(
@@ -113,59 +124,119 @@ class LayoutBuilderTest: XCTestCase {
         blockStatementNoNext.previousConnection)
       try blockStatementStatementInput.nextConnection?.connectTo(
         blockStatementMultipleInputValueInput.previousConnection)
-    } catch let error as NSError {
-      XCTFail("Couldn't connect blocks together: \(error)")
     }
 
-    do {
-      // Build layout tree for the only top-level block
-      if let blockGroupLayout =
-        try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
-          blockStatementStatementInput, workspaceLayout: _workspaceLayout)
-      {
-        verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
-      } else {
-        XCTFail("Could not create layout tree for top level block")
-      }
-
-      // Try building layout trees for non top-level blocks (these should all return nil)
-      var emptyBlockGroup =
-        try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
-          workspaceLayout: _workspaceLayout)
-      XCTAssertNil(emptyBlockGroup)
-
-      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementMultipleInputValueInput, workspaceLayout: _workspaceLayout)
-      XCTAssertNil(emptyBlockGroup)
-
-      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementNoNext, workspaceLayout: _workspaceLayout)
-      XCTAssertNil(emptyBlockGroup)
-
-      emptyBlockGroup = try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementOutputNoInput, workspaceLayout: _workspaceLayout)
-      XCTAssertNil(emptyBlockGroup)
-    } catch let error as NSError {
-      XCTFail("Couldn't build layout tree: \(error)")
+    // Build layout tree for the only top-level block
+    if let blockGroupLayout = BKYAssertDoesNotThrow({
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
+      })
+    {
+      verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
+    } else {
+      XCTFail("Could not create layout tree for top level block")
     }
+
+    // Try building layout trees for non top-level blocks (these should all return nil)
+    var emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
+        workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
+
+    emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementMultipleInputValueInput, workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
+
+    emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementNoNext, workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
+
+    emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementOutputNoInput, workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
   }
 
-  func testBuildLayoutTreeForTopLevelBlockWrongWorkspace() {
+  func testBuildLayoutTreeForTopLevelBlock_ValidWithShadows() {
+    let workspace = _workspaceLayout.workspace
+
+    // Add blocks to the workspace
+    guard
+      let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_multiple_value_input")
+      }),
+      let blockStatementStatementInput = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_statement_input")
+      }),
+      let blockShadowInput =  BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("simple_input_output", shadow: true)
+      }),
+      let blockShadowPrevious =  BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_no_next", shadow: true)
+      }) else
+    {
+      XCTFail("Blocks couldn't be loaded")
+      return
+    }
+
+    // Connect into a megazord block and add it to the workspace
+    BKYAssertDoesNotThrow { () -> Void in
+      try blockStatementMultipleInputValueInput.inputs[0].connection?.connectShadowTo(
+        blockShadowInput.outputConnection)
+      try blockStatementMultipleInputValueInput.nextConnection?.connectShadowTo(
+        blockShadowPrevious.previousConnection)
+      try blockStatementStatementInput.nextConnection?.connectTo(
+        blockStatementMultipleInputValueInput.previousConnection)
+      try workspace.addBlockTree(blockStatementStatementInput)
+    }
+
+    // Build layout tree for the only top-level block
+    if let blockGroupLayout = BKYAssertDoesNotThrow({
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
+    })
+    {
+      verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
+    } else {
+      XCTFail("Could not create layout tree for top level block")
+    }
+
+    // Try building layout trees for non top-level shadow blocks (these should all return nil)
+    var emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockShadowInput, workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
+
+    emptyBlockGroup = BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+        blockShadowPrevious, workspaceLayout: self._workspaceLayout)
+    }
+    XCTAssertNil(emptyBlockGroup)
+  }
+
+  func testBuildLayoutTreeForTopLevelBlock_WrongWorkspace() {
     let workspace2 = Workspace()
 
     // Add a blocks to workspace2
-    guard let block = try! _blockFactory.addBlock("output_no_input", toWorkspace: workspace2) else {
+    guard let block = BKYAssertDoesNotThrow({
+      try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace2)
+    }) else
+    {
       XCTFail("Block couldn't be loaded into the workspace")
       return
     }
 
-    do {
-      // Try building the layout tree this block, but in the wrong workspace
-      try _workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
-        workspaceLayout: _workspaceLayout)
-      XCTFail("A layout tree was built for a block in the wrong workspace")
-    } catch _ as NSError {
-      // An error should have been thrown. Everything is awesome.
+    // Try building the layout tree this block, but in the wrong workspace
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
+        workspaceLayout: self._workspaceLayout)
     }
   }
 
@@ -213,18 +284,13 @@ class LayoutBuilderTest: XCTestCase {
   private func verifyBlockGroupLayoutTree(blockGroupLayout: BlockGroupLayout, firstBlock: Block?) {
     var currentBlock = firstBlock
 
-    for i in 0 ..< blockGroupLayout.blockLayouts.count {
-      guard let block = currentBlock else {
-        XCTFail(
-          "The number of block layouts in the group exceeds the number of blocks in the chain")
+    var i = 0
+    while i < blockGroupLayout.blockLayouts.count || currentBlock != nil {
+      guard let block = currentBlock where i < blockGroupLayout.blockLayouts.count else {
+        XCTFail("The number of block layouts in the group doesn't match the number of " +
+          "blocks in the chain")
         return
       }
-      if i == 0 {
-        XCTAssertNil(block.previousBlock,
-          "The first block in the group is not the head of the chain of blocks")
-        return
-      }
-
       if block.layout == nil {
         XCTFail("Layout is missing for block: \(block)")
       } else {
@@ -243,7 +309,8 @@ class LayoutBuilderTest: XCTestCase {
         verifyBlockLayoutTree(blockLayout)
       }
 
-      currentBlock = currentBlock?.nextBlock
+      currentBlock = currentBlock?.nextBlock ?? currentBlock?.nextShadowBlock
+      i += 1
     }
 
     XCTAssertNil(currentBlock,
@@ -301,9 +368,10 @@ class LayoutBuilderTest: XCTestCase {
       }
     }
 
-    verifyBlockGroupLayoutTree(inputLayout.blockGroupLayout, firstBlock: input.connectedBlock)
+    verifyBlockGroupLayoutTree(inputLayout.blockGroupLayout,
+                               firstBlock: input.connectedBlock ?? input.connectedShadowBlock)
   }
-  
+
   private func verifyFieldLayout(fieldLayout: FieldLayout) {
     XCTAssertNotNil(fieldLayout.field.layout)
     XCTAssertEqual(fieldLayout, fieldLayout.field.layout)

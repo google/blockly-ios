@@ -75,7 +75,12 @@ extension Block {
       comment = block.comment
       helpURL = block.helpURL
       hasContextMenu = block.hasContextMenu
+      deletable = block.deletable
+      movable = block.movable
+      editable = block.editable
       collapsed = block.collapsed
+      disabled = block.disabled
+      rendered = block.rendered
 
       outputConnectionEnabled = block.outputConnection != nil ? true : false
       outputConnectionTypeChecks = block.outputConnection?.typeChecks
@@ -94,11 +99,13 @@ extension Block {
 
     - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
     assigned to the block.
+    - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
+    The default value is `false`.
     - Throws:
     `BlocklyError`: Occurs if the block is missing any required pieces.
     - Returns: A new block
     */
-    public func build(uuid uuid: String? = nil) throws -> Block {
+    public func build(uuid uuid: String? = nil, shadow: Bool = false) throws -> Block {
       if name == "" {
         throw BlocklyError(.InvalidBlockDefinition, "Block name may not be empty")
       }
@@ -120,7 +127,7 @@ extension Block {
       let inputs = inputBuilders.map({ $0.build() })
 
       let block = Block(uuid: uuid, name: name, category: category,
-        color: color, inputs: inputs, inputsInline: inputsInline,
+        color: color, inputs: inputs, inputsInline: inputsInline, shadow: shadow,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)
 

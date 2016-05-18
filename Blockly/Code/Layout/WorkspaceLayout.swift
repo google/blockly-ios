@@ -66,17 +66,17 @@ public class WorkspaceLayout: Layout {
     // occur on the workspace
     workspace.delegate = self
 
-    // Immediately start tracking all connections of blocks in the workspace
-    for (_, block) in workspace.allBlocks {
-      trackConnectionsForBlock(block)
-    }
-
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
     try self.layoutBuilder.buildLayoutTree(self)
 
     // Perform a layout update for the entire tree
     updateLayoutDownTree()
+
+    // Immediately start tracking connections of all visible blocks in the workspace
+    for blockLayout in allVisibleBlockLayoutsInWorkspace() {
+      trackConnections(forBlockLayout: blockLayout)
+    }
   }
 
   // MARK: - Super
@@ -128,12 +128,12 @@ public class WorkspaceLayout: Layout {
   // MARK: - Public
 
   /**
-  Returns all layouts associated with every block inside `self.workspace.allBlocks`.
+  Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
   */
-  public func allBlockLayoutsInWorkspace() -> [BlockLayout] {
+  public func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
     var descendants = [BlockLayout]()
     for (_, block) in workspace.allBlocks {
-      if let layout = block.layout {
+      if let layout = block.layout where layout.visible {
         descendants.append(layout)
       }
     }
@@ -242,18 +242,31 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Private
 
-  private func trackConnectionsForBlock(block: Block) {
+  private func updateConnectionTracking(forBlockLayout blockLayout: BlockLayout) {
+    if blockLayout.visible {
+      trackConnections(forBlockLayout: blockLayout)
+    } else {
+      untrackConnections(forBlockLayout: blockLayout)
+    }
+  }
+
+  private func trackConnections(forBlockLayout blockLayout: BlockLayout) {
+    guard blockLayout.visible && !blockLayout.block.shadow else {
+      // Only track connections for visible, non-shadow block layouts
+      return
+    }
+
     // Automatically track changes to the connection so we can update the layout hierarchy
     // accordingly
-    for connection in block.directConnections {
+    for connection in blockLayout.block.directConnections {
       connection.targetDelegate = self
       connectionManager.trackConnection(connection)
     }
   }
 
-  private func untrackConnectionsForBlock(block: Block) {
+  private func untrackConnections(forBlockLayout blockLayout: BlockLayout) {
     // Detach connection tracking for the block
-    for connection in block.directConnections {
+    for connection in blockLayout.block.directConnections {
       connection.targetDelegate = nil
       connectionManager.untrackConnection(connection)
     }
@@ -264,8 +277,6 @@ public class WorkspaceLayout: Layout {
 
 extension WorkspaceLayout: WorkspaceDelegate {
   public func workspace(workspace: Workspace, didAddBlock block: Block) {
-    trackConnectionsForBlock(block)
-
     if !block.topLevel {
       // We only need to create layout trees for top level blocks
       return
@@ -279,6 +290,11 @@ extension WorkspaceLayout: WorkspaceDelegate {
         // Perform a layout for the tree
         blockGroupLayout.updateLayoutDownTree()
 
+        // Track connections of all new block layouts that were added
+        for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
+          trackConnections(forBlockLayout: blockLayout)
+        }
+
         // Update the content size
         updateCanvasSize()
 
@@ -291,14 +307,17 @@ extension WorkspaceLayout: WorkspaceDelegate {
   }
 
   public func workspace(workspace: Workspace, willRemoveBlock block: Block) {
-    untrackConnectionsForBlock(block)
-
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return
     }
 
     if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
+      // Untrack connections for all block layouts that will be removed
+      for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
+        untrackConnections(forBlockLayout: blockLayout)
+      }
+
       removeBlockGroupLayout(blockGroupLayout)
 
       scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
@@ -309,48 +328,134 @@ extension WorkspaceLayout: WorkspaceDelegate {
 // MARK: - ConnectionTargetDelegate
 
 extension WorkspaceLayout: ConnectionTargetDelegate {
-  public func didChangeTargetForConnection(connection: Connection) {
+  public func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
+  {
     do {
-      try updateLayoutHierarchyForConnection(connection)
+      try updateLayoutTree(forConnection: connection, oldTarget: oldTarget)
     } catch let error as NSError {
-      bky_assertionFailure("Could not update layout for connection: \(error)")
+      bky_assertionFailure("Could not update layout tree for connection: \(error)")
+    }
+  }
+
+  public func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
+  {
+    do {
+      if connection.shadowConnected && !connection.connected {
+        // There's a new shadow block for the connection and it is not connected to anything.
+        // Add the shadow block layout tree.
+        try addShadowBlockLayoutTree(forConnection: connection)
+      } else if !connection.shadowConnected {
+        // There's no shadow block for the connection. Remove the shadow block layout tree.
+        try removeShadowBlockLayoutTree(forConnection: connection)
+      }
+    } catch let error as NSError {
+      bky_assertionFailure("Could not update shadow block layout tree for connection: \(error)")
+    }
+  }
+
+  private func addShadowBlockLayoutTree(forConnection connection: Connection?) throws {
+    guard let aConnection = connection,
+      shadowBlock = aConnection.shadowBlock
+      where (aConnection.type == .NextStatement || aConnection.type == .InputValue) &&
+        shadowBlock.layout == nil else
+    {
+      // Only next/input connectors are responsible for updating the shadow block group
+      // layout hierarchy, not previous/output connectors.
+      return
+    }
+
+    // Nothing is connected to aConnection. Re-create the shadow block hierarchy since it doesn't
+    // exist.
+    let shadowBlockGroupLayout =
+      try layoutBuilder.layoutFactory.layoutForBlockGroupLayout(engine: engine)
+    try layoutBuilder.buildLayoutTreeForBlockGroupLayout(shadowBlockGroupLayout, block: shadowBlock)
+    let shadowBlockLayouts = shadowBlockGroupLayout.blockLayouts
+
+    // Add shadow block layouts to proper block group
+    if let blockGroupLayout =
+      (aConnection.sourceInput?.layout?.blockGroupLayout ?? // For input values
+        aConnection.sourceBlock.layout?.parentBlockGroupLayout) // For next statements
+    {
+      blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: false)
+      blockGroupLayout.performLayout(includeChildren: true)
+      blockGroupLayout.updateLayoutUpTree()
+    }
+
+    // Update connection tracking
+    let allBlockLayouts = shadowBlockLayouts.flatMap {
+      $0.flattenedLayoutTree(ofType: BlockLayout.self)
+    }
+    for blockLayout in allBlockLayouts {
+      trackConnections(forBlockLayout: blockLayout)
+    }
+
+    if allBlockLayouts.count > 0 {
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
+    }
+  }
+
+  private func removeShadowBlockLayoutTree(forConnection connection: Connection?) throws {
+    guard let aConnection = connection,
+      shadowBlockLayout = aConnection.shadowBlock?.layout,
+      shadowBlockLayoutParent = shadowBlockLayout.parentBlockGroupLayout
+      where aConnection.type == .NextStatement || aConnection.type == .InputValue else
+    {
+      // Only next/input connectors are responsible for updating the shadow block group
+      // layout hierarchy, not previous/output connectors.
+      return
+    }
+
+    // Remove all layouts connected to this shadow block layout
+    let removedLayouts = shadowBlockLayoutParent
+      .removeAllStartingFromBlockLayout(shadowBlockLayout, updateLayout: false)
+      .flatMap { $0.flattenedLayoutTree(ofType: BlockLayout.self) }
+
+    for removedLayout in removedLayouts {
+      // Set the delegate of the block to nil (effectively removing its BlockLayout)
+      removedLayout.block.delegate = nil
+      // Untrack connections for the layout
+      untrackConnections(forBlockLayout: removedLayout)
+    }
+
+    if removedLayouts.count > 0 {
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
     }
   }
 
   /**
    Whenever a connection has been changed for a block in the workspace, this method is called to
-   ensure that the layout hierarchy is properly kept in sync to reflect this change.
+   ensure that the layout tree is properly kept in sync to reflect this change.
   */
-  private func updateLayoutHierarchyForConnection(connection: Connection) throws {
+  private func updateLayoutTree(forConnection connection: Connection, oldTarget: Connection?) throws
+  {
     // TODO:(#29) Optimize re-rendering all layouts affected by this method
 
-    let sourceBlock = connection.sourceBlock
-    let sourceBlockLayout = sourceBlock.layout as BlockLayout!
-
-    if connection != sourceBlock.previousConnection && connection != sourceBlock.outputConnection {
+    guard connection.type == .PreviousStatement || connection.type == .OutputValue else {
       // Only previous/output connectors are responsible for updating the block group
       // layout hierarchy, not next/input connectors.
       return
     }
 
     // Check that there are layouts for both the source and target blocks of this connection
-    if sourceBlockLayout == nil ||
-      (connection.sourceInput != nil && connection.sourceInput!.layout == nil) ||
-      (connection.targetBlock != nil && connection.targetBlock!.layout == nil)
+    guard let sourceBlock = connection.sourceBlock,
+      let sourceBlockLayout = sourceBlock.layout
+      where connection.sourceInput == nil || connection.sourceInput?.layout != nil ||
+        connection.targetBlock == nil || connection.targetBlock?.layout != nil
+      else
     {
       throw BlocklyError(.IllegalState, "Can't connect a block without a layout. ")
     }
 
     // Check that this layout is connected to a block group layout
-    if sourceBlock.layout?.parentBlockGroupLayout == nil {
+    guard sourceBlock.layout?.parentBlockGroupLayout != nil else {
       throw BlocklyError(.IllegalState,
         "Block layout is not connected to a parent block group layout. ")
     }
 
-    if (connection.targetBlock != nil &&
-      connection.targetBlock!.layout?.workspaceLayout != sourceBlockLayout.workspaceLayout)
+    guard (connection.targetBlock == nil || workspace.containsBlock(connection.targetBlock!)) &&
+      workspace.containsBlock(sourceBlock) else
     {
-      throw BlocklyError(.IllegalState, "Can't connect blocks in different workspaces")
+      throw BlocklyError(.IllegalState, "Can't connect blocks from different workspaces")
     }
 
     // Disconnect this block's layout and all subsequent block layouts from its block group layout,
@@ -370,18 +475,25 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
     }
 
     if let targetConnection = connection.targetConnection {
-      // Block was connected to another block
+      // `targetConnection` is connected to something now.
+      // Remove its shadow block layout tree (if it exists).
+      try removeShadowBlockLayoutTree(forConnection: targetConnection)
 
-      if targetConnection.sourceInput != nil {
+      // Reattach the layouts to the proper block group layout
+      if let sourceInputLayout = targetConnection.sourceInput?.layout {
         // Reattach block layouts to target input's block group layout
-        targetConnection.sourceInput!.layout?.blockGroupLayout
+        sourceInputLayout.blockGroupLayout
           .appendBlockLayouts(layoutsToReattach, updateLayout: true)
-      } else {
+      } else if let sourceBlockLayout = targetConnection.sourceBlock.layout {
         // Reattach block layouts to the target block's group layout
-        targetConnection.sourceBlock.layout?.parentBlockGroupLayout?
+        sourceBlockLayout.parentBlockGroupLayout?
           .appendBlockLayouts(layoutsToReattach, updateLayout: true)
       }
     } else {
+      // The connection is no longer connected to anything.
+      // Re-create the shadow block layout tree for the previous connection target (if it has one).
+      try addShadowBlockLayoutTree(forConnection: oldTarget)
+
       // Block was disconnected and added to the workspace level.
       // Create a new block group layout and set its `relativePosition` to the current absolute
       // position of the block that was disconnected
