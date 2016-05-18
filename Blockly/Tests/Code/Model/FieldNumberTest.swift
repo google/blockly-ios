@@ -29,7 +29,7 @@ class FieldNumberTest: XCTestCase {
 
   // MARK: - Tests
 
-  func testConstrainedRangeSuccess() {
+  func testSetConstrainedRangeSuccess() {
     let MIN = -100.0
     let MAX = 100.0
     let PRECISION = 0.1
@@ -76,6 +76,22 @@ class FieldNumberTest: XCTestCase {
     XCTAssertEqual(MIN, fieldNumber.value)
     fieldNumber.value = MAX + 1e100
     XCTAssertEqual(MAX, fieldNumber.value)
+  }
+
+  func testSetConstrained_MinOrMaxSuccess() {
+    // Set min, but not max
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: -55, maximum: nil, precision: 1)
+    }
+    fieldNumber.value = -100
+    XCTAssertEqual(-55, fieldNumber.value)
+
+    // Set max, but not min
+    BKYAssertDoesNotThrow {
+      try self.fieldNumber.setConstraints(minimum: nil, maximum: 50, precision: 1)
+    }
+    fieldNumber.value = 100
+    XCTAssertEqual(50, fieldNumber.value)
   }
 
   func testSetConstraints_IllegalArguments() {

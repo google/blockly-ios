@@ -164,7 +164,7 @@ public final class FieldNumber: Field {
       throw BlocklyError(.IllegalArgument, "Constraints cannot be infinite nor NaN.")
     }
 
-    guard minimum <= maximum else {
+    guard (minimum ?? -DBL_MAX) <= (maximum ?? DBL_MAX) else {
       throw BlocklyError(.IllegalArgument,
         "`minimum` value [\(minimum)] must be less than `maximum` value [\(maximum)].")
     }
@@ -197,7 +197,7 @@ public final class FieldNumber: Field {
         }
       }
 
-      guard effectiveMinimum <= effectiveMaximum else {
+      guard (effectiveMinimum ?? -DBL_MAX) <= (effectiveMaximum ?? DBL_MAX) else {
         throw BlocklyError(.IllegalArgument, "No valid value in range.")
       }
     } else {

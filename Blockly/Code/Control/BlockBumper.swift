@@ -79,6 +79,9 @@ public class BlockBumper: NSObject {
         if let connectedBlockLayout = directConnection.targetBlock?.layout {
           bumpNeighboursOfBlockLayout(connectedBlockLayout)
         }
+        if let connectedShadowBlockLayout = directConnection.shadowBlock?.layout {
+          bumpNeighboursOfBlockLayout(connectedShadowBlockLayout)
+        }
 
         bumpAllBlocksNearConnection(directConnection)
       }

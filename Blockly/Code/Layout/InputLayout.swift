@@ -57,10 +57,11 @@ public class InputLayout: Layout {
     self.input = input
     super.init(engine: engine)
 
-    // Create `self.blockGroupLayout` (this is done after super.init because you can't call a
-    // throwing method prior to initialization)
-    self.blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
-    self.blockGroupLayout.parentLayout = self
+    // Create `self.blockGroupLayout` and `self.shadowBlockGroupLayout`.
+    // This is done after super.init because you can't call a throwing method prior to
+    // initialization.
+    blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
+    blockGroupLayout.parentLayout = self
   }
 
   // MARK: - Public

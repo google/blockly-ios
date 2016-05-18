@@ -35,6 +35,8 @@
 		FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFD581B72EBEE0072A278 /* FieldInput.swift */; };
 		FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */; };
 		FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */; };
+		FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */; };
+		FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
 		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */; };
@@ -250,6 +252,8 @@
 		FA2DFD581B72EBEE0072A278 /* FieldInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInput.swift; sourceTree = "<group>"; };
 		FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilderTest.swift; sourceTree = "<group>"; };
 		FA3786A61C00093B009D18DF /* ConnectionManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManagerTest.swift; sourceTree = "<group>"; };
+		FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutTest.swift; sourceTree = "<group>"; };
+		FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceTest.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
 		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorView.swift; sourceTree = "<group>"; };
@@ -444,6 +448,7 @@
 				FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */,
 				FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */,
 				FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */,
+				FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */,
 				FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */,
 			);
 			path = Layout;
@@ -484,6 +489,7 @@
 				FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */,
 				FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */,
 				FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */,
+				FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1075,6 +1081,7 @@
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */,
 				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */,
 				FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */,
 				FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */,
@@ -1083,6 +1090,7 @@
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
 				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
+				FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
 				FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */,

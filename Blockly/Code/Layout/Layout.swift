@@ -199,6 +199,26 @@ public class Layout: NSObject {
     }
   }
 
+  /**
+   Returns an array of `Layout` instances for the tree headed by this `Layout` instance, in no
+   particular order.
+
+   - Parameter type: [Optional] Filters `Layout` instances by a specific type.
+   - Returns: An array of all `Layout` instances.
+   */
+  public final func flattenedLayoutTree<T where T: Layout>(ofType type: T.Type? = nil) -> [T] {
+    var allLayouts = [T]()
+
+    if let layout = self as? T {
+      allLayouts.append(layout)
+    }
+
+    for layout in childLayouts {
+      allLayouts.appendContentsOf(layout.flattenedLayoutTree(ofType: type))
+    }
+    return allLayouts
+  }
+
   // MARK: - Internal
 
   /**

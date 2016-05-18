@@ -120,7 +120,7 @@ public class WorkspaceView: LayoutView {
       return
     }
 
-    let allBlockLayouts = layout.allBlockLayoutsInWorkspace()
+    let allBlockLayouts = layout.allVisibleBlockLayoutsInWorkspace()
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_AddedBlockLayout]) {
       // Get blocks that are in the current viewport
@@ -129,14 +129,7 @@ public class WorkspaceView: LayoutView {
 
         // TODO:(#29) For now, always render blocks regardless of where they are on the screen.
         // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
-        let shouldRenderBlockLayout = true
-        if !shouldRenderBlockLayout {
-          // This layout shouldn't be rendered. If its corresponding view exists, remove it from the
-          // workspace view and recycle it.
-          if blockView != nil {
-            removeBlockView(blockView!)
-          }
-        } else if blockView == nil {
+        if blockView == nil {
           do {
             // Create a new block view for this layout
             try addBlockViewForLayout(blockLayout)
@@ -240,7 +233,7 @@ public class WorkspaceView: LayoutView {
 
     // Create a deep copy of this block in this workspace (which will automatically create a layout
     // tree for the block)
-    let newBlock = try workspace.copyBlockTree(blockLayout.block)
+    let newBlock = try workspace.copyBlockTree(blockLayout.block, editable: true)
 
     // Set its new workspace position
     newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)

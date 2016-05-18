@@ -38,24 +38,32 @@ public final class Block : NSObject {
 
   // MARK: - Properties
 
+  // TODO:(#104) Remove unused properties
+
   /// A unique identifier used to identify this block for its lifetime
   public let uuid: String
   public let name: String
   public let category: Int
   public let inputsInline: Bool
   public internal(set) var position: WorkspacePoint = WorkspacePointZero
+  /// Flag if this is a shadow block (`true`) or not (`false)
+  public let shadow: Bool
   public let outputConnection: Connection?
   public var outputBlock: Block? {
-    return outputConnection?.targetConnection?.sourceBlock
+    return outputConnection?.targetBlock
   }
   public let nextConnection: Connection?
   public var nextBlock: Block? {
-    return nextConnection?.targetConnection?.sourceBlock
+    return nextConnection?.targetBlock
+  }
+  public var nextShadowBlock: Block? {
+    return nextConnection?.shadowBlock
   }
   public let previousConnection: Connection?
   public var previousBlock: Block? {
-    return previousConnection?.targetConnection?.sourceBlock
+    return previousConnection?.targetBlock
   }
+
   /// List of connections directly attached to this block
   public private(set) var directConnections = [Connection]()
   public let inputs: [Input]
@@ -91,7 +99,10 @@ public final class Block : NSObject {
 
   /// Flag if this block is at the highest level in the workspace
   public var topLevel: Bool {
-    return previousConnection?.targetConnection == nil && outputConnection?.targetConnection == nil
+    return previousConnection?.targetConnection == nil &&
+      previousConnection?.shadowConnection == nil &&
+      outputConnection?.targetConnection == nil &&
+      outputConnection?.shadowConnection == nil
   }
 
   public var collapsed: Bool = false
@@ -110,8 +121,9 @@ public final class Block : NSObject {
   /**
   To create a Block, use Block.Builder instead.
   */
-  internal init(uuid: String?, name: String, category: Int,
-    color: UIColor, inputs: [Input] = [], inputsInline: Bool, outputConnection: Connection?,
+  internal init(
+    uuid: String?, name: String, category: Int, color: UIColor, inputs: [Input] = [],
+    inputsInline: Bool, shadow: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = uuid ?? NSUUID().UUIDString
@@ -120,6 +132,7 @@ public final class Block : NSObject {
     self.color = color
     self.inputs = inputs
     self.inputsInline = inputsInline
+    self.shadow = shadow
     self.outputConnection = outputConnection
     self.previousConnection = previousConnection
     self.nextConnection = nextConnection
@@ -219,11 +232,19 @@ public final class Block : NSObject {
       if let connectedBlock = input.connectedBlock {
         blocks.appendContentsOf(connectedBlock.allBlocksForTree())
       }
+      if let connectedShadowBlock = input.connectedShadowBlock {
+        blocks.appendContentsOf(connectedShadowBlock.allBlocksForTree())
+      }
     }
 
     // Follow next connection
     if let nextBlock = self.nextBlock {
       blocks.appendContentsOf(nextBlock.allBlocksForTree())
+    }
+
+    // Follow next shadow connection
+    if let nextShadowBlock = self.nextShadowBlock {
+      blocks.appendContentsOf(nextShadowBlock.allBlocksForTree())
     }
 
     return blocks
@@ -275,7 +296,7 @@ public final class Block : NSObject {
    `BlocklyError`: Thrown if copied blocks could not be connected to each other.
    */
   public func deepCopy() throws -> BlockTree {
-    let newBlock = try Block.Builder(block: self).build()
+    let newBlock = try Block.Builder(block: self).build(shadow: shadow)
     var copiedBlocks = [Block]()
     copiedBlocks.append(newBlock)
 
@@ -303,6 +324,17 @@ public final class Block : NSObject {
         }
         copiedBlocks.appendContentsOf(copyResult.allBlocks)
       }
+
+      // Perform a copy of the connected shadow block (if it exists)
+      if let connectedShadowBlock = self.inputs[i].connectedShadowBlock {
+        let copyResult = try connectedShadowBlock.deepCopy()
+        if self.inputs[i].connection!.type == .NextStatement {
+          try copiedInputConnection!.connectShadowTo(copyResult.rootBlock.previousConnection)
+        } else if self.inputs[i].connection!.type == .InputValue {
+          try copiedInputConnection!.connectShadowTo(copyResult.rootBlock.outputConnection)
+        }
+        copiedBlocks.appendContentsOf(copyResult.allBlocks)
+      }
     }
 
     // Check that the next connections are consistent between the original and copied blocks
@@ -320,6 +352,13 @@ public final class Block : NSObject {
     if let nextBlock = self.nextBlock {
       let copyResult = try nextBlock.deepCopy()
       try copiedNextConnection!.connectTo(copyResult.rootBlock.previousConnection)
+      copiedBlocks.appendContentsOf(copyResult.allBlocks)
+    }
+
+    // Copy shadow block(s) from next connection
+    if let nextShadowBlock = self.nextShadowBlock {
+      let copyResult = try nextShadowBlock.deepCopy()
+      try copiedNextConnection!.connectShadowTo(copyResult.rootBlock.previousConnection)
       copiedBlocks.appendContentsOf(copyResult.allBlocks)
     }
 
