@@ -688,7 +688,7 @@ extension WorkbenchViewController {
    */
   private dynamic func didRecognizeWorkspacePanGesture(gesture: UIPanGestureRecognizer) {
     guard let blockView = gesture.view as? BlockView,
-      blockLayout = blockView.blockLayout else {
+      blockLayout = blockView.blockLayout?.draggableBlockLayout else {
         return
     }
 
@@ -718,7 +718,7 @@ extension WorkbenchViewController {
         _dragger.clearGestureDataForBlockLayout(blockLayout)
 
         do {
-          try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block)
+          try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
           blockLayout.workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
         } catch let error as NSError {
           bky_assertionFailure("Could not copy block to trash can: \(error)")

@@ -86,14 +86,31 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       let loopIcon = UIImage(named: "icon_loop")
       let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor(), icon: loopIcon)
-      try addBlock("controls_repeat_ext", toCategory: loops)
+      if let repeatBlock = try _blockFactory.buildBlock("controls_repeat_ext"),
+        repeatBlockInput = repeatBlock.firstInputWithName("TIMES"),
+        numberBlock = try _blockFactory.buildBlock("non_negative_integer", shadow: true)
+      {
+        // Add shadow block to repeat loop
+        try repeatBlockInput.connection?.connectShadowTo(numberBlock.outputConnection)
+        try loops.addBlockTree(repeatBlock)
+      }
       try addBlock("controls_whileUntil", toCategory: loops)
 
       let prevNextIcon = UIImage(named: "icon_prevnext")
       let prevNextCategory =
         toolbox.addCategory("Prev / Next", color: UIColor.greenColor(), icon: prevNextIcon)
       try addBlock("statement_no_input", toCategory: prevNextCategory)
-      try addBlock("statement_value_input", toCategory: prevNextCategory)
+      if let statementValueInputBlock = try _blockFactory.buildBlock("statement_value_input"),
+        noNextBlock = try _blockFactory.buildBlock("statement_value_input", shadow: true),
+        noNextBlock2 = try _blockFactory.buildBlock("statement_no_input", shadow: true),
+        simpleInputOutput = try _blockFactory.buildBlock("simple_input_output", shadow: true)
+      {
+        // Add shadow block to next block
+        try statementValueInputBlock.nextConnection?.connectShadowTo(noNextBlock.previousConnection)
+        try noNextBlock.lastInputValueConnectionInChain()?.connectShadowTo(simpleInputOutput.outputConnection)
+        try noNextBlock.nextConnection?.connectShadowTo(noNextBlock2.previousConnection)
+        try prevNextCategory.addBlockTree(statementValueInputBlock)
+      }
       try addBlock("statement_multiple_value_input", toCategory: prevNextCategory)
       try addBlock("statement_no_next", toCategory: prevNextCategory)
       try addBlock("statement_statement_input", toCategory: prevNextCategory)

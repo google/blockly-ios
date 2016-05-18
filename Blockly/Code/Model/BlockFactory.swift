@@ -113,11 +113,15 @@ public class BlockFactory : NSObject {
    - Parameter blockName: The name of the block to build.
    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
+   - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
+   The default value is `false`.
    - Throws:
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
    - Returns: A new block if the name is known, nil otherwise.
    */
-  public func buildBlock(blockName: String, uuid: String? = nil) throws -> Block? {
-    return try _blockBuilders[blockName]?.build(uuid: uuid)
+  public func buildBlock(blockName: String, uuid: String? = nil, shadow: Bool = false) throws
+    -> Block?
+  {
+    return try _blockBuilders[blockName]?.build(uuid: uuid, shadow: shadow)
   }
 }

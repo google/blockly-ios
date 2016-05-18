@@ -259,6 +259,48 @@ class BlockTest: XCTestCase {
     }
   }
 
+  func testDeepCopy_ShadowBlock() {
+    guard
+      let root = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_value_input", uuid: "1")
+      }),
+      let output = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("simple_input_output", uuid: "2")
+      }),
+      let outputShadow = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("simple_input_output", uuid: "3", shadow: true)
+      }),
+      let next = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_no_next", uuid: "2")
+      }),
+      let shadowNext = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("statement_no_next", uuid: "2", shadow: true)
+      }) else
+    {
+      XCTFail("Couldn't initialize blocks")
+      return
+    }
+
+    BKYAssertDoesNotThrow {
+      try root.onlyValueInput()?.connection?.connectTo(output.outputConnection)
+    }
+    BKYAssertDoesNotThrow {
+      try root.onlyValueInput()?.connection?.connectShadowTo(outputShadow.outputConnection)
+    }
+    BKYAssertDoesNotThrow {
+      try root.nextConnection?.connectTo(next.previousConnection)
+    }
+    BKYAssertDoesNotThrow {
+      try root.nextConnection?.connectShadowTo(shadowNext.previousConnection)
+    }
+
+    guard let copy = BKYAssertDoesNotThrow({ try root.deepCopy() }) else {
+      XCTFail("Couldn't deep copy block")
+      return
+    }
+    assertSimilarBlockTrees(copy.rootBlock, root)
+  }
+
   func testLastInputValueConnectionInChainSimples() {
     guard
       let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),
@@ -395,6 +437,8 @@ class BlockTest: XCTestCase {
    Compares two trees of blocks and asserts that their tree of connections is the same.
    */
   func assertSimilarBlockTrees(block1: Block, _ block2: Block) {
+    XCTAssertEqual(block1.shadow, block2.shadow)
+
     // Test existence of all connections and follow next/input connections
     XCTAssertTrue(
       (block1.previousConnection == nil && block2.previousConnection == nil) ||
@@ -412,23 +456,56 @@ class BlockTest: XCTestCase {
       (block1.nextBlock == nil && block2.nextBlock == nil) ||
       (block1.nextBlock != nil && block2.nextBlock != nil))
 
-    if block1.nextBlock != nil && block2.nextBlock != nil {
-      assertSimilarBlockTrees(block1.nextBlock!, block2.nextBlock!)
+    if let nextBlock1 = block1.nextBlock,
+      nextBlock2 = block2.nextBlock
+    {
+      assertSimilarBlockTrees(nextBlock1, nextBlock2)
+    }
+
+    XCTAssertTrue(
+      (block1.nextShadowBlock == nil && block2.nextShadowBlock == nil) ||
+      (block1.nextShadowBlock != nil && block2.nextShadowBlock != nil))
+
+    if let nextShadowBlock1 = block1.nextShadowBlock,
+      nextShadowBlock2 = block2.nextShadowBlock
+    {
+      assertSimilarBlockTrees(nextShadowBlock1, nextShadowBlock2)
     }
 
     XCTAssertEqual(block1.inputs.count, block2.inputs.count)
-    for i in 0 ..< block1.inputs.count {
-      XCTAssertTrue(
-        (block1.inputs[i].connection == nil && block2.inputs[i].connection == nil) ||
-        (block1.inputs[i].connection != nil && block2.inputs[i].connection != nil))
+
+    var i = 0
+    while i < block1.inputs.count && i < block2.inputs.count {
+      let input1 = block1.inputs[i]
+      let input2 = block2.inputs[i]
 
       XCTAssertTrue(
-        (block1.inputs[i].connectedBlock == nil && block2.inputs[i].connectedBlock == nil) ||
-        (block1.inputs[i].connectedBlock != nil && block2.inputs[i].connectedBlock != nil))
+        (input1.connection == nil && input2.connection == nil) ||
+        (input1.connection != nil && input2.connection != nil))
 
-      if block1.inputs[i].connectedBlock != nil && block2.inputs[i].connectedBlock != nil {
-        assertSimilarBlockTrees(block1.inputs[i].connectedBlock!, block2.inputs[i].connectedBlock!)
+      // Check connected block trees
+      XCTAssertTrue(
+        (input1.connectedBlock == nil && input2.connectedBlock == nil) ||
+        (input1.connectedBlock != nil && input2.connectedBlock != nil))
+
+      if let connectedBlock1 = input1.connectedBlock,
+        let connectedBlock2 = input2.connectedBlock
+      {
+        assertSimilarBlockTrees(connectedBlock1, connectedBlock2)
       }
+
+      // Check connected shadow block trees
+      XCTAssertTrue(
+        (input1.connectedShadowBlock == nil && input2.connectedShadowBlock == nil) ||
+        (input1.connectedShadowBlock != nil && input2.connectedShadowBlock != nil))
+
+      if let connectedShadowBlock1 = input1.connectedShadowBlock,
+        let connectedShadowBlock2 = input2.connectedShadowBlock
+      {
+        assertSimilarBlockTrees(connectedShadowBlock1, connectedShadowBlock2)
+      }
+      
+      i += 1
     }
   }
 }

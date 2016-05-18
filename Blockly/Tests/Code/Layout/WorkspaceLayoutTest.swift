@@ -35,7 +35,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
   // MARK: - Tests
 
-  func testAllBlockLayoutsInWorkspace() {
+  func testAllVisibleBlockLayoutsInWorkspace() {
     let workspace = _workspaceLayout.workspace
 
     // Add blocks to the workspace
@@ -68,7 +68,7 @@ class WorkspaceLayoutTest: XCTestCase {
     // Manually walk through tree to get all block layout descendants for workspace layout
     var treeTraversalBlockLayouts =
       treeTraversalOfBlockLayoutsUnderWorkspaceLayout(_workspaceLayout)
-    var allBlockLayouts = _workspaceLayout.allBlockLayoutsInWorkspace()
+    var allBlockLayouts = _workspaceLayout.allVisibleBlockLayoutsInWorkspace()
 
     // Compare both lists
     XCTAssertEqual(treeTraversalBlockLayouts.count, allBlockLayouts.count)
@@ -93,13 +93,41 @@ class WorkspaceLayoutTest: XCTestCase {
     // Check all block layout now that some layouts are no longer top-level blocks
     treeTraversalBlockLayouts =
       treeTraversalOfBlockLayoutsUnderWorkspaceLayout(_workspaceLayout)
-    allBlockLayouts = _workspaceLayout.allBlockLayoutsInWorkspace()
+    allBlockLayouts = _workspaceLayout.allVisibleBlockLayoutsInWorkspace()
 
     // Compare both lists
     XCTAssertEqual(treeTraversalBlockLayouts.count, allBlockLayouts.count)
     for blockLayout in allBlockLayouts {
       XCTAssertTrue(treeTraversalBlockLayouts.contains(blockLayout))
     }
+  }
+
+  func testAllVisibleBlockLayoutsInWorkspace_HiddenLayout() {
+    let workspace = _workspaceLayout.workspace
+
+    // Add blocks to the workspace
+    let block = BKYAssertDoesNotThrow {
+      try self._blockFactory.addBlock("no_connections", toWorkspace: workspace)
+    }
+
+    // Build the layout tree
+    BKYAssertDoesNotThrow {
+      try self._workspaceLayout.layoutBuilder.buildLayoutTree(self._workspaceLayout)
+    }
+
+    let blockLayout = block?.layout
+    XCTAssertNotNil(blockLayout)
+
+    // Set visibility to true
+    blockLayout?.visible = true
+    var blockLayouts = _workspaceLayout.allVisibleBlockLayoutsInWorkspace()
+    XCTAssertEqual(1, blockLayouts.count)
+    XCTAssertEqual(blockLayout, blockLayouts.first)
+
+    // Set visibility to false
+    blockLayout?.visible = false
+    blockLayouts = _workspaceLayout.allVisibleBlockLayoutsInWorkspace()
+    XCTAssertEqual(0, blockLayouts.count)
   }
 
   func testAppendBlockGroupLayout() {
