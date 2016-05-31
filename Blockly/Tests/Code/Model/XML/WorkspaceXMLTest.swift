@@ -162,12 +162,26 @@ class WorkspaceXMLTest: XCTestCase {
   }
 
   func testSerializeXML_NestedBlocks() {
+    guard
+      let parent = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("simple_input_output", uuid: "parentBlock")
+      }),
+      let child = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("output_no_input", uuid: "childBlock")
+      }),
+      let parentInput = parent.firstInputWithName("value") else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    BKYAssertDoesNotThrow { try parentInput.connection?.connectTo(child.inferiorConnection) }
+
     let workspace = Workspace()
-    let parent = try! factory.buildBlock("simple_input_output", uuid: "parentBlock") as Block!
-    let child = try! factory.buildBlock("output_no_input", uuid: "childBlock") as Block!
-    try! child?.connectToSuperiorConnection(parent!.firstInputWithName("value")!.connection!)
-    try! workspace.addBlockTree(parent)
-    let xml = try! workspace.toXML()
+    BKYAssertDoesNotThrow { try workspace.addBlockTree(parent) }
+    guard let xml = BKYAssertDoesNotThrow({ try workspace.toXML() }) else {
+      XCTFail("Could not build XML")
+      return
+    }
 
     // Expected:
     // <xml xmlns="http://www.w3.org/1999/xhtml">
