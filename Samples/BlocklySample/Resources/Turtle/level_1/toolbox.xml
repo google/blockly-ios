@@ -43,9 +43,9 @@
   <category name="Colour" colour="20">
     <block type="turtle_colour">
       <value name="COLOUR">
-        <block type="colour_picker">
+        <shadow type="colour_picker">
           <field name="COLOUR">#ff0000</field>
-        </block>
+        </shadow>
       </value>
     </block>
     <block type="colour_picker"></block>

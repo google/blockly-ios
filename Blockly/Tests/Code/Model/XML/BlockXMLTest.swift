@@ -56,7 +56,7 @@ class BlockXMLTest: XCTestCase {
     XCTAssertNotNil(parseBlockFromXML(BlockTestStrings.NO_BLOCK_POSITION, factory))
   }
 
-  func testParseXML_BlocksWithValues() {
+  func testParseXML_BlocksWithInputValues() {
     // Values.
     if let blockTree =
       parseBlockFromXML(BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_GOOD), factory)
@@ -120,7 +120,7 @@ class BlockXMLTest: XCTestCase {
       BlockTestStrings.assembleBlock(BlockTestStrings.FIELD_MISSING_TEXT), factory))
   }
 
-  func testParseXML_BlocksWithStatements() {
+  func testParseXML_BlocksWithInputStatements() {
     // Statement
     if let blockTree =
       parseBlockFromXML(BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_GOOD), factory)
@@ -141,6 +141,148 @@ class BlockXMLTest: XCTestCase {
     // Statement: no input with that name
     XCTAssertNil(parseBlockFromXML(
       BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_BAD_NAME), factory))
+  }
+
+  func testParseXML_BlocksWithNextStatement() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NEXT_STATEMENT_GOOD)
+    if let blockTree = parseBlockFromXML(xml, factory) {
+      XCTAssertEqual(2, blockTree.allBlocks.count)
+      let block = blockTree.rootBlock.nextBlock
+      XCTAssertEqual("11", block?.uuid)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_SimpleShadowBlock() {
+    if let blockTree = parseBlockFromXML(BlockTestStrings.SIMPLE_SHADOW, factory) {
+      XCTAssertEqual(1, blockTree.allBlocks.count)
+      XCTAssertEqual("frankenblock", blockTree.rootBlock.name)
+      XCTAssertEqual(WorkspacePointMake(37, 13), blockTree.rootBlock.position)
+      XCTAssertTrue(blockTree.rootBlock.shadow)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithShadowInputValue() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_SHADOW)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection
+    {
+      XCTAssertEqual(2, blockTree.allBlocks.count)
+      XCTAssertFalse(connection.connected)
+      XCTAssertTrue(connection.shadowConnected)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithRealAndShadowInputValues() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_SHADOW_GOOD)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection
+    {
+      XCTAssertEqual(3, blockTree.allBlocks.count)
+      XCTAssertTrue(connection.connected)
+      XCTAssertEqual("VALUE_REAL", connection.targetBlock?.uuid)
+      XCTAssertFalse(connection.targetBlock?.shadow ?? true)
+      XCTAssertTrue(connection.shadowConnected)
+      XCTAssertEqual("VALUE_SHADOW", connection.shadowBlock?.uuid)
+      XCTAssertTrue(connection.shadowBlock?.shadow ?? false)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithShadowInputStatement() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_SHADOW_ONLY)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.firstInputWithName("NAME")?.connection
+    {
+      XCTAssertEqual(2, blockTree.allBlocks.count)
+      XCTAssertFalse(connection.connected)
+      XCTAssertTrue(connection.shadowConnected)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithRealAndShadowInputStatements() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_REAL_AND_SHADOW)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.firstInputWithName("NAME")?.connection
+    {
+      XCTAssertTrue(connection.connected)
+      XCTAssertEqual("STATEMENT_REAL", connection.targetBlock?.uuid)
+      XCTAssertFalse(connection.targetBlock?.shadow ?? true)
+      XCTAssertTrue(connection.shadowConnected)
+      XCTAssertEqual("STATEMENT_SHADOW", connection.shadowBlock?.uuid)
+      XCTAssertTrue(connection.shadowBlock?.shadow ?? false)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithShadowNextStatement() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NEXT_STATEMENT_SHADOW_ONLY)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.nextConnection
+    {
+      XCTAssertEqual(2, blockTree.allBlocks.count)
+      XCTAssertFalse(connection.connected)
+      XCTAssertTrue(connection.shadowConnected)
+      XCTAssertEqual("STATEMENT_SHADOW", connection.shadowBlock?.uuid)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithRealAndShadowNextStatements() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NEXT_STATEMENT_REAL_AND_SHADOW)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.nextConnection
+    {
+      XCTAssertTrue(connection.connected)
+      XCTAssertEqual("STATEMENT_REAL", connection.targetBlock?.uuid)
+      XCTAssertFalse(connection.targetBlock?.shadow ?? true)
+      XCTAssertTrue(connection.shadowConnected)
+      XCTAssertEqual("STATEMENT_SHADOW", connection.shadowBlock?.uuid)
+      XCTAssertTrue(connection.shadowBlock?.shadow ?? false)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithValidNestedShadowBlocks() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NESTED_SHADOW_GOOD)
+    if let blockTree = parseBlockFromXML(xml, factory),
+      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection,
+      let nextConnection = blockTree.rootBlock.nextConnection
+    {
+      XCTAssertFalse(connection.connected)
+      XCTAssertTrue(connection.shadowConnected)
+      XCTAssertEqual("SHADOW1", connection.shadowBlock?.uuid)
+
+      if let nestedInput = connection.shadowBlock?.onlyValueInput() {
+        XCTAssertNil(nestedInput.connectedBlock)
+        XCTAssertNotNil(nestedInput.connectedShadowBlock)
+        XCTAssertEqual("SHADOW2", nestedInput.connectedShadowBlock?.uuid)
+      } else {
+        XCTFail("Could not locate nested input")
+      }
+
+      XCTAssertFalse(nextConnection.connected)
+      XCTAssertTrue(nextConnection.shadowConnected)
+      XCTAssertEqual("SHADOW3", nextConnection.shadowBlock?.uuid)
+    } else {
+      XCTFail("Could not load block from XML")
+    }
+  }
+
+  func testParseXML_BlockWithInvalidNestedShadowBlocks() {
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NESTED_SHADOW_BAD)
+    XCTAssertNil(parseBlockFromXML(xml, factory))
   }
 
   // MARK: - XML Serialization Tests
@@ -245,7 +387,7 @@ class BlockXMLTest: XCTestCase {
     }
   }
 
-  func testSerializeXML_BlockWithStatementValue() {
+  func testSerializeXML_BlockWithInputStatement() {
     let block = try! factory.buildBlock("frankenblock", uuid: "1000") as Block!
     block.position = WorkspacePointMake(-350, -32)
     let input = block.firstInputWithName("NAME") as Input!
@@ -355,6 +497,636 @@ class BlockXMLTest: XCTestCase {
       XCTAssertEqual("colour", fieldXML.attributes["name"])
       XCTAssertEqual("#ff0000", fieldXML.value)
       XCTAssertEqual(0, fieldXML.children.count)
+    }
+  }
+
+  func testSerializeXML_BlockWithNextStatement() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "1000")
+      }),
+      let nextBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "2000")
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(-350, -32)
+    nextBlock.position = WorkspacePointMake(100, 50)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      try block.nextConnection?.connectTo(nextBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block type="statement_no_input" id="1000" x="-350" y="-32">
+    //   <next>
+    //     <block type="statement_no_input" id="2000" />
+    //   </next>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not build XML")
+      return
+    }
+
+    // Test: <block type="statement_no_input" id="1000" x="-350" y="-32">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("1000", xml.attributes["id"])
+    XCTAssertEqual("-350", xml.attributes["x"])
+    XCTAssertEqual("-32", xml.attributes["y"])
+    XCTAssertEqual("statement_no_input", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    // Test: <next>
+    if xml.children.count >= 1 {
+      let nextXML = xml.children[0]
+      XCTAssertEqual("next", nextXML.name)
+      XCTAssertEqual(0, nextXML.attributes.count)
+      XCTAssertEqual(1, nextXML.children.count)
+
+      // Test: <block type="statement_no_input" id="2000" />
+      if nextXML.children.count >= 1 {
+        let childXML = nextXML.children[0]
+        XCTAssertEqual("block", childXML.name)
+        XCTAssertEqual(2, childXML.attributes.count)
+        XCTAssertEqual("statement_no_input", childXML.attributes["type"])
+        XCTAssertEqual("2000", childXML.attributes["id"])
+        XCTAssertEqual(0, childXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_ShadowBlock() {
+    guard let block = BKYAssertDoesNotThrow(
+      { try self.factory.buildBlock("empty_block", uuid: "abc", shadow: true) }) else
+    {
+      XCTFail("Could not build block")
+      return
+    }
+    block.position = WorkspacePointMake(350, -10)
+
+    // This is the xml we expect from `block`:
+    // <shadow type=\"empty_block\" id=\"abc\" x=\"350\" y=\"-10\" />
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    XCTAssertEqual("shadow", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("abc", xml.attributes["id"])
+    XCTAssertEqual("350", xml.attributes["x"])
+    XCTAssertEqual("-10", xml.attributes["y"])
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testSerializeXML_BlockWithShadowInputValue() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("simple_input_output", uuid: "364")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("output_foo", uuid: "VALUE_SHADOW", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(37, 13)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      let input = block.firstInputWithName("value")
+      try input?.connection?.connectShadowTo(shadowBlock.outputConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block x="37" id="364" y="13" type="simple_input_output">
+    //   <value name="value">
+    //     <shadow id="VALUE_SHADOW" type="output_foo" />
+    //   </value>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    // Test: <block x="37" id="364" y="13" type="simple_input_output">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("364", xml.attributes["id"])
+    XCTAssertEqual("37", xml.attributes["x"])
+    XCTAssertEqual("13", xml.attributes["y"])
+    XCTAssertEqual("simple_input_output", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    if xml.children.count >= 1 {
+      // Test: <value name="value">
+      let valueXML = xml.children[0]
+      XCTAssertEqual("value", valueXML.name)
+      XCTAssertEqual(1, valueXML.attributes.count)
+      XCTAssertEqual("value", valueXML.attributes["name"])
+      XCTAssertEqual(1, valueXML.children.count)
+
+      // Test: <shadow id="VALUE_SHADOW" type="output_foo" />
+      if valueXML.children.count >= 0 {
+        let shadowBlockXML = valueXML.children[0]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_SHADOW", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("output_foo", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(0, shadowBlockXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithRealAndShadowInputValues() {
+    guard let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("simple_input_output", uuid: "364")
+      }),
+      let realBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("output_foo", uuid: "VALUE_REAL")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("output_foo", uuid: "VALUE_SHADOW", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(37, 13)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      let input = block.firstInputWithName("value")
+      try input?.connection?.connectTo(realBlock.outputConnection)
+      try input?.connection?.connectShadowTo(shadowBlock.outputConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block x="37" id="364" y="13" type="simple_input_output">
+    //   <value name="value">
+    //     <block id="VALUE_REAL" type="output_foo" />
+    //     <shadow id="VALUE_SHADOW" type="output_foo" />
+    //   </value>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    // Test: <block x="37" id="364" y="13" type="simple_input_output">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("364", xml.attributes["id"])
+    XCTAssertEqual("37", xml.attributes["x"])
+    XCTAssertEqual("13", xml.attributes["y"])
+    XCTAssertEqual("simple_input_output", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    if xml.children.count >= 1 {
+      // Test: <value name="value">
+      let valueXML = xml.children[0]
+      XCTAssertEqual("value", valueXML.name)
+      XCTAssertEqual(1, valueXML.attributes.count)
+      XCTAssertEqual("value", valueXML.attributes["name"])
+      XCTAssertEqual(2, valueXML.children.count)
+
+      // Test: <block id="VALUE_REAL" type="output_foo" />
+      if valueXML.children.count >= 1 {
+        let realBlockXML = valueXML.children[0]
+        XCTAssertEqual("block", realBlockXML.name)
+        XCTAssertEqual(2, realBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_REAL", realBlockXML.attributes["id"])
+        XCTAssertEqual("output_foo", realBlockXML.attributes["type"])
+        XCTAssertEqual(0, realBlockXML.children.count)
+      }
+
+      // Test: <shadow id="VALUE_SHADOW" type="output_foo" />
+      if valueXML.children.count >= 2 {
+        let shadowBlockXML = valueXML.children[1]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_SHADOW", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("output_foo", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(0, shadowBlockXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithShadowInputStatement() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_statement_input", uuid: "1000")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "2000", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(-350, -32)
+    shadowBlock.position = WorkspacePointMake(100, 50)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      try block.firstInputWithName("statement input")?.connection?
+        .connectShadowTo(shadowBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block type="statement_statement_input" id="1000" x="-350" y="-32">
+    //   <statement name="statement input">
+    //     <shadow type="statement_no_input" id="2000" />
+    //   </statement>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not build XML")
+      return
+    }
+
+    // Test: <block type="statement_statement_input" id="1000" x="-350" y="-32">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("1000", xml.attributes["id"])
+    XCTAssertEqual("-350", xml.attributes["x"])
+    XCTAssertEqual("-32", xml.attributes["y"])
+    XCTAssertEqual("statement_statement_input", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    // Test: <statement name="statement input">
+    if xml.children.count >= 1 {
+      let statementXML = xml.children[0]
+      XCTAssertEqual("statement", statementXML.name)
+      XCTAssertEqual(1, statementXML.attributes.count)
+      XCTAssertEqual("statement input", statementXML.attributes["name"])
+      XCTAssertEqual(1, statementXML.children.count)
+
+      // Test: <shadow type="statement_no_input" id="2000" />
+      if statementXML.children.count >= 1 {
+        let childXML = statementXML.children[0]
+        XCTAssertEqual("shadow", childXML.name)
+        XCTAssertEqual(2, childXML.attributes.count)
+        XCTAssertEqual("statement_no_input", childXML.attributes["type"])
+        XCTAssertEqual("2000", childXML.attributes["id"])
+        XCTAssertEqual(0, childXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithRealAndShadowInputStatements() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_statement_input", uuid: "1000")
+      }),
+      let realBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "2000")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "3000", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(-350, -32)
+    realBlock.position = WorkspacePointMake(20, 20)
+    shadowBlock.position = WorkspacePointMake(100, 50)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      let input = block.firstInputWithName("statement input")
+      try input?.connection?.connectTo(realBlock.previousConnection)
+      try input?.connection?.connectShadowTo(shadowBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block type="statement_statement_input" id="1000" x="-350" y="-32">
+    //   <statement name="statement input">
+    //     <block type="statement_no_input" id="2000" />
+    //     <shadow type="statement_no_input" id="3000" />
+    //   </statement>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not build XML")
+      return
+    }
+
+    // Test: <block type="statement_statement_input" id="1000" x="-350" y="-32">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("1000", xml.attributes["id"])
+    XCTAssertEqual("-350", xml.attributes["x"])
+    XCTAssertEqual("-32", xml.attributes["y"])
+    XCTAssertEqual("statement_statement_input", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    // Test: <statement name="statement input">
+    if xml.children.count >= 1 {
+      let statementXML = xml.children[0]
+      XCTAssertEqual("statement", statementXML.name)
+      XCTAssertEqual(1, statementXML.attributes.count)
+      XCTAssertEqual("statement input", statementXML.attributes["name"])
+      XCTAssertEqual(2, statementXML.children.count)
+
+      // Test: <block type="statement_no_input" id="2000" />
+      if statementXML.children.count >= 1 {
+        let realXML = statementXML.children[0]
+        XCTAssertEqual("block", realXML.name)
+        XCTAssertEqual(2, realXML.attributes.count)
+        XCTAssertEqual("statement_no_input", realXML.attributes["type"])
+        XCTAssertEqual("2000", realXML.attributes["id"])
+        XCTAssertEqual(0, realXML.children.count)
+      }
+
+      // Test: <shadow type="statement_no_input" id="3000" />
+      if statementXML.children.count >= 2 {
+        let shadowXML = statementXML.children[1]
+        XCTAssertEqual("shadow", shadowXML.name)
+        XCTAssertEqual(2, shadowXML.attributes.count)
+        XCTAssertEqual("statement_no_input", shadowXML.attributes["type"])
+        XCTAssertEqual("3000", shadowXML.attributes["id"])
+        XCTAssertEqual(0, shadowXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithShadowNextStatement() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "364")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(37, 13)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      try block.nextConnection?.connectShadowTo(shadowBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block id="364" x="37" y="13" type="statement_no_input">
+    //   <next>
+    //     <shadow id="VALUE_SHADOW" type="statement_no_next" />
+    //   </next>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    // Test: <block id="364" x="37" y="13" type="statement_no_input">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("364", xml.attributes["id"])
+    XCTAssertEqual("37", xml.attributes["x"])
+    XCTAssertEqual("13", xml.attributes["y"])
+    XCTAssertEqual("statement_no_input", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    if xml.children.count >= 1 {
+      // Test: <next>
+      let nextXML = xml.children[0]
+      XCTAssertEqual("next", nextXML.name)
+      XCTAssertEqual(0, nextXML.attributes.count)
+      XCTAssertEqual(1, nextXML.children.count)
+
+      // Test: <shadow id="VALUE_SHADOW" type="statement_no_next" />
+      if nextXML.children.count >= 1 {
+        let shadowBlockXML = nextXML.children[0]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_SHADOW", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("statement_no_next", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(0, shadowBlockXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithRealAndShadowNextStatements() {
+    guard let block = BKYAssertDoesNotThrow({
+      try self.factory.buildBlock("statement_no_input", uuid: "364")
+    }),
+      let realBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_input_no_next", uuid: "VALUE_REAL")
+      }),
+      let shadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    block.position = WorkspacePointMake(37, 13)
+
+    BKYAssertDoesNotThrow { () -> Void in
+      try block.nextConnection?.connectTo(realBlock.previousConnection)
+      try block.nextConnection?.connectShadowTo(shadowBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block id="364" x="37" y="13" type="statement_no_input">
+    //   <next>
+    //     <block id="VALUE_REAL" type="statement_input_no_next" />
+    //     <shadow id="VALUE_SHADOW" type="statement_no_next" />
+    //   </next>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    // Test: <block id="364" x="37" y="13" type="statement_no_input">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("364", xml.attributes["id"])
+    XCTAssertEqual("37", xml.attributes["x"])
+    XCTAssertEqual("13", xml.attributes["y"])
+    XCTAssertEqual("statement_no_input", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    if xml.children.count >= 1 {
+      // Test: <next>
+      let nextXML = xml.children[0]
+      XCTAssertEqual("next", nextXML.name)
+      XCTAssertEqual(0, nextXML.attributes.count)
+      XCTAssertEqual(2, nextXML.children.count)
+
+      // Test: <block id="VALUE_REAL" type="statement_input_no_next" />
+      if nextXML.children.count >= 1 {
+        let realBlockXML = nextXML.children[0]
+        XCTAssertEqual("block", realBlockXML.name)
+        XCTAssertEqual(2, realBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_REAL", realBlockXML.attributes["id"])
+        XCTAssertEqual("statement_input_no_next", realBlockXML.attributes["type"])
+        XCTAssertEqual(0, realBlockXML.children.count)
+      }
+
+      // Test: <shadow id="VALUE_SHADOW" type="statement_no_next" />
+      if nextXML.children.count >= 2 {
+        let shadowBlockXML = nextXML.children[1]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("VALUE_SHADOW", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("statement_no_next", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(0, shadowBlockXML.children.count)
+      }
+    }
+  }
+
+  func testSerializeXML_BlockWithNestedShadowBlocks() {
+    guard
+      let block = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_multiple_value_input", uuid: "777")
+      }),
+      let parentValueShadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("simple_input_output", uuid: "SHADOW_VALUE1", shadow: true)
+      }),
+      let childValueShadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("output_foo", uuid: "SHADOW_VALUE2", shadow: true)
+      }),
+      let parentNextShadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_input", uuid: "SHADOW_STATEMENT1", shadow: true)
+      }),
+      let childNextShadowBlock = BKYAssertDoesNotThrow({
+        try self.factory.buildBlock("statement_no_next", uuid: "SHADOW_STATEMENT2", shadow: true)
+      }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+
+    block.position = WorkspacePointMake(37, 13)
+
+    // Connect the blocks together
+    BKYAssertDoesNotThrow { () -> Void in
+      try block.firstInputWithName("value_1")?.connection?
+        .connectShadowTo(parentValueShadowBlock.outputConnection)
+      try parentValueShadowBlock.onlyValueInput()?.connection?
+        .connectShadowTo(childValueShadowBlock.outputConnection)
+
+      try block.nextConnection?.connectShadowTo(parentNextShadowBlock.previousConnection)
+      try parentNextShadowBlock.nextConnection?
+        .connectShadowTo(childNextShadowBlock.previousConnection)
+    }
+
+    // This is the xml we expect from `block`:
+    // <block x="37" id="777" y="13" type="statement_multiple_value_input">
+    //   <value name="value_1">
+    //     <shadow id="SHADOW_VALUE1" type="simple_input_output">
+    //       <value name="value">
+    //         <shadow id="SHADOW_VALUE2" type="output_foo" />
+    //       </value>
+    //     </shadow>
+    //   </value>
+    //   <next>
+    //     <shadow id="SHADOW_STATEMENT1" type="statement_no_input">
+    //       <next>
+    //         <shadow id="SHADOW_STATEMENT2" type="statement_no_next" />
+    //       </next>
+    //     </shadow>
+    //   </next>
+    // </block>
+
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    // Test: <block x="37" id="777" y="13" type="statement_multiple_value_input">
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("777", xml.attributes["id"])
+    XCTAssertEqual("37", xml.attributes["x"])
+    XCTAssertEqual("13", xml.attributes["y"])
+    XCTAssertEqual("statement_multiple_value_input", xml.attributes["type"])
+    XCTAssertEqual(2, xml.children.count)
+
+    if xml.children.count >= 1 {
+      // Test: <value name="value_1">
+      let valueXML = xml.children[0]
+      XCTAssertEqual("value", valueXML.name)
+      XCTAssertEqual(1, valueXML.attributes.count)
+      XCTAssertEqual("value_1", valueXML.attributes["name"])
+      XCTAssertEqual(1, valueXML.children.count)
+
+      // Test: <shadow id="SHADOW_VALUE1" type="simple_input_output">
+      if valueXML.children.count >= 2 {
+        let shadowBlockXML = valueXML.children[1]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("SHADOW_VALUE1", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("simple_input_output", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(1, shadowBlockXML.children.count)
+
+        // Test: <value name="value">
+        if shadowBlockXML.children.count >= 1 {
+          let childValueXML = shadowBlockXML.children[0]
+          XCTAssertEqual("value", childValueXML.name)
+          XCTAssertEqual(1, childValueXML.attributes.count)
+          XCTAssertEqual("value", childValueXML.attributes["name"])
+          XCTAssertEqual(1, childValueXML.children.count)
+
+          // Test: <shadow id="SHADOW_VALUE2" type="output_foo" />
+          if childValueXML.children.count >= 2 {
+            let childShadowBlockXML = childValueXML.children[1]
+            XCTAssertEqual("shadow", childShadowBlockXML.name)
+            XCTAssertEqual(2, childShadowBlockXML.attributes.count)
+            XCTAssertEqual("SHADOW_VALUE2", childShadowBlockXML.attributes["id"])
+            XCTAssertEqual("output_foo", childShadowBlockXML.attributes["type"])
+            XCTAssertEqual(0, childShadowBlockXML.children.count)
+          }
+        }
+      }
+    }
+
+    if xml.children.count >= 2 {
+      // Test: <next>
+      let nextXML = xml.children[1]
+      XCTAssertEqual("next", nextXML.name)
+      XCTAssertEqual(0, nextXML.attributes.count)
+      XCTAssertEqual(1, nextXML.children.count)
+
+      // Test: <shadow id="SHADOW_STATEMENT1" type="statement_no_input">
+      if nextXML.children.count >= 1 {
+        let shadowBlockXML = nextXML.children[0]
+        XCTAssertEqual("shadow", shadowBlockXML.name)
+        XCTAssertEqual(2, shadowBlockXML.attributes.count)
+        XCTAssertEqual("SHADOW_STATEMENT1", shadowBlockXML.attributes["id"])
+        XCTAssertEqual("statement_no_input", shadowBlockXML.attributes["type"])
+        XCTAssertEqual(1, shadowBlockXML.children.count)
+
+        // Test: <next>
+        if shadowBlockXML.children.count >= 1 {
+          let childNextXML = shadowBlockXML.children[0]
+          XCTAssertEqual("next", childNextXML.name)
+          XCTAssertEqual(0, childNextXML.attributes.count)
+          XCTAssertEqual(1, childNextXML.children.count)
+
+          // Test: <shadow id="SHADOW_STATEMENT2" type="statement_no_next" />
+          if childNextXML.children.count >= 2 {
+            let childShadowBlockXML = childNextXML.children[1]
+            XCTAssertEqual("shadow", childShadowBlockXML.name)
+            XCTAssertEqual(2, childShadowBlockXML.attributes.count)
+            XCTAssertEqual("SHADOW_STATEMENT2", childShadowBlockXML.attributes["id"])
+            XCTAssertEqual("statement_no_next", childShadowBlockXML.attributes["type"])
+            XCTAssertEqual(0, childShadowBlockXML.children.count)
+          }
+        }
+      }
     }
   }
 

@@ -30,17 +30,17 @@ extension Input {
    */
   public func toXML() throws -> [AEXMLElement] {
     var xmlElements: [AEXMLElement]
-    switch self.type {
+    switch type {
     case InputType.Dummy:
       xmlElements = []
     case InputType.Value:
-      xmlElements = try toXMLWithName("value")
+      xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_VALUE)
     case InputType.Statement:
-      xmlElements = try toXMLWithName("statement")
+      xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_STATEMENT)
     }
 
     // Create xml elements for each field
-    for field in self.fields {
+    for field in fields {
       if let fieldXML = try field.toXML() {
         xmlElements.append(fieldXML)
       }
@@ -52,7 +52,7 @@ extension Input {
   // MARK: - Private
 
   private func toXMLWithName(elementName: String) throws -> [AEXMLElement] {
-    guard let connectedBlock = self.connectedBlock else {
+    guard connectedBlock != nil || connectedShadowBlock != nil else {
       // No block connected, don't include any xml for this input
       return []
     }
@@ -60,8 +60,14 @@ extension Input {
     var xmlElements = [AEXMLElement]()
 
     // Create xml element for the input
-    let xml = AEXMLElement(elementName, value: nil, attributes: ["name": self.name])
-    xml.addChild(try connectedBlock.toXML())
+    let xml = AEXMLElement(
+      elementName, value: nil, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
+    if let connectedBlock = connectedBlock {
+      xml.addChild(try connectedBlock.toXML())
+    }
+    if let connectedShadowBlock = connectedShadowBlock {
+      xml.addChild(try connectedShadowBlock.toXML())
+    }
     xmlElements.append(xml)
 
     return xmlElements

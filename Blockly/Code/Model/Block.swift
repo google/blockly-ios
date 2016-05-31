@@ -375,11 +375,26 @@ public final class Block : NSObject {
    `BlocklyError`: Occurs if the connection cannot be made.
    */
   public func connectToSuperiorConnection(superior: Connection) throws {
-    if superior.type == .InputValue {
-      try superior.connectTo(self.outputConnection)
-    } else if superior.type == .NextStatement {
-      try superior.connectTo(self.previousConnection)
+    if let inferior = inferiorConnectionFromSuperior(superior) {
+      try superior.connectTo(inferior)
     }
+  }
+
+  /**
+   Returns the corresponding inferior connection (`self.outputConnection` or
+   `self.previousConnection`) to a given superior connection (`.InputValue` or `.NextStatement`).
+
+   - Parameter superior: A superior connection of type `.InputValue` or `.NextStatement`. If the
+   connection type is neither value, this method returns `nil`.
+   - Returns: The inferior connection on this block, or `nil` if none could be found.
+   */
+  public func inferiorConnectionFromSuperior(superior: Connection) -> Connection? {
+    if superior.type == .InputValue {
+      return outputConnection
+    } else if superior.type == .NextStatement {
+      return previousConnection
+    }
+    return nil
   }
 
   // MARK: - Internal - For testing only
