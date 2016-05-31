@@ -60,8 +60,43 @@ extension XCTestCase {
    - Returns: The return value of the expression or `nil` if the expression could not be evaluated.
    */
   func BKYAssertDoesNotThrow<T>(
-    message: String? = nil, file: String = #file, line: UInt = #line, expression: () throws -> T?)
-    -> T?
+    message: String? = nil, _ file: String = #file, _ line: UInt = #line,
+    _ expression: () throws -> T?) -> T?
+  {
+    do {
+      return try expression()
+    } catch {
+      recordFailureWithDescription(
+        bky_failureDescription("Expression threw an error", message), inFile: file, atLine: line,
+        expected: true)
+    }
+    return nil
+  }
+
+  /**
+   Assertion for testing that an expression does not throw an error.
+
+   If the assertion passes, the result of the evaluated expression is returned.
+   If not, `nil` is returned.
+
+   Usage:
+   ```
+   if let variable = BKYAssertDoesNotThrow({ try SomeObject() }) {
+   }
+   ```
+
+   - Parameter expression: The throwable expression
+   - Parameter message: [Optional] The message to display if the assertion fails.
+   - Parameter file: [Optional] The file where the expression is being called.
+   - Parameter line: [Optional] The line in the `file` where the expression is being called.
+   - Returns: The return value of the expression or `nil` if the expression could not be evaluated.
+   - Note: This version of `BKYAssertDoesNotThrow` was created primarily for use in
+   `if let` or `guard let` assignments. It is functionally equivalent to the other version of
+   `BKYAssertDoesNotThrow`.
+   */
+  func BKYAssertDoesNotThrow<T>(
+    expression: () throws -> T?, _ message: String? = nil, _ file: String = #file,
+    _ line: UInt = #line) -> T?
   {
     do {
       return try expression()

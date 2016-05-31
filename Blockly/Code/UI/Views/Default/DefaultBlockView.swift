@@ -24,6 +24,15 @@ public class DefaultBlockView: BlockView {
     return self.layout as? DefaultBlockLayout
   }
 
+  /// Saturation multiplier to use when calculating the shadow block fill/stroke colours
+  public var shadowSaturationMultiplier = CGFloat(0.4)
+  /// Brightness multiplier to use when calculating the shadow block fill/stroke colours
+  public var shadowBrightnessMultiplier = CGFloat(1.2)
+  /// Block background fill alpha to use when the block is being dragged
+  public var draggingBackgroundFillAlpha = CGFloat(0.8)
+  /// Block background stroke alpha to use when the block is being dragged
+  public var draggingBackgroundBackgroundAlpha = CGFloat(0.7)
+
   /// Layer for rendering the block's background
   private let _backgroundLayer = BezierPathLayer()
 
@@ -67,16 +76,22 @@ public class DefaultBlockView: BlockView {
         BlockLayout.Flag_UpdateDragging])
     {
       // Update background
-      let strokeColor = (layout.highlighted ?
+      var strokeColor = (layout.highlighted ?
         layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
         layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
         UIColor.clearColor()
+      var fillColor = layout.block.color
+
+      if layout.block.shadow {
+        strokeColor = shadowColorForColor(strokeColor)
+        fillColor = shadowColorForColor(fillColor)
+      }
+
       _backgroundLayer.strokeColor = layout.dragging ?
         strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
-      let fillColor = layout.block.color
       _backgroundLayer.fillColor = layout.dragging ?
         fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()
@@ -338,4 +353,11 @@ public class DefaultBlockView: BlockView {
     path.applyTransform(transform)
   }
 
+  private func shadowColorForColor(color: UIColor) -> UIColor {
+    var hsba = color.bky_hsba()
+    hsba.saturation *= shadowSaturationMultiplier
+    hsba.brightness = max(hsba.brightness * shadowBrightnessMultiplier, 1)
+    return UIColor(
+      hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)
+  }
 }

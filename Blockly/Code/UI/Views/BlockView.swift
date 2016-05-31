@@ -143,6 +143,10 @@ public class BlockView: LayoutView {
       self.zIndex = layout.zIndex
     }
 
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {
+      self.hidden = !layout.visible
+    }
+
     CATransaction.commit()
 
     // Re-enable layer animations for any future changes

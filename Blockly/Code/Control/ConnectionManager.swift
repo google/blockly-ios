@@ -173,8 +173,8 @@ public final class ConnectionManager: NSObject {
   }
 
   /**
-  Finds all compatible connections within the given radius, that are not currently being dragged.
-  This function is used for bumping so type checking does not apply.
+  Finds all compatible connections (including shadow connections) within the given radius, that are
+  not currently being dragged. This function is used for bumping so type checking does not apply.
 
   - Parameter connection: The base connection for the search.
   - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
@@ -243,29 +243,36 @@ public final class ConnectionManager: NSObject {
   - Parameter candidate: A nearby connection to check. Must be in the `ConnectionManager`, and
   therefore not be mid-drag.
   - Parameter maxRadius: The maximum radius allowed for connections.
+  - Parameter allowShadows: Flag determining if shadows are allowed to be connected (`true`) or
+  not (`false`).
   - Returns: True if the connection is allowed, false otherwise.
   */
   internal static func canConnect(
-    moving: Connection, toConnection candidate: Connection, maxRadius: CGFloat) -> Bool {
-      if moving.distanceFromConnection(candidate) > maxRadius {
+    moving: Connection, toConnection candidate: Connection, maxRadius: CGFloat,
+    allowShadows: Bool) -> Bool
+  {
+    if moving.distanceFromConnection(candidate) > maxRadius {
+      return false
+    }
+
+    // Type checking
+    let canConnect = moving.canConnectWithReasonTo(candidate)
+    guard canConnect.intersectsWith(.CanConnect) ||
+      canConnect.intersectsWith(.ReasonMustDisconnect) ||
+      (allowShadows && canConnect.intersectsWith(.ReasonCannotSetShadowForTarget)) else
+    {
+      return false
+    }
+
+    // Don't offer to connect an already connected left (male) value plug to
+    // an available right (female) value plug.  Don't offer to connect the
+    // bottom of a statement block to one that's already connected.
+    if candidate.connected &&
+      (candidate.type == .OutputValue || candidate.type == .PreviousStatement) {
         return false
-      }
+    }
 
-      // Type checking
-      let canConnect = moving.canConnectWithReasonTo(candidate)
-      if canConnect != .CanConnect && canConnect != .ReasonMustDisconnect {
-        return false
-      }
-
-      // Don't offer to connect an already connected left (male) value plug to
-      // an available right (female) value plug.  Don't offer to connect the
-      // bottom of a statement block to one that's already connected.
-      if candidate.connected &&
-        (candidate.type == .OutputValue || candidate.type == .PreviousStatement) {
-          return false
-      }
-
-      return true
+    return true
   }
 }
 
@@ -338,8 +345,8 @@ extension ConnectionManager {
     }
 
     /**
-    Find all compatible connections within the given radius.  This function is used for
-    bumping so type checking does not apply.
+    Find all compatible connections (including shadow connections) within the given radius. 
+    This function is used for bumping so type checking does not apply.
 
     - Parameter connection: The base connection for the search.
     - Parameter maxRadius: How far out to search for compatible connections.
@@ -583,7 +590,9 @@ extension ConnectionManager {
         var pointerMin = closestIndex - 1
         while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
-          if ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: bestRadius) {
+          if ConnectionManager.canConnect(
+            connection, toConnection: temp, maxRadius: bestRadius, allowShadows: false)
+          {
             bestConnection = temp
             bestRadius = temp.distanceFromConnection(connection)
           }
@@ -594,7 +603,9 @@ extension ConnectionManager {
         while (pointerMax < _connections.count &&
           isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
-            if ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: bestRadius) {
+            if ConnectionManager.canConnect(
+              connection, toConnection: temp, maxRadius: bestRadius, allowShadows: false)
+            {
               bestConnection = temp
               bestRadius = temp.distanceFromConnection(connection)
             }
@@ -624,8 +635,10 @@ extension ConnectionManager {
         while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
           if ((!connection.connected || !temp.connected) &&
-            ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: maxRadius)) {
-              neighbours.append(temp)
+            ConnectionManager.canConnect(
+              connection, toConnection: temp, maxRadius: maxRadius, allowShadows: true))
+          {
+            neighbours.append(temp)
           }
           pointerMin -= 1
         }
@@ -635,8 +648,10 @@ extension ConnectionManager {
           isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
             if ((!connection.connected || !temp.connected) &&
-              ConnectionManager.canConnect(connection, toConnection: temp, maxRadius: maxRadius)) {
-                neighbours.append(temp)
+              ConnectionManager.canConnect(
+                connection, toConnection: temp, maxRadius: maxRadius, allowShadows: true))
+            {
+              neighbours.append(temp)
             }
             pointerMax += 1
         }

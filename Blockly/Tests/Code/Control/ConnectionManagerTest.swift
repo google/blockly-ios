@@ -91,24 +91,29 @@ class ConnectionManagerTest: XCTestCase {
     let one = createConnection(5 /* x */, 10 /* y */, .InputValue)
     let two = createConnection(10 /* x */, 15 /* y */, .OutputValue)
 
-    XCTAssertTrue(ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0))
+    XCTAssertTrue(
+      ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0, allowShadows: true))
     // Move connections farther apart
     two.moveToPosition(WorkspacePointMake(100, 100))
-    XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0))
+    XCTAssertFalse(
+      ConnectionManager.canConnect(one, toConnection: two, maxRadius: 20.0, allowShadows: true))
 
     // Don't offer to connect an already connected left (male) value plug to
     // an available right (female) value plug.
     let three = createConnection(0, 0, .OutputValue)
-    XCTAssertTrue(ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0))
+    XCTAssertTrue(
+      ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0, allowShadows: true))
     let four = createConnection(0, 0, .InputValue)
     if (try? three.connectTo(four)) == nil {
       XCTFail("Could not connect connections 3 and 4")
     }
-    XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0))
+    XCTAssertFalse(
+      ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0, allowShadows: true))
 
     // Don't connect two connections on the same block
     two.sourceBlock = one.sourceBlock
-    XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: two, maxRadius: 1000.0))
+    XCTAssertFalse(
+      ConnectionManager.canConnect(one, toConnection: two, maxRadius: 1000.0, allowShadows: true))
   }
 
   func testConnectionManagerIsConnectionAllowedNext() {
@@ -119,11 +124,13 @@ class ConnectionManagerTest: XCTestCase {
 
     // Don't offer to connect the bottom of a statement block to one that's already connected.
     let three = createConnection(0, 0, .PreviousStatement)
-    XCTAssertTrue(ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0))
+    XCTAssertTrue(
+      ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0, allowShadows: true))
     if (try? three.connectTo(two)) == nil {
       XCTFail("Could not connect connections 3 and 4")
     }
-    XCTAssertFalse(ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0))
+    XCTAssertFalse(
+      ConnectionManager.canConnect(one, toConnection: three, maxRadius: 20.0, allowShadows: true))
   }
 
   // MARK: - ConnectionManager.Group Tests

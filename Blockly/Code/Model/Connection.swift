@@ -29,7 +29,7 @@ public protocol ConnectionHighlightDelegate {
 }
 
 /**
- Delegate for events that modify the `targetConnection` of a `Connection`.
+ Delegate for events that modify the `targetConnection` or `shadowConnection` of a `Connection`.
  */
 @objc(BKYConnectionTargetDelegate)
 public protocol ConnectionTargetDelegate {
@@ -37,8 +37,17 @@ public protocol ConnectionTargetDelegate {
    Event that is called when the target connection has changed for a given connection.
 
    - Parameter connection: The connection whose `targetConnection` value has changed.
+   - Parameter oldTarget: The previous value of `targetConnection`.
    */
-  func didChangeTargetForConnection(connection: Connection)
+  func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
+
+  /**
+   Event that is called when the shadow connection has changed for a given connection.
+
+   - Parameter connection: The connection whose `shadowConnection` value has changed.
+   - Parameter oldShadow: The previous value of `shadowConnection`.
+   */
+  func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
 }
 
 /**
@@ -84,13 +93,79 @@ public final class Connection : NSObject {
 
   // MARK: - Enum - CheckResultType
 
-  /// Represents result codes when trying to connect two connections
-  @objc
-  public enum BKYCheckResultType: Int {
-    case CanConnect = 0, ReasonSelfConnection, ReasonWrongType, ReasonMustDisconnect,
-    ReasonTargetNull, ReasonChecksFailed
+  /// Represents a combination of result codes when trying to connect two connections
+  public struct CheckResult: OptionSetType {
+    internal static let CanConnect = CheckResult(value: .CanConnect)
+    internal static let ReasonSelfConnection = CheckResult(value: .ReasonSelfConnection)
+    internal static let ReasonWrongType = CheckResult(value: .ReasonWrongType)
+    internal static let ReasonMustDisconnect = CheckResult(value: .ReasonMustDisconnect)
+    internal static let ReasonTargetNull = CheckResult(value: .ReasonTargetNull)
+    internal static let ReasonShadowNull = CheckResult(value: .ReasonShadowNull)
+    internal static let ReasonChecksFailed = CheckResult(value: .ReasonChecksFailed)
+    internal static let ReasonCannotSetShadowForTarget =
+      CheckResult(value: .ReasonCannotSetShadowForTarget)
+    internal static let ReasonInferiorBlockShadowMismatch =
+      CheckResult(value: .ReasonInferiorBlockShadowMismatch)
+
+    /// Specific reasons why two connections are able or unable connect
+    public enum Value: Int {
+      case CanConnect = 1, ReasonSelfConnection, ReasonWrongType, ReasonMustDisconnect,
+      ReasonTargetNull, ReasonShadowNull, ReasonChecksFailed, ReasonCannotSetShadowForTarget,
+      ReasonInferiorBlockShadowMismatch
+
+      func errorMessage() -> String? {
+        switch (self) {
+        case .ReasonSelfConnection:
+          return "Cannot connect a block to itself."
+        case .ReasonWrongType:
+          return "Cannot connect these types."
+        case .ReasonMustDisconnect:
+          return "Must disconnect from current block before connecting to a new one."
+        case .ReasonTargetNull, .ReasonShadowNull:
+          return "Cannot connect to a null connection"
+        case .ReasonChecksFailed:
+          return "Cannot connect, checks do not match."
+        case .ReasonCannotSetShadowForTarget:
+          return "Cannot set `self.targetConnection` when the source or target block is a shadow."
+        case .ReasonInferiorBlockShadowMismatch:
+          return "Cannot connect a non-shadow block to a shadow block when the non-shadow block " +
+           "connection is of type `.OutputValue` or `.PreviousStatement`."
+        case .CanConnect:
+          // Connection can be made, no error message
+          return nil
+        }
+      }
+    }
+
+    public let rawValue : Int
+    public init(rawValue: Int) {
+      self.rawValue = rawValue
+    }
+    public init(value: Value) {
+      self.init(rawValue: 1 << value.rawValue)
+    }
+
+    public func intersectsWith(other: CheckResult) -> Bool {
+      return intersect(other).rawValue != 0
+    }
+
+    func errorMessage() -> String? {
+      guard !intersectsWith(.CanConnect) else {
+        return nil
+      }
+
+      var errorMessage = ""
+      var i = 1
+      while let validValue = Value(rawValue: i) {
+        if intersectsWith(CheckResult(value: validValue)) {
+          errorMessage += "\(validValue.errorMessage())\n"
+        }
+        i += 1
+      }
+
+      return errorMessage
+    }
   }
-  public typealias CheckResultType = BKYCheckResultType
 
   // MARK: - Properties
 
@@ -110,13 +185,23 @@ public final class Connection : NSObject {
   public private(set) var position: WorkspacePoint = WorkspacePointZero
   /// The connection that this one is connected to
   public private(set) weak var targetConnection: Connection?
-  /// The source block of the `targetConnection`
+  /// The shadow connection that this one is connected to
+  public private(set) weak var shadowConnection: Connection?
+  /// The source block of `self.targetConnection`
   public var targetBlock: Block? {
     return targetConnection?.sourceBlock
   }
-  /// True if the target connection is non-null, false otherwise.
+  /// The source block of `self.shadowConnection`
+  public var shadowBlock: Block? {
+    return shadowConnection?.sourceBlock
+  }
+  /// `true` if `self.targetConnection` is non-nil. `false` otherwise.
   public var connected: Bool {
     return targetConnection != nil
+  }
+  /// `true` if `self.shadowConnection` is non-nil. `false` otherwise.
+  public var shadowConnected: Bool {
+    return shadowConnection != nil
   }
   /**
   The set of checks for this connection. Two Connections may be connected if one of them
@@ -126,9 +211,16 @@ public final class Connection : NSObject {
   */
   public var typeChecks: [String]? {
     didSet {
-      if targetConnection != nil && !typeChecksMatchWithConnection(targetConnection!) {
-        // The new value type is not compatible with the existing connection. Disconnect it.
+      // Disconnect connections that aren't compatible with the new `typeChecks` value.
+      if let targetConnection = self.targetConnection
+        where !typeChecksMatchWithConnection(targetConnection)
+      {
         disconnect()
+      }
+      if let shadowConnection = self.shadowConnection
+        where !typeChecksMatchWithConnection(shadowConnection)
+      {
+        disconnectShadow()
       }
     }
   }
@@ -164,62 +256,107 @@ public final class Connection : NSObject {
   }
 
   /**
-  Connect this to another connection.
+  Sets `self.targetConnection` to a given connection, and vice-versa.
 
   - Parameter connection: The other connection
   - Throws:
-  `BlocklyError`: Thrown if the connection could not be made, with error code .ConnectionInvalid
+  `BlocklyError`: Thrown if the connection could not be made, with error code `.ConnectionInvalid`
   */
   public func connectTo(connection: Connection?) throws {
-    if connection != nil && connection == targetConnection {
+    if let newConnection = connection
+      where newConnection == targetConnection
+    {
       // Already connected
       return
     }
 
-    switch canConnectWithReasonTo(connection) {
-    case .ReasonSelfConnection:
-      throw BlocklyError(.ConnectionInvalid, "Cannot connect a block to itself.")
-    case .ReasonWrongType:
-      throw BlocklyError(.ConnectionInvalid, "Cannot connect these types.")
-    case .ReasonMustDisconnect:
-      throw BlocklyError(.ConnectionInvalid,
-        "Must disconnect from current block before connecting to a new one.")
-    case .ReasonTargetNull:
-      throw BlocklyError(.ConnectionInvalid, "Cannot connect to a null connection")
-    case .ReasonChecksFailed:
-      throw BlocklyError(.ConnectionInvalid, "Cannot connect, checks do not match.")
-    case .CanConnect:
-      // Connection can be made, continue.
-      break
+    if let errorMessage = canConnectWithReasonTo(connection).errorMessage() {
+      throw BlocklyError(.ConnectionInvalid, errorMessage)
     }
 
-    if let newTargetConnection = connection {
-      // Set targetConnections for both sides before sending out delegate event
-      self.targetConnection = newTargetConnection
-      newTargetConnection.targetConnection = self
+    if let newConnection = connection {
+      // Set targetConnection for both sides before sending out delegate events
+      let oldTarget1 = targetConnection
+      let oldTarget2 = newConnection.targetConnection
+      targetConnection = newConnection
+      newConnection.targetConnection = self
 
       // Send delegate events
-      targetDelegate?.didChangeTargetForConnection(self)
-      newTargetConnection.targetDelegate?.didChangeTargetForConnection(newTargetConnection)
+      targetDelegate?.didChangeTarget(forConnection: self, oldTarget: oldTarget1)
+      newConnection.targetDelegate?
+        .didChangeTarget(forConnection: newConnection, oldTarget: oldTarget2)
     }
   }
 
   /**
-  Removes the connection between this and the Connection this is connected to. If this is not
-  connected disconnect() does nothing.
-  */
+   Sets `self.shadowConnection` to a given connection, and vice-versa.
+
+   - Parameter connection: The other connection
+   - Throws:
+   `BlocklyError`: Thrown if the connection could not be made, with error code `.ConnectionInvalid`
+   */
+  public func connectShadowTo(connection: Connection?) throws {
+    if let newConnection = connection
+      where newConnection == shadowConnection
+    {
+      // Already connected
+      return
+    }
+
+    if let errorMessage = canConnectShadowWithReasonTo(connection).errorMessage() {
+      throw BlocklyError(.ConnectionInvalid, errorMessage)
+    }
+
+    if let newConnection = connection {
+      // Set shadowConnection for both sides before sending out delegate events
+      let oldShadow1 = shadowConnection
+      let oldShadow2 = newConnection.shadowConnection
+      shadowConnection = newConnection
+      newConnection.shadowConnection = self
+
+      // Send delegate events
+      targetDelegate?.didChangeShadow(forConnection: self, oldShadow: oldShadow1)
+      newConnection.targetDelegate?
+        .didChangeShadow(forConnection: newConnection, oldShadow: oldShadow2)
+    }
+  }
+
+  /**
+   Removes the connection between this and `self.targetConnection`. If `self.targetConnection` is
+   `nil`, this method does nothing.
+   */
   public func disconnect() {
     guard let oldTargetConnection = targetConnection else {
       return
     }
 
-    // Set targetConnections for both sides before sending out delegate event
-    self.targetConnection = nil
+    // Set targetConnection for both sides before sending out delegate events
+    targetConnection = nil
     oldTargetConnection.targetConnection = nil
 
     // Send delegate events
-    targetDelegate?.didChangeTargetForConnection(self)
-    oldTargetConnection.targetDelegate?.didChangeTargetForConnection(oldTargetConnection)
+    targetDelegate?.didChangeTarget(forConnection: self, oldTarget: oldTargetConnection)
+    oldTargetConnection.targetDelegate?
+      .didChangeTarget(forConnection: oldTargetConnection, oldTarget: self)
+  }
+
+  /**
+   Removes the connection between this and `self.shadowConnection`. If `self.shadowConnection` is
+   `nil`, this method does nothing.
+   */
+  public func disconnectShadow() {
+    guard let oldShadowConnection = shadowConnection else {
+      return
+    }
+
+    // Set shadowConnection for both sides before sending out delegate events
+    shadowConnection = nil
+    oldShadowConnection.shadowConnection = nil
+
+    // Send delegate events
+    targetDelegate?.didChangeShadow(forConnection: self, oldShadow: oldShadowConnection)
+    oldShadowConnection.targetDelegate?
+      .didChangeShadow(forConnection: oldShadowConnection, oldShadow: self)
   }
 
   /**
@@ -233,28 +370,86 @@ public final class Connection : NSObject {
   }
 
   /**
-  Check if this can be connected to the target connection, with a specific reason.
+  Check if a given connection can be connected to the target connection, with a specific set of
+  reasons.
 
   - Parameter target: The `Connection` to check compatibility with.
-  - Returns: CheckResultType.CanConnect if the connection is legal, an error code otherwise.
+  - Returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
+  a set of all error codes are returned.
   */
-  public func canConnectWithReasonTo(target: Connection?) -> CheckResultType {
-    guard let aTarget = target else {
-      return .ReasonTargetNull
+  public func canConnectWithReasonTo(target: Connection?) -> CheckResult {
+    var checkResult = CheckResult(rawValue: 0)
+
+    if let aTarget = target {
+      if aTarget.sourceBlock == sourceBlock {
+        checkResult.unionInPlace(.ReasonSelfConnection)
+      }
+      if aTarget.type != Connection.OPPOSITE_TYPES[type.rawValue] {
+        checkResult.unionInPlace(.ReasonWrongType)
+      }
+      if aTarget.sourceBlock.shadow {
+        checkResult.unionInPlace(.ReasonCannotSetShadowForTarget)
+      }
+      if !typeChecksMatchWithConnection(aTarget) {
+        checkResult.unionInPlace(.ReasonChecksFailed)
+      }
+    } else {
+      checkResult.unionInPlace(.ReasonTargetNull)
     }
-    if aTarget.sourceBlock == self.sourceBlock {
-      return .ReasonSelfConnection
+    if targetConnection != nil {
+      checkResult.unionInPlace(.ReasonMustDisconnect)
     }
-    if aTarget.type != Connection.OPPOSITE_TYPES[self.type.rawValue] {
-      return .ReasonWrongType
+    if sourceBlock.shadow {
+      checkResult.unionInPlace(.ReasonCannotSetShadowForTarget)
     }
-    if self.targetConnection != nil {
-      return .ReasonMustDisconnect
+
+    if checkResult.rawValue == 0 {
+      // All checks passed! Set it to .CanConnect
+      checkResult.unionInPlace(.CanConnect)
     }
-    if !typeChecksMatchWithConnection(aTarget) {
-      return .ReasonChecksFailed
+
+    return checkResult
+  }
+
+  /**
+   Check if a given connection can be connected to the shadow connection, with a specific set of
+   reasons.
+
+   - Parameter shadow: The `Connection` to check compatibility with.
+   - Returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
+   a set of all error codes are returned.
+   */
+  public func canConnectShadowWithReasonTo(shadow: Connection?) -> CheckResult {
+    var checkResult = CheckResult(rawValue: 0)
+
+    if let aShadow = shadow {
+      if sourceBlock == aShadow.sourceBlock {
+        checkResult.unionInPlace(.ReasonSelfConnection)
+      }
+      if aShadow.type != Connection.OPPOSITE_TYPES[type.rawValue] {
+        checkResult.unionInPlace(.ReasonWrongType)
+      }
+      let isInferiorBlock = (type == .OutputValue || type == .PreviousStatement)
+      let inferiorBlock = isInferiorBlock ? sourceBlock : aShadow.sourceBlock
+      if !inferiorBlock.shadow {
+        checkResult.unionInPlace(.ReasonInferiorBlockShadowMismatch)
+      }
+      if !typeChecksMatchWithConnection(aShadow) {
+        checkResult.unionInPlace(.ReasonChecksFailed)
+      }
+    } else {
+      checkResult.unionInPlace(.ReasonShadowNull)
     }
-    return .CanConnect
+    if shadowConnection != nil {
+      checkResult.unionInPlace(.ReasonMustDisconnect)
+    }
+
+    if checkResult.rawValue == 0 {
+      // All checks passed! Set it to .CanConnect
+      checkResult.unionInPlace(.CanConnect)
+    }
+
+    return checkResult
   }
 
   /**

@@ -59,9 +59,23 @@ public class BlockGroupLayout: Layout {
         return
       }
 
-      // Update dragged property for all of its block children
+      // Update dragging property for all of its block children
       for blockLayout in self.blockLayouts {
         blockLayout.dragging = dragging
+      }
+    }
+  }
+
+  /// Flag indicating if this block group should be visible
+  public var visible: Bool = true {
+    didSet {
+      if visible == oldValue {
+        return
+      }
+
+      // Update visible property for all of its block children
+      for blockLayout in self.blockLayouts {
+        blockLayout.visible = visible
       }
     }
   }
