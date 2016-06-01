@@ -31,6 +31,18 @@ public class Dragger: NSObject {
 
   // MARK: - Properties
 
+  /// The workspace layout where blocks are being dragged
+  public var workspaceLayout: WorkspaceLayout? {
+    didSet {
+      if workspaceLayout == oldValue {
+        return
+      }
+
+      // Reset all gesture data and update the block bumper with the new workspace layout
+      _dragGestureData.keys.forEach { clearGestureData(forUUID: $0) }
+      _blockBumper.workspaceLayout = workspaceLayout
+    }
+  }
   /// Stores the data for each active drag gesture, keyed by the corresponding block view's layout
   /// uuid
   private var _dragGestureData = [String: DragGestureData]()
@@ -61,11 +73,11 @@ public class Dragger: NSObject {
     layout.rootBlockGroupLayout?.dragging = true
 
     // Bring its block group layout to the front
-    layout.workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+    workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
 
     // Start a new connection group for this block group layout
     if let newConnectionGroup =
-      layout.workspaceLayout?.connectionManager.startGroupForBlock(block)
+      workspaceLayout?.connectionManager.startGroupForBlock(block)
     {
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
@@ -142,7 +154,7 @@ public class Dragger: NSObject {
 
     // Update the workspace canvas size since it may have changed (this was purposely skipped
     // during the drag for performance reasons, so we have to update it now)
-    layout.workspaceLayout?.updateCanvasSize()
+    workspaceLayout?.updateCanvasSize()
   }
 
   /**
@@ -154,20 +166,35 @@ public class Dragger: NSObject {
   nil, the connection manager's `mainGroup` is used.
   */
   public func clearGestureDataForBlockLayout(
-    layout: BlockLayout, moveConnectionsToGroup group: ConnectionManager.Group? = nil) {
-      guard let gestureData = _dragGestureData[layout.uuid] else {
-        return
-      }
-
-      // Move connections to a different group in the connection manager
-      layout.workspaceLayout?.connectionManager
-        .mergeGroup(gestureData.connectionGroup, intoGroup: group)
-
-      removeHighlightedConnectionForDrag(gestureData)
-      _dragGestureData[layout.uuid] = nil
+    layout: BlockLayout, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
+  {
+    clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: group)
   }
 
   // MARK: - Private
+
+  /**
+   Clears the drag data for a block layout's UUID, removes any highlights, and moves connections
+   that were being tracked by the drag to a new group.
+
+   - Parameter uuid: The given block layout's UUID
+   - Parameter connectionGroup: The new connection group to move the connections to. If this is
+   nil, the connection manager's `mainGroup` is used.
+   */
+  private func clearGestureData(
+    forUUID uuid: String, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
+  {
+    guard let gestureData = _dragGestureData[uuid] else {
+      return
+    }
+
+    // Move connections to a different group in the connection manager
+    workspaceLayout?.connectionManager
+      .mergeGroup(gestureData.connectionGroup, intoGroup: group)
+
+    removeHighlightedConnectionForDrag(gestureData)
+    _dragGestureData[uuid] = nil
+  }
 
   /**
   Connects a pair of connections, disconnecting and possibly reattaching any existing connections,
@@ -209,7 +236,7 @@ public class Dragger: NSObject {
     try superior.connectTo(inferior)
 
     // Bring the entire block group layout to the front
-    if let workspaceLayout = superior.sourceBlock?.layout?.workspaceLayout,
+    if let workspaceLayout = self.workspaceLayout,
       let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
     {
       workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
@@ -251,7 +278,7 @@ public class Dragger: NSObject {
     try superior.connectTo(inferior)
 
     // Bring the entire block group layout to the front
-    if let workspaceLayout = superior.sourceBlock?.layout?.workspaceLayout,
+    if let workspaceLayout = self.workspaceLayout,
       let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
     {
       workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
@@ -309,7 +336,7 @@ public class Dragger: NSObject {
   private func findBestConnectionForDrag(drag: DragGestureData)
     -> ConnectionManager.ConnectionPair?
   {
-    if let workspaceLayout = drag.blockLayout?.workspaceLayout {
+    if let workspaceLayout = self.workspaceLayout {
       let maxRadius = workspaceLayout.engine.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
 
       return workspaceLayout.connectionManager.findBestConnectionForGroup(drag.connectionGroup,

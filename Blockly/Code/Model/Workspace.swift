@@ -82,7 +82,15 @@ public class Workspace : NSObject {
   public private(set) var allBlocks = [String: Block]()
 
   /// Flag indicating if this workspace is set to read-only
-  public var readOnly: Bool = false
+  public var readOnly: Bool = false {
+    didSet {
+      if readOnly == oldValue {
+        return
+      }
+
+      allBlocks.values.forEach { $0.editable = !self.readOnly }
+    }
+  }
 
   /// The delegate for events that occur in this workspace
   public weak var delegate: WorkspaceDelegate?
@@ -154,8 +162,8 @@ public class Workspace : NSObject {
           .IllegalState, "Shadow block cannot be added to the workspace as a top-level block.")
       }
 
+      block.editable = !readOnly
       allBlocks[block.uuid] = block
-      block.sourceWorkspace = self
       delegate?.workspace(self, didAddBlock: block)
 
       addNameManager(variableNameManager, toBlock: block)
@@ -179,7 +187,6 @@ public class Workspace : NSObject {
         delegate?.workspace(self, willRemoveBlock: block)
         removeNameManagerFromBlock(block)
         allBlocks[block.uuid] = nil
-        block.sourceWorkspace = nil
       }
     }
   }

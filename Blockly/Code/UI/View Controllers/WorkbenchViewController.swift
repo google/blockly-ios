@@ -132,7 +132,11 @@ public class WorkbenchViewController: UIViewController {
     return _toolboxLayout?.toolbox
   }
   /// The underlying workspace layout
-  private var _workspaceLayout: WorkspaceLayout?
+  private var _workspaceLayout: WorkspaceLayout? {
+    didSet {
+      _dragger.workspaceLayout = _workspaceLayout
+    }
+  }
   /// The underlying toolbox layout
   private var _toolboxLayout: ToolboxLayout?
 
@@ -156,7 +160,7 @@ public class WorkbenchViewController: UIViewController {
   public var toolboxDrawerStaysOpen: Bool = false
 
   /// Controls logic for dragging blocks around in the workspace
-  private var _dragger = Dragger()
+  private let _dragger = Dragger()
   /// Controller for listing the toolbox categories
   private var _toolboxCategoryListViewController: ToolboxCategoryListViewController!
   /// Controller for managing the trash can workspace
@@ -634,8 +638,9 @@ extension WorkbenchViewController {
       let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
       _dragger.startDraggingBlockLayout(newBlockView.blockLayout!, touchPosition: touchPosition)
 
-      if rootBlockView.blockLayout?.workspaceLayout ==
-        _trashCanViewController.workspaceView.workspaceLayout
+      if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace,
+        let rootBlock = rootBlockLayout?.block
+        where trashWorkspace.containsBlock(rootBlock)
       {
         // Remove this block view from the trash can
         _trashCanViewController.workspace?.removeBlockTree(rootBlockView.blockLayout!.block)
@@ -719,7 +724,7 @@ extension WorkbenchViewController {
 
         do {
           try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
-          blockLayout.workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
+          _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
         } catch let error as NSError {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }

@@ -310,6 +310,51 @@ class BlockTest: XCTestCase {
     XCTAssertNotEqual(original?.uuid, copy?.rootBlock.uuid)
   }
 
+  func testEditable() {
+    let inputBuilder = Input.Builder(type: .Dummy, name: "dummy")
+    inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
+    let blockBuilder = Block.Builder(name: "test")
+    blockBuilder.editable = true
+    blockBuilder.inputBuilders = [inputBuilder]
+
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.build() }) else {
+      XCTFail("Couldn't create block")
+      return
+    }
+
+    XCTAssertTrue(block.editable)
+    let allFields = block.inputs.flatMap { $0.fields }
+    for field in allFields {
+      XCTAssertTrue(field.editable)
+    }
+
+    block.editable = false
+
+    XCTAssertFalse(block.editable)
+    for field in allFields {
+      XCTAssertFalse(field.editable)
+    }
+  }
+
+  func testEditable_LoadAsReadOnly() {
+    let inputBuilder = Input.Builder(type: .Dummy, name: "dummy")
+    inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
+    let blockBuilder = Block.Builder(name: "test")
+    blockBuilder.editable = false
+    blockBuilder.inputBuilders = [inputBuilder]
+
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.build() }) else {
+      XCTFail("Couldn't create block")
+      return
+    }
+
+    XCTAssertFalse(block.editable)
+    let allFields = block.inputs.flatMap { $0.fields }
+    for field in allFields {
+      XCTAssertFalse(field.editable)
+    }
+  }
+
   func testLastInputValueConnectionInChainSimples() {
     guard
       let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),

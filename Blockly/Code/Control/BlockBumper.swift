@@ -26,6 +26,9 @@ public class BlockBumper: NSObject {
   /// system unit
   public var bumpDistance: CGFloat
 
+  /// The workspace layout where blocks are being bumped
+  public var workspaceLayout: WorkspaceLayout?
+
   // MARK: - Initializers
 
   public init(bumpDistance: CGFloat) {
@@ -55,7 +58,7 @@ public class BlockBumper: NSObject {
       blockGroupLayout.absolutePosition.x + dx,
       blockGroupLayout.absolutePosition.y + dy)
     blockGroupLayout.moveToWorkspacePosition(newPosition)
-    blockLayout.workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
+    workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
   }
 
   /**
@@ -97,7 +100,7 @@ public class BlockBumper: NSObject {
    */
   private func bumpBlockLayoutOfConnectionAwayFromNeighbours(connection: Connection) {
     guard
-      let connectionManager = connection.sourceBlock.layout?.workspaceLayout?.connectionManager,
+      let connectionManager = workspaceLayout?.connectionManager,
       let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
     {
       return
@@ -123,7 +126,7 @@ public class BlockBumper: NSObject {
    */
   private func bumpAllBlocksNearConnection(connection: Connection) {
     guard
-      let connectionManager = connection.sourceBlock.layout?.workspaceLayout?.connectionManager,
+      let connectionManager = workspaceLayout?.connectionManager,
       let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
     {
       return

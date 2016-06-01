@@ -40,7 +40,7 @@ public class Field: NSObject {
   public let name: String
 
   /// The input that owns this field
-  public weak var sourceInput: Input!
+  public weak var sourceInput: Input?
 
   /// A delegate for listening to events on this field
   public weak var delegate: FieldDelegate?
@@ -52,16 +52,12 @@ public class Field: NSObject {
 
   // TODO:(#26) Update all fields so that this property is respected.
   /// Flag indicating if this field can be edited
-  private var _editable: Bool = true
-  public var editable: Bool {
-    get {
-      return _editable && (sourceInput?.sourceBlock.editable ?? true)
-    }
-    set {
-      if _editable != newValue {
-        _editable = newValue
-        delegate?.didUpdateField(self)
+  public var editable: Bool = true {
+    didSet {
+      if editable == oldValue {
+        return
       }
+      delegate?.didUpdateField(self)
     }
   }
 
