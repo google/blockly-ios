@@ -14,19 +14,18 @@
 */
 
 import Foundation
+import Blockly
 
 class BlockTestStrings {
-  static let EMPTY_BLOCK_WITH_POSITION = "<block type=\"empty_block\" id=\"364\" x=\"37\" y=\"13\" />"
-  static let EMPTY_BLOCK_NO_POSITION = "<block type=\"empty_block\" id=\"364\" />"
-
-  static let BLOCK_START = "<block type=\"frankenblock\" id=\"1\" x=\"37\" y=\"13\">"
-  static let BLOCK_START_NO_POSITION = "<block type=\"frankenblock\" id=\"2\">"
-  static let BLOCK_END = "</block>"
-
   static let SIMPLE_BLOCK =
   "<block type=\"frankenblock\" id=\"3\" x=\"37\" y=\"13\">" +
     "<field name=\"text_input\">simple_block</field>" +
   "</block>"
+
+  static let SIMPLE_SHADOW =
+    "<shadow type=\"frankenblock\" id=\"SIMPLE_BLOCK\" x=\"37\" y=\"13\">" +
+      "<field name=\"text_input\">item</field>" +
+    "</shadow>"
 
   static let NO_BLOCK_TYPE =
   "<block id=\"4\" x=\"37\" y=\"13\">" +
@@ -70,6 +69,16 @@ class BlockTestStrings {
     "<block type=\"output_foo\" id=\"10\"></block>" +
   "</value>"
 
+  static let VALUE_SHADOW =
+    "<value name=\"value_input\">" +
+      "<shadow type=\"output_foo\" id=\"VALUE_GOOD\" />" +
+    "</value>"
+  static let VALUE_SHADOW_GOOD =
+    "<value name=\"value_input\">" +
+      "<shadow type=\"output_foo\" id=\"VALUE_SHADOW\" />" +
+      "<block type=\"output_foo\" id=\"VALUE_REAL\" />" +
+    "</value>"
+
   static let STATEMENT_GOOD =
   "<statement name=\"NAME\">" +
     "<block type=\"frankenblock\" id=\"11\"></block>" +
@@ -83,6 +92,56 @@ class BlockTestStrings {
   "<statement name=\"NAME\">" +
     "<block type=\"no_output\" id=\"13\"></block>" +
   "</statement>"
+  static let STATEMENT_SHADOW_ONLY =
+    "<statement name=\"NAME\">" +
+      "<shadow type=\"frankenblock\" id=\"STATEMENT_SHADOW\">" +
+      "</shadow>" +
+    "</statement>"
+  static let STATEMENT_REAL_AND_SHADOW =
+    "<statement name=\"NAME\">" +
+      "<shadow type=\"frankenblock\" id=\"STATEMENT_SHADOW\">" +
+      "</shadow>" +
+      "<block type=\"frankenblock\" id=\"STATEMENT_REAL\">" +
+      "</block>" +
+    "</statement>"
+
+  static let NEXT_STATEMENT_GOOD =
+    "<next>" +
+      "<block type=\"frankenblock\" id=\"11\"></block>" +
+    "</next>"
+  static let NEXT_STATEMENT_SHADOW_ONLY =
+    "<next>" +
+      "<shadow type=\"frankenblock\" id=\"STATEMENT_SHADOW\" />" +
+    "</next>"
+  static let NEXT_STATEMENT_REAL_AND_SHADOW =
+    "<next>" +
+      "<shadow type=\"frankenblock\" id=\"STATEMENT_SHADOW\">" +
+      "</shadow>" +
+      "<block type=\"frankenblock\" id=\"STATEMENT_REAL\">" +
+      "</block>" +
+    "</next>"
+
+  static let NESTED_SHADOW_GOOD =
+    "<value name=\"value_input\">" +
+      "<shadow type=\"simple_input_output\" id=\"SHADOW1\">" +
+        "<value name=\"value\">" +
+          "<shadow type=\"simple_input_output\" id=\"SHADOW2\" />" +
+        "</value>" +
+      "</shadow>" +
+    "</value>" +
+    "<next>" +
+      "<shadow type=\"statement_no_input\" id=\"SHADOW3\" />" +
+    "</next>"
+
+  static let NESTED_SHADOW_BAD =
+    "<value name=\"value_input\">" +
+      "<shadow type=\"simple_input_output\" id=\"SHADOW1\">" +
+        "<value name=\"value\">" +
+          "<shadow type=\"simple_input_output\" id=\"SHADOW2\"/>"  +
+          "<block type=\"simple_input_output\" id=\"BLOCK_INNER\"/>"  +
+        "</value>" +
+      "</shadow>" +
+    "</value>"
 
   static let COMMENT_GOOD = "<comment pinned=\"true\" h=\"80\" w=\"160\">Calm</comment>"
   static let COMMENT_NO_TEXT = "<comment pinned=\"true\" h=\"80\" w=\"160\"></comment>"
@@ -99,6 +158,21 @@ class BlockTestStrings {
   FRANKENBLOCK_DEFAULT_VALUES_START + FRANKENBLOCK_DEFAULT_VALUES_END
 
   class func assembleBlock(interior: String) -> String {
-    return BLOCK_START + interior + BLOCK_END
+    return assembleComplexBlock(tag: "block", type: "frankenblock", id: "1",
+                         position: WorkspacePointMake(37, 13), interior: interior)
+  }
+
+  class func assembleComplexBlock(
+    tag tag: String, type: String, id: String?, position: WorkspacePoint?, interior: String)
+    -> String
+  {
+    var attributes = "type=\"\(type)\""
+    if let anID = id {
+      attributes += " id=\"\(anID)\""
+    }
+    if let aPosition = position {
+      attributes += " x=\"\(aPosition.x)\" y=\"\(aPosition.y)\""
+    }
+    return "<\(tag) \(attributes)>\(interior)</\(tag)>"
   }
 }

@@ -31,7 +31,8 @@ extension Field {
    */
   public func toXML() throws -> AEXMLElement? {
     if let serializedText = try self.serializedText() {
-      return AEXMLElement("field", value: serializedText, attributes: ["name": self.name])
+      return AEXMLElement(XMLConstants.TAG_FIELD,
+                          value: serializedText, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
     } else {
       return nil
     }

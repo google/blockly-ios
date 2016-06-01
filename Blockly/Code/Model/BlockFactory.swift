@@ -82,7 +82,6 @@ public class BlockFactory : NSObject {
 
         // Save the block
         _blockBuilders[blockBuilder.name] = blockBuilder
-        bky_debugPrint("Added block builder with name \(blockBuilder.name)")
       }
     }
   }

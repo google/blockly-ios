@@ -34,14 +34,14 @@ extension XCTestCase {
     do {
       try expression()
       recordFailureWithDescription(
-        bky_failureDescription("Expression did not throw an error", message),
+        bky_failureDescription("Expression did not throw an error", message, nil),
         inFile: file, atLine: line, expected: true)
     } catch let error {
       if error.dynamicType != errorType {
         let errorDescription =
           "Error type [\(errorType)] is not equal to [\(error.dynamicType)]"
         recordFailureWithDescription(
-          bky_failureDescription(errorDescription, message),
+          bky_failureDescription(errorDescription, message, error),
           inFile: file, atLine: line, expected: true)
       }
     }
@@ -65,10 +65,10 @@ extension XCTestCase {
   {
     do {
       return try expression()
-    } catch {
+    } catch let error {
       recordFailureWithDescription(
-        bky_failureDescription("Expression threw an error", message), inFile: file, atLine: line,
-        expected: true)
+        bky_failureDescription("Expression threw an error", message, error),
+        inFile: file, atLine: line, expected: true)
     }
     return nil
   }
@@ -100,16 +100,17 @@ extension XCTestCase {
   {
     do {
       return try expression()
-    } catch {
+    } catch let error {
       recordFailureWithDescription(
-        bky_failureDescription("Expression threw an error", message), inFile: file, atLine: line,
-        expected: true)
+        bky_failureDescription("Expression threw an error", message, error),
+        inFile: file, atLine: line, expected: true)
     }
     return nil
   }
 
   private func bky_failureDescription(
-    description: String, _ message: String?, function: String = #function) -> String
+    description: String, _ message: String?, _ error: ErrorType?, function: String = #function)
+    -> String
   {
     let conciseFunctionName: String
     if let range = function.rangeOfString("(") {
@@ -117,7 +118,9 @@ extension XCTestCase {
     } else {
       conciseFunctionName = function
     }
-    let nonOptionalMessage = message ?? ""
-    return "\(conciseFunctionName) failed: \(description) - \(nonOptionalMessage)"
+    var bonusDescription = ""
+    bonusDescription += (message != nil ? " - \(message)" : "")
+    bonusDescription += (error != nil ? " - \(error)" : "")
+    return "\(conciseFunctionName) failed: \(description) \(bonusDescription)"
   }
 }

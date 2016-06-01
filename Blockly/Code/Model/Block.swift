@@ -63,6 +63,11 @@ public final class Block : NSObject {
   public var previousBlock: Block? {
     return previousConnection?.targetBlock
   }
+  /// If an inferior connection exists, returns either `self.outputConnection` or
+  /// `self.previousConnection` (only one may be non-`nil`).
+  public var inferiorConnection: Connection? {
+    return outputConnection ?? previousConnection
+  }
 
   /// List of connections directly attached to this block
   public private(set) var directConnections = [Connection]()
@@ -363,23 +368,6 @@ public final class Block : NSObject {
     }
 
     return BlockTree(rootBlock: newBlock, allBlocks: copiedBlocks)
-  }
-
-  /**
-   Automatically connects a given superior connection (input/next) to this block's inferior
-   connection (output/input).
-
-   - Parameter superior: The superior connection to attach this block to. If this connection is
-   not a superior connection (input/next), nothing happens.
-   - Throws:
-   `BlocklyError`: Occurs if the connection cannot be made.
-   */
-  public func connectToSuperiorConnection(superior: Connection) throws {
-    if superior.type == .InputValue {
-      try superior.connectTo(self.outputConnection)
-    } else if superior.type == .NextStatement {
-      try superior.connectTo(self.previousConnection)
-    }
   }
 
   // MARK: - Internal - For testing only

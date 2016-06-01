@@ -48,24 +48,40 @@ class CodeGeneratorServiceTest: XCTestCase {
   func testPythonCodeGeneration() {
     // Build workspace with simple repeat loop
     let workspace = Workspace()
-
-    let loopBlock = try! _blockFactory.buildBlock("controls_repeat_ext") as Block!
-    let loopValueBlock = try! _blockFactory.buildBlock("math_number") as Block!
-    (loopValueBlock.firstFieldWithName("NUM") as! FieldInput).text = "10"
-    try! loopValueBlock.connectToSuperiorConnection(
-      loopBlock.firstInputWithName("TIMES")!.connection!)
-
-    try! workspace.addBlockTree(loopBlock)
+    guard
+      let loopBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("controls_repeat_ext")
+      }),
+      let loopValueBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("math_number")
+      }),
+      let parentInput = loopBlock.firstInputWithName("TIMES"),
+      let fieldInput = loopValueBlock.firstFieldWithName("NUM") as? FieldInput else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    BKYAssertDoesNotThrow { () -> Void in
+      fieldInput.text = "10"
+      try parentInput.connection?.connectTo(loopValueBlock.inferiorConnection)
+      try workspace.addBlockTree(loopBlock)
+    }
 
     // Set up timeout expectation
     let expectation = expectationWithDescription("Code Generation")
 
     // Execute request
     let testBundle = NSBundle(forClass: self.dynamicType)
-    let request = try! CodeGeneratorService.Request(workspace: workspace,
-      jsGeneratorObject: "Blockly.Python",
-      jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
-      jsonBlockDefinitions: [])
+    guard let request = BKYAssertDoesNotThrow({
+        try CodeGeneratorService.Request(workspace: workspace,
+          jsGeneratorObject: "Blockly.Python",
+          jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+          jsonBlockDefinitions: [])
+      }) else
+    {
+      XCTFail("Could not build code generation request")
+      return
+    }
     request.onCompletion = { code in
       XCTAssertEqual("for count in range(10):  pass",
         code.stringByReplacingOccurrencesOfString("\n", withString: ""))
@@ -89,13 +105,24 @@ class CodeGeneratorServiceTest: XCTestCase {
     // Build workspace with simple repeat loop
     let workspace = Workspace()
 
-    let loopBlock = try! _blockFactory.buildBlock("controls_repeat_ext") as Block!
-    let loopValueBlock = try! _blockFactory.buildBlock("math_number") as Block!
-    (loopValueBlock.firstFieldWithName("NUM") as! FieldInput).text = "10"
-    try! loopValueBlock.connectToSuperiorConnection(
-      loopBlock.firstInputWithName("TIMES")!.connection!)
-
-    try! workspace.addBlockTree(loopBlock)
+    guard
+      let loopBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("controls_repeat_ext")
+      }),
+      let loopValueBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.buildBlock("math_number")
+      }),
+      let parentInput = loopBlock.firstInputWithName("TIMES"),
+      let fieldInput = loopValueBlock.firstFieldWithName("NUM") as? FieldInput else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    BKYAssertDoesNotThrow { () -> Void in
+      fieldInput.text = "10"
+      try parentInput.connection?.connectTo(loopValueBlock.inferiorConnection)
+      try workspace.addBlockTree(loopBlock)
+    }
 
     let testBundle = NSBundle(forClass: self.dynamicType)
 
@@ -104,10 +131,15 @@ class CodeGeneratorServiceTest: XCTestCase {
       let expectation = expectationWithDescription("Code Generation")
 
       // Execute request
-      let request = try! CodeGeneratorService.Request(workspace: workspace,
-        jsGeneratorObject: "Blockly.Python",
-        jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
-        jsonBlockDefinitions: [])
+      guard let request = BKYAssertDoesNotThrow({
+        try CodeGeneratorService.Request(workspace: workspace,
+          jsGeneratorObject: "Blockly.Python",
+          jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+          jsonBlockDefinitions: [])
+      }) else {
+        XCTFail("Could not build code generation request")
+        return
+      }
       request.onCompletion = { code in
         XCTAssertEqual("for count in range(10):  pass",
           code.stringByReplacingOccurrencesOfString("\n", withString: ""))

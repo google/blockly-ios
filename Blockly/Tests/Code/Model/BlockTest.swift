@@ -301,6 +301,15 @@ class BlockTest: XCTestCase {
     assertSimilarBlockTrees(copy.rootBlock, root)
   }
 
+  func testDeepCopy_DoesNotCopyUUID() {
+    let original = BKYAssertDoesNotThrow { try Block.Builder(name: "test").build() }
+    let copy = BKYAssertDoesNotThrow { try original?.deepCopy() }
+
+    XCTAssertNotNil(original)
+    XCTAssertNotNil(copy)
+    XCTAssertNotEqual(original?.uuid, copy?.rootBlock.uuid)
+  }
+
   func testLastInputValueConnectionInChainSimples() {
     guard
       let block1 = try! _blockFactory.addBlock("simple_input_output", toWorkspace: _workspace),

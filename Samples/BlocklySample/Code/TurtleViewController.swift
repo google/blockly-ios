@@ -245,15 +245,14 @@ class TurtleViewController: UIViewController {
     // Connect an input block (if it was specified).
     // Note: We keep a reference to the input block in this scope, so it isn't deallocated before
     // the block tree is added to the category
-    var inputBlock: Block?
+    let childBlock: Block?
 
-    if inputBlockName != nil {
-      inputBlock = try _blockFactory.buildBlock(inputBlockName!)
-      let inputConnection = block.inputs[0].connection
-
-      if inputBlock != nil && inputConnection != nil {
-        try inputBlock!.connectToSuperiorConnection(inputConnection!)
-      }
+    if let anInputBlockName = inputBlockName,
+      inputBlock = try _blockFactory.buildBlock(anInputBlockName)
+      where block.inputs.count > 0
+    {
+      childBlock = inputBlock
+      try block.inputs[0].connection?.connectTo(childBlock?.inferiorConnection)
     }
 
     // Add the block tree to the category
