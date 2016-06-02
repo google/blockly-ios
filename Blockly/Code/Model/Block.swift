@@ -83,24 +83,20 @@ public final class Block : NSObject {
   // TODO:(#26) Update model so that this property is respected.
   /// Flag indicating if this block can be edited. Updating this property automatically updates
   /// the `editable` on all child fields.
-  private var _editable: Bool = true
-  public var editable: Bool {
-    get {
-      return _editable && !(sourceWorkspace?.readOnly ?? false)
-    }
-    set {
-      _editable = newValue
+  public var editable: Bool = true {
+    didSet {
+      if editable == oldValue {
+        return
+      }
+
       for input in self.inputs {
         for field in input.fields {
-          field.editable = _editable
+          field.editable = editable
         }
       }
     }
   }
   public var disabled: Bool = false
-
-  /// The workspace that this block belongs to
-  public weak var sourceWorkspace: Workspace?
 
   /// Flag if this block is at the highest level in the workspace
   public var topLevel: Bool {
@@ -150,6 +146,10 @@ public final class Block : NSObject {
 
       if let connection = input.connection {
         directConnections.append(connection)
+      }
+
+      for field in input.fields {
+        field.editable = editable
       }
     }
     self.outputConnection?.sourceBlock = self

@@ -42,11 +42,6 @@ public class BlockLayout: Layout {
   /// The `Block` to layout.
   public final let block: Block
 
-  /// Convenience property for accessing `self.block.sourceWorkspace?.layout`
-  public var workspaceLayout: WorkspaceLayout? {
-    return self.block.sourceWorkspace?.layout
-  }
-
   /// Flag if this block should be highlighted
   public var highlighted: Bool = false {
     didSet {
