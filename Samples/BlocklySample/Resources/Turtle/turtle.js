@@ -58,6 +58,8 @@ window.addEventListener('load', Turtle.init);
  * pending tasks.
  */
 Turtle.reset = function() {
+  Turtle._unhighlightLastBlock()
+
   // Starting location and heading of the turtle.
   Turtle.x = Turtle.HEIGHT / 2;
   Turtle.y = Turtle.WIDTH / 2;
@@ -167,6 +169,7 @@ Turtle.animate = function() {
 
   var tuple = Turtle.log.shift();
   if (!tuple) {
+    Turtle._unhighlightLastBlock()
     return;
   }
   var command = tuple.shift();
@@ -174,10 +177,8 @@ Turtle.animate = function() {
   Turtle.display();
 
   // Scale the speed non-linearly, to give better precision at the fast end.
-  if (Turtle.log.length > 0) {
-    var stepSpeed = 1000 * Math.pow(1 - 2, 2);
-    Turtle.pid = window.setTimeout(Turtle.animate, stepSpeed);
-  }
+  var stepSpeed = 1000 * Math.pow(1 - 2, 2);
+  Turtle.pid = window.setTimeout(Turtle.animate, stepSpeed);
 };
 
 /**
@@ -186,6 +187,10 @@ Turtle.animate = function() {
  * @param {!Array} values List of arguments for the command.
  */
 Turtle.step = function(command, values) {
+  var blockID = values[values.length - 1].replace("block_id_", "")
+  Turtle._unhighlightLastBlock()
+  Turtle._highlightBlock(blockID)
+
   switch (command) {
     case 'FD':  // Forward
       if (Turtle.penDownValue) {
@@ -294,3 +299,15 @@ Turtle.drawPrint = function(text, id) {
 Turtle.drawFont = function(font, size, style, id) {
   Turtle.log.push(['DF', font, size, style, id]);
 };
+
+Turtle._highlightBlock = function(blockID) {
+  // Send callback message to iOS to highlight the block
+  window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
+    { method: "highlightBlock", blockID: blockID });
+}
+
+Turtle._unhighlightLastBlock = function() {
+  // Send callback message to iOS to unhighlight the last highlighted block
+  window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
+    { method: "unhighlightLastBlock" });
+}

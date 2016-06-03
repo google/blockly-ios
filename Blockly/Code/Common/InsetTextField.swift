@@ -22,15 +22,24 @@ public class InsetTextField: UITextField {
   // MARK: - Properties
 
   /// The amount of padding that should be added around the text
-  public var insetPadding = UIEdgeInsetsZero
+  public var insetPadding = EdgeInsets() {
+    didSet {
+      _uiEdgeInsetPadding = bky_UIEdgeInsetsMake(
+        insetPadding.top, insetPadding.leading, insetPadding.bottom, insetPadding.trailing)
+    }
+  }
+
+  /// The amount of padding that should be added around the text, irrespective of layout
+  /// direction.
+  private var _uiEdgeInsetPadding = UIEdgeInsetsZero
 
   // MARK: - Super
 
   public override func textRectForBounds(bounds: CGRect) -> CGRect {
-    return UIEdgeInsetsInsetRect(bounds, insetPadding)
+    return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 
   public override func editingRectForBounds(bounds: CGRect) -> CGRect {
-    return UIEdgeInsetsInsetRect(bounds, insetPadding)
+    return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 }

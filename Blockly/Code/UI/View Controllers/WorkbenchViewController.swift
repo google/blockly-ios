@@ -16,6 +16,17 @@
 import UIKit
 
 /**
+ Delegate for events that occur on `WorkbenchViewController`.
+ */
+public protocol WorkbenchViewControllerDelegate: class {
+  /**
+   Event that is called when a `WorkbenchViewController` updates its `state`.
+   */
+  func workbenchViewController(workbenchViewController: WorkbenchViewController,
+                               didUpdateState state: WorkbenchViewController.UIState)
+}
+
+/**
  View controller for editing a workspace.
 
  TODO:(#61) Refactor this view controller into smaller pieces.
@@ -63,13 +74,15 @@ public class WorkbenchViewController: UIViewController {
 
   /// Defines possible UI states that the view controller may be in
   public struct UIState : OptionSetType {
-    private static let Default = UIState(value: .Default)
-    private static let TrashCanOpen = UIState(value: .TrashCanOpen)
-    private static let TrashCanHighlighted = UIState(value: .TrashCanHighlighted)
-    private static let CategoryOpen = UIState(value: .CategoryOpen)
-    private static let EditingTextField = UIState(value: .EditingTextField)
-    private static let DraggingBlock = UIState(value: .DraggingBlock)
-    private static let PresentingPopover = UIState(value: .PresentingPopover)
+    public static let Default = UIState(value: .Default)
+    public static let TrashCanOpen = UIState(value: .TrashCanOpen)
+    public static let TrashCanHighlighted = UIState(value: .TrashCanHighlighted)
+    public static let CategoryOpen = UIState(value: .CategoryOpen)
+    public static let EditingTextField = UIState(value: .EditingTextField)
+    public static let DraggingBlock = UIState(value: .DraggingBlock)
+    public static let PresentingPopover = UIState(value: .PresentingPopover)
+    public static let DidPanWorkspace = UIState(value: .DidPanWorkspace)
+    public static let DidTapWorkspace = UIState(value: .DidTapWorkspace)
 
     public enum Value: Int {
       case Default = 1,
@@ -78,7 +91,9 @@ public class WorkbenchViewController: UIViewController {
         CategoryOpen,
         EditingTextField,
         DraggingBlock,
-        PresentingPopover
+        PresentingPopover,
+        DidPanWorkspace,
+        DidTapWorkspace
     }
     public let rawValue : Int
     public init(rawValue: Int) {
@@ -159,6 +174,12 @@ public class WorkbenchViewController: UIViewController {
   */
   public var toolboxDrawerStaysOpen: Bool = false
 
+  /// The current state of the UI
+  public private(set) var state = UIState.Default
+
+  /// The delegate for events that occur in the workbench
+  public weak var delegate: WorkbenchViewControllerDelegate?
+
   /// Controls logic for dragging blocks around in the workspace
   private let _dragger = Dragger()
   /// Controller for listing the toolbox categories
@@ -167,8 +188,10 @@ public class WorkbenchViewController: UIViewController {
   private var _trashCanViewController: TrashCanViewController!
   /// Flag indicating if the `self._trashCanViewController` is being shown
   private var _trashCanVisible: Bool = false
-  /// The current state of the UI
-  private var _state = UIState.Default
+  /// Flag indicating if block highlighting is allowed
+  private var _enableBlockHighlighting = true
+  /// Flag indicating if blocks should be automatically scrolled into view when they are highlighted
+  private var _enableScrollBlockIntoView = true
 
   // MARK: - Initializers
 
@@ -381,11 +404,11 @@ public class WorkbenchViewController: UIViewController {
   // MARK: - Private
 
   private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
-    resetUIState()
+    addUIStateValue(.DidPanWorkspace)
   }
 
   private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
-    resetUIState()
+    addUIStateValue(.DidTapWorkspace)
   }
 }
 
@@ -405,7 +428,7 @@ extension WorkbenchViewController {
     var state = UIState(value: stateValue)
     let newState: UIState
 
-    if toolboxDrawerStaysOpen && _state.intersectsWith(.CategoryOpen) {
+    if toolboxDrawerStaysOpen && self.state.intersectsWith(.CategoryOpen) {
       // Always keep the .CategoryOpen state if it existed before
       state = state.union(.CategoryOpen)
     }
@@ -415,20 +438,20 @@ extension WorkbenchViewController {
     switch stateValue {
     case .DraggingBlock:
       // Dragging a block can only co-exist with highlighting the trash can
-      newState = _state.intersect([.TrashCanHighlighted]).union(state)
+      newState = self.state.intersect([.TrashCanHighlighted]).union(state)
     case .TrashCanHighlighted:
       // This state can co-exist with anything, simply add it to the current state
-      newState = _state.union(state)
+      newState = self.state.union(state)
     case .EditingTextField:
       // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
       // else
-      newState = _state.intersect([.PresentingPopover, .CategoryOpen]).union(state)
+      newState = self.state.intersect([.PresentingPopover, .CategoryOpen]).union(state)
     case .PresentingPopover:
       // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
       // blocks from inside the toolbox). Disallow everything else.
-      newState = _state.intersect([.CategoryOpen]).union(state)
-    case .Default, .CategoryOpen, .TrashCanOpen:
-      // Whenever these states are added, clear out all existing state.
+      newState = self.state.intersect([.CategoryOpen]).union(state)
+    case .Default, .DidPanWorkspace, .DidTapWorkspace, .CategoryOpen, .TrashCanOpen:
+      // Whenever these states are added, clear out all existing state
       newState = state
     }
 
@@ -445,7 +468,7 @@ extension WorkbenchViewController {
   private func removeUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
     // When subtracting a state value, there is no need to check for compatibility.
     // Simply set the new state, minus the given state value.
-    let newState = _state.subtract(UIState(value: stateValue))
+    let newState = self.state.subtract(UIState(value: stateValue))
     refreshUIState(newState, animated: animated)
   }
 
@@ -467,7 +490,7 @@ extension WorkbenchViewController {
    removeUIState(...), or resetUIState(...).
    */
   private func refreshUIState(state: UIState, animated: Bool = true) {
-    _state = state
+    self.state = state
 
     setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen), animated: animated)
 
@@ -493,6 +516,8 @@ extension WorkbenchViewController {
     if !state.intersectsWith(.PresentingPopover) && self.presentedViewController != nil {
       dismissViewControllerAnimated(animated, completion: nil)
     }
+
+    delegate?.workbenchViewController(self, didUpdateState: state)
   }
 }
 
@@ -847,5 +872,89 @@ extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
     controller: ToolboxCategoryListViewController)
   {
     removeUIStateValue(.CategoryOpen, animated: true)
+  }
+}
+
+// MARK: - Block Highlighting
+
+extension WorkbenchViewController {
+  /**
+   Highlights a block in the workspace.
+
+   - Parameter blockUUID: The UUID of the block to highlight
+   */
+  public func highlightBlock(blockUUID: String) {
+    guard let workspace = self.workspace,
+      let block = workspace.allBlocks[blockUUID] else {
+        return
+    }
+
+    setHighlight(true, forBlocks: [block])
+  }
+
+  /**
+   Unhighlights a block in the workspace.
+
+   - Paramater blockUUID: The UUID of the block to unhighlight.
+   */
+  public func unhighlightBlock(blockUUID: String) {
+    guard let workspace = self.workspace,
+      let block = workspace.allBlocks[blockUUID] else {
+      return
+    }
+
+    setHighlight(false, forBlocks: [block])
+  }
+
+  /**
+   Unhighlights all blocks in the workspace.
+   */
+  public func unhighlightAllBlocks() {
+    guard let workspace = self.workspace else {
+      return
+    }
+
+    setHighlight(false, forBlocks: Array(workspace.allBlocks.values))
+  }
+
+  /**
+   Sets the `highlighted` property for the layouts of a given list of blocks.
+
+   - Parameter highlight: The value to set for `highlighted`
+   - Parameter blocks: The list of `Block` instances
+   */
+  private func setHighlight(highlight: Bool, forBlocks blocks: [Block]) {
+    guard let workspaceLayout = workspaceView.workspaceLayout else {
+      return
+    }
+
+    let visibleBlockLayouts = workspaceLayout.allVisibleBlockLayoutsInWorkspace()
+
+    for block in blocks {
+      guard let blockLayout = block.layout where visibleBlockLayouts.contains(blockLayout) else {
+        continue
+      }
+
+      blockLayout.highlighted = highlight
+
+      if highlight {
+        workspaceLayout.bringBlockGroupLayoutToFront(blockLayout.parentBlockGroupLayout)
+      }
+    }
+
+    // Send change event so the blocks are highlighted/unhighlighted immediately
+    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
+  }
+}
+
+// MARK: - Scrolling
+
+extension WorkbenchViewController {
+  public func scrollBlockIntoView(blockUUID: String, animated: Bool) {
+    guard let block = workspace?.allBlocks[blockUUID] else {
+        return
+    }
+
+    workspaceView.scrollBlockIntoView(block, animated: animated)
   }
 }

@@ -101,7 +101,7 @@ public class LayoutConfig: NSObject {
   /// `nil` means that the system default should be used.
   public static let FieldCheckboxSwitchTintColor = LayoutConfig.newPropertyKey()
 
-  /// [`UIEdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
+  /// [`EdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
   /// should be used for each one
   public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
 
@@ -123,8 +123,8 @@ public class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `UIColor` values
   private var _colors = Dictionary<PropertyKey, UIColor>()
 
-  /// Dictionary mapping property keys to `UIEdgeInsets` values
-  private var _edgeInsets = Dictionary<PropertyKey, UIEdgeInsets>()
+  /// Dictionary mapping property keys to `EdgeInsets` values
+  private var _edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
 
   /// Dictionary mapping property keys to `CGFloat` values
   private var _floats = Dictionary<PropertyKey, CGFloat>()
@@ -150,7 +150,7 @@ public class LayoutConfig: NSObject {
     setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchTintColor)
 
-    setEdgeInsets(UIEdgeInsetsMake(4, 8, 4, 8), forKey: LayoutConfig.FieldTextFieldInsetPadding)
+    setEdgeInsets(EdgeInsets(4, 8, 4, 8), forKey: LayoutConfig.FieldTextFieldInsetPadding)
     setFloat(300, forKey: LayoutConfig.FieldTextFieldMaximumWidth)
   }
 
@@ -296,28 +296,28 @@ public class LayoutConfig: NSObject {
   }
 
   /**
-   Maps a `UIEdgeInsets` value to a specific `PropertyKey`.
+   Maps a `EdgeInsets` value to a specific `PropertyKey`.
 
-   - Parameter edgeInset: The `UIEdgeInsets` value
+   - Parameter edgeInset: The `EdgeInsets` value
    - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
    - Returns: The `edgeInset` that was set.
    */
-  public func setEdgeInsets(edgeInset: UIEdgeInsets, forKey key: PropertyKey) -> UIEdgeInsets {
-    _edgeInsets[key] = edgeInset
-    return edgeInset
+  public func setEdgeInsets(edgeInsets: EdgeInsets, forKey key: PropertyKey) -> EdgeInsets {
+    _edgeInsets[key] = edgeInsets
+    return edgeInsets
   }
 
   /**
-   Returns the `UIEdgeInsets` value that is mapped to a specific `PropertyKey`.
+   Returns the `EdgeInsets` value that is mapped to a specific `PropertyKey`.
 
    - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - Parameter defaultValue: [Optional] If no `UIEdgeInsets` was found for `key`, this value is
+   - Parameter defaultValue: [Optional] If no `EdgeInsets` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - Returns: The `key`'s value
    */
   @inline(__always)
-  public func edgeInsetFor(key: PropertyKey, defaultValue: UIEdgeInsets = UIEdgeInsetsZero)
-    -> UIEdgeInsets
+  public func edgeInsetsFor(key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
+    -> EdgeInsets
   {
     return _edgeInsets[key] ?? setEdgeInsets(defaultValue, forKey: key)
   }

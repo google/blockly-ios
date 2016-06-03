@@ -45,20 +45,6 @@ View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
 public class WorkspaceView: LayoutView {
-  // MARK: - Struct - Padding
-  public struct Padding {
-    public var top: CGFloat
-    public var leading: CGFloat
-    public var bottom: CGFloat
-    public var trailing: CGFloat
-    public init(_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) {
-      self.top = top
-      self.leading = leading
-      self.bottom = bottom
-      self.trailing = trailing
-    }
-  }
-
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `WorkspaceLayout`
@@ -82,7 +68,13 @@ public class WorkspaceView: LayoutView {
   }
 
   /// The amount of padding to apply to the edges of the workspace canvas
-  public var canvasPadding = Padding(100, 100, 300, 100)
+  public var canvasPadding = EdgeInsets(100, 100, 300, 100)
+
+  /**
+  The amount of padding that should be added to the edges when automatically scrolling a
+  `Block` into view.
+  */
+  public var scrollIntoViewEdgeInsets = EdgeInsets(20, 20, 100, 20)
 
   /// The last known value for `workspaceLayout.contentOrigin`
   private var _lastKnownContentOrigin: CGPoint = CGPointZero
@@ -264,6 +256,55 @@ public class WorkspaceView: LayoutView {
     return workspacePositionFromViewPosition(touchPosition)
   }
 
+  /**
+   Automatically adjusts the workspace's scroll view to bring a given `Block` into view.
+
+   - Parameter block: The `Block` to bring into view
+   - Parameter animated: Flag determining if this scroll view adjustment should be animated.
+   - Note: See `scrollIntoViewEdgeInsets`.
+   */
+  public func scrollBlockIntoView(block: Block, animated: Bool) {
+    guard let blockLayout = block.layout,
+      let blockView = ViewManager.sharedInstance.findBlockViewForLayout(blockLayout) else
+    {
+      return
+    }
+
+    var scrollViewRect =
+      CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y,
+                 scrollView.bounds.width, scrollView.bounds.height)
+
+    // Force the blockView to be inset within the scroll view rectangle
+    scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
+    scrollViewRect.size.width -= scrollIntoViewEdgeInsets.left + scrollIntoViewEdgeInsets.right
+    scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
+    scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
+
+    let blockViewRect = blockView.convertRect(blockView.bounds, toView: scrollView)
+    var contentOffset = scrollView.contentOffset
+
+    // Check right edge
+    if blockViewRect.maxX > scrollViewRect.maxX {
+      contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+    }
+    // Check left edge
+    if blockViewRect.minX < scrollViewRect.minX {
+      contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+    }
+    // Check bottom edge
+    if blockViewRect.maxY > scrollViewRect.maxY {
+      contentOffset.y += (blockViewRect.maxY - scrollViewRect.maxY)
+    }
+    // Check top edge
+    if blockViewRect.minY < scrollViewRect.minY {
+      contentOffset.y -= (scrollViewRect.minY - blockViewRect.minY)
+    }
+
+    if scrollView.contentOffset != contentOffset {
+      scrollView.setContentOffset(contentOffset, animated: animated)
+    }
+  }
+
   // MARK: - Private
 
   /**
@@ -312,7 +353,7 @@ public class WorkspaceView: LayoutView {
     let contentViewDelta = layout.engine.viewPointFromWorkspacePoint(contentDelta)
 
     // Calculate the extra padding to add around the content
-    var contentPadding = Padding(0, 0, 0, 0)
+    var contentPadding = EdgeInsets(0, 0, 0, 0)
     if allowCanvasPadding {
       // Content padding must be at least two full screen sizes in all directions or else
       // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are

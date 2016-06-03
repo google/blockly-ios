@@ -38,6 +38,7 @@
 		FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */; };
 		FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */; };
 		FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */; };
+		FA3FD1781CFFAA8E005B6D0F /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
 		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */; };
@@ -256,6 +257,7 @@
 		FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutTest.swift; sourceTree = "<group>"; };
 		FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceTest.swift; sourceTree = "<group>"; };
 		FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLConstants.swift; sourceTree = "<group>"; };
+		FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
 		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorView.swift; sourceTree = "<group>"; };
@@ -705,6 +707,7 @@
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
+				FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -994,6 +997,7 @@
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
 				FAFAEE631CDAE4DB00698179 /* FieldNumberLayout.swift in Sources */,
 				FAFD37AB1C9CEC6900C77049 /* TrashCanView.swift in Sources */,
+				FA3FD1781CFFAA8E005B6D0F /* EdgeInsets.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
 				FA57C3921CCADADB00952BFB /* ColorHelper.swift in Sources */,
