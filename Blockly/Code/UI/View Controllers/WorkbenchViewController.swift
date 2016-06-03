@@ -70,6 +70,10 @@ public class WorkbenchViewController: UIViewController {
     private static let EditingTextField = UIState(value: .EditingTextField)
     private static let DraggingBlock = UIState(value: .DraggingBlock)
     private static let PresentingPopover = UIState(value: .PresentingPopover)
+    private static let DidPanWorkspace = UIState(value: .DidPanWorkspace)
+    private static let DidTapWorkspace = UIState(value: .DidTapWorkspace)
+    private static let BlockHighlighting = UIState(value: .BlockHighlighting)
+    private static let EnableScrollBlockIntoView = UIState(value: .EnableScrollBlockIntoView)
 
     public enum Value: Int {
       case Default = 1,
@@ -78,7 +82,11 @@ public class WorkbenchViewController: UIViewController {
         CategoryOpen,
         EditingTextField,
         DraggingBlock,
-        PresentingPopover
+        PresentingPopover,
+        DidPanWorkspace,
+        DidTapWorkspace,
+        BlockHighlighting,
+        EnableScrollBlockIntoView
     }
     public let rawValue : Int
     public init(rawValue: Int) {
@@ -169,6 +177,12 @@ public class WorkbenchViewController: UIViewController {
   private var _trashCanVisible: Bool = false
   /// The current state of the UI
   private var _state = UIState.Default
+  /// The last `BlockLayout` that was highlighted
+  private var _lastHighlightedBlockLayout: BlockLayout?
+  /// Flag indicating if block highlighting is allowed
+  private var _enableBlockHighlighting = true
+  /// Flag indicating if blocks should be automatically scrolled into view when they are highlighted
+  private var _enableScrollBlockIntoView = true
 
   // MARK: - Initializers
 
@@ -381,11 +395,11 @@ public class WorkbenchViewController: UIViewController {
   // MARK: - Private
 
   private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
-    resetUIState()
+    addUIStateValue(.DidPanWorkspace)
   }
 
   private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
-    resetUIState()
+    addUIStateValue(.DidTapWorkspace)
   }
 }
 
@@ -427,8 +441,18 @@ extension WorkbenchViewController {
       // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
       // blocks from inside the toolbox). Disallow everything else.
       newState = _state.intersect([.CategoryOpen]).union(state)
-    case .Default, .CategoryOpen, .TrashCanOpen:
-      // Whenever these states are added, clear out all existing state.
+    case .EnableScrollBlockIntoView, .BlockHighlighting:
+      // For these states, simply add them to the existing state
+      newState = _state.union(state)
+    case .DidTapWorkspace:
+      // By default, we want to continue allowing auto-scrolling/block highlighting if the user just
+      // tapped on the workspace
+      newState = _state.intersect([.EnableScrollBlockIntoView, .BlockHighlighting]).union(state)
+    case .DidPanWorkspace, .CategoryOpen, .TrashCanOpen:
+      // Whenever these states are added, clear out all existing state except for block highlighting
+      newState = _state.intersect([.BlockHighlighting]).union(state)
+    case .Default:
+      // Clear out all existing state
       newState = state
     }
 
@@ -493,6 +517,15 @@ extension WorkbenchViewController {
     if !state.intersectsWith(.PresentingPopover) && self.presentedViewController != nil {
       dismissViewControllerAnimated(animated, completion: nil)
     }
+
+    if state.intersectsWith(.BlockHighlighting) {
+      _enableBlockHighlighting = true
+    } else {
+      unhighlightLastBlock()
+      _enableBlockHighlighting = false
+    }
+
+    _enableScrollBlockIntoView = state.intersectsWith(.EnableScrollBlockIntoView)
   }
 }
 
@@ -847,5 +880,70 @@ extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
     controller: ToolboxCategoryListViewController)
   {
     removeUIStateValue(.CategoryOpen, animated: true)
+  }
+}
+
+// MARK: - Block Highlighting
+
+extension WorkbenchViewController {
+  /**
+   Enables block highlighting and automatic scrolling of block views into view.
+
+   - Note: This method must be called prior to calling `highlightBlockID(:, animateScroll:)`.
+   `WorkbenchViewController` may automatically disable block highlighting or automatic
+   scrolling based on certain user interactions, so this method should only be called once per
+   round of highlighting blocks (for example, when running generated code), and not every time
+   prior to highlighting an individual block.
+   */
+  public func startBlockHighlighting() {
+    addUIStateValue(.BlockHighlighting)
+    addUIStateValue(.EnableScrollBlockIntoView)
+  }
+
+  /**
+   Disables block highlighting and automatic scrolling of block views into view.
+   */
+  public func endBlockHighlighting() {
+    removeUIStateValue(.BlockHighlighting)
+    removeUIStateValue(.EnableScrollBlockIntoView)
+  }
+
+  /**
+   Highlights a block in the workspace automatically adjusts the workspace's scroll view to bring
+   the block into view.
+
+   - Parameter blockID: The ID of the block to highlight
+   - Parameter animateScroll: Flag if the scroll should be animated.
+   - Note: See `startBlockHighlighting()`.
+   */
+  public func highlightBlockID(blockID: String, animateScroll: Bool) {
+    unhighlightLastBlock()
+
+    guard let block = workspace?.allBlocks[blockID],
+      let blockLayout = block.layout,
+      let workspaceLayout = workspaceView.workspaceLayout
+      where workspaceLayout.allVisibleBlockLayoutsInWorkspace().contains(blockLayout) else
+    {
+      return
+    }
+
+    if _enableBlockHighlighting {
+      blockLayout.highlighted = true
+      workspaceLayout.bringBlockGroupLayoutToFront(blockLayout.parentBlockGroupLayout)
+      _lastHighlightedBlockLayout = blockLayout
+      LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
+    }
+
+    if _enableScrollBlockIntoView {
+      workspaceView.scrollBlockIntoView(block, animated: animateScroll)
+    }
+  }
+
+  /**
+   Removes the highlighting for the last block passed into `highlightBlockID(:animateScroll:)`.
+   */
+  public func unhighlightLastBlock() {
+    _lastHighlightedBlockLayout?.highlighted = false
+    _lastHighlightedBlockLayout = nil
   }
 }

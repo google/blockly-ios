@@ -21,6 +21,11 @@ import WebKit
  Demo app for using blocks to move a cute little turtle.
  */
 class TurtleViewController: UIViewController {
+  // MARK: - Static Properties
+  /// The callback name to access this object from the JS code.
+  /// See "turtle/turtle.js" for an example of its usage.
+  private static let JS_CALLBACK_NAME = "TurtleViewControllerCallback"
+
   // MARK: - Properties
 
   /// The view for holding `self.webView`
@@ -134,8 +139,15 @@ class TurtleViewController: UIViewController {
     self.editorView.addSubview(_workbenchViewController.view)
     self.addChildViewController(_workbenchViewController)
 
-    // Programmatically create WKWebView
-    _webView = WKWebView(frame: webViewContainer.bounds)
+    // Programmatically create WKWebView, configuring it with a hook so the JS code can callback
+    // into the iOS code
+    let userContentController = WKUserContentController()
+    userContentController.addScriptMessageHandler(self, name: TurtleViewController.JS_CALLBACK_NAME)
+
+    let configuration = WKWebViewConfiguration()
+    configuration.userContentController = userContentController
+
+    _webView = WKWebView(frame: webViewContainer.bounds, configuration: configuration)
     _webView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     _webView.translatesAutoresizingMaskIntoConstraints = true
     webViewContainer.autoresizesSubviews = true
@@ -204,18 +216,26 @@ class TurtleViewController: UIViewController {
   private func codeGenerationCompletedWithCode(code: String) {
     self.addTimestampedText("Generated code:\n\n====CODE====\n\n\(code)")
 
+    runCode(code)
+  }
+
+  private func codeGenerationFailedWithError(error: String) {
+    self.addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
+  }
+
+  private func runCode(code: String) {
+    // Allow block highlighting
+    _workbenchViewController.startBlockHighlighting()
+
     // Run the generated code in the web view by calling `Turtle.execute(<code>)`
     let codeParam = code.bky_escapedJavaScriptParameter()
-    self._webView.evaluateJavaScript("Turtle.execute(\"\(codeParam)\")",
+    _webView.evaluateJavaScript(
+      "Turtle.execute(\"\(codeParam)\")",
       completionHandler: { _, error -> Void in
         if error != nil {
           self.codeGenerationFailedWithError("\(error)")
         }
       })
-  }
-
-  private func codeGenerationFailedWithError(error: String) {
-    self.addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
   }
 
   private func resetTurtleCode() {
@@ -259,5 +279,33 @@ class TurtleViewController: UIViewController {
     try category.addBlockTree(block)
 
     return block
+  }
+}
+
+// MARK: - WKScriptMessageHandler implementation
+
+/**
+ Handler responsible for relaying messages back from `self.webView`.
+ */
+extension TurtleViewController: WKScriptMessageHandler {
+  @objc func userContentController(userContentController: WKUserContentController,
+                                   didReceiveScriptMessage message: WKScriptMessage)
+  {
+    guard let dictionary = message.body as? [String: AnyObject],
+      let method = dictionary["method"] as? String else
+    {
+      return
+    }
+
+    switch method {
+      case "highlightBlock":
+        if let blockID = dictionary["blockID"] as? String {
+          _workbenchViewController.highlightBlockID(blockID, animateScroll: true)
+        }
+      case "unhighlightLastBlock":
+        _workbenchViewController.unhighlightLastBlock()
+      default:
+        print("Unrecognized method")
+    }
   }
 }

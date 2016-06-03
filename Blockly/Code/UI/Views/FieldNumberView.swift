@@ -86,7 +86,7 @@ public class FieldNumberView: FieldView {
 
       // TODO:(#27) Standardize this font
       textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-      textField.insetPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
+      textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
@@ -162,14 +162,15 @@ extension FieldNumberView: FieldLayoutMeasurer {
       return CGSizeZero
     }
 
-    let textPadding = layout.config.edgeInsetFor(LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldNumberLayout.currentTextValue + " "
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
     measureSize.height = measureSize.height + textPadding.top + textPadding.bottom
-    measureSize.width = min(measureSize.width + textPadding.left + textPadding.right, maxWidth)
+    measureSize.width =
+      min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
     return measureSize
   }
 }
