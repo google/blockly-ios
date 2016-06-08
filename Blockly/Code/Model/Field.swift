@@ -50,7 +50,6 @@ public class Field: NSObject {
     return self.delegate as? FieldLayout
   }
 
-  // TODO:(#26) Update all fields so that this property is respected.
   /// Flag indicating if this field can be edited
   public var editable: Bool = true {
     didSet {
