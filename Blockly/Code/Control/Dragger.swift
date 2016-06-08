@@ -60,6 +60,10 @@ public class Dragger: NSObject {
   system
   */
   public func startDraggingBlockLayout(layout: BlockLayout, touchPosition: WorkspacePoint) {
+    if !layout.block.draggable {
+      return
+    }
+
     // Remove any existing gesture data for the layout
     clearGestureDataForBlockLayout(layout)
 

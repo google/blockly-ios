@@ -399,6 +399,7 @@ public class WorkbenchViewController: UIViewController {
     _toolboxCategoryListViewController?.refreshView()
 
     resetUIState()
+    updateWorkspaceCapacity()
   }
 
   // MARK: - Private
@@ -409,6 +410,19 @@ public class WorkbenchViewController: UIViewController {
 
   private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
     addUIStateValue(.DidTapWorkspace)
+  }
+
+  /**
+   Updates the trash can and toolbox so the user may only interact with block groups that
+   would not exceed the workspace's remaining capacity.
+   */
+  private func updateWorkspaceCapacity() {
+    if let capacity = _workspaceLayout?.workspace.remainingCapacity {
+      _trashCanViewController.workspace?.deactivateBlockTrees(forGroupsGreaterThan: capacity)
+      _toolboxLayout?.toolbox.categories.forEach {
+        $0.deactivateBlockTrees(forGroupsGreaterThan: capacity)
+      }
+    }
   }
 }
 
@@ -648,6 +662,7 @@ extension WorkbenchViewController {
       let newBlockView: BlockView
       do {
         newBlockView = try workspaceView.copyBlockView(rootBlockView)
+        updateWorkspaceCapacity()
       } catch let error as NSError {
         bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
         return
@@ -667,8 +682,13 @@ extension WorkbenchViewController {
         let rootBlock = rootBlockLayout?.block
         where trashWorkspace.containsBlock(rootBlock)
       {
-        // Remove this block view from the trash can
-        _trashCanViewController.workspace?.removeBlockTree(rootBlockView.blockLayout!.block)
+        do {
+          // Remove this block view from the trash can
+          try _trashCanViewController.workspace?.removeBlockTree(rootBlockView.blockLayout!.block)
+        } catch let error as NSError {
+          bky_assertionFailure("Could not remove block from trash can: \(error)")
+          return
+        }
       } else {
         // Re-add gesture tracking to the original block view for future drags
         addGestureTrackingForWorkspaceFolderBlockView(aBlockView)
@@ -735,7 +755,7 @@ extension WorkbenchViewController {
       addUIStateValue(.DraggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
 
-      if touchingTrashCan {
+      if touchingTrashCan && blockLayout.block.deletable {
         addUIStateValue(.TrashCanHighlighted)
       } else {
         removeUIStateValue(.TrashCanHighlighted)
@@ -743,13 +763,14 @@ extension WorkbenchViewController {
     }
 
     if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
-      if touchingTrashCan {
+      if touchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
         _dragger.clearGestureDataForBlockLayout(blockLayout)
 
         do {
           try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
-          _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
+          try _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
+          updateWorkspaceCapacity()
         } catch let error as NSError {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }

@@ -107,14 +107,13 @@ public class BlockLayout: Layout {
     var layout: Layout? = self
 
     while let currentLayout = layout {
-      // A block layout is considered draggable as long as it is not a shadow block
       if let blockLayout = currentLayout as? BlockLayout
-        where !blockLayout.block.shadow
+        where blockLayout.block.draggable
       {
         return blockLayout
       } else if let blockGroupLayout = layout as? BlockGroupLayout
         where blockGroupLayout.blockLayouts.count > 0 &&
-         !blockGroupLayout.blockLayouts[0].block.shadow
+         blockGroupLayout.blockLayouts[0].block.draggable
       {
         return blockGroupLayout.blockLayouts[0]
       }
@@ -261,4 +260,8 @@ extension BlockLayout: ConnectionHighlightDelegate {
 // MARK: - BlockDelegate
 
 extension BlockLayout: BlockDelegate {
+  public func didUpdateBlock(block: Block) {
+    // Refresh the block since it's been updated
+    scheduleChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
+  }
 }
