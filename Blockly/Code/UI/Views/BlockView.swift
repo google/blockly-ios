@@ -37,7 +37,7 @@ public protocol BlockViewDelegate: class {
 View for rendering a `BlockLayout`.
 */
 @objc(BKYBlockView)
-public class BlockView: LayoutView {
+public class BlockView: LayoutView, ZIndexedView {
   // MARK: - Properties
 
   /// Layout object to render
@@ -63,9 +63,9 @@ public class BlockView: LayoutView {
   public private(set) final var zIndex: UInt = 0 {
     didSet {
       if zIndex != oldValue {
-        if let superview = self.superview as? WorkspaceView.BlockGroupView {
+        if let superview = self.superview as? ZIndexedGroupView {
           // Re-order this view within its parent BlockGroupView view
-          superview.upsertBlockView(self)
+          superview.upsertView(self)
         }
       }
     }

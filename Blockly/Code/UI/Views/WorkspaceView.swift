@@ -181,69 +181,6 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Public
 
-  // TODO:(#45) Move this method out into a controller object.
-  /**
-  Copies a block view into this workspace view. This is done by:
-  1) Creating a copy of the view's block
-  2) Building its layout tree and setting its workspace position to be relative to where the given
-  block view is currently on-screen.
-  3) Immediately firing all change events that are pending on `LayoutEventManager.sharedInstance`,
-  which forces the block view to be created in `self.refreshView(...)`.
-
-  - Parameter blockView: The block view to copy into this workspace.
-  - Returns: The new block view that was added to this workspace.
-  - Throws:
-  `BlocklyError`: Thrown if the block view could not be created.
-  */
-  public func copyBlockView(blockView: BlockView) throws -> BlockView
-  {
-    // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
-    // causing a performance hit. Try to create an alternate method that performs an optimized
-    // "cut" operation.
-
-    guard let blockLayout = blockView.blockLayout else {
-      throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
-    }
-    guard let workspaceLayout = self.workspaceLayout else {
-      throw BlocklyError(.LayoutNotFound, "No workspace layout has been set for `self.layout`")
-    }
-
-    let workspace = workspaceLayout.workspace
-
-    // Get the position of the block view relative to this view, and use that as
-    // the position for the newly created block.
-    // Note: This is done before creating a new block since adding a new block might change the
-    // workspace's size, which would mess up this position calculation.
-    var blockViewPoint = CGPointZero
-    if workspaceLayout.engine.rtl {
-      // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
-      // it is the top-left corner point in LTR)
-      blockViewPoint = CGPointMake(blockView.bounds.width, 0)
-    }
-    let workspaceViewPosition =
-      blockView.convertPoint(blockViewPoint, toView: self.scrollView.blockGroupView)
-    let newWorkspacePosition = workspacePositionFromViewPosition(workspaceViewPosition)
-
-    // Create a deep copy of this block in this workspace (which will automatically create a layout
-    // tree for the block)
-    let newBlock = try workspace.copyBlockTree(blockLayout.block, editable: true)
-
-    // Set its new workspace position
-    newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
-
-    // Send change events immediately, which will force the corresponding block view to be created
-    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
-
-    guard
-      let newBlockLayout = newBlock.layout,
-      let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
-    {
-      throw BlocklyError(.ViewNotFound, "View could not be located for the copied block")
-    }
-
-    return newBlockView
-  }
-
   /**
    Maps a gesture's touch location relative to this view to a logical Workspace position.
 
@@ -254,7 +191,30 @@ public class WorkspaceView: LayoutView {
     -> WorkspacePoint
   {
     let touchPosition = gesture.locationInView(self.scrollView.blockGroupView)
-    return workspacePositionFromViewPosition(touchPosition)
+    return workspacePositionFromViewPoint(touchPosition)
+  }
+
+  /**
+   Returns the logical Workspace position of a given `BlockView` based on its position relative
+   to this `WorkspaceView`.
+
+   - Parameter blockView: The `BlockView`
+   - Returns: The `blockView`'s corresponding Workspace position
+   */
+  public final func workspacePositionFromBlockView(blockView: UIView) -> WorkspacePoint {
+    var blockViewPoint = CGPointZero
+    if (workspaceLayout?.engine.rtl ?? false) {
+      // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
+      // it is the top-left corner point in LTR)
+      blockViewPoint = CGPointMake(blockView.bounds.width, 0)
+    }
+    let workspaceViewPosition =
+      blockView.convertPoint(blockViewPoint, toView: scrollView.blockGroupView)
+    return workspacePositionFromViewPoint(workspaceViewPosition)
+  }
+
+  public final func viewPointFromWorkspacePosition(workspacePosition: WorkspacePoint) {
+
   }
 
   /**
@@ -315,7 +275,7 @@ public class WorkspaceView: LayoutView {
   - Parameter point: The `UIView` point
   - Returns: The corresponding `WorkspacePoint`
   */
-  private final func workspacePositionFromViewPosition(point: CGPoint) -> WorkspacePoint {
+  private func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePointZero
     }
@@ -552,7 +512,7 @@ public class WorkspaceView: LayoutView {
   */
   private func addBlockViewForLayout(layout: BlockLayout) throws {
     let newBlockView = try ViewFactory.sharedInstance.blockViewForLayout(layout)
-    scrollView.blockGroupView.upsertBlockView(newBlockView)
+    scrollView.blockGroupView.upsertView(newBlockView)
 
     delegate?.workspaceView(self, didAddBlockView: newBlockView)
   }
@@ -608,8 +568,8 @@ extension WorkspaceView {
   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all the block views
-    public private(set) var blockGroupView: BlockGroupView = {
-      let blockGroupView = BlockGroupView(frame: CGRectZero)
+    public private(set) var blockGroupView: ZIndexedGroupView = {
+      let blockGroupView = ZIndexedGroupView(frame: CGRectZero)
       blockGroupView.autoresizesSubviews = false
       return blockGroupView
     }()
@@ -686,111 +646,6 @@ extension WorkspaceView {
       }
 
       return super.gestureRecognizerShouldBegin(gestureRecognizer)
-    }
-  }
-}
-
-// MARK: - WorkspaceView.BlockGroupView Class
-
-extension WorkspaceView {
-  /**
-  UIView which *only* holds `BlockView` instances, where instances are ordered in the subview list
-  by their `zIndex` property. This causes each `BlockView` to be rendered and hit-tested inside
-  `BlockGroupView` based on their `zIndex`.
-
-  - Note: All block views should be added via `upsertBlockView(:)`. Using any other insertion method
-  on this class may have adverse effects. Also, adding any view other than a `BlockView` instance
-  will result in an app crash.
-  */
-  public final class BlockGroupView: UIView {
-    /// The highest z-index `BlockView` that has been added to this block group
-    private var highestInsertedZIndex: UInt = 0
-
-    /**
-    Inserts or updates a `BlockView` in this block group, where it is sorted inside `BlockGroupView`
-    based on its `zIndex`.
-
-    - Parameter blockView: The given block view
-    */
-    public func upsertBlockView(blockView: BlockView) {
-      let zIndex = blockView.zIndex
-
-      // More often than not, the target blockView's zIndex will be >= the zIndex of the highest
-      // subview anyway. Quickly check to see if that's the case.
-      if zIndex >= highestInsertedZIndex {
-        upsertBlockViewAtEnd(blockView)
-        return
-      }
-
-      let isUpdateOperation = (blockView.superview == self)
-      if isUpdateOperation {
-        // If blockView is already in this group, temporarily move it to the end.
-        // NOTE: blockView is purposely not removed from this view prior to running this method, as
-        // it will cause any active gesture recognizers on the blockView to be cancelled. Therefore,
-        // the blockView is simply skipped over if it is found in the binary search.
-        upsertBlockViewAtEnd(blockView)
-      }
-
-      // Binary search to find the correct position of where the block view should be, based on its
-      // z-index.
-
-      // Calling self.subviews is very expensive -- internally, it does not appear to be an array
-      // and is constructed dynamically when called. Only call it once and stuff it in a local var.
-      let subviews = self.subviews
-
-      // Initialize clamps
-      var min = 0
-      var max = isUpdateOperation ?
-        // Don't include the last index since that's where the given blockView is now positioned
-        (subviews.count - 1) :
-        subviews.count
-
-      while (min < max) {
-        let currentMid = (min + max) / 2
-        let currentZIndex = (subviews[currentMid] as! BlockView).zIndex
-
-        if (currentZIndex < zIndex) {
-          min = currentMid + 1
-        } else if (currentZIndex > zIndex) {
-          max = currentMid
-        } else {
-          min = currentMid
-          break
-        }
-      }
-
-      // Upsert the block view at the new index
-      upsertBlockView(blockView, atIndex: min)
-    }
-
-    private func upsertBlockViewAtEnd(blockView: BlockView) {
-      upsertBlockView(blockView, atIndex: -1)
-    }
-
-    /**
-    Upserts a block view into the group.
-
-    - Parameter blockView: The block view to upsert
-    - Parameter index: The index to upsert the block view at. If the value is < 0, the block view is
-    automatically upserted to the end of `self.subviews`.
-    */
-    private func upsertBlockView(blockView: BlockView, atIndex index: Int) {
-      if index >= 0 {
-        // Calling insertSubview(...) on a block view that is already a subview just updates its
-        // position in `self.subviews`.
-        // Note: Inserting (or re-inserting) a subview at an `index` greater than the number of
-        // subviews does not cause an error, it simply puts it at the end.
-        insertSubview(blockView, atIndex: index)
-      } else {
-        // Calling addSubview(_) always adds the view to the end of `self.subviews` (regardless of
-        // whether the view was already a subview) and brings it to appear on top of all other
-        // subviews.
-        addSubview(blockView)
-      }
-
-      if blockView.zIndex >= highestInsertedZIndex {
-        highestInsertedZIndex = blockView.zIndex
-      }
     }
   }
 }
