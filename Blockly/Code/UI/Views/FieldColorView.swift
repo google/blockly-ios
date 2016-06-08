@@ -28,25 +28,26 @@ public class FieldColorView: FieldView {
   }
 
   /// The color button to render
-  private var button: UIButton!
-
-  // MARK: - Initializers
-
-  public required init() {
-    self.button = UIButton(type: .Custom)
-    super.init(frame: CGRectZero)
-
+  private lazy var button: UIButton = {
+    let button = UIButton(type: .Custom)
     button.frame = self.bounds
     button.clipsToBounds = true
     button.layer.borderColor = UIColor.whiteColor().CGColor
     button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
+    return button
+  }()
+
+  // MARK: - Initializers
+
+  public required init() {
+    super.init(frame: CGRectZero)
+
     addSubview(button)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super

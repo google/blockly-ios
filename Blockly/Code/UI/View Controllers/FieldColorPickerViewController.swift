@@ -84,7 +84,13 @@ public class FieldColorPickerViewController: UICollectionViewController {
   public weak var delegate: FieldColorPickerViewControllerDelegate?
 
   /// The flow layout used for this collection view
-  private var _flowLayout: UICollectionViewFlowLayout!
+  private let _flowLayout: UICollectionViewFlowLayout = {
+    let flowLayout = UICollectionViewFlowLayout()
+    flowLayout.scrollDirection = .Vertical
+    flowLayout.minimumLineSpacing = 0
+    flowLayout.minimumInteritemSpacing = 0
+    return flowLayout
+  }()
 
   /// Reusable cell ID for each color picker cell
   private let _reusableCellIdentifier = "FieldColorPickerViewCell"
@@ -92,16 +98,11 @@ public class FieldColorPickerViewController: UICollectionViewController {
   // MARK: - Initializers
 
   public init() {
-    _flowLayout = UICollectionViewFlowLayout()
-    _flowLayout.scrollDirection = .Vertical
-    _flowLayout.minimumLineSpacing = 0
-    _flowLayout.minimumInteritemSpacing = 0
     super.init(collectionViewLayout: _flowLayout)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
