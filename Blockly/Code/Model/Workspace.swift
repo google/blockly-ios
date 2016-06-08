@@ -73,10 +73,19 @@ Data structure that contains `Block` instances.
 public class Workspace : NSObject {
   // MARK: - Properties
 
-  // TODO:(#85) Enforce this property
   /// The maximum number of blocks that this workspace may contain. If this value is set to `nil`,
   /// no maximum limit is enforced.
   public let maxBlocks: Int?
+
+  /// The maximum number of blocks that can be currently added to the workspace. If this value is
+  /// `nil`, no maximum limit is being enforced.
+  public var remainingCapacity: Int? {
+    if let maxBlocks = self.maxBlocks {
+      return max(maxBlocks - allBlocks.count, 0)
+    } else {
+      return nil
+    }
+  }
 
   /// Dictionary mapping all `Block` instances in this workspace to their `uuid` value
   public private(set) var allBlocks = [String: Block]()
@@ -122,7 +131,7 @@ public class Workspace : NSObject {
 
   - Parameter maxBlocks: Optional parameter for setting `self.maxBlocks`.
   */
-  public init(rtl: Bool? = nil, maxBlocks: Int? = nil) {
+  public init(maxBlocks: Int? = nil) {
     self.maxBlocks = maxBlocks
     super.init()
   }
@@ -142,9 +151,14 @@ public class Workspace : NSObject {
    - Parameter rootBlock: The root block to add.
    - Throws:
    `BlocklyError`: Thrown if one of the blocks uses a uuid that is already being used by another
-   block in the workspace.
+   block in the workspace or if adding the new set of blocks would exceed the maximum amount
+   allowed.
    */
   public func addBlockTree(rootBlock: Block) throws {
+    var newBlocks = [Block]()
+
+    // Gather list of all new blocks and perform state checks.
+
     for block in rootBlock.allBlocksForTree() {
       if let existingBlock = allBlocks[block.uuid] {
         if existingBlock == block {
@@ -162,6 +176,17 @@ public class Workspace : NSObject {
           .IllegalState, "Shadow block cannot be added to the workspace as a top-level block.")
       }
 
+      newBlocks.append(block)
+    }
+
+    if let maxBlocks = self.maxBlocks where (allBlocks.count + newBlocks.count) > maxBlocks {
+      throw BlocklyError(
+        .IllegalState, "Adding more blocks would exceed the maximum amount allowed (\(maxBlocks))")
+    }
+
+    // All checks passed. Add the new blocks to the workspace.
+
+    for block in newBlocks {
       block.editable = !readOnly
       allBlocks[block.uuid] = block
       delegate?.workspace(self, didAddBlock: block)
@@ -175,8 +200,10 @@ public class Workspace : NSObject {
    connected blocks from the workspace.
 
    - Parameter rootBlock: The root block to remove.
+   - Throws:
+   `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
-  public func removeBlockTree(rootBlock: Block) {
+  public func removeBlockTree(rootBlock: Block) throws {
     // Disconnect this block from anything
     rootBlock.previousConnection?.disconnect()
     rootBlock.outputConnection?.disconnect()
@@ -214,6 +241,24 @@ public class Workspace : NSObject {
   */
   public func containsBlock(block: Block) -> Bool {
     return (allBlocks[block.uuid] == block)
+  }
+
+  /**
+   For all top-level blocks in the workspace, disables any block trees that contain more than
+   a given number of blocks.
+
+   - Parameter threshold: The maximum number of blocks that a block tree may contain before it is
+   disabled.
+   */
+  public func disableBlocks(forGroupsGreaterThan threshold: Int) {
+    for rootBlock in topLevelBlocks() {
+      let blocks = rootBlock.allBlocksForTree()
+      let disabled = blocks.count > threshold
+
+      for block in blocks {
+        block.disabled = disabled
+      }
+    }
   }
 
   // MARK: - Private

@@ -261,4 +261,8 @@ extension BlockLayout: ConnectionHighlightDelegate {
 // MARK: - BlockDelegate
 
 extension BlockLayout: BlockDelegate {
+  public func didUpdateBlock(block: Block) {
+    // Refresh the block since it's been updated
+    scheduleChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
+  }
 }
