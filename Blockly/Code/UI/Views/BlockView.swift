@@ -75,11 +75,6 @@ public class BlockView: LayoutView {
 
   public required init() {
     super.init(frame: CGRectZero)
-
-    // Enable user interaction on this view since it can be dragged around. This is needed by
-    // `WorkspaceView.ScrollView` to distinguish between dragging blocks and scrolling the
-    // workspace.
-    self.userInteractionEnabled = true
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -137,6 +132,9 @@ public class BlockView: LayoutView {
           // Do nothing. The field view will handle its own refreshing/repositioning.
         }
       }
+
+      // Set its user interaction
+      userInteractionEnabled = !layout.block.disabled
     }
 
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateZIndex]) {

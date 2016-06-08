@@ -24,15 +24,6 @@ public class DefaultBlockView: BlockView {
     return self.layout as? DefaultBlockLayout
   }
 
-  /// Saturation multiplier to use when calculating the shadow block fill/stroke colours
-  public var shadowSaturationMultiplier = CGFloat(0.4)
-  /// Brightness multiplier to use when calculating the shadow block fill/stroke colours
-  public var shadowBrightnessMultiplier = CGFloat(1.2)
-  /// Block background fill alpha to use when the block is being dragged
-  public var draggingBackgroundFillAlpha = CGFloat(0.8)
-  /// Block background stroke alpha to use when the block is being dragged
-  public var draggingBackgroundBackgroundAlpha = CGFloat(0.7)
-
   /// Layer for rendering the block's background
   private let _backgroundLayer = BezierPathLayer()
 
@@ -70,30 +61,52 @@ public class DefaultBlockView: BlockView {
       return
     }
 
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay]) {
+      alpha = layout.block.disabled ?
+        layout.config.floatFor(DefaultLayoutConfig.BlockDisabledAlpha) :
+        layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
+    }
+
     if flags.intersectsWith(
       [BlockLayout.Flag_NeedsDisplay,
         BlockLayout.Flag_UpdateHighlight,
         BlockLayout.Flag_UpdateDragging])
     {
-      // Update background
-      var strokeColor = (layout.highlighted ?
-        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
-        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
-        UIColor.clearColor()
-      var fillColor = layout.block.color
+      // Figure out the stroke and fill colors of the block
+      var strokeColor = UIColor.clearColor()
+      var fillColor = UIColor.clearColor()
 
-      if layout.block.shadow {
-        strokeColor = shadowColorForColor(strokeColor)
-        fillColor = shadowColorForColor(fillColor)
+      if layout.block.disabled {
+        strokeColor =
+          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
+        fillColor =
+          layout.config.colorFor(DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
+      } else {
+        strokeColor = (layout.highlighted ?
+          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
+          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
+          UIColor.clearColor()
+        fillColor = layout.block.color
+
+        if layout.block.shadow {
+          strokeColor = shadowColorForColor(strokeColor, config: layout.config)
+          fillColor = shadowColorForColor(fillColor, config: layout.config)
+        }
+
+        if layout.dragging {
+          strokeColor = strokeColor.colorWithAlphaComponent(
+            layout.config.floatFor(DefaultLayoutConfig.BlockDraggingStrokeColorAlpha))
+          fillColor = fillColor.colorWithAlphaComponent(
+            layout.config.floatFor(DefaultLayoutConfig.BlockDraggingFillColorAlpha))
+        }
       }
 
-      _backgroundLayer.strokeColor = layout.dragging ?
-        strokeColor.colorWithAlphaComponent(0.8).CGColor : strokeColor.CGColor
+      // Update the background layer
+      _backgroundLayer.strokeColor = strokeColor.CGColor
+      _backgroundLayer.fillColor = fillColor.CGColor
       _backgroundLayer.lineWidth = layout.highlighted ?
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
-      _backgroundLayer.fillColor = layout.dragging ?
-        fillColor.colorWithAlphaComponent(0.7).CGColor : fillColor.CGColor
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()
       _backgroundLayer.frame = self.bounds
     }
@@ -353,10 +366,11 @@ public class DefaultBlockView: BlockView {
     path.applyTransform(transform)
   }
 
-  private func shadowColorForColor(color: UIColor) -> UIColor {
+  private func shadowColorForColor(color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
-    hsba.saturation *= shadowSaturationMultiplier
-    hsba.brightness = max(hsba.brightness * shadowBrightnessMultiplier, 1)
+    hsba.saturation *= config.floatFor(DefaultLayoutConfig.BlockShadowSaturationMultiplier)
+    hsba.brightness =
+      max(hsba.brightness * config.floatFor(DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
     return UIColor(
       hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)
   }

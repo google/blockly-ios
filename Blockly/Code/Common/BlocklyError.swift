@@ -32,6 +32,7 @@ public class BlocklyError: NSError {
   @objc
   public enum BKYBlocklyErrorCode: Int {
     case InvalidBlockDefinition = 100,
+    WorkspaceExceedsCapacity = 150,
     LayoutNotFound = 200,
     ConnectionManagerError = 210,
     ConnectionInvalid = 211,

@@ -20,6 +20,12 @@ Protocol for events that occur on a `Block` instance.
 */
 @objc(BKYBlockDelegate)
 public protocol BlockDelegate: class {
+  /**
+   Event that is fired when one of a block's properties has changed.
+
+   - Parameter block: The `Block` that changed.
+   */
+  func didUpdateBlock(block: Block)
 }
 
 /**
@@ -42,24 +48,35 @@ public final class Block : NSObject {
 
   /// A unique identifier used to identify this block for its lifetime
   public let uuid: String
+  /// The type name of this block
   public let name: String
-  public let category: Int
+  /// Flag indicating if input connectors should be drawn inside a block (`true`) or
+  /// on the edge of the block (`false`)
   public let inputsInline: Bool
+  /// The absolute position of the block, in the Workspace coordinate system
   public internal(set) var position: WorkspacePoint = WorkspacePointZero
-  /// Flag if this is a shadow block (`true`) or not (`false)
+  /// Flag indicating if this is a shadow block (`true`) or not (`false)
   public let shadow: Bool
+  /// The `.OutputValue` connection for this block
   public let outputConnection: Connection?
+  /// Convenience property for accessing `self.outputConnection?.targetBlock`
   public var outputBlock: Block? {
     return outputConnection?.targetBlock
   }
+  /// The `.NextStatement` connection for this block
   public let nextConnection: Connection?
+  /// Convenience property for accessing `self.nextConnection?.targetBlock`
   public var nextBlock: Block? {
     return nextConnection?.targetBlock
   }
+  /// Convenience property for accessing `self.nextConnection?.shadowBlock`
   public var nextShadowBlock: Block? {
     return nextConnection?.shadowBlock
   }
+  /// The `.PreviousStatement` connection for this block
+  /// - Note: A block may only have one non-nil `self.outputConnection` or `self.previousConnection`
   public let previousConnection: Connection?
+  /// Convenience property for accessing `self.previousConnection?.targetBlock`
   public var previousBlock: Block? {
     return previousConnection?.targetBlock
   }
@@ -71,19 +88,41 @@ public final class Block : NSObject {
 
   /// List of connections directly attached to this block
   public private(set) var directConnections = [Connection]()
+  /// List of inputs attached to this block
   public let inputs: [Input]
-  public private(set) var color: UIColor
-  public var tooltip: String = ""
-  public var comment: String = ""
-  public var helpURL: String = ""
-  public var hasContextMenu: Bool = true
-  public var deletable: Bool = true
-  public var movable: Bool = true
-
-  // TODO:(#26) Update model so that this property is respected.
+  /// The color of the block
+  public let color: UIColor
+  /// Tooltip text of the block
+  public var tooltip: String {
+    didSet { didSetEditableProperty(&tooltip, oldValue) }
+  }
+  /// The comment text of the block
+  public var comment: String {
+    didSet { didSetEditableProperty(&comment, oldValue) }
+  }
+  /// A help URL to learn more info about this block
+  public var helpURL: String {
+    didSet { didSetEditableProperty(&helpURL, oldValue) }
+  }
+  /// Flag indicating if this block may be deleted
+  public var deletable: Bool {
+    didSet { didSetProperty(deletable, oldValue) }
+  }
+  /// Flag indicating if this block may be moved by the user
+  public var movable: Bool {
+    didSet { didSetProperty(movable, oldValue) }
+  }
+  /// Flag indicating if this block has had its user interaction disabled
+  public var disabled: Bool  {
+    didSet { didSetProperty(disabled, oldValue) }
+  }
+  /// Flag indicating if this block may be dragged by the user
+  public var draggable: Bool {
+    return movable && !shadow
+  }
   /// Flag indicating if this block can be edited. Updating this property automatically updates
-  /// the `editable` on all child fields.
-  public var editable: Bool = true {
+  /// the `editable` property on all child fields.
+  public var editable: Bool {
     didSet {
       if editable == oldValue {
         return
@@ -96,18 +135,15 @@ public final class Block : NSObject {
       }
     }
   }
-  public var disabled: Bool = false
 
-  /// Flag if this block is at the highest level in the workspace
+
+  /// Flag indicating if this block is at the highest level in the workspace
   public var topLevel: Bool {
     return previousConnection?.targetConnection == nil &&
       previousConnection?.shadowConnection == nil &&
       outputConnection?.targetConnection == nil &&
       outputConnection?.shadowConnection == nil
   }
-
-  public var collapsed: Bool = false
-  public var rendered: Bool = false
 
   /// A delegate for listening to events on this block
   public weak var delegate: BlockDelegate?
@@ -123,13 +159,13 @@ public final class Block : NSObject {
   To create a Block, use Block.Builder instead.
   */
   internal init(
-    uuid: String?, name: String, category: Int, color: UIColor, inputs: [Input] = [],
-    inputsInline: Bool, shadow: Bool, outputConnection: Connection?,
+    uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
+    shadow: Bool, tooltip: String , comment: String, helpURL: String, deletable: Bool,
+    movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = uuid ?? NSUUID().UUIDString
     self.name = name
-    self.category = category
     self.color = color
     self.inputs = inputs
     self.inputsInline = inputsInline
@@ -137,6 +173,13 @@ public final class Block : NSObject {
     self.outputConnection = outputConnection
     self.previousConnection = previousConnection
     self.nextConnection = nextConnection
+    self.tooltip = tooltip
+    self.comment = comment
+    self.helpURL = helpURL
+    self.deletable = deletable
+    self.movable = movable
+    self.disabled = disabled
+    self.editable = editable
 
     super.init()
 
@@ -387,5 +430,69 @@ public final class Block : NSObject {
       }
     }
     return valueInput
+  }
+
+  // MARK: - Private
+
+  /**
+   A convenience method that should be called inside the `didSet { ... }` block of editable instance
+   properties.
+
+   If `self.editable == true` and `editableProperty != oldValue`, this method will automatically
+   call `delegate?.didUpdateBlock(self)`.
+
+   If `self.editable == true` and `editableProperty == oldValue`, nothing happens.
+
+   If `self.editable == false`, this method automatically reverts `editableProperty` back to
+   `oldValue`.
+
+   Usage:
+   ```
+   var someEditableInteger: Int {
+   didSet { didSetEditableProperty(&someEditableInteger, oldValue) }
+   }
+   ```
+
+   - Parameter editableProperty: The instance property that had been set
+   - Parameter oldValue: The old value of the instance property
+   - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   */
+  public func didSetEditableProperty<T: Equatable>(inout editableProperty: T, _ oldValue: T)
+    -> Bool
+  {
+    if !self.editable {
+      editableProperty = oldValue
+    }
+    if editableProperty == oldValue {
+      return false
+    }
+    delegate?.didUpdateBlock(self)
+    return true
+  }
+
+  /**
+   A convenience method that should be called inside the `didSet { ... }` block of instance
+   properties.
+
+   If `property != oldValue`, this method will automatically call `delegate?.didUpdateBlock(self)`.
+   If `editableProperty == oldValue`, nothing happens.
+
+   Usage:
+   ```
+   var someString: String {
+   didSet { didSetProperty(someString, oldValue) }
+   }
+   ```
+
+   - Parameter property: The instance property that had been set
+   - Parameter oldValue: The old value of the instance property
+   - Returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
+   */
+  public func didSetProperty<T: Equatable>(property: T, _ oldValue: T) -> Bool {
+    if property == oldValue {
+      return false
+    }
+    delegate?.didUpdateBlock(self)
+    return true
   }
 }

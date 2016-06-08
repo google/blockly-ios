@@ -29,7 +29,6 @@ extension Block {
 
     // These values are publicly immutable in `Block`
     public var name: String = ""
-    public var category: Int = 0
     public var color: UIColor = UIColor.clearColor()
     public private(set) var outputConnectionEnabled: Bool = false
     public private(set) var outputConnectionTypeChecks: [String]?
@@ -44,13 +43,10 @@ extension Block {
     public var tooltip: String = ""
     public var comment: String = ""
     public var helpURL: String = ""
-    public var hasContextMenu: Bool = true
     public var deletable: Bool = true
     public var movable: Bool = true
     public var editable: Bool = true
-    public var collapsed: Bool = false
     public var disabled: Bool = false
-    public var rendered: Bool = false
 
     // MARK: - Initializers
 
@@ -67,20 +63,16 @@ extension Block {
     */
     public init(block: Block) {
       name = block.name
-      category = block.category
       color = block.color
       inputsInline = block.inputsInline
 
       tooltip = block.tooltip
       comment = block.comment
       helpURL = block.helpURL
-      hasContextMenu = block.hasContextMenu
       deletable = block.deletable
       movable = block.movable
       editable = block.editable
-      collapsed = block.collapsed
       disabled = block.disabled
-      rendered = block.rendered
 
       outputConnectionEnabled = block.outputConnection != nil ? true : false
       outputConnectionTypeChecks = block.outputConnection?.typeChecks
@@ -126,21 +118,12 @@ extension Block {
       }
       let inputs = inputBuilders.map({ $0.build() })
 
-      let block = Block(uuid: uuid, name: name, category: category,
-        color: color, inputs: inputs, inputsInline: inputsInline, shadow: shadow,
+      let block = Block(
+        uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,
+        shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL, deletable: deletable,
+        movable: movable, disabled: disabled, editable: editable,
         outputConnection: outputConnection, previousConnection: previousConnection,
         nextConnection: nextConnection)
-
-      block.tooltip = tooltip
-      block.comment = comment
-      block.helpURL = helpURL
-      block.hasContextMenu = hasContextMenu
-      block.deletable = deletable
-      block.movable = movable
-      block.editable = editable
-      block.collapsed = collapsed
-      block.disabled = disabled
-      block.rendered = rendered
 
       return block
     }

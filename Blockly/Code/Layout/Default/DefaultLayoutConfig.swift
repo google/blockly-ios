@@ -59,8 +59,34 @@ public class DefaultLayoutConfig: LayoutConfig {
   /// [`UIColor`] The default stroke color to use when rendering a block
   public static let BlockStrokeDefaultColor = LayoutConfig.newPropertyKey()
 
-  /// [`UIColor`] The highlight stroke color to use when rendering a block
+  /// [`UIColor`] The stroke color to use when rendering a highlighted block
   public static let BlockStrokeHighlightColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The stroke color to use when rendering a disabled block
+  public static let BlockStrokeDisabledColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The fill color to use when rendering a disabled block
+  public static let BlockFillDisabledColor = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The default alpha value to use when rendering a block
+  public static let BlockDefaultAlpha = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The alpha value to use when rendering a disabled block
+  public static let BlockDisabledAlpha = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The alpha value to use when rendering the fill color of a dragged block
+  public static let BlockDraggingFillColorAlpha = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The alpha value to use when rendering the stroke color of a dragged block
+  public static let BlockDraggingStrokeColorAlpha = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The saturation multiplier to use when calculating a shadow block's fill/stroke
+  /// colors
+  public static let BlockShadowSaturationMultiplier = LayoutConfig.newPropertyKey()
+
+  /// [`Float`] The brightness multiplier to use when calculating a shadow block's fill/stroke
+  /// colors
+  public static let BlockShadowBrightnessMultiplier = LayoutConfig.newPropertyKey()
 
   /// [`Size`] Minimum size of the inline connector
   public static let MinimumInlineConnectorSize = LayoutConfig.newPropertyKey()
@@ -86,5 +112,15 @@ public class DefaultLayoutConfig: LayoutConfig {
 
     setColor(UIColor.darkGrayColor(), forKey: DefaultLayoutConfig.BlockStrokeDefaultColor)
     setColor(UIColor.blueColor(), forKey: DefaultLayoutConfig.BlockStrokeHighlightColor)
+    setColor(ColorHelper.colorFromRGB("555555"),
+             forKey: DefaultLayoutConfig.BlockStrokeDisabledColor)
+    setColor(ColorHelper.colorFromRGB("dddddd"),
+             forKey: DefaultLayoutConfig.BlockFillDisabledColor)
+    setFloat(0.7, forKey: DefaultLayoutConfig.BlockDraggingFillColorAlpha)
+    setFloat(0.8, forKey: DefaultLayoutConfig.BlockDraggingStrokeColorAlpha)
+    setFloat(1.0, forKey: DefaultLayoutConfig.BlockDefaultAlpha)
+    setFloat(0.5, forKey: DefaultLayoutConfig.BlockDisabledAlpha)
+    setFloat(0.4, forKey: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
+    setFloat(1.2, forKey: DefaultLayoutConfig.BlockShadowBrightnessMultiplier)
   }
 }

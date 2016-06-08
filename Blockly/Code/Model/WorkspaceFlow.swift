@@ -41,14 +41,14 @@ public class WorkspaceFlow: Workspace {
   // MARK: - Super
 
   public override func addBlockTree(rootBlock: Block) throws {
-    items.append(Item(rootBlock: rootBlock))
     try super.addBlockTree(rootBlock)
+    items.append(Item(rootBlock: rootBlock))
   }
 
-  public override func removeBlockTree(rootBlock: Block) {
+  public override func removeBlockTree(rootBlock: Block) throws {
+    try super.removeBlockTree(rootBlock)
     // Remove item for this block (by only keeping blocks that don't match this rootBlock)
     items = items.filter({ $0.rootBlock != rootBlock })
-    super.removeBlockTree(rootBlock)
   }
 
   // MARK: - Public
