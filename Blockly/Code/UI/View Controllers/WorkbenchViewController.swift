@@ -424,6 +424,61 @@ public class WorkbenchViewController: UIViewController {
       }
     }
   }
+
+  /**
+   Copies a block view into this workspace view. This is done by:
+   1) Creating a copy of the view's block
+   2) Building its layout tree and setting its workspace position to be relative to where the given
+   block view is currently on-screen.
+   3) Immediately firing all change events that are pending on `LayoutEventManager.sharedInstance`,
+   which forces the block view to be created in `self.refreshView(...)`.
+
+   - Parameter blockView: The block view to copy into this workspace.
+   - Returns: The new block view that was added to this workspace.
+   - Throws:
+   `BlocklyError`: Thrown if the block view could not be created.
+   */
+  public func copyBlockView(blockView: BlockView) throws -> BlockView
+  {
+    // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
+    // causing a performance hit. Try to create an alternate method that performs an optimized
+    // "cut" operation.
+
+    guard let blockLayout = blockView.blockLayout else {
+      throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
+    }
+    guard let workspaceLayout = _workspaceLayout else {
+      throw BlocklyError(
+        .LayoutNotFound, "No workspace layout has been set for `self._workspaceLayout`")
+    }
+
+    let workspace = workspaceLayout.workspace
+
+    // Get the position of the block view relative to this view, and use that as
+    // the position for the newly created block.
+    // Note: This is done before creating a new block since adding a new block might change the
+    // workspace's size, which would mess up this position calculation.
+    let newWorkspacePosition = workspaceView.workspacePositionFromBlockView(blockView)
+
+    // Create a deep copy of this block in this workspace (which will automatically create a layout
+    // tree for the block)
+    let newBlock = try workspace.copyBlockTree(blockLayout.block, editable: true)
+
+    // Set its new workspace position
+    newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
+
+    // Send change events immediately, which will force the corresponding block view to be created
+    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
+
+    guard
+      let newBlockLayout = newBlock.layout,
+      let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
+    {
+      throw BlocklyError(.ViewNotFound, "View could not be located for the copied block")
+    }
+    
+    return newBlockView
+  }
 }
 
 // MARK: - State Handling
@@ -652,16 +707,21 @@ extension WorkbenchViewController {
     if gesture.state == UIGestureRecognizerState.Began {
       // The block the user is dragging out of the toolbox/trash may be a child of a large nested
       // block. We want to do a deep copy on the root block (not just the current block).
-      let rootBlockLayout = aBlockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+      guard let rootBlockLayout = aBlockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+        else
+      {
+        return
+      }
 
       // TODO:(#45) This should be copying the root block layout, not the root block view.
       let rootBlockView: BlockView! =
-        ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout!)
+        ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout)
+
 
       // Copy the block view into the workspace view
       let newBlockView: BlockView
       do {
-        newBlockView = try workspaceView.copyBlockView(rootBlockView)
+        newBlockView = try copyBlockView(rootBlockView)
         updateWorkspaceCapacity()
       } catch let error as NSError {
         bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
@@ -678,13 +738,12 @@ extension WorkbenchViewController {
       let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
       _dragger.startDraggingBlockLayout(newBlockView.blockLayout!, touchPosition: touchPosition)
 
-      if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace,
-        let rootBlock = rootBlockLayout?.block
-        where trashWorkspace.containsBlock(rootBlock)
+      if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace
+        where trashWorkspace.containsBlock(rootBlockLayout.block)
       {
         do {
           // Remove this block view from the trash can
-          try _trashCanViewController.workspace?.removeBlockTree(rootBlockView.blockLayout!.block)
+          try _trashCanViewController.workspace?.removeBlockTree(rootBlockLayout.block)
         } catch let error as NSError {
           bky_assertionFailure("Could not remove block from trash can: \(error)")
           return
