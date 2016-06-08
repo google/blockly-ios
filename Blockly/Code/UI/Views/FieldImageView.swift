@@ -28,23 +28,24 @@ public class FieldImageView: FieldView {
   }
 
   /// The image to render
-  private var imageView: UIImageView!
+  private lazy var imageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.frame = self.bounds
+    imageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    imageView.contentMode = .ScaleAspectFill
+    return imageView
+  }()
 
   // MARK: - Initializers
 
   public required init() {
-    self.imageView = UIImageView()
     super.init(frame: CGRectZero)
 
-    imageView.frame = self.bounds
-    imageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    imageView.contentMode = .ScaleAspectFill
     addSubview(imageView)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super

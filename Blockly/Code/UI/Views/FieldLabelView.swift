@@ -28,21 +28,22 @@ public class FieldLabelView: FieldView {
   }
 
   /// The label to render
-  private var label: UILabel!
+  private let label: UILabel = {
+    let label = UILabel(frame: CGRectZero)
+    label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    return label
+  }()
 
   // MARK: - Initializers
 
   public required init() {
-    self.label = UILabel(frame: CGRectZero)
     super.init(frame: CGRectZero)
 
-    label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     addSubview(label)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super

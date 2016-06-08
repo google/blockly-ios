@@ -53,7 +53,13 @@ public class WorkspaceView: LayoutView {
   }
 
   /// Scroll view used to render the workspace
-  public private(set) var scrollView: WorkspaceView.ScrollView!
+  public lazy var scrollView: WorkspaceView.ScrollView = {
+    let scrollView = WorkspaceView.ScrollView(frame: self.bounds)
+    scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    scrollView.autoresizesSubviews = false
+    scrollView.delegate = self
+    return scrollView
+  }()
 
   /// Delegate for events that occur on this view
   public weak var delegate: WorkspaceViewDelegate?
@@ -85,12 +91,8 @@ public class WorkspaceView: LayoutView {
   // MARK: - Initializers
 
   public required init() {
-    self.scrollView = WorkspaceView.ScrollView(frame: CGRectZero)
     super.init(frame: CGRectZero)
 
-    scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    scrollView.autoresizesSubviews = false
-    scrollView.delegate = self
     addSubview(scrollView)
 
     // Don't automatically update `self.frame` based on `self.layout`
@@ -99,8 +101,7 @@ public class WorkspaceView: LayoutView {
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
@@ -607,10 +608,18 @@ extension WorkspaceView {
   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all the block views
-    public private(set) var blockGroupView: BlockGroupView!
+    public private(set) var blockGroupView: BlockGroupView = {
+      let blockGroupView = BlockGroupView(frame: CGRectZero)
+      blockGroupView.autoresizesSubviews = false
+      return blockGroupView
+    }()
 
     /// The fake pan gesture recognizer
-    private var _fakePanGestureRecognizer: UIPanGestureRecognizer!
+    private lazy var _fakePanGestureRecognizer: UIPanGestureRecognizer = {
+      let fakePanGestureRecognizer = UIPanGestureRecognizer()
+      fakePanGestureRecognizer.delegate = self
+      return fakePanGestureRecognizer
+    }()
 
     /// The first touch of the fake pan gesture recognizer
     private var _firstTouch: UITouch?
@@ -618,23 +627,18 @@ extension WorkspaceView {
     // MARK: - Initializers
 
     private override init(frame: CGRect) {
-      _fakePanGestureRecognizer = UIPanGestureRecognizer()
-      blockGroupView = BlockGroupView(frame: CGRectZero)
       super.init(frame: frame)
 
-      _fakePanGestureRecognizer.delegate = self
       addGestureRecognizer(_fakePanGestureRecognizer)
-      self.panGestureRecognizer.requireGestureRecognizerToFail(_fakePanGestureRecognizer)
+      panGestureRecognizer.requireGestureRecognizerToFail(_fakePanGestureRecognizer)
 
-      blockGroupView.autoresizesSubviews = false
       addSubview(blockGroupView)
 
-      self.delaysContentTouches = false
+      delaysContentTouches = false
     }
 
     public required init?(coder aDecoder: NSCoder) {
-      super.init(coder: aDecoder)
-      bky_assertionFailure("Called unsupported initializer")
+      fatalError("Called unsupported initializer")
     }
 
     // MARK: - Super

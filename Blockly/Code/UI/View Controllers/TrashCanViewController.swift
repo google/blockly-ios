@@ -29,15 +29,21 @@ public class TrashCanViewController: UIViewController {
     return workspaceLayout?.workspace
   }
   /// The trash can's `WorkspaceView`
-  public var workspaceView: WorkspaceView! {
-    return self.view as! WorkspaceView
-  }
+  public lazy var workspaceView: WorkspaceView = {
+    let workspaceView = WorkspaceView()
+    workspaceView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
+    workspaceView.allowCanvasPadding = false
+    workspaceView.addObserver(self, forKeyPath: "bounds",
+      options: NSKeyValueObservingOptions.New, context: &self._kvoContextBounds)
+    workspaceView.layout = self.workspaceLayout
+    return workspaceView
+  }()
   /// The layout engine to use for displaying the trash can
-  public private(set) var engine: LayoutEngine!
+  public let engine: LayoutEngine
   /// The layout builder to create layout hierarchies inside the trash can
-  public private(set) var layoutBuilder: LayoutBuilder!
+  public let layoutBuilder: LayoutBuilder
   /// The layout direction to use for `self.workspaceLayout`
-  public private(set) var layoutDirection: WorkspaceFlowLayout.LayoutDirection!
+  public let layoutDirection: WorkspaceFlowLayout.LayoutDirection
 
   /// The constraint for resizing the width of `self.workspaceView`
   private var _workspaceViewWidthConstraint: NSLayoutConstraint?
@@ -56,45 +62,34 @@ public class TrashCanViewController: UIViewController {
     self.layoutBuilder = layoutBuilder
     self.layoutDirection = layoutDirection
     super.init(nibName: nil, bundle: nil)
-    commonInit()
-  }
 
-  public required init?(coder aDecoder: NSCoder) {
-    // TODO:(#52) Support the ability to create view controllers from XIBs.
-    // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  deinit {
-    self.workspaceView?.removeObserver(self, forKeyPath: "bounds")
-  }
-
-  private func commonInit() {
     // Create the workspace and layout representing the trash can
     let workspace = WorkspaceFlow()
     workspace.readOnly = true
 
     do {
-      self.workspaceLayout = try WorkspaceFlowLayout(workspace: workspace,
-        layoutDirection: layoutDirection, engine: engine, layoutBuilder: layoutBuilder)
+      self.workspaceLayout = try WorkspaceFlowLayout(
+        workspace: workspace, layoutDirection: layoutDirection, engine: engine,
+        layoutBuilder: layoutBuilder)
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    // TODO:(#52) Support the ability to create view controllers from XIBs.
+    // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
+    fatalError("Called unsupported initializer")
+  }
+
+  deinit {
+    workspaceView.removeObserver(self, forKeyPath: "bounds")
   }
 
   // MARK: - Super
 
   public override func loadView() {
     super.loadView()
-
-    let workspaceView = WorkspaceView()
-    workspaceView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
-    workspaceView.allowCanvasPadding = false
-    workspaceView.addObserver(self,
-      forKeyPath: "bounds", options: NSKeyValueObservingOptions.New, context: &_kvoContextBounds)
-    workspaceView.layout = workspaceLayout
 
     self.view = workspaceView
   }

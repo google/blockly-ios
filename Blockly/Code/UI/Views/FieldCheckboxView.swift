@@ -30,22 +30,23 @@ public class FieldCheckboxView: FieldView {
   }
 
   /// The switch button (i.e. the "checkbox")
-  private var switchButton: UISwitch!
+  private lazy var switchButton: UISwitch = {
+    let switchButton = UISwitch()
+    switchButton.addTarget(
+      self, action: #selector(switchValueDidChange(_:)), forControlEvents: .ValueChanged)
+    return switchButton
+  }()
 
   // MARK: - Initializers
 
   public required init() {
     super.init(frame: CGRectZero)
 
-    switchButton = UISwitch()
-    switchButton
-      .addTarget(self, action: #selector(switchValueDidChange(_:)), forControlEvents: .ValueChanged)
     addSubview(switchButton)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    bky_assertionFailure("Called unsupported initializer")
-    super.init(coder: aDecoder)
+    fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
