@@ -84,7 +84,6 @@ public class LayoutEngine: NSObject {
   calculation would need to be done to get the UIView point's translated Workspace point.
   */
   public final func scaledWorkspaceVectorFromViewVector(point: CGPoint) -> WorkspacePoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return WorkspacePointZero
     } else if scale == 1 {
@@ -159,7 +158,6 @@ public class LayoutEngine: NSObject {
    - Returns: A point in the UIView coordinate system.
    */
   public final func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
     } else if scale == 1 {
@@ -178,7 +176,6 @@ public class LayoutEngine: NSObject {
    - Returns: A point in the UIView coordinate system.
    */
   public final func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
-    // TODO:(#28) Handle the offset of the viewport relative to the workspace
     if scale == 0 {
       return CGPointZero
     } else if scale == 1 {

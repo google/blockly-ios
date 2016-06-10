@@ -44,8 +44,6 @@ public final class Block : NSObject {
 
   // MARK: - Properties
 
-  // TODO:(#104) Remove unused properties
-
   /// A unique identifier used to identify this block for its lifetime
   public let uuid: String
   /// The type name of this block

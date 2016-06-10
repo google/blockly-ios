@@ -70,7 +70,6 @@ public final class DefaultBlockLayout: BlockLayout {
         _previousConnection.moveToPosition(self.absolutePosition,
           withOffset: _previousConnectionRelativePosition)
       }
-      // TODO:(#28) Scale and offset correctly into the workspace
       block.position = self.absolutePosition
     }
   }
