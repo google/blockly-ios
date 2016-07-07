@@ -131,13 +131,7 @@ public class WorkspaceLayout: Layout {
   Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
   */
   public func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
-    var descendants = [BlockLayout]()
-    for (_, block) in workspace.allBlocks {
-      if let layout = block.layout where layout.visible {
-        descendants.append(layout)
-      }
-    }
-    return descendants
+    return flattenedLayoutTree(ofType: BlockLayout.self).filter { $0.visible }
   }
 
   /**

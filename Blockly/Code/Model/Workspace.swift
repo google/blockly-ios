@@ -189,9 +189,8 @@ public class Workspace : NSObject {
     for block in newBlocks {
       block.editable = !readOnly
       allBlocks[block.uuid] = block
-      delegate?.workspace(self, didAddBlock: block)
-
       addNameManager(variableNameManager, toBlock: block)
+      delegate?.workspace(self, didAddBlock: block)
     }
   }
 
