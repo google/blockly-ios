@@ -29,6 +29,9 @@ public class LayoutEngine: NSObject {
 
   // MARK: - Properties
 
+  public static var MinimumScale: CGFloat = 0.5
+  public static var MaximumScale: CGFloat = 2.0
+
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
   public final var scale: CGFloat = 1.0 {

@@ -94,6 +94,7 @@ public class ToolboxCategoryView: WorkspaceView {
 
     // Set the new layout
     self.layout = category?.layout
+    self.layout?.updateLayoutDownTree()
     self.refreshView()
 
     // Update the size of the toolbox, if needed

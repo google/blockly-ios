@@ -20,7 +20,7 @@ import Foundation
 /**
  Protocol for events that occur on `WorkspaceView`.
  */
-public protocol WorkspaceViewDelegate: class {
+public protocol WorkspaceViewDelegate: UIScrollViewDelegate {
   /**
    Event that is called when a block view has been added to a workspace view.
 
@@ -95,9 +95,30 @@ public class WorkspaceView: LayoutView {
 
     addSubview(scrollView)
 
+    scrollView.delegate = self
+    scrollView.minimumZoomScale = LayoutEngine.MinimumScale
+    scrollView.maximumZoomScale = LayoutEngine.MaximumScale
+    scrollView.bouncesZoom = false
+
     // Don't automatically update `self.frame` based on `self.layout`
     updateOriginFromLayout = false
     updateBoundsFromLayout = false
+  }
+
+  @objc public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    return self.scrollView.blockGroupView
+  }
+
+  public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    guard let workspaceLayout = self.workspaceLayout else {
+      return
+    }
+
+    scrollView.zoomScale = 1
+    scrollView.minimumZoomScale /= scale
+    scrollView.maximumZoomScale /= scale
+    workspaceLayout.engine.scale *= scale
+    workspaceLayout.updateLayoutDownTree()
   }
 
   public required init?(coder aDecoder: NSCoder) {
