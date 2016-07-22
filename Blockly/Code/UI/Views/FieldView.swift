@@ -23,9 +23,10 @@ public class FieldView: LayoutView {
 
   // MARK: - Properties
 
+  // TODO:(#121) This property should be replaced by FieldViewDelegate
   /// The parent block view that owns this field
   public var parentBlockView: BlockView? {
-    return self.superview as? BlockView
+    return self.superview?.superview as? BlockView
   }
 
   /// The layout object to render
@@ -44,6 +45,12 @@ public class FieldView: LayoutView {
       return
     }
 
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+      // Update the view frame
+      frame = fieldLayout.viewFrame
+    }
+
+    // TODO:(#113) Read this from the layout instead of the field
     self.userInteractionEnabled = fieldLayout.field.editable
   }
 }
