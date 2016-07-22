@@ -48,8 +48,8 @@ class LayoutTest: XCTestCase {
     let parentLayout = Layout(engine: layoutEngine)
     let childLayout = Layout(engine: layoutEngine)
 
-    parentLayout.parentLayout = grandParentLayout
-    childLayout.parentLayout = parentLayout
+    grandParentLayout.adoptChildLayout(parentLayout)
+    parentLayout.adoptChildLayout(childLayout)
 
     let flattenedTree = grandParentLayout.flattenedLayoutTree()
 
@@ -70,8 +70,8 @@ class LayoutTest: XCTestCase {
     let parentLayout = Layout(engine: layoutEngine)
     let childLayout = Layout(engine: layoutEngine)
 
-    parentLayout.parentLayout = grandParentLayout
-    childLayout.parentLayout = parentLayout
+    grandParentLayout.adoptChildLayout(parentLayout)
+    parentLayout.adoptChildLayout(childLayout)
 
     let flattenedTree = parentLayout.flattenedLayoutTree(ofType: BlockLayout.self)
 
