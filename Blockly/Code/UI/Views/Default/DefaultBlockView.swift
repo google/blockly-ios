@@ -45,14 +45,19 @@ public class DefaultBlockView: BlockView {
 
   // MARK: - Super
 
-  public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
-    // Override this method so that this only returns true if the point is inside the
-    // block background bezier path
-    if let bezierPath = _backgroundLayer.bezierPath {
-      return bezierPath.containsPoint(point)
-    } else {
-      return false
+  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    let hitTestView = super.hitTest(point, withEvent: event)
+
+    if hitTestView == self {
+      // Only return this view if the hitTest touches a visible portion of the block.
+      if let bezierPath = _backgroundLayer.bezierPath where bezierPath.containsPoint(point) {
+        return self
+      } else {
+        return nil
+      }
     }
+
+    return hitTestView
   }
 
   public override func refreshBackgroundUI(forFlags flags: LayoutFlag) {
@@ -60,7 +65,7 @@ public class DefaultBlockView: BlockView {
       return
     }
 
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay]) {
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateViewFrame]) {
       alpha = layout.block.disabled ?
         layout.config.floatFor(DefaultLayoutConfig.BlockDisabledAlpha) :
         layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
@@ -68,8 +73,11 @@ public class DefaultBlockView: BlockView {
 
     if flags.intersectsWith(
       [BlockLayout.Flag_NeedsDisplay,
-        BlockLayout.Flag_UpdateHighlight,
-        BlockLayout.Flag_UpdateDragging])
+        // View frame is included here since the bezier path is transformed in RTL based on the
+        // view frame
+        // TODO:(#118) Re-write the code so this dependency isn't needed
+        BlockLayout.Flag_UpdateViewFrame,
+        BlockLayout.Flag_UpdateHighlight])
     {
       // Figure out the stroke and fill colors of the block
       var strokeColor = UIColor.clearColor()
@@ -91,13 +99,6 @@ public class DefaultBlockView: BlockView {
           strokeColor = shadowColorForColor(strokeColor, config: layout.config)
           fillColor = shadowColorForColor(fillColor, config: layout.config)
         }
-
-        if layout.dragging {
-          strokeColor = strokeColor.colorWithAlphaComponent(
-            layout.config.floatFor(DefaultLayoutConfig.BlockDraggingStrokeColorAlpha))
-          fillColor = fillColor.colorWithAlphaComponent(
-            layout.config.floatFor(DefaultLayoutConfig.BlockDraggingFillColorAlpha))
-        }
       }
 
       // Update the background layer
@@ -113,7 +114,11 @@ public class DefaultBlockView: BlockView {
     if flags.intersectsWith(
       [BlockLayout.Flag_NeedsDisplay,
         BlockLayout.Flag_UpdateHighlight,
-        BlockLayout.Flag_UpdateConnectionHighlight])
+        BlockLayout.Flag_UpdateConnectionHighlight,
+        // View frame is included here since the bezier path is transformed in RTL based on the
+        // view frame
+        // TODO:(#118) Re-write the code so this dependency isn't needed
+        BlockLayout.Flag_UpdateViewFrame])
     {
       // Update highlight
       if let path = blockHighlightBezierPath() {

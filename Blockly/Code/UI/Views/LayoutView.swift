@@ -47,14 +47,6 @@ public class LayoutView: UIView {
     }
   }
 
-  /// Flag indicating if `self.frame.origin` should automatically be kept in sync with
-  /// `self.layout.viewFrame.origin`. Defaults to `true`.
-  public var updateOriginFromLayout = true
-
-  /// Flag indicating if `self.frame.size` should automatically be kept in sync with
-  /// `self.layout.viewFrame.size`. Defaults to `true`.
-  public var updateBoundsFromLayout = true
-
   // MARK: - Public
 
   /**
@@ -64,19 +56,7 @@ public class LayoutView: UIView {
   value is set to include all flags (i.e. `LayoutFlag.All`).
   */
   public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    guard let layout = self.layout else {
-      return
-    }
-
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      if updateBoundsFromLayout && updateOriginFromLayout {
-        frame = layout.viewFrame
-      } else if updateBoundsFromLayout {
-        frame.size = layout.viewFrame.size
-      } else if updateOriginFromLayout {
-        frame.origin = layout.viewFrame.origin
-      }
-    }
+    // NOOP. Subclasses should implement this method.
   }
 }
 

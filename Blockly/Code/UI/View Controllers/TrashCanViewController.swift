@@ -18,26 +18,10 @@ import Foundation
 /**
  A view controller for displaying blocks in a trash can.
  */
-public class TrashCanViewController: UIViewController {
+public class TrashCanViewController: WorkspaceViewController {
 
   // MARK: - Properties
 
-  /// The `WorkspaceFlowLayout` of the trash can's workspace
-  public private(set) var workspaceLayout: WorkspaceFlowLayout?
-  /// The associated `Workspace` of the trash can
-  public var workspace: Workspace? {
-    return workspaceLayout?.workspace
-  }
-  /// The trash can's `WorkspaceView`
-  public lazy var workspaceView: WorkspaceView = {
-    let workspaceView = WorkspaceView()
-    workspaceView.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
-    workspaceView.allowCanvasPadding = false
-    workspaceView.addObserver(self, forKeyPath: "bounds",
-      options: NSKeyValueObservingOptions.New, context: &self._kvoContextBounds)
-    workspaceView.layout = self.workspaceLayout
-    return workspaceView
-  }()
   /// The layout engine to use for displaying the trash can
   public let engine: LayoutEngine
   /// The layout builder to create layout hierarchies inside the trash can
@@ -56,21 +40,22 @@ public class TrashCanViewController: UIViewController {
   // MARK: - Initializers/Deinitializers
 
   init(engine: LayoutEngine, layoutBuilder: LayoutBuilder,
-       layoutDirection: WorkspaceFlowLayout.LayoutDirection)
+       layoutDirection: WorkspaceFlowLayout.LayoutDirection, viewFactory: ViewFactory)
   {
     self.engine = engine
     self.layoutBuilder = layoutBuilder
     self.layoutDirection = layoutDirection
-    super.init(nibName: nil, bundle: nil)
+    super.init(viewFactory: viewFactory)
 
     // Create the workspace and layout representing the trash can
     let workspace = WorkspaceFlow()
     workspace.readOnly = true
 
     do {
-      self.workspaceLayout = try WorkspaceFlowLayout(
+      let workspaceLayout = try WorkspaceFlowLayout(
         workspace: workspace, layoutDirection: layoutDirection, engine: engine,
         layoutBuilder: layoutBuilder)
+      try loadWorkspaceLayout(workspaceLayout)
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }
@@ -88,14 +73,13 @@ public class TrashCanViewController: UIViewController {
 
   // MARK: - Super
 
-  public override func loadView() {
-    super.loadView()
-
-    self.view = workspaceView
-  }
-
   public override func viewDidLoad() {
     super.viewDidLoad()
+
+    view.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
+    workspaceView.allowCanvasPadding = false
+    workspaceView.addObserver(self, forKeyPath: "bounds",
+      options: NSKeyValueObservingOptions.New, context: &self._kvoContextBounds)
 
     updateMaximumLineBlockSize()
   }
@@ -123,11 +107,11 @@ public class TrashCanViewController: UIViewController {
    */
   public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
     if _workspaceViewHeightConstraint == nil {
-      _workspaceViewHeightConstraint = workspaceView.bky_addHeightConstraint(0)
+      _workspaceViewHeightConstraint = view.bky_addHeightConstraint(0)
     }
 
     if let constraint = _workspaceViewHeightConstraint where constraint.constant != height {
-      self.workspaceView.bky_updateConstraints(animated: animated, update: {
+      view.bky_updateConstraints(animated: animated, update: {
         constraint.constant = height
       })
     }
@@ -141,11 +125,11 @@ public class TrashCanViewController: UIViewController {
    */
   public func setWorkspaceViewWidth(width: CGFloat, animated: Bool) {
     if _workspaceViewWidthConstraint == nil {
-      _workspaceViewWidthConstraint = workspaceView.bky_addWidthConstraint(0)
+      _workspaceViewWidthConstraint = view.bky_addWidthConstraint(0)
     }
 
     if let constraint = _workspaceViewWidthConstraint where constraint.constant != width {
-      self.workspaceView.bky_updateConstraints(animated: animated, update: {
+      view.bky_updateConstraints(animated: animated, update: {
         constraint.constant = width
       })
     }
@@ -154,7 +138,7 @@ public class TrashCanViewController: UIViewController {
   // MARK: - Private
 
   private func updateMaximumLineBlockSize() {
-    guard let workspaceLayout = self.workspaceLayout else {
+    guard let workspaceLayout = self.workspaceLayout as? WorkspaceFlowLayout else {
       return
     }
 
