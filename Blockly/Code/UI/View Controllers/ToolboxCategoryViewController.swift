@@ -17,8 +17,15 @@ import Foundation
 
 /**
  A view for displaying the blocks inside of a `Toolbox.Category`.
+
+ // TODO:(vicng) Change this into a view controller that uses `WorkspaceViewController` instead.
  */
-public class ToolboxCategoryView: WorkspaceView {
+public class ToolboxCategoryViewController: WorkspaceViewController {
+
+  // MARK: - Static Properties
+
+  /// Default background color to use for `view`
+  private static let ViewBackgroundColor = UIColor(white: 0.6, alpha: 0.65)
 
   // MARK: - Properties
 
@@ -29,32 +36,20 @@ public class ToolboxCategoryView: WorkspaceView {
   /// Height constraint for this view
   private var _heightConstraint: NSLayoutConstraint!
 
-  // MARK: - Initializers
+  // MARK: - Super
 
-  public required init() {
-    super.init()
-    commonInit()
-  }
+  public override func viewDidLoad() {
+    super.viewDidLoad()
 
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  private func commonInit() {
-    // Create views
-    self.backgroundColor = UIColor(white: 0.6, alpha: 0.65)
-    self.allowCanvasPadding = false
+    view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
+    workspaceView.allowCanvasPadding = false
 
     // Add low priority size constraints. This allows this view to automatically resize itself
     // if no other higher priority size constraints have been set elsewhere.
-    _widthConstraint = self.bky_addWidthConstraint(0)
-    _widthConstraint.priority = UILayoutPriorityDefaultLow
+    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
+    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
 
-    _heightConstraint = self.bky_addHeightConstraint(0)
-    _heightConstraint.priority = UILayoutPriorityDefaultLow
-
-    setNeedsUpdateConstraints()
+    view.setNeedsUpdateConstraints()
   }
 
   // MARK: - Public
@@ -89,12 +84,16 @@ public class ToolboxCategoryView: WorkspaceView {
 
     self.category = category
 
-    // Clear the layout so all current blocks are removed
-    self.layout = nil
+    do {
+      // Clear the layout so all current blocks are removed
+      try loadWorkspaceLayout(nil)
 
-    // Set the new layout
-    self.layout = category?.layout
-    self.refreshView()
+      // Set the new layout
+      try loadWorkspaceLayout(category?.layout)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not load category: \(error)")
+      return
+    }
 
     // Update the size of the toolbox, if needed
     let newWidth = category?.layout?.viewFrame.size.width ?? 0
@@ -103,7 +102,7 @@ public class ToolboxCategoryView: WorkspaceView {
       return
     }
 
-    self.bky_updateConstraints(animated: animated, update: {
+    view.bky_updateConstraints(animated: animated, update: {
       self._widthConstraint.constant = newWidth
       self._heightConstraint.constant = newHeight
     })

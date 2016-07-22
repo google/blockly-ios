@@ -29,7 +29,7 @@ public protocol WorkbenchViewControllerDelegate: class {
 /**
  View controller for editing a workspace.
 
- TODO:(#61) Refactor this view controller into smaller pieces.
+ TODO:(#61) Refactor parts of this code into `WorkspaceViewController`.
  */
 @objc(BKYWorkbenchViewController)
 public class WorkbenchViewController: UIViewController {
@@ -110,25 +110,30 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Properties
 
-  /// The main workspace view
-  public private(set) var workspaceView: WorkspaceView! {
+  /// The main workspace view controller
+  public private(set) var workspaceViewController: WorkspaceViewController! {
     didSet {
       oldValue?.delegate = nil
-      workspaceView?.delegate = self
+      workspaceViewController?.delegate = self
     }
+  }
+
+  /// A convenience property to `workspaceViewController.workspaceView`
+  private var workspaceView: WorkspaceView! {
+    return workspaceViewController.workspaceView
   }
 
   // The trash can view
   public private(set) var trashCanView: TrashCanView?
 
-  // The toolbox category view
-  public private(set) var toolboxCategoryView: ToolboxCategoryView? {
+  // The toolbox category view controller
+  public private(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
     didSet {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
       // the workspace)
       oldValue?.delegate = nil
-      toolboxCategoryView?.delegate = self
+      toolboxCategoryViewController?.delegate = self
     }
   }
 
@@ -136,6 +141,9 @@ public class WorkbenchViewController: UIViewController {
   public final let engine: LayoutEngine
   /// The layout builder to create layout hierarchies
   public final let layoutBuilder: LayoutBuilder
+  /// The factory for creating views
+  public final let viewFactory: ViewFactory
+
   /// The current style of workbench
   public final let style: Style
   /// The workspace that has been loaded via `loadWorkspace(:)`
@@ -203,11 +211,16 @@ public class WorkbenchViewController: UIViewController {
    new `LayoutEngine` is automatically created.
    - Parameter layoutBuilder: [Optional] Value used for `self.layoutBuilder`. If no value is
    specified, a new `LayoutBuilder` is automatically created.
+   - Parameter layoutBuilder: [Optional] Value used for `self.viewFactory`. If no value is
+   specified, a new `ViewFactory` is automatically created.
    */
-  public init(style: Style, engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil) {
+  public init(style: Style, engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil,
+              viewFactory: ViewFactory? = nil)
+  {
     self.style = style
     self.engine = (engine ?? DefaultLayoutEngine())
     self.layoutBuilder = (layoutBuilder ?? LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
+    self.viewFactory = (viewFactory ?? ViewFactory())
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
@@ -221,7 +234,9 @@ public class WorkbenchViewController: UIViewController {
   private func commonInit() {
     // Set up trash can folder view controller
     _trashCanViewController = TrashCanViewController(
-      engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection)
+      engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection,
+      viewFactory: viewFactory)
+    _trashCanViewController.delegate = self
     addChildViewController(_trashCanViewController)
 
     // Set up toolbox category list view controller
@@ -254,17 +269,17 @@ public class WorkbenchViewController: UIViewController {
     self.view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
 
     // Create toolbox views
-    let toolboxCategoryView = ToolboxCategoryView()
-    self.toolboxCategoryView = toolboxCategoryView
+    toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
+    addChildViewController(toolboxCategoryViewController)
 
     // Create main workspace view
-    workspaceView = WorkspaceView()
-    workspaceView.scrollView.panGestureRecognizer
+    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
     let tapGesture =
       UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
-    workspaceView.scrollView.addGestureRecognizer(tapGesture)
-    workspaceView.backgroundColor = UIColor.clearColor()
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
+    addChildViewController(workspaceViewController)
 
     // Create trash can button
     let trashCanView = TrashCanView(imageNamed: "trash_can")
@@ -276,10 +291,10 @@ public class WorkbenchViewController: UIViewController {
     let trashCanPadding = CGFloat(25)
     let views: [String: UIView] = [
       "toolboxCategoriesListView": _toolboxCategoryListViewController.view,
-      "toolboxCategoryView": toolboxCategoryView,
-      "workspaceView": workspaceView,
+      "toolboxCategoryView": toolboxCategoryViewController.view,
+      "workspaceView": workspaceViewController.view,
       "trashCanView": trashCanView,
-      "trashCanFolderView": _trashCanViewController.workspaceView,
+      "trashCanFolderView": _trashCanViewController.view,
     ]
     let metrics = [
       "trashCanPadding": trashCanPadding,
@@ -335,16 +350,11 @@ public class WorkbenchViewController: UIViewController {
     self.view.bky_addSubviews(Array(views.values))
     self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
-    self.view.sendSubviewToBack(workspaceView)
+    self.view.sendSubviewToBack(workspaceViewController.view)
   }
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-
-    // We need to listen for when block views are added/removed from the block list
-    // so we can attach pan gesture recognizers to those blocks (for dragging them onto
-    // the workspace)
-    _trashCanViewController.workspaceView.delegate = self
 
     // Hide/show trash can
     setTrashCanViewVisible(enableTrashCan)
@@ -392,8 +402,13 @@ public class WorkbenchViewController: UIViewController {
    Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
    */
   public func refreshView() {
-    workspaceView?.layout = _workspaceLayout
-    workspaceView?.refreshView()
+    do {
+      if let workspaceLayout = _workspaceLayout {
+        try workspaceViewController?.loadWorkspaceLayout(workspaceLayout)
+      }
+    } catch let error as NSError {
+      bky_assertionFailure("Could not load workspace layout: \(error)")
+    }
 
     _toolboxCategoryListViewController?.toolboxLayout = _toolboxLayout
     _toolboxCategoryListViewController?.refreshView()
@@ -430,8 +445,6 @@ public class WorkbenchViewController: UIViewController {
    1) Creating a copy of the view's block
    2) Building its layout tree and setting its workspace position to be relative to where the given
    block view is currently on-screen.
-   3) Immediately firing all change events that are pending on `LayoutEventManager.sharedInstance`,
-   which forces the block view to be created in `self.refreshView(...)`.
 
    - Parameter blockView: The block view to copy into this workspace.
    - Returns: The new block view that was added to this workspace.
@@ -467,9 +480,8 @@ public class WorkbenchViewController: UIViewController {
     // Set its new workspace position
     newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
 
-    // Send change events immediately, which will force the corresponding block view to be created
-    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
-
+    // Because there are listeners on the layout hierarchy to update the corresponding view
+    // hierarchy when layouts change, we just need to find the view that was automatically created.
     guard
       let newBlockLayout = newBlock.layout,
       let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
@@ -569,10 +581,10 @@ extension WorkbenchViewController {
       where state.intersectsWith(.CategoryOpen)
     {
       // Show the toolbox category
-      toolboxCategoryView?.showCategory(selectedCategory, animated: true)
+      toolboxCategoryViewController?.showCategory(selectedCategory, animated: true)
     } else {
       // Hide the toolbox category
-      toolboxCategoryView?.hideCategory(animated: animated)
+      toolboxCategoryViewController?.hideCategory(animated: animated)
       _toolboxCategoryListViewController.selectedCategory = nil
     }
 
@@ -638,30 +650,32 @@ extension WorkbenchViewController {
   }
 }
 
-// MARK: - WorkspaceViewDelegate
+// MARK: - WorkspaceViewControllerDelegate
 
-extension WorkbenchViewController: WorkspaceViewDelegate {
-  public func workspaceView(workspaceView: WorkspaceView, didAddBlockView blockView: BlockView) {
-    if workspaceView == self.workspaceView {
-      addGestureTrackingForBlockView(blockView)
-    } else if workspaceView == toolboxCategoryView ||
-        workspaceView == _trashCanViewController.workspaceView
+extension WorkbenchViewController: WorkspaceViewControllerDelegate {
+  public func workspaceViewController(
+    workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
+  {
+    if workspaceViewController == toolboxCategoryViewController ||
+      workspaceViewController == _trashCanViewController
     {
       addGestureTrackingForWorkspaceFolderBlockView(blockView)
+    } else if workspaceViewController == self.workspaceViewController {
+      addGestureTrackingForBlockView(blockView)
     }
 
     blockView.delegate = self
   }
 
-  public func workspaceView(
-    workspaceView: WorkspaceView, willRemoveBlockView blockView: BlockView)
+  public func workspaceViewController(
+    workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
   {
-    if workspaceView == self.workspaceView {
-      removeGestureTrackingForBlockView(blockView)
-    } else if workspaceView == toolboxCategoryView ||
-        workspaceView == _trashCanViewController.workspaceView
+    if workspaceViewController == toolboxCategoryViewController ||
+      workspaceViewController == _trashCanViewController
     {
       removeGestureTrackingForWorkspaceFolderBlockView(blockView)
+    } else if workspaceViewController == self.workspaceViewController {
+      removeGestureTrackingForBlockView(blockView)
     }
 
     blockView.delegate = nil
@@ -767,6 +781,9 @@ extension WorkbenchViewController {
    - Parameter blockView: A given block view.
    */
   private func addGestureTrackingForBlockView(blockView: BlockView) {
+    // TODO:(#122) Gesture recognizing doesn't work simultaneously on a subview when a superview is
+    // already being dragged.
+
     blockView.bky_removeAllGestureRecognizers()
 
     let panGesture =
@@ -808,8 +825,16 @@ extension WorkbenchViewController {
     // on-going drags when the screen is rotated).
 
     if gesture.state == .Began {
+      // Temporarily remove gesture recognizer from the blockView
+      blockView.removeGestureRecognizer(gesture)
+
       addUIStateValue(.DraggingBlock)
       _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
+
+      // When the block layout is being dragged around, the corresponding view hierarchy may have
+      // been re-created (for example, if the block was disconnected from its parent). So we must
+      // find the view for the block layout and re-attach the gesture recognizer to it.
+      ViewManager.sharedInstance.findBlockViewForLayout(blockLayout)?.addGestureRecognizer(gesture)
     } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
       addUIStateValue(.DraggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
@@ -1021,9 +1046,6 @@ extension WorkbenchViewController {
         workspaceLayout.bringBlockGroupLayoutToFront(blockLayout.parentBlockGroupLayout)
       }
     }
-
-    // Send change event so the blocks are highlighted/unhighlighted immediately
-    LayoutEventManager.sharedInstance.immediatelySendChangeEvents()
   }
 }
 

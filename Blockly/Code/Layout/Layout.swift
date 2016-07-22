@@ -30,6 +30,31 @@ public protocol LayoutDelegate: class {
 }
 
 /**
+ Listener for events that modify the parent/child relationships for this `Layout`.
+ */
+@objc(BKYLayoutHierarchyListener)
+public protocol LayoutHierarchyListener {
+  /**
+   Event that is called when a layout has adopted a child layout.
+
+   - Parameter layout: The parent `Layout`.
+   - Parameter childLayout: The child `Layout`.
+   - Parameter oldParentLayout: The previous value of `childLayout.parentLayout` prior to being
+   adopted by `layout`
+   */
+  func layout(layout: Layout,
+    didAdoptChildLayout childLayout: Layout, fromOldParentLayout oldParentLayout: Layout?)
+
+  /**
+   Event that is called when a layout has removed a child layout.
+
+   - Parameter layout: The parent `Layout`.
+   - Parameter childLayout: The child `Layout`.
+   */
+  func layout(layout: Layout, didRemoveChildLayout childLayout: Layout)
+}
+
+/**
 Abstract base class that defines a node in a tree-hierarchy. It is used for storing layout
 information on how to render and position itself relative to other nodes in this hierarchy. Nodes
 can represent fields, blocks, or a workspace (which are always root nodes).
@@ -65,19 +90,7 @@ public class Layout: NSObject {
   }
 
   /// The parent node of this layout. If this value is nil, this layout is the root node.
-  public internal(set) final weak var parentLayout: Layout? {
-    didSet {
-      if parentLayout == oldValue {
-        return
-      }
-
-      // Remove self from old parent's childLayouts
-      oldValue?.childLayouts.remove(self)
-
-      // Add self to new parent's childLayouts
-      parentLayout?.childLayouts.insert(self)
-    }
-  }
+  public private(set) final weak var parentLayout: Layout?
 
   /// Layouts whose `parentLayout` is set to this layout
   public private(set) final var childLayouts = Set<Layout>()
@@ -126,6 +139,9 @@ public class Layout: NSObject {
   /// The delegate for events that occur on this instance
   public final weak var delegate: LayoutDelegate?
 
+  /// A set of Layout hierarchy listeners on this instance
+  public final var hierarchyListeners = WeakSet<LayoutHierarchyListener>()
+
   // MARK: - Initializers
 
   public init(engine: LayoutEngine) {
@@ -150,6 +166,55 @@ public class Layout: NSObject {
   }
 
   // MARK: - Public
+
+  /**
+   For a given `Layout`, adds it to `self.childLayouts` and sets its `parentLayout` property to
+   this instance.
+
+   If the given `Layout` had an existing parent, this method automatically removes it from that
+   parent's `childLayouts`. This ensures that child `Layout` objects do not belong to two different
+   `Layout` parents.
+
+   - Parameter layout: The child `Layout` to adopt
+   */
+  public func adoptChildLayout(layout: Layout) {
+    if layout.parentLayout == self {
+      return
+    }
+
+    let oldParentLayout = layout.parentLayout
+
+    // Remove the child layout from its old parent (if necessary)
+    oldParentLayout?.childLayouts.remove(layout)
+
+    // Add this child layout and set its parent
+    childLayouts.insert(layout)
+    layout.parentLayout = self
+
+    // Fire hierachy listeners
+    hierarchyListeners.forEach {
+      $0.layout(self, didAdoptChildLayout: layout, fromOldParentLayout: oldParentLayout)
+    }
+  }
+
+  /**
+   For a given `Layout`, removes it from `self.childLayouts` and sets its `parentLayout` property to
+   `nil`.
+
+   - Parameter layout: The child `Layout` to remove
+   */
+  public func removeChildLayout(layout: Layout) {
+    if !childLayouts.contains(layout) {
+      return
+    }
+
+    // Remove this child layout
+    childLayouts.remove(layout)
+    layout.parentLayout = nil
+
+    // Fire hierachy listeners
+    hierarchyListeners.forEach { $0.layout(self, didRemoveChildLayout: layout) }
+  }
 
   /**
   For every `Layout` in its tree hierarchy (including itself), this method recalculates its
@@ -187,6 +252,7 @@ public class Layout: NSObject {
   - Parameter flags: Additional flags to append to the next scheduled change event.
   */
   public final func scheduleChangeEventWithFlags(flags: LayoutFlag) {
+    // TODO:(#116) Rename this method to sendChangeEventWithFlags
     if delegate == nil {
       return
     }
@@ -194,9 +260,8 @@ public class Layout: NSObject {
     // Append the flags to the current set of flags
     self.layoutFlags.unionInPlace(flags)
 
-    if self.layoutFlags.hasFlagSet() {
-      LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
-    }
+    // Send the change event immediately
+    sendChangeEvent()
   }
 
   /**
@@ -318,20 +383,17 @@ public class Layout: NSObject {
       relativePosition.y + edgeInsets.top)
     self.viewAbsolutePosition = parentViewAbsolutePosition + viewRelativePosition
 
-    // Update the view frame (InputLayouts and BlockGroupLayouts do not need to update their view
-    // frames as they do not get rendered)
-    if !(self is InputLayout) && !(self is BlockGroupLayout) &&
-      (includeFields || !(self is FieldLayout))
+    // Update the view frame
+    if (includeFields || !(self is FieldLayout))
     {
-      var viewFrameOrigin = self.viewAbsolutePosition
-
-      // View frames for fields are calculated relative to its parent's parent
-      // (InputLayout -> BlockLayout)
-      if (self is FieldLayout) {
-        if let grandparentLayout = parentLayout?.parentLayout {
-          viewFrameOrigin.x -= grandparentLayout.viewAbsolutePosition.x
-          viewFrameOrigin.y -= grandparentLayout.viewAbsolutePosition.y
-        }
+      let viewFrameOrigin: CGPoint
+      if self.parentLayout is WorkspaceLayout {
+        // For top-level layouts, we want to use the absolute position.
+        // TODO:(#123) As an optimization, rewrite this method/functionality so self.parentLayout
+        // isn't called directly
+        viewFrameOrigin = viewAbsolutePosition
+      } else {
+        viewFrameOrigin = viewRelativePosition
       }
 
       let viewSize = self.engine.viewSizeFromWorkspaceSize(self.contentSize)
