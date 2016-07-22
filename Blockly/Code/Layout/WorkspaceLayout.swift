@@ -25,12 +25,6 @@ public class WorkspaceLayout: Layout {
   /// Flag that should be used when the canvas size of the workspace has been updated.
   public static let Flag_UpdateCanvasSize = LayoutFlag(0)
 
-  /// Flag that should be used when a block layout has been added to the workspace
-  public static let Flag_AddedBlockLayout = LayoutFlag(1)
-
-  /// Flag that should be used when a block layout has been removed from the workspace
-  public static let Flag_RemovedBlockLayout = LayoutFlag(2)
-
   // MARK: - Properties
 
   /// The `Workspace` to layout
@@ -148,7 +142,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -166,7 +160,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -285,7 +279,7 @@ extension WorkspaceLayout: WorkspaceDelegate {
         updateCanvasSize()
 
         // Schedule change event for an added block layout
-        scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
+        scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
       }
     } catch let error as NSError {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
@@ -306,7 +300,7 @@ extension WorkspaceLayout: WorkspaceDelegate {
 
       removeBlockGroupLayout(blockGroupLayout)
 
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 }
@@ -386,7 +380,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
     }
 
     if allBlockLayouts.count > 0 {
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_AddedBlockLayout)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -417,7 +411,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
     }
 
     if removedLayouts.count > 0 {
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_RemovedBlockLayout)
+      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -465,6 +459,10 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       throw BlocklyError(.IllegalState, "Can't connect blocks from different workspaces")
     }
 
+    // TODO:(#119) Update this code to perform a proper move, instead of a remove/add. The reason is
+    // that a remove/add will force a corresponding remove/add on the view hierarchy, which isn't
+    // efficient that forces a view hierarchy recreation.
+
     // Disconnect this block's layout and all subsequent block layouts from its block group layout,
     // so they can be reattached to another block group layout
     let layoutsToReattach: [BlockLayout]
@@ -491,9 +489,9 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
         // Reattach block layouts to target input's block group layout
         targetInputLayout.blockGroupLayout
           .appendBlockLayouts(layoutsToReattach, updateLayout: true)
-      } else if let sourceBlockLayout = targetConnection.sourceBlock.layout {
+      } else if let targetBlockLayout = targetConnection.sourceBlock.layout {
         // Reattach block layouts to the target block's group layout
-        sourceBlockLayout.parentBlockGroupLayout?
+        targetBlockLayout.parentBlockGroupLayout?
           .appendBlockLayouts(layoutsToReattach, updateLayout: true)
       }
     } else {
@@ -516,5 +514,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
 
     // Re-create the shadow block layout tree for the previous connection target (if it has one).
     try addShadowBlockLayoutTree(forConnection: oldTarget)
+
+    updateCanvasSize()
   }
 }

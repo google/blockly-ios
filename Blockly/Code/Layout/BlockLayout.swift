@@ -24,14 +24,10 @@ import Foundation
 public class BlockLayout: Layout {
   // MARK: - Static Properties
 
-  /// Flag that should be used when `self.zIndex` has been updated
-  public static let Flag_UpdateZIndex = LayoutFlag(0)
   /// Flag that should be used when `self.highlighted` has been updated
-  public static let Flag_UpdateHighlight = LayoutFlag(1)
-  /// Flag that should be used when `self.dragging` has been updated
-  public static let Flag_UpdateDragging = LayoutFlag(2)
+  public static let Flag_UpdateHighlight = LayoutFlag(0)
   /// Flag that should be used when `self.visible` has been updated
-  public static let Flag_UpdateVisible = LayoutFlag(3)
+  public static let Flag_UpdateVisible = LayoutFlag(1)
 
   /// Flag that should be used when any direct connection on this block has updated its highlight
   /// value
@@ -41,15 +37,6 @@ public class BlockLayout: Layout {
 
   /// The `Block` to layout.
   public final let block: Block
-
-  /// Flag if this block should be highlighted
-  public var highlighted: Bool = false {
-    didSet {
-      if highlighted != oldValue {
-        scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateHighlight)
-      }
-    }
-  }
 
   /// The corresponding layout objects for `self.block.inputs[]`
   public private(set) var inputLayouts = [InputLayout]()
@@ -83,24 +70,6 @@ public class BlockLayout: Layout {
     return root
   }
 
-  /// Z-index of the layout. Those with higher values should render on top of those with lower
-  /// values. Setting this value automatically updates every value of
-  /// `self.inputLayouts[i].renderedBlockGroupLayout.zIndex` to use the same `zIndex`.
-  public var zIndex: UInt = 0 {
-    didSet {
-      if zIndex == oldValue {
-        return
-      }
-
-      // Update the z-position for all of its input layouts
-      for inputLayout in inputLayouts {
-        inputLayout.blockGroupLayout.zIndex = zIndex
-      }
-
-      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateZIndex)
-    }
-  }
-
   /// The first draggable `BlockLayout` up the layout tree. Returns `nil` if there is
   /// no `BlockLayout` that can be dragged.
   public var draggableBlockLayout: BlockLayout? {
@@ -124,19 +93,13 @@ public class BlockLayout: Layout {
     return nil
   }
 
-  /// Flag indicating if this block is being dragged
-  public var dragging: Bool = false {
+  /// Flag if this block should be highlighted
+  public var highlighted: Bool = false {
     didSet {
-      if dragging == oldValue {
+      if highlighted == oldValue {
         return
       }
-
-      // Update dragging for all of its block group children
-      for inputLayout in inputLayouts {
-        inputLayout.blockGroupLayout.dragging = dragging
-      }
-
-      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateDragging)
+      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateHighlight)
     }
   }
 
@@ -146,12 +109,6 @@ public class BlockLayout: Layout {
       if visible == oldValue {
         return
       }
-
-      // Update visible for all of its block group children
-      for inputLayout in inputLayouts {
-        inputLayout.blockGroupLayout.visible = visible
-      }
-
       scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateVisible)
     }
   }

@@ -15,6 +15,7 @@
 
 import Foundation
 
+// TODO:(#121) Define this delegate protocol in FieldView instead
 /**
  Handler for events that occur on a `BlockView`.
  */
@@ -37,7 +38,7 @@ public protocol BlockViewDelegate: class {
 View for rendering a `BlockLayout`.
 */
 @objc(BKYBlockView)
-public class BlockView: LayoutView, ZIndexedView {
+public class BlockView: LayoutView {
   // MARK: - Properties
 
   /// Layout object to render
@@ -45,31 +46,11 @@ public class BlockView: LayoutView, ZIndexedView {
     return layout as? BlockLayout
   }
 
-  /// Layer for rendering the block's background
-  private let _backgroundLayer = BezierPathLayer()
-
-  /// Layer for rendering the block's highlight overlay
-  private var _highlightLayer: BezierPathLayer?
-
-  /// Field subviews
-  private var _fieldViews = [FieldView]()
-
   /// Flag determining if layer changes should be animated
   private var _disableLayerChangeAnimations: Bool = true
 
   /// Delegate for events that occur on the block
   public weak var delegate: BlockViewDelegate?
-
-  public private(set) final var zIndex: UInt = 0 {
-    didSet {
-      if zIndex != oldValue {
-        if let superview = self.superview as? ZIndexedGroupView {
-          // Re-order this view within its parent BlockGroupView view
-          superview.upsertView(self)
-        }
-      }
-    }
-  }
 
   // MARK: - Initializers
 
@@ -98,12 +79,6 @@ public class BlockView: LayoutView, ZIndexedView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    // super.refreshView() automatically handles updates for `Layout.Flag_UpdateViewFrame`.
-    // If that was the only flag that was set, then just exit early.
-    guard flags.subtract(Layout.Flag_UpdateViewFrame).hasFlagSet() else {
-      return
-    }
-
     guard let layout = self.blockLayout else {
       return
     }
@@ -111,37 +86,21 @@ public class BlockView: LayoutView, ZIndexedView {
     CATransaction.begin()
     CATransaction.setDisableActions(_disableLayerChangeAnimations)
 
+    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+      // Update the view frame
+      frame = layout.viewFrame
+    }
+
     refreshBackgroundUI(forFlags: flags)
 
     if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
-      // Update field views
-      for fieldLayout in layout.fieldLayouts {
-        let cachedFieldView = ViewManager.sharedInstance.findFieldViewForLayout(fieldLayout)
-
-        if cachedFieldView == nil {
-          do {
-            let fieldView = try ViewFactory.sharedInstance.fieldViewForLayout(fieldLayout)
-            _fieldViews.append(fieldView)
-
-            addSubview(fieldView)
-          } catch let error as NSError {
-            bky_assertionFailure("\(error)")
-          }
-        } else {
-          // Do nothing. The field view will handle its own refreshing/repositioning.
-        }
-      }
-
+      // TODO:(#113) Read this from the layout instead of the block
       // Set its user interaction
       userInteractionEnabled = !layout.block.disabled
     }
 
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateZIndex]) {
-      self.zIndex = layout.zIndex
-    }
-
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {
-      self.hidden = !layout.visible
+      hidden = !layout.visible
     }
 
     CATransaction.commit()
@@ -159,11 +118,10 @@ public class BlockView: LayoutView, ZIndexedView {
     // isn't animated into view based on the previous block layout.
     _disableLayerChangeAnimations = true
 
-    for fieldView in _fieldViews {
-      fieldView.removeFromSuperview()
-      ViewFactory.sharedInstance.recycleView(fieldView)
+    for subview in subviews {
+      subview.removeFromSuperview()
+      ViewFactory.sharedInstance.recycleView(subview)
     }
-    _fieldViews = []
   }
 
   // MARK: - Public

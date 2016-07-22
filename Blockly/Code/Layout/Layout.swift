@@ -30,6 +30,39 @@ public protocol LayoutDelegate: class {
 }
 
 /**
+ Listener for events that modify the parent/child relationships for this `Layout`.
+ */
+@objc(BKYLayoutHierarchyListener)
+public protocol LayoutHierarchyListener {
+  /**
+   Event that is called when a layout has added a child layout.
+
+   - Parameter layout: The parent `Layout`.
+   - Parameter childLayout: The child `Layout`.
+   */
+  func layout(layout: Layout, didAddChildLayout childLayout: Layout)
+
+  /**
+   Event that is called when a layout has removed a child layout.
+
+   - Parameter layout: The parent `Layout`.
+   - Parameter childLayout: The child `Layout`.
+   */
+  func layout(layout: Layout, didRemoveChildLayout childLayout: Layout)
+
+  /**
+   Event that is called when a layout has transferred ownership of a child layout to a different
+   layout.
+
+   - Parameter layout: The old parent `Layout`.
+   - Parameter childLayout: The child `Layout`.
+   - Parameter newParentLayout: The new parent `Layout`.
+   */
+  func layout(layout: Layout,
+              didTransferChildLayout childLayout: Layout, toNewParentLayout newParentLayout: Layout)
+}
+
+/**
 Abstract base class that defines a node in a tree-hierarchy. It is used for storing layout
 information on how to render and position itself relative to other nodes in this hierarchy. Nodes
 can represent fields, blocks, or a workspace (which are always root nodes).
@@ -72,10 +105,24 @@ public class Layout: NSObject {
       }
 
       // Remove self from old parent's childLayouts
-      oldValue?.childLayouts.remove(self)
+      if let oldParent = oldValue {
+        oldParent.childLayouts.remove(self)
+      }
 
       // Add self to new parent's childLayouts
-      parentLayout?.childLayouts.insert(self)
+      if let newParent = parentLayout {
+        newParent.childLayouts.insert(self)
+      }
+
+      if let oldParent = oldValue,
+        let newParent = parentLayout
+      {
+        oldParent.hierarchyListeners.forEach { $0.layout(oldParent, didTransferChildLayout: self, toNewParentLayout: newParent) }
+      } else if let oldParent = oldValue {
+        oldParent.hierarchyListeners.forEach { $0.layout(oldParent, didRemoveChildLayout: self) }
+      } else if let newParent = parentLayout {
+        newParent.hierarchyListeners.forEach { $0.layout(newParent, didAddChildLayout: self) }
+      }
     }
   }
 
@@ -125,6 +172,9 @@ public class Layout: NSObject {
 
   /// The delegate for events that occur on this instance
   public final weak var delegate: LayoutDelegate?
+
+  /// A set of Layout hierarchy listeners on this instance
+  public final var hierarchyListeners = WeakSet<LayoutHierarchyListener>()
 
   // MARK: - Initializers
 
@@ -187,6 +237,7 @@ public class Layout: NSObject {
   - Parameter flags: Additional flags to append to the next scheduled change event.
   */
   public final func scheduleChangeEventWithFlags(flags: LayoutFlag) {
+    // TODO:(#116) Rename this method to sendChangeEventWithFlags
     if delegate == nil {
       return
     }
@@ -194,9 +245,8 @@ public class Layout: NSObject {
     // Append the flags to the current set of flags
     self.layoutFlags.unionInPlace(flags)
 
-    if self.layoutFlags.hasFlagSet() {
-      LayoutEventManager.sharedInstance.scheduleChangeEventForLayout(self)
-    }
+    // Send the change event immediately
+    sendChangeEvent()
   }
 
   /**
@@ -318,20 +368,17 @@ public class Layout: NSObject {
       relativePosition.y + edgeInsets.top)
     self.viewAbsolutePosition = parentViewAbsolutePosition + viewRelativePosition
 
-    // Update the view frame (InputLayouts and BlockGroupLayouts do not need to update their view
-    // frames as they do not get rendered)
-    if !(self is InputLayout) && !(self is BlockGroupLayout) &&
-      (includeFields || !(self is FieldLayout))
+    // Update the view frame
+    if (includeFields || !(self is FieldLayout))
     {
-      var viewFrameOrigin = self.viewAbsolutePosition
-
-      // View frames for fields are calculated relative to its parent's parent
-      // (InputLayout -> BlockLayout)
-      if (self is FieldLayout) {
-        if let grandparentLayout = parentLayout?.parentLayout {
-          viewFrameOrigin.x -= grandparentLayout.viewAbsolutePosition.x
-          viewFrameOrigin.y -= grandparentLayout.viewAbsolutePosition.y
-        }
+      let viewFrameOrigin: CGPoint
+      if self.parentLayout is WorkspaceLayout {
+        // For top-level layouts, we want to use the absolute position.
+        // TODO:(#123) As an optimization, rewrite this method/functionality so self.parentLayout
+        // isn't called directly
+        viewFrameOrigin = viewAbsolutePosition
+      } else {
+        viewFrameOrigin = viewRelativePosition
       }
 
       let viewSize = self.engine.viewSizeFromWorkspaceSize(self.contentSize)
