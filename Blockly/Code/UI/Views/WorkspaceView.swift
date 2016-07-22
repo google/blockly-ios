@@ -15,29 +15,6 @@
 
 import Foundation
 
-// MARK: - WorkspaceViewDelegate Protocol
-
-/**
- Protocol for events that occur on `WorkspaceView`.
- */
-public protocol WorkspaceViewDelegate: class {
-  /**
-   Event that is called when a block view has been added to a workspace view.
-
-   - Parameter workspaceView: The given `WorkspaceView`
-   - Parameter blockView: The `BlockView` that has been added
-   */
-  func workspaceView(workspaceView: WorkspaceView, didAddBlockView blockView: BlockView)
-
-  /**
-   Event that is called when a block view will be removed from a workspace view.
-
-   - Parameter workspaceView: The given `WorkspaceView`
-   - Parameter blockView: The `BlockView` that will be removed
-   */
-  func workspaceView(workspaceView: WorkspaceView, willRemoveBlockView blockView: BlockView)
-}
-
 // MARK: - WorkspaceView Class
 
 /**
@@ -52,6 +29,9 @@ public class WorkspaceView: LayoutView {
     return layout as? WorkspaceLayout
   }
 
+  /// All top-level `BlockGroupView` instances underneath the workspace
+  public private(set) var blockGroupViews = Set<BlockGroupView>()
+
   /// Scroll view used to render the workspace
   public lazy var scrollView: WorkspaceView.ScrollView = {
     let scrollView = WorkspaceView.ScrollView(frame: self.bounds)
@@ -60,9 +40,6 @@ public class WorkspaceView: LayoutView {
     scrollView.delegate = self
     return scrollView
   }()
-
-  /// Delegate for events that occur on this view
-  public weak var delegate: WorkspaceViewDelegate?
 
   /// Flag if the canvas should be padded with extra spaces around its edges via
   /// `self.canvasPadding`. If set to false, the user will only be allowed to scroll the exact
@@ -94,10 +71,6 @@ public class WorkspaceView: LayoutView {
     super.init(frame: CGRectZero)
 
     addSubview(scrollView)
-
-    // Don't automatically update `self.frame` based on `self.layout`
-    updateOriginFromLayout = false
-    updateBoundsFromLayout = false
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -109,50 +82,6 @@ public class WorkspaceView: LayoutView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.workspaceLayout else {
-      return
-    }
-
-    let allBlockLayouts = layout.allVisibleBlockLayoutsInWorkspace()
-
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_AddedBlockLayout]) {
-      // Get blocks that are in the current viewport
-      for blockLayout in allBlockLayouts {
-        let blockView = ViewManager.sharedInstance.findBlockViewForLayout(blockLayout)
-
-        // TODO:(#29) For now, always render blocks regardless of where they are on the screen.
-        // Later on, this should be replaced by shouldRenderBlockLayout(blockLayout).
-        if blockView == nil {
-          do {
-            // Create a new block view for this layout
-            try addBlockViewForLayout(blockLayout)
-          } catch let error {
-            bky_assertionFailure("\(error)")
-          }
-        } else {
-          // Do nothing. The block view will handle its own refreshing/repositioning.
-        }
-      }
-    }
-
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_RemovedBlockLayout]) {
-      // TODO:(#29) Remove block views more efficiently.
-      var blockLayoutSet = Set<BlockLayout>()
-      for blockLayout in allBlockLayouts {
-        blockLayoutSet.insert(blockLayout)
-      }
-
-      // For all block views, check if the layout exists in `self.workspaceLayout`. If it doesn't,
-      // then the block view has been removed.
-      for view in scrollView.blockGroupView.subviews {
-        if let blockView = view as? BlockView {
-          if blockView.blockLayout == nil || !blockLayoutSet.contains(blockView.blockLayout!) {
-            removeBlockView(blockView)
-          }
-        }
-      }
-    }
-
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
       updateCanvasSizeFromLayout()
     }
@@ -161,11 +90,12 @@ public class WorkspaceView: LayoutView {
   public override func prepareForReuse() {
     super.prepareForReuse()
 
-    // Remove all block views
+    // Remove all block group views
     for view in scrollView.blockGroupView.subviews {
-      if let blockView = view as? BlockView {
-        removeBlockView(blockView)
+      if let blockGroupView = view as? BlockGroupView {
+        removeBlockGroupView(blockGroupView)
       }
+      ViewFactory.sharedInstance.recycleView(view)
     }
 
     scrollView.contentSize = CGSizeZero
@@ -180,6 +110,26 @@ public class WorkspaceView: LayoutView {
   }
 
   // MARK: - Public
+
+  /**
+   Adds a `BlockGroupView` to the workspace's scrollview.
+
+   - Parameter blockGroupView: The given `BlockGroupView`
+   */
+  public func addBlockGroupView(blockGroupView: BlockGroupView) {
+    scrollView.blockGroupView.upsertView(blockGroupView)
+    blockGroupViews.insert(blockGroupView)
+  }
+
+  /**
+   Removes a given `BlockGroupView` from the workspace's scrollview and recycles it.
+
+   - Parameter blockView: The given `BlockGroupView`
+   */
+  public func removeBlockGroupView(blockGroupView: BlockGroupView) {
+    blockGroupViews.remove(blockGroupView)
+    blockGroupView.removeFromSuperview()
+  }
 
   /**
    Maps a gesture's touch location relative to this view to a logical Workspace position.
@@ -498,32 +448,6 @@ public class WorkspaceView: LayoutView {
       ((minY <= topMostEdge && topMostEdge <= maxY) ||
       (minY <= bottomMostEdge && bottomMostEdge <= maxY))
   }
-
-  /**
-  Creates a block view for a given layout and adds it to the scroll view.
-
-  - Parameter layout: The given layout
-  - Throws:
-  `BlocklyError`: Thrown if the block view could not be added
-  */
-  private func addBlockViewForLayout(layout: BlockLayout) throws {
-    let newBlockView = try ViewFactory.sharedInstance.blockViewForLayout(layout)
-    scrollView.blockGroupView.upsertView(newBlockView)
-
-    delegate?.workspaceView(self, didAddBlockView: newBlockView)
-  }
-
-  /**
-  Removes a given block view from the scroll view and recycles it.
-
-  - Parameter blockView: The given block view
-  */
-  private func removeBlockView(blockView: BlockView) {
-    delegate?.workspaceView(self, willRemoveBlockView: blockView)
-
-    blockView.removeFromSuperview()
-    ViewFactory.sharedInstance.recycleView(blockView)
-  }
 }
 
 
@@ -564,7 +488,8 @@ extension WorkspaceView {
   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all the block views
-    public private(set) var blockGroupView: ZIndexedGroupView = {
+    // TODO:(#117) Rename blockGroupView to contentView
+    private var blockGroupView: ZIndexedGroupView = {
       let blockGroupView = ZIndexedGroupView(frame: CGRectZero)
       blockGroupView.autoresizesSubviews = false
       return blockGroupView
