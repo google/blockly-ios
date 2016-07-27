@@ -87,12 +87,17 @@ extension UIView {
    a constant value.
 
    - Parameter width: The width of the view
+   - Parameter priority: The priority to use for the constraint. Defaults to
+   `UILayoutPriorityRequired`.
    - Returns: The constraint that was added.
    */
-  internal func bky_addWidthConstraint(width: CGFloat) -> NSLayoutConstraint {
+  internal func bky_addWidthConstraint(
+    width: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+  {
     let constraint =
       NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil,
                          attribute: .NotAnAttribute, multiplier: 1, constant: width)
+    constraint.priority = priority
     addConstraint(constraint)
     return constraint
   }
@@ -102,14 +107,18 @@ extension UIView {
    a constant value.
 
    - Parameter height: The height of the view
+   - Parameter priority: The priority to use for the constraint. Defaults to
+   `UILayoutPriorityRequired`.
    - Returns: The constraint that was added.
    */
-  internal func bky_addHeightConstraint(height: CGFloat) -> NSLayoutConstraint {
+  internal func bky_addHeightConstraint(
+    height: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+  {
     let constraint =
       NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil,
                          attribute: .NotAnAttribute, multiplier: 1, constant: height)
+    constraint.priority = priority
     addConstraint(constraint)
-
     return constraint
   }
 

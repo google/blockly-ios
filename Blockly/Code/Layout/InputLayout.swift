@@ -61,7 +61,7 @@ public class InputLayout: Layout {
     // This is done after super.init because you can't call a throwing method prior to
     // initialization.
     blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
-    blockGroupLayout.parentLayout = self
+    adoptChildLayout(blockGroupLayout)
   }
 
   // MARK: - Public
@@ -72,8 +72,8 @@ public class InputLayout: Layout {
   - Parameter fieldLayout: The `FieldLayout` to append.
   */
   public func appendFieldLayout(fieldLayout: FieldLayout) {
-    fieldLayout.parentLayout = self
     fieldLayouts.append(fieldLayout)
+    adoptChildLayout(fieldLayout)
   }
 
   /**
@@ -84,7 +84,7 @@ public class InputLayout: Layout {
   */
   public func removeFieldLayoutAtIndex(index: Int) -> FieldLayout {
     let fieldLayout = fieldLayouts.removeAtIndex(index)
-    fieldLayout.parentLayout = nil
+    removeChildLayout(fieldLayout)
     return fieldLayout
   }
 

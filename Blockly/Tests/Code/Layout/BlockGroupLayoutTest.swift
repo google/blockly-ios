@@ -35,29 +35,6 @@ class BlockGroupLayoutTest: XCTestCase {
 
   // MARK: - Tests
 
-  func testZIndex() {
-    let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
-    blockGroupLayout.zIndex = 0
-
-    // Add a bunch of block layouts
-    var blockLayouts = [BlockLayout]()
-    for _ in 0 ..< 5 {
-      let blockLayout = createBlockLayout()
-      blockLayout.zIndex = 0
-      blockLayouts.append(blockLayout)
-    }
-    blockGroupLayout.appendBlockLayouts(blockLayouts)
-
-    // Change the zIndex of the block group layout
-    blockGroupLayout.zIndex = 2
-
-    // Check that it was updated for each block layout
-    for blockLayout in blockGroupLayout.blockLayouts {
-      XCTAssertEqual(blockGroupLayout.zIndex, blockLayout.zIndex)
-    }
-  }
-
   func testAppendBlockLayoutsEmpty() {
     let blockGroupLayout =
       try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
@@ -73,13 +50,11 @@ class BlockGroupLayoutTest: XCTestCase {
   func testAppendBlockLayoutsNonEmpty() {
     let blockGroupLayout =
       try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
-    blockGroupLayout.zIndex = 2
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
-    for i in 0 ..< 10 {
+    for _ in 0 ..< 10 {
       let blockLayout = createBlockLayout()
-      blockLayout.zIndex = UInt(i) // Assign a different z-index to each
       blockLayouts.append(blockLayout)
     }
     blockGroupLayout.appendBlockLayouts(blockLayouts)
@@ -89,7 +64,6 @@ class BlockGroupLayoutTest: XCTestCase {
     XCTAssertEqual(blockLayouts.count, appendedBlockLayouts.count)
 
     for blockLayout in appendedBlockLayouts {
-      XCTAssertEqual(blockGroupLayout.zIndex, blockLayout.zIndex)
       XCTAssertEqual(blockGroupLayout, blockLayout.parentLayout)
       XCTAssertTrue(blockLayouts.contains(blockLayout))
     }

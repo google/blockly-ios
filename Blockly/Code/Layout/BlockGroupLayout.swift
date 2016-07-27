@@ -23,6 +23,11 @@ import Foundation
 public class BlockGroupLayout: Layout {
   // MARK: - Properties
 
+  /// Flag that should be used when `self.zIndex` has been updated
+  public static let Flag_UpdateZIndex = LayoutFlag(0)
+  /// Flag that should be used when `self.dragging` has been updated
+  public static let Flag_UpdateDragging = LayoutFlag(1)
+
   /*
   A list of sequential block layouts that belong to this group. While this class doesn't enforce
   it, the following should hold true:
@@ -37,18 +42,13 @@ public class BlockGroupLayout: Layout {
   */
   public private(set) var blockLayouts = [BlockLayout]()
 
-  /// Z-index of the layout. This value isn't used directly by the BlockGroupLayout. Setting this
-  /// value automatically updates all of its descendant blocks to use the same `zIndex`.
+  /// Z-index of the layout
   public var zIndex: UInt = 0 {
     didSet {
       if zIndex == oldValue {
         return
       }
-
-      // Update the z-index for all of its block children
-      for blockLayout in self.blockLayouts {
-        blockLayout.zIndex = zIndex
-      }
+      scheduleChangeEventWithFlags(BlockGroupLayout.Flag_UpdateZIndex)
     }
   }
 
@@ -58,25 +58,7 @@ public class BlockGroupLayout: Layout {
       if dragging == oldValue {
         return
       }
-
-      // Update dragging property for all of its block children
-      for blockLayout in self.blockLayouts {
-        blockLayout.dragging = dragging
-      }
-    }
-  }
-
-  /// Flag indicating if this block group should be visible
-  public var visible: Bool = true {
-    didSet {
-      if visible == oldValue {
-        return
-      }
-
-      // Update visible property for all of its block children
-      for blockLayout in self.blockLayouts {
-        blockLayout.visible = visible
-      }
+      scheduleChangeEventWithFlags(BlockGroupLayout.Flag_UpdateDragging)
     }
   }
 
@@ -88,20 +70,15 @@ public class BlockGroupLayout: Layout {
   // MARK: - Public
 
   /**
-  Appends all blockLayouts to `self.blockLayouts`, sets their `parentLayout` to this instance, and
-  sets their `zIndex` values to match `self.zIndex`.
+  Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
 
   - Parameter blockLayouts: The list of `BlockLayout` instances to append.
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   public func appendBlockLayouts(blockLayouts: [BlockLayout], updateLayout: Bool = true) {
     for blockLayout in blockLayouts {
-      blockLayout.parentLayout = self
       self.blockLayouts.append(blockLayout)
-
-      // Set the block (and its child blocks) to match the zIndex/dragging values of this group
-      blockLayout.zIndex = zIndex
-      blockLayout.dragging = dragging
+      adoptChildLayout(blockLayout)
     }
 
     if updateLayout {
@@ -117,7 +94,7 @@ public class BlockGroupLayout: Layout {
   */
   public func removeBlockLayoutAtIndex(index: Int, updateLayout: Bool = true) -> BlockLayout {
     let removedLayout = blockLayouts.removeAtIndex(index)
-    removedLayout.parentLayout = nil
+    removeChildLayout(removedLayout)
 
     if updateLayout {
       updateLayoutUpTree()
@@ -151,7 +128,6 @@ public class BlockGroupLayout: Layout {
       } else {
         // Always return the given block layout, even it's not found
         removedElements.append(blockLayout)
-        blockLayout.parentLayout = nil
       }
 
       return removedElements

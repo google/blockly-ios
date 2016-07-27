@@ -17,14 +17,12 @@ import Foundation
 
 /**
  Handles the creation of recyclable views.
+ 
+ // TODO:(#124) Re-factor this class so it simply registers view types to layout types. There is no
+ need to differentiate for BlockView/FieldView/etc.
  */
 @objc(BKYViewFactory)
 public class ViewFactory: NSObject {
-
-  // MARK: - Static Properties
-
-  /// Shared instance that is used throughout the app
-  public static var sharedInstance = ViewFactory()
 
   // MARK: - Properties
 
@@ -59,6 +57,22 @@ public class ViewFactory: NSObject {
   }
 
   // MARK: - Public - Block View
+
+  public func viewForBlockGroupLayout(blockGroupLayout: BlockGroupLayout) throws -> BlockGroupView {
+    // TODO:(#124) Implement this properly so it uses a default registry and uses recycled view
+    // (like the other methods in this class)
+    let blockGroupView = viewForType(BlockGroupView.self)
+    blockGroupView.layout = blockGroupLayout
+    return blockGroupView
+  }
+
+  public func viewForInputLayout(inputLayout: InputLayout) throws -> InputView {
+    // TODO:(#124) Implement this properly so it uses a default registry and uses recycled view
+    // (like the other methods in this class)
+    let inputView = viewForType(InputView.self)
+    inputView.layout = inputLayout
+    return inputView
+  }
 
   /**
    Returns a recycled or new `BlockView` instance assigned to the given layout. This view is stored
@@ -139,6 +153,8 @@ public class ViewFactory: NSObject {
    - Parameter fieldType: The `Field.Type` key
    - Parameter viewType: A view type that is a subclass of `FieldView` that conforms to
    `Recyclable`
+
+   TODO:(#115) Switch to registering FieldLayout.Type instead of Field.Type
    */
   public func registerViewTypeForFieldType
     <LayoutView where LayoutView: FieldView, LayoutView: Recyclable>
@@ -197,9 +213,25 @@ public class ViewFactory: NSObject {
   public func recycleView(view: UIView) {
     if let recyclableView = view as? Recyclable {
       _objectPool.recycleObject(recyclableView)
-    } else {
-      bky_print(
-        "Cannot recycle view [\(view.dynamicType)] that does not conform to protocol [Recyclable]")
+    }
+  }
+
+  /**
+   For every `UIView` in a view hierarchy rooted by a given `UIView`, recycles those that conform
+   to the protocol `Recyclable` and stores them for re-use later.
+
+   - Parameter rootView: The root view to begin the recycling process.
+   - Note: Views recycled through this method should be re-obtained through `viewForType(:)`.
+   */
+  public func recycleViewTree(rootView: UIView) {
+    let subviews = rootView.subviews
+
+    // Recycle root view
+    recycleView(rootView)
+
+    // Recursively recycle subviews
+    for subview in subviews {
+      recycleViewTree(subview)
     }
   }
 }
