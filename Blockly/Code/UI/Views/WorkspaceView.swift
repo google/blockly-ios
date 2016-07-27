@@ -114,7 +114,9 @@ public class WorkspaceView: LayoutView {
       return
     }
 
+    var resetOffset = scrollView.contentOffset
     scrollView.zoomScale = 1
+    scrollView.contentOffset = resetOffset
     scrollView.minimumZoomScale /= scale
     scrollView.maximumZoomScale /= scale
     workspaceLayout.engine.scale *= scale
