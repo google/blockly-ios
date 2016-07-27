@@ -108,6 +108,10 @@ public class WorkspaceLayout: Layout {
       bottomRightMostPoint.x - topLeftMostPoint.x,
       bottomRightMostPoint.y - topLeftMostPoint.y)
 
+
+    // Set the content offset so children are automatically placed relative to (0, 0)
+    self.childContentOffset = WorkspacePointZero - topLeftMostPoint
+
     // Update the canvas size
     scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
@@ -459,40 +463,24 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       throw BlocklyError(.IllegalState, "Can't connect blocks from different workspaces")
     }
 
-    // TODO:(#119) Update this code to perform a proper move, instead of a remove/add. The reason is
-    // that a remove/add will force a corresponding remove/add on the view hierarchy, which isn't
-    // efficient that forces a view hierarchy recreation.
-
-    // Disconnect this block's layout and all subsequent block layouts from its block group layout,
-    // so they can be reattached to another block group layout
-    let layoutsToReattach: [BlockLayout]
-    if let oldParentLayout = sourceBlockLayout.parentBlockGroupLayout {
-      layoutsToReattach =
-        oldParentLayout.removeAllStartingFromBlockLayout(sourceBlockLayout, updateLayout: true)
-
-      if oldParentLayout.blockLayouts.count == 0 &&
-        oldParentLayout.parentLayout == workspace.layout {
-          // Remove this block's old parent group layout from the workspace level
-          removeBlockGroupLayout(oldParentLayout, updateLayout: true)
-      }
-    } else {
-      layoutsToReattach = [sourceBlockLayout]
-    }
+    // Keep a reference to the old parent block group layout, in case we need to clean it up later
+    // (if it becomes empty).
+    let oldParentLayout = sourceBlockLayout.parentBlockGroupLayout
 
     if let targetConnection = connection.targetConnection {
       // `targetConnection` is connected to something now.
       // Remove its shadow block layout tree (if it exists).
       try removeShadowBlockLayoutTree(forShadowBlock: targetConnection.shadowBlock)
 
-      // Reattach the layouts to the proper block group layout
+      // Move `sourceBlockLayout` and its followers to a new block group layout
       if let targetInputLayout = targetConnection.sourceInput?.layout {
-        // Reattach block layouts to target input's block group layout
+        // Move them to target input's block group layout
         targetInputLayout.blockGroupLayout
-          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+          .kidnapBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
       } else if let targetBlockLayout = targetConnection.sourceBlock.layout {
-        // Reattach block layouts to the target block's group layout
+        // Move them to the target block's group layout
         targetBlockLayout.parentBlockGroupLayout?
-          .appendBlockLayouts(layoutsToReattach, updateLayout: true)
+          .kidnapBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
       }
     } else {
       // The connection is no longer connected to anything.
@@ -508,12 +496,23 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
       bringBlockGroupLayoutToFront(blockGroupLayout)
 
-      // Reattach block layouts to a new block group layout
-      blockGroupLayout.appendBlockLayouts(layoutsToReattach, updateLayout: true)
+      // Move `sourceBlockLayout` and its followers to the new block group layout
+      blockGroupLayout
+        .kidnapBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
     }
 
     // Re-create the shadow block layout tree for the previous connection target (if it has one).
     try addShadowBlockLayoutTree(forConnection: oldTarget)
+
+    // If the previous block group layout parent of `sourceBlockLayout` is now empty and is at the
+    // the top-level of the workspace, remove it
+    if let emptyBlockGroupLayout = oldParentLayout
+      where emptyBlockGroupLayout.blockLayouts.count == 0 &&
+        emptyBlockGroupLayout.parentLayout == workspace.layout
+    {
+      // Remove this block's old parent group layout from the workspace level
+      removeBlockGroupLayout(emptyBlockGroupLayout, updateLayout: true)
+    }
 
     updateCanvasSize()
   }

@@ -104,6 +104,43 @@ public class BlockGroupLayout: Layout {
   }
 
   /**
+   Appends a given `BlockLayout` instance to `self.blockLayouts` and adopts it as a child.
+
+   If `blockLayout` had a previous `BlockGroupLayout` parent, it is removed as a child from that
+   parent. Additionally, any children that followed this `blockLayout` in its old parent are also
+   removed and appended to `self.blockLayouts`.
+
+   - Parameter blockLayout: The `BlockLayout` to adopt
+   - Parameter updateLayouts: If true, all parent layouts of this layout and of `blockLayout`'s
+   previous parent will be updated.
+   */
+  public func kidnapBlockLayoutAndFollowers(blockLayout: BlockLayout, updateLayouts: Bool = true) {
+    let oldParentLayout = blockLayout.parentBlockGroupLayout
+
+    var transferredLayouts = [BlockLayout]()
+    if let oldParentLayout = oldParentLayout,
+      let index = oldParentLayout.blockLayouts.indexOf(blockLayout)
+    {
+      while (index < oldParentLayout.blockLayouts.count) {
+        // Just remove block layout from `oldParentLayout.blockLayouts`
+        // We don't want to remove it via removeChildLayout(...) or else this will fire an event.
+        let transferLayout = oldParentLayout.blockLayouts.removeAtIndex(index)
+        transferredLayouts.append(transferLayout)
+      }
+    } else {
+      transferredLayouts.append(blockLayout)
+    }
+
+    // Transfer the layouts over to `newBlockGroupLayout`
+    appendBlockLayouts(transferredLayouts, updateLayout: false)
+
+    if updateLayouts {
+      updateLayoutUpTree()
+      oldParentLayout?.updateLayoutUpTree()
+    }
+  }
+
+  /**
   Removes a given block layout and all subsequent layouts from `blockLayouts`, and returns them in
   an array.
 

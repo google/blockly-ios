@@ -118,9 +118,10 @@ public class Layout: NSObject {
   /// `contentSize`.
   internal private(set) final var totalSize: WorkspaceSize = WorkspaceSizeZero
 
-  /// The absolute position of this layout, relative to the root node, in the View coordinate
-  /// system.
-  private final var viewAbsolutePosition = CGPointZero
+  /// An offset that should be applied to the positions of `childLayouts`, specified in the
+  /// Workspace coordinate system.
+  internal final var childContentOffset: WorkspacePoint = WorkspacePointZero
+
   /**
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
   view node layout for a Field is a Block, while the parent view node for a Block is a Workspace.
@@ -185,7 +186,13 @@ public class Layout: NSObject {
     let oldParentLayout = layout.parentLayout
 
     // Remove the child layout from its old parent (if necessary)
-    oldParentLayout?.childLayouts.remove(layout)
+    if let oldParentLayout = oldParentLayout {
+      oldParentLayout.childLayouts.remove(layout)
+      // Update its new relative position to where it is in its new layout tree
+      layout.relativePosition = layout.absolutePosition - absolutePosition
+      // With the new relative position, refresh the view positions for this part of the tree
+      layout.refreshViewPositionsForTree()
+    }
 
     // Add this child layout and set its parent
     childLayouts.insert(layout)
@@ -287,33 +294,17 @@ public class Layout: NSObject {
   // MARK: - Internal
 
   /**
-  For every `Layout` in its tree hierarchy (including itself), updates the `absolutePosition`,
-  `viewFrameOrigin`, and `viewFrame` based on the current state of this object.
+  For every `Layout` in its tree hierarchy (including itself), updates `self.absolutePosition`
+  and `self.viewFrame` based on the current state of this object.
 
   - Parameter includeFields: If true, recursively update view frames for field layouts. If false,
   skip them.
   */
   internal final func refreshViewPositionsForTree(includeFields includeFields: Bool = true) {
-    var parentViewAbsolutePosition = (parentLayout?.viewAbsolutePosition ?? CGPointZero)
-
-    if let workspaceLayout = self as? WorkspaceLayout where parentLayout == nil {
-      // This is a special case for when all view positions are being refreshed at the root
-      // workspace.
-      // Because UIScrollView is limited to scrolling positive coordiates, we must offset all
-      // block view origin coordinates so they are >= (0, 0). To do this, we simply set the
-      // `parentViewAbsolutePosition` for all blocks to be offset by the
-      // `workspaceLayout.contentOrigin`
-      let viewContentOrigin = self.engine.viewPointFromWorkspacePoint(workspaceLayout.contentOrigin)
-
-      // Note that in RTL, we must flip the X offset
-      parentViewAbsolutePosition.x = self.engine.rtl ? viewContentOrigin.x : -viewContentOrigin.x
-      parentViewAbsolutePosition.y = -viewContentOrigin.y
-    }
-
     refreshViewPositionsForTree(
       parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
-      parentViewAbsolutePosition: parentViewAbsolutePosition,
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
+      contentOffset: (parentLayout?.childContentOffset ?? WorkspacePointZero),
       rtl: self.engine.rtl,
       includeFields: includeFields)
   }
@@ -340,15 +331,15 @@ public class Layout: NSObject {
   // MARK: - Private
 
   /**
-  For every `Layout` in its tree hierarchy (including itself), updates the `absolutePosition`,
-  `viewFrameOrigin`, and `viewFrame` based on the current state of this object.
+  For every `Layout` in its tree hierarchy (including itself), updates `self.absolutePosition`
+  and `self.viewFrame` based on the current state of this object.
 
   - Parameter parentAbsolutePosition: The absolute position of its parent layout (specified as a
   Workspace coordinate system point)
-  - Parameter parentViewAbsolutePosition: The absolute position of its parent's view (specified as a
-  UIView coordinate system point)
-  - Parameter parentContentSize: The content size of its parent layout (specified as a Workspaced
+  - Parameter parentContentSize: The content size of its parent layout (specified as a Workspace
   coordinate system size)
+  - Parameter contentOffset: An offset that should be applied to this view frame (specified as a
+  Workspace coordinate system point)
   - Parameter rtl: Flag for if the layout should be positioned in RTL mode.
   - Parameter includeFields: If true, recursively update view positions for field layouts. If false,
   skip them.
@@ -357,8 +348,8 @@ public class Layout: NSObject {
   */
   private final func refreshViewPositionsForTree(
     parentAbsolutePosition parentAbsolutePosition: WorkspacePoint,
-    parentViewAbsolutePosition: CGPoint,
     parentContentSize: WorkspaceSize,
+    contentOffset: WorkspacePoint,
     rtl: Bool, includeFields: Bool)
   {
     // TODO:(#29) Optimize this method so it only recalculates view positions for layouts that
@@ -369,32 +360,22 @@ public class Layout: NSObject {
       parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
       parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
 
-    // Update the layout's absolute position in the view coordinate system
-    var viewRelativePosition = CGPointZero
-    if rtl {
-      // In RTL, the x position is calculated relative to the top-right corner of its parent
-      viewRelativePosition.x = self.engine.viewUnitFromWorkspaceUnit(
-        parentContentSize.width - (relativePosition.x + edgeInsets.left + contentSize.width))
-    } else {
-      viewRelativePosition.x =
-        self.engine.viewUnitFromWorkspaceUnit(relativePosition.x + edgeInsets.left)
-    }
-    viewRelativePosition.y = self.engine.viewUnitFromWorkspaceUnit(
-      relativePosition.y + edgeInsets.top)
-    self.viewAbsolutePosition = parentViewAbsolutePosition + viewRelativePosition
-
-    // Update the view frame
+    // Update the view frame, if needed
     if (includeFields || !(self is FieldLayout))
     {
-      let viewFrameOrigin: CGPoint
-      if self.parentLayout is WorkspaceLayout {
-        // For top-level layouts, we want to use the absolute position.
-        // TODO:(#123) As an optimization, rewrite this method/functionality so self.parentLayout
-        // isn't called directly
-        viewFrameOrigin = viewAbsolutePosition
+      // Calculate the view frame's position
+      var viewFrameOrigin = CGPointZero
+      if rtl {
+        // In RTL, the x position is calculated relative to the top-right corner of its parent
+        viewFrameOrigin.x = self.engine.viewUnitFromWorkspaceUnit(
+          parentContentSize.width -
+          (relativePosition.x + edgeInsets.left + contentSize.width + contentOffset.x))
       } else {
-        viewFrameOrigin = viewRelativePosition
+        viewFrameOrigin.x = self.engine.viewUnitFromWorkspaceUnit(
+          relativePosition.x + edgeInsets.left + contentOffset.x)
       }
+      viewFrameOrigin.y = self.engine.viewUnitFromWorkspaceUnit(
+        relativePosition.y + edgeInsets.top + contentOffset.y)
 
       let viewSize = self.engine.viewSizeFromWorkspaceSize(self.contentSize)
       self.viewFrame =
@@ -406,8 +387,8 @@ public class Layout: NSObject {
       if includeFields || !(layout is FieldLayout) {
         layout.refreshViewPositionsForTree(
           parentAbsolutePosition: self.absolutePosition,
-          parentViewAbsolutePosition: self.viewAbsolutePosition,
           parentContentSize: self.contentSize,
+          contentOffset: self.childContentOffset,
           rtl: rtl,
           includeFields: includeFields)
       }
