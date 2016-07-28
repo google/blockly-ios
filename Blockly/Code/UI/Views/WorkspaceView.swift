@@ -66,6 +66,9 @@ public class WorkspaceView: LayoutView {
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
+  /// Flag for allowing removal of excess scroll space, while tracking
+  private var _forceRemoveExcessScrollSpace = false
+
   // MARK: - Initializers
 
   public required init() {
@@ -83,19 +86,32 @@ public class WorkspaceView: LayoutView {
     return self.scrollView.blockGroupView
   }
 
+  public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.showsHorizontalScrollIndicator = false
+  }
+
   public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
     guard let workspaceLayout = self.workspaceLayout else {
       return
     }
 
+    // Scale the content by the zoom level, and reset the zoom.
     let resetOffset = scrollView.contentOffset
     scrollView.zoomScale = 1
     scrollView.contentOffset = resetOffset
     scrollView.minimumZoomScale /= scale
     scrollView.maximumZoomScale /= scale
 
+    // Ensure the excess scroll space will be trimmed, so there won't be
+    // excess padding after a zoom
+    _forceRemoveExcessScrollSpace = true
     workspaceLayout.engine.scale *= scale
     workspaceLayout.updateLayoutDownTree()
+
+    _forceRemoveExcessScrollSpace = false
+    scrollView.showsVerticalScrollIndicator = true
+    scrollView.showsHorizontalScrollIndicator = true
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -382,8 +398,11 @@ public class WorkspaceView: LayoutView {
   }
 
   private func removeExcessScrollSpace() {
-    if !allowCanvasPadding || _disableRemoveExcessScrollSpace ||
-      scrollView.tracking || scrollView.dragging || scrollView.decelerating
+    if !allowCanvasPadding || _disableRemoveExcessScrollSpace {
+      return
+    }
+    if !_forceRemoveExcessScrollSpace &&
+      (scrollView.tracking || scrollView.dragging || scrollView.decelerating)
     {
       return
     }
