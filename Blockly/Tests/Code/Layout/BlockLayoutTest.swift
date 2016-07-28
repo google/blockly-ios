@@ -120,39 +120,6 @@ class BlockLayoutTest: XCTestCase {
     XCTAssertEqual(blockGroupLayout, blockStatementStatementInput.layout?.rootBlockGroupLayout)
   }
 
-  func testZIndex() {
-    // Add block to the workspace
-    let workspace = _workspaceLayout.workspace
-    guard
-      let block = try! _blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
-      else
-    {
-      XCTFail("Blocks couldn't be loaded into the workspace")
-      return
-    }
-
-    // Build layout tree
-    do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
-    } catch let error as NSError {
-      XCTFail("Couldn't build layout tree: \(error)")
-    }
-
-    if let blockLayout = block.layout {
-      let newZIndex = blockLayout.zIndex + 1 // Increment zIndex by 1
-      blockLayout.zIndex = newZIndex
-
-      // Verify zIndex was changed on block layout and all direct block group layouts
-      XCTAssertEqual(newZIndex, blockLayout.zIndex)
-
-      for inputLayout in blockLayout.inputLayouts {
-        XCTAssertEqual(newZIndex, inputLayout.blockGroupLayout.zIndex)
-      }
-    } else {
-      XCTFail("Block layout wasn't created")
-    }
-  }
-
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
     let builder = Block.Builder(name: "test")
