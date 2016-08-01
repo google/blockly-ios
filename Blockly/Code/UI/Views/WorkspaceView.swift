@@ -507,7 +507,8 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.showsHorizontalScrollIndicator = false
   }
 
-  public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+  public func scrollViewDidEndZooming(scrollView: UIScrollView,
+                                      withView view: UIView?, atScale scale: CGFloat) {
     guard let workspaceLayout = self.workspaceLayout else {
       return
     }
