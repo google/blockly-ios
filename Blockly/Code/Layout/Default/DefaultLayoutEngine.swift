@@ -24,7 +24,7 @@ import Foundation
 public class DefaultLayoutEngine: LayoutEngine {
   // MARK: - Initializers
   public override init(config: LayoutConfig = DefaultLayoutConfig(), rtl: Bool? = nil,
-                       minScale: CGFloat = 0.5, maxScale: CGFloat = 2.0)
+                       minimumScale: CGFloat = 0.5, maximumScale: CGFloat = 2.0)
   {
     super.init(config: config, rtl: rtl)
   }

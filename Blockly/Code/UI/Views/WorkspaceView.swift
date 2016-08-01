@@ -38,6 +38,7 @@ public class WorkspaceView: LayoutView {
     scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     scrollView.autoresizesSubviews = false
     scrollView.delegate = self
+    scrollView.bouncesZoom = false
     return scrollView
   }()
 
@@ -50,8 +51,8 @@ public class WorkspaceView: LayoutView {
     }
   }
 
-  /// The amount of padding to apply to the edges of the workspace canvas, by percentage of screen
-  /// size
+  /// The amount of padding to apply to the edges of the workspace canvas, by percentage of view
+  /// frame size
   public var canvasPaddingScale = EdgeInsets(0.5, 0.5, 0.5, 0.5)
 
   /**
@@ -66,15 +67,18 @@ public class WorkspaceView: LayoutView {
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
+  /// Remember the state of the vertical scroll indicator, to re-enable after turning it off
+  private var _scrollViewShowedVerticalScrollIndicator: Bool = true
+
+  /// Remember the state of the horizontal scroll indicator, to re-enable after turning it off
+  private var _scrollViewShowedHorizontalScrollIndicator: Bool = true
+
   // MARK: - Initializers
 
   public required init() {
     super.init(frame: CGRectZero)
 
     addSubview(scrollView)
-
-    scrollView.delegate = self
-    scrollView.bouncesZoom = false
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -89,7 +93,6 @@ public class WorkspaceView: LayoutView {
     guard let layout = self.layout else {
       return
     }
-
 
     scrollView.minimumZoomScale = layout.engine.minimumScale
     scrollView.maximumZoomScale = layout.engine.maximumScale
@@ -258,7 +261,7 @@ public class WorkspaceView: LayoutView {
   private func canvasPadding() -> EdgeInsets {
     var scaled = EdgeInsets(0, 0, 0, 0)
 
-    let viewRect = self.bounds.size
+    let viewRect = bounds.size
     scaled.top = viewRect.height * canvasPaddingScale.top
     scaled.leading = viewRect.width * canvasPaddingScale.leading
     scaled.bottom = viewRect.height * canvasPaddingScale.bottom
@@ -282,7 +285,7 @@ public class WorkspaceView: LayoutView {
     let contentDelta = _lastKnownContentOrigin - layout.contentOrigin
     let contentViewDelta = layout.engine.viewPointFromWorkspacePoint(contentDelta)
 
-    let padding = canvasPadding()
+    let canvasPadding = self.canvasPadding()
 
     // Calculate the extra padding to add around the content
     var contentPadding = EdgeInsets(0, 0, 0, 0)
@@ -291,10 +294,10 @@ public class WorkspaceView: LayoutView {
       // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
       // moved from higher value coordinates to lower value ones) or grows in the negative
       // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
-      contentPadding.top = scrollView.bounds.height + padding.top
-      contentPadding.leading = scrollView.bounds.width + padding.leading
-      contentPadding.bottom = scrollView.bounds.height + padding.bottom
-      contentPadding.trailing = scrollView.bounds.width + padding.trailing
+      contentPadding.top = scrollView.bounds.height + canvasPadding.top
+      contentPadding.leading = scrollView.bounds.width + canvasPadding.leading
+      contentPadding.bottom = scrollView.bounds.height + canvasPadding.bottom
+      contentPadding.trailing = scrollView.bounds.width + canvasPadding.trailing
     } else if layout.engine.rtl {
       // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
       // sure that content appears right-aligned.
@@ -317,7 +320,7 @@ public class WorkspaceView: LayoutView {
         // simply set the `oldBlockGroupFrame.origin.x` to the right edge of the scrollView's
         // bounds.
         oldBlockGroupFrame.origin.x =
-          scrollView.bounds.width - (allowCanvasPadding ? padding.leading : 0)
+          scrollView.bounds.width - (allowCanvasPadding ? canvasPadding.leading : 0)
       }
 
       // Position the blockGroupView relative to the top-right corner
@@ -368,7 +371,7 @@ public class WorkspaceView: LayoutView {
     removeExcessScrollSpace()
   }
 
-  private func removeExcessScrollSpace(ignoreRestrictions: Bool = false) {
+  private func removeExcessScrollSpace(ignoreRestrictions ignoreRestrictions: Bool = false) {
     if !allowCanvasPadding || _disableRemoveExcessScrollSpace {
       return
     }
@@ -384,7 +387,7 @@ public class WorkspaceView: LayoutView {
     // Disable this method from recursively calling itself
     _disableRemoveExcessScrollSpace = true
 
-    let padding = canvasPadding()
+    let canvasPadding = self.canvasPadding()
 
     // Figure out the ideal placement for the scrollView.blockGroupView. This helps us figure out
     // the excess scrolling area that can be removed from the canvas.
@@ -392,20 +395,20 @@ public class WorkspaceView: LayoutView {
     if layout.engine.rtl {
       // The block group in RTL must always appear right-aligned on-screen, so we calculate an
       // origin that takes into account the block group's width and the current scrollView width
-      let originX = max(padding.trailing,
+      let originX = max(canvasPadding.trailing,
         scrollView.bounds.width - scrollView.blockGroupView.frame.width -
-        padding.leading)
+        canvasPadding.leading)
       idealBlockGroupFrame = CGRectMake(
         originX,
-        padding.top,
-        scrollView.blockGroupView.frame.width + padding.leading,
-        scrollView.blockGroupView.frame.height + padding.bottom)
+        canvasPadding.top,
+        scrollView.blockGroupView.frame.width + canvasPadding.leading,
+        scrollView.blockGroupView.frame.height + canvasPadding.bottom)
     } else {
       idealBlockGroupFrame = CGRectMake(
-        padding.leading,
-        padding.top,
-        scrollView.blockGroupView.frame.width + padding.trailing,
-        scrollView.blockGroupView.frame.height + padding.bottom)
+        canvasPadding.leading,
+        canvasPadding.top,
+        scrollView.blockGroupView.frame.width + canvasPadding.trailing,
+        scrollView.blockGroupView.frame.height + canvasPadding.bottom)
     }
 
     // Remove excess left space
@@ -498,11 +501,14 @@ extension WorkspaceView: UIScrollViewDelegate {
     removeExcessScrollSpace()
   }
 
-  @objc public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+  public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
     return self.scrollView.blockGroupView
   }
 
   public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
+    _scrollViewShowedVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
+    _scrollViewShowedHorizontalScrollIndicator = scrollView.showsHorizontalScrollIndicator
+
     scrollView.showsVerticalScrollIndicator = false
     scrollView.showsHorizontalScrollIndicator = false
   }
@@ -525,10 +531,10 @@ extension WorkspaceView: UIScrollViewDelegate {
     // excess padding after a zoom
     workspaceLayout.engine.scale *= scale
     workspaceLayout.updateLayoutDownTree()
-    self.removeExcessScrollSpace(true)
+    removeExcessScrollSpace(ignoreRestrictions:true)
 
-    scrollView.showsVerticalScrollIndicator = true
-    scrollView.showsHorizontalScrollIndicator = true
+    scrollView.showsVerticalScrollIndicator = _scrollViewShowedVerticalScrollIndicator
+    scrollView.showsHorizontalScrollIndicator = _scrollViewShowedHorizontalScrollIndicator
   }
 }
 
