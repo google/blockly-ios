@@ -29,13 +29,24 @@ public class LayoutEngine: NSObject {
 
   // MARK: - Properties
 
+
+  /// The minimum scale that the engine can have, relative to the Workspace coordinate system.
+  public private(set) final var minimumScale: CGFloat = 0.5
+
+  /// The maximum scale that the engine can have, relative to the Workspace coordinate system.
+  public private(set) final var maximumScale: CGFloat = 2.0
+
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
   public final var scale: CGFloat = 1.0 {
     didSet {
-      // Do not allow a scale less than 0.5
-      if scale < 0.5 {
-        scale = 0.5
+      // Do not allow a scale less than minimumScale, or greater than maximumScale
+      if scale < self.minimumScale {
+        scale = self.minimumScale
+      }
+
+      if scale > self.maximumScale {
+        scale = self.maximumScale
       }
 
       if scale != oldValue {
@@ -61,14 +72,22 @@ public class LayoutEngine: NSObject {
    a `LayoutConfig` is created automatically.
    - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
    is automatically set using the system's layout direction.
+   - Parameter minScale: The minimum scale for the engine, relative to Workspace coordinate system.
+   Defaults to 0.5.
+   - Parameter maxScale: The maximum scale for the engine, relative to Workspace coordinate system.
+   Degaults to 2.0.
    */
-  public init(config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil) {
+  public init(config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil, minimumScale: CGFloat = 0.5,
+              maximumScale: CGFloat = 2.0) {
     self.config = config
     self.rtl =
       rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
     super.init()
 
     config.updateViewValuesFromEngine(self)
+
+    self.minimumScale = minimumScale
+    self.maximumScale = maximumScale
   }
 
   // MARK: - Public
