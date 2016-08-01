@@ -66,9 +66,6 @@ public class WorkspaceView: LayoutView {
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
-  /// Flag for allowing removal of excess scroll space, while tracking the scrollView
-  private var _disableRemoveExcessScrollSpaceRestrictions = false
-
   // MARK: - Initializers
 
   public required init() {
@@ -94,8 +91,8 @@ public class WorkspaceView: LayoutView {
     }
 
 
-    scrollView.minimumZoomScale = layout.engine.MinimumScale
-    scrollView.maximumZoomScale = layout.engine.MaximumScale
+    scrollView.minimumZoomScale = layout.engine.minimumScale
+    scrollView.maximumZoomScale = layout.engine.maximumScale
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
       updateCanvasSizeFromLayout()
@@ -371,11 +368,11 @@ public class WorkspaceView: LayoutView {
     removeExcessScrollSpace()
   }
 
-  private func removeExcessScrollSpace() {
+  private func removeExcessScrollSpace(ignoreRestrictions: Bool = false) {
     if !allowCanvasPadding || _disableRemoveExcessScrollSpace {
       return
     }
-    if !_disableRemoveExcessScrollSpaceRestrictions &&
+    if !ignoreRestrictions &&
       (scrollView.tracking || scrollView.dragging || scrollView.decelerating)
     {
       return
@@ -525,11 +522,10 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     // Ensure the excess scroll space will be trimmed, so there won't be
     // excess padding after a zoom
-    _disableRemoveExcessScrollSpaceRestrictions = true
     workspaceLayout.engine.scale *= scale
     workspaceLayout.updateLayoutDownTree()
+    self.removeExcessScrollSpace(true)
 
-    _disableRemoveExcessScrollSpaceRestrictions = false
     scrollView.showsVerticalScrollIndicator = true
     scrollView.showsHorizontalScrollIndicator = true
   }

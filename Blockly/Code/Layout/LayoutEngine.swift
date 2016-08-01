@@ -32,20 +32,20 @@ public class LayoutEngine: NSObject {
 
   /// The minimum and maximum scale that the engine can have, relative to the Workspace coordinate
   /// system.
-  public private(set) final var MinimumScale: CGFloat = 0.5
-  public private(set) final var MaximumScale: CGFloat = 2.0
+  public private(set) final var minimumScale: CGFloat = 0.5
+  public private(set) final var maximumScale: CGFloat = 2.0
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
   public final var scale: CGFloat = 1.0 {
     didSet {
       // Do not allow a scale less than 0.5
-      if scale < self.MinimumScale {
-        scale = self.MinimumScale
+      if scale < self.minimumScale {
+        scale = self.minimumScale
       }
 
-      if scale > self.MaximumScale {
-        scale = self.MaximumScale
+      if scale > self.maximumScale {
+        scale = self.maximumScale
       }
 
       if scale != oldValue {
@@ -85,8 +85,8 @@ public class LayoutEngine: NSObject {
 
     config.updateViewValuesFromEngine(self)
 
-    self.MinimumScale = minScale
-    self.MaximumScale = maxScale
+    self.minimumScale = minScale
+    self.maximumScale = maxScale
   }
 
   // MARK: - Public
