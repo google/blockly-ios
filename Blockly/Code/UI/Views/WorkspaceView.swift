@@ -52,7 +52,7 @@ public class WorkspaceView: LayoutView {
 
   /// The amount of padding to apply to the edges of the workspace canvas, by percentage of screen
   /// size
-  public var canvasPadding = EdgeInsets(0.5, 0.5, 0.5, 0.5)
+  public var canvasPaddingScale = EdgeInsets(0.5, 0.5, 0.5, 0.5)
 
   /**
   The amount of padding that should be added to the edges when automatically scrolling a
@@ -66,8 +66,8 @@ public class WorkspaceView: LayoutView {
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
-  /// Flag for allowing removal of excess scroll space, while tracking
-  private var _forceRemoveExcessScrollSpace = false
+  /// Flag for allowing removal of excess scroll space, while tracking the scrollView
+  private var _disableRemoveExcessScrollSpaceRestrictions = false
 
   // MARK: - Initializers
 
@@ -77,41 +77,7 @@ public class WorkspaceView: LayoutView {
     addSubview(scrollView)
 
     scrollView.delegate = self
-    scrollView.minimumZoomScale = LayoutEngine.MinimumScale
-    scrollView.maximumZoomScale = LayoutEngine.MaximumScale
     scrollView.bouncesZoom = false
-  }
-
-  @objc public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-    return self.scrollView.blockGroupView
-  }
-
-  public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
-    scrollView.showsVerticalScrollIndicator = false
-    scrollView.showsHorizontalScrollIndicator = false
-  }
-
-  public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
-    guard let workspaceLayout = self.workspaceLayout else {
-      return
-    }
-
-    // Scale the content by the zoom level, and reset the zoom.
-    let resetOffset = scrollView.contentOffset
-    scrollView.zoomScale = 1
-    scrollView.contentOffset = resetOffset
-    scrollView.minimumZoomScale /= scale
-    scrollView.maximumZoomScale /= scale
-
-    // Ensure the excess scroll space will be trimmed, so there won't be
-    // excess padding after a zoom
-    _forceRemoveExcessScrollSpace = true
-    workspaceLayout.engine.scale *= scale
-    workspaceLayout.updateLayoutDownTree()
-
-    _forceRemoveExcessScrollSpace = false
-    scrollView.showsVerticalScrollIndicator = true
-    scrollView.showsHorizontalScrollIndicator = true
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -122,6 +88,14 @@ public class WorkspaceView: LayoutView {
 
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
+
+    guard let layout = self.layout else {
+      return
+    }
+
+
+    scrollView.minimumZoomScale = layout.engine.MinimumScale
+    scrollView.maximumZoomScale = layout.engine.MaximumScale
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
       updateCanvasSizeFromLayout()
@@ -284,14 +258,14 @@ public class WorkspaceView: LayoutView {
     return workspaceLayout.engine.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
 
-  private func scaledCanvasPadding()-> EdgeInsets {
+  private func canvasPadding() -> EdgeInsets {
     var scaled = EdgeInsets(0, 0, 0, 0)
 
-    let screenRect = UIScreen.mainScreen().bounds
-    scaled.top = screenRect.size.height * canvasPadding.top
-    scaled.leading = screenRect.size.width * canvasPadding.leading
-    scaled.bottom = screenRect.size.height * canvasPadding.bottom
-    scaled.trailing = screenRect.size.width * canvasPadding.trailing
+    let viewRect = self.bounds.size
+    scaled.top = viewRect.height * canvasPaddingScale.top
+    scaled.leading = viewRect.width * canvasPaddingScale.leading
+    scaled.bottom = viewRect.height * canvasPaddingScale.bottom
+    scaled.trailing = viewRect.width * canvasPaddingScale.trailing
 
     return scaled
   }
@@ -311,7 +285,7 @@ public class WorkspaceView: LayoutView {
     let contentDelta = _lastKnownContentOrigin - layout.contentOrigin
     let contentViewDelta = layout.engine.viewPointFromWorkspacePoint(contentDelta)
 
-    let scaledPadding = scaledCanvasPadding()
+    let padding = canvasPadding()
 
     // Calculate the extra padding to add around the content
     var contentPadding = EdgeInsets(0, 0, 0, 0)
@@ -320,10 +294,10 @@ public class WorkspaceView: LayoutView {
       // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
       // moved from higher value coordinates to lower value ones) or grows in the negative
       // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
-      contentPadding.top = scrollView.bounds.height + scaledPadding.top
-      contentPadding.leading = scrollView.bounds.width + scaledPadding.leading
-      contentPadding.bottom = scrollView.bounds.height + scaledPadding.bottom
-      contentPadding.trailing = scrollView.bounds.width + scaledPadding.trailing
+      contentPadding.top = scrollView.bounds.height + padding.top
+      contentPadding.leading = scrollView.bounds.width + padding.leading
+      contentPadding.bottom = scrollView.bounds.height + padding.bottom
+      contentPadding.trailing = scrollView.bounds.width + padding.trailing
     } else if layout.engine.rtl {
       // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
       // sure that content appears right-aligned.
@@ -346,7 +320,7 @@ public class WorkspaceView: LayoutView {
         // simply set the `oldBlockGroupFrame.origin.x` to the right edge of the scrollView's
         // bounds.
         oldBlockGroupFrame.origin.x =
-          scrollView.bounds.width - (allowCanvasPadding ? scaledPadding.leading : 0)
+          scrollView.bounds.width - (allowCanvasPadding ? padding.leading : 0)
       }
 
       // Position the blockGroupView relative to the top-right corner
@@ -401,7 +375,7 @@ public class WorkspaceView: LayoutView {
     if !allowCanvasPadding || _disableRemoveExcessScrollSpace {
       return
     }
-    if !_forceRemoveExcessScrollSpace &&
+    if !_disableRemoveExcessScrollSpaceRestrictions &&
       (scrollView.tracking || scrollView.dragging || scrollView.decelerating)
     {
       return
@@ -413,7 +387,7 @@ public class WorkspaceView: LayoutView {
     // Disable this method from recursively calling itself
     _disableRemoveExcessScrollSpace = true
 
-    let scaledPadding = scaledCanvasPadding()
+    let padding = canvasPadding()
 
     // Figure out the ideal placement for the scrollView.blockGroupView. This helps us figure out
     // the excess scrolling area that can be removed from the canvas.
@@ -421,18 +395,20 @@ public class WorkspaceView: LayoutView {
     if layout.engine.rtl {
       // The block group in RTL must always appear right-aligned on-screen, so we calculate an
       // origin that takes into account the block group's width and the current scrollView width
-      let originX = max(scaledPadding.trailing,
+      let originX = max(padding.trailing,
         scrollView.bounds.width - scrollView.blockGroupView.frame.width -
-        scaledPadding.leading)
+        padding.leading)
       idealBlockGroupFrame = CGRectMake(
         originX,
-        scaledPadding.top,
-        scrollView.blockGroupView.frame.width + scaledPadding.leading,
-        scrollView.blockGroupView.frame.height + scaledPadding.bottom)
+        padding.top,
+        scrollView.blockGroupView.frame.width + padding.leading,
+        scrollView.blockGroupView.frame.height + padding.bottom)
     } else {
-      idealBlockGroupFrame = CGRectMake(scaledPadding.leading, scaledPadding.top,
-        scrollView.blockGroupView.frame.width + scaledPadding.trailing,
-        scrollView.blockGroupView.frame.height + scaledPadding.bottom)
+      idealBlockGroupFrame = CGRectMake(
+        padding.leading,
+        padding.top,
+        scrollView.blockGroupView.frame.width + padding.trailing,
+        scrollView.blockGroupView.frame.height + padding.bottom)
     }
 
     // Remove excess left space
@@ -523,6 +499,39 @@ extension WorkspaceView: UIScrollViewDelegate {
 
   public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     removeExcessScrollSpace()
+  }
+
+  @objc public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    return self.scrollView.blockGroupView
+  }
+
+  public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.showsHorizontalScrollIndicator = false
+  }
+
+  public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    guard let workspaceLayout = self.workspaceLayout else {
+      return
+    }
+
+    // Scale the content by the zoom level, and reset the zoom. Also, save the current offset, since
+    // changing the zoomScale resets the contentOffset, which causes an apparent jump.
+    let resetOffset = scrollView.contentOffset
+    scrollView.zoomScale = 1
+    scrollView.contentOffset = resetOffset
+    scrollView.minimumZoomScale /= scale
+    scrollView.maximumZoomScale /= scale
+
+    // Ensure the excess scroll space will be trimmed, so there won't be
+    // excess padding after a zoom
+    _disableRemoveExcessScrollSpaceRestrictions = true
+    workspaceLayout.engine.scale *= scale
+    workspaceLayout.updateLayoutDownTree()
+
+    _disableRemoveExcessScrollSpaceRestrictions = false
+    scrollView.showsVerticalScrollIndicator = true
+    scrollView.showsHorizontalScrollIndicator = true
   }
 }
 
