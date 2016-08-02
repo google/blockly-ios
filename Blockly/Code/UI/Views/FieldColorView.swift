@@ -22,9 +22,9 @@ import Foundation
 public class FieldColorView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldColor` backing this view
-  public var fieldColor: FieldColor? {
-    return fieldLayout?.field as? FieldColor
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldColorLayout`
+  public var fieldColorLayout: FieldColorLayout? {
+    return fieldLayout as? FieldColorLayout
   }
 
   /// The color button to render
@@ -55,22 +55,23 @@ public class FieldColorView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout where layout.field is FieldColor else {
+    guard let fieldColorLayout = self.fieldColorLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.button.layer.borderWidth =
-        layout.config.viewUnitFor(LayoutConfig.FieldColorButtonBorderWidth)
-      self.button.layer.cornerRadius = layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
-      self.button.backgroundColor = self.fieldColor?.color
+      button.layer.borderWidth =
+        fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldColorButtonBorderWidth)
+      button.layer.cornerRadius =
+        fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+      button.backgroundColor = fieldColorLayout.color
     }
   }
 
   public override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.button.backgroundColor = UIColor.clearColor()
+    button.backgroundColor = UIColor.clearColor()
   }
 
   // MARK: - Private
@@ -82,7 +83,7 @@ public class FieldColorView: FieldView {
 
     // Show the color picker
     let viewController = FieldColorPickerViewController()
-    viewController.fieldColor = self.fieldColor
+    viewController.color = fieldColorLayout?.color
     viewController.delegate = self
     parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
   }
@@ -92,9 +93,9 @@ public class FieldColorView: FieldView {
 
 extension FieldColorView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout.field is FieldColor) {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldColor`.")
+    if !(layout is FieldColorLayout) {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldColorLayout`.")
       return CGSizeZero
     }
 
@@ -108,7 +109,7 @@ extension FieldColorView: FieldColorPickerViewControllerDelegate {
   public func fieldColorPickerViewController(
     viewController: FieldColorPickerViewController, didPickColor color: UIColor)
   {
-    self.fieldColor?.color = color
+    fieldColorLayout?.updateColor(color)
     viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 }

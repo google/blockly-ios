@@ -78,7 +78,7 @@ public class FieldColorPickerViewController: UICollectionViewController {
   }
 
   /// The color field to display
-  public var fieldColor: FieldColor?
+  public var color: UIColor?
 
   /// Delegate for events that occur on this controller
   public weak var delegate: FieldColorPickerViewControllerDelegate?
@@ -174,7 +174,7 @@ public class FieldColorPickerViewController: UICollectionViewController {
   // MARK: - Private
 
   private func updateSelectedColor(animated animated: Bool) {
-    guard let selectedColor = self.fieldColor?.color else {
+    guard let selectedColor = self.color else {
       return
     }
 

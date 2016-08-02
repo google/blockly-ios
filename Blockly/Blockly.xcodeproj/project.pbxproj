@@ -128,6 +128,7 @@
 		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
+		FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */; };
 		FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -148,6 +149,7 @@
 		FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557751BE028840019D0D4 /* ViewManager.swift */; };
 		FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE557781BE02B270019D0D4 /* Dragger.swift */; };
 		FAF500501D5042F4009E4B24 /* String+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5004F1D5042F4009E4B24 /* String+Util.swift */; };
+		FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */; };
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 		FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE231CD81F4D00698179 /* FieldNumber.swift */; };
 		FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */; };
@@ -355,6 +357,7 @@
 		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorLayout.swift; sourceTree = "<group>"; };
 		FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+Builder.swift"; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 		FAE557751BE028840019D0D4 /* ViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		FAE557781BE02B270019D0D4 /* Dragger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dragger.swift; sourceTree = "<group>"; };
 		FAF5004F1D5042F4009E4B24 /* String+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Util.swift"; sourceTree = "<group>"; };
+		FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxLayout.swift; sourceTree = "<group>"; };
 		FAFAEE231CD81F4D00698179 /* FieldNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumber.swift; sourceTree = "<group>"; };
 		FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberTest.swift; sourceTree = "<group>"; };
 		FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Helper.swift"; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 				FAD652501CB7266100F73F11 /* InputLayout.swift */,
 				FA2726831B83F99300777B49 /* FieldLayout.swift */,
 				FA16C2901D49A3BA00BAAFA2 /* FieldAngleLayout.swift */,
+				FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */,
+				FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */,
 				FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
@@ -985,6 +991,7 @@
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
 				FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */,
+				FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */,
 				FAF500501D5042F4009E4B24 /* String+Util.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
 				FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */,
@@ -992,6 +999,7 @@
 				FAA8700E1C64272C000C7C61 /* UIView+Helper.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
+				FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
