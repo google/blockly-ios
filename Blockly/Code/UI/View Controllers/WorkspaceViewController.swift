@@ -95,6 +95,7 @@ public class WorkspaceViewController: UIViewController {
     self.workspaceLayout = workspaceLayout
 
     workspaceView.layout = workspaceLayout
+    workspaceLayout?.updateLayoutDownTree()
     try _viewBuilder.buildViewTree(forWorkspaceView: workspaceView)
     workspaceView.refreshView()
   }
