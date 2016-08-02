@@ -42,7 +42,8 @@ public class DefaultLayoutFactory: NSObject {
     // Register layout creators for default fields
     registerLayoutCreatorForFieldType(FieldAngle.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldAngleView.self)
+      return FieldAngleLayout(
+        angle: field as! FieldAngle, engine: engine, measurer: FieldAngleView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldCheckbox.self) {
