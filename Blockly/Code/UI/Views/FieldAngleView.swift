@@ -22,9 +22,9 @@ import Foundation
 public class FieldAngleView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldAngle` backing this view
-  public var fieldAngle: FieldAngle? {
-    return fieldLayout?.field as? FieldAngle
+  /// Convenience property accessing `self.layout` as `FieldAngleLayout`
+  private var fieldAngleLayout: FieldAngleLayout? {
+    return layout as? FieldAngleLayout
   }
 
   /// The text field to render
@@ -70,16 +70,18 @@ public class FieldAngleView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout where layout.field is FieldAngle else {
+    guard let fieldAngleLayout = self.fieldAngleLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      updateTextFieldFromFieldAngle()
+      updateTextFieldFromLayout()
 
       // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-      textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      textField.text = fieldAngleLayout.textValue
+      textField.font = UIFont.systemFontOfSize(14 * fieldAngleLayout.engine.scale)
+      textField.insetPadding =
+        fieldAngleLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
@@ -91,13 +93,16 @@ public class FieldAngleView: FieldView {
 
   // MARK: - Private
 
+  private func updateTextFieldFromLayout() {
+    let text = fieldAngleLayout?.textValue ?? ""
+    if textField.text != text {
+      textField.text = text
+    }
+  }
+
   private dynamic func didTapDoneButton(sender: UITextField) {
     // Stop editing the text field
     textField.resignFirstResponder()
-  }
-
-  private func updateTextFieldFromFieldAngle() {
-    textField.text = String(fieldAngle?.angle ?? 0) + "°"
   }
 }
 
@@ -115,16 +120,17 @@ extension FieldAngleView: UITextFieldDelegate {
   }
 
   public func textFieldDidBeginEditing(textField: UITextField) {
-    // Temporarily remove the "°" from the text
-    textField.text = textField.text?.stringByReplacingOccurrencesOfString("°", withString: "")
+    // Temporarily remove any non-number characters from the text
+    let invalidCharacters = NSCharacterSet.decimalDigitCharacterSet().invertedSet
+    textField.text = textField.text?.bky_removingOccurrences(ofCharacterSet: invalidCharacters)
   }
 
   public func textFieldDidEndEditing(textField: UITextField) {
     // Only commit the change after the user has finished editing the field
-    if let newAngle = Int(textField.text ?? "") { // Only update it if it's a valid value
-      fieldAngle?.angle = newAngle
-    }
-    updateTextFieldFromFieldAngle()
+    fieldAngleLayout?.updateAngle(fromText: (textField.text ?? ""))
+
+    // Update the text from the layout
+    updateTextFieldFromLayout()
   }
 
   public func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -138,9 +144,9 @@ extension FieldAngleView: UITextFieldDelegate {
 
 extension FieldAngleView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout.field is FieldAngle) {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldAngle`.")
+    if !(layout is FieldAngleLayout) {
+      bky_assertionFailure("`layout` is of type `(layout.dynamicType)`. " +
+        "Expected type `FieldAngleLayout`.")
       return CGSizeZero
     }
 
