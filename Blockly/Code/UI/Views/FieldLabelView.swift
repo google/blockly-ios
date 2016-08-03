@@ -22,9 +22,9 @@ View for rendering a `FieldLabelLayout`.
 public class FieldLabelView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldLabel` backing this view
-  public var fieldLabel: FieldLabel? {
-    return fieldLayout?.field as? FieldLabel
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldLabelLayout`
+  public var fieldLabelLayout: FieldLabelLayout? {
+    return fieldLayout as? FieldLabelLayout
   }
 
   /// The label to render
@@ -51,17 +51,15 @@ public class FieldLabelView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout,
-      let fieldLabel = self.fieldLabel else
-    {
+    guard let fieldLabelLayout = self.fieldLabelLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.label.text = fieldLabel.text
+      label.text = fieldLabelLayout.text
 
       // TODO:(#27) Standardize this font
-      self.label.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      label.font = UIFont.systemFontOfSize(14 * fieldLabelLayout.engine.scale)
     }
   }
 
@@ -77,13 +75,13 @@ public class FieldLabelView: FieldView {
 
 extension FieldLabelView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldLabel = layout.field as? FieldLabel else {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldLabel`.")
+    guard let fieldLabelLayout = layout as? FieldLabelLayout else {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldLabelLayout`.")
       return CGSizeZero
     }
 
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    return fieldLabel.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
+    return fieldLabelLayout.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
   }
 }

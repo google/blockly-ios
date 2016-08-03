@@ -22,9 +22,9 @@ import Foundation
 public class FieldImageView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldImage` backing this view
-  public var fieldImage: FieldImage? {
-    return fieldLayout?.field as? FieldImage
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldImageLayout`
+  public var fieldImageLayout: FieldImageLayout? {
+    return fieldLayout as? FieldImageLayout
   }
 
   /// The image to render
@@ -53,12 +53,14 @@ public class FieldImageView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let fieldImage = self.fieldImage else {
+    guard let fieldImageLayout = self.fieldImageLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      loadImageURL(fieldImage.imageURL)
+      fieldImageLayout.loadImage(completion: { (image) in
+        self.imageView.image = image
+      })
     }
   }
 
@@ -68,47 +70,18 @@ public class FieldImageView: FieldView {
     self.frame = CGRectZero
     self.imageView.image = nil
   }
-
-  // MARK: - Private
-
-  private func loadImageURL(imageURL: String) {
-    // Load image in the background
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-      // Try loading from a local file first
-      var image = ImageLoader.loadImage(named: imageURL, forClass: FieldImageView.self)
-
-      if image == nil,
-        let url = NSURL(string: imageURL)
-      {
-        // Try loading image from the web
-        do {
-          let data = try NSData(contentsOfURL: url, options: .DataReadingMappedAlways)
-          image = UIImage(data: data)
-        } catch {
-          // Do nothing
-        }
-      }
-
-      if image != nil {
-        // Update the image back on the main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          self.imageView.image = image
-        })
-      }
-    }
-  }
 }
 
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldImageView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldImage = layout.field as? FieldImage else {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldImage`.")
+    guard let fieldImageLayout = layout as? FieldImageLayout else {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldImageLayout`.")
       return CGSizeZero
     }
 
-    return layout.engine.viewSizeFromWorkspaceSize(fieldImage.size)
+    return layout.engine.viewSizeFromWorkspaceSize(fieldImageLayout.size)
   }
 }
