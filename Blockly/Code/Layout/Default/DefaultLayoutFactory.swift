@@ -60,7 +60,8 @@ public class DefaultLayoutFactory: NSObject {
 
     registerLayoutCreatorForFieldType(FieldDate.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldDateView.self)
+      return FieldDateLayout(
+        fieldDate: field as! FieldDate, engine: engine, measurer: FieldDateView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldDropdown.self) {
@@ -70,17 +71,20 @@ public class DefaultLayoutFactory: NSObject {
 
     registerLayoutCreatorForFieldType(FieldImage.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldImageView.self)
+      return FieldImageLayout(
+        fieldImage: field as! FieldImage, engine: engine, measurer: FieldImageView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldInput.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldInputView.self)
+      return FieldInputLayout(
+        fieldInput: field as! FieldInput, engine: engine, measurer: FieldInputView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldLabel.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldLabelView.self)
+      return FieldLabelLayout(
+        fieldLabel: field as! FieldLabel, engine: engine, measurer: FieldLabelView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldNumber.self) {
