@@ -41,10 +41,10 @@ public class FieldNumberLayout: FieldLayout {
 
   // MARK: - Initializers
 
-  public init(number: FieldNumber, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
-    self.fieldNumber = number
-    self.currentTextValue = number.textValue
-    super.init(field: number, engine: engine, measurer: measurer)
+  public init(fieldNumber: FieldNumber, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
+    self.fieldNumber = fieldNumber
+    self.currentTextValue = fieldNumber.textValue
+    super.init(field: fieldNumber, engine: engine, measurer: measurer)
   }
 
   // MARK: - Public

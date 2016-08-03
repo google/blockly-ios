@@ -43,17 +43,19 @@ public class DefaultLayoutFactory: NSObject {
     registerLayoutCreatorForFieldType(FieldAngle.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldAngleLayout(
-        angle: field as! FieldAngle, engine: engine, measurer: FieldAngleView.self)
+        fieldAngle: field as! FieldAngle, engine: engine, measurer: FieldAngleView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldCheckbox.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldCheckboxView.self)
+      return FieldCheckboxLayout(
+        fieldCheckbox: field as! FieldCheckbox, engine: engine, measurer: FieldCheckboxView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldColor.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldColorView.self)
+      return FieldColorLayout(
+        fieldColor: field as! FieldColor, engine: engine, measurer: FieldColorView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldDate.self) {
@@ -84,7 +86,7 @@ public class DefaultLayoutFactory: NSObject {
     registerLayoutCreatorForFieldType(FieldNumber.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldNumberLayout(
-        number: field as! FieldNumber, engine: engine, measurer: FieldNumberView.self)
+        fieldNumber: field as! FieldNumber, engine: engine, measurer: FieldNumberView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldVariable.self) {

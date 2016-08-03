@@ -145,7 +145,7 @@ extension FieldAngleView: UITextFieldDelegate {
 extension FieldAngleView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
     if !(layout is FieldAngleLayout) {
-      bky_assertionFailure("`layout` is of type `(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
         "Expected type `FieldAngleLayout`.")
       return CGSizeZero
     }

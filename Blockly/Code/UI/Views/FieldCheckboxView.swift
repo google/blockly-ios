@@ -24,9 +24,9 @@ import Foundation
 public class FieldCheckboxView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldCheckbox` backing this view
-  public var fieldCheckbox: FieldCheckbox? {
-    return fieldLayout?.field as? FieldCheckbox
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldCheckboxLayout`
+  public var fieldCheckboxLayout: FieldCheckboxLayout? {
+    return fieldLayout as? FieldCheckboxLayout
   }
 
   /// The switch button (i.e. the "checkbox")
@@ -54,27 +54,26 @@ public class FieldCheckboxView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let fieldLayout = self.fieldLayout,
-      let fieldCheckbox = self.fieldCheckbox else
-    {
+    guard let fieldCheckboxLayout = self.fieldCheckboxLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      self.switchButton.on = fieldCheckbox.checked
+      switchButton.on = fieldCheckboxLayout.checked
 
-      let tintColor = fieldLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
-      let onTintColor = fieldLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchOnTintColor)
+      let tintColor = fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
+      let onTintColor =
+        fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchOnTintColor)
 
-      if self.switchButton.tintColor != tintColor {
+      if switchButton.tintColor != tintColor {
         // Whenever `tintColor` is set, it messes up the switch's transition animation.
         // Therefore, it's only set if the value changes.
-        self.switchButton.tintColor = tintColor
+        switchButton.tintColor = tintColor
       }
-      if self.switchButton.onTintColor != onTintColor {
+      if switchButton.onTintColor != onTintColor {
         // Whenever `onTintColor` is set, it messes up the switch's transition animation.
         // Therefore, it's only set if the value changes.
-        self.switchButton.onTintColor = onTintColor
+        switchButton.onTintColor = onTintColor
       }
     }
   }
@@ -82,13 +81,13 @@ public class FieldCheckboxView: FieldView {
   public override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.switchButton.on = false
+    switchButton.on = false
   }
 
   // MARK: - Private
 
   private dynamic func switchValueDidChange(sender: UISwitch) {
-    self.fieldCheckbox?.checked = self.switchButton.on
+    fieldCheckboxLayout?.updateCheckbox(switchButton.on)
   }
 }
 
@@ -98,9 +97,9 @@ extension FieldCheckboxView: FieldLayoutMeasurer {
   private static var switchButtonSize = CGSizeZero
 
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout.field is FieldCheckbox) {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldCheckbox`.")
+    if !(layout is FieldCheckboxLayout) {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldCheckboxLayout`.")
       return CGSizeZero
     }
 
