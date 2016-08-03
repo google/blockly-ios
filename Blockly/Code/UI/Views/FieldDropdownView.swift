@@ -22,12 +22,12 @@ import Foundation
 public class FieldDropdownView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldDropdown` backing this view
-  public var fieldDropdown: FieldDropdown? {
-    return fieldLayout?.field as? FieldDropdown
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldDropdownLayout`
+  public var fieldDropdownLayout: FieldDropdownLayout? {
+    return fieldLayout as? FieldDropdownLayout
   }
 
-  /// The text field to render
+  /// The dropdown to render
   private lazy var dropDownView: DropdownView = {
     let dropDownView = DropdownView()
     dropDownView.delegate = self
@@ -52,20 +52,18 @@ public class FieldDropdownView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout,
-      let fieldDropdown = self.fieldDropdown else
-    {
+    guard let fieldDropdownLayout = self.fieldDropdownLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      dropDownView.text = fieldDropdown.selectedOption?.displayName
+      dropDownView.text = fieldDropdownLayout.selectedOption?.displayName
       dropDownView.borderWidth =
-        layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+        fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
       dropDownView.borderCornerRadius =
-        layout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+        fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
       // TODO:(#27) Standardize this font
-      dropDownView.textFont = UIFont.systemFontOfSize(14 * layout.engine.scale)
+      dropDownView.textFont = UIFont.systemFontOfSize(14 * fieldDropdownLayout.engine.scale)
     }
   }
 
@@ -86,24 +84,22 @@ public class FieldDropdownView: FieldView {
     bky_addSubviews(Array(views.values))
     bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
   }
-
-
 }
 
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldDropdownView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldDropdown = layout.field as? FieldDropdown else {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldDropdown`.")
+    guard let fieldDropdownLayout = layout as? FieldDropdownLayout else {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldDropdownLayout`.")
       return CGSizeZero
     }
 
     let borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
     let xSpacing = layout.config.viewUnitFor(LayoutConfig.InlineXPadding)
     let ySpacing = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
-    let measureText = (fieldDropdown.selectedOption?.displayName ?? "")
+    let measureText = (fieldDropdownLayout.selectedOption?.displayName ?? "")
     // TODO:(#27) Standardize this font
     let font = UIFont.systemFontOfSize(14 * scale)
 
@@ -118,7 +114,7 @@ extension FieldDropdownView: FieldLayoutMeasurer {
 
 extension FieldDropdownView: DropdownViewDelegate {
   public func dropDownDidReceiveTap() {
-    guard let field = self.fieldDropdown,
+    guard let fieldDropdownLayout = self.fieldDropdownLayout,
       let parentBlockView = self.parentBlockView else
     {
       return
@@ -126,8 +122,8 @@ extension FieldDropdownView: DropdownViewDelegate {
 
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
-    viewController.options = field.options
-    viewController.selectedIndex = field.selectedIndex
+    viewController.options = fieldDropdownLayout.options
+    viewController.selectedIndex = fieldDropdownLayout.selectedIndex
     // TODO:(#27) Standardize this font
     viewController.textLabelFont = UIFont.systemFontOfSize(18)
     parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
@@ -140,7 +136,7 @@ extension FieldDropdownView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(viewController: DropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)
   {
-    self.fieldDropdown?.selectedIndex = optionIndex
+    fieldDropdownLayout?.updateSelectedIndex(optionIndex)
     viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
   }
 }

@@ -133,6 +133,8 @@
 		FAC034FA1D515D270017C1C8 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */; };
 		FAC034FC1D51658D0017C1C8 /* FieldInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034FB1D51658D0017C1C8 /* FieldInputLayout.swift */; };
 		FAC034FE1D5167210017C1C8 /* FieldLabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034FD1D5167210017C1C8 /* FieldLabelLayout.swift */; };
+		FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */; };
+		FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */; };
 		FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -366,6 +368,8 @@
 		FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
 		FAC034FB1D51658D0017C1C8 /* FieldInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldInputLayout.swift; sourceTree = "<group>"; };
 		FAC034FD1D5167210017C1C8 /* FieldLabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLabelLayout.swift; sourceTree = "<group>"; };
+		FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownLayout.swift; sourceTree = "<group>"; };
+		FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariableLayout.swift; sourceTree = "<group>"; };
 		FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+Builder.swift"; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -436,10 +440,12 @@
 				FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */,
 				FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */,
 				FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */,
+				FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */,
 				FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */,
 				FAC034FB1D51658D0017C1C8 /* FieldInputLayout.swift */,
 				FAC034FD1D5167210017C1C8 /* FieldLabelLayout.swift */,
 				FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */,
+				FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */,
 				FA2726781B83C54900777B49 /* Layout.swift */,
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FA4E83EA1CACF00A009FB0CD /* LayoutEngine.swift */,
@@ -1012,6 +1018,7 @@
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
+				FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */,
 				FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
 				FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */,
@@ -1070,6 +1077,7 @@
 				FA16C2911D49A3BA00BAAFA2 /* FieldAngleLayout.swift in Sources */,
 				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
 				FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */,
+				FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */,
 				FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */,
 				FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */,
 				FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */,
