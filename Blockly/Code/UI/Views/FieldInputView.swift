@@ -22,9 +22,9 @@ import Foundation
 public class FieldInputView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldInput` backing this view
-  public var fieldInput: FieldInput? {
-    return fieldLayout?.field as? FieldInput
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldInputLayout`
+  public var fieldInputLayout: FieldInputLayout? {
+    return fieldLayout as? FieldInputLayout
   }
 
   /// The text field to render
@@ -55,20 +55,20 @@ public class FieldInputView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout,
-      let fieldInput = self.fieldInput else
-    {
+    guard let fieldInputLayout = self.fieldInputLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      if textField.text != fieldInput.text {
-        textField.text = fieldInput.text
+      let text = fieldInputLayout.text
+      if textField.text != text {
+        textField.text = text
       }
 
       // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-      textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      textField.font = UIFont.systemFontOfSize(14 * fieldInputLayout.engine.scale)
+      textField.insetPadding =
+        fieldInputLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
@@ -81,7 +81,7 @@ public class FieldInputView: FieldView {
   // MARK: - Private
 
   private dynamic func textFieldDidChange(sender: UITextField) {
-    fieldInput?.text = (textField.text ?? "")
+    fieldInputLayout?.updateText(textField.text ?? "")
   }
 }
 
@@ -99,16 +99,16 @@ extension FieldInputView: UITextFieldDelegate {
 
 extension FieldInputView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldInput = layout.field as? FieldInput else {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldInput`.")
+    guard let fieldInputLayout = layout as? FieldInputLayout else {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldInputLayout`.")
       return CGSizeZero
     }
 
     let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let measureText = fieldInput.text + " "
+    let measureText = fieldInputLayout.text + " "
     let font = UIFont.systemFontOfSize(14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
     measureSize.height += textPadding.top + textPadding.bottom

@@ -23,9 +23,9 @@ import Foundation
 public class FieldDateView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldDate` backing this view
-  public var fieldDate: FieldDate? {
-    return fieldLayout?.field as? FieldDate
+  /// Convenience property for accessing `self.fieldLayout` as a `FieldDateLayout`
+  public var fieldDateLayout: FieldDateLayout? {
+    return fieldLayout as? FieldDateLayout
   }
 
   /// The text field to render the date
@@ -81,18 +81,17 @@ public class FieldDateView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout,
-      let fieldDate = self.fieldDate else
-    {
+    guard let fieldDateLayout = self.fieldDateLayout else {
       return
     }
 
     if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      textField.text = FieldDateView.stringFromDate(fieldDate.date)
+      textField.text = fieldDateLayout.textValue
 
       // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-      textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      textField.font = UIFont.systemFontOfSize(14 * fieldDateLayout.engine.scale)
+      textField.insetPadding =
+        fieldDateLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     }
   }
 
@@ -103,15 +102,6 @@ public class FieldDateView: FieldView {
   }
 
   // MARK: - Private
-
-  private class func stringFromDate(date: NSDate) -> String {
-    // Format the date based on the user's current locale, in a short style
-    // (which is generally numeric)
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.locale = NSLocale.currentLocale()
-    dateFormatter.dateStyle = .ShortStyle
-    return dateFormatter.stringFromDate(date)
-  }
 
   private dynamic func didTapDoneButton(sender: UITextField) {
     updateDateFromDatePicker()
@@ -126,7 +116,7 @@ public class FieldDateView: FieldView {
   }
 
   private func updateDateFromDatePicker() {
-    fieldDate?.date = datePicker.date
+    fieldDateLayout?.updateDate(datePicker.date)
   }
 }
 
@@ -145,14 +135,14 @@ extension FieldDateView: UITextFieldDelegate {
 
 extension FieldDateView: FieldLayoutMeasurer {
   public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
-    guard let fieldDate = layout.field as? FieldDate else {
-      bky_assertionFailure("`layout.field` is of type `(layout.field.dynamicType)`. " +
-        "Expected type `FieldDate`.")
+    guard let fieldDateLayout = layout as? FieldDateLayout else {
+      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+        "Expected type `FieldDateLayout`.")
       return CGSizeZero
     }
 
     let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
-    let text = FieldDateView.stringFromDate(fieldDate.date)
+    let text = fieldDateLayout.textValue
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     var measureSize = text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
     measureSize.height += textPadding.top + textPadding.bottom
