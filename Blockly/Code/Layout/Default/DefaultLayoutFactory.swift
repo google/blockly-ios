@@ -66,7 +66,8 @@ public class DefaultLayoutFactory: NSObject {
 
     registerLayoutCreatorForFieldType(FieldDropdown.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldDropdownView.self)
+      return FieldDropdownLayout(
+        fieldDropdown: field as! FieldDropdown, engine: engine, measurer: FieldDropdownView.self)
     }
 
     registerLayoutCreatorForFieldType(FieldImage.self) {
@@ -95,7 +96,8 @@ public class DefaultLayoutFactory: NSObject {
 
     registerLayoutCreatorForFieldType(FieldVariable.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
-      return FieldLayout(field: field, engine: engine, measurer: FieldVariableView.self)
+      return FieldVariableLayout(
+        fieldVariable: field as! FieldVariable, engine: engine, measurer: FieldVariableView.self)
     }
   }
 
