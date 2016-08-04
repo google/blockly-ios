@@ -22,9 +22,9 @@ import Foundation
 public class FieldInputView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldInputLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldInputLayout`
   public var fieldInputLayout: FieldInputLayout? {
-    return fieldLayout as? FieldInputLayout
+    return layout as? FieldInputLayout
   }
 
   /// The text field to render

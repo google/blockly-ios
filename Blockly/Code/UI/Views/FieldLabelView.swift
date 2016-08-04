@@ -22,9 +22,9 @@ View for rendering a `FieldLabelLayout`.
 public class FieldLabelView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldLabelLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldLabelLayout`
   public var fieldLabelLayout: FieldLabelLayout? {
-    return fieldLayout as? FieldLabelLayout
+    return layout as? FieldLabelLayout
   }
 
   /// The label to render

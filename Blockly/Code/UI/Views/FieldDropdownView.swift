@@ -22,9 +22,9 @@ import Foundation
 public class FieldDropdownView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldDropdownLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldDropdownLayout`
   public var fieldDropdownLayout: FieldDropdownLayout? {
-    return fieldLayout as? FieldDropdownLayout
+    return layout as? FieldDropdownLayout
   }
 
   /// The dropdown to render
@@ -114,9 +114,7 @@ extension FieldDropdownView: FieldLayoutMeasurer {
 
 extension FieldDropdownView: DropdownViewDelegate {
   public func dropDownDidReceiveTap() {
-    guard let fieldDropdownLayout = self.fieldDropdownLayout,
-      let parentBlockView = self.parentBlockView else
-    {
+    guard let fieldDropdownLayout = self.fieldDropdownLayout else {
       return
     }
 
@@ -126,7 +124,8 @@ extension FieldDropdownView: DropdownViewDelegate {
     viewController.selectedIndex = fieldDropdownLayout.selectedIndex
     // TODO:(#27) Standardize this font
     viewController.textLabelFont = UIFont.systemFontOfSize(18)
-    parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
+    delegate?.fieldView(self,
+                        requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 

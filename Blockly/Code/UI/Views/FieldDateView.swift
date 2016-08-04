@@ -23,9 +23,9 @@ import Foundation
 public class FieldDateView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldDateLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldDateLayout`
   public var fieldDateLayout: FieldDateLayout? {
-    return fieldLayout as? FieldDateLayout
+    return layout as? FieldDateLayout
   }
 
   /// The text field to render the date

@@ -22,9 +22,9 @@ import Foundation
 public class FieldColorView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldColorLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldColorLayout`
   public var fieldColorLayout: FieldColorLayout? {
-    return fieldLayout as? FieldColorLayout
+    return layout as? FieldColorLayout
   }
 
   /// The color button to render
@@ -77,15 +77,12 @@ public class FieldColorView: FieldView {
   // MARK: - Private
 
   private dynamic func didTapButton(sender: UIButton) {
-    guard let parentBlockView = self.parentBlockView else {
-      return
-    }
-
     // Show the color picker
     let viewController = FieldColorPickerViewController()
     viewController.color = fieldColorLayout?.color
     viewController.delegate = self
-    parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
+    delegate?.fieldView(self,
+                        requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 

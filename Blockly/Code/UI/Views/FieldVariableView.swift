@@ -22,9 +22,9 @@ import Foundation
 public class FieldVariableView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldVariableLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldVariableLayout`
   public var fieldVariableLayout: FieldVariableLayout? {
-    return fieldLayout as? FieldVariableLayout
+    return layout as? FieldVariableLayout
   }
 
   /// The dropdown to render
@@ -113,9 +113,7 @@ extension FieldVariableView: FieldLayoutMeasurer {
 
 extension FieldVariableView: DropdownViewDelegate {
   public func dropDownDidReceiveTap() {
-    guard let fieldVariableLayout = self.fieldVariableLayout,
-      let parentBlockView = self.parentBlockView else
-    {
+    guard let fieldVariableLayout = self.fieldVariableLayout else {
       return
     }
 
@@ -129,7 +127,8 @@ extension FieldVariableView: DropdownViewDelegate {
     viewController.options = options
     viewController.selectedIndex =
       options.indexOf { $0.value == fieldVariableLayout.variable } ?? -1
-    parentBlockView.requestToPresentPopoverViewController(viewController, fromView: self)
+    delegate?.fieldView(self,
+                        requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 
