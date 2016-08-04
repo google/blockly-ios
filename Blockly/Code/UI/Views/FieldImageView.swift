@@ -22,9 +22,9 @@ import Foundation
 public class FieldImageView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldImageLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldImageLayout`
   public var fieldImageLayout: FieldImageLayout? {
-    return fieldLayout as? FieldImageLayout
+    return layout as? FieldImageLayout
   }
 
   /// The image to render

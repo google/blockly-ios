@@ -16,6 +16,24 @@
 import Foundation
 
 /**
+ Protocol for delegate events that occur on a `FieldView`.
+ */
+@objc(BKYFieldViewDelegate)
+public protocol FieldViewDelegate {
+  /**
+   Event that is called when a field view requests to present a view controller as a popover.
+
+   - Parameter fieldView: The `FieldView` that made the request
+   - Parameter viewController: The `UIViewController` to present
+   - Parameter fromView: The `UIView` where the popover should pop up from
+   - Returns: True if the `viewController` was presented. False otherwise.
+   */
+  func fieldView(fieldView: FieldView,
+                 requestedToPresentPopoverViewController viewController: UIViewController,
+                                                         fromView: UIView) -> Bool
+}
+
+/**
  Abstract view for rendering a `FieldLayout`.
  */
 @objc(BKYFieldView)
@@ -23,14 +41,11 @@ public class FieldView: LayoutView {
 
   // MARK: - Properties
 
-  // TODO:(#121) This property should be replaced by FieldViewDelegate
-  /// The parent block view that owns this field
-  public var parentBlockView: BlockView? {
-    return self.superview?.superview as? BlockView
-  }
+  /// The delegate for events that occur on this instance
+  public weak var delegate: FieldViewDelegate?
 
   /// The layout object to render
-  public var fieldLayout: FieldLayout? {
+  private var fieldLayout: FieldLayout? {
     return layout as? FieldLayout
   }
 
@@ -39,8 +54,6 @@ public class FieldView: LayoutView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    // Use this opportunity to enable/disable user interaction based on the field's editable
-    // property
     guard let fieldLayout = self.fieldLayout else {
       return
     }
@@ -50,6 +63,7 @@ public class FieldView: LayoutView {
       frame = fieldLayout.viewFrame
     }
 
+    // Enable/disable user interaction based on the field's editable property
     // TODO:(#113) Read this from the layout instead of the field
     self.userInteractionEnabled = fieldLayout.field.editable
   }

@@ -24,9 +24,9 @@ import Foundation
 public class FieldCheckboxView: FieldView {
   // MARK: - Properties
 
-  /// Convenience property for accessing `self.fieldLayout` as a `FieldCheckboxLayout`
+  /// Convenience property for accessing `self.layout` as a `FieldCheckboxLayout`
   public var fieldCheckboxLayout: FieldCheckboxLayout? {
-    return fieldLayout as? FieldCheckboxLayout
+    return layout as? FieldCheckboxLayout
   }
 
   /// The switch button (i.e. the "checkbox")

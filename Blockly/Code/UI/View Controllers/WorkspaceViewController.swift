@@ -25,6 +25,17 @@ public protocol WorkspaceViewControllerDelegate {
 
   func workspaceViewController(
     workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
+
+  // TODO:(#135) The following two methods only exist right now so that the state can be updated in
+  // `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
+  // that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
+  // can change state behaviour. Once state handling has been refactored, these two methods can be
+  // deleted.
+  func workspaceViewController(
+    workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
+
+  func workspaceViewControllerDismissedViewController(
+    workspaceViewController: WorkspaceViewController)
 }
 
 /**
@@ -101,6 +112,8 @@ public class WorkspaceViewController: UIViewController {
   }
 }
 
+// MARK: - ViewBuilderDelegate implementation
+
 extension WorkspaceViewController: ViewBuilderDelegate {
   public func viewBuilder(
     viewBuilder: ViewBuilder, didAddChild childView: UIView, toParent parentView: UIView)
@@ -110,6 +123,10 @@ extension WorkspaceViewController: ViewBuilderDelegate {
     // in this view controller.
     if let blockView = childView as? BlockView {
       delegate?.workspaceViewController(self, didAddBlockView: blockView)
+    } else if let fieldView = childView as? FieldView {
+      // Assign this view controller as the field view's delegate (to handle pop up controller
+      // events)
+      fieldView.delegate = self
     }
   }
 
@@ -121,6 +138,67 @@ extension WorkspaceViewController: ViewBuilderDelegate {
     // in this view controller.
     if let blockView = childView as? BlockView {
       delegate?.workspaceViewController(self, didRemoveBlockView: blockView)
+    } else if let fieldView = childView as? FieldView where fieldView.delegate === self {
+      // Unassign this view controller as the field view's delegate
+      fieldView.delegate = nil
     }
+  }
+}
+
+// MARK: - FieldViewDelegate implementation
+
+extension WorkspaceViewController: FieldViewDelegate {
+  public func fieldView(fieldView: FieldView,
+    requestedToPresentPopoverViewController viewController: UIViewController, fromView: UIView)
+    -> Bool
+  {
+    guard !workspaceView.scrollView.dragging && !workspaceView.scrollView.decelerating &&
+      !(self.presentedViewController?.isBeingPresented() ?? false) else
+    {
+      // Don't present anything if the scroll view is being dragged or is decelerating, or if
+      // another view controller is being presented
+      return false
+    }
+
+    if self.presentedViewController != nil {
+      // Dismiss any other view controller that's being presented
+      dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    viewController.modalPresentationStyle = .Popover
+    viewController.popoverPresentationController?.sourceView = self.view
+    viewController.popoverPresentationController?.sourceRect =
+      self.view.convertRect(fromView.frame, fromView: fromView.superview)
+    viewController.popoverPresentationController?.permittedArrowDirections = .Any
+    viewController.popoverPresentationController?.delegate = self
+
+    delegate?.workspaceViewController(self, willPresentViewController: viewController)
+
+    presentViewController(viewController, animated: true, completion: nil)
+    
+    return true
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate implementation
+
+extension WorkspaceViewController: UIPopoverPresentationControllerDelegate {
+  public func adaptivePresentationStyleForPresentationController(
+    controller: UIPresentationController) -> UIModalPresentationStyle
+  {
+    // Force this view controller to always show up in a popover
+    return UIModalPresentationStyle.None
+  }
+
+  public func popoverPresentationControllerDidDismissPopover(
+    popoverPresentationController: UIPopoverPresentationController)
+  {
+    delegate?.workspaceViewControllerDismissedViewController(self)
+  }
+
+  public override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
+    super.dismissViewControllerAnimated(flag, completion: completion)
+
+    delegate?.workspaceViewControllerDismissedViewController(self)
   }
 }

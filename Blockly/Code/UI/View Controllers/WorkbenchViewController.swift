@@ -663,8 +663,6 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     } else if workspaceViewController == self.workspaceViewController {
       addGestureTrackingForBlockView(blockView)
     }
-
-    blockView.delegate = self
   }
 
   public func workspaceViewController(
@@ -677,8 +675,18 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     } else if workspaceViewController == self.workspaceViewController {
       removeGestureTrackingForBlockView(blockView)
     }
+  }
 
-    blockView.delegate = nil
+  public func workspaceViewController(
+    workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
+  {
+    addUIStateValue(.PresentingPopover)
+  }
+
+  public func workspaceViewControllerDismissedViewController(
+    workspaceViewController: WorkspaceViewController)
+  {
+    removeUIStateValue(.PresentingPopover)
   }
 }
 
@@ -903,64 +911,6 @@ extension WorkbenchViewController {
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
     let contentInsets = UIEdgeInsetsZero
     workspaceView.scrollView.contentInset = contentInsets
-  }
-}
-
-// MARK: - BlockViewDelegate implementation
-
-extension WorkbenchViewController: BlockViewDelegate {
-  public func blockView(blockView: BlockView,
-    requestedToPresentPopoverViewController viewController: UIViewController,
-    fromView: UIView) -> Bool
-  {
-    guard !workspaceView.scrollView.dragging && !workspaceView.scrollView.decelerating &&
-      !(self.presentedViewController?.isBeingPresented() ?? false) else
-    {
-      // Don't present anything if the scroll view is being dragged or is decelerating, or if
-      // another view controller is being presented
-      return false
-    }
-
-    if self.presentedViewController != nil {
-      // Dismiss any other view controller that's being presented
-      dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    addUIStateValue(.PresentingPopover)
-
-    viewController.modalPresentationStyle = .Popover
-    viewController.popoverPresentationController?.sourceView = self.view
-    viewController.popoverPresentationController?.sourceRect =
-      self.view.convertRect(fromView.frame, fromView: fromView.superview)
-    viewController.popoverPresentationController?.permittedArrowDirections = .Any
-    viewController.popoverPresentationController?.delegate = self
-
-    presentViewController(viewController, animated: true, completion: nil)
-
-    return true
-  }
-}
-
-// MARK: - UIPopoverPresentationControllerDelegate implementation
-
-extension WorkbenchViewController: UIPopoverPresentationControllerDelegate {
-  public func adaptivePresentationStyleForPresentationController(
-    controller: UIPresentationController) -> UIModalPresentationStyle
-  {
-    // Force this view controller to always show up in a popover
-    return UIModalPresentationStyle.None
-  }
-
-  public func popoverPresentationControllerDidDismissPopover(
-    popoverPresentationController: UIPopoverPresentationController)
-  {
-    removeUIStateValue(.PresentingPopover)
-  }
-
-  public override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
-    super.dismissViewControllerAnimated(flag, completion: completion)
-
-    removeUIStateValue(.PresentingPopover)
   }
 }
 
