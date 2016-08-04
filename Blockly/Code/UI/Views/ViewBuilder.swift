@@ -86,125 +86,58 @@ public class ViewBuilder: NSObject {
 
     // Create layouts for every top-level block in the workspace
     for blockGroupLayout in workspaceLayout.blockGroupLayouts {
-      let blockGroupView = try buildBlockGroupViewTree(forBlockGroupLayout: blockGroupLayout)
-      addChild(blockGroupView, toParent: workspaceView)
+      if let blockGroupView = buildViewTree(forLayout: blockGroupLayout) {
+        addChild(blockGroupView, toParent: workspaceView)
+      }
     }
   }
 
-  /**
-   Given a `BlockGroupLayout` instance, assigns this `ViewBuilder` as a hierarchy listener on it and
-   builds its `BlockGroupView` tree view hierarchy.
-
-   - Parameter blockGroupLayout: The `BlockGroupLayout`
-   - Returns: A `BlockGroupView` representing the entire `BlockGroupLayout` tree
-   - Throws:
-   `BlocklyError`: Thrown if the view hierarchy could not be built.
-   */
-  private func buildBlockGroupViewTree(forBlockGroupLayout blockGroupLayout: BlockGroupLayout)
-    throws -> BlockGroupView
-  {
-    blockGroupLayout.hierarchyListeners.add(self)
-
-    let blockGroupView = try
-      (ViewManager.sharedInstance.findViewForLayout(blockGroupLayout) as? BlockGroupView) ??
-      viewFactory.viewForBlockGroupLayout(blockGroupLayout)
-    blockGroupView.layout = blockGroupLayout
-
-    for subview in blockGroupView.subviews {
-      removeChild(subview, fromParent: blockGroupView)
-    }
-
-    // Create block views
-    for blockLayout in blockGroupLayout.blockLayouts {
-      let blockView = try buildBlockViewTree(forBlockLayout: blockLayout)
-      addChild(blockView, toParent: blockGroupView)
-    }
-
-    return blockGroupView
-  }
+  // MARK: - Private
 
   /**
-   Given a `BlockLayout` instance, assigns this `ViewBuilder` as a hierarchy listener on it and
-   builds its `BlockView` tree view hierarchy.
+   Builds the view tree for a given layout tree. For any layout in the tree where a view is created,
+   this `ViewBuilder` assigns itself to the layout's set of hierarchy listeners (so it can modify
+   the view tree on any layout changes).
 
-   - Parameter blockLayout: The `BlockLayout`
-   - Returns: A `BlockView` representing the entire `BlockLayout` tree
-   - Throws:
-   `BlocklyError`: Thrown if the view hierarchy could not be built.
+   - Parameter layout: The root of the `Layout` tree
+   - Returns: An associated `LayoutView` for `layout`. If `layout` is not a type of `Layout` that
+   is supposed to be represented by a `LayoutView`, `nil` is returned instead.
    */
-  private func buildBlockViewTree(forBlockLayout blockLayout: BlockLayout) throws -> BlockView
-  {
-    blockLayout.hierarchyListeners.add(self)
+  private func buildViewTree(forLayout layout: Layout) -> LayoutView? {
+    let view: LayoutView
 
-    let blockView = try
-      (ViewManager.sharedInstance.findViewForLayout(blockLayout) as? BlockView) ??
-      viewFactory.blockViewForLayout(blockLayout)
-    blockView.layout = blockLayout
-
-    for subview in blockView.subviews {
-      removeChild(subview, fromParent: blockView)
+    do {
+      // Look for an existing version of the layout or create a new one from the factory
+      view = try
+        ViewManager.sharedInstance.findViewForLayout(layout) ??
+        viewFactory.viewForLayout(layout)
+    } catch {
+      // Couldn't retrieve a view for this layout, just return nil (not all layouts need to have a
+      // view)
+      return nil
     }
 
-    // Build the input views for this block
-    for inputLayout in blockLayout.inputLayouts {
-      let inputView = try buildInputViewTree(forInputLayout: inputLayout)
-      addChild(inputView, toParent: blockView)
+    view.layout = layout
+
+    // Listen for any changes to this layout since it has an associated view with it (so we can
+    // update the view hierarchy to reflect layout hierarchy changes).
+    layout.hierarchyListeners.add(self)
+
+    // Remove all existing subviews if they are `LayoutView` instances
+    for subview in view.subviews {
+      if subview is LayoutView {
+        removeChild(subview, fromParent: view)
+      }
     }
 
-    return blockView
-  }
-
-  /**
-   Given an `InputLayout` instance, assigns this `ViewBuilder` as a hierarchy listener on it and
-   builds its `InputView` tree view hierarchy.
-
-   - Parameter inputLayout: The `InputLayout`
-   - Returns: A `InputView` representing the entire `InputLayout` tree
-   - Throws:
-   `BlocklyError`: Thrown if the view hierarchy could not be built.
-   */
-  private func buildInputViewTree(forInputLayout inputLayout: InputLayout) throws -> InputView {
-    inputLayout.hierarchyListeners.add(self)
-
-    let inputView = try
-      (ViewManager.sharedInstance.findViewForLayout(inputLayout) as? InputView) ??
-      viewFactory.viewForInputLayout(inputLayout)
-    inputView.layout = inputLayout
-
-    for subview in inputView.subviews {
-      removeChild(subview, fromParent: inputView)
+    // Build the child Layout view tree
+    for childLayout in layout.childLayouts {
+      if let childView = buildViewTree(forLayout: childLayout) {
+        addChild(childView, toParent: view)
+      }
     }
 
-    // Build field layouts for this input
-    for fieldLayout in inputLayout.fieldLayouts {
-      let fieldView = try buildFieldViewTree(forFieldLayout: fieldLayout)
-      addChild(fieldView, toParent: inputView)
-    }
-
-    let blockGroupView =
-      try buildBlockGroupViewTree(forBlockGroupLayout: inputLayout.blockGroupLayout)
-    addChild(blockGroupView, toParent: inputView)
-
-    return inputView
-  }
-
-  /**
-   Given a `FieldLayout` instance, assigns this `ViewBuilder` as a hierarchy listener on it and
-   builds its `FieldView`.
-
-   - Parameter fieldLayout: The `FieldLayout`
-   - Returns: A `FieldView` representing the `FieldLayout`
-   - Throws:
-   `BlocklyError`: Thrown if the view could not be built.
-   */
-  private func buildFieldViewTree(forFieldLayout fieldLayout: FieldLayout) throws -> FieldView {
-    fieldLayout.hierarchyListeners.add(self)
-
-    let fieldView = try
-      (ViewManager.sharedInstance.findViewForLayout(fieldLayout) as? FieldView) ??
-      viewFactory.fieldViewForLayout(fieldLayout)
-    fieldView.layout = fieldLayout
-    return fieldView
+    return view
   }
 
   private func addChild(childView: UIView, toParent parentView: UIView) {
@@ -250,32 +183,9 @@ extension ViewBuilder: LayoutHierarchyListener {
       }
     }
 
-    do {
-      var view: UIView?
-
-      if let blockGroupLayout = childLayout as? BlockGroupLayout
-        where layout is WorkspaceLayout
-      {
-        view = try buildBlockGroupViewTree(forBlockGroupLayout: blockGroupLayout)
-      } else if let blockLayout = childLayout as? BlockLayout
-        where layout is BlockGroupLayout
-      {
-        view = try buildBlockViewTree(forBlockLayout: blockLayout)
-      } else if let inputLayout = childLayout as? InputLayout
-        where layout is BlockLayout
-      {
-        view = try buildInputViewTree(forInputLayout: inputLayout)
-      } else if let fieldLayout = childLayout as? FieldLayout
-        where layout is InputLayout
-      {
-        view = try buildFieldViewTree(forFieldLayout: fieldLayout)
-      }
-
-      if let childView = view {
-        addChild(childView, toParent: parentView)
-      }
-    } catch let error as NSError {
-      bky_assertionFailure("Could not create view tree: \(error)")
+    // Attempt to build a fresh child view tree for the new child layout
+    if let childView = buildViewTree(forLayout: childLayout) {
+      addChild(childView, toParent: parentView)
     }
   }
 
@@ -288,5 +198,8 @@ extension ViewBuilder: LayoutHierarchyListener {
     }
 
     removeChild(childView, fromParent: parentView)
+
+    // Remove self from list of the child's layout hierarchy listeners
+    childLayout.hierarchyListeners.remove(self)
   }
 }
