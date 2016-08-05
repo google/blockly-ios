@@ -71,13 +71,18 @@ public class DefaultBlockView: BlockView {
         layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
     }
 
-    if flags.intersectsWith(
-      [BlockLayout.Flag_NeedsDisplay,
-        // View frame is included here since the bezier path is transformed in RTL based on the
-        // view frame
-        // TODO:(#118) Re-write the code so this dependency isn't needed
-        BlockLayout.Flag_UpdateViewFrame,
-        BlockLayout.Flag_UpdateHighlight])
+    // Special case for determining if we need to force a bezier path redraw. The reason is that
+    // in RTL, when the bezier path is calculated, it does a transform at the end where it scales
+    // the x-axis by -1 and then translates the path by the width of the view frame. So basically,
+    // if the view frame width has changed in this case, we need to force a bezier path
+    // recalculation.
+    let forceBezierPathRedraw =
+      flags.intersectsWith(BlockLayout.Flag_UpdateViewFrame) &&
+      layout.engine.rtl &&
+      _backgroundLayer.frame.size.width != layout.viewFrame.size.width
+
+    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) ||
+      forceBezierPathRedraw
     {
       // Figure out the stroke and fill colors of the block
       var strokeColor = UIColor.clearColor()
@@ -108,17 +113,13 @@ public class DefaultBlockView: BlockView {
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
         layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
       _backgroundLayer.bezierPath = blockBackgroundBezierPath()
-      _backgroundLayer.frame = self.bounds
+      _backgroundLayer.frame = bounds
     }
 
     if flags.intersectsWith(
       [BlockLayout.Flag_NeedsDisplay,
         BlockLayout.Flag_UpdateHighlight,
-        BlockLayout.Flag_UpdateConnectionHighlight,
-        // View frame is included here since the bezier path is transformed in RTL based on the
-        // view frame
-        // TODO:(#118) Re-write the code so this dependency isn't needed
-        BlockLayout.Flag_UpdateViewFrame])
+        BlockLayout.Flag_UpdateConnectionHighlight]) || forceBezierPathRedraw
     {
       // Update highlight
       if let path = blockHighlightBezierPath() {
@@ -142,22 +143,24 @@ public class DefaultBlockView: BlockView {
       return
     }
 
-    if _highlightLayer == nil {
-      let highlightLayer = BezierPathLayer()
-      highlightLayer.lineWidth = layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight)
-      highlightLayer.strokeColor =
-        layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.CGColor ??
-        UIColor.clearColor().CGColor
-      highlightLayer.fillColor = nil
-      // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
-      // larger line width
-      highlightLayer.frame = self.bounds
-      // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
-      highlightLayer.zPosition = 1
-      layer.addSublayer(highlightLayer)
-      _highlightLayer = highlightLayer
-    }
-    _highlightLayer!.bezierPath = path
+    // Use existing _highlightLayer or create a new one
+    let highlightLayer = _highlightLayer ?? BezierPathLayer()
+    layer.addSublayer(highlightLayer)
+    _highlightLayer = highlightLayer
+
+    // Configure highlight
+    highlightLayer.lineWidth =
+      layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight)
+    highlightLayer.strokeColor =
+      layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.CGColor ??
+      UIColor.clearColor().CGColor
+    highlightLayer.fillColor = nil
+    // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
+    // larger line width
+    highlightLayer.frame = bounds
+    // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
+    highlightLayer.zPosition = 1
+    highlightLayer.bezierPath = path
   }
 
   private func removeHighlightLayer() {
