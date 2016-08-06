@@ -17,9 +17,6 @@ import Foundation
 
 /**
  Handles the creation of recyclable views.
- 
- // TODO:(#124) Re-factor this class so it simply registers view types to layout types. There is no
- need to differentiate for BlockView/FieldView/etc.
  */
 @objc(BKYViewFactory)
 public class ViewFactory: NSObject {
@@ -29,174 +26,74 @@ public class ViewFactory: NSObject {
   /// Object pool for holding reusable views.
   private let _objectPool = ObjectPool()
 
-  /// Dictionary that maps `BlockLayout` subclasses (using their class' `hash()` value) to their
-  /// `BlockView` type
-  private var _blockViewMapping = [Int: Recyclable.Type]()
-
-  /// Dictionary that maps `Field` subclasses (using their class' `hash()` value) to their
-  /// `FieldView` type
-  private var _fieldViewMapping = [Int: Recyclable.Type]()
+  /// Dictionary that maps `Layout` subclasses (using their class' `hash()` value) to their
+  /// `LayoutView` type
+  private var _viewMapping = [Int: Recyclable.Type]()
 
   public override init() {
     super.init()
 
-    // Register the default views for known block views
-    registerViewTypeForBlockLayoutType(DefaultBlockLayout.self, viewType: DefaultBlockView.self)
+    // Register the views for default layouts
+    registerLayoutType(DefaultBlockLayout.self, withViewType: DefaultBlockView.self)
+    registerLayoutType(DefaultBlockGroupLayout.self, withViewType: BlockGroupView.self)
+    registerLayoutType(DefaultInputLayout.self, withViewType: InputView.self)
 
-    // Register the default views for known fields
-    registerViewTypeForFieldType(FieldAngle.self, viewType: FieldAngleView.self)
-    registerViewTypeForFieldType(FieldCheckbox.self, viewType: FieldCheckboxView.self)
-    registerViewTypeForFieldType(FieldColor.self, viewType: FieldColorView.self)
-    registerViewTypeForFieldType(FieldDate.self, viewType: FieldDateView.self)
-    registerViewTypeForFieldType(FieldDropdown.self, viewType: FieldDropdownView.self)
-    registerViewTypeForFieldType(FieldImage.self, viewType: FieldImageView.self)
-    registerViewTypeForFieldType(FieldInput.self, viewType: FieldInputView.self)
-    registerViewTypeForFieldType(FieldLabel.self, viewType: FieldLabelView.self)
-    registerViewTypeForFieldType(FieldNumber.self, viewType: FieldNumberView.self)
-    registerViewTypeForFieldType(FieldVariable.self, viewType: FieldVariableView.self)
+    // Register the views for known field layouts
+    registerLayoutType(FieldAngleLayout.self, withViewType: FieldAngleView.self)
+    registerLayoutType(FieldCheckboxLayout.self, withViewType: FieldCheckboxView.self)
+    registerLayoutType(FieldColorLayout.self, withViewType: FieldColorView.self)
+    registerLayoutType(FieldDateLayout.self, withViewType: FieldDateView.self)
+    registerLayoutType(FieldDropdownLayout.self, withViewType: FieldDropdownView.self)
+    registerLayoutType(FieldImageLayout.self, withViewType: FieldImageView.self)
+    registerLayoutType(FieldInputLayout.self, withViewType: FieldInputView.self)
+    registerLayoutType(FieldLabelLayout.self, withViewType: FieldLabelView.self)
+    registerLayoutType(FieldNumberLayout.self, withViewType: FieldNumberView.self)
+    registerLayoutType(FieldVariableLayout.self, withViewType: FieldVariableView.self)
   }
 
-  // MARK: - Public - Block View
-
-  public func viewForBlockGroupLayout(blockGroupLayout: BlockGroupLayout) throws -> BlockGroupView {
-    // TODO:(#124) Implement this properly so it uses a default registry and uses recycled view
-    // (like the other methods in this class)
-    let blockGroupView = viewForType(BlockGroupView.self)
-    blockGroupView.layout = blockGroupLayout
-    return blockGroupView
-  }
-
-  public func viewForInputLayout(inputLayout: InputLayout) throws -> InputView {
-    // TODO:(#124) Implement this properly so it uses a default registry and uses recycled view
-    // (like the other methods in this class)
-    let inputView = viewForType(InputView.self)
-    inputView.layout = inputLayout
-    return inputView
-  }
+  // MARK: - Public
 
   /**
-   Returns a recycled or new `BlockView` instance assigned to the given layout. This view is stored
-   in the internal cache for future lookup.
+   Returns a recycled or new `LayoutView` instance assigned to the given layout.
 
-   - Parameter layout: The given `BlockLayout`
-   - Returns: A `BlockView` with the given layout assigned to it
+   - Parameter layout: The given `Layout`
+   - Returns: A `LayoutView` with the given layout assigned to it
    - Throws:
-   `BlocklyError`: Thrown if no `BlockView` could be retrieved for the given layout.
+   `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
    */
-  public func blockViewForLayout(layout: BlockLayout) throws -> BlockView {
+  public func viewForLayout(layout: Layout) throws -> LayoutView {
     // Get a fresh view and populate it with the layout
-    let blockLayoutType = layout.dynamicType
-    if let viewType = _blockViewMapping[blockLayoutType.hash()],
-      let blockView = recyclableViewForType(viewType) as? BlockView
+    let layoutType = layout.dynamicType
+    if let viewType = _viewMapping[layoutType.hash()],
+      let view = recyclableViewForType(viewType) as? LayoutView
     {
-      blockView.layout = layout
-      return blockView
+      view.layout = layout
+      return view
     } else {
-      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(blockLayoutType)")
+      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(layoutType)")
     }
   }
 
   /**
-   Registers the type of `BlockView` instances that should be created when requesting a specific
-   `BlockLayout` type.
+   Registers the type of `LayoutView` instances that should be created when requesting a specific
+   `Layout` type.
 
-   - Parameter blockLayoutType: The `BlockLayout.Type` key
-   - Parameter viewType: A view type that is a subclass of `FieldView` that conforms to
+   - Parameter layoutType: The `Layout.Type` key
+   - Parameter viewType: A view type that is a subclass of `LayoutView` that conforms to
    `Recyclable`
    */
-  public func registerViewTypeForBlockLayoutType
-    <LayoutView where LayoutView: BlockView, LayoutView: Recyclable>
-    (blockLayoutType: BlockLayout.Type, viewType: LayoutView.Type)
-  {
-    _blockViewMapping[blockLayoutType.hash()] = viewType
-  }
-
-  /**
-   Unregisters the type of `FieldView` instance that should be created when requesting a specific
-   `Field` type.
-
-   - Parameter fieldType: The `Field.Type` key
-   */
-  public func unregisterViewTypeForBlockLayoutType(blockLayoutType: BlockLayout.Type) {
-    _blockViewMapping[blockLayoutType.hash()] = nil
-  }
-
-  // MARK: - Public - Field View
-
-  /**
-   Returns a recycled `FieldView` instance assigned to the given layout's `field`.
-   If one isn't found, a new one is created based on the `FieldView` type that was registered via
-   `registerFieldViewType(:, fieldType:)`. This view is then stored in the internal cache for
-   future lookup.
-
-   - Parameter layout: The given `FieldLayout`
-   - Returns: A `FieldView` with the given layout assigned to it
-   - Throws:
-   `BlocklyError`: Thrown if no `FieldView` could be retrieved for the given layout.
-   */
-  public func fieldViewForLayout(layout: FieldLayout) throws -> FieldView {
-    let fieldType = layout.field.dynamicType
-    if let viewType = _fieldViewMapping[fieldType.hash()],
-      let fieldView = recyclableViewForType(viewType) as? FieldView
-    {
-      fieldView.layout = layout
-      return fieldView
-    } else {
-      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(fieldType)")
-    }
-  }
-
-  /**
-   Registers the type of `FieldView` instances that should be created when requesting a specific
-   `Field` type.
-
-   - Parameter fieldType: The `Field.Type` key
-   - Parameter viewType: A view type that is a subclass of `FieldView` that conforms to
-   `Recyclable`
-
-   TODO:(#115) Switch to registering FieldLayout.Type instead of Field.Type
-   */
-  public func registerViewTypeForFieldType
-    <LayoutView where LayoutView: FieldView, LayoutView: Recyclable>
-    (fieldType: Field.Type, viewType: LayoutView.Type)
-  {
-    _fieldViewMapping[fieldType.hash()] = viewType
-  }
-
-  /**
-   Unregisters the type of `FieldView` instance that should be created when requesting a specific
-   `Field` type.
-
-   - Parameter fieldType: The `Field.Type` key
-   */
-  public func unregisterViewTypeForFieldType(fieldType: Field.Type) {
-    _fieldViewMapping[fieldType.hash()] = nil
-  }
-
-  // MARK: - Public - Recyclable Views
-
-  /**
-  If a recycled view is available for re-use, that view is returned.
-  If not, a new view of the given type is instantiated.
-
-  - Parameter type: The type of UIView<Recyclable> object to retrieve.
-  - Note: Views obtained through this method should be recycled through `recycleView(:)`.
-  - Returns: A view of the given type.
-  */
-  public func viewForType<RecyclableView where RecyclableView: UIView, RecyclableView: Recyclable>
-    (type: RecyclableView.Type) -> RecyclableView {
-      return _objectPool.objectForType(type)
+  public func registerLayoutType(layoutType: Layout.Type, withViewType viewType: LayoutView.Type) {
+    _viewMapping[layoutType.hash()] = viewType
   }
 
   /**
    If a recycled view is available for re-use, that view is returned.
    If not, a new view of the given type is instantiated.
 
-   - Parameter type: The type of Recyclable object to retrieve.
-   - Note: Views obtained through this method should be recycled through `recycleView(:)`.
-   - Warning: This method should only be called by Objective-C code. Swift code should use
-   `viewForType(:)` instead.
-   - Returns: A view of the given type, if it is a UIView. Otherwise, nil is returned.
+   - Parameter type: The type of `Recyclable` object to retrieve.
+   - Note: Views obtained through this method should be recycled through `recycleView(:)` or
+   `recycleViewTree(:)`.
+   - Returns: A view of the given type, if it is a `UIView`. Otherwise, nil is returned.
    */
   public func recyclableViewForType(type: Recyclable.Type) -> UIView? {
     return _objectPool.recyclableObjectForType(type) as? UIView
@@ -207,8 +104,6 @@ public class ViewFactory: NSObject {
    for re-use later. Otherwise, nothing happens.
 
    - Parameter view: The view to recycle.
-   - Note: Views recycled through this method should be re-obtained through `viewForType(:)`
-   or `recyclableViewForType`.
    */
   public func recycleView(view: UIView) {
     if let recyclableView = view as? Recyclable {
@@ -221,7 +116,6 @@ public class ViewFactory: NSObject {
    to the protocol `Recyclable` and stores them for re-use later.
 
    - Parameter rootView: The root view to begin the recycling process.
-   - Note: Views recycled through this method should be re-obtained through `viewForType(:)`.
    */
   public func recycleViewTree(rootView: UIView) {
     let subviews = rootView.subviews
