@@ -22,13 +22,9 @@ import Foundation
 public class FieldNumberView: FieldView {
   // MARK: - Properties
 
-  /// The `FieldNumberLayout` backing this view
+  /// Convenience property accessing `self.layout` as `FieldNumberLayout`
   public var fieldNumberLayout: FieldNumberLayout? {
-    if fieldLayout != nil && !(fieldLayout is FieldNumberLayout) {
-      bky_assertionFailure(
-        "`fieldLayout` is of type `\(layout.dynamicType)`. Expected type `FieldNumberLayout`.")
-    }
-    return fieldLayout as? FieldNumberLayout
+    return layout as? FieldNumberLayout
   }
 
   /// The text field to render
@@ -77,7 +73,7 @@ public class FieldNumberView: FieldView {
   public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
     super.refreshView(forFlags: flags)
 
-    guard let layout = self.fieldLayout where layout.field is FieldNumber else {
+    guard let layout = self.layout else {
       return
     }
 
