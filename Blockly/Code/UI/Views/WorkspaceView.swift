@@ -106,7 +106,7 @@ public class WorkspaceView: LayoutView {
     super.prepareForReuse()
 
     // Remove all block group views
-    for view in scrollView.blockGroupView.subviews {
+    for view in scrollView.containerView.subviews {
       if let blockGroupView = view as? BlockGroupView {
         removeBlockGroupView(blockGroupView)
       }
@@ -114,7 +114,7 @@ public class WorkspaceView: LayoutView {
 
     scrollView.contentSize = CGSizeZero
     scrollView.contentOffset = CGPointZero
-    scrollView.blockGroupView.frame = CGRectZero
+    scrollView.containerView.frame = CGRectZero
   }
 
   public override func layoutSubviews() {
@@ -131,7 +131,7 @@ public class WorkspaceView: LayoutView {
    - Parameter blockGroupView: The given `BlockGroupView`
    */
   public func addBlockGroupView(blockGroupView: BlockGroupView) {
-    scrollView.blockGroupView.upsertView(blockGroupView)
+    scrollView.containerView.upsertView(blockGroupView)
     blockGroupViews.insert(blockGroupView)
   }
 
@@ -154,7 +154,7 @@ public class WorkspaceView: LayoutView {
   public final func workspacePositionFromGestureTouchLocation(gesture: UIGestureRecognizer)
     -> WorkspacePoint
   {
-    let touchPosition = gesture.locationInView(self.scrollView.blockGroupView)
+    let touchPosition = gesture.locationInView(scrollView.containerView)
     return workspacePositionFromViewPoint(touchPosition)
   }
 
@@ -173,7 +173,7 @@ public class WorkspaceView: LayoutView {
       blockViewPoint = CGPointMake(blockView.bounds.width, 0)
     }
     let workspaceViewPosition =
-      blockView.convertPoint(blockViewPoint, toView: scrollView.blockGroupView)
+      blockView.convertPoint(blockViewPoint, toView: scrollView.containerView)
     return workspacePositionFromViewPoint(workspaceViewPosition)
   }
 
@@ -229,7 +229,7 @@ public class WorkspaceView: LayoutView {
   // MARK: - Private
 
   /**
-  Maps a `UIView` point relative to `self.scrollView.blockGroupView` to a logical Workspace
+  Maps a `UIView` point relative to `self.scrollView.containerView` to a logical Workspace
   position.
 
   - Parameter point: The `UIView` point
@@ -244,8 +244,8 @@ public class WorkspaceView: LayoutView {
 
     if workspaceLayout.engine.rtl {
       // In RTL, the workspace position is relative to the top-right corner of
-      // `scrollView.blockGroupView`
-      viewPoint.x = scrollView.blockGroupView.frame.width - viewPoint.x
+      // `scrollView.containerView`
+      viewPoint.x = scrollView.containerView.frame.width - viewPoint.x
     }
 
     // Account for the current content origin
@@ -278,8 +278,8 @@ public class WorkspaceView: LayoutView {
     // Disable inadvertent calls to `removeExcessScrollSpace()`
     _disableRemoveExcessScrollSpace = true
 
-    // Get the total canvas size in UIView sizing
-    let blockGroupSize = layout.engine.viewSizeFromWorkspaceSize(layout.totalSize)
+    // Figure out the value that will be used for `scrollView.containerView.frame.size`
+    let containerViewSize = layout.engine.viewSizeFromWorkspaceSize(layout.totalSize)
 
     // Figure out the amount that the content jumped by (based on the new content origin)
     let contentDelta = _lastKnownContentOrigin - layout.contentOrigin
@@ -301,33 +301,34 @@ public class WorkspaceView: LayoutView {
     } else if layout.engine.rtl {
       // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
       // sure that content appears right-aligned.
-      contentPadding.trailing = max(scrollView.bounds.width - blockGroupSize.width, 0)
+      contentPadding.trailing = max(scrollView.bounds.width - containerViewSize.width, 0)
     }
 
-    // Calculate the new `contentSize` for the scroll view
-    var newContentSize = blockGroupSize
+    // Figure out the value that will be used for `scrollView.contentSize`
+    var newContentSize = containerViewSize
     newContentSize.width += contentPadding.leading + contentPadding.trailing
     newContentSize.height += contentPadding.top + contentPadding.bottom
 
     // Update the content size of the scroll view.
     if layout.engine.rtl {
-      var oldBlockGroupFrame = scrollView.blockGroupView.frame
+      var oldContainerFrame = scrollView.containerView.frame
 
-      if oldBlockGroupFrame.width < 1 && oldBlockGroupFrame.height < 1 {
-        // If the previous block group size was (0, 0), it was never actually positioned.
+      if oldContainerFrame.width < 1 && oldContainerFrame.height < 1 {
+        // If the container view size was previously (0, 0), it was never actually positioned.
         // For the sake of calculation purposes below, it is assumed that
-        // `scrollView.blockGroupView` is always anchored to the top-right corner. Therefore, we
-        // simply set the `oldBlockGroupFrame.origin.x` to the right edge of the scrollView's
+        // `scrollView.containerView` is always anchored to the top-right corner. Therefore, we
+        // simply set the `oldContainerFrame.origin.x` to the right edge of the scrollView's
         // bounds.
-        oldBlockGroupFrame.origin.x =
+        oldContainerFrame.origin.x =
           scrollView.bounds.width - (allowCanvasPadding ? canvasPadding.leading : 0)
       }
 
-      // Position the blockGroupView relative to the top-right corner
-      let blockGroupOrigin = CGPointMake(
-        newContentSize.width - blockGroupSize.width - contentPadding.leading, contentPadding.top)
-      scrollView.blockGroupView.frame = CGRectMake(
-        blockGroupOrigin.x, blockGroupOrigin.y, blockGroupSize.width, blockGroupSize.height)
+      // Position the contentView relative to the top-right corner
+      let containerOrigin = CGPointMake(
+        newContentSize.width - containerViewSize.width
+        - contentPadding.leading, contentPadding.top)
+      scrollView.containerView.frame = CGRectMake(
+        containerOrigin.x, containerOrigin.y, containerViewSize.width, containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't
       // appear that viewport has jumped to a new location
@@ -335,26 +336,26 @@ public class WorkspaceView: LayoutView {
       scrollView.contentOffset.x -= contentViewDelta.x
       scrollView.contentOffset.y += contentViewDelta.y
 
-      // The block group origin may have changed since the last call to
+      // The container view origin may have changed since the last call to
       // `updateCanvasSizeFromLayout()`, so we need to adjust the content offset for this too.
       // NOTE: In RTL, `contentOffset.x` is adjusted based on the right edge, not the left edge.
-      scrollView.contentOffset.x += scrollView.blockGroupView.frame.maxX - oldBlockGroupFrame.maxX
-      scrollView.contentOffset.y += scrollView.blockGroupView.frame.minY - oldBlockGroupFrame.minY
+      scrollView.contentOffset.x += scrollView.containerView.frame.maxX - oldContainerFrame.maxX
+      scrollView.contentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
     } else {
-      let blockGroupOrigin = CGPointMake(contentPadding.leading, contentPadding.top)
-      let oldBlockGroupFrame = scrollView.blockGroupView.frame
-      scrollView.blockGroupView.frame = CGRectMake(
-        blockGroupOrigin.x, blockGroupOrigin.y, blockGroupSize.width, blockGroupSize.height)
+      let containerOrigin = CGPointMake(contentPadding.leading, contentPadding.top)
+      let oldContainerFrame = scrollView.containerView.frame
+      scrollView.containerView.frame = CGRectMake(
+        containerOrigin.x, containerOrigin.y, containerViewSize.width, containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't appear
       // that viewport has jumped to a new location
       scrollView.contentOffset.x += contentViewDelta.x
       scrollView.contentOffset.y += contentViewDelta.y
 
-      // The block group origin may have changed since the last call to
+      // The container view origin may have changed since the last call to
       // `updateCanvasSizeFromLayout()`, so we need to adjust the content offset for this too.
-      scrollView.contentOffset.x += scrollView.blockGroupView.frame.minX - oldBlockGroupFrame.minX
-      scrollView.contentOffset.y += scrollView.blockGroupView.frame.minY - oldBlockGroupFrame.minY
+      scrollView.contentOffset.x += scrollView.containerView.frame.minX - oldContainerFrame.minX
+      scrollView.contentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
     }
 
     // Set the content size of the scroll view
@@ -389,41 +390,41 @@ public class WorkspaceView: LayoutView {
 
     let canvasPadding = self.canvasPadding()
 
-    // Figure out the ideal placement for the scrollView.blockGroupView. This helps us figure out
+    // Figure out the ideal placement for `scrollView.containerView`. This helps us figure out
     // the excess scrolling area that can be removed from the canvas.
-    let idealBlockGroupFrame: CGRect
+    let idealContainerViewFrame: CGRect
     if layout.engine.rtl {
-      // The block group in RTL must always appear right-aligned on-screen, so we calculate an
-      // origin that takes into account the block group's width and the current scrollView width
+      // The container view in RTL must always appear right-aligned on-screen, so we calculate an
+      // origin that takes into account the container view's width and the current scrollView width
       let originX = max(canvasPadding.trailing,
-        scrollView.bounds.width - scrollView.blockGroupView.frame.width -
+        scrollView.bounds.width - scrollView.containerView.frame.width -
         canvasPadding.leading)
-      idealBlockGroupFrame = CGRectMake(
+      idealContainerViewFrame = CGRectMake(
         originX,
         canvasPadding.top,
-        scrollView.blockGroupView.frame.width + canvasPadding.leading,
-        scrollView.blockGroupView.frame.height + canvasPadding.bottom)
+        scrollView.containerView.frame.width + canvasPadding.leading,
+        scrollView.containerView.frame.height + canvasPadding.bottom)
     } else {
-      idealBlockGroupFrame = CGRectMake(
+      idealContainerViewFrame = CGRectMake(
         canvasPadding.leading,
         canvasPadding.top,
-        scrollView.blockGroupView.frame.width + canvasPadding.trailing,
-        scrollView.blockGroupView.frame.height + canvasPadding.bottom)
+        scrollView.containerView.frame.width + canvasPadding.trailing,
+        scrollView.containerView.frame.height + canvasPadding.bottom)
     }
 
     // Remove excess left space
-    let leftExcessSpace = scrollView.blockGroupView.frame.minX - idealBlockGroupFrame.minX
+    let leftExcessSpace = scrollView.containerView.frame.minX - idealContainerViewFrame.minX
 
     if leftExcessSpace > 0 && scrollView.contentOffset.x >= 0 {
       let adjustment = min(leftExcessSpace, scrollView.contentOffset.x)
       scrollView.contentOffset.x -= adjustment
       scrollView.contentSize.width -= adjustment
-      scrollView.blockGroupView.frame.origin.x -= adjustment
+      scrollView.containerView.frame.origin.x -= adjustment
     }
 
     // Remove excess right space
     let rightExcessSpace = scrollView.contentSize.width -
-      (scrollView.blockGroupView.frame.minX + idealBlockGroupFrame.width)
+      (scrollView.containerView.frame.minX + idealContainerViewFrame.width)
 
     if rightExcessSpace > 0 &&
       (scrollView.contentOffset.x + scrollView.bounds.width) <= scrollView.contentSize.width
@@ -434,17 +435,17 @@ public class WorkspaceView: LayoutView {
     }
 
     // Remove excess top space
-    let topExcessSpace = scrollView.blockGroupView.frame.minY - idealBlockGroupFrame.minY
+    let topExcessSpace = scrollView.containerView.frame.minY - idealContainerViewFrame.minY
     if topExcessSpace > 0 && scrollView.contentOffset.y >= 0 {
       let adjustment = min(topExcessSpace, scrollView.contentOffset.y)
       scrollView.contentOffset.y -= adjustment
       scrollView.contentSize.height -= adjustment
-      scrollView.blockGroupView.frame.origin.y -= adjustment
+      scrollView.containerView.frame.origin.y -= adjustment
     }
 
     // Remove excess bottom space
     let bottomExcessSpace = scrollView.contentSize.height -
-      (scrollView.blockGroupView.frame.origin.y + idealBlockGroupFrame.height)
+      (scrollView.containerView.frame.origin.y + idealContainerViewFrame.height)
 
     if bottomExcessSpace > 0 &&
       (scrollView.contentOffset.y + scrollView.bounds.height) <= scrollView.contentSize.height
@@ -502,7 +503,7 @@ extension WorkspaceView: UIScrollViewDelegate {
   }
 
   public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-    return self.scrollView.blockGroupView
+    return self.scrollView.containerView
   }
 
   public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
@@ -558,12 +559,11 @@ extension WorkspaceView {
   triggering if we can determine a block is being dragged.
   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
-    /// View which holds all the block views
-    // TODO:(#117) Rename blockGroupView to contentView
-    private var blockGroupView: ZIndexedGroupView = {
-      let blockGroupView = ZIndexedGroupView(frame: CGRectZero)
-      blockGroupView.autoresizesSubviews = false
-      return blockGroupView
+    /// View which holds all content in the Workspace
+    private var containerView: ZIndexedGroupView = {
+      let view = ZIndexedGroupView(frame: CGRectZero)
+      view.autoresizesSubviews = false
+      return view
     }()
 
     /// The fake pan gesture recognizer
@@ -584,7 +584,7 @@ extension WorkspaceView {
       addGestureRecognizer(_fakePanGestureRecognizer)
       panGestureRecognizer.requireGestureRecognizerToFail(_fakePanGestureRecognizer)
 
-      addSubview(blockGroupView)
+      addSubview(containerView)
 
       delaysContentTouches = false
     }
@@ -615,9 +615,9 @@ extension WorkspaceView {
       // state to the "Began" state (ie. triggering the gesture recognizer).
       if gestureRecognizer == _fakePanGestureRecognizer {
         if _firstTouch != nil {
-          let firstTouchLocation = _firstTouch!.locationInView(blockGroupView)
-          let hitTestView = blockGroupView.hitTest(firstTouchLocation, withEvent: nil)
-          if hitTestView != nil && hitTestView != blockGroupView {
+          let firstTouchLocation = _firstTouch!.locationInView(containerView)
+          let hitTestView = containerView.hitTest(firstTouchLocation, withEvent: nil)
+          if hitTestView != nil && hitTestView != containerView {
             // The user is dragging something, but the first touch did not begin inside the scroll
             // view, which can only mean that the user is dragging a block. Therefore, we need to
             // temporarily disable panning of the scroll view by forcing it to transition into a
