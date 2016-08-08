@@ -64,6 +64,9 @@ public class WorkspaceView: LayoutView {
   /// The last known value for `workspaceLayout.contentOrigin`
   private var _lastKnownContentOrigin: CGPoint = CGPointZero
 
+  /// The offset of the view when zooming begins
+  private var _beginZoomOffset: CGPoint = CGPointZero
+
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
@@ -94,8 +97,8 @@ public class WorkspaceView: LayoutView {
       return
     }
 
-    scrollView.minimumZoomScale = layout.engine.minimumScale
-    scrollView.maximumZoomScale = layout.engine.maximumScale
+    scrollView.minimumZoomScale = layout.engine.minimumScale / layout.engine.scale
+    scrollView.maximumZoomScale = layout.engine.maximumScale / layout.engine.scale
 
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
       updateCanvasSizeFromLayout()
@@ -512,6 +515,23 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     scrollView.showsVerticalScrollIndicator = false
     scrollView.showsHorizontalScrollIndicator = false
+
+    // Save the offset when zooming begins, so we can keep the view centered on the same point.
+    // TODO:(#142) Center the view on the pinch, not on the center of the scrollView
+    var offset = scrollView.contentOffset
+    offset.x = offset.x * scrollView.zoomScale
+    offset.y = offset.y * scrollView.zoomScale
+
+    _beginZoomOffset = offset
+  }
+
+  public func scrollViewDidZoom(scrollView: UIScrollView) {
+    // Reset the offset while zooming, so we stay centered on the same point.
+    var offset = _beginZoomOffset
+    offset.x = offset.x * scrollView.zoomScale
+    offset.y = offset.y * scrollView.zoomScale
+
+    scrollView.contentOffset = offset
   }
 
   public func scrollViewDidEndZooming(scrollView: UIScrollView,
