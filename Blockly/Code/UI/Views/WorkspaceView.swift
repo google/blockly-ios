@@ -64,6 +64,9 @@ public class WorkspaceView: LayoutView {
   /// The last known value for `workspaceLayout.contentOrigin`
   private var _lastKnownContentOrigin: CGPoint = CGPointZero
 
+  /// The offset of the view when zooming begins
+  private var _beginZoomOffset:CGPoint = CGPointZero
+
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
@@ -281,6 +284,8 @@ public class WorkspaceView: LayoutView {
     // Get the total canvas size in UIView sizing
     let blockGroupSize = layout.engine.viewSizeFromWorkspaceSize(layout.totalSize)
 
+    _lastKnownContentOrigin = layout.contentOrigin
+
     // Figure out the amount that the content jumped by (based on the new content origin)
     let contentDelta = _lastKnownContentOrigin - layout.contentOrigin
     let contentViewDelta = layout.engine.viewPointFromWorkspacePoint(contentDelta)
@@ -363,8 +368,6 @@ public class WorkspaceView: LayoutView {
     // the current `contentOffset` is unreachable (but it won't change if it grows, which is why we
     // adjust `contentOffset` manually first).
     scrollView.contentSize = newContentSize
-
-    _lastKnownContentOrigin = layout.contentOrigin
 
     // Re-enable `removeExcessScrollSpace()` and call it
     _disableRemoveExcessScrollSpace = false
@@ -511,6 +514,22 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     scrollView.showsVerticalScrollIndicator = false
     scrollView.showsHorizontalScrollIndicator = false
+
+    // Save the offset when zooming begins, so we can keep the view centered on the same point.
+    var offset = scrollView.contentOffset
+    offset.x = offset.x * scrollView.zoomScale
+    offset.y = offset.y * scrollView.zoomScale
+
+    _beginZoomOffset = offset
+  }
+
+  public func scrollViewDidZoom(scrollView: UIScrollView) {
+    // Reset the offset while zooming, so we stay centered on the same point.
+    var offset = _beginZoomOffset
+    offset.x = offset.x * scrollView.zoomScale
+    offset.y = offset.y * scrollView.zoomScale
+
+    scrollView.contentOffset = offset
   }
 
   public func scrollViewDidEndZooming(scrollView: UIScrollView,
