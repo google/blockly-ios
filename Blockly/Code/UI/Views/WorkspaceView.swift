@@ -541,23 +541,10 @@ extension WorkspaceView: UIScrollViewDelegate {
 
 // MARK: - WorkspaceView.ScrollView Class
 
-// TODO:(#46) Distinguish between swipe vs pan gestures
-
 extension WorkspaceView {
   /**
-  A custom version of UIScrollView that can properly distinguish between dragging blocks and
-  scrolling the workspace, in a performant way.
-
-  The simple approach is to call `self.panGestureRecognizer.requireGestureRecognizerToFail(:)` on
-  each block's set of gesture recognizers. Unfortunately, this doesn't scale and causes
-  very slow initialization times. Another approach would be to assign this instance as a delegate of
-  `self.panGestureRecognizer.delegate` in order to control its behaviour, but that doesn't work
-  because the delegate assignment is protected by `UIScrollView`.
-
-  The alternative approach implemented here is to create a "fake" UIPanGestureRecognizer on which
-  `self.panGestureRecognizer` depends on. This allows us to kill `self.panGestureRecognizer` from
-  triggering if we can determine a block is being dragged.
-  */
+   The scroll view used by `WorkspaceView`.
+   */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
     private var containerView: ZIndexedGroupView = {
@@ -566,23 +553,10 @@ extension WorkspaceView {
       return view
     }()
 
-    /// The fake pan gesture recognizer
-    private lazy var _fakePanGestureRecognizer: UIPanGestureRecognizer = {
-      let fakePanGestureRecognizer = UIPanGestureRecognizer()
-      fakePanGestureRecognizer.delegate = self
-      return fakePanGestureRecognizer
-    }()
-
-    /// The first touch of the fake pan gesture recognizer
-    private var _firstTouch: UITouch?
-
     // MARK: - Initializers
 
     private override init(frame: CGRect) {
       super.init(frame: frame)
-
-      addGestureRecognizer(_fakePanGestureRecognizer)
-      panGestureRecognizer.requireGestureRecognizerToFail(_fakePanGestureRecognizer)
 
       addSubview(containerView)
 
@@ -591,53 +565,6 @@ extension WorkspaceView {
 
     public required init?(coder aDecoder: NSCoder) {
       fatalError("Called unsupported initializer")
-    }
-
-    // MARK: - Super
-
-    @objc public final func gestureRecognizer(
-      gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool
-    {
-      if gestureRecognizer == _fakePanGestureRecognizer && !self.decelerating && !self.dragging
-      {
-        // Register the first touch point of the fake gesture recognizer, now that the scroll view
-        // is "at rest".
-        _firstTouch = touch
-      }
-
-      return true
-    }
-
-    public final override func gestureRecognizerShouldBegin(
-      gestureRecognizer: UIGestureRecognizer) -> Bool
-    {
-      // This method is called when a gesture recognizer wants to transition from the "Possible"
-      // state to the "Began" state (ie. triggering the gesture recognizer).
-      if gestureRecognizer == _fakePanGestureRecognizer {
-        if _firstTouch != nil {
-          let firstTouchLocation = _firstTouch!.locationInView(containerView)
-          let hitTestView = containerView.hitTest(firstTouchLocation, withEvent: nil)
-          if hitTestView != nil && hitTestView != containerView {
-            // The user is dragging something, but the first touch did not begin inside the scroll
-            // view, which can only mean that the user is dragging a block. Therefore, we need to
-            // temporarily disable panning of the scroll view by forcing it to transition into a
-            // Cancel state.
-            self.panGestureRecognizer.enabled = false
-
-            // Re-enable it for the future
-            self.panGestureRecognizer.enabled = true
-          }
-
-          _firstTouch = nil
-        }
-
-        // This fake gesture recognizer should always fail to allow legitimate gesture recognizers
-        // to be recognized. If `self.panGestureRecognizer` wasn't cancelled from above, it will
-        // now be allowed to recognize the current gesture.
-        return false
-      }
-
-      return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
   }
 }
