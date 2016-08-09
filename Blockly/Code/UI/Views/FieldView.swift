@@ -63,8 +63,7 @@ public class FieldView: LayoutView {
       frame = fieldLayout.viewFrame
     }
 
-    // Enable/disable user interaction based on the field's editable property
-    // TODO:(#113) Read this from the layout instead of the field
-    self.userInteractionEnabled = fieldLayout.field.editable
+    // Enable/disable user interaction
+    userInteractionEnabled = fieldLayout.userInteractionEnabled
   }
 }

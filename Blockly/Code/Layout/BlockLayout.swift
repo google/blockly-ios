@@ -113,6 +113,11 @@ public class BlockLayout: Layout {
     }
   }
 
+  /// Flag determining if user interaction should be enabled for the corresponding view
+  public var userInteractionEnabled: Bool {
+    return !block.disabled
+  }
+
   /// The position of the block's leading edge X offset, specified as a Workspace coordinate
   /// system unit.
   public var leadingEdgeXOffset: CGFloat {
