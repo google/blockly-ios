@@ -113,14 +113,14 @@ public class WorkspaceLayout: Layout {
     self.childContentOffset = WorkspacePointZero - topLeftMostPoint
 
     // Update the canvas size
-    scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
+    sendChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 
   public override func updateLayoutDownTree() {
     super.updateLayoutDownTree()
 
     // When this method is called, force a redisplay at the workspace level
-    scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+    sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
   }
 
   // MARK: - Public
@@ -146,7 +146,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -164,7 +164,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -181,7 +181,7 @@ public class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      scheduleChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
     }
   }
 
@@ -283,7 +283,7 @@ extension WorkspaceLayout: WorkspaceDelegate {
         updateCanvasSize()
 
         // Schedule change event for an added block layout
-        scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+        sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
       }
     } catch let error as NSError {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
@@ -304,7 +304,7 @@ extension WorkspaceLayout: WorkspaceDelegate {
 
       removeBlockGroupLayout(blockGroupLayout)
 
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 }
@@ -384,7 +384,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
     }
 
     if allBlockLayouts.count > 0 {
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -415,7 +415,7 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
     }
 
     if removedLayouts.count > 0 {
-      scheduleChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 

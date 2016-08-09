@@ -139,6 +139,6 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
     self.contentSize = size
 
     // Update the canvas size
-    scheduleChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
+    sendChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 }
