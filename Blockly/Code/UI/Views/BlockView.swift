@@ -72,9 +72,8 @@ public class BlockView: LayoutView {
     refreshBackgroundUI(forFlags: flags)
 
     if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
-      // TODO:(#113) Read this from the layout instead of the block
       // Set its user interaction
-      userInteractionEnabled = !layout.block.disabled
+      userInteractionEnabled = layout.userInteractionEnabled
     }
 
     if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {

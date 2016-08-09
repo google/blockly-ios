@@ -46,9 +46,9 @@ public class FieldLayout: Layout {
   /// The target field to layout
   public final let field: Field
 
-  /// Convenience property returning `self.parentLayout` as an `InputLayout`
-  public final var parentInputLayout: InputLayout? {
-    return parentLayout as? InputLayout
+  /// Flag determining if user interaction should be enabled for the corresponding view
+  public var userInteractionEnabled: Bool {
+    return field.editable
   }
 
   // MARK: - Initializers
