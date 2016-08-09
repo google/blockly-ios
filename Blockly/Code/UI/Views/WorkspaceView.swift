@@ -67,6 +67,9 @@ public class WorkspaceView: LayoutView {
   /// The offset of the view when zooming begins
   private var _beginZoomOffset: CGPoint = CGPointZero
 
+  /// The offset between the zoom offset and the center of the zoom pinch
+  private var _zoomPinchOffset: CGPoint = CGPointZero
+
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   private var _disableRemoveExcessScrollSpace = false
 
@@ -509,6 +512,24 @@ extension WorkspaceView: UIScrollViewDelegate {
     return self.scrollView.containerView
   }
 
+  private func offsetOfPinch(scrollView: UIScrollView, withView view:UIView?) -> CGPoint {
+    if scrollView.panGestureRecognizer.numberOfTouches() < 2 {
+        return CGPointZero
+    }
+
+    let panGesture = scrollView.panGestureRecognizer
+    let touch1 = panGesture.locationOfTouch(0, inView: self.scrollView.containerView)
+    let touch2 = panGesture.locationOfTouch(1, inView: self.scrollView.containerView)
+
+    var pinchCenter: CGPoint = CGPointZero
+    pinchCenter.x = (max(touch1.x, touch2.x) - min(touch1.x, touch2.x)) / 2 +
+      min(touch1.x, touch2.x)
+    pinchCenter.y = (max(touch1.y, touch2.y) - min(touch1.y, touch2.y)) / 2 +
+      min(touch1.y, touch2.y)
+
+    return pinchCenter - scrollView.contentOffset
+  }
+
   public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
     _scrollViewShowedVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
     _scrollViewShowedHorizontalScrollIndicator = scrollView.showsHorizontalScrollIndicator
@@ -516,12 +537,13 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.showsVerticalScrollIndicator = false
     scrollView.showsHorizontalScrollIndicator = false
 
-    // Save the offset when zooming begins, so we can keep the view centered on the same point.
-    // TODO:(#142) Center the view on the pinch, not on the center of the scrollView
-    var offset = scrollView.contentOffset
+    // Save the offset of the zoom pinch from the content's offset, so we can zoom on the pinch.
+    _zoomPinchOffset =  offsetOfPinch(scrollView, withView: self.scrollView.containerView)
+    var offset = scrollView.contentOffset + _zoomPinchOffset
     offset.x = offset.x * scrollView.zoomScale
     offset.y = offset.y * scrollView.zoomScale
 
+    // Save the contentOffset + the offset from the pinch, so we can zoom on the pinch point.
     _beginZoomOffset = offset
   }
 
@@ -531,7 +553,7 @@ extension WorkspaceView: UIScrollViewDelegate {
     offset.x = offset.x * scrollView.zoomScale
     offset.y = offset.y * scrollView.zoomScale
 
-    scrollView.contentOffset = offset
+    scrollView.contentOffset = offset - _zoomPinchOffset
   }
 
   public func scrollViewDidEndZooming(scrollView: UIScrollView,
