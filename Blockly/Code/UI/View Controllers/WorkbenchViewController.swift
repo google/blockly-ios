@@ -705,6 +705,7 @@ extension WorkbenchViewController {
     let panGesture = UIPanGestureRecognizer(
       target: self, action: #selector(didRecognizeWorkspaceFolderPanGesture(_:)))
     panGesture.maximumNumberOfTouches = 1
+    panGesture.delegate = self
     blockView.addGestureRecognizer(panGesture)
   }
 
@@ -1008,5 +1009,37 @@ extension WorkbenchViewController {
     }
 
     workspaceView.scrollBlockIntoView(block, animated: animated)
+  }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension WorkbenchViewController: UIGestureRecognizerDelegate {
+  public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer,
+      let blockView = gestureRecognizer.view as? BlockView,
+      let block = blockView.blockLayout?.block,
+      let toolboxCategory = toolboxCategoryViewController.category
+      where toolboxCategory.containsBlock(block)
+    {
+      // For toolbox blocks, only fire the pan gesture if the user is panning in the direction
+      // perpendicular to the toolbox scrolling. Otherwise, don't let it fire, so the user can
+      // simply continue scrolling the toolbox.
+      let velocity = panGestureRecognizer.velocityInView(panGestureRecognizer.view)
+
+      // Figure out angle of velocity vector, relative to the scroll direction
+      let radians: CGFloat
+      if style.toolboxOrientation == .Vertical {
+        radians = atan(abs(velocity.x) / abs(velocity.y))
+      } else {
+        radians = atan(abs(velocity.y) / abs(velocity.x))
+      }
+
+      // Fire the gesture if it started more than 20 degrees in the perpendicular direction
+      let angle = (radians / CGFloat(M_PI)) * 180
+      return angle > 20
+    }
+
+    return true
   }
 }
