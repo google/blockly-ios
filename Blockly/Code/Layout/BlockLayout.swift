@@ -99,7 +99,7 @@ public class BlockLayout: Layout {
       if highlighted == oldValue {
         return
       }
-      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateHighlight)
+      sendChangeEventWithFlags(BlockLayout.Flag_UpdateHighlight)
     }
   }
 
@@ -109,7 +109,7 @@ public class BlockLayout: Layout {
       if visible == oldValue {
         return
       }
-      scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateVisible)
+      sendChangeEventWithFlags(BlockLayout.Flag_UpdateVisible)
     }
   }
 
@@ -215,7 +215,7 @@ public class BlockLayout: Layout {
 
 extension BlockLayout: ConnectionHighlightDelegate {
   public func didChangeHighlightForConnection(connection: Connection) {
-    scheduleChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
+    sendChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
   }
 }
 
@@ -224,6 +224,6 @@ extension BlockLayout: ConnectionHighlightDelegate {
 extension BlockLayout: BlockDelegate {
   public func didUpdateBlock(block: Block) {
     // Refresh the block since it's been updated
-    scheduleChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
+    sendChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
   }
 }

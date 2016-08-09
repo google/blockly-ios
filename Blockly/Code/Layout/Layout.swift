@@ -129,13 +129,10 @@ public class Layout: NSObject {
   public internal(set) final var viewFrame: CGRect = CGRectZero {
     didSet {
       if viewFrame != oldValue {
-        scheduleChangeEventWithFlags(Layout.Flag_UpdateViewFrame)
+        sendChangeEventWithFlags(Layout.Flag_UpdateViewFrame)
       }
     }
   }
-
-  /// All flags that this layout's corresponding view needs to update when a change event is sent.
-  private final var layoutFlags = LayoutFlag.None
 
   /// The delegate for events that occur on this instance
   public final weak var delegate: LayoutDelegate?
@@ -197,23 +194,13 @@ public class Layout: NSObject {
   }
 
   /**
-  Schedules to send a change event to `self.delegate` via `LayoutEventManager.sharedInstance`
-  (if one hasn't already been scheduled) and appends any additional flags to that scheduled event's
-  set of flags.
+  Sends a layout change event to `self.delegate` with a given set of flags.
 
-  - Parameter flags: Additional flags to append to the next scheduled change event.
+  - Parameter flags: `LayoutFlag` options to send with the change event
   */
-  public final func scheduleChangeEventWithFlags(flags: LayoutFlag) {
-    // TODO:(#116) Rename this method to sendChangeEventWithFlags
-    if delegate == nil {
-      return
-    }
-
-    // Append the flags to the current set of flags
-    self.layoutFlags.unionInPlace(flags)
-
-    // Send the change event immediately
-    sendChangeEvent()
+  public final func sendChangeEventWithFlags(flags: LayoutFlag) {
+    // Send change event
+    delegate?.layoutDidChange(self, withFlags: flags)
   }
 
   /**
@@ -308,25 +295,6 @@ public class Layout: NSObject {
       contentOffset: (parentLayout?.childContentOffset ?? WorkspacePointZero),
       rtl: self.engine.rtl,
       includeFields: includeFields)
-  }
-
-  /**
-  Sends a change event to `self.delegate` (with all flags that were set via
-  `scheduleChangeEventWithFlags(_)`). If no flags were set since that last call to
-  `sendChangeEvent()`, nothing happens.
-  */
-  internal final func sendChangeEvent() {
-    // Grab the current state of self.layoutFlags
-    let changedLayoutFlags = self.layoutFlags
-
-    // Reset the layout flags now, so the delegate below could potentially call
-    // scheduleChangeEventWithFlags(_) without consequence of them being reset afterward
-    self.layoutFlags = LayoutFlag.None
-
-    // Send change event
-    if changedLayoutFlags.hasFlagSet() {
-      self.delegate?.layoutDidChange(self, withFlags: changedLayoutFlags)
-    }
   }
 
   // MARK: - Private
