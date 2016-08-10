@@ -163,9 +163,7 @@ public class LayoutEngine: NSObject {
     } else if scale == 1 {
       return unit
     } else {
-      // Round unit values when going from workspace to view coordinates. This helps keep
-      // things consistent when scaling points and sizes.
-      return round(unit * scale)
+      return unit * scale
     }
   }
 
