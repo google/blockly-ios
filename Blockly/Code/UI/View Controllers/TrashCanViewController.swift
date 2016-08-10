@@ -34,10 +34,10 @@ public class TrashCanViewController: WorkspaceViewController {
   /// The layout direction to use for `self.workspaceLayout`
   public let layoutDirection: WorkspaceFlowLayout.LayoutDirection
 
-  /// The constraint for resizing the width of `self.workspaceView`
-  private var _workspaceViewWidthConstraint: NSLayoutConstraint?
-  /// The constraint for resizing the height of `self.workspaceView`
-  private var _workspaceViewHeightConstraint: NSLayoutConstraint?
+  /// The constraint for resizing the width of `self.view`
+  private var _viewWidthConstraint: NSLayoutConstraint?
+  /// The constraint for resizing the height of `self.view`
+  private var _viewHeightConstraint: NSLayoutConstraint?
   /// Pointer used for distinguishing changes in `self.bounds`
   private var _kvoContextBounds = 0
 
@@ -73,7 +73,7 @@ public class TrashCanViewController: WorkspaceViewController {
   }
 
   deinit {
-    workspaceView.removeObserver(self, forKeyPath: "bounds")
+    view.removeObserver(self, forKeyPath: "bounds")
   }
 
   // MARK: - Super
@@ -81,9 +81,10 @@ public class TrashCanViewController: WorkspaceViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = TrashCanViewController.ViewBackgroundColor
     workspaceView.allowCanvasPadding = false
-    workspaceView.addObserver(self, forKeyPath: "bounds",
+
+    view.backgroundColor = TrashCanViewController.ViewBackgroundColor
+    view.addObserver(self, forKeyPath: "bounds",
       options: NSKeyValueObservingOptions.New, context: &self._kvoContextBounds)
 
     updateMaximumLineBlockSize()
@@ -105,17 +106,24 @@ public class TrashCanViewController: WorkspaceViewController {
   // MARK: - Public
 
   /**
-   Sets the height of `self.workspaceView`.
+   Sets the height of the workspace view.
 
    - Parameter height: The new height
    - Parameter animated: Flag determining if the new height should be animated.
    */
   public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
-    if _workspaceViewHeightConstraint == nil {
-      _workspaceViewHeightConstraint = view.bky_addHeightConstraint(0)
+    if _viewHeightConstraint == nil {
+      _viewHeightConstraint = view.bky_addHeightConstraint(0)
     }
 
-    if let constraint = _workspaceViewHeightConstraint where constraint.constant != height {
+    if let constraint = _viewHeightConstraint where constraint.constant != height {
+      if height > 0 {
+        // Immediately update the max line block size before animating so the contents within the
+        // workspace view don't animate their positions. Only do it for height > 0 since we don't
+        // want things to be repositioned as the trash is being closed.
+        updateMaximumLineBlockSize(fromViewSize: CGSizeMake(view.bounds.width, height))
+      }
+
       view.bky_updateConstraints(animated: animated, update: {
         constraint.constant = height
       })
@@ -123,17 +131,24 @@ public class TrashCanViewController: WorkspaceViewController {
   }
 
   /**
-   Sets the width of `self.workspaceView`.
+   Sets the width of the workspace view.
 
    - Parameter width: The new width
    - Parameter animated: Flag determining if the new width should be animated.
    */
   public func setWorkspaceViewWidth(width: CGFloat, animated: Bool) {
-    if _workspaceViewWidthConstraint == nil {
-      _workspaceViewWidthConstraint = view.bky_addWidthConstraint(0)
+    if _viewWidthConstraint == nil {
+      _viewWidthConstraint = view.bky_addWidthConstraint(0)
     }
 
-    if let constraint = _workspaceViewWidthConstraint where constraint.constant != width {
+    if let constraint = _viewWidthConstraint where constraint.constant != width {
+      if width > 0 {
+        // Immediately update the max line block size before animating so the contents within the
+        // workspace view don't animate their positions. Only do it for width > 0 since we don't
+        // want things to be repositioned as the trash is being closed.
+        updateMaximumLineBlockSize(fromViewSize: CGSizeMake(width, view.bounds.height))
+      }
+
       view.bky_updateConstraints(animated: animated, update: {
         constraint.constant = width
       })
@@ -142,17 +157,22 @@ public class TrashCanViewController: WorkspaceViewController {
 
   // MARK: - Private
 
-  private func updateMaximumLineBlockSize() {
+  private func updateMaximumLineBlockSize(fromViewSize viewSize: CGSize? = nil) {
     guard let workspaceLayout = self.workspaceLayout as? WorkspaceFlowLayout else {
       return
     }
 
-    // Constrain the workspace layout max line size to the view's width or height
-    workspaceLayout.maximumLineBlockSize =
-      layoutDirection == WorkspaceFlowLayout.LayoutDirection.Horizontal ?
-        workspaceLayout.engine.workspaceUnitFromViewUnit(workspaceView.bounds.width) :
-        workspaceLayout.engine.workspaceUnitFromViewUnit(workspaceView.bounds.height)
-    workspaceLayout.updateLayoutDownTree()
-    workspaceView.refreshView()
+    let size = viewSize ?? view.bounds.size
+    let maxBlockLineSize = layoutDirection == WorkspaceFlowLayout.LayoutDirection.Horizontal ?
+      workspaceLayout.engine.workspaceUnitFromViewUnit(size.width) :
+      workspaceLayout.engine.workspaceUnitFromViewUnit(size.height)
+
+    // Only need to set a maximum line block size if it's > 0. We don't want things to be
+    // repositioned as the trash is being closed.
+    if maxBlockLineSize > 0 {
+      workspaceLayout.maximumLineBlockSize = maxBlockLineSize
+      workspaceLayout.updateLayoutDownTree()
+      workspaceView.refreshView()
+    }
   }
 }
