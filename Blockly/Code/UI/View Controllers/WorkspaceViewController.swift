@@ -55,7 +55,6 @@ public class WorkspaceViewController: UIViewController {
   /// The target workspace view
   public lazy var workspaceView: WorkspaceView = {
     let workspaceView = WorkspaceView()
-    workspaceView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     workspaceView.backgroundColor = UIColor.clearColor()
     return workspaceView
   }()
@@ -87,11 +86,8 @@ public class WorkspaceViewController: UIViewController {
 
   // MARK: - Super
 
-  public override func viewDidLoad() {
-    super.viewDidLoad()
-
-    workspaceView.frame = view.bounds
-    view.addSubview(workspaceView)
+  public override func loadView() {
+    view = workspaceView
   }
 
   // MARK: - Public
