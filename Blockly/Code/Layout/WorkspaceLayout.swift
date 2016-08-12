@@ -50,10 +50,11 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Initializers
 
-  public init(workspace: Workspace, engine: LayoutEngine, layoutBuilder: LayoutBuilder) throws {
+  public init(workspace: Workspace, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
+              connectionManager: ConnectionManager! = ConnectionManager()) throws {
     self.workspace = workspace
     self.layoutBuilder = layoutBuilder
-    self.connectionManager = ConnectionManager()
+    self.connectionManager = connectionManager
     super.init(engine: engine)
 
     // Assign the layout as the workspace's delegate so it can listen for new events that

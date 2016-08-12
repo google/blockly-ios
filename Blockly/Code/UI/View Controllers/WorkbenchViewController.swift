@@ -382,6 +382,26 @@ public class WorkbenchViewController: UIViewController {
   }
 
   /**
+   Automatically creates a `WorkspaceLayout` for a given `Workspace` (using both the `self.engine`
+   and `self.layoutBuilder` instances) and loads it into the view controller. Also passes a
+   connection manager to allow for custom block validation.
+
+   - Parameter workspace: The `Workspace` to load
+   - Parameter withConnectionManager: The (custom) ConnectionManager to set on the WorkspaceLayout
+   - Throws:
+   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
+   */
+  public func loadWorkspace(workspace: Workspace, withConnectionManager: ConnectionManager) throws {
+    // Create a layout for the workspace, which is required for viewing the workspace
+    let workspaceLayout =
+      try WorkspaceLayout(workspace: workspace, engine: engine, layoutBuilder: layoutBuilder,
+                          connectionManager: withConnectionManager)
+    _workspaceLayout = workspaceLayout
+
+    refreshView()
+  }
+
+  /**
    Automatically creates a `ToolboxLayout` for a given `Toolbox` (using both the `self.engine`
    and `self.layoutBuilder` instances) and loads it into the view controller.
 

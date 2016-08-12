@@ -36,9 +36,12 @@ public final class ConnectionManager: NSObject {
   /// All groups that have been created by this manager, including `mainGroup`
   private var _groups = Set<ConnectionManager.Group>()
 
+  public final let _blockConnectionValidator: BlockConnectionValidator!
+
   // MARK: - Initializers
 
-  public override init() {
+  public init(connectionValidator: BlockConnectionValidator = DefaultBlockConnectionValidator()) {
+    _blockConnectionValidator = connectionValidator
     self.mainGroup = ConnectionManager.Group(ownerBlock: nil)
     super.init()
     self._groups.insert(mainGroup)
@@ -227,52 +230,15 @@ public final class ConnectionManager: NSObject {
           continue
         }
 
-        if let compatibleConnection = group.closestConnection(connection, maxRadius: radius) {
+        if let compatibleConnection = group.closestConnection(connection, maxRadius: radius,
+                                                              validator: _blockConnectionValidator)
+        {
           candidate = (compatibleConnection, group)
           radius = connection.distanceFromConnection(compatibleConnection)
         }
       }
 
       return candidate
-  }
-
-  /**
-  Check if the two connections can be dragged to connect to each other.
-
-  - Parameter moving: The connection being dragged.
-  - Parameter candidate: A nearby connection to check. Must be in the `ConnectionManager`, and
-  therefore not be mid-drag.
-  - Parameter maxRadius: The maximum radius allowed for connections.
-  - Parameter allowShadows: Flag determining if shadows are allowed to be connected (`true`) or
-  not (`false`).
-  - Returns: True if the connection is allowed, false otherwise.
-  */
-  internal static func canConnect(
-    moving: Connection, toConnection candidate: Connection, maxRadius: CGFloat,
-    allowShadows: Bool) -> Bool
-  {
-    if moving.distanceFromConnection(candidate) > maxRadius {
-      return false
-    }
-
-    // Type checking
-    let canConnect = moving.canConnectWithReasonTo(candidate)
-    guard canConnect.intersectsWith(.CanConnect) ||
-      canConnect.intersectsWith(.ReasonMustDisconnect) ||
-      (allowShadows && canConnect.intersectsWith(.ReasonCannotSetShadowForTarget)) else
-    {
-      return false
-    }
-
-    // Don't offer to connect an already connected left (male) value plug to
-    // an available right (female) value plug.  Don't offer to connect the
-    // bottom of a statement block to one that's already connected.
-    if candidate.connected &&
-      (candidate.type == .OutputValue || candidate.type == .PreviousStatement) {
-        return false
-    }
-
-    return true
   }
 }
 
@@ -365,13 +331,15 @@ extension ConnectionManager {
     - Parameter maxRadius: How far out to search for compatible connections.
     - Returns: The closest compatible connection.
     */
-    internal func closestConnection(connection: Connection, maxRadius: CGFloat) -> Connection? {
+    internal func closestConnection(connection: Connection, maxRadius: CGFloat, validator:
+                                    BlockConnectionValidator) -> Connection? {
       if connection.connected {
         // Don't offer to connect when already connected.
         return nil
       }
       let compatibleList = _oppositeLists[connection.type.rawValue]
-      return compatibleList.searchForClosestConnectionTo(connection, maxRadius: maxRadius)
+      return compatibleList.searchForClosestValidConnectionTo(connection, maxRadius: maxRadius,
+                                                              validator: validator)
     }
 
     internal func connectionsForType(type: Connection.ConnectionType) -> YSortedList {
@@ -570,7 +538,8 @@ extension ConnectionManager {
       return pointerMin
     }
 
-    internal func searchForClosestConnectionTo(connection: Connection, maxRadius: CGFloat)
+    internal func searchForClosestValidConnectionTo(connection: Connection, maxRadius: CGFloat,
+                                                    validator: BlockConnectionValidator)
       -> Connection? {
         // Don't bother.
         if _connections.isEmpty {
@@ -590,8 +559,9 @@ extension ConnectionManager {
         var pointerMin = closestIndex - 1
         while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
-          if ConnectionManager.canConnect(
-            connection, toConnection: temp, maxRadius: bestRadius, allowShadows: false)
+          let distance = connection.distanceFromConnection(temp)
+          if distance < bestRadius && validator.canConnect(connection,
+              toConnection: temp)
           {
             bestConnection = temp
             bestRadius = temp.distanceFromConnection(connection)
@@ -603,8 +573,9 @@ extension ConnectionManager {
         while (pointerMax < _connections.count &&
           isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
-            if ConnectionManager.canConnect(
-              connection, toConnection: temp, maxRadius: bestRadius, allowShadows: false)
+            let distance = connection.distanceFromConnection(temp)
+            if distance < bestRadius && validator.canConnect(connection,
+                toConnection: temp)
             {
               bestConnection = temp
               bestRadius = temp.distanceFromConnection(connection)
@@ -634,9 +605,12 @@ extension ConnectionManager {
         var pointerMin = closestIndex - 1
         while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
+          let connectReason = connection.canConnectWithReasonTo(temp)
+          let couldConnect = connectReason.intersectsWith(.CanConnect) ||
+                             connectReason.intersectsWith(.ReasonMustDisconnect)
           if ((!connection.connected || !temp.connected) &&
-            ConnectionManager.canConnect(
-              connection, toConnection: temp, maxRadius: maxRadius, allowShadows: true))
+            connection.distanceFromConnection(temp) <= maxRadius &&
+            couldConnect)
           {
             neighbours.append(temp)
           }
@@ -647,9 +621,13 @@ extension ConnectionManager {
         while (pointerMax < _connections.count &&
           isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
+            let connectReason = connection.canConnectWithReasonTo(temp)
+            let couldConnect = connectReason.intersectsWith(.CanConnect) ||
+              connectReason.intersectsWith(.ReasonMustDisconnect)
             if ((!connection.connected || !temp.connected) &&
-              ConnectionManager.canConnect(
-                connection, toConnection: temp, maxRadius: maxRadius, allowShadows: true))
+              connection.distanceFromConnection(temp) <= maxRadius &&
+              connection.canConnectTo(temp) &&
+              couldConnect)
             {
               neighbours.append(temp)
             }

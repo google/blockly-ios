@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300CABD11D5CF816000E43B2 /* BlockConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* BlockConnectionValidator.swift */; };
+		300CABE81D5E8606000E43B2 /* DefaultBlockConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultBlockConnectionValidator.swift */; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
@@ -239,6 +241,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		300CABD01D5CF816000E43B2 /* BlockConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockConnectionValidator.swift; sourceTree = "<group>"; };
+		300CABE71D5E8606000E43B2 /* DefaultBlockConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultBlockConnectionValidator.swift; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
@@ -818,6 +822,8 @@
 				FAE5576D1BE0219C0019D0D4 /* ConnectionManager.swift */,
 				FAE557781BE02B270019D0D4 /* Dragger.swift */,
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
+				300CABD01D5CF816000E43B2 /* BlockConnectionValidator.swift */,
+				300CABE71D5E8606000E43B2 /* DefaultBlockConnectionValidator.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -1077,6 +1083,7 @@
 				FA16C2911D49A3BA00BAAFA2 /* FieldAngleLayout.swift in Sources */,
 				FA548D271B6708F2008BC59C /* Block+Builder.swift in Sources */,
 				FA2DFCC31B72DD400072A278 /* FieldVariable.swift in Sources */,
+				300CABD11D5CF816000E43B2 /* BlockConnectionValidator.swift in Sources */,
 				FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */,
 				FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */,
 				FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */,
@@ -1092,6 +1099,7 @@
 				FAA870191C642805000C7C61 /* DropdownOptionsViewController.swift in Sources */,
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
+				300CABE81D5E8606000E43B2 /* DefaultBlockConnectionValidator.swift in Sources */,
 				FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
