@@ -358,8 +358,8 @@ class LayoutBuilderTest: XCTestCase {
         XCTAssertEqual(input.fields[i], fieldLayout.field)
 
         // Check that the field layout's parent is set to this input layout
-        if let parentInputLayout = fieldLayout.parentInputLayout {
-          XCTAssertEqual(inputLayout, parentInputLayout)
+        if let parentLayout = fieldLayout.parentLayout {
+          XCTAssertEqual(inputLayout, parentLayout)
         } else {
           XCTFail("Parent layout has not been set for field layout: \(fieldLayout)")
         }

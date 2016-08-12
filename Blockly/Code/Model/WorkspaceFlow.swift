@@ -42,13 +42,17 @@ public class WorkspaceFlow: Workspace {
 
   public override func addBlockTree(rootBlock: Block) throws {
     try super.addBlockTree(rootBlock)
+
     items.append(Item(rootBlock: rootBlock))
+    layout?.updateLayoutUpTree()
   }
 
   public override func removeBlockTree(rootBlock: Block) throws {
     try super.removeBlockTree(rootBlock)
+
     // Remove item for this block (by only keeping blocks that don't match this rootBlock)
     items = items.filter({ $0.rootBlock != rootBlock })
+    layout?.updateLayoutUpTree()
   }
 
   // MARK: - Public

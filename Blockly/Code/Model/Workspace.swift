@@ -97,7 +97,9 @@ public class Workspace : NSObject {
         return
       }
 
-      allBlocks.values.forEach { $0.editable = !self.readOnly }
+      for block in allBlocks.values {
+        block.editable = block.editable && !self.readOnly
+      }
     }
   }
 
@@ -185,11 +187,15 @@ public class Workspace : NSObject {
     }
 
     // All checks passed. Add the new blocks to the workspace.
-
     for block in newBlocks {
-      block.editable = !readOnly
+      block.editable = block.editable && !readOnly
       allBlocks[block.uuid] = block
       addNameManager(variableNameManager, toBlock: block)
+    }
+
+    // Notify delegate for each block addition, now that all of them have been added to the
+    // workspace
+    for block in newBlocks {
       delegate?.workspace(self, didAddBlock: block)
     }
   }
@@ -207,13 +213,20 @@ public class Workspace : NSObject {
     rootBlock.previousConnection?.disconnect()
     rootBlock.outputConnection?.disconnect()
 
-    // Remove all blocks from this block tree
+    var blocksToRemove = [Block]()
+
+    // Gather all blocks to be removed and notify the delegate
     for block in rootBlock.allBlocksForTree() {
       if containsBlock(block) {
+        blocksToRemove.append(block)
         delegate?.workspace(self, willRemoveBlock: block)
-        removeNameManagerFromBlock(block)
-        allBlocks[block.uuid] = nil
       }
+    }
+
+    // Remove blocks
+    for block in blocksToRemove {
+      removeNameManagerFromBlock(block)
+      allBlocks[block.uuid] = nil
     }
   }
 
@@ -227,11 +240,19 @@ public class Workspace : NSObject {
    `BlocklyError`: Thrown if the block could not be copied
    */
   public func copyBlockTree(rootBlock: Block, editable: Bool) throws -> Block {
+    // Create a copy of the tree
     let copyResult = try rootBlock.deepCopy()
-    try addBlockTree(copyResult.rootBlock)
+
+    // Set the `editable` property of each block prior to adding them to the workspace so we don't
+    // overfire the listeners on each block (currently, each block has no listeners, but it could
+    // have once it's been added to the workspace)
     for block in copyResult.allBlocks {
       block.editable = editable
     }
+
+    // Add copy of tree to the workspace
+    try addBlockTree(copyResult.rootBlock)
+
     return copyResult.rootBlock
   }
 
