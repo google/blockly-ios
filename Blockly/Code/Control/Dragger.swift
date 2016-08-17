@@ -105,6 +105,10 @@ public class Dragger: NSObject {
       return
     }
 
+    // Set dragging to true, so the block groups displays with correct alpha through changes to the
+    // group mid-drag
+    layout.rootBlockGroupLayout?.dragging = true
+
     // Set the connection manager group to "drag mode" to avoid wasting compute cycles during the
     // drag
     gestureData.connectionGroup.dragMode = true
