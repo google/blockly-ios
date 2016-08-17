@@ -61,6 +61,9 @@ public class WorkspaceView: LayoutView {
   */
   public var scrollIntoViewEdgeInsets = EdgeInsets(20, 20, 100, 20)
 
+  /// Enables/disables the zooming of a workspace
+  public var allowZoom = false
+
   /// The last known value for `workspaceLayout.contentOrigin`
   private var _lastKnownContentOrigin: CGPoint = CGPointZero
 
@@ -103,8 +106,10 @@ public class WorkspaceView: LayoutView {
     }
 
     runAnimatableCode(animated) {
-      self.scrollView.minimumZoomScale = layout.engine.minimumScale / layout.engine.scale
-      self.scrollView.maximumZoomScale = layout.engine.maximumScale / layout.engine.scale
+      if self.allowZoom {
+        self.scrollView.minimumZoomScale = layout.engine.minimumScale / layout.engine.scale
+        self.scrollView.maximumZoomScale = layout.engine.maximumScale / layout.engine.scale
+      }
 
       if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
         self.updateCanvasSizeFromLayout()
@@ -153,19 +158,6 @@ public class WorkspaceView: LayoutView {
   public func removeBlockGroupView(blockGroupView: BlockGroupView) {
     blockGroupViews.remove(blockGroupView)
     blockGroupView.removeFromSuperview()
-  }
-
-  /**
-   Maps a gesture's touch location relative to this view to a logical Workspace position.
-
-   - Parameter gesture: The gesture
-   - Returns: The corresponding `WorkspacePoint` for the gesture
-   */
-  public final func workspacePositionFromGestureTouchLocation(gesture: UIGestureRecognizer)
-    -> WorkspacePoint
-  {
-    let touchPosition = gesture.locationInView(scrollView.containerView)
-    return workspacePositionFromViewPoint(touchPosition)
   }
 
   /**
@@ -236,8 +228,6 @@ public class WorkspaceView: LayoutView {
     }
   }
 
-  // MARK: - Private
-
   /**
   Maps a `UIView` point relative to `self.scrollView.containerView` to a logical Workspace
   position.
@@ -245,7 +235,7 @@ public class WorkspaceView: LayoutView {
   - Parameter point: The `UIView` point
   - Returns: The corresponding `WorkspacePoint`
   */
-  private func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
+  public func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePointZero
     }
@@ -267,6 +257,8 @@ public class WorkspaceView: LayoutView {
     // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
     return workspaceLayout.engine.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
+
+  // MARK: - Private
 
   private func canvasPadding() -> EdgeInsets {
     var scaled = EdgeInsets(0, 0, 0, 0)
@@ -338,7 +330,7 @@ public class WorkspaceView: LayoutView {
       // Position the contentView relative to the top-right corner
       let containerOrigin = CGPointMake(
         newContentSize.width - containerViewSize.width
-        - contentPadding.leading, contentPadding.top)
+          - contentPadding.leading, contentPadding.top)
       scrollView.containerView.frame = CGRectMake(
         containerOrigin.x, containerOrigin.y, containerViewSize.width, containerViewSize.height)
 
@@ -392,7 +384,7 @@ public class WorkspaceView: LayoutView {
       return
     }
     if !ignoreRestrictions &&
-      (scrollView.tracking || scrollView.dragging || scrollView.decelerating)
+      (scrollView.dragging || scrollView.decelerating)
     {
       return
     }
@@ -606,7 +598,7 @@ extension WorkspaceView {
    */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
-    private var containerView: ZIndexedGroupView = {
+    public var containerView: ZIndexedGroupView = {
       let view = ZIndexedGroupView(frame: CGRectZero)
       view.autoresizesSubviews = false
       return view
