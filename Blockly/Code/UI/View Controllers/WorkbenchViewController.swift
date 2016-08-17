@@ -137,6 +137,9 @@ public class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// Controller for managing the trash can workspace
+  public private(set) var trashCanViewController: TrashCanViewController!
+
   /// The layout engine to use for all views
   public final let engine: LayoutEngine
   /// The layout builder to create layout hierarchies
@@ -192,8 +195,6 @@ public class WorkbenchViewController: UIViewController {
   private let _dragger = Dragger()
   /// Controller for listing the toolbox categories
   private var _toolboxCategoryListViewController: ToolboxCategoryListViewController!
-  /// Controller for managing the trash can workspace
-  private var _trashCanViewController: TrashCanViewController!
   /// Flag indicating if the `self._trashCanViewController` is being shown
   private var _trashCanVisible: Bool = false
   /// Flag indicating if block highlighting is allowed
@@ -233,11 +234,11 @@ public class WorkbenchViewController: UIViewController {
 
   private func commonInit() {
     // Set up trash can folder view controller
-    _trashCanViewController = TrashCanViewController(
+    trashCanViewController = TrashCanViewController(
       engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection,
       viewFactory: viewFactory)
-    _trashCanViewController.delegate = self
-    addChildViewController(_trashCanViewController)
+    trashCanViewController.delegate = self
+    addChildViewController(trashCanViewController)
 
     // Set up toolbox category list view controller
     _toolboxCategoryListViewController = ToolboxCategoryListViewController(
@@ -294,7 +295,7 @@ public class WorkbenchViewController: UIViewController {
       "toolboxCategoryView": toolboxCategoryViewController.view,
       "workspaceView": workspaceViewController.view,
       "trashCanView": trashCanView,
-      "trashCanFolderView": _trashCanViewController.view,
+      "trashCanFolderView": trashCanViewController.view,
     ]
     let metrics = [
       "trashCanPadding": trashCanPadding,
@@ -351,6 +352,21 @@ public class WorkbenchViewController: UIViewController {
     self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
     self.view.sendSubviewToBack(workspaceViewController.view)
+
+    let panGesture = BlocklyPanGestureRecognizer(target: self, action: nil, workbench: self)
+    panGesture.delegate = self
+    workspaceViewController.view.addGestureRecognizer(panGesture)
+
+    let toolboxGesture = BlocklyPanGestureRecognizer(target: self, action: nil, workbench: self)
+    toolboxGesture.inToolbox = true
+    toolboxGesture.delegate = self
+    toolboxCategoryViewController.view.addGestureRecognizer(toolboxGesture)
+
+    let trashGesture = BlocklyPanGestureRecognizer(target: self, action: nil, workbench: self)
+    trashGesture.inToolbox = true
+    trashGesture.inTrash = true
+    trashGesture.delegate = self
+    trashCanViewController.view.addGestureRecognizer(trashGesture)
   }
 
   public override func viewDidLoad() {
@@ -437,7 +453,7 @@ public class WorkbenchViewController: UIViewController {
    */
   private func updateWorkspaceCapacity() {
     if let capacity = _workspaceLayout?.workspace.remainingCapacity {
-      _trashCanViewController.workspace?.deactivateBlockTrees(forGroupsGreaterThan: capacity)
+      trashCanViewController.workspace?.deactivateBlockTrees(forGroupsGreaterThan: capacity)
       _toolboxLayout?.toolbox.categories.forEach {
         $0.deactivateBlockTrees(forGroupsGreaterThan: capacity)
       }
@@ -638,9 +654,9 @@ extension WorkbenchViewController {
 
     let size: CGFloat = visible ? 300 : 0
     if style == .Default {
-      _trashCanViewController.setWorkspaceViewHeight(size, animated: animated)
+      trashCanViewController.setWorkspaceViewHeight(size, animated: animated)
     } else {
-      _trashCanViewController.setWorkspaceViewWidth(size, animated: animated)
+      trashCanViewController.setWorkspaceViewWidth(size, animated: animated)
     }
     _trashCanVisible = visible
   }
@@ -660,11 +676,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   public func workspaceViewController(
     workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
   {
-    if workspaceViewController == toolboxCategoryViewController ||
-      workspaceViewController == _trashCanViewController
-    {
-      addGestureTrackingForWorkspaceFolderBlockView(blockView)
-    } else if workspaceViewController == self.workspaceViewController {
+    if workspaceViewController == self.workspaceViewController {
       addGestureTrackingForBlockView(blockView)
     }
   }
@@ -672,11 +684,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   public func workspaceViewController(
     workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
   {
-    if workspaceViewController == toolboxCategoryViewController ||
-      workspaceViewController == _trashCanViewController
-    {
-      removeGestureTrackingForWorkspaceFolderBlockView(blockView)
-    } else if workspaceViewController == self.workspaceViewController {
+    if workspaceViewController == self.workspaceViewController {
       removeGestureTrackingForBlockView(blockView)
     }
   }
@@ -698,23 +706,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
 
 extension WorkbenchViewController {
   /**
-   Adds a pan gesture recognizer to a block view that is part of a workspace "folder" (ie. trash
-   can or toolbox).
-
-   - Parameter blockView: A given block view.
-   */
-  private func addGestureTrackingForWorkspaceFolderBlockView(blockView: BlockView) {
-    blockView.bky_removeAllGestureRecognizers()
-
-    let panGesture = UIPanGestureRecognizer(
-      target: self, action: #selector(didRecognizeWorkspaceFolderPanGesture(_:)))
-    panGesture.maximumNumberOfTouches = 1
-    panGesture.delegate = self
-    blockView.addGestureRecognizer(panGesture)
-  }
-
-  /**
-   Removes all gesture recognizers from a block view that is part of a workspace "folder" (ie. trash
+   Removes all gesture recognizers from a block view that is part of a workspace flyout (ie. trash
    can or toolbox).
 
    - Parameter blockView: A given block view.
@@ -724,63 +716,60 @@ extension WorkbenchViewController {
   }
 
   /**
-   Pan gesture event handler for a block view inside `self.toolboxView`.
-  */
-  private dynamic func didRecognizeWorkspaceFolderPanGesture(gesture: UIPanGestureRecognizer) {
-    guard let aBlockView = gesture.view as? BlockView else {
+   Copies the specified block from a flyout (trash/toolbox) to the workspace.
+
+   - Parameter blockView: The BlockView to copy
+   - Return: The new BlockView
+   */
+  public func copyBlockToWorkspace(blockView: BlockView) -> BlockView? {
+    // The block the user is dragging out of the toolbox/trash may be a child of a large nested
+    // block. We want to do a deep copy on the root block (not just the current block).
+    guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+      else
+    {
+      return nil
+    }
+
+    // TODO:(#45) This should be copying the root block layout, not the root block view.
+    let rootBlockView: BlockView! =
+      ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout)
+
+
+    // Copy the block view into the workspace view
+    let newBlockView: BlockView
+    do {
+      newBlockView = try copyBlockView(rootBlockView)
+      updateWorkspaceCapacity()
+    } catch let error as NSError {
+      bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
+      return nil
+    }
+
+    return newBlockView
+  }
+
+  /**
+   Removes a BlockView from the trash, when moving it back to the workspace.
+
+   - Parameter blockView: The BlockView to remove.
+   */
+  public func removeBlockFromTrash(blockView: BlockView) {
+    guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+      else
+    {
       return
     }
 
-    if gesture.state == UIGestureRecognizerState.Began {
-      // The block the user is dragging out of the toolbox/trash may be a child of a large nested
-      // block. We want to do a deep copy on the root block (not just the current block).
-      guard let rootBlockLayout = aBlockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
-        else
-      {
-        return
-      }
-
-      // TODO:(#45) This should be copying the root block layout, not the root block view.
-      let rootBlockView: BlockView! =
-        ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout)
-
-
-      // Copy the block view into the workspace view
-      let newBlockView: BlockView
+    if let trashWorkspace = trashCanViewController.workspaceView.workspaceLayout?.workspace
+      where trashWorkspace.containsBlock(rootBlockLayout.block)
+    {
       do {
-        newBlockView = try copyBlockView(rootBlockView)
-        updateWorkspaceCapacity()
+        // Remove this block view from the trash can
+        try trashCanViewController.workspace?.removeBlockTree(rootBlockLayout.block)
       } catch let error as NSError {
-        bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
+        bky_assertionFailure("Could not remove block from trash can: \(error)")
         return
       }
-
-      // Transfer this gesture recognizer from the original block view to the new block view
-      gesture.removeTarget(self, action: #selector(didRecognizeWorkspaceFolderPanGesture(_:)))
-      aBlockView.removeGestureRecognizer(gesture)
-      gesture.addTarget(self, action: #selector(didRecognizeWorkspacePanGesture(_:)))
-      newBlockView.addGestureRecognizer(gesture)
-
-      // Start the first step of dragging the block layout
-      let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
-      _dragger.startDraggingBlockLayout(newBlockView.blockLayout!, touchPosition: touchPosition)
-
-      if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace
-        where trashWorkspace.containsBlock(rootBlockLayout.block)
-      {
-        do {
-          // Remove this block view from the trash can
-          try _trashCanViewController.workspace?.removeBlockTree(rootBlockLayout.block)
-        } catch let error as NSError {
-          bky_assertionFailure("Could not remove block from trash can: \(error)")
-          return
-        }
-      } else {
-        // Re-add gesture tracking to the original block view for future drags
-        addGestureTrackingForWorkspaceFolderBlockView(aBlockView)
-      }
-
-      addUIStateValue(.DraggingBlock)
     }
   }
 }
@@ -794,15 +783,7 @@ extension WorkbenchViewController {
    - Parameter blockView: A given block view.
    */
   private func addGestureTrackingForBlockView(blockView: BlockView) {
-    // TODO:(#122) Gesture recognizing doesn't work simultaneously on a subview when a superview is
-    // already being dragged.
-
     blockView.bky_removeAllGestureRecognizers()
-
-    let panGesture =
-      UIPanGestureRecognizer(target: self, action: #selector(didRecognizeWorkspacePanGesture(_:)))
-    panGesture.maximumNumberOfTouches = 1
-    blockView.addGestureRecognizer(panGesture)
 
     let tapGesture =
       UITapGestureRecognizer(target: self, action: #selector(didRecognizeWorkspaceTapGesture(_:)))
@@ -825,32 +806,25 @@ extension WorkbenchViewController {
   /**
    Pan gesture event handler for a block view inside `self.workspaceView`.
    */
-  private dynamic func didRecognizeWorkspacePanGesture(gesture: UIPanGestureRecognizer) {
-    guard let blockView = gesture.view as? BlockView,
-      blockLayout = blockView.blockLayout?.draggableBlockLayout else {
-        return
+  public dynamic func didRecognizeWorkspacePanGesture(gesture: BlocklyPanGestureRecognizer,
+    touchPosition: CGPoint, blockView: BlockView, state: UIGestureRecognizerState)
+  {
+    guard let blockLayout = blockView.blockLayout?.draggableBlockLayout else {
+      return
     }
 
-    let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
+    let workspacePosition = workspaceView.workspacePositionFromViewPoint(touchPosition)
     let touchingTrashCan = isGestureTouchingTrashCan(gesture)
 
     // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
 
-    if gesture.state == .Began {
-      // Temporarily remove gesture recognizer from the blockView
-      blockView.removeGestureRecognizer(gesture)
-
+    if state == .Began {
       addUIStateValue(.DraggingBlock)
-      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
-
-      // When the block layout is being dragged around, the corresponding view hierarchy may have
-      // been re-created (for example, if the block was disconnected from its parent). So we must
-      // find the view for the block layout and re-attach the gesture recognizer to it.
-      ViewManager.sharedInstance.findBlockViewForLayout(blockLayout)?.addGestureRecognizer(gesture)
-    } else if gesture.state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
+      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
+    } else if state == .Changed || gesture.state == .Cancelled || gesture.state == .Ended {
       addUIStateValue(.DraggingBlock)
-      _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: touchPosition)
+      _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
 
       if touchingTrashCan && blockLayout.block.deletable {
         addUIStateValue(.TrashCanHighlighted)
@@ -859,13 +833,13 @@ extension WorkbenchViewController {
       }
     }
 
-    if gesture.state == .Cancelled || gesture.state == .Ended || gesture.state == .Failed {
+    if state == .Cancelled || state == .Ended || state == .Failed {
       if touchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
         _dragger.clearGestureDataForBlockLayout(blockLayout)
 
         do {
-          try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
+          try trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
           try _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
           updateWorkspaceCapacity()
         } catch let error as NSError {

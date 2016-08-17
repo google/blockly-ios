@@ -152,19 +152,6 @@ public class WorkspaceView: LayoutView {
   }
 
   /**
-   Maps a gesture's touch location relative to this view to a logical Workspace position.
-
-   - Parameter gesture: The gesture
-   - Returns: The corresponding `WorkspacePoint` for the gesture
-   */
-  public final func workspacePositionFromGestureTouchLocation(gesture: UIGestureRecognizer)
-    -> WorkspacePoint
-  {
-    let touchPosition = gesture.locationInView(scrollView.containerView)
-    return workspacePositionFromViewPoint(touchPosition)
-  }
-
-  /**
    Returns the logical Workspace position of a given `BlockView` based on its position relative
    to this `WorkspaceView`.
 
@@ -232,8 +219,6 @@ public class WorkspaceView: LayoutView {
     }
   }
 
-  // MARK: - Private
-
   /**
   Maps a `UIView` point relative to `self.scrollView.containerView` to a logical Workspace
   position.
@@ -241,7 +226,7 @@ public class WorkspaceView: LayoutView {
   - Parameter point: The `UIView` point
   - Returns: The corresponding `WorkspacePoint`
   */
-  private func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
+  public func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePointZero
     }
@@ -263,6 +248,8 @@ public class WorkspaceView: LayoutView {
     // Scale this CGPoint (ie. `viewPoint`) into a WorkspacePoint
     return workspaceLayout.engine.scaledWorkspaceVectorFromViewVector(viewPoint)
   }
+
+  // MARK: - Private
 
   private func canvasPadding() -> EdgeInsets {
     var scaled = EdgeInsets(0, 0, 0, 0)
@@ -587,7 +574,7 @@ extension WorkspaceView {
    */
   public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
-    private var containerView: ZIndexedGroupView = {
+    public var containerView: ZIndexedGroupView = {
       let view = ZIndexedGroupView(frame: CGRectZero)
       view.autoresizesSubviews = false
       return view
