@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		300CABD11D5CF816000E43B2 /* ConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */; };
 		300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */; };
+		30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
@@ -243,6 +244,7 @@
 /* Begin PBXFileReference section */
 		300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionValidator.swift; sourceTree = "<group>"; };
 		300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultConnectionValidator.swift; sourceTree = "<group>"; };
+		30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 			children = (
 				FAA870131C642805000C7C61 /* View Controllers */,
 				FA4BB5681B7C03EA000980E9 /* Views */,
+				30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */,
 				FAA870111C64276A000C7C61 /* WorkspaceBezierPath.swift */,
 			);
 			path = UI;
@@ -1065,6 +1068,7 @@
 				FAD652741CB87B2200F73F11 /* DefaultLayoutEngine.swift in Sources */,
 				FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
+				30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */,
 				FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */,
