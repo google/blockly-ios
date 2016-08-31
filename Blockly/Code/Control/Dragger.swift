@@ -64,34 +64,36 @@ public class Dragger: NSObject {
       return
     }
 
-    // Remove any existing gesture data for the layout
-    clearGestureDataForBlockLayout(layout)
+    Layout.animate {
+      // Remove any existing gesture data for the layout
+      self.clearGestureDataForBlockLayout(layout)
 
-    // Disconnect this block from its previous or output connections prior to moving it
-    let block = layout.block
-    block.previousConnection?.disconnect()
-    block.outputConnection?.disconnect()
+      // Disconnect this block from its previous or output connections prior to moving it
+      let block = layout.block
+      block.previousConnection?.disconnect()
+      block.outputConnection?.disconnect()
 
-    // Highlight this block
-    layout.highlighted = true
-    layout.rootBlockGroupLayout?.dragging = true
+      // Highlight this block
+      layout.highlighted = true
+      layout.rootBlockGroupLayout?.dragging = true
 
-    // Bring its block group layout to the front
-    workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+      // Bring its block group layout to the front
+      self.workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
 
-    // Start a new connection group for this block group layout
-    if let newConnectionGroup =
-      workspaceLayout?.connectionManager.startGroupForBlock(block)
-    {
-      // Keep track of the gesture data for this drag
-      let dragGestureData = DragGestureData(
-        blockLayout: layout,
-        blockLayoutStartPosition: layout.absolutePosition,
-        touchStartPosition: touchPosition,
-        connectionGroup: newConnectionGroup
-      )
+      // Start a new connection group for this block group layout
+      if let newConnectionGroup =
+        self.workspaceLayout?.connectionManager.startGroupForBlock(block)
+      {
+        // Keep track of the gesture data for this drag
+        let dragGestureData = DragGestureData(
+          blockLayout: layout,
+          blockLayoutStartPosition: layout.absolutePosition,
+          touchStartPosition: touchPosition,
+          connectionGroup: newConnectionGroup
+        )
 
-      _dragGestureData[layout.uuid] = dragGestureData
+        self._dragGestureData[layout.uuid] = dragGestureData
+      }
     }
   }
 
@@ -131,34 +133,38 @@ public class Dragger: NSObject {
   - Parameter layout: The given block layout
   */
   public func finishDraggingBlockLayout(layout: BlockLayout) {
-    // Remove the highlight for this block
-    layout.highlighted = false
-    layout.rootBlockGroupLayout?.dragging = false
+    Layout.animate {
+      // Remove the highlight for this block
+      layout.highlighted = false
+      layout.rootBlockGroupLayout?.dragging = false
 
-    // If this block can be connected to anything, connect it.
-    if let drag = _dragGestureData[layout.uuid],
-      let connectionPair = findBestConnectionForDrag(drag)
-    {
-      connectPair(connectionPair)
+      // If this block can be connected to anything, connect it.
+      if let drag = self._dragGestureData[layout.uuid],
+        let connectionPair = self.findBestConnectionForDrag(drag)
+      {
+        self.connectPair(connectionPair)
 
-      clearGestureDataForBlockLayout(layout,
-        moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
-    } else {
-      clearGestureDataForBlockLayout(layout)
+        self.clearGestureDataForBlockLayout(layout,
+          moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
+      } else {
+        self.clearGestureDataForBlockLayout(layout)
+
+        // Update the workspace canvas size since it may have changed (this was purposely skipped
+        // during the drag for performance reasons, so we have to update it now). Also, there is
+        // no need to call this method in the `if` part of this `if/else` block, since
+        // `self.connectPair(:)` implicitly calls it already.
+        self.workspaceLayout?.updateCanvasSize()
+      }
+
+      // Bump any neighbours of the block layout
+      self._blockBumper.bumpNeighboursOfBlockLayout(layout)
+
+      // Update the highlighted connections for all other drags (due to potential changes in block
+      // sizes)
+      for (_, gestureData) in self._dragGestureData {
+        self.updateHighlightedConnectionForDrag(gestureData)
+      }
     }
-
-    // Bump any neighbours of the block layout
-    _blockBumper.bumpNeighboursOfBlockLayout(layout)
-
-    // Update the highlighted connections for all other drags (due to potential changes in block
-    // sizes)
-    for (_, gestureData) in _dragGestureData {
-      updateHighlightedConnectionForDrag(gestureData)
-    }
-
-    // Update the workspace canvas size since it may have changed (this was purposely skipped
-    // during the drag for performance reasons, so we have to update it now)
-    workspaceLayout?.updateCanvasSize()
   }
 
   /**

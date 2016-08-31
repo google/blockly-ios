@@ -50,17 +50,21 @@ public class FieldImageView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldImageLayout = self.fieldImageLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      fieldImageLayout.loadImage(completion: { (image) in
-        self.imageView.image = image
-      })
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        fieldImageLayout.loadImage(completion: { (image) in
+          self.imageView.image = image
+        })
+      }
     }
   }
 

@@ -48,18 +48,22 @@ public class FieldLabelView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldLabelLayout = self.fieldLabelLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      label.text = fieldLabelLayout.text
-
-      // TODO:(#27) Standardize this font
-      label.font = UIFont.systemFontOfSize(14 * fieldLabelLayout.engine.scale)
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let label = self.label
+        label.text = fieldLabelLayout.text
+        // TODO:(#27) Standardize this font
+        label.font = UIFont.systemFontOfSize(14 * fieldLabelLayout.engine.scale)
+      }
     }
   }
 
