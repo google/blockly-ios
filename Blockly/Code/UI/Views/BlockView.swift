@@ -16,8 +16,8 @@
 import Foundation
 
 /**
-View for rendering a `BlockLayout`.
-*/
+ Abstract view for rendering a `BlockLayout`.
+ */
 @objc(BKYBlockView)
 public class BlockView: LayoutView {
   // MARK: - Properties
@@ -26,9 +26,6 @@ public class BlockView: LayoutView {
   public var blockLayout: BlockLayout? {
     return layout as? BlockLayout
   }
-
-  /// Flag determining if layer changes should be animated
-  private var _disableLayerChangeAnimations: Bool = true
 
   // MARK: - Initializers
 
@@ -40,60 +37,12 @@ public class BlockView: LayoutView {
     fatalError("Called unsupported initializer")
   }
 
-  // MARK: - Abstract
-
-  /**
-   Updates the background UI of the block based on the layout flags.
-
-   - Parameter flags: Refresh the background UI for the given set of flags.
-   - Note: This method needs to be implemented by a subclass.
-   */
-  public func refreshBackgroundUI(forFlags flags: LayoutFlag) {
-    bky_assertionFailure("\(#function) needs to be implemented by a subclass")
-  }
-
   // MARK: - Super
-
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
-
-    guard let layout = self.blockLayout else {
-      return
-    }
-
-    CATransaction.begin()
-    CATransaction.setDisableActions(_disableLayerChangeAnimations)
-
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      // Update the view frame
-      frame = layout.viewFrame
-    }
-
-    refreshBackgroundUI(forFlags: flags)
-
-    if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
-      // Set its user interaction
-      userInteractionEnabled = layout.userInteractionEnabled
-    }
-
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {
-      hidden = !layout.visible
-    }
-
-    CATransaction.commit()
-
-    // Re-enable layer animations for any future changes
-    _disableLayerChangeAnimations = false
-  }
 
   public override func prepareForReuse() {
     super.prepareForReuse()
 
     self.frame = CGRectZero
-
-    // Disable animating layer changes, so that the next block layout that uses this view instance
-    // isn't animated into view based on the previous block layout.
-    _disableLayerChangeAnimations = true
 
     for subview in subviews {
       subview.removeFromSuperview()

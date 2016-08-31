@@ -109,6 +109,9 @@ public class LayoutConfig: NSObject {
   /// used for each one, specified as a UIView coordinate system unit.
   public static let FieldTextFieldMaximumWidth = LayoutConfig.newPropertyKey()
 
+  /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
+  public static let ViewAnimationDuration = LayoutConfig.newPropertyKey()
+
   // MARK: - Properties
 
   // NOTE: Separate dictionaries were created for each type of value as casting specific values
@@ -128,6 +131,9 @@ public class LayoutConfig: NSObject {
 
   /// Dictionary mapping property keys to `CGFloat` values
   private var _floats = Dictionary<PropertyKey, CGFloat>()
+
+  /// Dictionary mapping property keys to `Double` values
+  private var _doubles = Dictionary<PropertyKey, Double>()
 
   // MARK: - Initializers
 
@@ -152,6 +158,8 @@ public class LayoutConfig: NSObject {
 
     setEdgeInsets(EdgeInsets(4, 8, 4, 8), forKey: LayoutConfig.FieldTextFieldInsetPadding)
     setFloat(300, forKey: LayoutConfig.FieldTextFieldMaximumWidth)
+
+    setDouble(0.3, forKey: LayoutConfig.ViewAnimationDuration)
   }
 
   // MARK: - Public
@@ -293,6 +301,31 @@ public class LayoutConfig: NSObject {
   @inline(__always)
   public func colorFor(key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
     return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, forKey: key) : nil)
+  }
+
+  /**
+   Maps a `Double` value to a specific `PropertyKey`.
+
+   - Parameter double: The `Double` value
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
+   - Returns: The `Double` that was set.
+   */
+  public func setDouble(double: Double, forKey key: PropertyKey) -> Double {
+    _doubles[key] = double
+    return double
+  }
+
+  /**
+   Returns the `Double` value that is mapped to a specific `PropertyKey`.
+
+   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
+   - Parameter defaultValue: [Optional] If no `Double` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - Returns: The `key`'s value
+   */
+  @inline(__always)
+  public func doubleFor(key: PropertyKey, defaultValue: Double = 0) -> Double {
+    return _doubles[key] ?? setDouble(defaultValue, forKey: key)
   }
 
   /**

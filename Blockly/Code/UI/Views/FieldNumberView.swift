@@ -70,19 +70,24 @@ public class FieldNumberView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let layout = self.layout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      updateTextFieldFromFieldNumber()
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        self.updateTextFieldFromFieldNumber()
 
-      // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-      textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+        // TODO:(#27) Standardize this font
+        let textField = self.textField
+        textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
+        textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      }
     }
   }
 

@@ -51,19 +51,23 @@ public class FieldView: LayoutView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldLayout = self.fieldLayout else {
       return
     }
 
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      // Update the view frame
-      frame = fieldLayout.viewFrame
-    }
+    runAnimatableCode(animated) {
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+        // Update the view frame
+        self.frame = fieldLayout.viewFrame
+      }
 
-    // Enable/disable user interaction
-    userInteractionEnabled = fieldLayout.userInteractionEnabled
+      // Enable/disable user interaction
+      self.userInteractionEnabled = fieldLayout.userInteractionEnabled
+    }
   }
 }

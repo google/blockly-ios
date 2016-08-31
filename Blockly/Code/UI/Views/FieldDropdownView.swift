@@ -49,21 +49,26 @@ public class FieldDropdownView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldDropdownLayout = self.fieldDropdownLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      dropDownView.text = fieldDropdownLayout.selectedOption?.displayName
-      dropDownView.borderWidth =
-        fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
-      dropDownView.borderCornerRadius =
-        fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
-      // TODO:(#27) Standardize this font
-      dropDownView.textFont = UIFont.systemFontOfSize(14 * fieldDropdownLayout.engine.scale)
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let dropDownView = self.dropDownView
+        dropDownView.text = fieldDropdownLayout.selectedOption?.displayName
+        dropDownView.borderWidth =
+          fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+        dropDownView.borderCornerRadius =
+          fieldDropdownLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+        // TODO:(#27) Standardize this font
+        dropDownView.textFont = UIFont.systemFontOfSize(14 * fieldDropdownLayout.engine.scale)
+      }
     }
   }
 
