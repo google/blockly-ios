@@ -78,20 +78,25 @@ public class FieldDateView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldDateLayout = self.fieldDateLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      textField.text = fieldDateLayout.textValue
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let textField = self.textField
+        textField.text = fieldDateLayout.textValue
 
-      // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * fieldDateLayout.engine.scale)
-      textField.insetPadding =
-        fieldDateLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+        // TODO:(#27) Standardize this font
+        textField.font = UIFont.systemFontOfSize(14 * fieldDateLayout.engine.scale)
+        textField.insetPadding =
+          fieldDateLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      }
     }
   }
 

@@ -371,8 +371,12 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       (aConnection.sourceInput?.layout?.blockGroupLayout ?? // For input values or statements
       aConnection.sourceBlock.layout?.parentBlockGroupLayout) // For a block's next statement
     {
-      blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: false)
-      blockGroupLayout.performLayout(includeChildren: true)
+      Layout.doNotAnimate {
+        blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
+        blockGroupLayout.performLayout(includeChildren: true)
+        blockGroupLayout.refreshViewPositionsForTree()
+      }
+
       blockGroupLayout.updateLayoutUpTree()
     }
 
@@ -493,11 +497,12 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       let blockGroupLayout = try layoutFactory.layoutForBlockGroupLayout(engine: self.engine)
       blockGroupLayout.relativePosition = sourceBlockLayout.absolutePosition
 
-      // Add this new block group layout to the workspace level
-      appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
-      bringBlockGroupLayoutToFront(blockGroupLayout)
+      Layout.doNotAnimate {
+        // Add this new block group layout to the workspace level
+        self.appendBlockGroupLayout(blockGroupLayout, updateLayout: true)
+        self.bringBlockGroupLayoutToFront(blockGroupLayout)
+      }
 
-      // Move `sourceBlockLayout` and its followers to the new block group layout
       blockGroupLayout.claimBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
     }
 
@@ -510,10 +515,14 @@ extension WorkspaceLayout: ConnectionTargetDelegate {
       where emptyBlockGroupLayout.blockLayouts.count == 0 &&
         emptyBlockGroupLayout.parentLayout == workspace.layout
     {
-      // Remove this block's old parent group layout from the workspace level
-      removeBlockGroupLayout(emptyBlockGroupLayout, updateLayout: true)
+      Layout.doNotAnimate {
+        // Remove this block's old parent group layout from the workspace level
+        self.removeBlockGroupLayout(emptyBlockGroupLayout, updateLayout: true)
+      }
     }
 
-    updateCanvasSize()
+    Layout.doNotAnimate {
+      self.updateCanvasSize()
+    }
   }
 }

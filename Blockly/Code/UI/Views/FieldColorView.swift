@@ -52,19 +52,24 @@ public class FieldColorView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
-
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
+  
     guard let fieldColorLayout = self.fieldColorLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      button.layer.borderWidth =
-        fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldColorButtonBorderWidth)
-      button.layer.cornerRadius =
-        fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
-      button.backgroundColor = fieldColorLayout.color
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let button = self.button
+        button.layer.borderWidth =
+          fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldColorButtonBorderWidth)
+        button.layer.cornerRadius =
+          fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+        button.backgroundColor = fieldColorLayout.color
+      }
     }
   }
 

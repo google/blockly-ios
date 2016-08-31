@@ -49,27 +49,34 @@ public class BlockGroupView: LayoutView, ZIndexedView {
     return (hitTestView == self) ? nil : hitTestView
   }
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let layout = self.blockGroupLayout else {
       return
     }
 
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      // Update the view frame
-      frame = layout.viewFrame
-    }
-
     if flags.intersectsWith([Layout.Flag_NeedsDisplay, BlockGroupLayout.Flag_UpdateDragging]) {
-      // Update the alpha interaction
-      alpha = layout.dragging ?
+      // Update the alpha interaction. This part isn't animated since it can look weird when
+      // connecting new blocks into an existing block group that was previously highlighted before
+      // (the new blocks will change from fully opaque to translucent, and then quickly animate
+      // back to fully opaque)
+      self.alpha = layout.dragging ?
         layout.config.floatFor(DefaultLayoutConfig.BlockDraggingFillColorAlpha) : 1.0
     }
 
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, BlockGroupLayout.Flag_UpdateZIndex]) {
-      // Update the z-index
-      zIndex = layout.zIndex
+    runAnimatableCode(animated) {
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+        // Update the view frame
+        self.frame = layout.viewFrame
+      }
+
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, BlockGroupLayout.Flag_UpdateZIndex]) {
+        // Update the z-index
+        self.zIndex = layout.zIndex
+      }
     }
   }
 

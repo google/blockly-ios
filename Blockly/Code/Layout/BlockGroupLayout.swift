@@ -131,8 +131,12 @@ public class BlockGroupLayout: Layout {
       transferredLayouts.append(blockLayout)
     }
 
-    // Transfer the layouts over to `newBlockGroupLayout`
-    appendBlockLayouts(transferredLayouts, updateLayout: false)
+    Layout.doNotAnimate {
+      // Transfer the layouts over to `newBlockGroupLayout`. Do not animate these changes, as these
+      // layouts need to start any potential animations from locations relative to its new parent
+      // (not its old parent).
+      self.appendBlockLayouts(transferredLayouts, updateLayout: false)
+    }
 
     if updateLayouts {
       updateLayoutUpTree()
