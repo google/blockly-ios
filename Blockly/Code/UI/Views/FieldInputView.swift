@@ -52,23 +52,28 @@ public class FieldInputView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldInputLayout = self.fieldInputLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      let text = fieldInputLayout.text
-      if textField.text != text {
-        textField.text = text
-      }
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let text = fieldInputLayout.text
+        let textField = self.textField
+        if textField.text != text {
+          textField.text = text
+        }
 
-      // TODO:(#27) Standardize this font
-      textField.font = UIFont.systemFontOfSize(14 * fieldInputLayout.engine.scale)
-      textField.insetPadding =
-        fieldInputLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+        // TODO:(#27) Standardize this font
+        textField.font = UIFont.systemFontOfSize(14 * fieldInputLayout.engine.scale)
+        textField.insetPadding =
+          fieldInputLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      }
     }
   }
 
@@ -81,7 +86,7 @@ public class FieldInputView: FieldView {
   // MARK: - Private
 
   private dynamic func textFieldDidChange(sender: UITextField) {
-    fieldInputLayout?.updateText(textField.text ?? "")
+    self.fieldInputLayout?.updateText(self.textField.text ?? "")
   }
 }
 

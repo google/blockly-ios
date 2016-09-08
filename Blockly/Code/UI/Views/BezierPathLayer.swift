@@ -22,16 +22,11 @@ Layer used to draw a `UIBezierPath`.
 public class BezierPathLayer: CAShapeLayer {
   // MARK: - Properties
 
-  internal var bezierPath: UIBezierPath? {
-    didSet {
-      if bezierPath == oldValue {
-        return
-      }
+  /// The bezier path to draw
+  public private(set) var bezierPath: UIBezierPath?
 
-      self.path = bezierPath?.CGPath
-      setNeedsDisplay()
-    }
-  }
+  /// The duration of the bezier path animation
+  public var animationDuration = 0.3
 
   // MARK: - Initializers
 
@@ -48,5 +43,48 @@ public class BezierPathLayer: CAShapeLayer {
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     self.fillRule = kCAFillRuleEvenOdd
+  }
+
+  // MARK: - Public
+
+  /**
+   Draws `self.path` using a given bezier path.
+
+   - Parameter bezierPath: The `UIBezierPath` to draw.
+   - Parameter animated: Flag determining if the draw should be animated or not.
+   */
+  public func setBezierPath(bezierPath: UIBezierPath?, animated: Bool) {
+    if self.bezierPath == bezierPath {
+      return
+    }
+
+    self.bezierPath = bezierPath
+
+    // Keep track of the bezier path that's currently being presented on-screen. This method
+    // may be interrupting an already running bezier path animation that was set earlier and we
+    // want to start any new path animations from the layer's current state (not necessarily what
+    // was previously set in `self.bezierPath`).
+    let fromBezierPath = (presentationLayer() as? CAShapeLayer)?.path
+
+    // Kill off any potentially on-going animation
+    removeAnimationForKey("path")
+
+    if !animated || fromBezierPath == nil || bezierPath == nil {
+      // No need to animate anything. Simply set the path.
+      path = bezierPath?.CGPath
+    } else {
+      // Animate new bezier path
+      let animation = CABasicAnimation(keyPath: "path")
+      animation.fromValue = fromBezierPath
+      animation.toValue = bezierPath?.CGPath
+      animation.duration = animationDuration
+      animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+      animation.fillMode = kCAFillModeBoth // Keeps `self.path` set to `toValue` on completion
+      animation.removedOnCompletion = false // Keeps `self.path` set to `toValue` on completion
+      addAnimation(animation, forKey: animation.keyPath)
+    }
+
+    // Force re-draw
+    setNeedsDisplay()
   }
 }

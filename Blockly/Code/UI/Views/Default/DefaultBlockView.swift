@@ -24,6 +24,9 @@ public class DefaultBlockView: BlockView {
     return self.layout as? DefaultBlockLayout
   }
 
+  /// Flag determining if layer changes should be animated
+  private var _disableLayerChangeAnimations: Bool = true
+
   /// Layer for rendering the block's background
   private let _backgroundLayer = BezierPathLayer()
 
@@ -60,88 +63,127 @@ public class DefaultBlockView: BlockView {
     return hitTestView
   }
 
-  public override func refreshBackgroundUI(forFlags flags: LayoutFlag) {
-    guard let layout = self.defaultBlockLayout else {
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
+
+    guard let layout = self.blockLayout else {
       return
     }
 
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateViewFrame]) {
-      alpha = layout.block.disabled ?
-        layout.config.floatFor(DefaultLayoutConfig.BlockDisabledAlpha) :
-        layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
-    }
+    runAnimatableCode(animated) {
+      CATransaction.begin()
+      CATransaction.setDisableActions(self._disableLayerChangeAnimations || !animated)
 
-    // Special case for determining if we need to force a bezier path redraw. The reason is that
-    // in RTL, when the bezier path is calculated, it does a transform at the end where it scales
-    // the x-axis by -1 and then translates the path by the width of the view frame. So basically,
-    // if the view frame width has changed in this case, we need to force a bezier path
-    // recalculation.
-    let forceBezierPathRedraw =
-      flags.intersectsWith(BlockLayout.Flag_UpdateViewFrame) &&
-      layout.engine.rtl &&
-      _backgroundLayer.frame.size.width != layout.viewFrame.size.width
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+        // Update the view frame
+        self.frame = layout.viewFrame
+      }
 
-    if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) ||
-      forceBezierPathRedraw
-    {
-      // Figure out the stroke and fill colors of the block
-      var strokeColor = UIColor.clearColor()
-      var fillColor = UIColor.clearColor()
+      if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
+        // Set its user interaction
+        self.userInteractionEnabled = layout.userInteractionEnabled
+      }
 
-      if layout.block.disabled {
-        strokeColor =
-          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
-        fillColor =
-          layout.config.colorFor(DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
-      } else {
-        strokeColor = (layout.highlighted ?
-          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
-          layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
-          UIColor.clearColor()
-        fillColor = layout.block.color
+      if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {
+        self.hidden = !layout.visible
+      }
 
-        if layout.block.shadow {
-          strokeColor = shadowColorForColor(strokeColor, config: layout.config)
-          fillColor = shadowColorForColor(fillColor, config: layout.config)
+      if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateViewFrame]) {
+        self.alpha = layout.block.disabled ?
+          layout.config.floatFor(DefaultLayoutConfig.BlockDisabledAlpha) :
+          layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
+      }
+
+      // Special case for determining if we need to force a bezier path redraw. The reason is that
+      // in RTL, when the bezier path is calculated, it does a transform at the end where it scales
+      // the x-axis by -1 and then translates the path by the width of the view frame. So basically,
+      // if the view frame width has changed in this case, we need to force a bezier path
+      // recalculation.
+      let forceBezierPathRedraw =
+        flags.intersectsWith(BlockLayout.Flag_UpdateViewFrame) &&
+        layout.engine.rtl &&
+        self._backgroundLayer.frame.size.width != layout.viewFrame.size.width
+
+      if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateHighlight]) ||
+        forceBezierPathRedraw
+      {
+        // Figure out the stroke and fill colors of the block
+        var strokeColor = UIColor.clearColor()
+        var fillColor = UIColor.clearColor()
+
+        if layout.block.disabled {
+          strokeColor =
+            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
+          fillColor =
+            layout.config.colorFor(DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
+        } else {
+          strokeColor = (layout.highlighted ?
+            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
+            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
+            UIColor.clearColor()
+          fillColor = layout.block.color
+
+          if layout.block.shadow {
+            strokeColor = self.shadowColorForColor(strokeColor, config: layout.config)
+            fillColor = self.shadowColorForColor(fillColor, config: layout.config)
+          }
+        }
+
+        // Update the background layer
+        let backgroundLayer = self._backgroundLayer
+        backgroundLayer.strokeColor = strokeColor.CGColor
+        backgroundLayer.fillColor = fillColor.CGColor
+        backgroundLayer.lineWidth = layout.highlighted ?
+          layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
+          layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
+        backgroundLayer.animationDuration =
+          layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
+        backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
+        backgroundLayer.frame = self.bounds
+      }
+
+      if flags.intersectsWith(
+        [BlockLayout.Flag_NeedsDisplay,
+          BlockLayout.Flag_UpdateHighlight,
+          BlockLayout.Flag_UpdateConnectionHighlight]) || forceBezierPathRedraw
+      {
+        // Update highlight
+        if let path = self.blockHighlightBezierPath() {
+          self.addHighlightLayerWithPath(path, animated: animated)
+        } else {
+          self.removeHighlightLayer()
         }
       }
 
-      // Update the background layer
-      _backgroundLayer.strokeColor = strokeColor.CGColor
-      _backgroundLayer.fillColor = fillColor.CGColor
-      _backgroundLayer.lineWidth = layout.highlighted ?
-        layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
-        layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
-      _backgroundLayer.bezierPath = blockBackgroundBezierPath()
-      _backgroundLayer.frame = bounds
-    }
+      CATransaction.commit()
 
-    if flags.intersectsWith(
-      [BlockLayout.Flag_NeedsDisplay,
-        BlockLayout.Flag_UpdateHighlight,
-        BlockLayout.Flag_UpdateConnectionHighlight]) || forceBezierPathRedraw
-    {
-      // Update highlight
-      if let path = blockHighlightBezierPath() {
-        addHighlightLayerWithPath(path)
-      } else {
-        removeHighlightLayer()
-      }
+      // Re-enable layer animations for any future changes
+      self._disableLayerChangeAnimations = false
     }
   }
 
   public override func prepareForReuse() {
     super.prepareForReuse()
 
+    // Disable animating layer changes, so that the next block layout that uses this view instance
+    // isn't animated into view based on the previous block layout.
+    _disableLayerChangeAnimations = true
+
+    _backgroundLayer.setBezierPath(nil, animated: false)
     removeHighlightLayer()
   }
 
   // MARK: - Private
 
-  private func addHighlightLayerWithPath(path: UIBezierPath) {
+  private func addHighlightLayerWithPath(path: UIBezierPath, animated: Bool) {
     guard let layout = self.defaultBlockLayout else {
       return
     }
+
+    // TODO:(#170) Connection highlights need to be animated into position. Currently, they always
+    // just appear in their final destination position.
 
     // Use existing _highlightLayer or create a new one
     let highlightLayer = _highlightLayer ?? BezierPathLayer()
@@ -157,10 +199,11 @@ public class DefaultBlockView: BlockView {
     highlightLayer.fillColor = nil
     // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
     // larger line width
-    highlightLayer.frame = bounds
     // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
     highlightLayer.zPosition = 1
-    highlightLayer.bezierPath = path
+    highlightLayer.animationDuration = layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
+    highlightLayer.setBezierPath(path, animated: animated)
+    highlightLayer.frame = bounds
   }
 
   private func removeHighlightLayer() {

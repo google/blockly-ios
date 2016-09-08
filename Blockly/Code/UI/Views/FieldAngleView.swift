@@ -67,21 +67,26 @@ public class FieldAngleView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldAngleLayout = self.fieldAngleLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      updateTextFieldFromLayout()
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        self.updateTextFieldFromLayout()
 
-      // TODO:(#27) Standardize this font
-      textField.text = fieldAngleLayout.textValue
-      textField.font = UIFont.systemFontOfSize(14 * fieldAngleLayout.engine.scale)
-      textField.insetPadding =
-        fieldAngleLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+        // TODO:(#27) Standardize this font
+        let textField = self.textField
+        textField.text = fieldAngleLayout.textValue
+        textField.font = UIFont.systemFontOfSize(14 * fieldAngleLayout.engine.scale)
+        textField.insetPadding =
+          fieldAngleLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+      }
     }
   }
 

@@ -51,29 +51,35 @@ public class FieldCheckboxView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let fieldCheckboxLayout = self.fieldCheckboxLayout else {
       return
     }
 
-    if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-      switchButton.on = fieldCheckboxLayout.checked
+    runAnimatableCode(animated) {
+      if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        let switchButton = self.switchButton
+        switchButton.on = fieldCheckboxLayout.checked
 
-      let tintColor = fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
-      let onTintColor =
-        fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchOnTintColor)
+        let tintColor =
+          fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
+        let onTintColor =
+          fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchOnTintColor)
 
-      if switchButton.tintColor != tintColor {
-        // Whenever `tintColor` is set, it messes up the switch's transition animation.
-        // Therefore, it's only set if the value changes.
-        switchButton.tintColor = tintColor
-      }
-      if switchButton.onTintColor != onTintColor {
-        // Whenever `onTintColor` is set, it messes up the switch's transition animation.
-        // Therefore, it's only set if the value changes.
-        switchButton.onTintColor = onTintColor
+        if switchButton.tintColor != tintColor {
+          // Whenever `tintColor` is set, it messes up the switch's transition animation.
+          // Therefore, it's only set if the value changes.
+          switchButton.tintColor = tintColor
+        }
+        if switchButton.onTintColor != onTintColor {
+          // Whenever `onTintColor` is set, it messes up the switch's transition animation.
+          // Therefore, it's only set if the value changes.
+          switchButton.onTintColor = onTintColor
+        }
       }
     }
   }

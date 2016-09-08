@@ -93,18 +93,22 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Super
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let layout = self.layout else {
       return
     }
 
-    scrollView.minimumZoomScale = layout.engine.minimumScale / layout.engine.scale
-    scrollView.maximumZoomScale = layout.engine.maximumScale / layout.engine.scale
+    runAnimatableCode(animated) {
+      self.scrollView.minimumZoomScale = layout.engine.minimumScale / layout.engine.scale
+      self.scrollView.maximumZoomScale = layout.engine.maximumScale / layout.engine.scale
 
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
-      updateCanvasSizeFromLayout()
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, WorkspaceLayout.Flag_UpdateCanvasSize]) {
+        self.updateCanvasSizeFromLayout()
+      }
     }
   }
 
@@ -315,6 +319,8 @@ public class WorkspaceView: LayoutView {
     newContentSize.width += contentPadding.leading + contentPadding.trailing
     newContentSize.height += contentPadding.top + contentPadding.bottom
 
+    var newContentOffset = scrollView.contentOffset
+
     // Update the content size of the scroll view.
     if layout.engine.rtl {
       var oldContainerFrame = scrollView.containerView.frame
@@ -339,14 +345,14 @@ public class WorkspaceView: LayoutView {
       // The content offset must be adjusted based on the new content origin, so it doesn't
       // appear that viewport has jumped to a new location
       // NOTE: In RTL, we jump in the opposite X direction
-      scrollView.contentOffset.x -= contentViewDelta.x
-      scrollView.contentOffset.y += contentViewDelta.y
+      newContentOffset.x -= contentViewDelta.x
+      newContentOffset.y += contentViewDelta.y
 
       // The container view origin may have changed since the last call to
       // `updateCanvasSizeFromLayout()`, so we need to adjust the content offset for this too.
       // NOTE: In RTL, `contentOffset.x` is adjusted based on the right edge, not the left edge.
-      scrollView.contentOffset.x += scrollView.containerView.frame.maxX - oldContainerFrame.maxX
-      scrollView.contentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
+      newContentOffset.x += scrollView.containerView.frame.maxX - oldContainerFrame.maxX
+      newContentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
     } else {
       let containerOrigin = CGPointMake(contentPadding.leading, contentPadding.top)
       let oldContainerFrame = scrollView.containerView.frame
@@ -355,14 +361,17 @@ public class WorkspaceView: LayoutView {
 
       // The content offset must be adjusted based on the new content origin, so it doesn't appear
       // that viewport has jumped to a new location
-      scrollView.contentOffset.x += contentViewDelta.x
-      scrollView.contentOffset.y += contentViewDelta.y
+      newContentOffset.x += contentViewDelta.x
+      newContentOffset.y += contentViewDelta.y
 
       // The container view origin may have changed since the last call to
       // `updateCanvasSizeFromLayout()`, so we need to adjust the content offset for this too.
-      scrollView.contentOffset.x += scrollView.containerView.frame.minX - oldContainerFrame.minX
-      scrollView.contentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
+      newContentOffset.x += scrollView.containerView.frame.minX - oldContainerFrame.minX
+      newContentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
     }
+
+    // NOTE: contentOffset is only set once at the end as it's expensive to do during an animation
+    scrollView.contentOffset = newContentOffset
 
     // Set the content size of the scroll view
     // NOTE: This has to be done *after* adjusting the `scrollView.contentOffset`. `UIScrollView`
@@ -396,6 +405,10 @@ public class WorkspaceView: LayoutView {
 
     let canvasPadding = self.canvasPadding()
 
+    var contentOffset = scrollView.contentOffset
+    var contentSize = scrollView.contentSize
+    var containerViewFrame = scrollView.containerView.frame
+
     // Figure out the ideal placement for `scrollView.containerView`. This helps us figure out
     // the excess scrolling area that can be removed from the canvas.
     let idealContainerViewFrame: CGRect
@@ -403,63 +416,69 @@ public class WorkspaceView: LayoutView {
       // The container view in RTL must always appear right-aligned on-screen, so we calculate an
       // origin that takes into account the container view's width and the current scrollView width
       let originX = max(canvasPadding.trailing,
-        scrollView.bounds.width - scrollView.containerView.frame.width -
+        scrollView.bounds.width - containerViewFrame.width -
         canvasPadding.leading)
       idealContainerViewFrame = CGRectMake(
         originX,
         canvasPadding.top,
-        scrollView.containerView.frame.width + canvasPadding.leading,
-        scrollView.containerView.frame.height + canvasPadding.bottom)
+        containerViewFrame.width + canvasPadding.leading,
+        containerViewFrame.height + canvasPadding.bottom)
     } else {
       idealContainerViewFrame = CGRectMake(
         canvasPadding.leading,
         canvasPadding.top,
-        scrollView.containerView.frame.width + canvasPadding.trailing,
-        scrollView.containerView.frame.height + canvasPadding.bottom)
+        containerViewFrame.width + canvasPadding.trailing,
+        containerViewFrame.height + canvasPadding.bottom)
     }
 
     // Remove excess left space
-    let leftExcessSpace = scrollView.containerView.frame.minX - idealContainerViewFrame.minX
+    let leftExcessSpace = containerViewFrame.minX - idealContainerViewFrame.minX
 
-    if leftExcessSpace > 0 && scrollView.contentOffset.x >= 0 {
-      let adjustment = min(leftExcessSpace, scrollView.contentOffset.x)
-      scrollView.contentOffset.x -= adjustment
-      scrollView.contentSize.width -= adjustment
-      scrollView.containerView.frame.origin.x -= adjustment
+    if leftExcessSpace > 0 && contentOffset.x >= 0 {
+      let adjustment = min(leftExcessSpace, contentOffset.x)
+      contentOffset.x -= adjustment
+      contentSize.width -= adjustment
+      containerViewFrame.origin.x -= adjustment
     }
 
     // Remove excess right space
-    let rightExcessSpace = scrollView.contentSize.width -
-      (scrollView.containerView.frame.minX + idealContainerViewFrame.width)
+    let rightExcessSpace = contentSize.width -
+      (containerViewFrame.minX + idealContainerViewFrame.width)
 
     if rightExcessSpace > 0 &&
-      (scrollView.contentOffset.x + scrollView.bounds.width) <= scrollView.contentSize.width
+      (contentOffset.x + scrollView.bounds.width) <= contentSize.width
     {
       let adjustment = min(rightExcessSpace,
-        scrollView.contentSize.width - (scrollView.contentOffset.x + scrollView.bounds.width))
-      scrollView.contentSize.width -= adjustment
+        contentSize.width - (contentOffset.x + scrollView.bounds.width))
+      contentSize.width -= adjustment
     }
 
     // Remove excess top space
-    let topExcessSpace = scrollView.containerView.frame.minY - idealContainerViewFrame.minY
-    if topExcessSpace > 0 && scrollView.contentOffset.y >= 0 {
-      let adjustment = min(topExcessSpace, scrollView.contentOffset.y)
-      scrollView.contentOffset.y -= adjustment
-      scrollView.contentSize.height -= adjustment
-      scrollView.containerView.frame.origin.y -= adjustment
+    let topExcessSpace = containerViewFrame.minY - idealContainerViewFrame.minY
+    if topExcessSpace > 0 && contentOffset.y >= 0 {
+      let adjustment = min(topExcessSpace, contentOffset.y)
+      contentOffset.y -= adjustment
+      contentSize.height -= adjustment
+      containerViewFrame.origin.y -= adjustment
     }
 
     // Remove excess bottom space
-    let bottomExcessSpace = scrollView.contentSize.height -
-      (scrollView.containerView.frame.origin.y + idealContainerViewFrame.height)
+    let bottomExcessSpace = contentSize.height -
+      (containerViewFrame.origin.y + idealContainerViewFrame.height)
 
     if bottomExcessSpace > 0 &&
-      (scrollView.contentOffset.y + scrollView.bounds.height) <= scrollView.contentSize.height
+      (contentOffset.y + scrollView.bounds.height) <= contentSize.height
     {
       let adjustment = min(bottomExcessSpace,
-        scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.bounds.height)
-      scrollView.contentSize.height -= adjustment
+        contentSize.height - contentOffset.y - scrollView.bounds.height)
+      contentSize.height -= adjustment
     }
+
+    // NOTE: These values are set at the end as it's expensive to continually change them during an
+    // animation
+    scrollView.contentOffset = contentOffset
+    scrollView.contentSize = contentSize
+    scrollView.containerView.frame = containerViewFrame
 
     // Re-enable this method
     _disableRemoveExcessScrollSpace = false

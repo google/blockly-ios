@@ -37,16 +37,20 @@ public class InputView: LayoutView {
     return (hitTestView == self) ? nil : hitTestView
   }
 
-  public override func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All) {
-    super.refreshView(forFlags: flags)
+  public override func refreshView(
+    forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
+  {
+    super.refreshView(forFlags: flags, animated: animated)
 
     guard let layout = self.inputLayout else {
       return
     }
 
-    if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
-      // Update the view frame
-      frame = layout.viewFrame
+    runAnimatableCode(animated) {
+      if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
+        // Update the view frame
+        self.frame = layout.viewFrame
+      }
     }
   }
 

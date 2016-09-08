@@ -71,7 +71,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       // Add some blocks to the workspace
       // try addChainedBlocksToWorkspace(workspace)
-      addSpaghettiBlocksToWorkspace(workspace)
+      // addSpaghettiBlocksToWorkspace(workspace)
 
       try loadWorkspace(workspace)
     } catch let error as NSError {

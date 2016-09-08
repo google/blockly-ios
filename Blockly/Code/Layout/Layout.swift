@@ -26,7 +26,7 @@ public protocol LayoutDelegate: class {
   - Parameter flags: Set of flags indicating which parts of the layout that need to be updated from
   the UI side.
   */
-  func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag)
+  func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag, animated: Bool)
 }
 
 /**
@@ -200,7 +200,7 @@ public class Layout: NSObject {
   */
   public final func sendChangeEventWithFlags(flags: LayoutFlag) {
     // Send change event
-    delegate?.layoutDidChange(self, withFlags: flags)
+    delegate?.layoutDidChange(self, withFlags: flags, animated: animateChangeEvent)
   }
 
   /**
@@ -241,20 +241,21 @@ public class Layout: NSObject {
       return
     }
 
+    // Keep track of old parent
     let oldParentLayout = layout.parentLayout
-
-    // Remove the child layout from its old parent (if necessary)
-    if let oldParentLayout = oldParentLayout {
-      oldParentLayout.childLayouts.remove(layout)
-      // Update its new relative position to where it is in its new layout tree
-      layout.relativePosition = layout.absolutePosition - absolutePosition
-      // With the new relative position, refresh the view positions for this part of the tree
-      layout.refreshViewPositionsForTree()
-    }
 
     // Add this child layout and set its parent
     childLayouts.insert(layout)
     layout.parentLayout = self
+
+    // Remove the child layout from its old parent (if necessary)
+    if let previousParentLayout = oldParentLayout {
+      previousParentLayout.childLayouts.remove(layout)
+      // Update the layout's relative position to where it is in its new layout tree
+      layout.relativePosition = layout.absolutePosition - absolutePosition
+      // With its new relative position, refresh the view positions for this part of the tree
+      layout.refreshViewPositionsForTree()
+    }
 
     // Fire hierachy listeners
     hierarchyListeners.forEach {
@@ -370,6 +371,53 @@ public class Layout: NSObject {
   private func updateTotalSize() {
     totalSize.width = contentSize.width + edgeInsets.left + edgeInsets.right
     totalSize.height = contentSize.height + edgeInsets.top + edgeInsets.bottom
+  }
+}
+
+// MARK: - Layout Animation
+
+extension Layout {
+  // TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren't made
+  // automatically on connection changes, revisit whether an animation stack is needed.
+
+  /// Stack that keeps track of whether future layout code changes should be animated.
+  private static var _animationStack = [Bool]()
+
+  /**
+   Executes a given code block, where layout changes made inside this code block are animated.
+
+   - Note: If there is an inner call to `Layout.doNotAnimate(:)` inside the given code block,
+   that call will not animate its layout changes.
+   - Parameter code: The code block to execute, with layout animations enabled.
+   */
+  public static func animate(code: () throws -> Void) rethrows {
+    _animationStack.append(true)
+    try code()
+    _animationStack.popLast()
+  }
+
+  /**
+   Executes a given code block, where layout changes made inside this code block are not animated.
+
+   - Note: If there is an inner call to `Layout.animate(:)` inside the given code block, that
+   call will animate its layout changes.
+   - Parameter code: The code block to execute, with layout animations disabled.
+   */
+  public static func doNotAnimate(code: () throws -> Void) rethrows {
+    _animationStack.append(false)
+    try code()
+    _animationStack.popLast()
+  }
+
+  /**
+   Returns whether the next change event that is sent out via `sendChangeEvent(:)` should be
+   animated or not.
+   */
+  public var animateChangeEvent: Bool {
+    // Take the most recent value of what's on the animation stack to determine if the next change
+    // should be animated. If nothing is on the stack, do not animate by default.
+    // TODO(#169): Animations don't work in RTL yet, so they've been disabled.
+    return !engine.rtl && Layout._animationStack.last ?? false
   }
 }
 
