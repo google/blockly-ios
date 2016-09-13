@@ -22,17 +22,19 @@ import Foundation
 public class BlockBumper: NSObject {
   // MARK: - Properties
 
+  /// The workspace layout coordinator where blocks are being bumped
+  public weak var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?
+
+  /// Convenience property for `self.workspaceLayoutCoordinator?.workspaceLayout`
+  private var workspaceLayout: WorkspaceLayout? {
+    return workspaceLayoutCoordinator?.workspaceLayout
+  }
+
   /// The X and Y amount to bump blocks away from each other, specified as a Workspace coordinate
-  /// system unit
-  public var bumpDistance: CGFloat
-
-  /// The workspace layout where blocks are being bumped
-  public var workspaceLayout: WorkspaceLayout?
-
-  // MARK: - Initializers
-
-  public init(bumpDistance: CGFloat) {
-    self.bumpDistance = bumpDistance
+  /// system unit. This value is read from `self.workspaceLayout.config` using the key
+  /// `LayoutConfig.BlockBumpDistance`. If no value exists for that key, this defaults to `0`.
+  private var bumpDistance: CGFloat {
+    return workspaceLayout?.config.unitFor(LayoutConfig.BlockBumpDistance).workspaceUnit ?? 0
   }
 
   // MARK: - Public
@@ -52,8 +54,8 @@ public class BlockBumper: NSObject {
       return
     }
 
-    let dx = stationaryConnection.position.x + self.bumpDistance - impingingConnection.position.x
-    let dy = stationaryConnection.position.y + self.bumpDistance - impingingConnection.position.y
+    let dx = stationaryConnection.position.x + bumpDistance - impingingConnection.position.x
+    let dy = stationaryConnection.position.y + bumpDistance - impingingConnection.position.y
     let newPosition = WorkspacePointMake(
       blockGroupLayout.absolutePosition.x + dx,
       blockGroupLayout.absolutePosition.y + dy)
@@ -100,14 +102,14 @@ public class BlockBumper: NSObject {
    */
   private func bumpBlockLayoutOfConnectionAwayFromNeighbours(connection: Connection) {
     guard
-      let connectionManager = workspaceLayout?.connectionManager,
+      let connectionManager = workspaceLayoutCoordinator?.connectionManager,
       let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
     {
       return
     }
 
     let neighbours =
-      connectionManager.stationaryNeighboursForConnection(connection, maxRadius: self.bumpDistance)
+      connectionManager.stationaryNeighboursForConnection(connection, maxRadius: bumpDistance)
 
     for neighbour in neighbours {
       // Bump away from the first neighbour that isn't in the same block group as the target
@@ -126,14 +128,14 @@ public class BlockBumper: NSObject {
    */
   private func bumpAllBlocksNearConnection(connection: Connection) {
     guard
-      let connectionManager = workspaceLayout?.connectionManager,
+      let connectionManager = workspaceLayoutCoordinator?.connectionManager,
       let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
     {
       return
     }
 
     let neighbours =
-      connectionManager.stationaryNeighboursForConnection(connection, maxRadius: self.bumpDistance)
+      connectionManager.stationaryNeighboursForConnection(connection, maxRadius: bumpDistance)
 
     for neighbour in neighbours {
       // Only bump blocks that aren't in the same block group as the target connection's block group

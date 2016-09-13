@@ -20,34 +20,22 @@ Controller for dragging blocks around in the workspace.
 */
 @objc(BKYDragger)
 public class Dragger: NSObject {
-  // MARK: - Static Properties
-
-  /**
-  Blocks "snap" toward each other at the end of drags if they have compatible connections
-  near each other.  This is the farthest they can snap. This value is in the UIView coordinate
-  system.
-  */
-  private static let MAX_SNAP_DISTANCE: CGFloat = 25
-
   // MARK: - Properties
 
   /// The workspace layout where blocks are being dragged
-  public var workspaceLayout: WorkspaceLayout? {
+  public var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
     didSet {
-      if workspaceLayout == oldValue {
+      if workspaceLayoutCoordinator == oldValue {
         return
       }
 
-      // Reset all gesture data and update the block bumper with the new workspace layout
+      // Reset all gesture data
       _dragGestureData.keys.forEach { clearGestureData(forUUID: $0) }
-      _blockBumper.workspaceLayout = workspaceLayout
     }
   }
   /// Stores the data for each active drag gesture, keyed by the corresponding block view's layout
   /// uuid
   private var _dragGestureData = [String: DragGestureData]()
-  /// Object responsible for bumping blocks out of the way
-  private let _blockBumper = BlockBumper(bumpDistance: Dragger.MAX_SNAP_DISTANCE)
 
   // MARK: - Public
 
@@ -60,7 +48,12 @@ public class Dragger: NSObject {
   system
   */
   public func startDraggingBlockLayout(layout: BlockLayout, touchPosition: WorkspacePoint) {
-    if !layout.block.draggable {
+    guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator,
+      let connectionManager = workspaceLayoutCoordinator.connectionManager
+      where layout.block.draggable &&
+        workspaceLayoutCoordinator.workspaceLayout
+          .allVisibleBlockLayoutsInWorkspace().contains(layout) else
+    {
       return
     }
 
@@ -70,30 +63,33 @@ public class Dragger: NSObject {
 
       // Disconnect this block from its previous or output connections prior to moving it
       let block = layout.block
-      block.previousConnection?.disconnect()
-      block.outputConnection?.disconnect()
+      if let previousConnection = block.previousConnection {
+        workspaceLayoutCoordinator.disconnect(previousConnection)
+      }
+      if let outputConnection = block.outputConnection {
+        workspaceLayoutCoordinator.disconnect(outputConnection)
+      }
 
       // Highlight this block
       layout.highlighted = true
       layout.rootBlockGroupLayout?.dragging = true
 
       // Bring its block group layout to the front
-      self.workspaceLayout?.bringBlockGroupLayoutToFront(layout.rootBlockGroupLayout)
+      self.workspaceLayoutCoordinator?.workspaceLayout.bringBlockGroupLayoutToFront(
+        layout.rootBlockGroupLayout)
 
       // Start a new connection group for this block group layout
-      if let newConnectionGroup =
-        self.workspaceLayout?.connectionManager.startGroupForBlock(block)
-      {
-        // Keep track of the gesture data for this drag
-        let dragGestureData = DragGestureData(
-          blockLayout: layout,
-          blockLayoutStartPosition: layout.absolutePosition,
-          touchStartPosition: touchPosition,
-          connectionGroup: newConnectionGroup
-        )
+      let newConnectionGroup = connectionManager.startGroupForBlock(block)
 
-        self._dragGestureData[layout.uuid] = dragGestureData
-      }
+      // Keep track of the gesture data for this drag
+      let dragGestureData = DragGestureData(
+        blockLayout: layout,
+        blockLayoutStartPosition: layout.absolutePosition,
+        touchStartPosition: touchPosition,
+        connectionGroup: newConnectionGroup
+      )
+
+      self._dragGestureData[layout.uuid] = dragGestureData
     }
   }
 
@@ -133,6 +129,10 @@ public class Dragger: NSObject {
   - Parameter layout: The given block layout
   */
   public func finishDraggingBlockLayout(layout: BlockLayout) {
+    guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator else {
+      return
+    }
+
     Layout.animate {
       // Remove the highlight for this block
       layout.highlighted = false
@@ -142,7 +142,7 @@ public class Dragger: NSObject {
       if let drag = self._dragGestureData[layout.uuid],
         let connectionPair = self.findBestConnectionForDrag(drag)
       {
-        self.connectPair(connectionPair)
+        workspaceLayoutCoordinator.connectPair(connectionPair)
 
         self.clearGestureDataForBlockLayout(layout,
           moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
@@ -153,11 +153,11 @@ public class Dragger: NSObject {
         // during the drag for performance reasons, so we have to update it now). Also, there is
         // no need to call this method in the `if` part of this `if/else` block, since
         // `self.connectPair(:)` implicitly calls it already.
-        self.workspaceLayout?.updateCanvasSize()
+        workspaceLayoutCoordinator.workspaceLayout.updateCanvasSize()
       }
 
       // Bump any neighbours of the block layout
-      self._blockBumper.bumpNeighboursOfBlockLayout(layout)
+      workspaceLayoutCoordinator.blockBumper.bumpNeighboursOfBlockLayout(layout)
 
       // Update the highlighted connections for all other drags (due to potential changes in block
       // sizes)
@@ -199,112 +199,11 @@ public class Dragger: NSObject {
     }
 
     // Move connections to a different group in the connection manager
-    workspaceLayout?.connectionManager
+    workspaceLayoutCoordinator?.connectionManager?
       .mergeGroup(gestureData.connectionGroup, intoGroup: group)
 
     removeHighlightedConnectionForDrag(gestureData)
     _dragGestureData[uuid] = nil
-  }
-
-  /**
-  Connects a pair of connections, disconnecting and possibly reattaching any existing connections,
-  depending on the operation.
-
-  - Parameter connectionPair: The pair to connect
-  */
-  private func connectPair(connectionPair: ConnectionManager.ConnectionPair) {
-    let moving = connectionPair.moving
-    let target = connectionPair.target
-
-    do {
-      switch (moving.type) {
-      case .InputValue:
-        try connectValueConnections(superior: moving, inferior: target)
-      case .OutputValue:
-        try connectValueConnections(superior: target, inferior: moving)
-      case .NextStatement:
-        try connectStatementConnections(superior: moving, inferior: target)
-      case .PreviousStatement:
-        try connectStatementConnections(superior: target, inferior: moving)
-      }
-    } catch let error as NSError {
-      bky_assertionFailure("Could not connect pair together: \(error)")
-    }
-  }
-
-  /**
-  Connects two value connections. If a block was previously connected to the superior connection,
-  this method attempts to reattach it to the end of the inferior connection's block input value
-  chain. If unsuccessful, the disconnected block is bumped away.
-  */
-  private func connectValueConnections(superior superior: Connection, inferior: Connection) throws {
-    let previouslyConnectedBlock = superior.targetBlock
-
-    // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
-    superior.disconnect()
-    inferior.disconnect()
-    try superior.connectTo(inferior)
-
-    // Bring the entire block group layout to the front
-    if let workspaceLayout = self.workspaceLayout,
-      let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
-    {
-      workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
-    }
-
-    if let previousOutputConnection = previouslyConnectedBlock?.outputConnection {
-      if let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain()
-        where lastInputConnection.canConnectTo(previousOutputConnection)
-      {
-        // Try to reconnect previously connected block to the end of the input value chain
-        try lastInputConnection.connectTo(previousOutputConnection)
-      } else {
-        // Bump previously connected block away from the superior connection
-        _blockBumper.bumpBlockLayoutOfConnection(previousOutputConnection,
-          awayFromConnection: superior)
-      }
-    }
-  }
-
-  /**
-  Connects two statement connections. If a block was previously connected to the superior
-  connection, this method attempts to reattach it to the end of the inferior connection's block
-  chain. If unsuccessful, the disconnected block is bumped away.
-
-  - Parameter superior: A connection of type `.NextStatement`
-  - Parameter inferior: A connection of type `.PreviousStatement`
-  - Throws:
-  `BlocklyError`: Thrown if the previous/next statements could not be connected together or if
-  the previously disconnected block could not be re-connected to the end of the block chain.
-  */
-  private func connectStatementConnections(superior superior: Connection, inferior: Connection)
-    throws
-  {
-    let previouslyConnectedBlock = superior.targetBlock
-
-    // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
-    superior.disconnect()
-    inferior.disconnect()
-    try superior.connectTo(inferior)
-
-    // Bring the entire block group layout to the front
-    if let workspaceLayout = self.workspaceLayout,
-      let rootBlockGroupLayout = superior.sourceBlock?.layout?.rootBlockGroupLayout
-    {
-      workspaceLayout.bringBlockGroupLayoutToFront(rootBlockGroupLayout)
-    }
-
-    if let previousConnection = previouslyConnectedBlock?.previousConnection {
-      if let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection
-        where lastConnection.canConnectTo(previousConnection)
-      {
-        // Reconnect previously connected block to the end of the block chain
-        try lastConnection.connectTo(previousConnection)
-      } else {
-        // Bump previously connected block away from the superior connection
-        _blockBumper.bumpBlockLayoutOfConnection(previousConnection, awayFromConnection: superior)
-      }
-    }
   }
 
   /**
@@ -346,11 +245,14 @@ public class Dragger: NSObject {
   private func findBestConnectionForDrag(drag: DragGestureData)
     -> ConnectionManager.ConnectionPair?
   {
-    if let workspaceLayout = self.workspaceLayout {
-      let maxRadius = workspaceLayout.engine.workspaceUnitFromViewUnit(Dragger.MAX_SNAP_DISTANCE)
+    if let workspaceLayout = workspaceLayoutCoordinator?.workspaceLayout,
+      let connectionManager = workspaceLayoutCoordinator?.connectionManager
+    {
+      let maxRadius = workspaceLayout.config.unitFor(
+        LayoutConfig.BlockSnapDistance, defaultValue: LayoutConfig.Unit(0)).workspaceUnit
 
-      return workspaceLayout.connectionManager.findBestConnectionForGroup(drag.connectionGroup,
-        maxRadius: maxRadius)
+      return
+        connectionManager.findBestConnectionForGroup(drag.connectionGroup, maxRadius: maxRadius)
     }
     return nil
   }

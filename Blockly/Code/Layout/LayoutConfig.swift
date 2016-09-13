@@ -66,6 +66,13 @@ public class LayoutConfig: NSObject {
   /// Total number of `PropertyKey` values that have been created via `newPropertyKey()`.
   private static var NUMBER_OF_PROPERTY_KEYS = 0
 
+  /// [`Unit`] The distance to bump blocks away from each other
+  public static let BlockBumpDistance = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] The maximum distance allowed for blocks to "snap" toward each other at the end of
+  /// drags, if they have compatible connections near each other.
+  public static let BlockSnapDistance = LayoutConfig.newPropertyKey()
+
   /// [`Unit`] Horizontal padding around inline elements (such as fields or inputs)
   public static let InlineXPadding = LayoutConfig.newPropertyKey()
 
@@ -141,6 +148,8 @@ public class LayoutConfig: NSObject {
     super.init()
 
     // Set default values for base config keys
+    setUnit(Unit(25), forKey: LayoutConfig.BlockBumpDistance)
+    setUnit(Unit(25), forKey: LayoutConfig.BlockSnapDistance)
     setUnit(Unit(10), forKey: LayoutConfig.InlineXPadding)
     setUnit(Unit(5), forKey: LayoutConfig.InlineYPadding)
     setUnit(Unit(10), forKey: LayoutConfig.WorkspaceFlowXSeparatorSpace)

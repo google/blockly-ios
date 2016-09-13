@@ -44,8 +44,13 @@ public protocol WorkspaceViewControllerDelegate {
 @objc(BKYWorkspaceViewController)
 public class WorkspaceViewController: UIViewController {
 
-  /// The workspace layout this view controller operates on
-  public private(set) var workspaceLayout: WorkspaceLayout?
+  /// The workspace layout coordinator this view controller operates on
+  public private(set) var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?
+
+  /// A convenience property for accessing `self.workspaceLayoutCoordinator?.workspaceLayout`
+  public var workspaceLayout: WorkspaceLayout? {
+    return workspaceLayoutCoordinator?.workspaceLayout
+  }
 
   /// A convenience property for `self.workspaceLayout.workspace`
   public var workspace: Workspace? {
@@ -93,14 +98,16 @@ public class WorkspaceViewController: UIViewController {
   // MARK: - Public
 
   /**
-   Loads a `WorkspaceLayout` into `self.workspaceView`. This method automatically creates and
-   manages all the views required to render the workspace.
+   Loads the workspace associated with a workspace layout coordinator, automatically creating all views required to render the workspace.
 
-   - Parameter workspaceLayout: A `WorkspaceLayout`.
+   - Parameter workspaceLayoutCoordinator: A `WorkspaceLayoutCoordinator`.
    */
-  public func loadWorkspaceLayout(workspaceLayout: WorkspaceLayout?) throws {
-    self.workspaceLayout = workspaceLayout
+  public func loadWorkspaceLayoutCoordinator(
+    workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?) throws
+  {
+    self.workspaceLayoutCoordinator = workspaceLayoutCoordinator
 
+    let workspaceLayout = workspaceLayoutCoordinator?.workspaceLayout
     workspaceView.layout = workspaceLayout
     workspaceLayout?.updateLayoutDownTree()
     try _viewBuilder.buildViewTree(forWorkspaceView: workspaceView)

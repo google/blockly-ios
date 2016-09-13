@@ -51,12 +51,11 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
 
   // MARK: - Initializers
 
-  public init(workspace: WorkspaceFlow, layoutDirection: LayoutDirection, engine: LayoutEngine,
-    layoutBuilder: LayoutBuilder) throws
+  public init(workspace: WorkspaceFlow, engine: LayoutEngine, layoutDirection: LayoutDirection)
   {
     self.workspaceFlow = workspace
     self.layoutDirection = layoutDirection
-    try super.init(workspace: workspace, engine: engine, layoutBuilder: layoutBuilder)
+    super.init(workspace: workspace, engine: engine)
   }
 
   public override func performLayout(includeChildren includeChildren: Bool) {

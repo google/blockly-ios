@@ -44,7 +44,8 @@ public class BlocklyError: NSError {
     FileNotFound = 600,
     FileNotReadable = 601,
     IllegalState = 700,
-    IllegalArgument = 701
+    IllegalArgument = 701,
+    IllegalOperation = 702
   }
   public typealias Code = BKYBlocklyErrorCode
 

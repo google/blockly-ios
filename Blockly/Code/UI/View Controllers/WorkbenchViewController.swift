@@ -154,11 +154,15 @@ public class WorkbenchViewController: UIViewController {
   public var toolbox: Toolbox? {
     return _toolboxLayout?.toolbox
   }
+  /// The main workspace layout coordinator
+  private var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
+    didSet {
+      _dragger.workspaceLayoutCoordinator = _workspaceLayoutCoordinator
+    }
+  }
   /// The underlying workspace layout
   private var _workspaceLayout: WorkspaceLayout? {
-    didSet {
-      _dragger.workspaceLayout = _workspaceLayout
-    }
+    return _workspaceLayoutCoordinator?.workspaceLayout
   }
   /// The underlying toolbox layout
   private var _toolboxLayout: ToolboxLayout?
@@ -365,22 +369,25 @@ public class WorkbenchViewController: UIViewController {
   // MARK: - Public
 
   /**
-   Automatically creates a `WorkspaceLayout` for a given `Workspace` (using both the `self.engine`
-   and `self.layoutBuilder` instances) and loads it into the view controller. Also passes a
-   connection manager to allow for custom block validation.
+   Automatically creates a `WorkspaceLayout` and `WorkspaceLayoutCoordinator` for a given workspace
+   (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
+   rendered into the view controller.
 
    - Parameter workspace: The `Workspace` to load
-   - Parameter withConnectionManager: The (custom) ConnectionManager to set on the WorkspaceLayout
+   - Parameter connectionManager: A `ConnectionManager` to track connections in the workspace.
+   If none is specified, a default one is automatically created.
    - Throws:
    `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
    */
-  public func loadWorkspace(workspace: Workspace, withConnectionManager: ConnectionManager? = nil)
+  public func loadWorkspace(workspace: Workspace, connectionManager: ConnectionManager? = nil)
       throws {
     // Create a layout for the workspace, which is required for viewing the workspace
-    let workspaceLayout =
-      try WorkspaceLayout(workspace: workspace, engine: engine, layoutBuilder: layoutBuilder,
-                          connectionManager: withConnectionManager)
-    _workspaceLayout = workspaceLayout
+    let workspaceLayout = WorkspaceLayout(workspace: workspace, engine: engine)
+    let aConnectionManager = connectionManager ?? ConnectionManager()
+    _workspaceLayoutCoordinator =
+      try WorkspaceLayoutCoordinator(workspaceLayout: workspaceLayout,
+                                     layoutBuilder: layoutBuilder,
+                                     connectionManager: aConnectionManager)
 
     refreshView()
   }
@@ -395,8 +402,8 @@ public class WorkbenchViewController: UIViewController {
    */
   public func loadToolbox(toolbox: Toolbox) throws {
     let toolboxLayout = ToolboxLayout(
-      toolbox: toolbox, layoutDirection: style.toolboxCategoryLayoutDirection,
-      engine: engine, layoutBuilder: layoutBuilder)
+      toolbox: toolbox, engine: engine, layoutDirection: style.toolboxCategoryLayoutDirection,
+      layoutBuilder: layoutBuilder)
     _toolboxLayout = toolboxLayout
 
     refreshView()
@@ -407,15 +414,15 @@ public class WorkbenchViewController: UIViewController {
    */
   public func refreshView() {
     do {
-      if let workspaceLayout = _workspaceLayout {
-        try workspaceViewController?.loadWorkspaceLayout(workspaceLayout)
-      }
+      try workspaceViewController?.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
     } catch let error as NSError {
       bky_assertionFailure("Could not load workspace layout: \(error)")
     }
 
     _toolboxCategoryListViewController?.toolboxLayout = _toolboxLayout
     _toolboxCategoryListViewController?.refreshView()
+
+    toolboxCategoryViewController?.toolboxLayout = _toolboxLayout
 
     resetUIState()
     updateWorkspaceCapacity()
@@ -464,12 +471,10 @@ public class WorkbenchViewController: UIViewController {
     guard let blockLayout = blockView.blockLayout else {
       throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
     }
-    guard let workspaceLayout = _workspaceLayout else {
-      throw BlocklyError(
-        .LayoutNotFound, "No workspace layout has been set for `self._workspaceLayout`")
+    guard let workspaceLayoutCoordinator = _workspaceLayoutCoordinator else {
+      throw BlocklyError(.LayoutNotFound,
+        "No workspace layout coordinator has been set for `self._workspaceLayoutCoordinator`")
     }
-
-    let workspace = workspaceLayout.workspace
 
     // Get the position of the block view relative to this view, and use that as
     // the position for the newly created block.
@@ -479,7 +484,7 @@ public class WorkbenchViewController: UIViewController {
 
     // Create a deep copy of this block in this workspace (which will automatically create a layout
     // tree for the block)
-    let newBlock = try workspace.copyBlockTree(blockLayout.block, editable: true)
+    let newBlock = try workspaceLayoutCoordinator.copyBlockTree(blockLayout.block, editable: true)
 
     // Set its new workspace position
     newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
@@ -765,12 +770,13 @@ extension WorkbenchViewController {
       let touchPosition = workspaceView.workspacePositionFromGestureTouchLocation(gesture)
       _dragger.startDraggingBlockLayout(newBlockView.blockLayout!, touchPosition: touchPosition)
 
-      if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace
+      if let trashWorkspace = _trashCanViewController.workspace
         where trashWorkspace.containsBlock(rootBlockLayout.block)
       {
         do {
           // Remove this block view from the trash can
-          try _trashCanViewController.workspace?.removeBlockTree(rootBlockLayout.block)
+          try _trashCanViewController.workspaceLayoutCoordinator?
+            .removeBlockTree(rootBlockLayout.block)
         } catch let error as NSError {
           bky_assertionFailure("Could not remove block from trash can: \(error)")
           return
@@ -865,8 +871,9 @@ extension WorkbenchViewController {
         _dragger.clearGestureDataForBlockLayout(blockLayout)
 
         do {
-          try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
-          try _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
+          try _trashCanViewController.workspaceLayoutCoordinator?
+            .copyBlockTree(blockLayout.block, editable: true)
+          try _workspaceLayoutCoordinator?.removeBlockTree(blockLayout.block)
           updateWorkspaceCapacity()
         } catch let error as NSError {
           bky_assertionFailure("Could not copy block to trash can: \(error)")

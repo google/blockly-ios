@@ -29,6 +29,8 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
 
   // MARK: - Properties
 
+  /// The toolbox layout to display
+  public var toolboxLayout: ToolboxLayout?
   /// The current category being displayed
   public private(set) var category: Toolbox.Category?
   /// Width constraint for this view
@@ -86,10 +88,15 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
 
     do {
       // Clear the layout so all current blocks are removed
-      try loadWorkspaceLayout(nil)
+      try loadWorkspaceLayoutCoordinator(nil)
 
       // Set the new layout
-      try loadWorkspaceLayout(category?.layout)
+      if let layoutCoordinator =
+        toolboxLayout?.categoryLayoutCoordinators
+          .filter({ $0.workspaceLayout.workspace == category }).first
+      {
+        try loadWorkspaceLayoutCoordinator(layoutCoordinator)
+      }
     } catch let error as NSError {
       bky_assertionFailure("Could not load category: \(error)")
       return
