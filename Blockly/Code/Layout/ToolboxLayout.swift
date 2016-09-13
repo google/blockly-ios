@@ -37,8 +37,8 @@ public class ToolboxLayout: NSObject {
   /// The layout builder to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
   public let layoutBuilder: LayoutBuilder
-  /// The associated list of `WorkspaceFlowLayout` instances for `toolbox.categories`
-  public var categoryLayouts = [WorkspaceFlowLayout]()
+  /// The associated list of `WorkspaceLayoutCoordinator` instances for `toolbox.categories`
+  public var categoryLayoutCoordinators = [WorkspaceLayoutCoordinator]()
 
   // MARK: - Initializers
 
@@ -46,15 +46,15 @@ public class ToolboxLayout: NSObject {
    Creates a new `ToolboxLayout`.
   
    - Parameter toolbox: The `Toolbox` to associate with this object.
-   - Parameter layoutDirection: The layout direction to use when creating new
-   `WorkspaceFlowLayout` instances for each category in `toolbox`
    - Parameter engine: The layout engine to use when creating new `WorkspaceFlowLayout` instances
    for each category in `toolbox`
+   - Parameter layoutDirection: The layout direction to use when creating new
+   `WorkspaceFlowLayout` instances for each category in `toolbox`
    - Parameter layoutBuilder: The layout builder to use when creating new `WorkspaceFlowLayout`
    instances for each category in `toolbox`
    */
-  public init(toolbox: Toolbox, layoutDirection: WorkspaceFlowLayout.LayoutDirection,
-    engine: LayoutEngine, layoutBuilder: LayoutBuilder)
+  public init(toolbox: Toolbox, engine: LayoutEngine,
+              layoutDirection: WorkspaceFlowLayout.LayoutDirection, layoutBuilder: LayoutBuilder)
   {
     self.toolbox = toolbox
     self.engine = engine
@@ -64,17 +64,19 @@ public class ToolboxLayout: NSObject {
     super.init()
 
     for category in self.toolbox.categories {
-      addLayoutForToolboxCategory(category)
+      addLayoutCoordinatorForToolboxCategory(category)
     }
   }
 
   // MARK: - Private
 
-  private func addLayoutForToolboxCategory(category: Toolbox.Category) {
+  private func addLayoutCoordinatorForToolboxCategory(category: Toolbox.Category) {
     do {
-      let layout = try WorkspaceFlowLayout(workspace: category,
-        layoutDirection: self.layoutDirection, engine: self.engine, layoutBuilder: layoutBuilder)
-      categoryLayouts.append(layout)
+      let layout =
+        WorkspaceFlowLayout(workspace: category, engine: engine, layoutDirection: layoutDirection)
+      let coordinator = try WorkspaceLayoutCoordinator(
+        workspaceLayout: layout, layoutBuilder: layoutBuilder, connectionManager: nil)
+      categoryLayoutCoordinators.append(coordinator)
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceListLayout: \(error)")
     }

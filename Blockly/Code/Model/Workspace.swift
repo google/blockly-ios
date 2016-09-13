@@ -45,10 +45,10 @@ public func WorkspaceEdgeInsetsMake(
 }
 
 /**
- Protocol for events that occur on a `Workspace` instance.
+ Listener protocol for events that occur on a `Workspace` instance.
  */
-@objc(BKYWorkspaceDelegate)
-public protocol WorkspaceDelegate: class {
+@objc(BKYWorkspaceListener)
+public protocol WorkspaceListener: class {
   /**
    Event that is called when a block has been added to a workspace.
 
@@ -103,13 +103,11 @@ public class Workspace : NSObject {
     }
   }
 
-  /// The delegate for events that occur in this workspace
-  public weak var delegate: WorkspaceDelegate?
+  /// The listener for events that occur in this workspace
+  public var listeners = WeakSet<WorkspaceListener>()
 
-  /// Convenience property for accessing `self.delegate` as a `WorkspaceLayout`
-  public var layout: WorkspaceLayout? {
-    return self.delegate as? WorkspaceLayout
-  }
+  /// The layout associated with this workspace
+  public weak var layout: WorkspaceLayout?
 
   /// Manager responsible for keeping track of all variable names under this workspace
   public var variableNameManager: NameManager? = NameManager() {
@@ -196,22 +194,25 @@ public class Workspace : NSObject {
     // Notify delegate for each block addition, now that all of them have been added to the
     // workspace
     for block in newBlocks {
-      delegate?.workspace(self, didAddBlock: block)
+      listeners.forEach { $0.workspace(self, didAddBlock: block) }
     }
   }
 
   /**
-   Disconnects a given block from its previous/output connections, and removes it and all of its
-   connected blocks from the workspace.
+   Removes a given block and all of its connected child blocks from the workspace.
 
    - Parameter rootBlock: The root block to remove.
    - Throws:
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
   public func removeBlockTree(rootBlock: Block) throws {
-    // Disconnect this block from anything
-    rootBlock.previousConnection?.disconnect()
-    rootBlock.outputConnection?.disconnect()
+    if (rootBlock.previousConnection?.connected ?? false) ||
+      (rootBlock.outputConnection?.connected ?? false)
+    {
+      throw BlocklyError(.IllegalOperation,
+        "The root block must be disconnected from its previous and/or output connections prior " +
+        "to being removed from the workspace")
+    }
 
     var blocksToRemove = [Block]()
 
@@ -219,7 +220,7 @@ public class Workspace : NSObject {
     for block in rootBlock.allBlocksForTree() {
       if containsBlock(block) {
         blocksToRemove.append(block)
-        delegate?.workspace(self, willRemoveBlock: block)
+        listeners.forEach { $0.workspace(self, willRemoveBlock: block) }
       }
     }
 

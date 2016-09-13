@@ -145,7 +145,7 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   public override func collectionView(
     collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      return toolboxLayout?.categoryLayouts.count ?? 0
+      return toolboxLayout?.categoryLayoutCoordinators.count ?? 0
   }
 
   public override func collectionView(collectionView: UICollectionView,
@@ -186,8 +186,8 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
       return nil
     }
 
-    for i in 0 ..< toolboxLayout!.categoryLayouts.count {
-      if toolboxLayout!.categoryLayouts[i].workspace == category {
+    for i in 0 ..< toolboxLayout!.categoryLayoutCoordinators.count {
+      if toolboxLayout!.categoryLayoutCoordinators[i].workspaceLayout.workspace == category {
         return NSIndexPath(forRow: i, inSection: 0)
       }
     }
@@ -195,7 +195,8 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
   }
 
   private func categoryForIndexPath(indexPath: NSIndexPath) -> Toolbox.Category {
-    return toolboxLayout!.categoryLayouts[indexPath.row].workspace as! Toolbox.Category
+    return toolboxLayout!.categoryLayoutCoordinators[indexPath.row].workspaceLayout.workspace
+      as! Toolbox.Category
   }
 }
 
