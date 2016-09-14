@@ -800,14 +800,12 @@ extension WorkbenchViewController {
    - Parameter blockView: A given block view.
    */
   private func addGestureTrackingForBlockView(blockView: BlockView) {
-    // TODO:(#122) Gesture recognizing doesn't work simultaneously on a subview when a superview is
-    // already being dragged.
-
     blockView.bky_removeAllGestureRecognizers()
 
     let panGesture =
       UIPanGestureRecognizer(target: self, action: #selector(didRecognizeWorkspacePanGesture(_:)))
     panGesture.maximumNumberOfTouches = 1
+    panGesture.delegate = self
     blockView.addGestureRecognizer(panGesture)
 
     let tapGesture =
@@ -1052,5 +1050,36 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     }
 
     return true
+  }
+  
+  /**
+   Allow pan gestures to recognize simultaneously, so we can drag the children of blocks while
+   dragging the parent.
+   */
+  public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
+                                shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer)
+    -> Bool
+  {
+    if otherGestureRecognizer.delegate === self {
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   Only allow pan gestures to work simultaneously if the second view is a descendant of the other,
+   so it allows multiple pans, but doesn't bubble pan gestures up to the BlockGroupView.
+   */
+  public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
+                                shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool
+  {
+    guard let view1 = gestureRecognizer.view,
+      let view2 = otherGestureRecognizer.view else
+    {
+      return false
+    }
+
+    return view2.isDescendantOfView(view1)
   }
 }
