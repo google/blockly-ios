@@ -29,8 +29,6 @@ public class TrashCanViewController: WorkspaceViewController {
 
   /// The layout engine to use for displaying the trash can
   public let engine: LayoutEngine
-  /// The layout builder to create layout hierarchies inside the trash can
-  public let layoutBuilder: LayoutBuilder
   /// The layout direction to use for `self.workspaceLayout`
   public let layoutDirection: WorkspaceFlowLayout.LayoutDirection
 
@@ -48,7 +46,6 @@ public class TrashCanViewController: WorkspaceViewController {
        layoutDirection: WorkspaceFlowLayout.LayoutDirection, viewFactory: ViewFactory)
   {
     self.engine = engine
-    self.layoutBuilder = layoutBuilder
     self.layoutDirection = layoutDirection
     super.init(viewFactory: viewFactory)
 
@@ -57,10 +54,11 @@ public class TrashCanViewController: WorkspaceViewController {
     workspace.readOnly = true
 
     do {
-      let workspaceLayout = try WorkspaceFlowLayout(
-        workspace: workspace, layoutDirection: layoutDirection, engine: engine,
-        layoutBuilder: layoutBuilder)
-      try loadWorkspaceLayout(workspaceLayout)
+      let workspaceLayout =
+        WorkspaceFlowLayout(workspace: workspace, engine: engine, layoutDirection: layoutDirection)
+      let workspaceLayoutCoordinator = try WorkspaceLayoutCoordinator(
+        workspaceLayout: workspaceLayout, layoutBuilder: layoutBuilder, connectionManager: nil)
+      try loadWorkspaceLayoutCoordinator(workspaceLayoutCoordinator)
     } catch let error as NSError {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }

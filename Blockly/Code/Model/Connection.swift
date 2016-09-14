@@ -29,28 +29,6 @@ public protocol ConnectionHighlightDelegate {
 }
 
 /**
- Delegate for events that modify the `targetConnection` or `shadowConnection` of a `Connection`.
- */
-@objc(BKYConnectionTargetDelegate)
-public protocol ConnectionTargetDelegate {
-  /**
-   Event that is called when the target connection has changed for a given connection.
-
-   - Parameter connection: The connection whose `targetConnection` value has changed.
-   - Parameter oldTarget: The previous value of `targetConnection`.
-   */
-  func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
-
-  /**
-   Event that is called when the shadow connection has changed for a given connection.
-
-   - Parameter connection: The connection whose `shadowConnection` value has changed.
-   - Parameter oldShadow: The previous value of `shadowConnection`.
-   */
-  func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
-}
-
-/**
 Delegate for position events that occur on a `Connection`.
 */
 @objc(BKYConnectionPositionDelegate)
@@ -235,9 +213,6 @@ public final class Connection : NSObject {
   /// Connection position delegate
   public final weak var positionDelegate: ConnectionPositionDelegate?
 
-  /// Connection target delegate
-  public final weak var targetDelegate: ConnectionTargetDelegate?
-
   /// Keeps track of all block uuid's that are telling this connection to be 
   /// highlighted
   private var _highlights = Set<String>()
@@ -275,16 +250,9 @@ public final class Connection : NSObject {
     }
 
     if let newConnection = connection {
-      // Set targetConnection for both sides before sending out delegate events
-      let oldTarget1 = targetConnection
-      let oldTarget2 = newConnection.targetConnection
+      // Set targetConnection for both sides
       targetConnection = newConnection
       newConnection.targetConnection = self
-
-      // Send delegate events
-      targetDelegate?.didChangeTarget(forConnection: self, oldTarget: oldTarget1)
-      newConnection.targetDelegate?
-        .didChangeTarget(forConnection: newConnection, oldTarget: oldTarget2)
     }
   }
 
@@ -308,16 +276,9 @@ public final class Connection : NSObject {
     }
 
     if let newConnection = connection {
-      // Set shadowConnection for both sides before sending out delegate events
-      let oldShadow1 = shadowConnection
-      let oldShadow2 = newConnection.shadowConnection
+      // Set shadowConnection for both sides
       shadowConnection = newConnection
       newConnection.shadowConnection = self
-
-      // Send delegate events
-      targetDelegate?.didChangeShadow(forConnection: self, oldShadow: oldShadow1)
-      newConnection.targetDelegate?
-        .didChangeShadow(forConnection: newConnection, oldShadow: oldShadow2)
     }
   }
 
@@ -330,14 +291,9 @@ public final class Connection : NSObject {
       return
     }
 
-    // Set targetConnection for both sides before sending out delegate events
+    // Remove targetConnection for both sides
     targetConnection = nil
     oldTargetConnection.targetConnection = nil
-
-    // Send delegate events
-    targetDelegate?.didChangeTarget(forConnection: self, oldTarget: oldTargetConnection)
-    oldTargetConnection.targetDelegate?
-      .didChangeTarget(forConnection: oldTargetConnection, oldTarget: self)
   }
 
   /**
@@ -349,14 +305,9 @@ public final class Connection : NSObject {
       return
     }
 
-    // Set shadowConnection for both sides before sending out delegate events
+    // Remove shadowConnection for both sides
     shadowConnection = nil
     oldShadowConnection.shadowConnection = nil
-
-    // Send delegate events
-    targetDelegate?.didChangeShadow(forConnection: self, oldShadow: oldShadowConnection)
-    oldShadowConnection.targetDelegate?
-      .didChangeShadow(forConnection: oldShadowConnection, oldShadow: self)
   }
 
   /**
