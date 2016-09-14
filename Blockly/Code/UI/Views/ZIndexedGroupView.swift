@@ -34,8 +34,34 @@ public protocol ZIndexedView {
  `ZIndexedView` will result in an app crash.
  */
 public final class ZIndexedGroupView: UIView {
+  // MARK: - Properties
+
   /// The highest z-index `UIView` that has been added to this group
   private var highestInsertedZIndex: UInt = 0
+
+  // MARK: - Super
+
+  /**
+   Allows for hit testing while sub views are outside the bounds of a groupView.
+
+   - Parameter point: The location to be tested, in local space.
+   - Parameter event: The event requesting the hit test.
+   */
+  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    for target in subviews.lazy.reverse() {
+      let pointForTargetView = target.convertPoint(point, fromView: self)
+
+      // If the touch is inside any child of this view, return the hit test for it.
+      if (CGRectContainsPoint(target.bounds, pointForTargetView)) {
+        return target.hitTest(pointForTargetView, withEvent: event)
+      }
+    }
+
+    // If none of the children of this view have been hit, continue hit testing as usual.
+    return super.hitTest(point, withEvent: event)
+  }
+
+  // MARK: - Public
 
   /**
    Inserts or updates a `UIView` in this group, where it is sorted amongst other subviews based on
@@ -93,6 +119,8 @@ public final class ZIndexedGroupView: UIView {
     // Upsert `view` at the new index
     upsertView(view, atIndex: min)
   }
+
+  // MARK: - Private
 
   private func upsertViewAtEnd<T where T: UIView, T:ZIndexedView>(view: T) {
     upsertView(view, atIndex: -1)
