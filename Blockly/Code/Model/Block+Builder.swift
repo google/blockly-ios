@@ -28,28 +28,52 @@ extension Block {
     // MARK: - Properties
 
     // These values are publicly immutable in `Block`
+
+    /// The name of the block. Defaults to `""`.
     public var name: String = ""
+    /// The color of the block. Defaults to `UIColor.clearColor()`.
     public var color: UIColor = UIColor.clearColor()
+    /// Specifies the output connection is enabled. Defaults to `false`.
     public private(set) var outputConnectionEnabled: Bool = false
+    /// Specifies the output type checks. Defaults to `nil`.
     public private(set) var outputConnectionTypeChecks: [String]?
+    /// Specifies the next connection is enabled. Defaults to `false`.
     public private(set) var nextConnectionEnabled: Bool = false
+    /// Specifies the next connection type checks. Defaults to `nil`.
     public private(set) var nextConnectionTypeChecks: [String]?
+    /// Specifies the previous connection is enabled. Defaults to `false`.
     public private(set) var previousConnectionEnabled: Bool = false
+    /// Specifies the previous connection type checks. Defaults to `nil`.
     public private(set) var previousConnectionTypeChecks: [String]?
+    /// The builders for inputs on the block. Defaults to `[]`.
     public var inputBuilders: [Input.Builder] = []
+    /// Sepcifies the inputs are inline. Defaults to `false`.
     public var inputsInline: Bool = false
 
     // These values are publicly mutable in `Block`
+
+    /// The tooltip of the block. Defaults to `""`.
     public var tooltip: String = ""
+    /// The comment of the block. Defaults to `""`.
     public var comment: String = ""
+    /// The help URL of the block. Defaults to `""`.
     public var helpURL: String = ""
+    /// Specifies the block is deletable. Defaults to `true`.
     public var deletable: Bool = true
+    /// Specifies the block is movable. Defaults to `true`.
     public var movable: Bool = true
+    /// Specifies the block is editable. Defaults to `true`.
     public var editable: Bool = true
+    /// Specifies the block is disabled. Defaults to `false`.
     public var disabled: Bool = false
 
     // MARK: - Initializers
 
+    /**
+     Initializes the block builder. Requires a name for the block to be built.
+
+     - Parameter name: The name of the block to be built.
+     */
     public init(name: String) {
       super.init()
       self.name = name
@@ -57,9 +81,11 @@ extension Block {
     }
 
     /**
-    Initialize a builder from an existing block. All values that are not specific to
-    a single instance of a block will be copied in to the builder. Any associated layouts are not
-    copied into the builder.
+     Initialize a builder from an existing block. All values that are not specific to
+     a single instance of a block will be copied in to the builder. Any associated layouts are not
+     copied into the builder.
+
+     - Parameter block: The block to be copied.
     */
     public init(block: Block) {
       name = block.name
@@ -95,7 +121,7 @@ extension Block {
     The default value is `false`.
     - Throws:
     `BlocklyError`: Occurs if the block is missing any required pieces.
-    - Returns: A new block
+    - Returns: A new block.
     */
     public func build(uuid uuid: String? = nil, shadow: Bool = false) throws -> Block {
       if name == "" {
@@ -128,6 +154,15 @@ extension Block {
       return block
     }
 
+    /**
+     Specifies an output connection on the builder, and optionally the type checks to go with it.
+
+     - Parameter enabled: Specifies the resulting block should have an output connection.
+     - Parameter typeChecks: [Optional] Specifies the type checks for the given output connection.
+       Defaults to `nil`.
+     - Throws:
+     `BlocklyError`: Occurs if the builder already has a next or previous connection.
+     */
     public func setOutputConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
         throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
@@ -136,6 +171,15 @@ extension Block {
       self.outputConnectionTypeChecks = typeChecks
     }
 
+    /**
+     Specifies an next connection on the builder, and optionally the type checks to go with it.
+
+     - Parameter enabled: Specifies the resulting block should have a next connection.
+     - Parameter typeChecks: [Optional] Specifies the type checks for the given next connection.
+       Defaults to `nil`.
+     - Throws:
+     `BlocklyError`: Occurs if the builder already has an output connection.
+     */
     public func setNextConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
         throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
@@ -144,6 +188,15 @@ extension Block {
       self.nextConnectionTypeChecks = typeChecks
     }
 
+    /**
+     Specifies a previous connection on the builder, and optionally the type checks to go with it.
+
+     - Parameter enabled: Specifies the resulting block should have a previous connection.
+     - Parameter typeChecks: [Optional] Specifies the type checks for the given previous connection.
+       Defaults to `nil`.
+     - Throws:
+     `BlocklyError`: Occurs if the builder already has an output connection.
+     */
     public func setPreviousConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
         throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)

@@ -309,8 +309,8 @@ public final class DefaultInputLayout: InputLayout {
     self.rightEdge += widthDifference
 
     // Shift fields based on new width and alignment
-    if self.input.alignment == .Centre || self.input.alignment == .Right {
-      let shiftAmount = (self.input.alignment == .Centre) ?
+    if self.input.alignment == .Center || self.input.alignment == .Right {
+      let shiftAmount = (self.input.alignment == .Center) ?
         floor(widthDifference / 2) : widthDifference
       for fieldLayout in fieldLayouts {
         fieldLayout.relativePosition.x += shiftAmount

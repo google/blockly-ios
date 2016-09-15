@@ -73,10 +73,10 @@ extension Field {
   }
 }
 
-/**
-Manages the registration of fields.
-*/
 extension Field {
+  /**
+   Manages the registration of fields.
+   */
   @objc(BKYFieldJSONRegistry)
   public class JSONRegistry: NSObject {
     // MARK: - Static Properties
@@ -100,6 +100,9 @@ extension Field {
 
     // MARK: - Initializers
 
+    /**
+     Fills the JSON registry with the built-in Blockly types.
+     */
     public override init() {
       super.init()
 

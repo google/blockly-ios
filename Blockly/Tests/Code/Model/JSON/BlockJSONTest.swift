@@ -51,7 +51,7 @@ class BlockJSONTest: XCTestCase {
     let input0 = block.inputs[0]
     XCTAssertEqual(Input.InputType.Value, input0.type)
     XCTAssertEqual("VALUE INPUT", input0.name)
-    XCTAssertEqual(Input.Alignment.Centre, input0.alignment)
+    XCTAssertEqual(Input.Alignment.Center, input0.alignment)
     XCTAssertEqual(9, input0.fields.count) // 7 argument fields + 2 string labels
 
     // Image

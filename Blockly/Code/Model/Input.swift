@@ -23,7 +23,8 @@ public protocol InputDelegate: class {
 }
 
 /**
-Class representing an input (value, statement, or dummy).
+ Class representing an input (value, statement, or dummy). To create an `Input` object, use
+ `Input.Builder`
 */
 @objc(BKYInput)
 public final class Input : NSObject {
@@ -32,17 +33,23 @@ public final class Input : NSObject {
   /** Represents types of inputs. */
   @objc
   public enum BKYInputType: Int {
-    case Value = 0, Statement, Dummy
+    /// Specifies the input is a value input.
+    case Value = 0,
+      /// Specifies the input is a statement input.
+      Statement,
+      /// Specifies the input is a dummy input.
+      Dummy
+
+    /// The string describing the type of this input.
+    public var stringValue : String {
+      return BKYInputType.stringMapping[self]!
+    }
 
     private static let stringMapping = [
       Value: "input_value",
       Statement: "input_statement",
       Dummy: "input_dummy",
     ]
-
-    public var stringValue : String {
-      return BKYInputType.stringMapping[self]!
-    }
 
     internal init?(string: String) {
       guard let value = BKYInputType.stringMapping.bky_anyKeyForValue(string) else {
@@ -58,17 +65,23 @@ public final class Input : NSObject {
   /** Represents valid alignments of a connection's fields. */
   @objc
   public enum BKYInputAlignment: Int {
-    case Left = -1, Centre = 0, Right = 1
+    /// Specifies the input is left-aligned
+    case Left = -1,
+      /// Specifies the input is center-aligned
+      Center = 0,
+      /// Specifies the input is right-aligned
+      Right = 1
 
-    private static let stringMapping = [
-      Left: "LEFT",
-      Centre: "CENTRE",
-      Right: "RIGHT",
-    ]
-
+    /// The string describing the alignment of this input.
     public var stringValue : String {
       return BKYInputAlignment.stringMapping[self]!
     }
+
+    private static let stringMapping = [
+      Left: "LEFT",
+      Center: "CENTRE",
+      Right: "RIGHT",
+    ]
 
     internal init?(string: String) {
       guard let value = BKYInputAlignment.stringMapping.bky_anyKeyForValue(string) else {
@@ -81,14 +94,19 @@ public final class Input : NSObject {
 
   // MARK: - Properties
 
+  /// The type (value, statement, dummy) of the input.
   public let type: BKYInputType
+  /// The name of the input.
   public let name: String
+  /// A list of `Field` objects for the input.
   public let fields: [Field]
+  /// The `Block` that owns this input.
   public weak var sourceBlock: Block! {
     didSet {
       self.connection?.sourceBlock = sourceBlock
     }
   }
+  /// The connection for this input, if required.
   public private(set) var connection: Connection?
   /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
@@ -98,7 +116,9 @@ public final class Input : NSObject {
   public var connectedShadowBlock: Block? {
     return connection?.shadowBlock
   }
+  /// `true` if the input is visible, `false` otherwise. Defaults to `true`.
   public var visible: Bool = true
+  /// The alignment of the input
   public var alignment: BKYInputAlignment = BKYInputAlignment.Left
 
   /// A delegate for listening to events on this input
