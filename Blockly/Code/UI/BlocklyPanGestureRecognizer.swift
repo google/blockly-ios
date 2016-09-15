@@ -56,10 +56,10 @@ public class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   public enum BKYBlocklyPanGestureRecognizerTouchState: Int {
     /// Specifies an individual touch has just begun on a `BlockView`
     case Began = 0,
-    /// Specifies an individual touch has just changed on a `BlockView`
-           Changed,
-    /// Specifies an individual touch has just ended on a `BlockView`
-           Ended
+      /// Specifies an individual touch has just changed on a `BlockView`
+      Changed,
+      /// Specifies an individual touch has just ended on a `BlockView`
+      Ended
   }
   public typealias TouchState = BKYBlocklyPanGestureRecognizerTouchState
 

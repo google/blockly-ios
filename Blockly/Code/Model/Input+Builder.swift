@@ -25,24 +25,38 @@ extension Input {
 
     // MARK: - Properties
 
+    /// The type (value, statement, dummy) of the `Input`.
     public var type: BKYInputType
+    /// The type checks for the connection of this `Input`. Defaults to `[String]?`.
     public var connectionTypeChecks: [String]?
+    /// The name of the `Input`.
     public var name: String
+    /// Specifies whether this `Input` is visible. Defaults to `true`.
     public var visible: Bool = true
+    /// Specifies the alignment for the `Input`. Defaults to `BKYInputAlignment.Left`.
     public var alignment: BKYInputAlignment = BKYInputAlignment.Left
+    /// A list of `Field` objects for the input. Defaults to `[]`.
     public private(set) var fields: [Field] = []
 
     // MARK: - Initializers
 
+    /**
+     Initializes an input builder with a type and string.
+     
+     - Parameter type: The type of the `Input`.
+     - Parameter name: The name of the `Input`.
+     */
     public init(type: InputType, name: String) {
       self.type = type
       self.name = name
     }
 
     /**
-    Initialize a builder from an existing input. All values that are not specific to
-    a single instance of a input will be copied in to the builder. Any associated layouts are not
-    copied into the builder.
+     Initialize a builder from an existing input. All values that are not specific to
+     a single instance of a input will be copied in to the builder. Any associated layouts are not
+     copied into the builder.
+    
+     - Parameter input: The input to copy.
     */
     public init(input: Input) {
       self.type = input.type
