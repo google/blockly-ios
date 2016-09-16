@@ -1,0 +1,130 @@
+module: Blockly
+
+#TODO(#178):-Set up correct information here.
+author: Google
+author_url: http://www.google.com
+copyright: ''
+
+custom_categories:
+  - name: Model
+    children:
+    - Block
+    - BlockFactory
+    - Connection
+    - Field
+    - Input
+    - Toolbox
+    - Workspace
+    - WorkspaceFlow
+
+  - name: Control
+    children:
+    - BlockBumper
+    - ConnectionManager
+    - Dragger
+    - NameManager
+    - ConnectionValidator
+
+  - name: Layout
+    children:
+    - BlockLayout
+    - BlockGroupLayout
+    - InputLayout
+    - FieldLayout
+    - Layout
+    - LayoutBuilder
+    - LayoutConfig
+    - LayoutEngine
+    - LayoutFactory
+    - LayoutHelper
+    - ToolboxLayout
+    - WorkspaceLayout
+    - WorkspaceFlowLayout
+
+  - name: View
+    children:
+    - BezierPathLayer
+    - BlockView
+    - BlockGroupView
+    - FieldView
+    - InputView
+    - LayoutView
+    - TrashCanView
+    - ViewBuilder
+    - ViewFactory
+    - ViewManager
+    - WorkspaceView
+    - ZIndexedGroupView
+
+  - name: View Controller
+    children:
+    - DropdownOptionsViewController
+    - FieldColorPickerViewController
+    - ToolboxCategoryListViewController
+    - ToolboxCategoryViewController
+    - TrashCanViewController
+    - WorkbenchViewController
+    - WorkspaceViewController
+
+  - name: Common
+    children:
+    - BlocklyError
+    - CodeGenerator
+    - CodeGeneratorService
+    - ColorHelper
+    - DropdownView
+    - ImageLoader
+    - InsetTextField
+    - JSONHelper
+    - ObjectPool
+    - WorkspaceBezierPath
+
+  - name: Fields
+    children:
+    - FieldAngle
+    - FieldCheckbox
+    - FieldColor
+    - FieldDate
+    - FieldDropdown
+    - FieldImage
+    - FieldInput
+    - FieldLabel
+    - FieldNumber
+    - FieldVariable
+
+  - name: FieldLayouts
+    children:
+    - FieldAngleLayout
+    - FieldCheckboxLayout
+    - FieldColorLayout
+    - FieldDateLayout
+    - FieldDropdownLayout
+    - FieldImageLayout
+    - FieldInputLayout
+    - FieldLabelLayout
+    - FieldNumberLayout
+    - FieldVariableLayout
+
+  - name: FieldViews
+    children:
+    - FieldAngleView
+    - FieldCheckboxView
+    - FieldColorView
+    - FieldDateView
+    - FieldDropdownView
+    - FieldImageView
+    - FieldInputView
+    - FieldLabelView
+    - FieldNumberView
+    - FieldVariableView
+
+  - name: Default Implementation
+    children:
+    - DefaultBlockGroupLayout
+    - DefaultBlockLayout
+    - DefaultBlockView
+    - DefaultConnectionValidator
+    - DefaultInputLayout
+    - DefaultLayoutConfig
+    - DefaultLayoutEngine
+    - DefaultLayoutFactory

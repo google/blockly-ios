@@ -57,6 +57,7 @@ public final class Connection : NSObject {
 
   // NOTE: If OPPOSITE_TYPES is updated, also update ConnectionManager's matchingLists and
   // oppositeLists arrays.
+  /// Specifies which `BKYConnectionType` a `BKYConnectionType` is compatible with.
   public static let OPPOSITE_TYPES: [BKYConnectionType] =
   [.NextStatement, .PreviousStatement, .OutputValue, .InputValue]
 
@@ -65,7 +66,14 @@ public final class Connection : NSObject {
   /// Represents all possible types of connections.
   @objc
   public enum BKYConnectionType: Int {
-    case PreviousStatement = 0, NextStatement, InputValue, OutputValue
+    /// Specifies the connection is a previous connection.
+    case PreviousStatement = 0,
+      /// Specifies the connection is a next connection.
+      NextStatement,
+      /// Specifies the connection is an input connection.
+      InputValue,
+      /// Specifies the connection is an output connection.
+      OutputValue
   }
   public typealias ConnectionType = BKYConnectionType
 
@@ -115,14 +123,33 @@ public final class Connection : NSObject {
       }
     }
 
+    ///  The underlying raw value for the `CheckResult`.
     public let rawValue : Int
+
+    /**
+     Initializes the value with an integer.
+
+     - Parameter rawValue: The integer to seed the `CheckResult` with.
+     */
     public init(rawValue: Int) {
       self.rawValue = rawValue
     }
+
+    /**
+     Initializes the value with a `Value`.
+
+     - Parameter value: The `Value` to seed the `CheckResult` with.
+     */
     public init(value: Value) {
       self.init(rawValue: 1 << value.rawValue)
     }
 
+    /**
+     Checks whether the `CheckResult` intersects with another `CheckResult`.
+
+     - Parameter other: The other `CheckResult` to check.
+     - Return: `true` if they intersect, `false` otherwise.
+     */
     public func intersectsWith(other: CheckResult) -> Bool {
       return intersect(other).rawValue != 0
     }
@@ -224,6 +251,12 @@ public final class Connection : NSObject {
 
   // MARK: - Initializers
 
+  /**
+   Creates a `Connection`.
+
+   - Parameter type: The `BKYConnectionType` of this connection.
+   - Parameter sourceInput: [Optional] The source input for the `Connection`. Defaults to `nil`.
+   */
   public init(type: BKYConnectionType, sourceInput: Input? = nil) {
     self.uuid = NSUUID().UUIDString
     self.type = type
