@@ -257,6 +257,7 @@ public class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    references.
    */
   public override func reset() {
+    super.reset()
     _touches.removeAll()
     _blocks.removeAll()
   }
