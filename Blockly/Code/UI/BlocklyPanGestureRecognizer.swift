@@ -253,12 +253,19 @@ public class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   }
 
   /**
+   Called when the gesture recognizer terminates (ended, cancelled, or failed.) Cleans up internal
+   references.
+   */
+  public override func reset() {
+    _touches.removeAll()
+    _blocks.removeAll()
+  }
+
+  /**
    Manually cancels the touches of the gesture recognizer.
    */
   public func cancelAllTouches() {
-    _touches.removeAll()
-    _blocks.removeAll()
-
+    reset()
     state = .Cancelled
   }
 
