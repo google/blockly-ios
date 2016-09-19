@@ -26,19 +26,19 @@ public struct WeakSet<Element: AnyObject> {
 
   /// Returns an array of all objects
   public var all: [Element] {
-    return _objects.allObjects as! [Element]
+    return _objects.allObjects
   }
 
   /// Wrapper of a set of weakly-referenced objects
-  private var _boxedObjects = WrapperBox(NSHashTable.weakObjectsHashTable())
+  private var _boxedObjects = WrapperBox<NSHashTable<Element>>(NSHashTable.weakObjects())
   /// Set of immutable objects
-  private var _objects: NSHashTable {
+  private var _objects: NSHashTable<Element> {
     return _boxedObjects.unbox
   }
   /// Set of mutable objects
-  private var _mutableObjects: NSHashTable {
+  private var _mutableObjects: NSHashTable<Element> {
     mutating get {
-      if !isUniquelyReferencedNonObjC(&_boxedObjects) {
+      if !isKnownUniquelyReferenced(&_boxedObjects) {
         // `_boxedObjects` is being referenced by another `WeakSet` struct (that must have been
         // created through a copied assignment). Create a copy of `_boxedObjects` so that both
         // structs now reference a different set of objects.
@@ -53,29 +53,29 @@ public struct WeakSet<Element: AnyObject> {
   /**
    Adds an object to the set.
    */
-  public mutating func add(object: Element) {
-    _mutableObjects.addObject(object)
+  public mutating func add(_ object: Element) {
+    _mutableObjects.add(object)
   }
 
   /**
    Removes an object from the set.
    */
-  public mutating func remove(object: Element) {
-    _mutableObjects.removeObject(object)
+  public mutating func remove(_ object: Element) {
+    _mutableObjects.remove(object)
   }
 }
 
 // MARK: - SequenceType Implementation
 
-extension WeakSet : SequenceType {
-  public typealias Generator = AnyGenerator<Element>
+extension WeakSet : Sequence {
+  public typealias Iterator = AnyIterator<Element>
 
-  public func generate() -> Generator {
+  public func makeIterator() -> Iterator {
     var index = 0
     let allObjects = self.all
 
     // Create `AnyGenerator` with the closure used for retrieving the next element in the sequence
-    return AnyGenerator {
+    return AnyIterator {
       if index < allObjects.count {
         let nextObject = allObjects[index]
         index += 1

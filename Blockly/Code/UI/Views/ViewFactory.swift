@@ -19,7 +19,7 @@ import Foundation
  Handles the creation of recyclable views.
  */
 @objc(BKYViewFactory)
-public class ViewFactory: NSObject {
+open class ViewFactory: NSObject {
 
   // MARK: - Properties
 
@@ -61,16 +61,16 @@ public class ViewFactory: NSObject {
    - Throws:
    `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
    */
-  public func viewForLayout(layout: Layout) throws -> LayoutView {
+  open func viewForLayout(_ layout: Layout) throws -> LayoutView {
     // Get a fresh view and populate it with the layout
-    let layoutType = layout.dynamicType
+    let layoutType = type(of: layout)
     if let viewType = _viewMapping[layoutType.hash()],
       let view = recyclableViewForType(viewType) as? LayoutView
     {
       view.layout = layout
       return view
     } else {
-      throw BlocklyError(.ViewNotFound, "Could not retrieve view for \(layoutType)")
+      throw BlocklyError(.viewNotFound, "Could not retrieve view for \(layoutType)")
     }
   }
 
@@ -82,7 +82,7 @@ public class ViewFactory: NSObject {
    - Parameter viewType: A view type that is a subclass of `LayoutView` that conforms to
    `Recyclable`
    */
-  public func registerLayoutType(layoutType: Layout.Type, withViewType viewType: LayoutView.Type) {
+  open func registerLayoutType(_ layoutType: Layout.Type, withViewType viewType: LayoutView.Type) {
     _viewMapping[layoutType.hash()] = viewType
   }
 
@@ -95,7 +95,7 @@ public class ViewFactory: NSObject {
    `recycleViewTree(:)`.
    - Returns: A view of the given type, if it is a `UIView`. Otherwise, nil is returned.
    */
-  public func recyclableViewForType(type: Recyclable.Type) -> UIView? {
+  open func recyclableViewForType(_ type: Recyclable.Type) -> UIView? {
     return _objectPool.recyclableObjectForType(type) as? UIView
   }
 
@@ -105,7 +105,7 @@ public class ViewFactory: NSObject {
 
    - Parameter view: The view to recycle.
    */
-  public func recycleView(view: UIView) {
+  open func recycleView(_ view: UIView) {
     if let recyclableView = view as? Recyclable {
       _objectPool.recycleObject(recyclableView)
     }
@@ -117,7 +117,7 @@ public class ViewFactory: NSObject {
 
    - Parameter rootView: The root view to begin the recycling process.
    */
-  public func recycleViewTree(rootView: UIView) {
+  open func recycleViewTree(_ rootView: UIView) {
     let subviews = rootView.subviews
 
     // Recycle root view

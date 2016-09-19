@@ -21,21 +21,21 @@ import Foundation
 View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
-public class WorkspaceView: LayoutView {
+open class WorkspaceView: LayoutView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `WorkspaceLayout`
-  public var workspaceLayout: WorkspaceLayout? {
+  open var workspaceLayout: WorkspaceLayout? {
     return layout as? WorkspaceLayout
   }
 
   /// All top-level `BlockGroupView` instances underneath the workspace
-  public private(set) var blockGroupViews = Set<BlockGroupView>()
+  open fileprivate(set) var blockGroupViews = Set<BlockGroupView>()
 
   /// Scroll view used to render the workspace
-  public lazy var scrollView: WorkspaceView.ScrollView = {
+  open lazy var scrollView: WorkspaceView.ScrollView = {
     let scrollView = WorkspaceView.ScrollView(frame: self.bounds)
-    scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    scrollView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     scrollView.autoresizesSubviews = false
     scrollView.delegate = self
     scrollView.bouncesZoom = false
@@ -45,7 +45,7 @@ public class WorkspaceView: LayoutView {
   /// Flag if the canvas should be padded with extra spaces around its edges via
   /// `self.canvasPadding`. If set to false, the user will only be allowed to scroll the exact
   /// amount needed to view all blocks.
-  public var allowCanvasPadding: Bool = true {
+  open var allowCanvasPadding: Bool = true {
     didSet {
       updateCanvasSizeFromLayout()
     }
@@ -53,39 +53,39 @@ public class WorkspaceView: LayoutView {
 
   /// The amount of padding to apply to the edges of the workspace canvas, by percentage of view
   /// frame size
-  public var canvasPaddingScale = EdgeInsets(0.5, 0.5, 0.5, 0.5)
+  open var canvasPaddingScale = EdgeInsets(0.5, 0.5, 0.5, 0.5)
 
   /**
   The amount of padding that should be added to the edges when automatically scrolling a
   `Block` into view.
   */
-  public var scrollIntoViewEdgeInsets = EdgeInsets(20, 20, 100, 20)
+  open var scrollIntoViewEdgeInsets = EdgeInsets(20, 20, 100, 20)
 
   /// Enables/disables the zooming of a workspace. Defaults to false.
-  public var allowZoom = false
+  open var allowZoom = false
 
   /// The last known value for `workspaceLayout.contentOrigin`
-  private var _lastKnownContentOrigin: CGPoint = CGPointZero
+  fileprivate var _lastKnownContentOrigin: CGPoint = CGPoint.zero
 
   /// The offset of the view when zooming begins
-  private var _zoomBeginOffset: CGPoint = CGPointZero
+  fileprivate var _zoomBeginOffset: CGPoint = CGPoint.zero
 
   /// The offset between the zoom offset and the center of the zoom pinch
-  private var _zoomPinchOffset: CGPoint = CGPointZero
+  fileprivate var _zoomPinchOffset: CGPoint = CGPoint.zero
 
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
-  private var _disableRemoveExcessScrollSpace = false
+  fileprivate var _disableRemoveExcessScrollSpace = false
 
   /// Remember the state of the vertical scroll indicator, to re-enable after turning it off
-  private var _scrollViewShowedVerticalScrollIndicator: Bool = true
+  fileprivate var _scrollViewShowedVerticalScrollIndicator: Bool = true
 
   /// Remember the state of the horizontal scroll indicator, to re-enable after turning it off
-  private var _scrollViewShowedHorizontalScrollIndicator: Bool = true
+  fileprivate var _scrollViewShowedHorizontalScrollIndicator: Bool = true
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(scrollView)
   }
@@ -96,7 +96,7 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -117,7 +117,7 @@ public class WorkspaceView: LayoutView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     // Remove all block group views
@@ -127,12 +127,12 @@ public class WorkspaceView: LayoutView {
       }
     }
 
-    scrollView.contentSize = CGSizeZero
-    scrollView.contentOffset = CGPointZero
-    scrollView.containerView.frame = CGRectZero
+    scrollView.contentSize = CGSize.zero
+    scrollView.contentOffset = CGPoint.zero
+    scrollView.containerView.frame = CGRect.zero
   }
 
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
 
     updateCanvasSizeFromLayout()
@@ -145,7 +145,7 @@ public class WorkspaceView: LayoutView {
 
    - Parameter blockGroupView: The given `BlockGroupView`
    */
-  public func addBlockGroupView(blockGroupView: BlockGroupView) {
+  open func addBlockGroupView(_ blockGroupView: BlockGroupView) {
     scrollView.containerView.upsertView(blockGroupView)
     blockGroupViews.insert(blockGroupView)
   }
@@ -155,7 +155,7 @@ public class WorkspaceView: LayoutView {
 
    - Parameter blockView: The given `BlockGroupView`
    */
-  public func removeBlockGroupView(blockGroupView: BlockGroupView) {
+  open func removeBlockGroupView(_ blockGroupView: BlockGroupView) {
     blockGroupViews.remove(blockGroupView)
     blockGroupView.removeFromSuperview()
   }
@@ -167,15 +167,15 @@ public class WorkspaceView: LayoutView {
    - Parameter blockView: The `BlockView`
    - Returns: The `blockView`'s corresponding Workspace position
    */
-  public final func workspacePositionFromBlockView(blockView: UIView) -> WorkspacePoint {
-    var blockViewPoint = CGPointZero
+  public final func workspacePositionFromBlockView(_ blockView: UIView) -> WorkspacePoint {
+    var blockViewPoint = CGPoint.zero
     if (workspaceLayout?.engine.rtl ?? false) {
       // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
       // it is the top-left corner point in LTR)
-      blockViewPoint = CGPointMake(blockView.bounds.width, 0)
+      blockViewPoint = CGPoint(x: blockView.bounds.width, y: 0)
     }
     let workspaceViewPosition =
-      blockView.convertPoint(blockViewPoint, toView: scrollView.containerView)
+      blockView.convert(blockViewPoint, to: scrollView.containerView)
     return workspacePositionFromViewPoint(workspaceViewPosition)
   }
 
@@ -186,7 +186,7 @@ public class WorkspaceView: LayoutView {
    - Parameter animated: Flag determining if this scroll view adjustment should be animated.
    - Note: See `scrollIntoViewEdgeInsets`.
    */
-  public func scrollBlockIntoView(block: Block, animated: Bool) {
+  open func scrollBlockIntoView(_ block: Block, animated: Bool) {
     guard let blockLayout = block.layout,
       let blockView = ViewManager.sharedInstance.findBlockViewForLayout(blockLayout) else
     {
@@ -194,8 +194,8 @@ public class WorkspaceView: LayoutView {
     }
 
     var scrollViewRect =
-      CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y,
-                 scrollView.bounds.width, scrollView.bounds.height)
+      CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y,
+                 width: scrollView.bounds.width, height: scrollView.bounds.height)
 
     // Force the blockView to be inset within the scroll view rectangle
     scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
@@ -203,7 +203,7 @@ public class WorkspaceView: LayoutView {
     scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
     scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
 
-    let blockViewRect = blockView.convertRect(blockView.bounds, toView: scrollView)
+    let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
     var contentOffset = scrollView.contentOffset
 
     // Check right edge
@@ -235,7 +235,7 @@ public class WorkspaceView: LayoutView {
   - Parameter point: The `UIView` point
   - Returns: The corresponding `WorkspacePoint`
   */
-  public func workspacePositionFromViewPoint(point: CGPoint) -> WorkspacePoint {
+  open func workspacePositionFromViewPoint(_ point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePointZero
     }
@@ -260,7 +260,7 @@ public class WorkspaceView: LayoutView {
 
   // MARK: - Private
 
-  private func canvasPadding() -> EdgeInsets {
+  fileprivate func canvasPadding() -> EdgeInsets {
     var scaled = EdgeInsets(0, 0, 0, 0)
 
     let viewRect = bounds.size
@@ -272,7 +272,7 @@ public class WorkspaceView: LayoutView {
     return scaled
   }
 
-  private func updateCanvasSizeFromLayout() {
+  fileprivate func updateCanvasSizeFromLayout() {
     guard let layout = self.workspaceLayout else {
       return
     }
@@ -328,11 +328,12 @@ public class WorkspaceView: LayoutView {
       }
 
       // Position the contentView relative to the top-right corner
-      let containerOrigin = CGPointMake(
-        newContentSize.width - containerViewSize.width
-          - contentPadding.leading, contentPadding.top)
-      scrollView.containerView.frame = CGRectMake(
-        containerOrigin.x, containerOrigin.y, containerViewSize.width, containerViewSize.height)
+      let containerOrigin = CGPoint(
+        x: newContentSize.width - containerViewSize.width
+          - contentPadding.leading, y: contentPadding.top)
+      scrollView.containerView.frame = CGRect(
+        x: containerOrigin.x, y: containerOrigin.y,
+        width: containerViewSize.width, height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't
       // appear that viewport has jumped to a new location
@@ -346,10 +347,11 @@ public class WorkspaceView: LayoutView {
       newContentOffset.x += scrollView.containerView.frame.maxX - oldContainerFrame.maxX
       newContentOffset.y += scrollView.containerView.frame.minY - oldContainerFrame.minY
     } else {
-      let containerOrigin = CGPointMake(contentPadding.leading, contentPadding.top)
+      let containerOrigin = CGPoint(x: contentPadding.leading, y: contentPadding.top)
       let oldContainerFrame = scrollView.containerView.frame
-      scrollView.containerView.frame = CGRectMake(
-        containerOrigin.x, containerOrigin.y, containerViewSize.width, containerViewSize.height)
+      scrollView.containerView.frame = CGRect(
+        x: containerOrigin.x, y: containerOrigin.y,
+        width: containerViewSize.width, height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't appear
       // that viewport has jumped to a new location
@@ -379,12 +381,12 @@ public class WorkspaceView: LayoutView {
     removeExcessScrollSpace()
   }
 
-  private func removeExcessScrollSpace(ignoreRestrictions ignoreRestrictions: Bool = false) {
+  fileprivate func removeExcessScrollSpace(ignoreRestrictions: Bool = false) {
     if !allowCanvasPadding || _disableRemoveExcessScrollSpace {
       return
     }
     if !ignoreRestrictions &&
-      (scrollView.dragging || scrollView.decelerating)
+      (scrollView.isDragging || scrollView.isDecelerating)
     {
       return
     }
@@ -410,17 +412,17 @@ public class WorkspaceView: LayoutView {
       let originX = max(canvasPadding.trailing,
         scrollView.bounds.width - containerViewFrame.width -
         canvasPadding.leading)
-      idealContainerViewFrame = CGRectMake(
-        originX,
-        canvasPadding.top,
-        containerViewFrame.width + canvasPadding.leading,
-        containerViewFrame.height + canvasPadding.bottom)
+      idealContainerViewFrame = CGRect(
+        x: originX,
+        y: canvasPadding.top,
+        width: containerViewFrame.width + canvasPadding.leading,
+        height: containerViewFrame.height + canvasPadding.bottom)
     } else {
-      idealContainerViewFrame = CGRectMake(
-        canvasPadding.leading,
-        canvasPadding.top,
-        containerViewFrame.width + canvasPadding.trailing,
-        containerViewFrame.height + canvasPadding.bottom)
+      idealContainerViewFrame = CGRect(
+        x: canvasPadding.leading,
+        y: canvasPadding.top,
+        width: containerViewFrame.width + canvasPadding.trailing,
+        height: containerViewFrame.height + canvasPadding.bottom)
     }
 
     // Remove excess left space
@@ -482,7 +484,7 @@ public class WorkspaceView: LayoutView {
 
   - Parameter blockLayout: A given block layout.
   */
-  private func shouldRenderBlockLayout(blockLayout: BlockLayout) -> Bool {
+  fileprivate func shouldRenderBlockLayout(_ blockLayout: BlockLayout) -> Bool {
     // Allow blocks within a 1/2 screen away to be rendered
     let xDelta = scrollView.contentSize.width / 2
     let yDelta = scrollView.contentSize.height / 2
@@ -507,23 +509,24 @@ public class WorkspaceView: LayoutView {
 // MARK: - UIScrollViewDelegate Implementation
 
 extension WorkspaceView: UIScrollViewDelegate {
-  public func scrollViewDidScroll(scrollView: UIScrollView) {
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
-  public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+  public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
-  public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+  public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
+  {
     removeExcessScrollSpace()
   }
 
-  public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+  public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
     return self.scrollView.containerView
   }
 
-  public func scrollViewWillBeginZooming(zoomScrollView: UIScrollView, withView view: UIView?) {
+  public func scrollViewWillBeginZooming(_ zoomScrollView: UIScrollView, with view: UIView?) {
     _scrollViewShowedVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
     _scrollViewShowedHorizontalScrollIndicator = scrollView.showsHorizontalScrollIndicator
 
@@ -540,7 +543,7 @@ extension WorkspaceView: UIScrollViewDelegate {
     _zoomBeginOffset = offset
   }
 
-  public func scrollViewDidZoom(zoomScrollView: UIScrollView) {
+  public func scrollViewDidZoom(_ zoomScrollView: UIScrollView) {
     // Reset the offset while zooming, so we stay centered on the same point.
     var offset = _zoomBeginOffset
     offset.x = offset.x * scrollView.zoomScale
@@ -549,8 +552,8 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.contentOffset = offset - _zoomPinchOffset
   }
 
-  public func scrollViewDidEndZooming(scrollView: UIScrollView,
-                                      withView view: UIView?, atScale scale: CGFloat) {
+  public func scrollViewDidEndZooming(_ scrollView: UIScrollView,
+                                      with view: UIView?, atScale scale: CGFloat) {
     guard let workspaceLayout = self.workspaceLayout else {
       return
     }
@@ -573,16 +576,16 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.showsHorizontalScrollIndicator = _scrollViewShowedHorizontalScrollIndicator
   }
 
-  private func offsetOfPinch(zoomScrollView: UIScrollView, withView view:UIView?) -> CGPoint {
-    if scrollView.panGestureRecognizer.numberOfTouches() < 2 {
-      return CGPointZero
+  fileprivate func offsetOfPinch(_ zoomScrollView: UIScrollView, withView view:UIView?) -> CGPoint {
+    if scrollView.panGestureRecognizer.numberOfTouches < 2 {
+      return CGPoint.zero
     }
 
     let panGesture = scrollView.panGestureRecognizer
-    let touch1 = panGesture.locationOfTouch(0, inView: scrollView.containerView)
-    let touch2 = panGesture.locationOfTouch(1, inView: scrollView.containerView)
+    let touch1 = panGesture.location(ofTouch: 0, in: scrollView.containerView)
+    let touch2 = panGesture.location(ofTouch: 1, in: scrollView.containerView)
 
-    var pinchCenter = CGPointZero
+    var pinchCenter = CGPoint.zero
     pinchCenter.x = (max(touch1.x, touch2.x) + min(touch1.x, touch2.x)) / 2
     pinchCenter.y = (max(touch1.y, touch2.y) + min(touch1.y, touch2.y)) / 2
 
@@ -596,17 +599,17 @@ extension WorkspaceView {
   /**
    The scroll view used by `WorkspaceView`.
    */
-  public class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
+  open class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
-    public var containerView: ZIndexedGroupView = {
-      let view = ZIndexedGroupView(frame: CGRectZero)
+    open var containerView: ZIndexedGroupView = {
+      let view = ZIndexedGroupView(frame: CGRect.zero)
       view.autoresizesSubviews = false
       return view
     }()
 
     // MARK: - Initializers
 
-    private override init(frame: CGRect) {
+    fileprivate override init(frame: CGRect) {
       super.init(frame: frame)
 
       addSubview(containerView)

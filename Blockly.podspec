@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Blockly'
   s.module_name      = 'Blockly'
-  s.version          = '0.1.0'
+  s.version          = '0.5'
   s.summary          = 'A library for building visual programming editors.'
   s.description      = <<-DESC
   Blockly is a visual editor that allows users to write programs by plugging blocks together. Developers can integrate the Blockly editor into their own applications to create a great UI for novice users.
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
                          #:tag => s.version.to_s
                        }
 
-  s.platform         = :ios, '9.0'
+  s.platform         = :ios, '10.0'
   s.ios.deployment_target = '8.0'
   s.requires_arc     = true
 
@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.resources = ['Blockly/Resources/Blockly.xcassets', 'Blockly/Resources/code_generator']
 
   s.frameworks        = 'WebKit'
-  s.ios.dependency 'AEXML', '~> 2.1'
+  s.ios.dependency 'AEXML', '~> 4.0.0'
 
   # Enable whole-module-optimization for all builds except for Debug builds
   s.pod_target_xcconfig = {

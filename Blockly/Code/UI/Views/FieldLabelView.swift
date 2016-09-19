@@ -19,25 +19,25 @@ import Foundation
 View for rendering a `FieldLabelLayout`.
 */
 @objc(BKYFieldLabelView)
-public class FieldLabelView: FieldView {
+open class FieldLabelView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldLabelLayout`
-  public var fieldLabelLayout: FieldLabelLayout? {
+  open var fieldLabelLayout: FieldLabelLayout? {
     return layout as? FieldLabelLayout
   }
 
   /// The label to render
-  private let label: UILabel = {
-    let label = UILabel(frame: CGRectZero)
-    label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+  fileprivate let label: UILabel = {
+    let label = UILabel(frame: CGRect.zero)
+    label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return label
   }()
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(label)
   }
@@ -48,7 +48,7 @@ public class FieldLabelView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -62,15 +62,15 @@ public class FieldLabelView: FieldView {
         let label = self.label
         label.text = fieldLabelLayout.text
         // TODO:(#27) Standardize this font
-        label.font = UIFont.systemFontOfSize(14 * fieldLabelLayout.engine.scale)
+        label.font = UIFont.systemFont(ofSize: 14 * fieldLabelLayout.engine.scale)
       }
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRectZero
+    self.frame = CGRect.zero
     self.label.text = ""
   }
 }
@@ -78,14 +78,14 @@ public class FieldLabelView: FieldView {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldLabelView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldLabelLayout = layout as? FieldLabelLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldLabelLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    return fieldLabelLayout.text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
+    return fieldLabelLayout.text.bky_singleLineSizeForFont(UIFont.systemFont(ofSize: 14 * scale))
   }
 }

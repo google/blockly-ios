@@ -19,29 +19,29 @@ import Foundation
  View for rendering a `FieldInputLayout`.
  */
 @objc(BKYFieldInputView)
-public class FieldInputView: FieldView {
+open class FieldInputView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldInputLayout`
-  public var fieldInputLayout: FieldInputLayout? {
+  open var fieldInputLayout: FieldInputLayout? {
     return layout as? FieldInputLayout
   }
 
   /// The text field to render
-  public private(set) lazy var textField: InsetTextField = {
-    let textField = InsetTextField(frame: CGRectZero)
+  open fileprivate(set) lazy var textField: InsetTextField = {
+    let textField = InsetTextField(frame: CGRect.zero)
     textField.delegate = self
-    textField.borderStyle = .RoundedRect
-    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    textField.borderStyle = .roundedRect
+    textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     textField
-      .addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+      .addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     return textField
   }()
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
@@ -52,7 +52,7 @@ public class FieldInputView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -70,14 +70,14 @@ public class FieldInputView: FieldView {
         }
 
         // TODO:(#27) Standardize this font
-        textField.font = UIFont.systemFontOfSize(14 * fieldInputLayout.engine.scale)
+        textField.font = UIFont.systemFont(ofSize: 14 * fieldInputLayout.engine.scale)
         textField.insetPadding =
           fieldInputLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     textField.text = ""
@@ -85,7 +85,7 @@ public class FieldInputView: FieldView {
 
   // MARK: - Private
 
-  private dynamic func textFieldDidChange(sender: UITextField) {
+  fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
     self.fieldInputLayout?.updateText(self.textField.text ?? "")
   }
 }
@@ -93,7 +93,7 @@ public class FieldInputView: FieldView {
 // MARK: - UITextFieldDelegate
 
 extension FieldInputView: UITextFieldDelegate {
-  public func textFieldShouldReturn(textField: UITextField) -> Bool {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // This will dismiss the keyboard
     textField.resignFirstResponder()
     return true
@@ -103,18 +103,18 @@ extension FieldInputView: UITextFieldDelegate {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldInputView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldInputLayout = layout as? FieldInputLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldInputLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     let measureText = fieldInputLayout.text + " "
-    let font = UIFont.systemFontOfSize(14 * scale)
+    let font = UIFont.systemFont(ofSize: 14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =

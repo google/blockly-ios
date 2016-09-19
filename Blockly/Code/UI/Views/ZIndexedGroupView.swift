@@ -47,18 +47,18 @@ public final class ZIndexedGroupView: UIView {
    - Parameter point: The location to be tested, in local space.
    - Parameter event: The event requesting the hit test.
    */
-  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-    for target in subviews.lazy.reverse() {
-      let pointForTargetView = target.convertPoint(point, fromView: self)
+  public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    for target in subviews.lazy.reversed() {
+      let pointForTargetView = target.convert(point, from: self)
 
       // If the touch is inside any child of this view, return the hit test for it.
-      if (CGRectContainsPoint(target.bounds, pointForTargetView)) {
-        return target.hitTest(pointForTargetView, withEvent: event)
+      if (target.bounds.contains(pointForTargetView)) {
+        return target.hitTest(pointForTargetView, with: event)
       }
     }
 
     // If none of the children of this view have been hit, continue hit testing as usual.
-    return super.hitTest(point, withEvent: event)
+    return super.hitTest(point, with: event)
   }
 
   // MARK: - Public
@@ -69,7 +69,7 @@ public final class ZIndexedGroupView: UIView {
 
    - Parameter view: A `UIView` that conforms to `ZIndexedView`
    */
-  public func upsertView<T where T: UIView, T:ZIndexedView>(view: T) {
+  public func upsertView<T>(_ view: T) where T: UIView, T:ZIndexedView {
     let zIndex = view.zIndex
 
     // More often than not, the target view's zIndex will be >= the zIndex of the highest
@@ -122,7 +122,7 @@ public final class ZIndexedGroupView: UIView {
 
   // MARK: - Private
 
-  private func upsertViewAtEnd<T where T: UIView, T:ZIndexedView>(view: T) {
+  private func upsertViewAtEnd<T>(_ view: T) where T: UIView, T:ZIndexedView {
     upsertView(view, atIndex: -1)
   }
 
@@ -133,13 +133,13 @@ public final class ZIndexedGroupView: UIView {
    - Parameter index: The index to upsert `view` at. If the value is < 0, `view` is
    automatically upserted to the end of `self.subviews`.
    */
-  private func upsertView<T where T: UIView, T:ZIndexedView>(view: T, atIndex index: Int) {
+  private func upsertView<T>(_ view: T, atIndex index: Int) where T: UIView, T:ZIndexedView {
     if index >= 0 {
       // Calling insertSubview(...) on a view that is already a subview just updates its
       // position in `self.subviews`.
       // Note: Inserting (or re-inserting) a subview at an `index` greater than the number of
       // subviews does not cause an error, it simply puts it at the end.
-      insertSubview(view, atIndex: index)
+      insertSubview(view, at: index)
     } else {
       // Calling addSubview(_) always adds the view to the end of `self.subviews` (regardless of
       // whether the view was already a subview) and brings it to appear on top of all other

@@ -25,13 +25,13 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
   Event that occurs when a category has been selected.
   */
   func toolboxCategoryListViewController(
-    controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
+    _ controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
 
   /**
   Event that occurs when the category selection has been deselected.
   */
   func toolboxCategoryListViewControllerDidDeselectCategory(
-    controller: ToolboxCategoryListViewController)
+    _ controller: ToolboxCategoryListViewController)
 }
 
 // MARK: - ToolboxCategoryListViewController (Class)
@@ -39,11 +39,11 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 /**
  A view for displaying a vertical list of categories from a `Toolbox`.
  */
-public class ToolboxCategoryListViewController: UICollectionViewController {
+public final class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Orientation Enum
   public enum Orientation {
-    case Horizontal, Vertical
+    case horizontal, vertical
   }
 
   // MARK: - Properties
@@ -65,16 +65,16 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
       if selectedCategory != nil,
         let indexPath = indexPathForCategory(selectedCategory),
-        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) where !cell.selected
+        let cell = self.collectionView?.cellForItem(at: indexPath) , !cell.isSelected
       {
         // Select the new value (which automatically deselects the previous value)
-        self.collectionView?.selectItemAtIndexPath(
-          indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+        self.collectionView?.selectItem(
+          at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition())
       } else if selectedCategory == nil,
         let indexPath = indexPathForCategory(oldValue)
       {
         // No new category was selected. Just de-select the previous value.
-        self.collectionView?.deselectItemAtIndexPath(indexPath, animated: true)
+        self.collectionView?.deselectItem(at: indexPath, animated: true)
       }
     }
   }
@@ -89,10 +89,10 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
     let flowLayout = UICollectionViewFlowLayout()
     switch orientation {
-    case .Horizontal:
-      flowLayout.scrollDirection = .Horizontal
-    case .Vertical:
-      flowLayout.scrollDirection = .Vertical
+    case .horizontal:
+      flowLayout.scrollDirection = .horizontal
+    case .vertical:
+      flowLayout.scrollDirection = .vertical
     }
 
     super.init(collectionViewLayout: flowLayout)
@@ -104,7 +104,7 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Super
 
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
 
     guard let collectionView = self.collectionView else {
@@ -112,19 +112,19 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
       return
     }
 
-    collectionView.backgroundColor = UIColor.whiteColor()
-    collectionView.registerClass(ToolboxCategoryListViewCell.self,
+    collectionView.backgroundColor = UIColor.white
+    collectionView.register(ToolboxCategoryListViewCell.self,
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
     collectionView.showsVerticalScrollIndicator = false
     collectionView.showsHorizontalScrollIndicator = false
 
     // Automatically constrain this view to a certain size
-    if orientation == .Horizontal {
-      self.view.bky_addHeightConstraint(ToolboxCategoryListViewCell.CellHeight)
+    if orientation == .horizontal {
+      view.bky_addHeightConstraint(ToolboxCategoryListViewCell.CellHeight)
     } else {
       // `ToolboxCategoryListViewCell.CellHeight` is used since in the vertical orientation,
       // cells are rotated by 90 degrees
-      self.view.bky_addWidthConstraint(ToolboxCategoryListViewCell.CellHeight)
+      view.bky_addWidthConstraint(ToolboxCategoryListViewCell.CellHeight)
     }
   }
 
@@ -139,31 +139,31 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - UICollectionViewDataSource overrides
 
-  public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+  public override func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
   }
 
   public override func collectionView(
-    collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    _ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
       return toolboxLayout?.categoryLayoutCoordinators.count ?? 0
   }
 
-  public override func collectionView(collectionView: UICollectionView,
-    cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-      let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-        ToolboxCategoryListViewCell.ReusableCellIdentifier,
-        forIndexPath: indexPath) as! ToolboxCategoryListViewCell
+  public override func collectionView(_ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+      let cell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier,
+        for: indexPath) as! ToolboxCategoryListViewCell
       cell.loadCategory(categoryForIndexPath(indexPath), orientation: orientation)
-      cell.selected = (selectedCategory == cell.category)
+      cell.isSelected = (selectedCategory == cell.category)
       return cell
   }
 
   // MARK: - UICollectionViewDelegate overrides
 
   public override func collectionView(
-    collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    _ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
   {
-    let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ToolboxCategoryListViewCell
+    let cell = collectionView.cellForItem(at: indexPath) as! ToolboxCategoryListViewCell
 
     if selectedCategory == cell.category {
       // If the category has already been selected, de-select it
@@ -181,21 +181,21 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Private
 
-  private func indexPathForCategory(category: Toolbox.Category?) -> NSIndexPath? {
+  fileprivate func indexPathForCategory(_ category: Toolbox.Category?) -> IndexPath? {
     if toolboxLayout == nil || category == nil {
       return nil
     }
 
     for i in 0 ..< toolboxLayout!.categoryLayoutCoordinators.count {
       if toolboxLayout!.categoryLayoutCoordinators[i].workspaceLayout.workspace == category {
-        return NSIndexPath(forRow: i, inSection: 0)
+        return IndexPath(row: i, section: 0)
       }
     }
     return nil
   }
 
-  private func categoryForIndexPath(indexPath: NSIndexPath) -> Toolbox.Category {
-    return toolboxLayout!.categoryLayoutCoordinators[indexPath.row].workspaceLayout.workspace
+  fileprivate func categoryForIndexPath(_ indexPath: IndexPath) -> Toolbox.Category {
+    return toolboxLayout!.categoryLayoutCoordinators[(indexPath as NSIndexPath).row].workspaceLayout.workspace
       as! Toolbox.Category
   }
 }
@@ -203,15 +203,15 @@ public class ToolboxCategoryListViewController: UICollectionViewController {
 extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout {
   // MARK: - UICollectionViewDelegateFlowLayout implementation
 
-  public func collectionView(collectionView: UICollectionView,
+  public func collectionView(_ collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    sizeForItemAt indexPath: IndexPath) -> CGSize
   {
     let category = categoryForIndexPath(indexPath)
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
 
     // Flip width/height for the vertical orientation (its contents are actually rotated 90 degrees)
-    return (orientation == .Vertical) ? CGSizeMake(size.height, size.width) : size
+    return (orientation == .vertical) ? CGSize(width: size.height, height: size.width) : size
   }
 }
 
@@ -226,7 +226,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   static let ColorTagViewHeight = CGFloat(8)
   static let LabelInsets = UIEdgeInsetsMake(4, 8, 4, 8)
   static let CellHeight = CGFloat(48)
-  static let IconSize = CGSizeMake(48, 48)
+  static let IconSize = CGSize(width: 48, height: 48)
 
   /// The category this cell represents
   var category: Toolbox.Category?
@@ -244,17 +244,17 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   /// Image for the category icon
   let iconView: UIImageView = {
     let view = UIImageView()
-    view.contentMode = .ScaleAspectFit
+    view.contentMode = .scaleAspectFit
     return view
   }()
 
   /// View representing the category's color
   let colorTagView = UIView()
 
-  override var selected: Bool {
+  override var isSelected: Bool {
     didSet {
-      self.backgroundColor = selected ?
-        category?.color.colorWithAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
+      self.backgroundColor = isSelected ?
+        category?.color.withAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
     }
   }
 
@@ -273,29 +273,30 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   // MARK: - Super
 
   override func prepareForReuse() {
-    rotationView.transform = CGAffineTransformIdentity
+    rotationView.transform = CGAffineTransform.identity
     nameLabel.text = ""
     iconView.image = nil
-    colorTagView.backgroundColor = UIColor.clearColor()
-    selected = false
+    colorTagView.backgroundColor = UIColor.clear
+    isSelected = false
   }
 
   // MARK: - Private
 
   func configureSubviews() {
     self.autoresizesSubviews = true
-    self.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.translatesAutoresizingMaskIntoConstraints = true
 
     self.contentView.frame = self.bounds
-    self.contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.contentView.translatesAutoresizingMaskIntoConstraints = true
 
     // Create a view specifically dedicated to rotating its contents (rotating the contentView
     // causes problems)
     rotationView.frame =
-      CGRectMake(0, 0, self.contentView.bounds.height, self.contentView.bounds.width)
-    rotationView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+      CGRect(x: 0, y: 0,
+             width: self.contentView.bounds.height, height: self.contentView.bounds.width)
+    rotationView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     rotationView.autoresizesSubviews = true
     self.contentView.addSubview(rotationView)
 
@@ -303,30 +304,31 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     // well with `rotationView.transform`, which is required for rotating the view.
 
     // Create color tag for the top of the view
-    colorTagView.frame = CGRectMake(0, 0, rotationView.bounds.width,
-                                    ToolboxCategoryListViewCell.ColorTagViewHeight)
-    colorTagView.autoresizingMask = [.FlexibleWidth, .FlexibleBottomMargin]
+    colorTagView.frame = CGRect(x: 0, y: 0, width: rotationView.bounds.width,
+                                    height: ToolboxCategoryListViewCell.ColorTagViewHeight)
+    colorTagView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
     rotationView.addSubview(colorTagView)
 
     // Create category name label for the bottom of the view
     let labelInsets = ToolboxCategoryListViewCell.LabelInsets
-    nameLabel.frame = CGRectMake(labelInsets.left,
-                                 colorTagView.bounds.height + labelInsets.top,
-                                 rotationView.bounds.width - labelInsets.left - labelInsets.right,
-                                 rotationView.bounds.height - colorTagView.bounds.height
-                                  - labelInsets.top - labelInsets.bottom)
-    nameLabel.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    nameLabel.frame =
+      CGRect(x: labelInsets.left,
+             y: colorTagView.bounds.height + labelInsets.top,
+             width: rotationView.bounds.width - labelInsets.left - labelInsets.right,
+             height: rotationView.bounds.height - colorTagView.bounds.height
+              - labelInsets.top - labelInsets.bottom)
+    nameLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     rotationView.addSubview(nameLabel)
 
     // Create category name label for the bottom of the view
     iconView.frame = nameLabel.frame
-    iconView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    iconView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     rotationView.addSubview(iconView)
   }
 
   // MARK: - Private
 
-  func loadCategory(category: Toolbox.Category,
+  func loadCategory(_ category: Toolbox.Category,
     orientation: ToolboxCategoryListViewController.Orientation)
   {
     self.category = category
@@ -340,30 +342,30 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
 
     let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
     rotationView.center = self.contentView.center // We need the rotation to occur in the center
-    rotationView.bounds = CGRectMake(0, 0, size.width, size.height)
+    rotationView.bounds = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
-    if orientation == .Vertical {
+    if orientation == .vertical {
       // Rotate so the category appears vertically
-      rotationView.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI_2)) // Rotate -90 degrees
+      rotationView.transform = CGAffineTransform(rotationAngle: -CGFloat(M_PI_2)) // Rotate -90°
 
       // We want icons to appear right-side up, so we un-rotate them by 90 degrees
-      iconView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+      iconView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
     }
   }
 
-  static func sizeRequiredForCategory(category: Toolbox.Category) -> CGSize {
+  static func sizeRequiredForCategory(_ category: Toolbox.Category) -> CGSize {
     let size: CGSize
     if let icon = category.icon {
-      size =
-        CGSizeMake(max(icon.size.width, IconSize.width), max(icon.size.height, IconSize.height))
+      size = CGSize(width: max(icon.size.width, IconSize.width),
+                    height: max(icon.size.height, IconSize.height))
     } else {
       size = category.name.bky_singleLineSizeForFont(fontForNameLabel())
     }
 
-    return CGSizeMake(size.width + LabelInsets.left + LabelInsets.right, CellHeight)
+    return CGSize(width: size.width + LabelInsets.left + LabelInsets.right, height: CellHeight)
   }
 
   static func fontForNameLabel() -> UIFont {
-    return UIFont.systemFontOfSize(16)
+    return UIFont.systemFont(ofSize: 16)
   }
 }

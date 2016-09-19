@@ -23,21 +23,22 @@ extension String {
    Computes the size of the bounding box that would be needed to render the current string,
    constrained to a maximum width.
 
-   - Parameter attributes: A dictionary of text attributes to be applied to the string. These are the
-   same attributes that can be applied to an NSAttributedString object, but in the case of NSString
+   - Parameter attributes: A dictionary of text attributes to be applied to the string. These are
+   the same attributes that can be applied to an NSAttributedString object, but in the case of NSString
    objects, the attributes apply to the entire string, rather than ranges within the string.
    - Parameter width: The maximum width the string can occupy when rendered.
    - Returns: The size required to render the string.
    */
   public func bky_multiLineSizeWithAttributes(
-    attributes: [String : AnyObject]?, constrainedToWidth width: CGFloat) -> CGSize {
-      let boundingBox = self.boundingRectWithSize(CGSizeMake(width, CGFloat(MAXFLOAT)),
-        options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-        attributes: attributes,
-        context: nil)
+    _ attributes: [String : Any]?, constrainedToWidth width: CGFloat) -> CGSize
+  {
+    let boundingBox = self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)),
+      options: NSStringDrawingOptions.usesLineFragmentOrigin,
+      attributes: attributes,
+      context: nil)
 
-      // Use ceiling since you can't split a pixel
-      return CGSizeMake(ceil(boundingBox.size.width), ceil(boundingBox.size.height))
+    // Use ceiling since you can't split a pixel
+    return CGSize(width: ceil(boundingBox.size.width), height: ceil(boundingBox.size.height))
   }
 
   /**
@@ -48,7 +49,8 @@ extension String {
    - Parameter width: The maximum width the string can occupy when rendered.
    - Returns: The size required to render the string.
   */
-  public func bky_multiLineSizeForFont(font: UIFont, constrainedToWidth width: CGFloat) -> CGSize {
+  public func bky_multiLineSizeForFont(_ font: UIFont, constrainedToWidth width: CGFloat) -> CGSize
+  {
     let attributes = [NSFontAttributeName: font]
     return self.bky_multiLineSizeWithAttributes(attributes, constrainedToWidth: width)
   }
@@ -60,14 +62,15 @@ extension String {
    - Parameter font: The font used to render the string.
    - Returns: The size required to render the string.
    */
-  public func bky_singleLineSizeForFont(font: UIFont) -> CGSize {
+  public func bky_singleLineSizeForFont(_ font: UIFont) -> CGSize {
     let attributes = [NSFontAttributeName: font]
-    let boundingBox = self.boundingRectWithSize(CGSizeMake(CGFloat(MAXFLOAT), CGFloat(MAXFLOAT)),
-      options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+    let boundingBox = self.boundingRect(
+      with: CGSize(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)),
+      options: NSStringDrawingOptions.usesLineFragmentOrigin,
       attributes: attributes,
       context: nil)
 
     // Return ceiling since you can't split a pixel
-    return CGSizeMake(ceil(boundingBox.size.width), ceil(boundingBox.size.height))
+    return CGSize(width: ceil(boundingBox.size.width), height: ceil(boundingBox.size.height))
   }
 }

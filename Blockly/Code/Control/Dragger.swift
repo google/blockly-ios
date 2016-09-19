@@ -19,7 +19,7 @@ import Foundation
 Controller for dragging blocks around in the workspace.
 */
 @objc(BKYDragger)
-public class Dragger: NSObject {
+public final class Dragger: NSObject {
   // MARK: - Properties
 
   /// The workspace layout where blocks are being dragged
@@ -35,7 +35,7 @@ public class Dragger: NSObject {
   }
   /// Stores the data for each active drag gesture, keyed by the corresponding block view's layout
   /// uuid
-  private var _dragGestureData = [String: DragGestureData]()
+  fileprivate var _dragGestureData = [String: DragGestureData]()
 
   // MARK: - Public
 
@@ -47,10 +47,10 @@ public class Dragger: NSObject {
   - Parameter touchPosition: The initial touch position, specified in the Workspace coordinate
   system
   */
-  public func startDraggingBlockLayout(layout: BlockLayout, touchPosition: WorkspacePoint) {
+  public func startDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator,
       let connectionManager = workspaceLayoutCoordinator.connectionManager
-      where layout.block.draggable &&
+      , layout.block.draggable &&
         workspaceLayoutCoordinator.workspaceLayout
           .allVisibleBlockLayoutsInWorkspace().contains(layout) else
     {
@@ -59,7 +59,7 @@ public class Dragger: NSObject {
 
     Layout.animate {
       // Remove any existing gesture data for the layout
-      self.clearGestureDataForBlockLayout(layout)
+      clearGestureDataForBlockLayout(layout)
 
       // Disconnect this block from its previous or output connections prior to moving it
       let block = layout.block
@@ -75,7 +75,7 @@ public class Dragger: NSObject {
       layout.rootBlockGroupLayout?.dragging = true
 
       // Bring its block group layout to the front
-      self.workspaceLayoutCoordinator?.workspaceLayout.bringBlockGroupLayoutToFront(
+      workspaceLayoutCoordinator.workspaceLayout.bringBlockGroupLayoutToFront(
         layout.rootBlockGroupLayout)
 
       // Start a new connection group for this block group layout
@@ -89,7 +89,7 @@ public class Dragger: NSObject {
         connectionGroup: newConnectionGroup
       )
 
-      self._dragGestureData[layout.uuid] = dragGestureData
+      _dragGestureData[layout.uuid] = dragGestureData
     }
   }
 
@@ -100,7 +100,7 @@ public class Dragger: NSObject {
   - Parameter touchPosition: The current touch position, specified in the Workspace coordinate
   system
   */
-  public func continueDraggingBlockLayout(layout: BlockLayout, touchPosition: WorkspacePoint) {
+  public func continueDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
     guard let gestureData = _dragGestureData[layout.uuid] else {
       return
     }
@@ -132,7 +132,7 @@ public class Dragger: NSObject {
 
   - Parameter layout: The given block layout
   */
-  public func finishDraggingBlockLayout(layout: BlockLayout) {
+  public func finishDraggingBlockLayout(_ layout: BlockLayout) {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator else {
       return
     }
@@ -143,15 +143,15 @@ public class Dragger: NSObject {
       layout.rootBlockGroupLayout?.dragging = false
 
       // If this block can be connected to anything, connect it.
-      if let drag = self._dragGestureData[layout.uuid],
-        let connectionPair = self.findBestConnectionForDrag(drag)
+      if let drag = _dragGestureData[layout.uuid],
+        let connectionPair = findBestConnectionForDrag(drag)
       {
         workspaceLayoutCoordinator.connectPair(connectionPair)
 
-        self.clearGestureDataForBlockLayout(layout,
+        clearGestureDataForBlockLayout(layout,
           moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
       } else {
-        self.clearGestureDataForBlockLayout(layout)
+        clearGestureDataForBlockLayout(layout)
 
         // Update the workspace canvas size since it may have changed (this was purposely skipped
         // during the drag for performance reasons, so we have to update it now). Also, there is
@@ -165,8 +165,8 @@ public class Dragger: NSObject {
 
       // Update the highlighted connections for all other drags (due to potential changes in block
       // sizes)
-      for (_, gestureData) in self._dragGestureData {
-        self.updateHighlightedConnectionForDrag(gestureData)
+      for (_, gestureData) in _dragGestureData {
+        updateHighlightedConnectionForDrag(gestureData)
       }
     }
   }
@@ -180,7 +180,7 @@ public class Dragger: NSObject {
   nil, the connection manager's `mainGroup` is used.
   */
   public func clearGestureDataForBlockLayout(
-    layout: BlockLayout, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
+    _ layout: BlockLayout, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
   {
     clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: group)
   }
@@ -195,7 +195,7 @@ public class Dragger: NSObject {
    - Parameter connectionGroup: The new connection group to move the connections to. If this is
    nil, the connection manager's `mainGroup` is used.
    */
-  private func clearGestureData(
+  fileprivate func clearGestureData(
     forUUID uuid: String, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
   {
     guard let gestureData = _dragGestureData[uuid] else {
@@ -215,7 +215,7 @@ public class Dragger: NSObject {
 
   - Parameter drag: The `DragGestureData` that is being tracked for the block.
   */
-  private func updateHighlightedConnectionForDrag(drag: DragGestureData) {
+  fileprivate func updateHighlightedConnectionForDrag(_ drag: DragGestureData) {
     let connectionPair = findBestConnectionForDrag(drag)
     if connectionPair?.target != drag.highlightedConnection {
       // The highlight has changed, remove the old highlight
@@ -236,7 +236,7 @@ public class Dragger: NSObject {
 
   - Parameter drag: The drag.
   */
-  private func removeHighlightedConnectionForDrag(drag: DragGestureData) {
+  fileprivate func removeHighlightedConnectionForDrag(_ drag: DragGestureData) {
     if let blockLayout = drag.blockLayout {
       drag.highlightedConnection?.removeHighlightForBlock(blockLayout.block)
       drag.highlightedConnection = nil
@@ -246,7 +246,7 @@ public class Dragger: NSObject {
   /**
   Returns the most suitable connection pair for a given drag, if one exists.
   */
-  private func findBestConnectionForDrag(drag: DragGestureData)
+  fileprivate func findBestConnectionForDrag(_ drag: DragGestureData)
     -> ConnectionManager.ConnectionPair?
   {
     if let workspaceLayout = workspaceLayoutCoordinator?.workspaceLayout,
@@ -267,23 +267,23 @@ Stores relevant data for the lifetime of a single drag.
 */
 private class DragGestureData {
   /// The block layout that is being dragged
-  private weak var blockLayout: BlockLayout?
+  fileprivate weak var blockLayout: BlockLayout?
 
   /// Stores the block layout's starting position when the drag began, in Workspace coordinates
-  private let blockLayoutStartPosition: WorkspacePoint
+  fileprivate let blockLayoutStartPosition: WorkspacePoint
 
   /// Stores the starting touch position when the drag began, in Workspace coordinates
-  private let touchStartPosition: WorkspacePoint
+  fileprivate let touchStartPosition: WorkspacePoint
 
   /// Group of connections from the connection manager at the beginning of the pan gesture.
-  private let connectionGroup: ConnectionManager.Group
+  fileprivate let connectionGroup: ConnectionManager.Group
 
   /// Stores the current connection that is being highlighted because of this drag gesture
-  private weak var highlightedConnection: Connection?
+  fileprivate weak var highlightedConnection: Connection?
 
   // MARK: - Initializers
 
-  private init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
+  fileprivate init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
     touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group) {
       self.blockLayout = blockLayout
       self.blockLayoutStartPosition = blockLayoutStartPosition

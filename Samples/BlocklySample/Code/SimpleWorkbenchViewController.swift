@@ -20,12 +20,12 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Super
 
   /// Factory that produces block instances from a parsed json file
-  private var _blockFactory: BlockFactory!
+  var _blockFactory: BlockFactory!
 
   // MARK: - Initializers
 
   init() {
-    super.init(style: .Default)
+    super.init(style: .defaultStyle)
     commonInit()
   }
 
@@ -50,7 +50,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     super.viewDidLoad()
 
     // Don't allow the navigation controller bar cover this view controller
-    self.edgesForExtendedLayout = .None
+    self.edgesForExtendedLayout = UIRectEdge()
     self.navigationItem.title = "Simple Workbench Demo"
 
     // Load data
@@ -58,7 +58,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     loadToolbox()
   }
 
-  override func prefersStatusBarHidden() -> Bool {
+  override var prefersStatusBarHidden : Bool {
     return true
   }
 
@@ -71,7 +71,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       // Add some blocks to the workspace
       // try addChainedBlocksToWorkspace(workspace)
-      // addSpaghettiBlocksToWorkspace(workspace)
+      try addSpaghettiBlocksToWorkspace(workspace)
 
       try loadWorkspace(workspace)
     } catch let error as NSError {
@@ -85,58 +85,59 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let toolbox = Toolbox()
 
       let loopIcon = UIImage(named: "icon_loop")
-      let loops = toolbox.addCategory("Loops", color: UIColor.yellowColor(), icon: loopIcon)
+      let loops = toolbox.addCategory("Loops", color: UIColor.yellow, icon: loopIcon)
       if let repeatBlock = try _blockFactory.buildBlock("controls_repeat_ext"),
-        repeatBlockInput = repeatBlock.firstInputWithName("TIMES"),
-        numberBlock = try _blockFactory.buildBlock("non_negative_integer", shadow: true)
+        let repeatBlockInput = repeatBlock.firstInputWithName("TIMES"),
+        let numberBlock = try _blockFactory.buildBlock("non_negative_integer", shadow: true)
       {
         // Add shadow block to repeat loop
         try repeatBlockInput.connection?.connectShadowTo(numberBlock.outputConnection)
         try loops.addBlockTree(repeatBlock)
       }
-      try addBlock("controls_whileUntil", toCategory: loops)
+      try addBlock("controls_whileUntil", toWorkspace: loops)
 
       let prevNextIcon = UIImage(named: "icon_prevnext")
       let prevNextCategory =
-        toolbox.addCategory("Prev / Next", color: UIColor.greenColor(), icon: prevNextIcon)
-      try addBlock("statement_no_input", toCategory: prevNextCategory)
+        toolbox.addCategory("Prev / Next", color: UIColor.green, icon: prevNextIcon)
+      try addBlock("statement_no_input", toWorkspace: prevNextCategory)
       if let statementValueInputBlock = try _blockFactory.buildBlock("statement_value_input"),
-        noNextBlock = try _blockFactory.buildBlock("statement_value_input", shadow: true),
-        noNextBlock2 = try _blockFactory.buildBlock("statement_no_input", shadow: true),
-        simpleInputOutput = try _blockFactory.buildBlock("simple_input_output", shadow: true)
+        let noNextBlock = try _blockFactory.buildBlock("statement_value_input", shadow: true),
+        let noNextBlock2 = try _blockFactory.buildBlock("statement_no_input", shadow: true),
+        let simpleInputOutput = try _blockFactory.buildBlock("simple_input_output", shadow: true)
       {
         // Add shadow block to next block
         try statementValueInputBlock.nextConnection?.connectShadowTo(noNextBlock.previousConnection)
-        try noNextBlock.lastInputValueConnectionInChain()?.connectShadowTo(simpleInputOutput.outputConnection)
+        try noNextBlock.lastInputValueConnectionInChain()?.connectShadowTo(
+          simpleInputOutput.outputConnection)
         try noNextBlock.nextConnection?.connectShadowTo(noNextBlock2.previousConnection)
         try prevNextCategory.addBlockTree(statementValueInputBlock)
       }
-      try addBlock("statement_multiple_value_input", toCategory: prevNextCategory)
-      try addBlock("statement_no_next", toCategory: prevNextCategory)
-      try addBlock("statement_statement_input", toCategory: prevNextCategory)
-      try addBlock("block_statement", toCategory: prevNextCategory)
+      try addBlock("statement_multiple_value_input", toWorkspace: prevNextCategory)
+      try addBlock("statement_no_next", toWorkspace: prevNextCategory)
+      try addBlock("statement_statement_input", toWorkspace: prevNextCategory)
+      try addBlock("block_statement", toWorkspace: prevNextCategory)
 
       let blockIcon = UIImage(named: "icon_block")
-      let random = toolbox.addCategory("Random", color: UIColor.orangeColor(), icon: blockIcon)
-      try addBlock("web_image", toCategory: random)
-      try addBlock("local_image", toCategory: random)
-      try addBlock("angle", toCategory: random)
-      try addBlock("checkbox", toCategory: random)
-      try addBlock("date_picker", toCategory: random)
-      try addBlock("colour_picker", toCategory: random)
-      try addBlock("test_dropdown", toCategory: random)
-      try addBlock("text_input_block", toCategory: random)
-      try addBlock("any_number", toCategory: random)
-      try addBlock("currency", toCategory: random)
-      try addBlock("constrained_decimal", toCategory: random)
+      let random = toolbox.addCategory("Random", color: UIColor.orange, icon: blockIcon)
+      try addBlock("web_image", toWorkspace: random)
+      try addBlock("local_image", toWorkspace: random)
+      try addBlock("angle", toWorkspace: random)
+      try addBlock("checkbox", toWorkspace: random)
+      try addBlock("date_picker", toWorkspace: random)
+      try addBlock("colour_picker", toWorkspace: random)
+      try addBlock("test_dropdown", toWorkspace: random)
+      try addBlock("text_input_block", toWorkspace: random)
+      try addBlock("any_number", toWorkspace: random)
+      try addBlock("currency", toWorkspace: random)
+      try addBlock("constrained_decimal", toWorkspace: random)
       random.addGap(40)
-      try addBlock("variables_get", toCategory: random)
-      try addBlock("variables_set", toCategory: random)
+      try addBlock("variables_get", toWorkspace: random)
+      try addBlock("variables_set", toWorkspace: random)
       random.addGap(40)
-      try addBlock("simple_input_output", toCategory: random)
-      try addBlock("multiple_input_output", toCategory: random)
-      try addBlock("output_no_input", toCategory: random)
-      try addBlock("block_output", toCategory: random)
+      try addBlock("simple_input_output", toWorkspace: random)
+      try addBlock("multiple_input_output", toWorkspace: random)
+      try addBlock("output_no_input", toWorkspace: random)
+      try addBlock("block_output", toWorkspace: random)
 
       try loadToolbox(toolbox)
     } catch let error as NSError {
@@ -144,13 +145,16 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  private func addBlock(blockName: String, toCategory category: Toolbox.Category) throws {
+  @discardableResult
+  private func addBlock(_ blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
     if let block = try _blockFactory.buildBlock(blockName) {
-      try category.addBlockTree(block)
+      try workspace.addBlockTree(block)
+      return block
     }
+    return nil
   }
 
-  private func addChainedBlocksToWorkspace(workspace: Workspace) throws {
+  private func addChainedBlocksToWorkspace(_ workspace: Workspace) throws {
     if let block1 = try buildChainedStatementBlock(workspace) {
       if let block2 = try buildOutputBlock(workspace) {
         try block1.inputs[1].connection?.connectTo(block2.outputConnection)
@@ -166,30 +170,30 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  private func addToolboxBlocksToWorkspace(workspace: Workspace) {
+  private func addToolboxBlocksToWorkspace(_ workspace: Workspace) throws {
     let blocks = ["controls_repeat_ext", "controls_whileUntil", "math_number",
       "simple_input_output", "multiple_input_output", "statement_no_input", "statement_value_input",
       "statement_multiple_value_input", "statement_statement_input", "output_no_input",
       "statement_no_next", "block_output", "block_statement"]
 
     for block in blocks {
-      try! _blockFactory.addBlock(block, toWorkspace: workspace)
+      try addBlock(block, toWorkspace: workspace)
     }
   }
 
-  private func addSpaghettiBlocksToWorkspace(workspace: Workspace) {
-    buildSpaghettiBlock(workspace, level: 4, blocksPerLevel: 5)
+  private func addSpaghettiBlocksToWorkspace(_ workspace: Workspace) throws {
+    try buildSpaghettiBlock(workspace, level: 4, blocksPerLevel: 5)
   }
 
-  private func buildOutputBlock(workspace: Workspace) throws -> Block? {
-    return try _blockFactory.addBlock("block_output", toWorkspace: workspace)
+  private func buildOutputBlock(_ workspace: Workspace) throws -> Block? {
+    return try addBlock("block_output", toWorkspace: workspace)
   }
 
-  private func buildStatementBlock(workspace: Workspace) throws -> Block? {
-    return try _blockFactory.addBlock("block_statement", toWorkspace: workspace)
+  private func buildStatementBlock(_ workspace: Workspace) throws -> Block? {
+    return try addBlock("block_statement", toWorkspace: workspace)
   }
 
-  private func buildChainedStatementBlock(workspace: Workspace) throws -> Block? {
+  private func buildChainedStatementBlock(_ workspace: Workspace) throws -> Block? {
     if let block = try buildStatementBlock(workspace) {
       var previousBlock = block
       for _ in 0 ..< 100 {
@@ -205,7 +209,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     return nil
   }
 
-  private func buildSpaghettiBlock(workspace: Workspace, level: Int, blocksPerLevel: Int) -> Block?
+  @discardableResult
+  private func buildSpaghettiBlock(_ workspace: Workspace, level: Int, blocksPerLevel: Int) throws
+    -> Block?
   {
     if level <= 0 {
       return nil
@@ -214,15 +220,15 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     var previousBlock: Block? = nil
 
     for i in 0 ..< blocksPerLevel {
-      if let nextBlock = try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+      if let nextBlock = try addBlock("statement_statement_input", toWorkspace: workspace)
       {
         if let spaghettiBlock =
-          buildSpaghettiBlock(workspace, level: level - 1, blocksPerLevel: blocksPerLevel)
+          try buildSpaghettiBlock(workspace, level: level - 1, blocksPerLevel: blocksPerLevel)
         {
-          try! nextBlock.inputs[0].connection?.connectTo(spaghettiBlock.previousConnection)
+          try nextBlock.inputs[0].connection?.connectTo(spaghettiBlock.previousConnection)
         }
 
-        try! previousBlock?.nextConnection?.connectTo(nextBlock.previousConnection)
+        try previousBlock?.nextConnection?.connectTo(nextBlock.previousConnection)
         if i == 0 {
           firstBlock = nextBlock
         }

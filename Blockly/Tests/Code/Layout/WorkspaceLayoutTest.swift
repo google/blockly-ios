@@ -19,18 +19,20 @@ import XCTest
 class WorkspaceLayoutTest: XCTestCase {
 
   var _workspaceLayout: WorkspaceLayout!
+  var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator!
   var _blockFactory: BlockFactory!
   var _layoutFactory: LayoutFactory!
+  var _layoutBuilder: LayoutBuilder!
 
   // MARK: - Setup
 
   override func setUp() {
     let workspace = Workspace()
     _layoutFactory = DefaultLayoutFactory()
-    _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
-      engine: DefaultLayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: _layoutFactory))
+    _workspaceLayout = WorkspaceLayout(workspace: workspace, engine: DefaultLayoutEngine())
+    _layoutBuilder = LayoutBuilder(layoutFactory: _layoutFactory)
     _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+      jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
   }
 
   // MARK: - Tests
@@ -59,10 +61,10 @@ class WorkspaceLayoutTest: XCTestCase {
     }
 
     // Build the layout tree
-    do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
-    } catch let error as NSError {
-      XCTFail("Couldn't build the layout tree: \(error)")
+    let workspaceLayoutCoordinator = BKYAssertDoesNotThrow {
+      try WorkspaceLayoutCoordinator(
+        workspaceLayout: _workspaceLayout, layoutBuilder: _layoutBuilder,
+        connectionManager: ConnectionManager())
     }
 
     // Manually walk through tree to get all block layout descendants for workspace layout
@@ -78,14 +80,29 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Connect some blocks together
     do {
-      try blockInputOutput.inputs[0].connection?.connectTo(
-        blockMathNumber.outputConnection)
+      if let conn1 = blockInputOutput.inputs[0].connection,
+        let conn2 = blockMathNumber.outputConnection
+      {
+        try workspaceLayoutCoordinator?.connect(conn1, conn2)
+      } else {
+        XCTFail("Couldn't locate connections")
+      }
 
-      try blockStatementValueInput.inputs[0].connection?.connectTo(
-        blockMultipleInputOutput.outputConnection)
+      if let conn1 = blockStatementValueInput.inputs[0].connection,
+        let conn2 = blockMultipleInputOutput.outputConnection
+      {
+        try workspaceLayoutCoordinator?.connect(conn1, conn2)
+      } else {
+        XCTFail("Couldn't locate connections")
+      }
 
-      try blockStatementStatementInput.nextConnection?.connectTo(
-        blockStatementValueInput.previousConnection)
+      if let conn1 = blockStatementStatementInput.nextConnection,
+        let conn2 = blockStatementValueInput.previousConnection
+      {
+        try workspaceLayoutCoordinator?.connect(conn1, conn2)
+      } else {
+        XCTFail("Couldn't locate connections")
+      }
     } catch let error as NSError {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
@@ -112,7 +129,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Build the layout tree
     BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTree(self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(_workspaceLayout)
     }
 
     let blockLayout = block?.layout
@@ -164,7 +181,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Remove them
     while allBlockGroupLayouts.count > 0 {
-      let blockGroupLayout = allBlockGroupLayouts.removeAtIndex(0)
+      let blockGroupLayout = allBlockGroupLayouts.remove(at: 0)
       _workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
       XCTAssertEqual(allBlockGroupLayouts.count, _workspaceLayout.blockGroupLayouts.count)
       // The block group's parent should be nil now
@@ -217,8 +234,8 @@ class WorkspaceLayoutTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  func isHighestBlockGroupLayout(
-    blockGroupLayout: BlockGroupLayout, inWorkspaceLayout workspaceLayout: WorkspaceLayout) -> Bool
+  func isHighestBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout,
+                                 inWorkspaceLayout workspaceLayout: WorkspaceLayout) -> Bool
   {
     for aBlockGroupLayout in workspaceLayout.blockGroupLayouts {
       if aBlockGroupLayout != blockGroupLayout &&
@@ -232,7 +249,7 @@ class WorkspaceLayoutTest: XCTestCase {
     return true
   }
 
-  func treeTraversalOfBlockLayoutsUnderWorkspaceLayout(workspaceLayout: WorkspaceLayout)
+  func treeTraversalOfBlockLayoutsUnderWorkspaceLayout(_ workspaceLayout: WorkspaceLayout)
     -> [BlockLayout]
   {
     var blockLayouts = [BlockLayout]()

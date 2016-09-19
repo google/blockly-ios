@@ -19,7 +19,7 @@ import UIKit
  Abstract class for storing information on how to render and position an `Input` on-screen.
  */
 @objc(BKYInputLayout)
-public class InputLayout: Layout {
+open class InputLayout: Layout {
   // MARK: - Properties
 
   /// The target `Input` to layout
@@ -31,23 +31,23 @@ public class InputLayout: Layout {
   }
 
   /// The corresponding `BlockGroupLayout` object seeded by `self.input.connectedBlock`.
-  public private(set) final var blockGroupLayout: BlockGroupLayout!
+  public fileprivate(set) final var blockGroupLayout: BlockGroupLayout!
 
   /// The corresponding layouts for `self.input.fields[]`
-  public private(set) final var fieldLayouts = [FieldLayout]()
+  public fileprivate(set) final var fieldLayouts = [FieldLayout]()
 
   /// Flag for if this input is the first child in its parent's block layout
-  public var isFirstChild: Bool {
-    return parentBlockLayout?.inputLayouts.first == self ?? false
+  open var isFirstChild: Bool {
+    return parentBlockLayout?.inputLayouts.first == self
   }
 
   /// Flag for if this input is the last child in its parent's block layout
-  public var isLastChild: Bool {
-    return parentBlockLayout?.inputLayouts.last == self ?? false
+  open var isLastChild: Bool {
+    return parentBlockLayout?.inputLayouts.last == self
   }
 
   /// Flag for if its parent block renders its inputs inline
-  public var isInline: Bool {
+  open var isInline: Bool {
     return parentBlockLayout?.block.inputsInline ?? false
   }
 
@@ -71,7 +71,7 @@ public class InputLayout: Layout {
 
   - Parameter fieldLayout: The `FieldLayout` to append.
   */
-  public func appendFieldLayout(fieldLayout: FieldLayout) {
+  open func appendFieldLayout(_ fieldLayout: FieldLayout) {
     fieldLayouts.append(fieldLayout)
     adoptChildLayout(fieldLayout)
   }
@@ -82,8 +82,9 @@ public class InputLayout: Layout {
   - Parameter index: The index to remove from `self.fieldLayouts`.
   - Returns: The `FieldLayout` that was removed.
   */
-  public func removeFieldLayoutAtIndex(index: Int) -> FieldLayout {
-    let fieldLayout = fieldLayouts.removeAtIndex(index)
+  @discardableResult
+  open func removeFieldLayoutAtIndex(_ index: Int) -> FieldLayout {
+    let fieldLayout = fieldLayouts.remove(at: index)
     removeChildLayout(fieldLayout)
     return fieldLayout
   }
@@ -94,7 +95,7 @@ public class InputLayout: Layout {
 
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset(updateLayout updateLayout: Bool) {
+  open func reset(updateLayout: Bool) {
     while fieldLayouts.count > 0 {
       removeFieldLayoutAtIndex(0)
     }

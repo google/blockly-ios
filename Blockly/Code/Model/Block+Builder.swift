@@ -20,7 +20,7 @@ extension Block {
    Builder for creating instances of `Block`.
    */
   @objc(BKYBlockBuilder)
-  public class Builder: NSObject {
+  public final class Builder: NSObject {
     // MARK: - Static Properties
     private static let CONFLICTING_CONNECTIONS_ERROR =
     "Block cannot have both an output and a either a previous or next statement."
@@ -31,8 +31,8 @@ extension Block {
 
     /// The name of the block. Defaults to `""`.
     public var name: String = ""
-    /// The color of the block. Defaults to `UIColor.clearColor()`.
-    public var color: UIColor = UIColor.clearColor()
+    /// The color of the block. Defaults to `UIColor.clear`.
+    public var color: UIColor = UIColor.clear
     /// Specifies the output connection is enabled. Defaults to `false`.
     public private(set) var outputConnectionEnabled: Bool = false
     /// Specifies the output type checks. Defaults to `nil`.
@@ -107,7 +107,7 @@ extension Block {
       previousConnectionEnabled = block.previousConnection != nil ? true : false
       previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
-      inputBuilders.appendContentsOf(block.inputs.map({ Input.Builder(input: $0) }))
+      inputBuilders.append(contentsOf: block.inputs.map({ Input.Builder(input: $0) }))
     }
 
     // MARK: - Public
@@ -123,23 +123,23 @@ extension Block {
     `BlocklyError`: Occurs if the block is missing any required pieces.
     - Returns: A new block.
     */
-    public func build(uuid uuid: String? = nil, shadow: Bool = false) throws -> Block {
+    public func build(uuid: String? = nil, shadow: Bool = false) throws -> Block {
       if name == "" {
-        throw BlocklyError(.InvalidBlockDefinition, "Block name may not be empty")
+        throw BlocklyError(.invalidBlockDefinition, "Block name may not be empty")
       }
       var outputConnection: Connection?
       var nextConnection: Connection?
       var previousConnection: Connection?
       if outputConnectionEnabled {
-        outputConnection = Connection(type: .OutputValue)
+        outputConnection = Connection(type: .outputValue)
         outputConnection!.typeChecks = outputConnectionTypeChecks
       }
       if nextConnectionEnabled {
-        nextConnection = Connection(type: .NextStatement)
+        nextConnection = Connection(type: .nextStatement)
         nextConnection!.typeChecks = nextConnectionTypeChecks
       }
       if previousConnectionEnabled {
-        previousConnection = Connection(type: .PreviousStatement)
+        previousConnection = Connection(type: .previousStatement)
         previousConnection!.typeChecks = previousConnectionTypeChecks
       }
       let inputs = inputBuilders.map({ $0.build() })
@@ -163,9 +163,9 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has a next or previous connection.
      */
-    public func setOutputConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setOutputConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
-        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.outputConnectionEnabled = enabled
       self.outputConnectionTypeChecks = typeChecks
@@ -180,9 +180,9 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has an output connection.
      */
-    public func setNextConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setNextConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
-        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.nextConnectionEnabled = enabled
       self.nextConnectionTypeChecks = typeChecks
@@ -197,9 +197,9 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has an output connection.
      */
-    public func setPreviousConnectionEnabled(enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setPreviousConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
-        throw BlocklyError(.InvalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
+        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
       self.previousConnectionEnabled = enabled
       self.previousConnectionTypeChecks = typeChecks

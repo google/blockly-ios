@@ -20,7 +20,7 @@ extension Input {
   Builder for creating instances of `Input`.
   */
   @objc(BKYInputBuilder)
-  public class Builder: NSObject {
+  public final class Builder: NSObject {
     // MARK: - Static Properties
 
     // MARK: - Properties
@@ -34,9 +34,9 @@ extension Input {
     /// Specifies whether this `Input` is visible. Defaults to `true`.
     public var visible: Bool = true
     /// Specifies the alignment for the `Input`. Defaults to `BKYInputAlignment.Left`.
-    public var alignment: BKYInputAlignment = BKYInputAlignment.Left
+    public var alignment: BKYInputAlignment = BKYInputAlignment.left
     /// A list of `Field` objects for the `Input`. Defaults to `[]`.
-    public private(set) var fields: [Field] = []
+    public fileprivate(set) var fields: [Field] = []
 
     // MARK: - Initializers
 
@@ -93,7 +93,7 @@ extension Input {
 
     - Parameter field: The `Field` to copy and append.
     */
-    public func appendField(field: Field) {
+    public func appendField(_ field: Field) {
       appendFields([field])
     }
 
@@ -102,8 +102,8 @@ extension Input {
 
     - Parameter fields: The list of `Field`'s to copy and append.
     */
-    public func appendFields(fields: [Field]) {
-      self.fields.appendContentsOf(fields.map({ $0.copyField()}))
+    public func appendFields(_ fields: [Field]) {
+      self.fields.append(contentsOf: fields.map({ $0.copyField()}))
     }
   }
 }

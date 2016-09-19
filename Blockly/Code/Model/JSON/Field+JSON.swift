@@ -19,38 +19,38 @@ extension Field {
   // MARK: - Static Properties
 
   // Field types
-  private static let FIELD_TYPE_ANGLE = "field_angle"
-  private static let FIELD_TYPE_CHECKBOX = "field_checkbox"
+  fileprivate static let FIELD_TYPE_ANGLE = "field_angle"
+  fileprivate static let FIELD_TYPE_CHECKBOX = "field_checkbox"
   // To maintain compatibility with Web Blockly, this value is spelled as "field_colour" and not
   // "field_color"
-  private static let FIELD_TYPE_COLOR = "field_colour"
-  private static let FIELD_TYPE_DATE = "field_date"
-  private static let FIELD_TYPE_DROPDOWN = "field_dropdown"
-  private static let FIELD_TYPE_IMAGE = "field_image"
-  private static let FIELD_TYPE_INPUT = "field_input"
-  private static let FIELD_TYPE_LABEL = "field_label"
-  private static let FIELD_TYPE_NUMBER = "field_number"
-  private static let FIELD_TYPE_VARIABLE = "field_variable"
+  fileprivate static let FIELD_TYPE_COLOR = "field_colour"
+  fileprivate static let FIELD_TYPE_DATE = "field_date"
+  fileprivate static let FIELD_TYPE_DROPDOWN = "field_dropdown"
+  fileprivate static let FIELD_TYPE_IMAGE = "field_image"
+  fileprivate static let FIELD_TYPE_INPUT = "field_input"
+  fileprivate static let FIELD_TYPE_LABEL = "field_label"
+  fileprivate static let FIELD_TYPE_NUMBER = "field_number"
+  fileprivate static let FIELD_TYPE_VARIABLE = "field_variable"
 
   // JSON parameters
-  private static let PARAMETER_ALT_TEXT = "alt"
-  private static let PARAMETER_ANGLE = "angle"
-  private static let PARAMETER_CHECKED = "checked"
+  fileprivate static let PARAMETER_ALT_TEXT = "alt"
+  fileprivate static let PARAMETER_ANGLE = "angle"
+  fileprivate static let PARAMETER_CHECKED = "checked"
   // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
-  private static let PARAMETER_COLOR = "colour"
-  private static let PARAMETER_DATE = "date"
-  private static let PARAMETER_HEIGHT = "height"
-  private static let PARAMETER_IMAGE_URL = "src"
-  private static let PARAMETER_MINIMUM_VALUE = "min"
-  private static let PARAMETER_MAXIMUM_VALUE = "max"
-  private static let PARAMETER_NAME = "name"
-  private static let PARAMETER_OPTIONS = "options"
-  private static let PARAMETER_PRECISION = "precision"
-  private static let PARAMETER_TEXT = "text"
-  private static let PARAMETER_TYPE = "type"
-  private static let PARAMETER_VALUE = "value"
-  private static let PARAMETER_VARIABLE = "variable"
-  private static let PARAMETER_WIDTH = "width"
+  fileprivate static let PARAMETER_COLOR = "colour"
+  fileprivate static let PARAMETER_DATE = "date"
+  fileprivate static let PARAMETER_HEIGHT = "height"
+  fileprivate static let PARAMETER_IMAGE_URL = "src"
+  fileprivate static let PARAMETER_MINIMUM_VALUE = "min"
+  fileprivate static let PARAMETER_MAXIMUM_VALUE = "max"
+  fileprivate static let PARAMETER_NAME = "name"
+  fileprivate static let PARAMETER_OPTIONS = "options"
+  fileprivate static let PARAMETER_PRECISION = "precision"
+  fileprivate static let PARAMETER_TEXT = "text"
+  fileprivate static let PARAMETER_TYPE = "type"
+  fileprivate static let PARAMETER_VALUE = "value"
+  fileprivate static let PARAMETER_VARIABLE = "variable"
+  fileprivate static let PARAMETER_WIDTH = "width"
 
   // MARK: - Internal
 
@@ -63,10 +63,10 @@ extension Field {
   - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
-  internal static func fieldFromJSON(json: [String: AnyObject]) throws -> Field? {
+  internal static func fieldFromJSON(_ json: [String: Any]) throws -> Field? {
     let type = json[PARAMETER_TYPE] as? String ?? ""
     if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
-      return try creationHandler(json: json)
+      return try creationHandler(json)
     } else {
       return nil
     }
@@ -78,7 +78,7 @@ extension Field {
    Manages the registration of fields.
    */
   @objc(BKYFieldJSONRegistry)
-  public class JSONRegistry: NSObject {
+  public final class JSONRegistry: NSObject {
     // MARK: - Static Properties
 
     /// Shared instance.
@@ -87,15 +87,15 @@ extension Field {
     // MARK: - Closures
 
     /// Callback for creating a Field instance from JSON
-    public typealias CreationHandler = (json: [String: AnyObject]) throws -> Field
+    public typealias CreationHandler = (_ json: [String: Any]) throws -> Field
 
     // MARK: - Properties
 
     /// Dictionary mapping JSON field types to its creation handler.
-    private var _registry = [String: CreationHandler]()
+    fileprivate var _registry = [String: CreationHandler]()
     public subscript(key: String) -> CreationHandler? {
-      get { return _registry[key.lowercaseString] }
-      set { _registry[key.lowercaseString] = newValue }
+      get { return _registry[key.lowercased()] }
+      set { _registry[key.lowercased()] = newValue }
     }
 
     // MARK: - Initializers
@@ -108,7 +108,7 @@ extension Field {
 
       // Angle
       registerType(FIELD_TYPE_ANGLE) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldAngle(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           angle: (json[PARAMETER_ANGLE] as? Int ?? 90))
@@ -116,7 +116,7 @@ extension Field {
 
       // Checkbox
       registerType(FIELD_TYPE_CHECKBOX) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldCheckbox(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           checked: (json[PARAMETER_CHECKED] as? Bool ?? true))
@@ -124,16 +124,16 @@ extension Field {
 
       // Color
       registerType(FIELD_TYPE_COLOR) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         let color = ColorHelper.colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
         return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          color: (color ?? UIColor.redColor()))
+          color: (color ?? UIColor.red))
       }
 
       // Date
       registerType(FIELD_TYPE_DATE) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldDate(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           stringDate: (json[PARAMETER_DATE] as? String ?? ""))
@@ -141,14 +141,14 @@ extension Field {
 
       // Dropdown
       registerType(FIELD_TYPE_DROPDOWN) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         // Options should be an array of string arrays.
         // eg. [["Name 1", "Value 1"], ["Name 2", "Value 2"]]
         let options = json[PARAMETER_OPTIONS] as? Array<[String]> ?? []
 
         // Check that all arrays contain exactly two values and that the second value is not empty
         if (options.filter { ($0.count != 2) || ($0[1] == "") }.count > 0) {
-          throw BlocklyError(.InvalidBlockDefinition, "Each dropdown field option must contain " +
+          throw BlocklyError(.invalidBlockDefinition, "Each dropdown field option must contain " +
             "exactly two String values and the second value must not be empty.")
         }
 
@@ -163,20 +163,20 @@ extension Field {
 
       // Image
       registerType(FIELD_TYPE_IMAGE) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldImage(
           name: (json[PARAMETER_NAME] as? String ?? ""),
           imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
             "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
-          size: CGSizeMake(
-            CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
-            CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
+          size: CGSize(
+            width: CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
+            height: CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
           altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))
       }
 
       // Input
       registerType(FIELD_TYPE_INPUT) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldInput(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           text: (json[PARAMETER_TEXT] as? String ?? "default"))
@@ -184,7 +184,7 @@ extension Field {
 
       // Label
       registerType(FIELD_TYPE_LABEL) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldLabel(
           name: (json[PARAMETER_NAME] as? String ?? ""),
           text: (json[PARAMETER_TEXT] as? String ?? ""))
@@ -192,12 +192,12 @@ extension Field {
 
       // Number
       registerType(FIELD_TYPE_NUMBER) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
 
-        let value = (json[PARAMETER_VALUE] as? Double) ?? 0.0
-        let minimum = json[PARAMETER_MINIMUM_VALUE] as? Double
-        let maximum = json[PARAMETER_MAXIMUM_VALUE] as? Double
-        let precision = json[PARAMETER_PRECISION] as? Double
+        let value = JSONRegistry.parseDouble(json[PARAMETER_VALUE]) ?? 0.0
+        let minimum = JSONRegistry.parseDouble(json[PARAMETER_MINIMUM_VALUE])
+        let maximum = JSONRegistry.parseDouble(json[PARAMETER_MAXIMUM_VALUE])
+        let precision = JSONRegistry.parseDouble(json[PARAMETER_PRECISION])
 
         let fieldNumber = FieldNumber(name: (json[PARAMETER_NAME] as? String ?? ""), value: value)
         try fieldNumber.setConstraints(minimum: minimum, maximum: maximum, precision: precision)
@@ -206,7 +206,7 @@ extension Field {
 
       // Variable
       registerType(FIELD_TYPE_VARIABLE) {
-        (json: [String: AnyObject]) throws -> Field in
+        (json: [String: Any]) throws -> Field in
         return FieldVariable(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           variable: (json[PARAMETER_VARIABLE] as? String ?? "item"))
@@ -221,7 +221,7 @@ extension Field {
     - Parameter type: The key for a field type.
     - Parameter creationHandler: The `CreationHandler` to use for this field key.
     */
-    public func registerType(type: String, creationHandler: CreationHandler) {
+    public func registerType(_ type: String, creationHandler: @escaping CreationHandler) {
       _registry[type] = creationHandler
     }
 
@@ -230,8 +230,21 @@ extension Field {
 
     - Parameter type: The key for a field type.
     */
-    public func unregisterType(type: String) {
+    public func unregisterType(_ type: String) {
       _registry[type] = nil
+    }
+
+    // MARK: - Private
+
+    fileprivate static func parseDouble(_ any: Any) -> Double? {
+      if let double = any as? Double {
+        return double
+      } else if let integer = any as? Int {
+        // Use-case where Swift parsed `any` as an Int first, so we need to reconstruct it as a
+        // Double.
+        return Double(integer)
+      }
+      return nil
     }
   }
 }

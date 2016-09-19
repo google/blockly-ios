@@ -25,16 +25,16 @@ import Foundation
  unexpected results may occur.
  */
 @objc(BKYLayoutEngine)
-public class LayoutEngine: NSObject {
+open class LayoutEngine: NSObject {
 
   // MARK: - Properties
 
 
   /// The minimum scale that the engine can have, relative to the Workspace coordinate system.
-  public private(set) final var minimumScale: CGFloat = 0.5
+  public fileprivate(set) final var minimumScale: CGFloat = 0.5
 
   /// The maximum scale that the engine can have, relative to the Workspace coordinate system.
-  public private(set) final var maximumScale: CGFloat = 2.0
+  public fileprivate(set) final var maximumScale: CGFloat = 2.0
 
   /// The current scale of the UI, relative to the Workspace coordinate system.
   /// eg. scale = 2.0 means that a (10, 10) UIView point scales to a (5, 5) Workspace point.
@@ -81,7 +81,7 @@ public class LayoutEngine: NSObject {
               maximumScale: CGFloat = 2.0) {
     self.config = config
     self.rtl =
-      rtl ?? (UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft)
+      rtl ?? (UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft)
     super.init()
 
     config.updateViewValuesFromEngine(self)
@@ -102,7 +102,7 @@ public class LayoutEngine: NSObject {
   magnitude of a UIView point into the Workspace coordinate system. For example, in RTL, more
   calculation would need to be done to get the UIView point's translated Workspace point.
   */
-  public final func scaledWorkspaceVectorFromViewVector(point: CGPoint) -> WorkspacePoint {
+  public final func scaledWorkspaceVectorFromViewVector(_ point: CGPoint) -> WorkspacePoint {
     if scale == 0 {
       return WorkspacePointZero
     } else if scale == 1 {
@@ -121,7 +121,7 @@ public class LayoutEngine: NSObject {
    - Parameter size: A size from the UIView coordinate system.
    - Returns: A size in the Workspace coordinate system.
    */
-  public final func workspaceSizeFromViewSize(size: CGSize) -> WorkspaceSize {
+  public final func workspaceSizeFromViewSize(_ size: CGSize) -> WorkspaceSize {
     if scale == 0 {
       return WorkspaceSizeZero
     } else if scale == 1 {
@@ -140,7 +140,7 @@ public class LayoutEngine: NSObject {
    - Parameter unit: A unit value from the UIView coordinate system.
    - Returns: A unit value in the Workspace coordinate system.
    */
-  public final func workspaceUnitFromViewUnit(unit: CGFloat) -> CGFloat {
+  public final func workspaceUnitFromViewUnit(_ unit: CGFloat) -> CGFloat {
     if scale == 0 {
       return 0
     } else if scale == 1 {
@@ -157,7 +157,7 @@ public class LayoutEngine: NSObject {
    - Parameter unit: A unit value from the Workspace coordinate system.
    - Returns: A unit value in the UIView coordinate system.
    */
-  public final func viewUnitFromWorkspaceUnit(unit: CGFloat) -> CGFloat {
+  public final func viewUnitFromWorkspaceUnit(_ unit: CGFloat) -> CGFloat {
     if scale == 0 {
       return 0
     } else if scale == 1 {
@@ -174,13 +174,13 @@ public class LayoutEngine: NSObject {
    - Parameter point: A point from the Workspace coordinate system.
    - Returns: A point in the UIView coordinate system.
    */
-  public final func viewPointFromWorkspacePoint(point: WorkspacePoint) -> CGPoint {
+  public final func viewPointFromWorkspacePoint(_ point: WorkspacePoint) -> CGPoint {
     if scale == 0 {
-      return CGPointZero
+      return CGPoint.zero
     } else if scale == 1 {
       return point
     } else {
-      return CGPointMake(viewUnitFromWorkspaceUnit(point.x), viewUnitFromWorkspaceUnit(point.y))
+      return CGPoint(x: viewUnitFromWorkspaceUnit(point.x), y: viewUnitFromWorkspaceUnit(point.y))
     }
   }
 
@@ -192,13 +192,13 @@ public class LayoutEngine: NSObject {
    - Parameter y: The y-coordinate of the point
    - Returns: A point in the UIView coordinate system.
    */
-  public final func viewPointFromWorkspacePoint(x: CGFloat, _ y: CGFloat) -> CGPoint {
+  public final func viewPointFromWorkspacePoint(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
     if scale == 0 {
-      return CGPointZero
+      return CGPoint.zero
     } else if scale == 1 {
-      return CGPointMake(x, y)
+      return CGPoint(x: x, y: y)
     } else {
-      return CGPointMake(viewUnitFromWorkspaceUnit(x), viewUnitFromWorkspaceUnit(y))
+      return CGPoint(x: viewUnitFromWorkspaceUnit(x), y: viewUnitFromWorkspaceUnit(y))
     }
   }
 
@@ -209,15 +209,15 @@ public class LayoutEngine: NSObject {
    - Parameter size: A size from the Workspace coordinate system.
    - Returns: A size in the UIView coordinate system.
    */
-  public final func viewSizeFromWorkspaceSize(size: WorkspaceSize) -> CGSize {
+  public final func viewSizeFromWorkspaceSize(_ size: WorkspaceSize) -> CGSize {
     if scale == 0 {
-      return CGSizeZero
+      return CGSize.zero
     } else if scale == 1 {
       return size
     } else {
-      return CGSizeMake(
-        viewUnitFromWorkspaceUnit(size.width),
-        viewUnitFromWorkspaceUnit(size.height))
+      return CGSize(
+        width: viewUnitFromWorkspaceUnit(size.width),
+        height: viewUnitFromWorkspaceUnit(size.height))
     }
   }
 }

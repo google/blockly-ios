@@ -48,7 +48,7 @@ class BlockBuilderTest: XCTestCase {
 
   }
 
-  internal func validateFrankenblock(block: Block) {
+  internal func validateFrankenblock(_ block: Block) {
     XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
     XCTAssertEqualWithAccuracy(
@@ -65,7 +65,7 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNil(block.outputConnection)
 
     var input = block.inputs[0]
-    XCTAssertEqual(Input.InputType.Value, input.type)
+    XCTAssertEqual(Input.InputType.value, input.type)
     XCTAssertEqual(2, input.fields.count)
     XCTAssertEqual(block, input.sourceBlock)
     XCTAssertEqual(block, input.connection?.sourceBlock)
@@ -77,7 +77,7 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNotNil(input.fields[1] as? FieldCheckbox)
 
     input = block.inputs[1]
-    XCTAssertEqual(Input.InputType.Statement, input.type)
+    XCTAssertEqual(Input.InputType.statement, input.type)
     XCTAssertEqual(block, input.sourceBlock)
     XCTAssertEqual(block, input.connection?.sourceBlock)
     XCTAssertEqual(2, input.fields.count)
@@ -85,7 +85,7 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNotNil(input.fields[1] as? FieldVariable)
 
     input = block.inputs[2]
-    XCTAssertEqual(Input.InputType.Dummy, input.type)
+    XCTAssertEqual(Input.InputType.dummy, input.type)
     XCTAssertEqual(block, input.sourceBlock)
     XCTAssertNil(input.connection) // Dummy inputs have nil connections
     XCTAssertNotNil(input.fields[0] as? FieldAngle)
@@ -93,10 +93,10 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNotNil(input.fields[2] as? FieldImage)
   }
 
-  internal func buildFrankenBlock(workspace: Workspace) -> Block {
+  internal func buildFrankenBlock(_ workspace: Workspace) -> Block {
     let bob = Block.Builder(name: "frankenblock")
 
-    var inputBuilder = Input.Builder(type: Input.InputType.Value, name: "value_input")
+    var inputBuilder = Input.Builder(type: Input.InputType.value, name: "value_input")
     var fields = [
       FieldInput(name: "text_input", text: "something"),
       FieldCheckbox(name: "checkbox", checked: true)
@@ -105,7 +105,7 @@ class BlockBuilderTest: XCTestCase {
     bob.inputBuilders.append(inputBuilder)
     fields = []
 
-    inputBuilder = Input.Builder(type: Input.InputType.Statement, name:"statement_input")
+    inputBuilder = Input.Builder(type: Input.InputType.statement, name:"statement_input")
     do {
       fields.append(try FieldDropdown(name: "dropdown",
         displayNames: ["option1", "option2", "option3"],
@@ -119,10 +119,10 @@ class BlockBuilderTest: XCTestCase {
     bob.inputBuilders.append(inputBuilder)
     fields = []
 
-    inputBuilder = Input.Builder(type: Input.InputType.Dummy, name: "dummy_input")
+    inputBuilder = Input.Builder(type: Input.InputType.dummy, name: "dummy_input")
     fields = [
       FieldAngle(name: "angle", angle: 90),
-      FieldColor(name: "color", color: UIColor.magentaColor()),
+      FieldColor(name: "color", color: UIColor.magenta),
       FieldImage(name: "no name",
         imageURL: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
         size: WorkspaceSize(width: 15, height: 20), altText: "*")

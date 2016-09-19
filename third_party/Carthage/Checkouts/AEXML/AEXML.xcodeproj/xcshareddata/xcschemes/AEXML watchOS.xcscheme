@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
                BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
                BuildableName = "AEXML.framework"
                BlueprintName = "AEXML watchOS"
-               ReferencedContainer = "container:AEXML.xcodeproj">
+               ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
             BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML watchOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -67,7 +67,7 @@
             BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML watchOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

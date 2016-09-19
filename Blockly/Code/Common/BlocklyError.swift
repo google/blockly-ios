@@ -20,7 +20,7 @@ import AEXML
 General error class for all Blockly errors.
 */
 @objc(BKYBlocklyError)
-public class BlocklyError: NSError {
+public final class BlocklyError: NSError {
   // MARK: - Static Properties
 
   /// Domain to use when throwing an error from this class
@@ -31,21 +31,21 @@ public class BlocklyError: NSError {
   // MARK: - Enum - Code
   @objc
   public enum BKYBlocklyErrorCode: Int {
-    case InvalidBlockDefinition = 100,
-    WorkspaceExceedsCapacity = 150,
-    LayoutNotFound = 200,
-    ConnectionManagerError = 210,
-    ConnectionInvalid = 211,
-    ViewNotFound = 300,
-    JSONParsing = 400,
-    JSONInvalidTypecast = 401,
-    XMLParsing = 500,
-    XMLUnknownBlock = 501,
-    FileNotFound = 600,
-    FileNotReadable = 601,
-    IllegalState = 700,
-    IllegalArgument = 701,
-    IllegalOperation = 702
+    case invalidBlockDefinition = 100,
+    workspaceExceedsCapacity = 150,
+    layoutNotFound = 200,
+    connectionManagerError = 210,
+    connectionInvalid = 211,
+    viewNotFound = 300,
+    jsonParsing = 400,
+    jsonInvalidTypecast = 401,
+    xmlParsing = 500,
+    xmlUnknownBlock = 501,
+    fileNotFound = 600,
+    fileNotReadable = 601,
+    illegalState = 700,
+    illegalArgument = 701,
+    illegalOperation = 702
   }
   public typealias Code = BKYBlocklyErrorCode
 

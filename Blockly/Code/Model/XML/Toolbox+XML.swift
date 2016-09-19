@@ -32,9 +32,10 @@ extension Toolbox {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func toolboxFromXMLString(xmlString: String, factory: BlockFactory) throws -> Toolbox
+  public class func toolboxFromXMLString(_ xmlString: String, factory: BlockFactory) throws
+    -> Toolbox
   {
-    let xmlDoc = try AEXMLDocument(string: xmlString)
+    let xmlDoc = try AEXMLDocument(xml: xmlString)
     return try toolboxFromXML(xmlDoc, factory: factory)
   }
 
@@ -49,11 +50,12 @@ extension Toolbox {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func toolboxFromXML(xml: AEXMLElement, factory: BlockFactory) throws -> Toolbox {
+  public class func toolboxFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws -> Toolbox {
     let toolboxNode = xml["toolbox"]
 
-    if toolboxNode.name == AEXMLElement.errorElementName {
-      throw BlocklyError(.XMLParsing, "Missing root <toolbox> node")
+    if let error = toolboxNode.error {
+      // if let error = toolboxNode.error {
+      throw BlocklyError(.xmlParsing, "An AEXMLError occurred parsing the <toolbox> node: \(error)")
     }
 
     let toolbox = Toolbox()
@@ -65,7 +67,7 @@ extension Toolbox {
       // To maintain compatibility with Web Blockly, this value is accessed as "colour" and not
       // "color"
       if let colorString = categoryNode.attributes["colour"] {
-        if let colorHue = NSNumberFormatter().numberFromString(colorString) {
+        if let colorHue = NumberFormatter().number(from: colorString) {
           let hue = (min(max(CGFloat(colorHue), 0), 360)) / 360
           color = ColorHelper.colorFromHue(hue)
         } else {
@@ -82,7 +84,7 @@ extension Toolbox {
         bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
       }
 
-      let category = toolbox.addCategory(name, color: color ?? UIColor.clearColor(), icon: icon)
+      let category = toolbox.addCategory(name, color: color ?? UIColor.clear, icon: icon)
 
       for subNode in categoryNode.children {
         switch subNode.name {
@@ -90,12 +92,12 @@ extension Toolbox {
           let blockTree = try Block.blockTreeFromXML(subNode, factory: factory)
           try category.addBlockTree(blockTree.rootBlock)
         case "category":
-          throw BlocklyError(.XMLParsing, "Subcategories are not supported.")
+          throw BlocklyError(.xmlParsing, "Subcategories are not supported.")
         case "shadow":
-          throw BlocklyError(.XMLParsing, "Shadow blocks may not be top level toolbox blocks.")
+          throw BlocklyError(.xmlParsing, "Shadow blocks may not be top level toolbox blocks.")
         case "sep":
           if let gapString = subNode.attributes["gap"],
-            gap = NSNumberFormatter().numberFromString(gapString)
+            let gap = NumberFormatter().number(from: gapString)
           {
             category.addGap(CGFloat(gap))
           } else {

@@ -22,7 +22,7 @@ public protocol WorkbenchViewControllerDelegate: class {
   /**
    Event that is called when a `WorkbenchViewController` updates its `state`.
    */
-  func workbenchViewController(workbenchViewController: WorkbenchViewController,
+  func workbenchViewController(_ workbenchViewController: WorkbenchViewController,
                                didUpdateState state: WorkbenchViewController.UIState)
 }
 
@@ -32,7 +32,7 @@ public protocol WorkbenchViewControllerDelegate: class {
  TODO:(#61) Refactor parts of this code into `WorkspaceViewController`.
  */
 @objc(BKYWorkbenchViewController)
-public class WorkbenchViewController: UIViewController {
+open class WorkbenchViewController: UIViewController {
 
   // MARK: - Style Enum
 
@@ -40,32 +40,32 @@ public class WorkbenchViewController: UIViewController {
   public enum Style {
     /// Style where the toolbox is positioned vertically, the trash can is located in the
     /// bottom-right corner, and the trash folder flies out from the bottom
-    case Default,
+    case defaultStyle,
     /// Style where the toolbox is positioned horizontally on the bottom, the trash can is
-    /// located in the top-right corner, and the trash folder flies out from the trailing edge of the
-    /// screen
-      Alternate
+    /// located in the top-right corner, and the trash folder flies out from the trailing edge of
+    /// the screen
+      alternate
 
     /// The `WorkspaceFlowLayout.LayoutDirection` to use for the trash folder
-    private var trashLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
+    fileprivate var trashLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
       switch self {
-      case Default, Alternate: return .Horizontal
+      case .defaultStyle, .alternate: return .horizontal
       }
     }
 
     /// The `WorkspaceFlowLayout.LayoutDirection` to use for the toolbox category
-    private var toolboxCategoryLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
+    fileprivate var toolboxCategoryLayoutDirection: WorkspaceFlowLayout.LayoutDirection {
       switch self {
-      case Default: return .Vertical
-      case Alternate: return .Horizontal
+      case .defaultStyle: return .vertical
+      case .alternate: return .horizontal
       }
     }
 
     /// The `ToolboxCategoryListViewController.Orientation` to use for the toolbox
-    private var toolboxOrientation: ToolboxCategoryListViewController.Orientation {
+    fileprivate var toolboxOrientation: ToolboxCategoryListViewController.Orientation {
       switch self {
-      case Default: return .Vertical
-      case Alternate: return .Horizontal
+      case .defaultStyle: return .vertical
+      case .alternate: return .horizontal
       }
     }
   }
@@ -73,27 +73,27 @@ public class WorkbenchViewController: UIViewController {
   // MARK: - UIState Struct
 
   /// Defines possible UI states that the view controller may be in
-  public struct UIState : OptionSetType {
-    public static let Default = UIState(value: .Default)
-    public static let TrashCanOpen = UIState(value: .TrashCanOpen)
-    public static let TrashCanHighlighted = UIState(value: .TrashCanHighlighted)
-    public static let CategoryOpen = UIState(value: .CategoryOpen)
-    public static let EditingTextField = UIState(value: .EditingTextField)
-    public static let DraggingBlock = UIState(value: .DraggingBlock)
-    public static let PresentingPopover = UIState(value: .PresentingPopover)
-    public static let DidPanWorkspace = UIState(value: .DidPanWorkspace)
-    public static let DidTapWorkspace = UIState(value: .DidTapWorkspace)
+  public struct UIState : OptionSet {
+    public static let defaultState = UIState(value: .defaultState)
+    public static let trashCanOpen = UIState(value: .trashCanOpen)
+    public static let trashCanHighlighted = UIState(value: .trashCanHighlighted)
+    public static let categoryOpen = UIState(value: .categoryOpen)
+    public static let editingTextField = UIState(value: .editingTextField)
+    public static let draggingBlock = UIState(value: .draggingBlock)
+    public static let presentingPopover = UIState(value: .presentingPopover)
+    public static let didPanWorkspace = UIState(value: .didPanWorkspace)
+    public static let didTapWorkspace = UIState(value: .didTapWorkspace)
 
     public enum Value: Int {
-      case Default = 1,
-        TrashCanOpen,
-        TrashCanHighlighted,
-        CategoryOpen,
-        EditingTextField,
-        DraggingBlock,
-        PresentingPopover,
-        DidPanWorkspace,
-        DidTapWorkspace
+      case defaultState = 1,
+        trashCanOpen,
+        trashCanHighlighted,
+        categoryOpen,
+        editingTextField,
+        draggingBlock,
+        presentingPopover,
+        didPanWorkspace,
+        didTapWorkspace
     }
     public let rawValue : Int
     public init(rawValue: Int) {
@@ -103,15 +103,15 @@ public class WorkbenchViewController: UIViewController {
       self.init(rawValue: 1 << value.rawValue)
     }
 
-    public func intersectsWith(other: UIState) -> Bool {
-      return intersect(other).rawValue != 0
+    public func intersectsWith(_ other: UIState) -> Bool {
+      return intersection(other).rawValue != 0
     }
   }
 
   // MARK: - Properties
 
   /// The main workspace view controller
-  public private(set) var workspaceViewController: WorkspaceViewController! {
+  open fileprivate(set) var workspaceViewController: WorkspaceViewController! {
     didSet {
       oldValue?.delegate = nil
       workspaceViewController?.delegate = self
@@ -119,15 +119,15 @@ public class WorkbenchViewController: UIViewController {
   }
 
   /// A convenience property to `workspaceViewController.workspaceView`
-  private var workspaceView: WorkspaceView! {
+  fileprivate var workspaceView: WorkspaceView! {
     return workspaceViewController.workspaceView
   }
 
   // The trash can view
-  public private(set) var trashCanView: TrashCanView?
+  open fileprivate(set) var trashCanView: TrashCanView?
 
   // The toolbox category view controller
-  public private(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
+  open fileprivate(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
     didSet {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
@@ -147,34 +147,34 @@ public class WorkbenchViewController: UIViewController {
   /// The current style of workbench
   public final let style: Style
   /// The workspace that has been loaded via `loadWorkspace(:)`
-  public var workspace: Workspace? {
+  open var workspace: Workspace? {
     return _workspaceLayout?.workspace
   }
   /// The toolbox that has been loaded via `loadToolbox(:)`
-  public var toolbox: Toolbox? {
+  open var toolbox: Toolbox? {
     return _toolboxLayout?.toolbox
   }
   /// The main workspace layout coordinator
-  private var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
+  fileprivate var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
     didSet {
       _dragger.workspaceLayoutCoordinator = _workspaceLayoutCoordinator
     }
   }
   /// The underlying workspace layout
-  private var _workspaceLayout: WorkspaceLayout? {
+  fileprivate var _workspaceLayout: WorkspaceLayout? {
     return _workspaceLayoutCoordinator?.workspaceLayout
   }
   /// The underlying toolbox layout
-  private var _toolboxLayout: ToolboxLayout?
+  fileprivate var _toolboxLayout: ToolboxLayout?
 
   /// Flag for enabling trash can functionality
-  public var enableTrashCan: Bool = true {
+  open var enableTrashCan: Bool = true {
     didSet {
       setTrashCanViewVisible(enableTrashCan)
 
       if !enableTrashCan {
         // Hide trash can folder
-        removeUIStateValue(.TrashCanOpen, animated: false)
+        removeUIStateValue(.trashCanOpen, animated: false)
       }
     }
   }
@@ -184,26 +184,26 @@ public class WorkbenchViewController: UIViewController {
   or if it should automatically close itself when the user does something else (`false`).
   By default, this value is set to `false`.
   */
-  public var toolboxDrawerStaysOpen: Bool = false
+  open var toolboxDrawerStaysOpen: Bool = false
 
   /// The current state of the UI
-  public private(set) var state = UIState.Default
+  open fileprivate(set) var state = UIState.defaultState
 
   /// The delegate for events that occur in the workbench
-  public weak var delegate: WorkbenchViewControllerDelegate?
+  open weak var delegate: WorkbenchViewControllerDelegate?
 
   /// Controls logic for dragging blocks around in the workspace
-  private let _dragger = Dragger()
+  fileprivate let _dragger = Dragger()
   /// Controller for listing the toolbox categories
-  private var _toolboxCategoryListViewController: ToolboxCategoryListViewController!
+  fileprivate var _toolboxCategoryListViewController: ToolboxCategoryListViewController!
   /// Controller for managing the trash can workspace
-  private var _trashCanViewController: TrashCanViewController!
+  fileprivate var _trashCanViewController: TrashCanViewController!
   /// Flag indicating if the `self._trashCanViewController` is being shown
-  private var _trashCanVisible: Bool = false
+  fileprivate var _trashCanVisible: Bool = false
   /// Flag indicating if block highlighting is allowed
-  private var _enableBlockHighlighting = true
+  fileprivate var _enableBlockHighlighting = true
   /// Flag indicating if blocks should be automatically scrolled into view when they are highlighted
-  private var _enableScrollBlockIntoView = true
+  fileprivate var _enableScrollBlockIntoView = true
 
   // MARK: - Initializers
 
@@ -235,7 +235,7 @@ public class WorkbenchViewController: UIViewController {
     fatalError("Called unsupported initializer")
   }
 
-  private func commonInit() {
+  fileprivate func commonInit() {
     // Set up trash can folder view controller
     _trashCanViewController = TrashCanViewController(
       engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection,
@@ -250,27 +250,27 @@ public class WorkbenchViewController: UIViewController {
     addChildViewController(_toolboxCategoryListViewController)
 
     // Register for keyboard notifications
-    NSNotificationCenter.defaultCenter().addObserver(
+    NotificationCenter.default.addObserver(
       self, selector: #selector(keyboardWillShowNotification(_:)),
-      name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(
+      name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(
       self, selector: #selector(keyboardWillHideNotification(_:)),
-      name: UIKeyboardWillHideNotification, object: nil)
+      name: NSNotification.Name.UIKeyboardWillHide, object: nil)
   }
 
   deinit {
     // Unregister all notifications
-    NSNotificationCenter.defaultCenter().removeObserver(self)
+    NotificationCenter.default.removeObserver(self)
   }
 
   // MARK: - Super
 
-  public override func loadView() {
+  open override func loadView() {
     super.loadView()
 
     self.view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     self.view.autoresizesSubviews = true
-    self.view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    self.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
@@ -289,7 +289,7 @@ public class WorkbenchViewController: UIViewController {
     // Create trash can button
     let trashCanView = TrashCanView(imageNamed: "trash_can")
     trashCanView.button
-      .addTarget(self, action: #selector(didTapTrashCan(_:)), forControlEvents: .TouchUpInside)
+      .addTarget(self, action: #selector(didTapTrashCan(_:)), for: .touchUpInside)
     self.trashCanView = trashCanView
 
     // Set up auto-layout constraints
@@ -306,7 +306,7 @@ public class WorkbenchViewController: UIViewController {
     ]
     let constraints: [String]
 
-    if style == .Alternate {
+    if style == .alternate {
       // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
       // away from the top-trailing corner.
       trashCanView.setButtonPadding(
@@ -355,7 +355,7 @@ public class WorkbenchViewController: UIViewController {
     self.view.bky_addSubviews(Array(views.values))
     self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
-    self.view.sendSubviewToBack(workspaceViewController.view)
+    self.view.sendSubview(toBack: workspaceViewController.view)
 
     let panGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     panGesture.delegate = self
@@ -370,7 +370,7 @@ public class WorkbenchViewController: UIViewController {
     _trashCanViewController.view.addGestureRecognizer(trashGesture)
   }
 
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
 
     // Hide/show trash can
@@ -392,7 +392,7 @@ public class WorkbenchViewController: UIViewController {
    - Throws:
    `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
    */
-  public func loadWorkspace(workspace: Workspace, connectionManager: ConnectionManager? = nil)
+  open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager? = nil)
       throws {
     // Create a layout for the workspace, which is required for viewing the workspace
     let workspaceLayout = WorkspaceLayout(workspace: workspace, engine: engine)
@@ -413,7 +413,7 @@ public class WorkbenchViewController: UIViewController {
    - Throws:
    `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
    */
-  public func loadToolbox(toolbox: Toolbox) throws {
+  open func loadToolbox(_ toolbox: Toolbox) throws {
     let toolboxLayout = ToolboxLayout(
       toolbox: toolbox, engine: engine, layoutDirection: style.toolboxCategoryLayoutDirection,
       layoutBuilder: layoutBuilder)
@@ -425,7 +425,7 @@ public class WorkbenchViewController: UIViewController {
   /**
    Refreshes the UI based on the current version of `self.workspace` and `self.toolbox`.
    */
-  public func refreshView() {
+  open func refreshView() {
     do {
       try workspaceViewController?.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
     } catch let error as NSError {
@@ -443,19 +443,19 @@ public class WorkbenchViewController: UIViewController {
 
   // MARK: - Private
 
-  private dynamic func didPanWorkspaceView(gesture: UIPanGestureRecognizer) {
-    addUIStateValue(.DidPanWorkspace)
+  fileprivate dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
+    addUIStateValue(.didPanWorkspace)
   }
 
-  private dynamic func didTapWorkspaceView(gesture: UITapGestureRecognizer) {
-    addUIStateValue(.DidTapWorkspace)
+  fileprivate dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
+    addUIStateValue(.didTapWorkspace)
   }
 
   /**
    Updates the trash can and toolbox so the user may only interact with block groups that
    would not exceed the workspace's remaining capacity.
    */
-  private func updateWorkspaceCapacity() {
+  fileprivate func updateWorkspaceCapacity() {
     if let capacity = _workspaceLayout?.workspace.remainingCapacity {
       _trashCanViewController.workspace?.deactivateBlockTrees(forGroupsGreaterThan: capacity)
       _toolboxLayout?.toolbox.categories.forEach {
@@ -475,17 +475,17 @@ public class WorkbenchViewController: UIViewController {
    - Throws:
    `BlocklyError`: Thrown if the block view could not be created.
    */
-  public func copyBlockView(blockView: BlockView) throws -> BlockView
+  open func copyBlockView(_ blockView: BlockView) throws -> BlockView
   {
     // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
     // causing a performance hit. Try to create an alternate method that performs an optimized
     // "cut" operation.
 
     guard let blockLayout = blockView.blockLayout else {
-      throw BlocklyError(.LayoutNotFound, "No layout was set for the `blockView` parameter")
+      throw BlocklyError(.layoutNotFound, "No layout was set for the `blockView` parameter")
     }
     guard let workspaceLayoutCoordinator = _workspaceLayoutCoordinator else {
-      throw BlocklyError(.LayoutNotFound,
+      throw BlocklyError(.layoutNotFound,
         "No workspace layout coordinator has been set for `self._workspaceLayoutCoordinator`")
     }
 
@@ -508,7 +508,7 @@ public class WorkbenchViewController: UIViewController {
       let newBlockLayout = newBlock.layout,
       let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
     {
-      throw BlocklyError(.ViewNotFound, "View could not be located for the copied block")
+      throw BlocklyError(.viewNotFound, "View could not be located for the copied block")
     }
 
     return newBlockView
@@ -527,33 +527,33 @@ extension WorkbenchViewController {
    - Parameter state: The state to append to `self.state`.
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
-  private func addUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
+  fileprivate func addUIStateValue(_ stateValue: UIState.Value, animated: Bool = true) {
     var state = UIState(value: stateValue)
     let newState: UIState
 
-    if toolboxDrawerStaysOpen && self.state.intersectsWith(.CategoryOpen) {
+    if toolboxDrawerStaysOpen && self.state.intersectsWith(.categoryOpen) {
       // Always keep the .CategoryOpen state if it existed before
-      state = state.union(.CategoryOpen)
+      state = state.union(.categoryOpen)
     }
 
     // When adding a new state, check for compatibility with existing states.
 
     switch stateValue {
-    case .DraggingBlock:
+    case .draggingBlock:
       // Dragging a block can only co-exist with highlighting the trash can
-      newState = self.state.intersect([.TrashCanHighlighted]).union(state)
-    case .TrashCanHighlighted:
+      newState = self.state.intersection([.trashCanHighlighted]).union(state)
+    case .trashCanHighlighted:
       // This state can co-exist with anything, simply add it to the current state
       newState = self.state.union(state)
-    case .EditingTextField:
+    case .editingTextField:
       // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
       // else
-      newState = self.state.intersect([.PresentingPopover, .CategoryOpen]).union(state)
-    case .PresentingPopover:
+      newState = self.state.intersection([.presentingPopover, .categoryOpen]).union(state)
+    case .presentingPopover:
       // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
       // blocks from inside the toolbox). Disallow everything else.
-      newState = self.state.intersect([.CategoryOpen]).union(state)
-    case .Default, .DidPanWorkspace, .DidTapWorkspace, .CategoryOpen, .TrashCanOpen:
+      newState = self.state.intersection([.categoryOpen]).union(state)
+    case .defaultState, .didPanWorkspace, .didTapWorkspace, .categoryOpen, .trashCanOpen:
       // Whenever these states are added, clear out all existing state
       newState = state
     }
@@ -568,10 +568,10 @@ extension WorkbenchViewController {
    - Parameter state: The state to remove from `self.state`.
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
-  private func removeUIStateValue(stateValue: UIState.Value, animated: Bool = true) {
+  fileprivate func removeUIStateValue(_ stateValue: UIState.Value, animated: Bool = true) {
     // When subtracting a state value, there is no need to check for compatibility.
     // Simply set the new state, minus the given state value.
-    let newState = self.state.subtract(UIState(value: stateValue))
+    let newState = self.state.subtracting(UIState(value: stateValue))
     refreshUIState(newState, animated: animated)
   }
 
@@ -580,8 +580,8 @@ extension WorkbenchViewController {
 
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
-  private func resetUIState(animated: Bool = true) {
-    addUIStateValue(.Default, animated: animated)
+  fileprivate func resetUIState(_ animated: Bool = true) {
+    addUIStateValue(.defaultState, animated: animated)
   }
 
   /**
@@ -592,15 +592,15 @@ extension WorkbenchViewController {
    - Note: This method should not be called directly. Instead, you should call addUIState(...),
    removeUIState(...), or resetUIState(...).
    */
-  private func refreshUIState(state: UIState, animated: Bool = true) {
+  fileprivate func refreshUIState(_ state: UIState, animated: Bool = true) {
     self.state = state
 
-    setTrashCanFolderVisible(state.intersectsWith(.TrashCanOpen), animated: animated)
+    setTrashCanFolderVisible(state.intersectsWith(.trashCanOpen), animated: animated)
 
-    trashCanView?.setHighlighted(state.intersectsWith(.TrashCanHighlighted), animated: animated)
+    trashCanView?.setHighlighted(state.intersectsWith(.trashCanHighlighted), animated: animated)
 
     if let selectedCategory = _toolboxCategoryListViewController.selectedCategory
-      where state.intersectsWith(.CategoryOpen)
+      , state.intersectsWith(.categoryOpen)
     {
       // Show the toolbox category
       toolboxCategoryViewController?.showCategory(selectedCategory, animated: true)
@@ -610,14 +610,14 @@ extension WorkbenchViewController {
       _toolboxCategoryListViewController.selectedCategory = nil
     }
 
-    if !state.intersectsWith(.EditingTextField) {
+    if !state.intersectsWith(.editingTextField) {
       // Force all child text fields to end editing (which essentially dismisses the keyboard if
       // it's currently visible)
       self.view.endEditing(true)
     }
 
-    if !state.intersectsWith(.PresentingPopover) && self.presentedViewController != nil {
-      dismissViewControllerAnimated(animated, completion: nil)
+    if !state.intersectsWith(.presentingPopover) && self.presentedViewController != nil {
+      dismiss(animated: animated, completion: nil)
     }
 
     delegate?.workbenchViewController(self, didUpdateState: state)
@@ -634,28 +634,28 @@ extension WorkbenchViewController {
 
    - Parameter sender: The trash can button that sent the event.
    */
-  public func didTapTrashCan(sender: UIButton) {
+  public func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
-      addUIStateValue(.TrashCanOpen)
+      addUIStateValue(.trashCanOpen)
     } else {
-      removeUIStateValue(.TrashCanOpen)
+      removeUIStateValue(.trashCanOpen)
     }
   }
 
   // MARK: - Private
 
-  private func setTrashCanViewVisible(visible: Bool) {
-    trashCanView?.hidden = !visible
+  fileprivate func setTrashCanViewVisible(_ visible: Bool) {
+    trashCanView?.isHidden = !visible
   }
 
-  private func setTrashCanFolderVisible(visible: Bool, animated: Bool) {
+  fileprivate func setTrashCanFolderVisible(_ visible: Bool, animated: Bool) {
     if _trashCanVisible == visible && trashCanView != nil {
       return
     }
 
     let size: CGFloat = visible ? 300 : 0
-    if style == .Default {
+    if style == .defaultStyle {
       _trashCanViewController.setWorkspaceViewHeight(size, animated: animated)
     } else {
       _trashCanViewController.setWorkspaceViewWidth(size, animated: animated)
@@ -663,18 +663,18 @@ extension WorkbenchViewController {
     _trashCanVisible = visible
   }
 
-  private func isGestureTouchingTrashCan(gesture: BlocklyPanGestureRecognizer) -> Bool {
-    if let trashCanView = self.trashCanView where !trashCanView.hidden {
+  fileprivate func isGestureTouchingTrashCan(_ gesture: BlocklyPanGestureRecognizer) -> Bool {
+    if let trashCanView = self.trashCanView , !trashCanView.isHidden {
       return gesture.isTouchingView(trashCanView)
     }
 
     return false
   }
 
-  private func isTouchTouchingTrashCan(touchPosition: CGPoint, fromView: UIView?) -> Bool {
-    if let trashCanView = self.trashCanView where !trashCanView.hidden {
-      let trashSpacePosition = trashCanView.convertPoint(touchPosition, fromView: fromView)
-      return CGRectContainsPoint(trashCanView.bounds, trashSpacePosition)
+  fileprivate func isTouchTouchingTrashCan(_ touchPosition: CGPoint, fromView: UIView?) -> Bool {
+    if let trashCanView = self.trashCanView , !trashCanView.isHidden {
+      let trashSpacePosition = trashCanView.convert(touchPosition, from: fromView)
+      return trashCanView.bounds.contains(trashSpacePosition)
     }
 
     return false
@@ -685,7 +685,7 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   public func workspaceViewController(
-    workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
+    _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
       addGestureTrackingForBlockView(blockView)
@@ -693,7 +693,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   }
 
   public func workspaceViewController(
-    workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
+    _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
       removeGestureTrackingForBlockView(blockView)
@@ -701,15 +701,15 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   }
 
   public func workspaceViewController(
-    workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
+    _ workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
   {
-    addUIStateValue(.PresentingPopover)
+    addUIStateValue(.presentingPopover)
   }
 
   public func workspaceViewControllerDismissedViewController(
-    workspaceViewController: WorkspaceViewController)
+    _ workspaceViewController: WorkspaceViewController)
   {
-    removeUIStateValue(.PresentingPopover)
+    removeUIStateValue(.presentingPopover)
   }
 }
 
@@ -722,7 +722,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: A given block view.
    */
-  private func removeGestureTrackingForWorkspaceFolderBlockView(blockView: BlockView) {
+  fileprivate func removeGestureTrackingForWorkspaceFolderBlockView(_ blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
   }
 
@@ -732,7 +732,7 @@ extension WorkbenchViewController {
    - Parameter blockView: The `BlockView` to copy
    - Return: The new `BlockView`
    */
-  public func copyBlockToWorkspace(blockView: BlockView) -> BlockView? {
+  public func copyBlockToWorkspace(_ blockView: BlockView) -> BlockView? {
     // The block the user is dragging out of the toolbox/trash may be a child of a large nested
     // block. We want to do a deep copy on the root block (not just the current block).
     guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
@@ -764,7 +764,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: The `BlockView` to remove.
    */
-  public func removeBlockFromTrash(blockView: BlockView) {
+  public func removeBlockFromTrash(_ blockView: BlockView) {
     guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
       else
     {
@@ -772,7 +772,7 @@ extension WorkbenchViewController {
     }
 
     if let trashWorkspace = _trashCanViewController.workspaceView.workspaceLayout?.workspace
-      where trashWorkspace.containsBlock(rootBlockLayout.block)
+      , trashWorkspace.containsBlock(rootBlockLayout.block)
     {
       do {
         // Remove this block view from the trash can
@@ -793,7 +793,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: A given block view.
    */
-  private func addGestureTrackingForBlockView(blockView: BlockView) {
+  fileprivate func addGestureTrackingForBlockView(_ blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
 
     let tapGesture =
@@ -806,7 +806,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: A given block view.
    */
-  private func removeGestureTrackingForBlockView(blockView: BlockView) {
+  fileprivate func removeGestureTrackingForBlockView(_ blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
 
     if let blockLayout = blockView.blockLayout {
@@ -817,17 +817,19 @@ extension WorkbenchViewController {
   /**
    Tap gesture event handler for a block view inside `self.workspaceView`.
    */
-  private dynamic func didRecognizeWorkspaceTapGesture(gesture: UITapGestureRecognizer) {
+  fileprivate dynamic func didRecognizeWorkspaceTapGesture(_ gesture: UITapGestureRecognizer) {
   }
 }
 
 // MARK: - UIKeyboard notifications
 
 extension WorkbenchViewController {
-  private dynamic func keyboardWillShowNotification(notification: NSNotification) {
-    addUIStateValue(.EditingTextField)
+  fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
+    addUIStateValue(.editingTextField)
 
-    if let keyboardEndSize = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
+    if let keyboardEndSize =
+      (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+    {
       // Increase the canvas' bottom padding so the text field isn't hidden by the keyboard (when
       // the user edits a text field, it is automatically scrolled into view by the system as long
       // as there is enough scrolling space in its container scroll view).
@@ -839,11 +841,11 @@ extension WorkbenchViewController {
     }
   }
 
-  private dynamic func keyboardWillHideNotification(notification: NSNotification) {
-    removeUIStateValue(.EditingTextField)
+  fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
+    removeUIStateValue(.editingTextField)
 
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
-    let contentInsets = UIEdgeInsetsZero
+    let contentInsets = UIEdgeInsets.zero
     workspaceView.scrollView.contentInset = contentInsets
   }
 }
@@ -852,15 +854,15 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
   public func toolboxCategoryListViewController(
-    controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
+    _ controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
   {
-    addUIStateValue(.CategoryOpen, animated: true)
+    addUIStateValue(.categoryOpen, animated: true)
   }
 
   public func toolboxCategoryListViewControllerDidDeselectCategory(
-    controller: ToolboxCategoryListViewController)
+    _ controller: ToolboxCategoryListViewController)
   {
-    removeUIStateValue(.CategoryOpen, animated: true)
+    removeUIStateValue(.categoryOpen, animated: true)
   }
 }
 
@@ -872,7 +874,7 @@ extension WorkbenchViewController {
 
    - Parameter blockUUID: The UUID of the block to highlight
    */
-  public func highlightBlock(blockUUID: String) {
+  public func highlightBlock(_ blockUUID: String) {
     guard let workspace = self.workspace,
       let block = workspace.allBlocks[blockUUID] else {
         return
@@ -886,7 +888,7 @@ extension WorkbenchViewController {
 
    - Paramater blockUUID: The UUID of the block to unhighlight.
    */
-  public func unhighlightBlock(blockUUID: String) {
+  public func unhighlightBlock(_ blockUUID: String) {
     guard let workspace = self.workspace,
       let block = workspace.allBlocks[blockUUID] else {
       return
@@ -912,7 +914,7 @@ extension WorkbenchViewController {
    - Parameter highlight: The value to set for `highlighted`
    - Parameter blocks: The list of `Block` instances
    */
-  private func setHighlight(highlight: Bool, forBlocks blocks: [Block]) {
+  fileprivate func setHighlight(_ highlight: Bool, forBlocks blocks: [Block]) {
     guard let workspaceLayout = workspaceView.workspaceLayout else {
       return
     }
@@ -920,7 +922,7 @@ extension WorkbenchViewController {
     let visibleBlockLayouts = workspaceLayout.allVisibleBlockLayoutsInWorkspace()
 
     for block in blocks {
-      guard let blockLayout = block.layout where visibleBlockLayouts.contains(blockLayout) else {
+      guard let blockLayout = block.layout , visibleBlockLayouts.contains(blockLayout) else {
         continue
       }
 
@@ -936,7 +938,7 @@ extension WorkbenchViewController {
 // MARK: - Scrolling
 
 extension WorkbenchViewController {
-  public func scrollBlockIntoView(blockUUID: String, animated: Bool) {
+  public func scrollBlockIntoView(_ blockUUID: String, animated: Bool) {
     guard let block = workspace?.allBlocks[blockUUID] else {
         return
     }
@@ -951,7 +953,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
   /**
    Pan gesture event handler for a block view inside `self.workspaceView`.
    */
-  public func blocklyPanGestureRecognizer(gesture: BlocklyPanGestureRecognizer,
+  public func blocklyPanGestureRecognizer(_ gesture: BlocklyPanGestureRecognizer,
     didTouchBlock block: BlockView, touch: UITouch,
     touchState: BlocklyPanGestureRecognizer.TouchState)
   {
@@ -960,13 +962,13 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
     }
 
     var blockView = block
-    let touchPosition = touch.locationInView(workspaceView.scrollView.containerView)
+    let touchPosition = touch.location(in: workspaceView.scrollView.containerView)
     let workspacePosition = workspaceView.workspacePositionFromViewPoint(touchPosition)
 
     // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
 
-    if touchState == .Began {
+    if touchState == .began {
       let inToolbox = gesture.view == toolboxCategoryViewController.view
       let inTrash = gesture.view == _trashCanViewController.view
       // If the touch is in the toolbox, copy the block over to the workspace first.
@@ -991,20 +993,20 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
         return
       }
 
-      addUIStateValue(.DraggingBlock)
+      addUIStateValue(.draggingBlock)
       _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
-    } else if touchState == .Changed || touchState == .Ended {
-      addUIStateValue(.DraggingBlock)
+    } else if touchState == .changed || touchState == .ended {
+      addUIStateValue(.draggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
 
       if isGestureTouchingTrashCan(gesture) && blockLayout.block.deletable {
-        addUIStateValue(.TrashCanHighlighted)
+        addUIStateValue(.trashCanHighlighted)
       } else {
-        removeUIStateValue(.TrashCanHighlighted)
+        removeUIStateValue(.trashCanHighlighted)
       }
     }
 
-    if touchState == .Ended {
+    if touchState == .ended {
       let touchTouchingTrashCan = isTouchTouchingTrashCan(touchPosition,
         fromView: workspaceView.scrollView.containerView)
       if touchTouchingTrashCan && blockLayout.block.deletable {
@@ -1027,9 +1029,9 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
       addGestureTrackingForBlockView(blockView)
 
       // Update the UI state
-      removeUIStateValue(.DraggingBlock)
+      removeUIStateValue(.draggingBlock)
       if !isGestureTouchingTrashCan(gesture) {
-        removeUIStateValue(.TrashCanHighlighted)
+        removeUIStateValue(.trashCanHighlighted)
       }
     }
 
@@ -1040,9 +1042,9 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
 // MARK: - UIGestureRecognizerDelegate
 
 extension WorkbenchViewController: UIGestureRecognizerDelegate {
-  public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+  public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     if let panGestureRecognizer = gestureRecognizer as? BlocklyPanGestureRecognizer
-      where gestureRecognizer.view == toolboxCategoryViewController.view
+      , gestureRecognizer.view == toolboxCategoryViewController.view
     {
       // For toolbox blocks, only fire the pan gesture if the user is panning in the direction
       // perpendicular to the toolbox scrolling. Otherwise, don't let it fire, so the user can
@@ -1051,7 +1053,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
 
       // Figure out angle of delta vector, relative to the scroll direction
       let radians: CGFloat
-      if style.toolboxOrientation == .Vertical {
+      if style.toolboxOrientation == .vertical {
         radians = atan(abs(delta.x) / abs(delta.y))
       } else {
         radians = atan(abs(delta.y) / abs(delta.x))
@@ -1070,8 +1072,8 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     return true
   }
 
-  public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
-    shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool
+  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+    shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool
   {
     let scrollView = workspaceViewController.workspaceView.scrollView
     let toolboxScrollView = toolboxCategoryViewController.workspaceView.scrollView

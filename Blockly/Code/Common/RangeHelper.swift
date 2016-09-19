@@ -22,12 +22,13 @@ import Foundation
  - Parameter string: The `String`
  - Returns: The corresponding `Range` for `string`, or nil if `nsRange` specified an invalid range.
  */
-func bky_rangeFromNSRange(nsRange: NSRange, forString string: String) -> Range<String.Index>? {
+func bky_rangeFromNSRange(_ nsRange: NSRange, forString string: String) -> Range<String.Index>? {
   // Get the start/end indices within `string` based on `nsRange`
-  let fromUTF16 = string.utf16.startIndex.advancedBy(nsRange.location, limit: string.utf16.endIndex)
-  let toUTF16 = fromUTF16.advancedBy(nsRange.length, limit: string.utf16.endIndex)
-
-  if let from = String.Index(fromUTF16, within: string),
+  if let fromUTF16 = string.utf16.index(string.utf16.startIndex,
+                                     offsetBy: nsRange.location, limitedBy: string.utf16.endIndex),
+    let toUTF16 = string.utf16.index(fromUTF16,
+                                     offsetBy: nsRange.length, limitedBy: string.utf16.endIndex),
+    let from = String.Index(fromUTF16, within: string),
     let to = String.Index(toUTF16, within: string)
   {
     return from ..< to

@@ -19,15 +19,15 @@ import Foundation
  Class for a `FieldCheckbox`-based `Layout`.
  */
 @objc(BKYFieldCheckboxLayout)
-public class FieldCheckboxLayout: FieldLayout {
+open class FieldCheckboxLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldCheckbox` that backs this layout
-  public let fieldCheckbox: FieldCheckbox
+  open let fieldCheckbox: FieldCheckbox
 
   /// The checkbox value that should be used when rendering this layout
-  public var checked: Bool {
+  open var checked: Bool {
     return fieldCheckbox.checked
   }
 
@@ -45,7 +45,7 @@ public class FieldCheckboxLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -58,7 +58,7 @@ public class FieldCheckboxLayout: FieldLayout {
 
    - Parameter checked: The value used to update `self.fieldCheckbox`.
    */
-  public func updateCheckbox(checked: Bool) {
+  open func updateCheckbox(_ checked: Bool) {
     // Setting to a new checkbox value automatically fires a listener to update the layout
     fieldCheckbox.checked = checked
   }

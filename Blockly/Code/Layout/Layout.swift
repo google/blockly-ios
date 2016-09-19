@@ -26,7 +26,7 @@ public protocol LayoutDelegate: class {
   - Parameter flags: Set of flags indicating which parts of the layout that need to be updated from
   the UI side.
   */
-  func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag, animated: Bool)
+  func layoutDidChange(_ layout: Layout, withFlags flags: LayoutFlag, animated: Bool)
 }
 
 /**
@@ -42,7 +42,7 @@ public protocol LayoutHierarchyListener {
    - Parameter oldParentLayout: The previous value of `childLayout.parentLayout` prior to being
    adopted by `layout`
    */
-  func layout(layout: Layout,
+  func layout(_ layout: Layout,
     didAdoptChildLayout childLayout: Layout, fromOldParentLayout oldParentLayout: Layout?)
 
   /**
@@ -51,7 +51,7 @@ public protocol LayoutHierarchyListener {
    - Parameter layout: The parent `Layout`.
    - Parameter childLayout: The child `Layout`.
    */
-  func layout(layout: Layout, didRemoveChildLayout childLayout: Layout)
+  func layout(_ layout: Layout, didRemoveChildLayout childLayout: Layout)
 }
 
 /**
@@ -66,14 +66,14 @@ a UI view can simply access the property `viewFrame` to determine its "UIView co
 position and size.
 */
 @objc(BKYLayout)
-public class Layout: NSObject {
+open class Layout: NSObject {
   // MARK: - Static Properties
 
   /// Flag that should be used when the layout's entire display needs to be updated from the UI side
-  public static let Flag_NeedsDisplay = LayoutFlag(highestOrderBitIndex: 0)
+  open static let Flag_NeedsDisplay = LayoutFlag(highestOrderBitIndex: 0)
 
   /// Flag that should be used when `self.viewFrame` has been updated
-  public static let Flag_UpdateViewFrame = LayoutFlag(highestOrderBitIndex: 1)
+  open static let Flag_UpdateViewFrame = LayoutFlag(highestOrderBitIndex: 1)
 
   // MARK: - Properties
 
@@ -85,15 +85,15 @@ public class Layout: NSObject {
   public final let engine: LayoutEngine
 
   /// Convenience property for accessing `self.engine.config`
-  public var config: LayoutConfig {
+  open var config: LayoutConfig {
     return engine.config
   }
 
   /// The parent node of this layout. If this value is nil, this layout is the root node.
-  public private(set) final weak var parentLayout: Layout?
+  public fileprivate(set) final weak var parentLayout: Layout?
 
   /// Layouts whose `parentLayout` is set to this layout
-  public private(set) final var childLayouts = Set<Layout>()
+  public fileprivate(set) final var childLayouts = Set<Layout>()
 
   /// Position relative to `self.parentLayout`
   internal final var relativePosition: WorkspacePoint = WorkspacePointZero
@@ -116,7 +116,7 @@ public class Layout: NSObject {
   internal var absolutePosition: WorkspacePoint = WorkspacePointZero
   /// Total size used by this layout. This value is calculated by combining `edgeInsets` and
   /// `contentSize`.
-  internal private(set) final var totalSize: WorkspaceSize = WorkspaceSizeZero
+  internal fileprivate(set) final var totalSize: WorkspaceSize = WorkspaceSizeZero
 
   /// An offset that should be applied to the positions of `childLayouts`, specified in the
   /// Workspace coordinate system.
@@ -126,7 +126,7 @@ public class Layout: NSObject {
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
   view node layout for a Field is a Block, while the parent view node for a Block is a Workspace.
   */
-  public internal(set) final var viewFrame: CGRect = CGRectZero {
+  public internal(set) final var viewFrame: CGRect = CGRect.zero {
     didSet {
       if viewFrame != oldValue {
         sendChangeEventWithFlags(Layout.Flag_UpdateViewFrame)
@@ -143,7 +143,7 @@ public class Layout: NSObject {
   // MARK: - Initializers
 
   public init(engine: LayoutEngine) {
-    self.uuid = NSUUID().UUIDString
+    self.uuid = UUID().uuidString
     self.engine = engine
     super.init()
   }
@@ -159,7 +159,7 @@ public class Layout: NSObject {
   to honor this flag.
   - Note: This method needs to be implemented by a subclass of `Layout`.
   */
-  public func performLayout(includeChildren includeChildren: Bool) {
+  open func performLayout(includeChildren: Bool) {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
@@ -170,7 +170,7 @@ public class Layout: NSObject {
   `contentSize`, `relativePosition`, `absolutePosition`, and `viewFrame`, based on the current state
   of `self.parentLayout`.
   */
-  public func updateLayoutDownTree() {
+  open func updateLayoutDownTree() {
     performLayout(includeChildren: true)
     refreshViewPositionsForTree()
   }
@@ -198,7 +198,7 @@ public class Layout: NSObject {
 
   - Parameter flags: `LayoutFlag` options to send with the change event
   */
-  public final func sendChangeEventWithFlags(flags: LayoutFlag) {
+  public final func sendChangeEventWithFlags(_ flags: LayoutFlag) {
     // Send change event
     delegate?.layoutDidChange(self, withFlags: flags, animated: animateChangeEvent)
   }
@@ -210,7 +210,7 @@ public class Layout: NSObject {
    - Parameter type: [Optional] Filters `Layout` instances by a specific type.
    - Returns: An array of all `Layout` instances.
    */
-  public final func flattenedLayoutTree<T where T: Layout>(ofType type: T.Type? = nil) -> [T] {
+  public final func flattenedLayoutTree<T>(ofType type: T.Type? = nil) -> [T] where T: Layout {
     var allLayouts = [T]()
 
     if let layout = self as? T {
@@ -218,7 +218,7 @@ public class Layout: NSObject {
     }
 
     for layout in childLayouts {
-      allLayouts.appendContentsOf(layout.flattenedLayoutTree(ofType: type))
+      allLayouts.append(contentsOf: layout.flattenedLayoutTree(ofType: type))
     }
     return allLayouts
   }
@@ -236,7 +236,7 @@ public class Layout: NSObject {
 
    - Parameter layout: The child `Layout` to adopt
    */
-  internal func adoptChildLayout(layout: Layout) {
+  internal func adoptChildLayout(_ layout: Layout) {
     if layout.parentLayout == self {
       return
     }
@@ -269,7 +269,7 @@ public class Layout: NSObject {
 
    - Parameter layout: The child `Layout` to remove
    */
-  internal func removeChildLayout(layout: Layout) {
+  internal func removeChildLayout(_ layout: Layout) {
     if !childLayouts.contains(layout) {
       return
     }
@@ -289,7 +289,7 @@ public class Layout: NSObject {
   - Parameter includeFields: If true, recursively update view frames for field layouts. If false,
   skip them.
   */
-  internal final func refreshViewPositionsForTree(includeFields includeFields: Bool = true) {
+  internal final func refreshViewPositionsForTree(includeFields: Bool = true) {
     refreshViewPositionsForTree(
       parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
@@ -316,8 +316,8 @@ public class Layout: NSObject {
   - Note: All parent parameters are defined in the method signature so we can eliminate direct
   references to `self.parentLayout` inside this method. This results in better performance.
   */
-  private final func refreshViewPositionsForTree(
-    parentAbsolutePosition parentAbsolutePosition: WorkspacePoint,
+  fileprivate final func refreshViewPositionsForTree(
+    parentAbsolutePosition: WorkspacePoint,
     parentContentSize: WorkspaceSize,
     contentOffset: WorkspacePoint,
     rtl: Bool, includeFields: Bool)
@@ -334,7 +334,7 @@ public class Layout: NSObject {
     if (includeFields || !(self is FieldLayout))
     {
       // Calculate the view frame's position
-      var viewFrameOrigin = CGPointZero
+      var viewFrameOrigin = CGPoint.zero
       if rtl {
         // In RTL, the x position is calculated relative to the top-right corner of its parent
         viewFrameOrigin.x = self.engine.viewUnitFromWorkspaceUnit(
@@ -349,7 +349,8 @@ public class Layout: NSObject {
 
       let viewSize = self.engine.viewSizeFromWorkspaceSize(self.contentSize)
       self.viewFrame =
-        CGRectMake(viewFrameOrigin.x, viewFrameOrigin.y, viewSize.width, viewSize.height)
+        CGRect(x: viewFrameOrigin.x, y: viewFrameOrigin.y,
+               width: viewSize.width, height: viewSize.height)
     }
 
     for layout in self.childLayouts {
@@ -368,7 +369,7 @@ public class Layout: NSObject {
   /**
   Updates the `totalSize` value based on the current state of `contentSize` and `edgeInsets`.
   */
-  private func updateTotalSize() {
+  fileprivate func updateTotalSize() {
     totalSize.width = contentSize.width + edgeInsets.left + edgeInsets.right
     totalSize.height = contentSize.height + edgeInsets.top + edgeInsets.bottom
   }
@@ -381,7 +382,7 @@ extension Layout {
   // automatically on connection changes, revisit whether an animation stack is needed.
 
   /// Stack that keeps track of whether future layout code changes should be animated.
-  private static var _animationStack = [Bool]()
+  fileprivate static var _animationStack = [Bool]()
 
   /**
    Executes a given code block, where layout changes made inside this code block are animated.
@@ -393,7 +394,7 @@ extension Layout {
   public static func animate(code: () throws -> Void) rethrows {
     _animationStack.append(true)
     try code()
-    _animationStack.popLast()
+    _animationStack.removeLast()
   }
 
   /**
@@ -406,7 +407,7 @@ extension Layout {
   public static func doNotAnimate(code: () throws -> Void) rethrows {
     _animationStack.append(false)
     try code()
-    _animationStack.popLast()
+    _animationStack.removeLast()
   }
 
   /**
@@ -432,11 +433,11 @@ order bit (ie. 63, 62, etc).
 - Subclasses of `Layout` can define up to 50 custom layout flags, which start at the lowest order
 bit (ie. 0, 1, etc).
 */
-public struct LayoutFlag: OptionSetType {
+public struct LayoutFlag: OptionSet {
   // MARK: - Static Properties
   public static let None = LayoutFlag(rawValue: 0)
   public static let All = LayoutFlag(rawValue: UInt64.max)
-  private static let MaximumNumberOfCustomFlags: UInt64 = 50
+  fileprivate static let MaximumNumberOfCustomFlags: UInt64 = 50
 
   // MARK: - Properties
   public let rawValue: UInt64
@@ -450,7 +451,7 @@ public struct LayoutFlag: OptionSetType {
   from the highest order bit.
   - Note: An assertion is made in this method that `highestOrderBitIndex < 14`.
   */
-  private init(highestOrderBitIndex: UInt64) {
+  fileprivate init(highestOrderBitIndex: UInt64) {
     // Event flags defined in `Layout` should start at the highest order bit (which is why this
     // initializer is marked as private). These flags are reserved from use by any subclass.
     let bitShiftIndex = (63 - highestOrderBitIndex)
@@ -497,7 +498,7 @@ public struct LayoutFlag: OptionSetType {
   /**
   - Returns: True if `self` shares at least one common flag with `other`.
   */
-  public func intersectsWith(other: LayoutFlag) -> Bool {
-    return intersect(other).hasFlagSet()
+  public func intersectsWith(_ other: LayoutFlag) -> Bool {
+    return intersection(other).hasFlagSet()
   }
 }

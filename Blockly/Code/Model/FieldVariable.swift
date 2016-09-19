@@ -23,7 +23,7 @@ public final class FieldVariable: Field {
   // MARK: - Properties
 
   /// The variable in this field
-  public private(set) var variable: String {
+  public fileprivate(set) var variable: String {
     didSet { didSetEditableProperty(&variable, oldValue) }
   }
 
@@ -55,11 +55,11 @@ public final class FieldVariable: Field {
     return FieldVariable(name: name, variable: variable)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     if text != "" {
       self.variable = text
     } else {
-      throw BlocklyError(.XMLParsing, "Cannot set a variable to empty text")
+      throw BlocklyError(.xmlParsing, "Cannot set a variable to empty text")
     }
   }
 
@@ -74,7 +74,7 @@ public final class FieldVariable: Field {
 
    - Parameter variable: The new variable name
    */
-  public func addNewVariable(variable: String) {
+  public func addNewVariable(_ variable: String) {
     self.variable = variable
     nameManager?.addName(variable)
   }
@@ -84,7 +84,7 @@ public final class FieldVariable: Field {
 
    - Parameter variable: The new variable name
    */
-  public func renameVariable(variable: String) {
+  public func renameVariable(_ variable: String) {
     let oldName = self.variable
     self.variable = variable
     nameManager?.renameName(oldName, toName: variable)
@@ -94,7 +94,7 @@ public final class FieldVariable: Field {
    Sets `self.variable` to a new variable and calls `self.nameManager?.requestRemovalForName(:)`
    with the previous value of `self.variable`.
    */
-  public func changeToVariable(variable: String) {
+  public func changeToVariable(_ variable: String) {
     let oldValue = self.variable
     if oldValue != variable {
       self.variable = variable
@@ -106,13 +106,13 @@ public final class FieldVariable: Field {
 // MARK: - NameManagerListener Implementation
 
 extension FieldVariable: NameManagerListener {
-  public func nameManager(nameManager: NameManager, shouldRemoveName name: String) -> Bool {
+  public func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
     // Only approve this removal if this instance isn't using that variable
     return !nameManager.namesAreEqual(variable, name)
   }
 
   public func nameManager(
-    nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
   {
     if nameManager.namesAreEqual(oldName, variable) {
       // This variable was renamed, update it

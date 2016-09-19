@@ -22,23 +22,23 @@ import Foundation
  - Note: The `Toolbox` itself does not have an associated `Layout` instance.
  */
 @objc(BKYToolboxLayout)
-public class ToolboxLayout: NSObject {
+open class ToolboxLayout: NSObject {
 
   // MARK: - Properties
 
   /// The associated toolbox
-  public let toolbox: Toolbox
+  open let toolbox: Toolbox
   /// The layout direction to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  public let layoutDirection: WorkspaceFlowLayout.LayoutDirection
+  open let layoutDirection: WorkspaceFlowLayout.LayoutDirection
   /// The layout engine to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  public let engine: LayoutEngine
+  open let engine: LayoutEngine
   /// The layout builder to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  public let layoutBuilder: LayoutBuilder
+  open let layoutBuilder: LayoutBuilder
   /// The associated list of `WorkspaceLayoutCoordinator` instances for `toolbox.categories`
-  public var categoryLayoutCoordinators = [WorkspaceLayoutCoordinator]()
+  open var categoryLayoutCoordinators = [WorkspaceLayoutCoordinator]()
 
   // MARK: - Initializers
 
@@ -70,7 +70,7 @@ public class ToolboxLayout: NSObject {
 
   // MARK: - Private
 
-  private func addLayoutCoordinatorForToolboxCategory(category: Toolbox.Category) {
+  private func addLayoutCoordinatorForToolboxCategory(_ category: Toolbox.Category) {
     do {
       let layout =
         WorkspaceFlowLayout(workspace: category, engine: engine, layoutDirection: layoutDirection)

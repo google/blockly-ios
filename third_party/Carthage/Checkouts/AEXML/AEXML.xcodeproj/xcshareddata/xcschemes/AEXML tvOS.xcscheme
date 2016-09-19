@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,21 +17,21 @@
                BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
                BuildableName = "AEXML.framework"
                BlueprintName = "AEXML tvOS"
-               ReferencedContainer = "container:AEXML.xcodeproj">
+               ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B4A92CB1BDD5BB20011F36F"
                BuildableName = "AEXML tvOS Tests.xctest"
                BlueprintName = "AEXML tvOS Tests"
-               ReferencedContainer = "container:AEXML.xcodeproj">
+               ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -50,7 +50,7 @@
                BlueprintIdentifier = "8B4A92CB1BDD5BB20011F36F"
                BuildableName = "AEXML tvOS Tests.xctest"
                BlueprintName = "AEXML tvOS Tests"
-               ReferencedContainer = "container:AEXML.xcodeproj">
+               ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -60,7 +60,7 @@
             BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -100,7 +100,7 @@
             BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

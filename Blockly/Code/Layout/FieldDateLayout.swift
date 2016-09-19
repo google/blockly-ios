@@ -19,25 +19,25 @@ import Foundation
  Class for a `FieldDate`-based `Layout`.
  */
 @objc(BKYFieldDateLayout)
-public class FieldDateLayout: FieldLayout {
+open class FieldDateLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldDate` that backs this layout
-  public let fieldDate: FieldDate
+  open let fieldDate: FieldDate
 
   /// The value that should be used when rendering this layout
-  public var textValue: String {
-    return dateFormatter.stringFromDate(fieldDate.date)
+  open var textValue: String {
+    return dateFormatter.string(from: fieldDate.date as Date)
   }
 
   // Formatter used to generate `self.textValue`
-  public let dateFormatter: NSDateFormatter
+  open let dateFormatter: DateFormatter
 
   // MARK: - Initializers
 
   public init(fieldDate: FieldDate, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type,
-              dateFormatter: NSDateFormatter? = nil)
+              dateFormatter: DateFormatter? = nil)
   {
     self.fieldDate = fieldDate
 
@@ -46,9 +46,9 @@ public class FieldDateLayout: FieldLayout {
     } else {
       // By default, format dates based on the user's current locale, in a short style
       // (which is generally numeric)
-      self.dateFormatter = NSDateFormatter()
-      self.dateFormatter.locale = NSLocale.currentLocale()
-      self.dateFormatter.dateStyle = .ShortStyle
+      self.dateFormatter = DateFormatter()
+      self.dateFormatter.locale = Locale.current
+      self.dateFormatter.dateStyle = .short
     }
     super.init(field: fieldDate, engine: engine, measurer: measurer)
 
@@ -58,7 +58,7 @@ public class FieldDateLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -71,7 +71,7 @@ public class FieldDateLayout: FieldLayout {
 
    - Parameter date: The value used to update `self.fieldDate`.
    */
-  public func updateDate(date: NSDate) {
+  open func updateDate(_ date: Date) {
     // Setting to a new date automatically fires a listener to update the layout
     fieldDate.date = date
   }

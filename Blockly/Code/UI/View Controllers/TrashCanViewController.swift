@@ -18,7 +18,7 @@ import Foundation
 /**
  A view controller for displaying blocks in a trash can.
  */
-public class TrashCanViewController: WorkspaceViewController {
+public final class TrashCanViewController: WorkspaceViewController {
 
   // MARK: - Static Properties
 
@@ -76,28 +76,28 @@ public class TrashCanViewController: WorkspaceViewController {
 
   // MARK: - Super
 
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
 
     workspaceView.allowCanvasPadding = false
 
     view.backgroundColor = TrashCanViewController.ViewBackgroundColor
     view.addObserver(self, forKeyPath: "bounds",
-      options: NSKeyValueObservingOptions.New, context: &self._kvoContextBounds)
+      options: NSKeyValueObservingOptions.new, context: &self._kvoContextBounds)
 
     updateMaximumLineBlockSize()
   }
 
-  public override func observeValueForKeyPath(
-    keyPath: String?,
-    ofObject object: AnyObject?,
-    change: [String : AnyObject]?,
-    context: UnsafeMutablePointer<Void>)
+  open override func observeValue(
+    forKeyPath keyPath: String?,
+    of object: Any?,
+    change: [NSKeyValueChangeKey : Any]?,
+    context: UnsafeMutableRawPointer?)
   {
     if context == &_kvoContextBounds {
       updateMaximumLineBlockSize()
     } else {
-      super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
     }
   }
 
@@ -109,17 +109,17 @@ public class TrashCanViewController: WorkspaceViewController {
    - Parameter height: The new height
    - Parameter animated: Flag determining if the new height should be animated.
    */
-  public func setWorkspaceViewHeight(height: CGFloat, animated: Bool) {
+  public func setWorkspaceViewHeight(_ height: CGFloat, animated: Bool) {
     if _viewHeightConstraint == nil {
       _viewHeightConstraint = view.bky_addHeightConstraint(0)
     }
 
-    if let constraint = _viewHeightConstraint where constraint.constant != height {
+    if let constraint = _viewHeightConstraint , constraint.constant != height {
       if height > 0 {
         // Immediately update the max line block size before animating so the contents within the
         // workspace view don't animate their positions. Only do it for height > 0 since we don't
         // want things to be repositioned as the trash is being closed.
-        updateMaximumLineBlockSize(fromViewSize: CGSizeMake(view.bounds.width, height))
+        updateMaximumLineBlockSize(fromViewSize: CGSize(width: view.bounds.width, height: height))
       }
 
       view.bky_updateConstraints(animated: animated, update: {
@@ -134,17 +134,17 @@ public class TrashCanViewController: WorkspaceViewController {
    - Parameter width: The new width
    - Parameter animated: Flag determining if the new width should be animated.
    */
-  public func setWorkspaceViewWidth(width: CGFloat, animated: Bool) {
+  public func setWorkspaceViewWidth(_ width: CGFloat, animated: Bool) {
     if _viewWidthConstraint == nil {
       _viewWidthConstraint = view.bky_addWidthConstraint(0)
     }
 
-    if let constraint = _viewWidthConstraint where constraint.constant != width {
+    if let constraint = _viewWidthConstraint , constraint.constant != width {
       if width > 0 {
         // Immediately update the max line block size before animating so the contents within the
         // workspace view don't animate their positions. Only do it for width > 0 since we don't
         // want things to be repositioned as the trash is being closed.
-        updateMaximumLineBlockSize(fromViewSize: CGSizeMake(width, view.bounds.height))
+        updateMaximumLineBlockSize(fromViewSize: CGSize(width: width, height: view.bounds.height))
       }
 
       view.bky_updateConstraints(animated: animated, update: {
@@ -161,7 +161,7 @@ public class TrashCanViewController: WorkspaceViewController {
     }
 
     let size = viewSize ?? view.bounds.size
-    let maxBlockLineSize = layoutDirection == WorkspaceFlowLayout.LayoutDirection.Horizontal ?
+    let maxBlockLineSize = layoutDirection == WorkspaceFlowLayout.LayoutDirection.horizontal ?
       workspaceLayout.engine.workspaceUnitFromViewUnit(size.width) :
       workspaceLayout.engine.workspaceUnitFromViewUnit(size.height)
 

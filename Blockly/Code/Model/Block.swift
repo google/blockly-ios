@@ -25,7 +25,7 @@ public protocol BlockDelegate: class {
 
    - Parameter block: The `Block` that changed.
    */
-  func didUpdateBlock(block: Block)
+  func didUpdateBlock(_ block: Block)
 }
 
 /**
@@ -85,7 +85,7 @@ public final class Block : NSObject {
   }
 
   /// List of connections directly attached to this block
-  public private(set) var directConnections = [Connection]()
+  public fileprivate(set) var directConnections = [Connection]()
   /// List of inputs attached to this block
   public let inputs: [Input]
   /// The color of the block
@@ -134,7 +134,6 @@ public final class Block : NSObject {
     }
   }
 
-
   /// Flag indicating if this block is at the highest level in the workspace
   public var topLevel: Bool {
     return previousConnection?.targetConnection == nil &&
@@ -162,7 +161,7 @@ public final class Block : NSObject {
     movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
-    self.uuid = uuid ?? NSUUID().UUIDString
+    self.uuid = uuid ?? UUID().uuidString
     self.name = name
     self.color = color
     self.inputs = inputs
@@ -221,7 +220,7 @@ public final class Block : NSObject {
 
       if connection != self.previousConnection && connection != self.outputConnection &&
         connection.targetBlock != nil {
-          connections.appendContentsOf(connection.targetBlock!.allConnectionsForTree())
+          connections.append(contentsOf: connection.targetBlock!.allConnectionsForTree())
       }
     }
 
@@ -276,21 +275,21 @@ public final class Block : NSObject {
     // Follow input connections
     for input in self.inputs {
       if let connectedBlock = input.connectedBlock {
-        blocks.appendContentsOf(connectedBlock.allBlocksForTree())
+        blocks.append(contentsOf: connectedBlock.allBlocksForTree())
       }
       if let connectedShadowBlock = input.connectedShadowBlock {
-        blocks.appendContentsOf(connectedShadowBlock.allBlocksForTree())
+        blocks.append(contentsOf: connectedShadowBlock.allBlocksForTree())
       }
     }
 
     // Follow next connection
     if let nextBlock = self.nextBlock {
-      blocks.appendContentsOf(nextBlock.allBlocksForTree())
+      blocks.append(contentsOf: nextBlock.allBlocksForTree())
     }
 
     // Follow next shadow connection
     if let nextShadowBlock = self.nextShadowBlock {
-      blocks.appendContentsOf(nextShadowBlock.allBlocksForTree())
+      blocks.append(contentsOf: nextShadowBlock.allBlocksForTree())
     }
 
     return blocks
@@ -302,7 +301,7 @@ public final class Block : NSObject {
    - Parameter name: The input name
    - Returns: The first input with that name or nil.
    */
-  public func firstInputWithName(name: String) -> Input? {
+  public func firstInputWithName(_ name: String) -> Input? {
     if name == "" {
       return nil
     }
@@ -320,7 +319,7 @@ public final class Block : NSObject {
    - Parameter name: The field name
    - Returns: The first field with that name or nil.
    */
-  public func firstFieldWithName(name: String) -> Field? {
+  public func firstFieldWithName(_ name: String) -> Field? {
     if name == "" {
       return nil
     }
@@ -353,33 +352,33 @@ public final class Block : NSObject {
 
       // Check that the input connections are consistent between the original and copied blocks
       if inputConnection == nil && copiedInputConnection != nil {
-        throw BlocklyError(.IllegalState,
+        throw BlocklyError(.illegalState,
           "An input connection was created, but no such connection exists on the original block.")
       } else if inputConnection != nil && copiedInputConnection == nil {
-        throw BlocklyError(.IllegalState,
+        throw BlocklyError(.illegalState,
           "An input connection was not copied from the original block.")
       }
 
       // Perform a copy of the connected block (if it exists)
       if let connectedBlock = self.inputs[i].connectedBlock {
         let copyResult = try connectedBlock.deepCopy()
-        if self.inputs[i].connection!.type == .NextStatement {
+        if self.inputs[i].connection!.type == .nextStatement {
           try copiedInputConnection!.connectTo(copyResult.rootBlock.previousConnection)
-        } else if self.inputs[i].connection!.type == .InputValue {
+        } else if self.inputs[i].connection!.type == .inputValue {
           try copiedInputConnection!.connectTo(copyResult.rootBlock.outputConnection)
         }
-        copiedBlocks.appendContentsOf(copyResult.allBlocks)
+        copiedBlocks.append(contentsOf: copyResult.allBlocks)
       }
 
       // Perform a copy of the connected shadow block (if it exists)
       if let connectedShadowBlock = self.inputs[i].connectedShadowBlock {
         let copyResult = try connectedShadowBlock.deepCopy()
-        if self.inputs[i].connection!.type == .NextStatement {
+        if self.inputs[i].connection!.type == .nextStatement {
           try copiedInputConnection!.connectShadowTo(copyResult.rootBlock.previousConnection)
-        } else if self.inputs[i].connection!.type == .InputValue {
+        } else if self.inputs[i].connection!.type == .inputValue {
           try copiedInputConnection!.connectShadowTo(copyResult.rootBlock.outputConnection)
         }
-        copiedBlocks.appendContentsOf(copyResult.allBlocks)
+        copiedBlocks.append(contentsOf: copyResult.allBlocks)
       }
     }
 
@@ -387,10 +386,10 @@ public final class Block : NSObject {
     let nextConnection = self.nextConnection
     let copiedNextConnection = newBlock.nextConnection
     if nextConnection == nil && copiedNextConnection != nil {
-      throw BlocklyError(.IllegalState,
+      throw BlocklyError(.illegalState,
         "A next connection was created, but no such connection exists on the original block.")
     } else if nextConnection != nil && copiedNextConnection == nil {
-      throw BlocklyError(.IllegalState,
+      throw BlocklyError(.illegalState,
         "The next connection was not copied from the original block.")
     }
 
@@ -398,14 +397,14 @@ public final class Block : NSObject {
     if let nextBlock = self.nextBlock {
       let copyResult = try nextBlock.deepCopy()
       try copiedNextConnection!.connectTo(copyResult.rootBlock.previousConnection)
-      copiedBlocks.appendContentsOf(copyResult.allBlocks)
+      copiedBlocks.append(contentsOf: copyResult.allBlocks)
     }
 
     // Copy shadow block(s) from next connection
     if let nextShadowBlock = self.nextShadowBlock {
       let copyResult = try nextShadowBlock.deepCopy()
       try copiedNextConnection!.connectShadowTo(copyResult.rootBlock.previousConnection)
-      copiedBlocks.appendContentsOf(copyResult.allBlocks)
+      copiedBlocks.append(contentsOf: copyResult.allBlocks)
     }
 
     return BlockTree(rootBlock: newBlock, allBlocks: copiedBlocks)
@@ -419,7 +418,7 @@ public final class Block : NSObject {
   internal func onlyValueInput() -> Input? {
     var valueInput: Input?
     for input in self.inputs {
-      if input.type == .Value {
+      if input.type == .value {
         if valueInput != nil {
           // Found more than one value input
           return nil
@@ -455,7 +454,8 @@ public final class Block : NSObject {
    - Parameter oldValue: The old value of the instance property
    - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
-  public func didSetEditableProperty<T: Equatable>(inout editableProperty: T, _ oldValue: T)
+  @discardableResult
+  public func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
     -> Bool
   {
     if !self.editable {
@@ -486,7 +486,8 @@ public final class Block : NSObject {
    - Parameter oldValue: The old value of the instance property
    - Returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
    */
-  public func didSetProperty<T: Equatable>(property: T, _ oldValue: T) -> Bool {
+  @discardableResult
+  public func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {
     if property == oldValue {
       return false
     }

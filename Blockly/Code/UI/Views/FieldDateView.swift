@@ -20,44 +20,44 @@ import Foundation
  View for rendering a `FieldDateLayout`.
  */
 @objc(BKYFieldDateView)
-public class FieldDateView: FieldView {
+open class FieldDateView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldDateLayout`
-  public var fieldDateLayout: FieldDateLayout? {
+  open var fieldDateLayout: FieldDateLayout? {
     return layout as? FieldDateLayout
   }
 
   /// The text field to render the date
-  public private(set) lazy var textField: InsetTextField = {
+  open fileprivate(set) lazy var textField: InsetTextField = {
     let textField = InsetTextField(frame: self.bounds)
     textField.delegate = self
-    textField.borderStyle = .RoundedRect
-    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    textField.borderStyle = .roundedRect
+    textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     textField.inputView = self.datePicker
     textField.inputAccessoryView = self.datePickerToolbar
-    textField.textAlignment = .Center
+    textField.textAlignment = .center
     return textField
   }()
 
   /// The picker for choosing a date
-  public private(set) lazy var datePicker: UIDatePicker = {
+  open fileprivate(set) lazy var datePicker: UIDatePicker = {
     let datePicker = UIDatePicker()
-    datePicker.datePickerMode = .Date
-    datePicker.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    datePicker.datePickerMode = .date
+    datePicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     datePicker
-      .addTarget(self, action: #selector(datePickerDidChange(_:)), forControlEvents: .ValueChanged)
+      .addTarget(self, action: #selector(datePickerDidChange(_:)), for: .valueChanged)
     return datePicker
   }()
 
   /// The toolbar that appears above the date picker
-  private private(set) lazy var datePickerToolbar: UIToolbar = {
+  fileprivate fileprivate(set) lazy var datePickerToolbar: UIToolbar = {
     let datePickerToolbar = UIToolbar()
-    datePickerToolbar.barStyle = .Default
-    datePickerToolbar.translucent = true
+    datePickerToolbar.barStyle = .default
+    datePickerToolbar.isTranslucent = true
     datePickerToolbar.items = [
-      UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .Done, target: self,
+      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+      UIBarButtonItem(barButtonSystemItem: .done, target: self,
         action: #selector(didTapDoneButton(_:)))
     ]
     datePickerToolbar.sizeToFit() // This is important or else the bar won't render!
@@ -67,7 +67,7 @@ public class FieldDateView: FieldView {
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
@@ -78,7 +78,7 @@ public class FieldDateView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -93,14 +93,14 @@ public class FieldDateView: FieldView {
         textField.text = fieldDateLayout.textValue
 
         // TODO:(#27) Standardize this font
-        textField.font = UIFont.systemFontOfSize(14 * fieldDateLayout.engine.scale)
+        textField.font = UIFont.systemFont(ofSize: 14 * fieldDateLayout.engine.scale)
         textField.insetPadding =
           fieldDateLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     textField.text = ""
@@ -108,19 +108,19 @@ public class FieldDateView: FieldView {
 
   // MARK: - Private
 
-  private dynamic func didTapDoneButton(sender: UITextField) {
+  fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
     updateDateFromDatePicker()
 
     // Stop editing the text field
     textField.resignFirstResponder()
   }
 
-  private dynamic func datePickerDidChange(sender: UIDatePicker) {
+  fileprivate dynamic func datePickerDidChange(_ sender: UIDatePicker) {
     // Immediately update the date when the date picker changes
     updateDateFromDatePicker()
   }
 
-  private func updateDateFromDatePicker() {
+  fileprivate func updateDateFromDatePicker() {
     fieldDateLayout?.updateDate(datePicker.date)
   }
 }
@@ -128,7 +128,7 @@ public class FieldDateView: FieldView {
 // MARK: - UITextFieldDelegate
 
 extension FieldDateView: UITextFieldDelegate {
-  public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
     replacementString string: String) -> Bool
   {
     // Disable direct editing of the text field
@@ -139,17 +139,17 @@ extension FieldDateView: UITextFieldDelegate {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldDateView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldDateLayout = layout as? FieldDateLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldDateLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     let text = fieldDateLayout.textValue
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    var measureSize = text.bky_singleLineSizeForFont(UIFont.systemFontOfSize(14 * scale))
+    var measureSize = text.bky_singleLineSizeForFont(UIFont.systemFont(ofSize: 14 * scale))
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width += textPadding.leading + textPadding.trailing
     return measureSize

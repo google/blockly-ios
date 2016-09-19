@@ -23,18 +23,18 @@ public final class JSONHelper: NSObject {
   Convenience method for retrieving a JSON object from a String.
 
   - Parameter jsonString: The JSON string
-  - Returns: Either a Dictionary<String, AnyObject> or Array<AnyObject>
+  - Returns: Either a Dictionary<String, Any> or Array<Any>
   */
-  public static func JSONObjectFromString(jsonString: String) throws -> AnyObject {
+  public static func JSONObjectFromString(_ jsonString: String) throws -> Any {
     guard
       let jsonData =
-        jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) else
+        jsonString.data(using: String.Encoding.utf8, allowLossyConversion: false) else
     {
-      throw BlocklyError(.JSONParsing, "Could not convert json to NSData:\n\(jsonString)")
+      throw BlocklyError(.jsonParsing, "Could not convert json to NSData:\n\(jsonString)")
     }
 
-    return try NSJSONSerialization.JSONObjectWithData(
-      jsonData, options:NSJSONReadingOptions(rawValue: 0))
+    return try JSONSerialization.jsonObject(
+      with: jsonData, options:JSONSerialization.ReadingOptions(rawValue: 0))
   }
 
   /**
@@ -43,13 +43,13 @@ public final class JSONHelper: NSObject {
   - Parameter jsonString: A valid JSON string dictionary
   - Returns: The JSON dictionary
   */
-  public static func JSONDictionaryFromString(jsonString: String) throws
-    -> Dictionary<String, AnyObject>
+  public static func JSONDictionaryFromString(_ jsonString: String) throws
+    -> Dictionary<String, Any>
   {
     // Parse jsonString into json dictionary
-    guard let json = try JSONObjectFromString(jsonString) as? Dictionary<String, AnyObject> else {
-      throw BlocklyError(.JSONInvalidTypecast,
-        "Could not convert AnyObject to Dictionary<String, AnyObject>")
+    guard let json = try JSONObjectFromString(jsonString) as? Dictionary<String, Any> else {
+      throw BlocklyError(.jsonInvalidTypecast,
+        "Could not convert Any to Dictionary<String, Any>")
     }
     return json
   }
@@ -60,10 +60,10 @@ public final class JSONHelper: NSObject {
   - Parameter jsonString: A valid JSON string array
   - Returns: The JSON array
   */
-  public static func JSONArrayFromString(jsonString: String) throws -> [AnyObject] {
+  public static func JSONArrayFromString(_ jsonString: String) throws -> [Any] {
     // Parse jsonString into json array
-    guard let json = try JSONObjectFromString(jsonString) as? [AnyObject] else {
-      throw BlocklyError(.JSONInvalidTypecast, "Could not convert AnyObject to [AnyObject]")
+    guard let json = try JSONObjectFromString(jsonString) as? [Any] else {
+      throw BlocklyError(.jsonInvalidTypecast, "Could not convert Any to [Any]")
     }
     return json
   }

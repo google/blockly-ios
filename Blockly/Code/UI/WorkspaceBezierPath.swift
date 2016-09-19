@@ -24,7 +24,7 @@ Under the hood, this class uses a `UIBezierPath` object, but it has added the fo
 - adds SVG-equivalent methods for "smooth curveto" and "smooth quadratic curveto"
 */
 @objc(BKYWorkspaceBezierPath)
-public class WorkspaceBezierPath: NSObject {
+public final class WorkspaceBezierPath: NSObject {
   // MARK: - Properties
 
   /// The translated bezier path in the UIView coordinate system.
@@ -67,10 +67,8 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  public func addLineToPoint(point: WorkspacePoint, relative: Bool) {
-//    bky_print("[current point=\(self.currentWorkspacePoint)], [point=\(point)], " +
-//      "[relative=\(relative)], ")
-    viewBezierPath.addLineToPoint(viewPointFromWorkspacePoint(point, relative: relative))
+  public func addLineToPoint(_ point: WorkspacePoint, relative: Bool) {
+    viewBezierPath.addLine(to: viewPointFromWorkspacePoint(point, relative: relative))
 
     setCurrentWorkspacePoint(point, relative: relative)
     _reflectionOfLastCurveControlPoint = nil
@@ -86,7 +84,7 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  public func addLineToPoint(x: CGFloat, _ y: CGFloat, relative: Bool) {
+  public func addLineToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
     addLineToPoint(WorkspacePointMake(x, y), relative: relative)
   }
 
@@ -102,10 +100,10 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified center point should be relative to the `currentPoint`.
   False if it should be an absolute point.
   */
-  public func addArcWithCenter(center: WorkspacePoint, radius: CGFloat, startAngle: CGFloat,
+  public func addArcWithCenter(_ center: WorkspacePoint, radius: CGFloat, startAngle: CGFloat,
     endAngle: CGFloat, clockwise: Bool, relative: Bool) {
-      viewBezierPath.addArcWithCenter(
-        viewPointFromWorkspacePoint(center, relative: relative),
+      viewBezierPath.addArc(
+        withCenter: viewPointFromWorkspacePoint(center, relative: relative),
         radius: radius * _layoutEngine.scale,
         startAngle: startAngle,
         endAngle: endAngle,
@@ -128,13 +126,13 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be are absolute points.
   */
-  public func addCurveToPoint(endPoint: WorkspacePoint, controlPoint1: WorkspacePoint,
+  public func addCurveToPoint(_ endPoint: WorkspacePoint, controlPoint1: WorkspacePoint,
     controlPoint2: WorkspacePoint, relative: Bool) {
       let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
       let viewControlPoint1 = viewPointFromWorkspacePoint(controlPoint1, relative: relative)
       let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
-      viewBezierPath.addCurveToPoint(
-        viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
+      viewBezierPath.addCurve(
+        to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
 
       setCurrentWorkspacePoint(endPoint, relative: relative)
       _reflectionOfLastCurveControlPoint =
@@ -151,10 +149,10 @@ public class WorkspaceBezierPath: NSObject {
   False if they should be absolute points.
   */
   public func addQuadCurveToPoint(
-    endPoint: WorkspacePoint, controlPoint: WorkspacePoint, relative: Bool) {
+    _ endPoint: WorkspacePoint, controlPoint: WorkspacePoint, relative: Bool) {
       let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
       let viewControlPoint = viewPointFromWorkspacePoint(controlPoint, relative: relative)
-      viewBezierPath.addQuadCurveToPoint(viewEndPoint, controlPoint:viewControlPoint)
+      viewBezierPath.addQuadCurve(to: viewEndPoint, controlPoint:viewControlPoint)
 
       setCurrentWorkspacePoint(endPoint, relative: relative)
       _reflectionOfLastCurveControlPoint =
@@ -176,12 +174,12 @@ public class WorkspaceBezierPath: NSObject {
   if they should be absolute points.
   */
   public func addSmoothCurveToPoint(
-    endPoint: WorkspacePoint, controlPoint2: WorkspacePoint, relative: Bool) {
+    _ endPoint: WorkspacePoint, controlPoint2: WorkspacePoint, relative: Bool) {
       let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
       let viewControlPoint1 = _reflectionOfLastCurveControlPoint ?? viewBezierPath.currentPoint
       let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
-      viewBezierPath.addCurveToPoint(
-        viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
+      viewBezierPath.addCurve(
+        to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
 
       setCurrentWorkspacePoint(endPoint, relative: relative)
       _reflectionOfLastCurveControlPoint =
@@ -202,10 +200,10 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be absolute points.
   */
-  public func addSmoothQuadCurveToPoint(endPoint: WorkspacePoint, relative: Bool) {
+  public func addSmoothQuadCurveToPoint(_ endPoint: WorkspacePoint, relative: Bool) {
     let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
     let viewControlPoint = _reflectionOfLastCurveControlPoint ?? viewBezierPath.currentPoint
-    viewBezierPath.addQuadCurveToPoint(viewEndPoint, controlPoint:viewControlPoint)
+    viewBezierPath.addQuadCurve(to: viewEndPoint, controlPoint:viewControlPoint)
 
     setCurrentWorkspacePoint(endPoint, relative: relative)
     _reflectionOfLastCurveControlPoint =
@@ -217,8 +215,8 @@ public class WorkspaceBezierPath: NSObject {
 
   - Parameter bezierPath: The path to add to the receiver.
   */
-  public func appendPath(bezierPath: WorkspaceBezierPath) {
-    viewBezierPath.appendPath(bezierPath.viewBezierPath)
+  public func appendPath(_ bezierPath: WorkspaceBezierPath) {
+    viewBezierPath.append(bezierPath.viewBezierPath)
 
     self.currentWorkspacePoint = bezierPath.currentWorkspacePoint
     _reflectionOfLastCurveControlPoint = nil
@@ -228,7 +226,7 @@ public class WorkspaceBezierPath: NSObject {
   Closes the most recently added subpath.
   */
   public func closePath() {
-    viewBezierPath.closePath()
+    viewBezierPath.close()
 
     self.currentWorkspacePoint =
       _layoutEngine.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint)
@@ -242,8 +240,8 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  public func moveToPoint(point: WorkspacePoint, relative: Bool) {
-    viewBezierPath.moveToPoint(viewPointFromWorkspacePoint(point, relative: relative))
+  public func moveToPoint(_ point: WorkspacePoint, relative: Bool) {
+    viewBezierPath.move(to: viewPointFromWorkspacePoint(point, relative: relative))
 
     self.currentWorkspacePoint = point
     _reflectionOfLastCurveControlPoint = nil
@@ -259,7 +257,7 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  public func moveToPoint(x: CGFloat, _ y: CGFloat, relative: Bool) {
+  public func moveToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
     moveToPoint(WorkspacePointMake(x, y), relative: relative)
   }
 
@@ -269,7 +267,7 @@ public class WorkspaceBezierPath: NSObject {
   public func removeAllPoints() {
     viewBezierPath.removeAllPoints()
 
-    self.currentWorkspacePoint = CGPointZero
+    self.currentWorkspacePoint = CGPoint.zero
     _reflectionOfLastCurveControlPoint = nil
   }
 
@@ -282,9 +280,9 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  private func viewPointFromWorkspacePoint(point: WorkspacePoint, relative: Bool) -> CGPoint {
+  private func viewPointFromWorkspacePoint(_ point: WorkspacePoint, relative: Bool) -> CGPoint {
     let viewPoint = _layoutEngine.viewPointFromWorkspacePoint(point)
-    return relative && !viewBezierPath.empty ?
+    return relative && !viewBezierPath.isEmpty ?
       (viewBezierPath.currentPoint + viewPoint) : viewPoint
   }
 
@@ -295,7 +293,7 @@ public class WorkspaceBezierPath: NSObject {
   - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
-  private func setCurrentWorkspacePoint(point: WorkspacePoint, relative: Bool) {
+  private func setCurrentWorkspacePoint(_ point: WorkspacePoint, relative: Bool) {
     self.currentWorkspacePoint = relative ? currentWorkspacePoint + point : point
   }
 }

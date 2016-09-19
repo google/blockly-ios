@@ -21,26 +21,26 @@ import Foundation
  Because there is no native checkbox on iOS, this is implemented using a `UISwitch`.
  */
 @objc(BKYFieldCheckboxView)
-public class FieldCheckboxView: FieldView {
+open class FieldCheckboxView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldCheckboxLayout`
-  public var fieldCheckboxLayout: FieldCheckboxLayout? {
+  open var fieldCheckboxLayout: FieldCheckboxLayout? {
     return layout as? FieldCheckboxLayout
   }
 
   /// The switch button (i.e. the "checkbox")
-  private lazy var switchButton: UISwitch = {
+  fileprivate lazy var switchButton: UISwitch = {
     let switchButton = UISwitch()
     switchButton.addTarget(
-      self, action: #selector(switchValueDidChange(_:)), forControlEvents: .ValueChanged)
+      self, action: #selector(switchValueDidChange(_:)), for: .valueChanged)
     return switchButton
   }()
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(switchButton)
   }
@@ -51,7 +51,7 @@ public class FieldCheckboxView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -63,7 +63,7 @@ public class FieldCheckboxView: FieldView {
     runAnimatableCode(animated) {
       if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
         let switchButton = self.switchButton
-        switchButton.on = fieldCheckboxLayout.checked
+        switchButton.isOn = fieldCheckboxLayout.checked
 
         let tintColor =
           fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
@@ -84,32 +84,32 @@ public class FieldCheckboxView: FieldView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    switchButton.on = false
+    switchButton.isOn = false
   }
 
   // MARK: - Private
 
-  private dynamic func switchValueDidChange(sender: UISwitch) {
-    fieldCheckboxLayout?.updateCheckbox(switchButton.on)
+  fileprivate dynamic func switchValueDidChange(_ sender: UISwitch) {
+    fieldCheckboxLayout?.updateCheckbox(switchButton.isOn)
   }
 }
 
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldCheckboxView: FieldLayoutMeasurer {
-  private static var switchButtonSize = CGSizeZero
+  fileprivate static var switchButtonSize = CGSize.zero
 
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     if !(layout is FieldCheckboxLayout) {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldCheckboxLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
-    if switchButtonSize == CGSizeZero {
+    if switchButtonSize == CGSize.zero {
       // UISwitch sizes never change. Measure it once and then never again.
       switchButtonSize = UISwitch().bounds.size
     }

@@ -9,32 +9,40 @@
 /* Begin PBXBuildFile section */
 		8B4A92821BDD477E0011F36F /* AEXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B4A92811BDD477E0011F36F /* AEXML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B4A92921BDD4AD30011F36F /* AEXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B4A92811BDD477E0011F36F /* AEXML.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8B4A92931BDD4AEE0011F36F /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78CE19F0056D00914487 /* AEXML.swift */; };
-		8B4A92941BDD4AF50011F36F /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78CE19F0056D00914487 /* AEXML.swift */; };
 		8B4A929E1BDD4CEF0011F36F /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4A92791BDD47210011F36F /* AEXML.framework */; };
 		8B4A92A41BDD4F8D0011F36F /* AEXMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78C419F0054200914487 /* AEXMLTests.swift */; };
 		8B4A92B01BDD54F50011F36F /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4A928A1BDD49390011F36F /* AEXML.framework */; };
 		8B4A92B61BDD55140011F36F /* AEXMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78C419F0054200914487 /* AEXMLTests.swift */; };
-		8B4A92C61BDD5B8D0011F36F /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78CE19F0056D00914487 /* AEXML.swift */; };
 		8B4A92C71BDD5B940011F36F /* AEXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B4A92811BDD477E0011F36F /* AEXML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B4A92D11BDD5BB20011F36F /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4A92BE1BDD5B300011F36F /* AEXML.framework */; };
 		8B4A92D91BDD5BDE0011F36F /* AEXMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78C419F0054200914487 /* AEXMLTests.swift */; };
-		8B4A92E71BDD5D980011F36F /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78CE19F0056D00914487 /* AEXML.swift */; };
 		8B4A92E81BDD5DA00011F36F /* AEXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B4A92811BDD477E0011F36F /* AEXML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B4A92EC1BDD66680011F36F /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EA1BDD66680011F36F /* example.xml */; };
 		8B4A92ED1BDD66680011F36F /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EA1BDD66680011F36F /* example.xml */; };
 		8B4A92EE1BDD66680011F36F /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EA1BDD66680011F36F /* example.xml */; };
-		8B4A92EF1BDD66680011F36F /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EA1BDD66680011F36F /* example.xml */; };
 		8B4A92F01BDD66680011F36F /* plant_catalog.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EB1BDD66680011F36F /* plant_catalog.xml */; };
 		8B4A92F11BDD66680011F36F /* plant_catalog.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EB1BDD66680011F36F /* plant_catalog.xml */; };
 		8B4A92F21BDD66680011F36F /* plant_catalog.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EB1BDD66680011F36F /* plant_catalog.xml */; };
-		8B4A92F31BDD66680011F36F /* plant_catalog.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A92EB1BDD66680011F36F /* plant_catalog.xml */; };
-		8BFE78AF19F0054100914487 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78AE19F0054100914487 /* AppDelegate.swift */; };
-		8BFE78B119F0054100914487 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78B019F0054100914487 /* ViewController.swift */; };
-		8BFE78B419F0054100914487 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE78B219F0054100914487 /* Main.storyboard */; };
-		8BFE78B619F0054100914487 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE78B519F0054100914487 /* Images.xcassets */; };
-		8BFE78B919F0054200914487 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE78B719F0054200914487 /* LaunchScreen.xib */; };
-		8BFE78CF19F0056D00914487 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE78CE19F0056D00914487 /* AEXML.swift */; };
+		8B52A48A1D8486D00060C08D /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4861D8486D00060C08D /* Document.swift */; };
+		8B52A48B1D8486D00060C08D /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4861D8486D00060C08D /* Document.swift */; };
+		8B52A48C1D8486D00060C08D /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4861D8486D00060C08D /* Document.swift */; };
+		8B52A48D1D8486D00060C08D /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4861D8486D00060C08D /* Document.swift */; };
+		8B52A48E1D8486D00060C08D /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4871D8486D00060C08D /* Element.swift */; };
+		8B52A48F1D8486D00060C08D /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4871D8486D00060C08D /* Element.swift */; };
+		8B52A4901D8486D00060C08D /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4871D8486D00060C08D /* Element.swift */; };
+		8B52A4911D8486D00060C08D /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4871D8486D00060C08D /* Element.swift */; };
+		8B52A4921D8486D00060C08D /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4881D8486D00060C08D /* Error.swift */; };
+		8B52A4931D8486D00060C08D /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4881D8486D00060C08D /* Error.swift */; };
+		8B52A4941D8486D00060C08D /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4881D8486D00060C08D /* Error.swift */; };
+		8B52A4951D8486D00060C08D /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4881D8486D00060C08D /* Error.swift */; };
+		8B52A4961D8486D00060C08D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4891D8486D00060C08D /* Parser.swift */; };
+		8B52A4971D8486D00060C08D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4891D8486D00060C08D /* Parser.swift */; };
+		8B52A4981D8486D00060C08D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4891D8486D00060C08D /* Parser.swift */; };
+		8B52A4991D8486D00060C08D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A4891D8486D00060C08D /* Parser.swift */; };
+		8B52A49B1D84AF640060C08D /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A49A1D84AF640060C08D /* Options.swift */; };
+		8B52A49C1D84AF640060C08D /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A49A1D84AF640060C08D /* Options.swift */; };
+		8B52A49D1D84AF640060C08D /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A49A1D84AF640060C08D /* Options.swift */; };
+		8B52A49E1D84AF640060C08D /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B52A49A1D84AF640060C08D /* Options.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,19 +82,17 @@
 		8B4A92DF1BDD5D330011F36F /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4A92EA1BDD66680011F36F /* example.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example.xml; sourceTree = "<group>"; };
 		8B4A92EB1BDD66680011F36F /* plant_catalog.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = plant_catalog.xml; sourceTree = "<group>"; };
+		8B52A4861D8486D00060C08D /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		8B52A4871D8486D00060C08D /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		8B52A4881D8486D00060C08D /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		8B52A4891D8486D00060C08D /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		8B52A49A1D84AF640060C08D /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
+		8B8C73681CD8114F00A4E197 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		8BD7A14319F0093F005F73F4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8BD7A14419F0093F005F73F4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8BDEBA8C1AEC588700A12D92 /* AEXML.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AEXML.podspec; sourceTree = "<group>"; };
-		8BFE78A919F0054100914487 /* AEXMLExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AEXMLExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BFE78AD19F0054100914487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BFE78AE19F0054100914487 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8BFE78B019F0054100914487 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8BFE78B319F0054100914487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8BFE78B519F0054100914487 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		8BFE78B819F0054200914487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		8BFE78C319F0054200914487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BFE78C419F0054200914487 /* AEXMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEXMLTests.swift; sourceTree = "<group>"; };
-		8BFE78CE19F0056D00914487 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXML.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,13 +148,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8BFE78A619F0054100914487 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -167,36 +166,51 @@
 				8B4A92EA1BDD66680011F36F /* example.xml */,
 				8B4A92EB1BDD66680011F36F /* plant_catalog.xml */,
 			);
-			path = Resources;
+			name = Resources;
+			path = ../Example/Resources;
 			sourceTree = "<group>";
 		};
-		8BD5EE981AEC407800A8BB45 /* Source */ = {
+		8B8C736E1CD816C100A4E197 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8BFE78CE19F0056D00914487 /* AEXML.swift */,
+				8BD7A14319F0093F005F73F4 /* LICENSE */,
+				8BD7A14419F0093F005F73F4 /* README.md */,
+				8B0D48AA1C594F8D0075C8BF /* CHANGELOG.md */,
+				8BDEBA8C1AEC588700A12D92 /* AEXML.podspec */,
+				8B8C73681CD8114F00A4E197 /* Package.swift */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BD5EE981AEC407800A8BB45 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8B52A4871D8486D00060C08D /* Element.swift */,
+				8B52A4861D8486D00060C08D /* Document.swift */,
+				8B52A4891D8486D00060C08D /* Parser.swift */,
+				8B52A49A1D84AF640060C08D /* Options.swift */,
+				8B52A4881D8486D00060C08D /* Error.swift */,
 				8B4A92841BDD47D60011F36F /* Supporting Files */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		8BFE78A019F0054100914487 = {
 			isa = PBXGroup;
 			children = (
-				8BD5EE981AEC407800A8BB45 /* Source */,
+				8BD5EE981AEC407800A8BB45 /* Sources */,
 				8BFE78C119F0054200914487 /* Tests */,
-				8BFE78AB19F0054100914487 /* Example */,
 				8BFE78AA19F0054100914487 /* Products */,
-				8BD7A14319F0093F005F73F4 /* LICENSE */,
-				8BD7A14419F0093F005F73F4 /* README.md */,
-				8B0D48AA1C594F8D0075C8BF /* CHANGELOG.md */,
-				8BDEBA8C1AEC588700A12D92 /* AEXML.podspec */,
+				8B8C736E1CD816C100A4E197 /* Supporting Files */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		8BFE78AA19F0054100914487 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8BFE78A919F0054100914487 /* AEXMLExample.app */,
 				8B4A92791BDD47210011F36F /* AEXML.framework */,
 				8B4A928A1BDD49390011F36F /* AEXML.framework */,
 				8B4A92991BDD4CEF0011F36F /* AEXML iOS Tests.xctest */,
@@ -206,27 +220,6 @@
 				8B4A92DF1BDD5D330011F36F /* AEXML.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		8BFE78AB19F0054100914487 /* Example */ = {
-			isa = PBXGroup;
-			children = (
-				8BFE78AE19F0054100914487 /* AppDelegate.swift */,
-				8BFE78B019F0054100914487 /* ViewController.swift */,
-				8BFE78B219F0054100914487 /* Main.storyboard */,
-				8BFE78B519F0054100914487 /* Images.xcassets */,
-				8BFE78B719F0054200914487 /* LaunchScreen.xib */,
-				8BFE78AC19F0054100914487 /* Supporting Files */,
-			);
-			path = Example;
-			sourceTree = "<group>";
-		};
-		8BFE78AC19F0054100914487 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8BFE78AD19F0054100914487 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		8BFE78C119F0054200914487 /* Tests */ = {
@@ -411,23 +404,6 @@
 			productReference = 8B4A92DF1BDD5D330011F36F /* AEXML.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8BFE78A819F0054100914487 /* AEXMLExample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8BFE78C819F0054200914487 /* Build configuration list for PBXNativeTarget "AEXMLExample" */;
-			buildPhases = (
-				8BFE78A519F0054100914487 /* Sources */,
-				8BFE78A619F0054100914487 /* Frameworks */,
-				8BFE78A719F0054100914487 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AEXMLExample;
-			productName = AEXMLExample;
-			productReference = 8BFE78A919F0054100914487 /* AEXMLExample.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -435,32 +411,36 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = AE;
 				TargetAttributes = {
 					8B4A92781BDD47210011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92891BDD49390011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92981BDD4CEF0011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92AA1BDD54F50011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92BD1BDD5B300011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92CB1BDD5BB20011F36F = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					8B4A92DE1BDD5D330011F36F = {
 						CreatedOnToolsVersion = 7.1;
-					};
-					8BFE78A819F0054100914487 = {
-						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -478,13 +458,12 @@
 			projectRoot = "";
 			targets = (
 				8B4A92781BDD47210011F36F /* AEXML iOS */,
+				8B4A92DE1BDD5D330011F36F /* AEXML watchOS */,
 				8B4A92981BDD4CEF0011F36F /* AEXML iOS Tests */,
-				8B4A92891BDD49390011F36F /* AEXML OSX */,
-				8B4A92AA1BDD54F50011F36F /* AEXML OSX Tests */,
 				8B4A92BD1BDD5B300011F36F /* AEXML tvOS */,
 				8B4A92CB1BDD5BB20011F36F /* AEXML tvOS Tests */,
-				8B4A92DE1BDD5D330011F36F /* AEXML watchOS */,
-				8BFE78A819F0054100914487 /* AEXMLExample */,
+				8B4A92891BDD49390011F36F /* AEXML OSX */,
+				8B4A92AA1BDD54F50011F36F /* AEXML OSX Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -545,18 +524,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8BFE78A719F0054100914487 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8BFE78B419F0054100914487 /* Main.storyboard in Resources */,
-				8BFE78B919F0054200914487 /* LaunchScreen.xib in Resources */,
-				8B4A92F31BDD66680011F36F /* plant_catalog.xml in Resources */,
-				8B4A92EF1BDD66680011F36F /* example.xml in Resources */,
-				8BFE78B619F0054100914487 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -564,7 +531,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B4A92931BDD4AEE0011F36F /* AEXML.swift in Sources */,
+				8B52A4921D8486D00060C08D /* Error.swift in Sources */,
+				8B52A48A1D8486D00060C08D /* Document.swift in Sources */,
+				8B52A4961D8486D00060C08D /* Parser.swift in Sources */,
+				8B52A49B1D84AF640060C08D /* Options.swift in Sources */,
+				8B52A48E1D8486D00060C08D /* Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,7 +543,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B4A92941BDD4AF50011F36F /* AEXML.swift in Sources */,
+				8B52A4951D8486D00060C08D /* Error.swift in Sources */,
+				8B52A48D1D8486D00060C08D /* Document.swift in Sources */,
+				8B52A4991D8486D00060C08D /* Parser.swift in Sources */,
+				8B52A49E1D84AF640060C08D /* Options.swift in Sources */,
+				8B52A4911D8486D00060C08D /* Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,7 +571,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B4A92C61BDD5B8D0011F36F /* AEXML.swift in Sources */,
+				8B52A4941D8486D00060C08D /* Error.swift in Sources */,
+				8B52A48C1D8486D00060C08D /* Document.swift in Sources */,
+				8B52A4981D8486D00060C08D /* Parser.swift in Sources */,
+				8B52A49D1D84AF640060C08D /* Options.swift in Sources */,
+				8B52A4901D8486D00060C08D /* Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,17 +591,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B4A92E71BDD5D980011F36F /* AEXML.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8BFE78A519F0054100914487 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8BFE78B119F0054100914487 /* ViewController.swift in Sources */,
-				8BFE78CF19F0056D00914487 /* AEXML.swift in Sources */,
-				8BFE78AF19F0054100914487 /* AppDelegate.swift in Sources */,
+				8B52A4931D8486D00060C08D /* Error.swift in Sources */,
+				8B52A48B1D8486D00060C08D /* Document.swift in Sources */,
+				8B52A4971D8486D00060C08D /* Parser.swift in Sources */,
+				8B52A49C1D84AF640060C08D /* Options.swift in Sources */,
+				8B52A48F1D8486D00060C08D /* Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,25 +619,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		8BFE78B219F0054100914487 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8BFE78B319F0054100914487 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		8BFE78B719F0054200914487 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8BFE78B819F0054200914487 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		8B4A927E1BDD47210011F36F /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -676,13 +630,13 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -697,13 +651,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -720,14 +675,14 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -745,14 +700,15 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -766,6 +722,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -780,6 +737,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -796,6 +755,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-OSX-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -813,6 +773,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-OSX-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -826,13 +788,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -849,13 +812,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -871,6 +836,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
@@ -886,6 +852,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AEXML-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
@@ -901,13 +869,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -927,13 +896,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AEXML;
 				PRODUCT_NAME = AEXML;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -965,6 +936,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -978,7 +950,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1013,6 +985,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1020,7 +993,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1028,28 +1001,6 @@
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
-		8BFE78C919F0054200914487 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Example/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = AEXMLExample;
-			};
-			name = Debug;
-		};
-		8BFE78CA19F0054200914487 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Example/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = AEXMLExample;
 			};
 			name = Release;
 		};
@@ -1124,15 +1075,6 @@
 			buildConfigurations = (
 				8BFE78C619F0054200914487 /* Debug */,
 				8BFE78C719F0054200914487 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8BFE78C819F0054200914487 /* Build configuration list for PBXNativeTarget "AEXMLExample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8BFE78C919F0054200914487 /* Debug */,
-				8BFE78CA19F0054200914487 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

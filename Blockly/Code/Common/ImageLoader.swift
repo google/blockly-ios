@@ -18,7 +18,7 @@ import Foundation
 /**
  Helper class for loading images.
  */
-public class ImageLoader {
+public final class ImageLoader {
   /**
    Returns an image with a given name in the main application bundle. As a fallback, it returns
    the image inside the associated bundle for the given class (typically, this will be the
@@ -35,8 +35,8 @@ public class ImageLoader {
     if let image = UIImage(named: imageName) {
       return image
     } else {
-      let bundle = NSBundle(forClass: anyClass)
-      return UIImage(named: imageName, inBundle: bundle, compatibleWithTraitCollection: nil)
+      let bundle = Bundle(for: anyClass)
+      return UIImage(named: imageName, in: bundle, compatibleWith: nil)
     }
   }
 }

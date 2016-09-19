@@ -44,7 +44,7 @@ class ColorHelperTest: XCTestCase {
   // MARK - Helper
 
   func assertValuesForColor(
-    color: UIColor, red: Int, green: Int, blue: Int, alpha: Float) {
+    _ color: UIColor, red: Int, green: Int, blue: Int, alpha: Float) {
     var actualRed:CGFloat = 0
     var actualGreen:CGFloat = 0
     var actualBlue:CGFloat = 0

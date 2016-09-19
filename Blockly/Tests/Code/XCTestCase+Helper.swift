@@ -28,20 +28,20 @@ extension XCTestCase {
    - Parameter expression: The throwable expression
    */
   func BKYAssertThrow<T: NSError>(
-    message: String? = nil, file: String = #file, line: UInt = #line, errorType: T.Type,
+    _ message: String? = nil, file: String = #file, line: UInt = #line, errorType: T.Type,
     expression: () throws -> Void)
   {
     do {
       try expression()
-      recordFailureWithDescription(
-        bky_failureDescription("Expression did not throw an error", message, nil),
+      recordFailure(
+        withDescription: bky_failureDescription("Expression did not throw an error", message, nil),
         inFile: file, atLine: line, expected: true)
     } catch let error {
-      if error.dynamicType != errorType {
+      if type(of: error) != errorType {
         let errorDescription =
-          "Error type [\(errorType)] is not equal to [\(error.dynamicType)]"
-        recordFailureWithDescription(
-          bky_failureDescription(errorDescription, message, error),
+          "Error type [\(errorType)] is not equal to [\(type(of: error))]"
+        recordFailure(
+          withDescription: bky_failureDescription(errorDescription, message, error),
           inFile: file, atLine: line, expected: true)
       }
     }
@@ -60,14 +60,14 @@ extension XCTestCase {
    - Returns: The return value of the expression or `nil` if the expression could not be evaluated.
    */
   func BKYAssertDoesNotThrow<T>(
-    message: String? = nil, _ file: String = #file, _ line: UInt = #line,
+    _ message: String? = nil, _ file: String = #file, _ line: UInt = #line,
     _ expression: () throws -> T?) -> T?
   {
     do {
       return try expression()
     } catch let error {
-      recordFailureWithDescription(
-        bky_failureDescription("Expression threw an error", message, error),
+      recordFailure(
+        withDescription: bky_failureDescription("Expression threw an error", message, error),
         inFile: file, atLine: line, expected: true)
     }
     return nil
@@ -95,26 +95,26 @@ extension XCTestCase {
    `BKYAssertDoesNotThrow`.
    */
   func BKYAssertDoesNotThrow<T>(
-    expression: () throws -> T?, _ message: String? = nil, _ file: String = #file,
+    _ expression: () throws -> T?, _ message: String? = nil, _ file: String = #file,
     _ line: UInt = #line) -> T?
   {
     do {
       return try expression()
     } catch let error {
-      recordFailureWithDescription(
-        bky_failureDescription("Expression threw an error", message, error),
+      recordFailure(
+        withDescription: bky_failureDescription("Expression threw an error", message, error),
         inFile: file, atLine: line, expected: true)
     }
     return nil
   }
 
-  private func bky_failureDescription(
-    description: String, _ message: String?, _ error: ErrorType?, function: String = #function)
+  fileprivate func bky_failureDescription(
+    _ description: String, _ message: String?, _ error: Error?, function: String = #function)
     -> String
   {
     let conciseFunctionName: String
-    if let range = function.rangeOfString("(") {
-      conciseFunctionName = function.substringToIndex(range.startIndex)
+    if let range = function.range(of: "(") {
+      conciseFunctionName = function.substring(to: range.lowerBound)
     } else {
       conciseFunctionName = function
     }

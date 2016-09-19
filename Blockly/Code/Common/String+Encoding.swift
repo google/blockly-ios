@@ -28,11 +28,11 @@ extension String {
   public func bky_escapedJavaScriptParameter() -> String {
     // Note: `\b` and `\f` aren't included here because they aren't special String characters in
     // Swift (even though they are special in JS)
-    return self.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
-      .stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
-      .stringByReplacingOccurrencesOfString("\'", withString: "\\'")
-      .stringByReplacingOccurrencesOfString("\r", withString: "\\r")
-      .stringByReplacingOccurrencesOfString("\n", withString: "\\n")
-      .stringByReplacingOccurrencesOfString("\t", withString: "\\t")
+    return self.replacingOccurrences(of: "\\", with: "\\\\")
+      .replacingOccurrences(of: "\"", with: "\\\"")
+      .replacingOccurrences(of: "\'", with: "\\'")
+      .replacingOccurrences(of: "\r", with: "\\r")
+      .replacingOccurrences(of: "\n", with: "\\n")
+      .replacingOccurrences(of: "\t", with: "\\t")
   }
 }

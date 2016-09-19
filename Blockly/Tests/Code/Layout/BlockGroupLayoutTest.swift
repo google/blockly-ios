@@ -21,16 +21,17 @@ class BlockGroupLayoutTest: XCTestCase {
   var _workspaceLayout: WorkspaceLayout!
   var _blockFactory: BlockFactory!
   var _layoutFactory: LayoutFactory!
+  var _layoutBuilder: LayoutBuilder!
 
   // MARK: - Setup
 
   override func setUp() {
     let workspace = Workspace()
     _layoutFactory = DefaultLayoutFactory()
-    _workspaceLayout = try! WorkspaceLayout(workspace: workspace,
-      engine: DefaultLayoutEngine(), layoutBuilder: LayoutBuilder(layoutFactory: _layoutFactory))
+    _workspaceLayout = WorkspaceLayout(workspace: workspace, engine: DefaultLayoutEngine())
+    _layoutBuilder = LayoutBuilder(layoutFactory: _layoutFactory)
     _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+      jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
   }
 
   // MARK: - Tests
@@ -193,7 +194,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Build its layout tree
     do {
-      try _workspaceLayout.layoutBuilder.buildLayoutTree(_workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(_workspaceLayout)
     } catch let error as NSError {
       XCTFail("Couldn't build the layout tree: \(error)")
     }
@@ -213,7 +214,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  func createBlockGroupLayout(numberOfBlockLayouts numberOfBlockLayouts: Int) -> BlockGroupLayout {
+  func createBlockGroupLayout(numberOfBlockLayouts: Int) -> BlockGroupLayout {
     let blockGroupLayout =
       try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
 

@@ -40,8 +40,8 @@ public final class FieldLabel: Field {
     return FieldLabel(name: name, text: text)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
-    throw BlocklyError(.IllegalState, "Label field text cannot be set after construction.")
+  public override func setValueFromSerializedText(_ text: String) throws {
+    throw BlocklyError(.illegalState, "Label field text cannot be set after construction.")
   }
 
   public override func serializedText() throws -> String? {

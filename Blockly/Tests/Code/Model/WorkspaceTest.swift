@@ -101,13 +101,13 @@ class WorkspaceTest: XCTestCase {
     }
 
     // Add non-editable block to workspace when it's not read only.
-    // It should automatically change the block to be editable.
+    // Nothing should happen and the block should remain non-editable.
     _workspace.readOnly = false
     XCTAssertFalse(_workspace.readOnly)
     block1.editable = false
     XCTAssertFalse(block1.editable)
     BKYAssertDoesNotThrow { try self._workspace.addBlockTree(block1) }
-    XCTAssertTrue(block1.editable)
+    XCTAssertFalse(block1.editable)
 
     // Change workspace to be read only. This should update all blocks to be editable.
     _workspace.readOnly = true
@@ -124,11 +124,11 @@ class WorkspaceTest: XCTestCase {
     XCTAssertFalse(block2.editable)
 
     // Change workspace to not read only.
-    // This should update all blocks to be non-editable.
+    // Nothing should happen and all blocks should remain non-editable.
     _workspace.readOnly = false
     XCTAssertFalse(_workspace.readOnly)
     for (_, block) in _workspace.allBlocks {
-      XCTAssertTrue(block.editable)
+      XCTAssertFalse(block.editable)
     }
   }
 

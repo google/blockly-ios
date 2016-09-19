@@ -17,10 +17,8 @@ import Foundation
 
 /**
  A view for displaying the blocks inside of a `Toolbox.Category`.
-
- // TODO:(vicng) Change this into a view controller that uses `WorkspaceViewController` instead.
  */
-public class ToolboxCategoryViewController: WorkspaceViewController {
+public final class ToolboxCategoryViewController: WorkspaceViewController {
 
   // MARK: - Static Properties
 
@@ -32,7 +30,7 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
   /// The toolbox layout to display
   public var toolboxLayout: ToolboxLayout?
   /// The current category being displayed
-  public private(set) var category: Toolbox.Category?
+  public fileprivate(set) var category: Toolbox.Category?
   /// Width constraint for this view
   private var _widthConstraint: NSLayoutConstraint!
   /// Height constraint for this view
@@ -40,7 +38,7 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
 
   // MARK: - Super
 
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
@@ -63,7 +61,7 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
    - Parameter category: The `Category` to show.
    - Parameter animated: Flag indicating if resizing the view's size should be animated.
    */
-  public func showCategory(category: Toolbox.Category, animated: Bool) {
+  public func showCategory(_ category: Toolbox.Category, animated: Bool) {
     setCategory(category, animated: animated)
   }
 
@@ -73,13 +71,13 @@ public class ToolboxCategoryViewController: WorkspaceViewController {
    - Parameter category: The `Category` to hide.
    - Parameter animated: Flag indicating if resizing the view's size should be animated.
    */
-  public func hideCategory(animated animated: Bool) {
+  public func hideCategory(animated: Bool) {
     setCategory(nil, animated: animated)
   }
 
   // MARK: - Private
 
-  private func setCategory(category: Toolbox.Category?, animated: Bool) {
+  private func setCategory(_ category: Toolbox.Category?, animated: Bool) {
     if self.category == category {
       return
     }

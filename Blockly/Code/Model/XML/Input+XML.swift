@@ -31,11 +31,11 @@ extension Input {
   public func toXML() throws -> [AEXMLElement] {
     var xmlElements: [AEXMLElement]
     switch type {
-    case InputType.Dummy:
+    case InputType.dummy:
       xmlElements = []
-    case InputType.Value:
+    case InputType.value:
       xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_VALUE)
-    case InputType.Statement:
+    case InputType.statement:
       xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_STATEMENT)
     }
 
@@ -51,7 +51,7 @@ extension Input {
 
   // MARK: - Private
 
-  private func toXMLWithName(elementName: String) throws -> [AEXMLElement] {
+  fileprivate func toXMLWithName(_ elementName: String) throws -> [AEXMLElement] {
     if connectedBlock == nil && connectedShadowBlock == nil {
       // No block connected, don't include any xml for this input
       return []
@@ -61,7 +61,7 @@ extension Input {
 
     // Create xml element for the input
     let xml = AEXMLElement(
-      elementName, value: nil, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
+      name: elementName, value: nil, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
     if let connectedBlock = connectedBlock {
       xml.addChild(try connectedBlock.toXML())
     }

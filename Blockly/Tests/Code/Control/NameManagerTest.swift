@@ -53,16 +53,16 @@ class NameManagerTest: XCTestCase {
     let name1 = _nameManager.generateUniqueName("string", addToList: true)
     let name2 = _nameManager.generateUniqueName("String", addToList: true)
     XCTAssertNotEqual(name1, name2)
-    XCTAssertNotEqual(name1.lowercaseString, name2.lowercaseString)
+    XCTAssertNotEqual(name1.lowercased(), name2.lowercased())
   }
 
   func testListFunctions() {
     _nameManager.addName("foo")
     XCTAssertEqual(1, _nameManager.count)
-    _nameManager.generateUniqueName("bar", addToList: true)
+    _ = _nameManager.generateUniqueName("bar", addToList: true)
     XCTAssertEqual(2, _nameManager.count)
 
-    _nameManager.generateUniqueName("bar", addToList: false)
+    _ = _nameManager.generateUniqueName("bar", addToList: false)
     XCTAssertEqual(2, _nameManager.count)
 
     _nameManager.clearNames()
@@ -160,21 +160,21 @@ class NameManagerTestListener: NameManagerListener {
     removedName = false
   }
 
-  @objc func nameManager(nameManager: NameManager, didAddName name: String) {
+  @objc func nameManager(_ nameManager: NameManager, didAddName name: String) {
     addedName = true
   }
 
-  @objc func nameManager(nameManager: NameManager, didRemoveName name: String) {
+  @objc func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
     removedName = true
   }
 
   @objc func nameManager(
-    nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
   {
     renamedName = true
   }
 
-  @objc func nameManager(nameManager: NameManager, shouldRemoveName name: String) -> Bool {
+  @objc func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
     return allowRemoveName
   }
 }

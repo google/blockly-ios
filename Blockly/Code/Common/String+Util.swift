@@ -26,7 +26,7 @@ extension String {
    - Parameter invalidCharacters: The set representing all characters that should be removed.
    - Returns: A new string in which all occurrences of characters inside `characterSet` are removed.
    */
-  public func bky_removingOccurrences(ofCharacterSet invalidCharacters: NSCharacterSet) -> String {
-    return componentsSeparatedByCharactersInSet(invalidCharacters).joinWithSeparator("")
+  public func bky_removingOccurrences(ofCharacterSet invalidCharacters: CharacterSet) -> String {
+    return components(separatedBy: invalidCharacters).joined(separator: "")
   }
 }

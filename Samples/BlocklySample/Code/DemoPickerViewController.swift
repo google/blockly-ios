@@ -18,38 +18,38 @@ import UIKit
 /**
  View controller for picking between Blockly demos.
  */
-public class DemoPickerViewController: UITableViewController {
+class DemoPickerViewController: UITableViewController {
   private let DEMO_VIEW_CONTROLLERS = [
     "Simple Workbench Demo",
     "Turtle Demo",
   ]
 
-  public override func viewDidLoad() {
-    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "DemoPickerViewCell")
+  override func viewDidLoad() {
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DemoPickerViewCell")
   }
 
-  public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
   {
     return DEMO_VIEW_CONTROLLERS.count
   }
 
-  public override func tableView(
-    tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+  override func tableView(
+    _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
   {
     let cell =
-      tableView.dequeueReusableCellWithIdentifier("DemoPickerViewCell", forIndexPath: indexPath)
-    cell.textLabel?.text = DEMO_VIEW_CONTROLLERS[indexPath.row]
+      tableView.dequeueReusableCell(withIdentifier: "DemoPickerViewCell", for: indexPath)
+    cell.textLabel?.text = DEMO_VIEW_CONTROLLERS[(indexPath as NSIndexPath).row]
 
     return cell
   }
 
-  public override func tableView(
-    tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+  override func tableView(
+    _ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
   {
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: true)
 
     var viewController: UIViewController!
-    switch indexPath.row {
+    switch (indexPath as NSIndexPath).row {
     case 0:
       viewController = SimpleWorkbenchViewController()
     case 1:

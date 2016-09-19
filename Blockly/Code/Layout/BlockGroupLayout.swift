@@ -20,7 +20,7 @@ import Foundation
  `Block` objects (ie. those that are connecting via previous/next connections).
  */
 @objc(BKYBlockGroupLayout)
-public class BlockGroupLayout: Layout {
+open class BlockGroupLayout: Layout {
   // MARK: - Properties
 
   /// Flag that should be used when `self.zIndex` has been updated
@@ -40,10 +40,10 @@ public class BlockGroupLayout: Layout {
 
   `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
   */
-  public private(set) var blockLayouts = [BlockLayout]()
+  open fileprivate(set) var blockLayouts = [BlockLayout]()
 
   /// Z-index of the layout
-  public var zIndex: UInt = 0 {
+  open var zIndex: UInt = 0 {
     didSet {
       if zIndex == oldValue {
         return
@@ -53,7 +53,7 @@ public class BlockGroupLayout: Layout {
   }
 
   /// Flag indicating if this block group is being dragged
-  public var dragging: Bool = false {
+  open var dragging: Bool = false {
     didSet {
       if dragging == oldValue {
         return
@@ -63,11 +63,11 @@ public class BlockGroupLayout: Layout {
   }
 
   /// The largest leading edge X offset for every `BlockLayout` in `self.blockLayouts`
-  public var largestLeadingEdgeXOffset: CGFloat {
-    return blockLayouts.map({ $0.leadingEdgeXOffset }).maxElement() ?? CGFloat(0)
+  open var largestLeadingEdgeXOffset: CGFloat {
+    return blockLayouts.map({ $0.leadingEdgeXOffset }).max() ?? CGFloat(0)
   }
 
-  // MARK: - Public
+  // MARK: - Open
 
   /**
   Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
@@ -75,7 +75,7 @@ public class BlockGroupLayout: Layout {
   - Parameter blockLayouts: The list of `BlockLayout` instances to append.
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func appendBlockLayouts(blockLayouts: [BlockLayout], updateLayout: Bool = true) {
+  open func appendBlockLayouts(_ blockLayouts: [BlockLayout], updateLayout: Bool = true) {
     for blockLayout in blockLayouts {
       self.blockLayouts.append(blockLayout)
       adoptChildLayout(blockLayout)
@@ -92,8 +92,9 @@ public class BlockGroupLayout: Layout {
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   - Returns: The `BlockLayout` that was removed.
   */
-  public func removeBlockLayoutAtIndex(index: Int, updateLayout: Bool = true) -> BlockLayout {
-    let removedLayout = blockLayouts.removeAtIndex(index)
+  @discardableResult
+  open func removeBlockLayoutAtIndex(_ index: Int, updateLayout: Bool = true) -> BlockLayout {
+    let removedLayout = blockLayouts.remove(at: index)
     removeChildLayout(removedLayout)
 
     if updateLayout {
@@ -114,17 +115,17 @@ public class BlockGroupLayout: Layout {
    - Parameter updateLayouts: If true, all parent layouts of this layout and of `blockLayout`'s
    previous parent will be updated.
    */
-  public func claimBlockLayoutAndFollowers(blockLayout: BlockLayout, updateLayouts: Bool = true) {
+  open func claimBlockLayoutAndFollowers(_ blockLayout: BlockLayout, updateLayouts: Bool = true) {
     let oldParentLayout = blockLayout.parentBlockGroupLayout
 
     var transferredLayouts = [BlockLayout]()
     if let oldParentLayout = oldParentLayout,
-      let index = oldParentLayout.blockLayouts.indexOf(blockLayout)
+      let index = oldParentLayout.blockLayouts.index(of: blockLayout)
     {
       while (index < oldParentLayout.blockLayouts.count) {
         // Just remove block layout from `oldParentLayout.blockLayouts`
         // We don't want to remove it via removeChildLayout(...) or else this will fire an event.
-        let transferLayout = oldParentLayout.blockLayouts.removeAtIndex(index)
+        let transferLayout = oldParentLayout.blockLayouts.remove(at: index)
         transferredLayouts.append(transferLayout)
       }
     } else {
@@ -153,11 +154,11 @@ public class BlockGroupLayout: Layout {
   - Returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
-  public func removeAllStartingFromBlockLayout(blockLayout: BlockLayout, updateLayout: Bool = true)
+  open func removeAllStartingFromBlockLayout(_ blockLayout: BlockLayout, updateLayout: Bool = true)
     -> [BlockLayout] {
       var removedElements = [BlockLayout]()
 
-      if let index = blockLayouts.indexOf(blockLayout) {
+      if let index = blockLayouts.index(of: blockLayout) {
         while (index < blockLayouts.count) {
           let removedLayout = removeBlockLayoutAtIndex(index, updateLayout: false)
           removedElements.append(removedLayout)
@@ -179,7 +180,7 @@ public class BlockGroupLayout: Layout {
 
    - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
    */
-  public func reset(updateLayout updateLayout: Bool = true) {
+  open func reset(updateLayout: Bool = true) {
     while blockLayouts.count > 0 {
       removeBlockLayoutAtIndex(0, updateLayout: false)
     }
@@ -198,7 +199,7 @@ public class BlockGroupLayout: Layout {
   - Parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
   the current positions of its block groups.
   */
-  public func moveToWorkspacePosition(position: WorkspacePoint, updateCanvasSize: Bool = true) {
+  open func moveToWorkspacePosition(_ position: WorkspacePoint, updateCanvasSize: Bool = true) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
       self.relativePosition = position
       refreshViewPositionsForTree(includeFields: false)

@@ -18,7 +18,7 @@ import Foundation
 /**
 Abstract class for rendering a `UIView` backed by a `Layout`.
 */
-public class LayoutView: UIView {
+open class LayoutView: UIView {
 
   // MARK: - Properties
 
@@ -58,7 +58,7 @@ public class LayoutView: UIView {
    state.
   - Note: Subclasses should override this method. The default implementation does nothing.
   */
-  public func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false) {
+  open func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false) {
     // NOOP. Subclasses should implement this method.
   }
 
@@ -68,14 +68,14 @@ public class LayoutView: UIView {
    - Parameter animated: Flag determining if the `code` should be animated.
    - Parameter code: The code block to run.
    */
-  public func runAnimatableCode(animated: Bool, code: () -> Void) {
+  open func runAnimatableCode(_ animated: Bool, code: @escaping () -> Void) {
     if animated {
       let duration = layout?.config.doubleFor(LayoutConfig.ViewAnimationDuration) ?? 0
       if duration > 0 {
-        UIView.animateWithDuration(
-          duration,
+        UIView.animate(
+          withDuration: duration,
           delay: 0,
-          options: [.BeginFromCurrentState, .CurveEaseInOut, .AllowUserInteraction],
+          options: [.beginFromCurrentState, .allowUserInteraction],
           animations: code,
           completion: nil)
 
@@ -90,7 +90,7 @@ public class LayoutView: UIView {
 // MARK: - LayoutDelegate implementation
 
 extension LayoutView: LayoutDelegate {
-  public final func layoutDidChange(layout: Layout, withFlags flags: LayoutFlag, animated: Bool) {
+  public final func layoutDidChange(_ layout: Layout, withFlags flags: LayoutFlag, animated: Bool) {
     refreshView(forFlags: flags, animated: animated)
   }
 }

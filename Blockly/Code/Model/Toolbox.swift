@@ -22,15 +22,15 @@ import Foundation
  workspace.
  */
 @objc(BKYToolbox)
-public class Toolbox: NSObject {
+open class Toolbox: NSObject {
 
   // MARK: - Properties
 
   /// A list of all categories in the toolbox
-  public private(set) var categories = [Category]()
+  open private(set) var categories = [Category]()
 
   /// Flag to set all categories in the toolbox to readOnly
-  public var readOnly: Bool = true {
+  open var readOnly: Bool = true {
     didSet {
       for category in categories {
         category.readOnly = self.readOnly
@@ -40,7 +40,7 @@ public class Toolbox: NSObject {
 
   // MARK: - Public
 
-  public func addCategory(categoryName: String, color: UIColor, icon: UIImage? = nil) -> Category {
+  open func addCategory(_ categoryName: String, color: UIColor, icon: UIImage? = nil) -> Category {
     let category = Category(name: categoryName, color: color, icon: icon)
     category.readOnly = self.readOnly
 
@@ -57,20 +57,20 @@ extension Toolbox {
    Groups a collection of blocks together, for use in a `Toolbox`.
    */
   @objc(BKYToolboxCategory)
-  public class Category: WorkspaceFlow {
+  open class Category: WorkspaceFlow {
 
     // MARK: - Properties
 
     /// The name of the category
-    public var name: String
+    open var name: String
     /// The color of the category
-    public var color: UIColor
+    open var color: UIColor
     /// An icon used to represent the category
-    public var icon: UIImage?
+    open var icon: UIImage?
 
     // MARK: - Initializers
 
-    private init(name: String, color: UIColor, icon: UIImage?) {
+    fileprivate init(name: String, color: UIColor, icon: UIImage?) {
       self.name = name
       self.color = color
       self.icon = icon

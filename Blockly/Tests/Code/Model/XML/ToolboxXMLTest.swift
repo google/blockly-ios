@@ -23,7 +23,7 @@ class ToolboxXMLTest: XCTestCase {
 
   override func setUp() {
     factory = try! BlockFactory(jsonPath: "all_test_blocks.json",
-      bundle: NSBundle(forClass: self.dynamicType))
+      bundle: Bundle(for: type(of: self)))
 
     super.setUp()
   }
@@ -119,10 +119,10 @@ class ToolboxXMLTest: XCTestCase {
   func testParseXML_BadXML() {
     do {
       let xmlString = "<toolboxa></toolboxa>"
-      try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+      _ = try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
-      XCTAssertEqual(BlocklyError.Code.XMLParsing.rawValue, error.code)
+      XCTAssertEqual(BlocklyError.Code.xmlParsing.rawValue, error.code)
     } catch let error as NSError {
       XCTFail("Caught unexpected error: \(error)")
     }
@@ -131,10 +131,10 @@ class ToolboxXMLTest: XCTestCase {
   func testParseXML_UnknownBlock() {
     do {
       let xmlString = "<toolbox><category><block id='unknownblock'></block></category></toolbox>"
-      try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+      _ = try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
-      XCTAssertEqual(BlocklyError.Code.XMLUnknownBlock.rawValue, error.code)
+      XCTAssertEqual(BlocklyError.Code.xmlUnknownBlock.rawValue, error.code)
     } catch let error as NSError {
       XCTFail("Caught unexpected error: \(error)")
     }

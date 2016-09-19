@@ -27,5 +27,5 @@ public protocol ConnectionValidator {
    - Parameter candidate: A nearby connection to check. Must not be mid-drag.
    - Returns: True if the connection is allowed, false otherwise.
    */
-  func canConnect(moving: Connection, toConnection candidate: Connection) -> Bool
+  func canConnect(_ moving: Connection, toConnection candidate: Connection) -> Bool
 }

@@ -40,11 +40,11 @@ public final class FieldColor: Field {
     return FieldColor(name: name, color: color)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     if let color = ColorHelper.colorFromRGB(text) {
       self.color = color
     } else {
-      throw BlocklyError(.XMLParsing,
+      throw BlocklyError(.xmlParsing,
         "Could not parse '\(text)' into a color. The value must be of the form '#RRGGBB'.")
     }
   }

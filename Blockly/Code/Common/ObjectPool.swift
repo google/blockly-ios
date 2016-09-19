@@ -41,12 +41,12 @@ public protocol Recyclable: class {
 Handles the management of recyclable objects.
 */
 @objc(BKYObjectPool)
-public class ObjectPool: NSObject {
+public final class ObjectPool: NSObject {
   // MARK: - Properties
 
   /// Keeps track of all recycled objects. Objects of the same type are keyed by their class name
   /// and stored in a cache.
-  private let _recycledObjects = NSCache()
+  private let _recycledObjects = NSCache<NSString, NSMutableArray>()
 
   // MARK: - Public
 
@@ -59,7 +59,7 @@ public class ObjectPool: NSObject {
   - Note: Objects obtained through this method should be recycled through `recycleObject(:)`.
   - Returns: An object of the given type.
   */
-  public func objectForType<T: Recyclable>(type: T.Type) -> T {
+  public func objectForType<T: Recyclable>(_ type: T.Type) -> T {
     // Force cast Recyclable back into the concrete "T" type
     return recyclableObjectForType(type) as! T
   }
@@ -75,10 +75,10 @@ public class ObjectPool: NSObject {
    `objectForType(type:)` instead.
    - Returns: An object of the given type.
    */
-  public func recyclableObjectForType(type: Recyclable.Type) -> Recyclable {
-    let className = String(type)
+  public func recyclableObjectForType(_ type: Recyclable.Type) -> Recyclable {
+    let className = String(describing: type) as NSString
 
-    if let list = _recycledObjects.objectForKey(className) as? NSMutableArray where list.count > 0 {
+    if let list = _recycledObjects.object(forKey: className), list.count > 0 {
       let recycledObject = list.lastObject as! Recyclable
       list.removeLastObject()
       return recycledObject
@@ -95,15 +95,15 @@ public class ObjectPool: NSObject {
    - Note: Objects recycled through this method should be obtained through `objectForType(:)` or
    `recyclableObjectForType(:)`.
    */
-  public func recycleObject(object: Recyclable) {
+  public func recycleObject(_ object: Recyclable) {
     // Prepare the object for re-use
     object.prepareForReuse()
 
-    let className = String(object.dynamicType)
+    let className = String(describing: (of: type(of: object))) as NSString
 
-    if let list = _recycledObjects.objectForKey(className) as? NSMutableArray {
+    if let list = _recycledObjects.object(forKey: className) {
       // Append to the array
-      list.addObject(object)
+      list.add(object)
     } else {
       // Create a new array. Because the array will be constantly changing, it is faster to use an
       // NSMutableArray instead of an Array<Recyclable> here, as any changes to the array will be

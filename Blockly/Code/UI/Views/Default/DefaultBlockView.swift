@@ -15,7 +15,7 @@
 
 import Foundation
 
-public class DefaultBlockView: BlockView {
+public final class DefaultBlockView: BlockView {
 
   // MARK: - Properties
 
@@ -25,13 +25,13 @@ public class DefaultBlockView: BlockView {
   }
 
   /// Flag determining if layer changes should be animated
-  private var _disableLayerChangeAnimations: Bool = true
+  fileprivate var _disableLayerChangeAnimations: Bool = true
 
   /// Layer for rendering the block's background
-  private let _backgroundLayer = BezierPathLayer()
+  fileprivate let _backgroundLayer = BezierPathLayer()
 
   /// Layer for rendering the block's highlight overlay
-  private var _highlightLayer: BezierPathLayer?
+  fileprivate var _highlightLayer: BezierPathLayer?
 
   // MARK: - Initializers
 
@@ -48,12 +48,12 @@ public class DefaultBlockView: BlockView {
 
   // MARK: - Super
 
-  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-    let hitTestView = super.hitTest(point, withEvent: event)
+  open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    let hitTestView = super.hitTest(point, with: event)
 
     if hitTestView == self {
       // Only return this view if the hitTest touches a visible portion of the block.
-      if let bezierPath = _backgroundLayer.bezierPath where bezierPath.containsPoint(point) {
+      if let bezierPath = _backgroundLayer.bezierPath , bezierPath.contains(point) {
         return self
       } else {
         return nil
@@ -63,7 +63,7 @@ public class DefaultBlockView: BlockView {
     return hitTestView
   }
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -83,11 +83,11 @@ public class DefaultBlockView: BlockView {
 
       if flags.intersectsWith(BlockLayout.Flag_NeedsDisplay) {
         // Set its user interaction
-        self.userInteractionEnabled = layout.userInteractionEnabled
+        self.isUserInteractionEnabled = layout.userInteractionEnabled
       }
 
       if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateVisible]) {
-        self.hidden = !layout.visible
+        self.isHidden = !layout.visible
       }
 
       if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateViewFrame]) {
@@ -110,8 +110,8 @@ public class DefaultBlockView: BlockView {
         forceBezierPathRedraw
       {
         // Figure out the stroke and fill colors of the block
-        var strokeColor = UIColor.clearColor()
-        var fillColor = UIColor.clearColor()
+        var strokeColor = UIColor.clear
+        var fillColor = UIColor.clear
 
         if layout.block.disabled {
           strokeColor =
@@ -122,7 +122,7 @@ public class DefaultBlockView: BlockView {
           strokeColor = (layout.highlighted ?
             layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
             layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
-            UIColor.clearColor()
+            UIColor.clear
           fillColor = layout.block.color
 
           if layout.block.shadow {
@@ -133,8 +133,8 @@ public class DefaultBlockView: BlockView {
 
         // Update the background layer
         let backgroundLayer = self._backgroundLayer
-        backgroundLayer.strokeColor = strokeColor.CGColor
-        backgroundLayer.fillColor = fillColor.CGColor
+        backgroundLayer.strokeColor = strokeColor.cgColor
+        backgroundLayer.fillColor = fillColor.cgColor
         backgroundLayer.lineWidth = layout.highlighted ?
           layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
           layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
@@ -164,7 +164,7 @@ public class DefaultBlockView: BlockView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     // Disable animating layer changes, so that the next block layout that uses this view instance
@@ -177,7 +177,7 @@ public class DefaultBlockView: BlockView {
 
   // MARK: - Private
 
-  private func addHighlightLayerWithPath(path: UIBezierPath, animated: Bool) {
+  fileprivate func addHighlightLayerWithPath(_ path: UIBezierPath, animated: Bool) {
     guard let layout = self.defaultBlockLayout else {
       return
     }
@@ -194,8 +194,8 @@ public class DefaultBlockView: BlockView {
     highlightLayer.lineWidth =
       layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight)
     highlightLayer.strokeColor =
-      layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.CGColor ??
-      UIColor.clearColor().CGColor
+      layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor ??
+      UIColor.clear.cgColor
     highlightLayer.fillColor = nil
     // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
     // larger line width
@@ -206,14 +206,14 @@ public class DefaultBlockView: BlockView {
     highlightLayer.frame = bounds
   }
 
-  private func removeHighlightLayer() {
+  fileprivate func removeHighlightLayer() {
     if let highlightLayer = _highlightLayer {
       highlightLayer.removeFromSuperlayer()
       _highlightLayer = nil
     }
   }
 
-  private func blockBackgroundBezierPath() -> UIBezierPath? {
+  fileprivate func blockBackgroundBezierPath() -> UIBezierPath? {
     guard let layout = self.defaultBlockLayout else {
       return nil
     }
@@ -354,7 +354,7 @@ public class DefaultBlockView: BlockView {
     return viewBezierPath
   }
 
-  private func blockHighlightBezierPath() -> UIBezierPath? {
+  fileprivate func blockHighlightBezierPath() -> UIBezierPath? {
     guard let layout = self.defaultBlockLayout else {
       return nil
     }
@@ -381,7 +381,7 @@ public class DefaultBlockView: BlockView {
 
       // Highlight specific connection
       switch connection.type {
-      case .InputValue, .OutputValue:
+      case .inputValue, .outputValue:
         // The connection point is set to the apex of the puzzle tab's curve. Move the point before
         // drawing it.
         path.moveToPoint(connectionRelativePosition +
@@ -390,7 +390,7 @@ public class DefaultBlockView: BlockView {
         addPuzzleTabToPath(path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         break
-      case .PreviousStatement, .NextStatement:
+      case .previousStatement, .nextStatement:
         // The connection point is set to the bottom of the notch. Move the point before drawing it.
         path.moveToPoint(connectionRelativePosition -
           WorkspacePointMake(notchWidth / 2, notchHeight),
@@ -409,14 +409,14 @@ public class DefaultBlockView: BlockView {
     return viewBezierPath
   }
 
-  private func applyRtlTransformToBezierPath(path: UIBezierPath, layout: BlockLayout) {
-    var transform = CGAffineTransformIdentity
-    transform = CGAffineTransformScale(transform, CGFloat(-1.0), CGFloat(1.0))
-    transform = CGAffineTransformTranslate(transform, -layout.viewFrame.size.width, CGFloat(0))
-    path.applyTransform(transform)
+  fileprivate func applyRtlTransformToBezierPath(_ path: UIBezierPath, layout: BlockLayout) {
+    var transform = CGAffineTransform.identity
+    transform = transform.scaledBy(x: CGFloat(-1.0), y: CGFloat(1.0))
+    transform = transform.translatedBy(x: -layout.viewFrame.size.width, y: CGFloat(0))
+    path.apply(transform)
   }
 
-  private func shadowColorForColor(color: UIColor, config: LayoutConfig) -> UIColor {
+  fileprivate func shadowColorForColor(_ color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
     hsba.saturation *= config.floatFor(DefaultLayoutConfig.BlockShadowSaturationMultiplier)
     hsba.brightness =

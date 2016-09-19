@@ -20,10 +20,10 @@ import Foundation
  the validator that is used by the `ConnectionManager`.
  */
 @objc(BKYDefaultConnectionValidator)
-public class DefaultConnectionValidator : NSObject, ConnectionValidator {
+open class DefaultConnectionValidator : NSObject, ConnectionValidator {
 
   public final func canConnect(
-    moving: Connection, toConnection candidate: Connection) -> Bool
+    _ moving: Connection, toConnection candidate: Connection) -> Bool
   {
     // Type checking
     let canConnect = moving.canConnectWithReasonTo(candidate)
@@ -44,7 +44,7 @@ public class DefaultConnectionValidator : NSObject, ConnectionValidator {
     // an available right (female) value plug.  Don't offer to connect the
     // bottom of a statement block to one that's already connected.
     if candidate.connected &&
-      (candidate.type == .OutputValue || candidate.type == .PreviousStatement) {
+      (candidate.type == .outputValue || candidate.type == .previousStatement) {
       return false
     }
 

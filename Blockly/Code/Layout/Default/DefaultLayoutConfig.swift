@@ -18,7 +18,7 @@ import Foundation
  Stores config properties specific to the default layout.
  */
 @objc(BKYDefaultLayoutConfig)
-public class DefaultLayoutConfig: LayoutConfig {
+open class DefaultLayoutConfig: LayoutConfig {
   // MARK: - Properties
 
   /// [`Unit`] Rounded corner radius of a block
@@ -48,8 +48,8 @@ public class DefaultLayoutConfig: LayoutConfig {
   /// [`Unit`] Width of jagged teeth at the end of collapsed blocks
   public static let BlockJaggedTeethWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] Vertical space to use for each of the top, middle, and bottom sections of the C-shaped
-  /// statement input
+  /// [`Unit`] Vertical space to use for each of the top, middle, and bottom sections of the
+  /// C-shaped statement input
   public static let StatementSectionHeight = LayoutConfig.newPropertyKey()
 
   /// [`Unit`] The minimum width of the top section of the C-shaped statement input (not
@@ -110,8 +110,8 @@ public class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(10), forKey: DefaultLayoutConfig.StatementMinimumConnectorWidth)
     setSize(Size(WorkspaceSizeMake(10, 25)), forKey: DefaultLayoutConfig.MinimumInlineConnectorSize)
 
-    setColor(UIColor.darkGrayColor(), forKey: DefaultLayoutConfig.BlockStrokeDefaultColor)
-    setColor(UIColor.blueColor(), forKey: DefaultLayoutConfig.BlockStrokeHighlightColor)
+    setColor(UIColor.darkGray, forKey: DefaultLayoutConfig.BlockStrokeDefaultColor)
+    setColor(UIColor.blue, forKey: DefaultLayoutConfig.BlockStrokeHighlightColor)
     setColor(ColorHelper.colorFromRGB("555555"),
              forKey: DefaultLayoutConfig.BlockStrokeDisabledColor)
     setColor(ColorHelper.colorFromRGB("dddddd"),

@@ -23,16 +23,16 @@ import AEXML
  `CodeGenerator` for more information.
  */
 @objc(BKYCodeGeneratorService)
-public class CodeGeneratorService: NSObject {
+public final class CodeGeneratorService: NSObject {
 
   // MARK: - Properties
 
   /// List of core Blockly JS dependencies
-  private let jsCoreDependencies: [CodeGenerator.BundledFile]
+  fileprivate let jsCoreDependencies: [CodeGenerator.BundledFile]
   /// Current code generator
-  private var codeGenerator: CodeGenerator?
+  fileprivate var codeGenerator: CodeGenerator?
   /// Operation queue of all pending code generation requests
-  private let requestQueue = NSOperationQueue()
+  fileprivate let requestQueue = OperationQueue()
 
   // MARK: - Initializers
 
@@ -66,7 +66,7 @@ public class CodeGeneratorService: NSObject {
 
    - Parameter request: The request
    */
-  public func generateCodeForRequest(request: Request) {
+  public func generateCodeForRequest(_ request: Request) {
     request.codeGeneratorService = self
     requestQueue.addOperation(request)
   }
@@ -74,7 +74,7 @@ public class CodeGeneratorService: NSObject {
   /**
    Cancels code generation for a given request.
    */
-  public func cancelRequest(request: Request) {
+  public func cancelRequest(_ request: Request) {
     request.cancel()
   }
 
@@ -87,8 +87,8 @@ public class CodeGeneratorService: NSObject {
 
   // MARK: - Private
 
-  private func executeRequest(request: Request) {
-    if let codeGenerator = self.codeGenerator where
+  fileprivate func executeRequest(_ request: Request) {
+    if let codeGenerator = self.codeGenerator ,
       (compareLists(codeGenerator.jsonBlockDefinitions, request.jsonBlockDefinitions) &&
       compareLists(codeGenerator.jsBlockGenerators, request.jsBlockGenerators) &&
       codeGenerator.jsGeneratorObject == request.jsGeneratorObject)
@@ -99,7 +99,7 @@ public class CodeGeneratorService: NSObject {
         error: request.completeRequestWithError)
     } else {
       // Use a new code generator (`CodeGenerator` must be instantiated on the main thread)
-      dispatch_async(dispatch_get_main_queue(), {
+      DispatchQueue.main.async(execute: {
         self.codeGenerator = CodeGenerator(
           jsCoreDependencies: self.jsCoreDependencies,
           jsGeneratorObject: request.jsGeneratorObject,
@@ -117,16 +117,16 @@ public class CodeGeneratorService: NSObject {
     }
   }
 
-  private func compareLists(
-    list1: [CodeGenerator.BundledFile], _ list2: [CodeGenerator.BundledFile]) -> Bool
+  fileprivate func compareLists(
+    _ list1: [CodeGenerator.BundledFile], _ list2: [CodeGenerator.BundledFile]) -> Bool
   {
     if list1.count != list2.count {
       return false
     }
     var mutableList1 = list1
     for path2 in list2 {
-      if let index = mutableList1.indexOf({ $0.file == path2.file && $0.bundle == path2.bundle }) {
-        mutableList1.removeAtIndex(index)
+      if let index = mutableList1.index(where: { $0.file == path2.file && $0.bundle == path2.bundle }) {
+        mutableList1.remove(at: index)
       } else {
         return false
       }
@@ -141,28 +141,28 @@ extension CodeGeneratorService {
   /**
    Request object for generating code for a workspace.
    */
-  public class Request: NSOperation {
+  open class Request: Operation {
     // MARK: - Typealiases
-    public typealias CompletionClosure = (code: String) -> Void
-    public typealias ErrorClosure = (error: String) -> Void
+    public typealias CompletionClosure = (_ code: String) -> Void
+    public typealias ErrorClosure = (_ error: String) -> Void
 
     // MARK: - Properties
     /// The workspace XML to use when generating code
-    public let workspaceXML: String
+    open let workspaceXML: String
     /// The name of the JS object that generates code (e.g. 'Blockly.Python')
-    public let jsGeneratorObject: String
+    open let jsGeneratorObject: String
     /// List of block generator JS files (e.g. ['python_compressed.js'])
-    public let jsBlockGenerators: [CodeGenerator.BundledFile]
+    open let jsBlockGenerators: [CodeGenerator.BundledFile]
     /// List of JSON files containing block definitions
-    public let jsonBlockDefinitions: [CodeGenerator.BundledFile]
+    open let jsonBlockDefinitions: [CodeGenerator.BundledFile]
     /// Callback that is executed when code generation completes successfully. This is always
     /// executed on the main thread.
-    public var onCompletion: CompletionClosure?
+    open var onCompletion: CompletionClosure?
     /// Callback that is executed when code generation fails. This is always executed on the main
     /// thread.
-    public var onError: ErrorClosure?
+    open var onError: ErrorClosure?
     /// The code generator service used for executing this request.
-    private weak var codeGeneratorService: CodeGeneratorService?
+    fileprivate weak var codeGeneratorService: CodeGeneratorService?
 
     // MARK: - Initializers
 
@@ -186,45 +186,45 @@ extension CodeGeneratorService {
       jsonBlockDefinitions: [CodeGenerator.BundledFile],
       completion: CompletionClosure? = nil, error: ErrorClosure? = nil) throws
     {
-      self.init(workspaceXML: try workspace.toXML().xmlString,
+      self.init(workspaceXML: try workspace.toXML().xml,
         jsGeneratorObject: jsGeneratorObject, jsBlockGenerators: jsBlockGenerators,
         jsonBlockDefinitions: jsonBlockDefinitions, completion: completion, error: error)
     }
 
     // MARK: - Super
 
-    private var _executing: Bool = false
-    public override var executing: Bool {
+    fileprivate var _executing: Bool = false
+    open override var isExecuting: Bool {
       get { return _executing }
       set {
         if _executing == newValue {
           return
         }
-        willChangeValueForKey("isExecuting")
+        willChangeValue(forKey: "isExecuting")
         _executing = newValue
-        didChangeValueForKey("isExecuting")
+        didChangeValue(forKey: "isExecuting")
       }
     }
 
-    private var _finished: Bool = false;
-    public override var finished: Bool {
+    fileprivate var _finished: Bool = false
+    open override var isFinished: Bool {
       get { return _finished }
       set {
         if _finished == newValue {
           return
         }
-        willChangeValueForKey("isFinished")
+        willChangeValue(forKey: "isFinished")
         _finished = newValue
-        didChangeValueForKey("isFinished")
+        didChangeValue(forKey: "isFinished")
       }
     }
 
-    public override func start() {
-      if self.cancelled {
+    open override func start() {
+      if self.isCancelled {
         finishOperation()
         return
       }
-      self.executing = true
+      self.isExecuting = true
 
       // Execute the request. The operation will eventually execute:
       // completeRequestWithCode(...) or
@@ -232,7 +232,7 @@ extension CodeGeneratorService {
       codeGeneratorService?.executeRequest(self)
     }
 
-    public override func cancel() {
+    open override func cancel() {
       self.onCompletion = nil
       self.onError = nil
       super.cancel()
@@ -240,29 +240,29 @@ extension CodeGeneratorService {
 
     // MARK: - Private
 
-    private func completeRequestWithCode(code: String) {
-      dispatch_async(dispatch_get_main_queue()) {
-        if !self.cancelled {
-          self.onCompletion?(code: code)
+    fileprivate func completeRequestWithCode(_ code: String) {
+      DispatchQueue.main.async {
+        if !self.isCancelled {
+          self.onCompletion?(code)
         }
         self.finishOperation()
       }
     }
 
-    private func completeRequestWithError(error: String) {
-      dispatch_async(dispatch_get_main_queue()) {
-        if !self.cancelled {
-          self.onError?(error: error)
+    fileprivate func completeRequestWithError(_ error: String) {
+      DispatchQueue.main.async {
+        if !self.isCancelled {
+          self.onError?(error)
         }
         self.finishOperation()
       }
     }
 
-    private func finishOperation() {
+    fileprivate func finishOperation() {
       self.onCompletion = nil
       self.onError = nil
-      self.executing = false
-      self.finished = true
+      self.isExecuting = false
+      self.isFinished = true
     }
   }
 }

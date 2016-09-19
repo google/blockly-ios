@@ -19,14 +19,14 @@ import Foundation
 Layer used to draw a `UIBezierPath`.
 */
 @objc(BKYBezierPathLayer)
-public class BezierPathLayer: CAShapeLayer {
+open class BezierPathLayer: CAShapeLayer {
   // MARK: - Properties
 
   /// The bezier path to draw
-  public private(set) var bezierPath: UIBezierPath?
+  open private(set) var bezierPath: UIBezierPath?
 
   /// The duration of the bezier path animation
-  public var animationDuration = 0.3
+  open var animationDuration = 0.3
 
   // MARK: - Initializers
 
@@ -35,7 +35,7 @@ public class BezierPathLayer: CAShapeLayer {
     self.fillRule = kCAFillRuleEvenOdd
   }
 
-  public override init(layer: AnyObject) {
+  public override init(layer: Any) {
     super.init(layer: layer)
     self.fillRule = kCAFillRuleEvenOdd
   }
@@ -53,7 +53,7 @@ public class BezierPathLayer: CAShapeLayer {
    - Parameter bezierPath: The `UIBezierPath` to draw.
    - Parameter animated: Flag determining if the draw should be animated or not.
    */
-  public func setBezierPath(bezierPath: UIBezierPath?, animated: Bool) {
+  open func setBezierPath(_ bezierPath: UIBezierPath?, animated: Bool) {
     if self.bezierPath == bezierPath {
       return
     }
@@ -64,24 +64,24 @@ public class BezierPathLayer: CAShapeLayer {
     // may be interrupting an already running bezier path animation that was set earlier and we
     // want to start any new path animations from the layer's current state (not necessarily what
     // was previously set in `self.bezierPath`).
-    let fromBezierPath = (presentationLayer() as? CAShapeLayer)?.path
+    let fromBezierPath = presentation()?.path
 
     // Kill off any potentially on-going animation
-    removeAnimationForKey("path")
+    removeAnimation(forKey: "path")
 
     if !animated || fromBezierPath == nil || bezierPath == nil {
       // No need to animate anything. Simply set the path.
-      path = bezierPath?.CGPath
+      path = bezierPath?.cgPath
     } else {
       // Animate new bezier path
       let animation = CABasicAnimation(keyPath: "path")
       animation.fromValue = fromBezierPath
-      animation.toValue = bezierPath?.CGPath
+      animation.toValue = bezierPath?.cgPath
       animation.duration = animationDuration
       animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
       animation.fillMode = kCAFillModeBoth // Keeps `self.path` set to `toValue` on completion
-      animation.removedOnCompletion = false // Keeps `self.path` set to `toValue` on completion
-      addAnimation(animation, forKey: animation.keyPath)
+      animation.isRemovedOnCompletion = false // Keeps `self.path` set to `toValue` on completion
+      add(animation, forKey: animation.keyPath)
     }
 
     // Force re-draw

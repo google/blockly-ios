@@ -48,7 +48,7 @@ class FieldXMLTest: XCTestCase {
   }
 
   func testSerializeXML_FieldColor() {
-    let field = FieldColor(name: "a_field", color: UIColor.redColor())
+    let field = FieldColor(name: "a_field", color: UIColor.red)
     let fieldXML = BKYAssertDoesNotThrow { try field.toXML() }
 
     // Expected: <field name="a_field">#FF0000</field>

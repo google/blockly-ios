@@ -19,7 +19,7 @@ import Foundation
  Manages the set `LayoutView` instances that have been created.
  */
 @objc(BKYViewManager)
-public class ViewManager: NSObject {
+public final class ViewManager: NSObject {
   // MARK: - Static Properties
 
   /// Shared instance.
@@ -38,7 +38,7 @@ public class ViewManager: NSObject {
    - Parameter layoutView: The `LayoutView` to cache
    - Parameter layout: The `Layout` associated with the view
    */
-  public func cacheView(layoutView: LayoutView, forLayout layout: Layout) {
+  public func cacheView(_ layoutView: LayoutView, forLayout layout: Layout) {
     _views[layout.uuid] = layoutView
   }
 
@@ -47,7 +47,7 @@ public class ViewManager: NSObject {
 
    - Parameter layout: The given layout
    */
-  public func uncacheViewForLayout(layout: Layout) {
+  public func uncacheViewForLayout(_ layout: Layout) {
     _views[layout.uuid] = nil
   }
 
@@ -58,7 +58,7 @@ public class ViewManager: NSObject {
    - Parameter layout: The `BlockLayout` to look for
    - Returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findBlockViewForLayout(layout: BlockLayout) -> BlockView? {
+  public func findBlockViewForLayout(_ layout: BlockLayout) -> BlockView? {
     return (_views[layout.uuid] as? BlockView) ?? nil
   }
 
@@ -69,7 +69,7 @@ public class ViewManager: NSObject {
    - Parameter layout: The `FieldLayout` to look for
    - Returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findFieldViewForLayout(layout: FieldLayout) -> FieldView? {
+  public func findFieldViewForLayout(_ layout: FieldLayout) -> FieldView? {
     return (_views[layout.uuid] as? FieldView) ?? nil
   }
 
@@ -80,7 +80,7 @@ public class ViewManager: NSObject {
    - Parameter layout: The `Layout` to look for
    - Returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findViewForLayout(layout: Layout) -> LayoutView? {
+  public func findViewForLayout(_ layout: Layout) -> LayoutView? {
     return _views[layout.uuid]
   }
 }

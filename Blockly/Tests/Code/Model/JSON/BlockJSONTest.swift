@@ -21,13 +21,13 @@ class BlockJSONTest: XCTestCase {
   // MARK: - blockFromJSON
 
   func testBlockFromJSON_allFieldsSet() {
-    let testBundle = NSBundle(forClass: self.dynamicType.self)
-    let path = testBundle.pathForResource("block_json_test", ofType: "json")
+    let testBundle = Bundle(for: type(of: self).self)
+    let path = testBundle.path(forResource: "block_json_test", ofType: "json")
     let workspace = Workspace()
 
     var block: Block
     do {
-      let jsonString = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+      let jsonString = try String(contentsOfFile: path!, encoding: String.Encoding.utf8)
       let json = try JSONHelper.JSONDictionaryFromString(jsonString)
       block = try Block.builderFromJSON(json).build()
       try! workspace.addBlockTree(block)
@@ -49,9 +49,9 @@ class BlockJSONTest: XCTestCase {
 
     // -- Input Value --
     let input0 = block.inputs[0]
-    XCTAssertEqual(Input.InputType.Value, input0.type)
+    XCTAssertEqual(Input.InputType.value, input0.type)
     XCTAssertEqual("VALUE INPUT", input0.name)
-    XCTAssertEqual(Input.Alignment.Center, input0.alignment)
+    XCTAssertEqual(Input.Alignment.center, input0.alignment)
     XCTAssertEqual(9, input0.fields.count) // 7 argument fields + 2 string labels
 
     // Image
@@ -59,7 +59,8 @@ class BlockJSONTest: XCTestCase {
       XCTFail("input[0].fields[0] is not a FieldImage")
       return
     }
-    XCTAssertEqual("http://33.media.tumblr.com/tumblr_lhtb1e4oc11qhp8pjo1_400.gif", fieldImage.imageURL)
+    XCTAssertEqual("http://33.media.tumblr.com/tumblr_lhtb1e4oc11qhp8pjo1_400.gif",
+                   fieldImage.imageURL)
     XCTAssertEqual(100, fieldImage.size.width)
     XCTAssertEqual(100, fieldImage.size.height)
     XCTAssertEqual("Cool Dance!", fieldImage.altText)
@@ -126,12 +127,11 @@ class BlockJSONTest: XCTestCase {
       return
     }
     XCTAssertEqual("Judgment Day", fieldDate.name)
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    calendar.timeZone = NSTimeZone.localTimeZone()
-    let components = calendar.components([.Year, .Month, .Day], fromDate: fieldDate.date)
-    XCTAssertEqual(1997, components.year)
-    XCTAssertEqual(8, components.month)
-    XCTAssertEqual(29, components.day)
+    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    calendar.timeZone = TimeZone.autoupdatingCurrent
+    XCTAssertEqual(1997, calendar.component(.year, from: fieldDate.date))
+    XCTAssertEqual(8, calendar.component(.month, from: fieldDate.date))
+    XCTAssertEqual(29, calendar.component(.day, from: fieldDate.date))
 
     // "in" text
     guard let fieldLabel1 = input0.fields[8] as? FieldLabel else {
@@ -143,9 +143,9 @@ class BlockJSONTest: XCTestCase {
 
     // -- Input Statement --
     let input1 = block.inputs[1]
-    XCTAssertEqual(Input.InputType.Statement, input1.type)
+    XCTAssertEqual(Input.InputType.statement, input1.type)
     XCTAssertEqual("STATEMENT input", input1.name)
-    XCTAssertEqual(Input.Alignment.Right, input1.alignment)
+    XCTAssertEqual(Input.Alignment.right, input1.alignment)
     XCTAssertEqual(1, input1.fields.count) // 1 string label
 
     // "do" text
@@ -158,7 +158,7 @@ class BlockJSONTest: XCTestCase {
 
     // -- Dummy Statement --
     let input2 = block.inputs[2]
-    XCTAssertEqual(Input.InputType.Dummy, input2.type)
+    XCTAssertEqual(Input.InputType.dummy, input2.type)
     XCTAssertEqual("DUMMY INPUT", input2.name)
     XCTAssertEqual(0, input2.fields.count)
   }
@@ -172,26 +172,50 @@ class BlockJSONTest: XCTestCase {
 
   func testTokenizeMessage_emojiMessage() {
     let tokens = Block.tokenizeMessage("👋 %1 🌏")
-    XCTAssertEqual(["👋 ", 1, " 🌏"], tokens)
+    XCTAssertEqual(3, tokens.count)
+    if tokens.count >= 3 {
+      XCTAssertEqual("👋 ", tokens[0] as? String)
+      XCTAssertEqual(1, tokens[1] as? Int)
+      XCTAssertEqual(" 🌏", tokens[2] as? String)
+    }
   }
 
   func testTokenizeMessage_simpleMessage() {
     let tokens = Block.tokenizeMessage("Simple text")
-    XCTAssertEqual(["Simple text"], tokens)
+    XCTAssertEqual(1, tokens.count)
+    if tokens.count >= 1 {
+      XCTAssertEqual("Simple text", tokens[0] as? String)
+    }
   }
 
   func testTokenizeMessage_complexMessage() {
     let tokens = Block.tokenizeMessage("  token1%1%%%3another\n%29 😸📺 %1234567890")
-    XCTAssertEqual(["  token1", 1, "%", 3, "another\n", 29, " 😸📺 ", 1234567890], tokens)
+    XCTAssertEqual(8, tokens.count)
+    if tokens.count >= 8 {
+      XCTAssertEqual("  token1", tokens[0] as? String)
+      XCTAssertEqual(1, tokens[1] as? Int)
+      XCTAssertEqual("%", tokens[2] as? String)
+      XCTAssertEqual(3, tokens[3] as? Int)
+      XCTAssertEqual("another\n", tokens[4] as? String)
+      XCTAssertEqual(29, tokens[5] as? Int)
+      XCTAssertEqual(" 😸📺 ", tokens[6] as? String)
+      XCTAssertEqual(1234567890, tokens[7] as? Int)
+    }
   }
 
   func testTokenizeMessage_unescapePercent() {
     let tokens = Block.tokenizeMessage("blah%blahblah")
-    XCTAssertEqual(["blah%blahblah"], tokens)
+    XCTAssertEqual(1, tokens.count)
+    if tokens.count >= 1 {
+      XCTAssertEqual("blah%blahblah", tokens[0] as? String)
+    }
   }
 
   func testTokenizeMessage_trailingPercent() {
     let tokens = Block.tokenizeMessage("%")
-    XCTAssertEqual(["%"], tokens)
+    XCTAssertEqual(1, tokens.count)
+    if tokens.count >= 1 {
+      XCTAssertEqual("%", tokens[0] as? String)
+    }
   }
 }

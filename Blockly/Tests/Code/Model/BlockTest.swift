@@ -24,7 +24,7 @@ class BlockTest: XCTestCase {
   override func setUp() {
     _workspace = Workspace()
     _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+      jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
   }
 
   func testTopLevel() {
@@ -311,7 +311,7 @@ class BlockTest: XCTestCase {
   }
 
   func testEditable() {
-    let inputBuilder = Input.Builder(type: .Dummy, name: "dummy")
+    let inputBuilder = Input.Builder(type: .dummy, name: "dummy")
     inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
     let blockBuilder = Block.Builder(name: "test")
     blockBuilder.editable = true
@@ -337,7 +337,7 @@ class BlockTest: XCTestCase {
   }
 
   func testEditable_LoadAsReadOnly() {
-    let inputBuilder = Input.Builder(type: .Dummy, name: "dummy")
+    let inputBuilder = Input.Builder(type: .dummy, name: "dummy")
     inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
     let blockBuilder = Block.Builder(name: "test")
     blockBuilder.editable = false
@@ -490,7 +490,7 @@ class BlockTest: XCTestCase {
   /**
    Compares two trees of blocks and asserts that their tree of connections is the same.
    */
-  func assertSimilarBlockTrees(block1: Block, _ block2: Block) {
+  func assertSimilarBlockTrees(_ block1: Block, _ block2: Block) {
     XCTAssertEqual(block1.shadow, block2.shadow)
 
     // Test existence of all connections and follow next/input connections
@@ -511,7 +511,7 @@ class BlockTest: XCTestCase {
       (block1.nextBlock != nil && block2.nextBlock != nil))
 
     if let nextBlock1 = block1.nextBlock,
-      nextBlock2 = block2.nextBlock
+      let nextBlock2 = block2.nextBlock
     {
       assertSimilarBlockTrees(nextBlock1, nextBlock2)
     }
@@ -521,7 +521,7 @@ class BlockTest: XCTestCase {
       (block1.nextShadowBlock != nil && block2.nextShadowBlock != nil))
 
     if let nextShadowBlock1 = block1.nextShadowBlock,
-      nextShadowBlock2 = block2.nextShadowBlock
+      let nextShadowBlock2 = block2.nextShadowBlock
     {
       assertSimilarBlockTrees(nextShadowBlock1, nextShadowBlock2)
     }

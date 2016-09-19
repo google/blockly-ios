@@ -19,15 +19,15 @@ import Foundation
  Class for a `FieldLabel`-based `Layout`.
  */
 @objc(BKYFieldLabelLayout)
-public class FieldLabelLayout: FieldLayout {
+open class FieldLabelLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldLabel` that backs this layout
-  public let fieldLabel: FieldLabel
+  open let fieldLabel: FieldLabel
 
   /// The value that should be used when rendering this layout
-  public var text: String {
+  open var text: String {
     return fieldLabel.text
   }
 
@@ -43,7 +43,7 @@ public class FieldLabelLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }

@@ -21,11 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
   func application(
-    application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
   {
     // Create window
-    let frame = UIScreen.mainScreen().bounds
+    let frame = UIScreen.main.bounds
     self.window = UIWindow(frame: frame)
 
     let navigationController = UINavigationController()

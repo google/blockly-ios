@@ -25,7 +25,7 @@ public protocol DropdownOptionsViewControllerDelegate: class {
    - Parameter viewController: The view controller where this event occurred.
    - Parameter optionIndex: The selected option index.
    */
-  func dropdownOptionsViewController(viewController: DropdownOptionsViewController,
+  func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)
 }
 
@@ -33,7 +33,7 @@ public protocol DropdownOptionsViewControllerDelegate: class {
  View controller for selecting an option from inside a dropdown.
  */
 @objc(BKYDropdownOptionsViewController)
-public class DropdownOptionsViewController: UITableViewController {
+open class DropdownOptionsViewController: UITableViewController {
 
   // MARK: - Type Alias - Option
 
@@ -43,14 +43,14 @@ public class DropdownOptionsViewController: UITableViewController {
   // MARK: - Properties
 
   /// The list of drop-down options to display.
-  public var options = [Option]() {
+  open var options = [Option]() {
     didSet {
       // Recalculate the preferred content size
       calculatePreferredContentSize()
     }
   }
   /// The currently selected index.
-  public var selectedIndex = -1 {
+  open var selectedIndex = -1 {
     didSet {
       if selectedIndex != oldValue {
         calculatePreferredContentSize()
@@ -58,60 +58,60 @@ public class DropdownOptionsViewController: UITableViewController {
     }
   }
   /// Delegate for events that occur on this controller
-  public weak var delegate: DropdownOptionsViewControllerDelegate?
+  open weak var delegate: DropdownOptionsViewControllerDelegate?
   /// The font to render each cell
-  public var textLabelFont = UIFont.systemFontOfSize(18)
+  open var textLabelFont = UIFont.systemFont(ofSize: 18)
   /// The maximum size to use when displaying this view controller as a popover
-  public var maximumPopoverSize = CGSizeMake(248, 248)
+  open var maximumPopoverSize = CGSize(width: 248, height: 248)
   /// Identifier for reusing cells for this table
-  private let cellReuseIdentifier = "DropdownOptionsViewControllerCell"
+  fileprivate let cellReuseIdentifier = "DropdownOptionsViewControllerCell"
   /// The estimated width of the checkmark accessory (this value does not appear to be accessible)
-  private let accessoryWidth = CGFloat(30)
+  fileprivate let accessoryWidth = CGFloat(30)
   /// The cell padding
-  private let cellPadding = UIEdgeInsetsMake(16, 16, 16, 16)
+  fileprivate let cellPadding = UIEdgeInsetsMake(16, 16, 16, 16)
 
   // MARK: - Super
 
-  public override func viewDidLoad() {
-    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+  open override func viewDidLoad() {
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
     tableView.reloadData()
   }
 
-  public override func viewWillAppear(animated: Bool) {
+  open override func viewWillAppear(_ animated: Bool) {
     if 0 <= selectedIndex && selectedIndex < options.count {
       // Automatically scroll to the selected index when the view first appears
-      let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
-      tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Middle, animated: false)
+      let path = IndexPath(row: selectedIndex, section: 0)
+      tableView.scrollToRow(at: path, at: .middle, animated: false)
     }
   }
 
   // MARK: - UITableViewDataSource
 
-  public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  open override func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
 
-  public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+  open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
   {
-    return options.count ?? 0
+    return options.count
   }
 
-  public override func tableView(
-    tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+  open override func tableView(
+    _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
   {
-    return cellSizeForRow(indexPath.row, constrainedToWidth: view.bounds.width).height
+    return cellSizeForRow((indexPath as NSIndexPath).row, constrainedToWidth: view.bounds.width).height
   }
 
-  public override func tableView(
-    tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+  open override func tableView(
+    _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
   {
-    let cell = tableView.dequeueReusableCellWithIdentifier(
-      cellReuseIdentifier, forIndexPath: indexPath)
-    cell.accessoryType = (selectedIndex == indexPath.row ? .Checkmark : .None)
-    cell.selectionStyle = .Default
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: cellReuseIdentifier, for: indexPath)
+    cell.accessoryType = (selectedIndex == (indexPath as NSIndexPath).row ? .checkmark : .none)
+    cell.selectionStyle = .default
     cell.textLabel?.font = textLabelFont
     cell.textLabel?.numberOfLines = 0
-    cell.textLabel?.text = options[indexPath.row].displayName
+    cell.textLabel?.text = options[(indexPath as NSIndexPath).row].displayName
     cell.textLabel?.sizeToFit()
 
     return cell
@@ -119,18 +119,18 @@ public class DropdownOptionsViewController: UITableViewController {
 
   // MARK: - UITableViewDelegate
 
-  public override func tableView(
-    tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+  open override func tableView(
+    _ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
   {
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: true)
 
-    delegate?.dropdownOptionsViewController(self, didSelectOptionIndex: indexPath.row)
+    delegate?.dropdownOptionsViewController(self, didSelectOptionIndex: (indexPath as NSIndexPath).row)
   }
 
   // MARK: - Private
 
-  private func calculatePreferredContentSize() {
-    var preferredContentSize = CGSizeZero
+  fileprivate func calculatePreferredContentSize() {
+    var preferredContentSize = CGSize.zero
 
     for i in 0 ..< options.count {
       let cellSize = cellSizeForRow(i, constrainedToWidth: maximumPopoverSize.width)
@@ -142,7 +142,7 @@ public class DropdownOptionsViewController: UITableViewController {
     self.preferredContentSize = preferredContentSize
   }
 
-  private func cellSizeForRow(row: Int, constrainedToWidth width: CGFloat) -> CGSize {
+  fileprivate func cellSizeForRow(_ row: Int, constrainedToWidth width: CGFloat) -> CGSize {
     // Measure the text width (taking into account the cell's x-padding)
     let text = options[row].displayName
     let xPadding =

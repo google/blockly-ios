@@ -19,15 +19,15 @@ import Foundation
  Class for a `FieldColor`-based `Layout`.
  */
 @objc(BKYFieldColorLayout)
-public class FieldColorLayout: FieldLayout {
+open class FieldColorLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldColor` that backs this layout
-  public let fieldColor: FieldColor
+  open let fieldColor: FieldColor
 
   /// The checkbox value that should be used when rendering this layout
-  public var color: UIColor {
+  open var color: UIColor {
     return fieldColor.color
   }
 
@@ -43,7 +43,7 @@ public class FieldColorLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -56,7 +56,7 @@ public class FieldColorLayout: FieldLayout {
 
    - Parameter color: The value used to update `self.fieldColor`.
    */
-  public func updateColor(color: UIColor) {
+  open func updateColor(_ color: UIColor) {
     // Setting to a new color automatically fires a listener to update the layout
     fieldColor.color = color
   }

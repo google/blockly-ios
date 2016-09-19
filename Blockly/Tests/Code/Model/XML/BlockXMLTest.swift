@@ -25,7 +25,7 @@ class BlockXMLTest: XCTestCase {
 
   override func setUp() {
     factory = try! BlockFactory(jsonPath: "xml_parsing_test.json",
-      bundle: NSBundle(forClass: self.dynamicType))
+      bundle: Bundle(for: type(of: self)))
 
     super.setUp()
   }
@@ -289,18 +289,18 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_SimpleBlockWithPosition() {
     let block = try! factory.buildBlock("empty_block", uuid: "block_uuid") as Block!
-    block.position = WorkspacePointMake(999, -111)
+    block?.position = WorkspacePointMake(999, -111)
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"37\" y=\"13\" />
-    let xml = try! block.toXML()
-    XCTAssertEqual("block", xml.name)
-    XCTAssertEqual(4, xml.attributes.count)
-    XCTAssertEqual("block_uuid", xml.attributes["id"])
-    XCTAssertEqual("999", xml.attributes["x"])
-    XCTAssertEqual("-111", xml.attributes["y"])
-    XCTAssertEqual("empty_block", xml.attributes["type"])
-    XCTAssertEqual(0, xml.children.count)
+    let xml = try! block?.toXML()
+    XCTAssertEqual("block", xml?.name)
+    XCTAssertEqual(4, xml?.attributes.count)
+    XCTAssertEqual("block_uuid", xml?.attributes["id"])
+    XCTAssertEqual("999", xml?.attributes["x"])
+    XCTAssertEqual("-111", xml?.attributes["y"])
+    XCTAssertEqual("empty_block", xml?.attributes["type"])
+    XCTAssertEqual(0, xml?.children.count)
   }
 
   func testSerializeXML_SimpleBlockWithNoPosition() {
@@ -308,14 +308,14 @@ class BlockXMLTest: XCTestCase {
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"0\" y=\"0\" />
-    let xml = try! block.toXML()
-    XCTAssertEqual("block", xml.name)
-    XCTAssertEqual(4, xml.attributes.count)
-    XCTAssertEqual("uuid", xml.attributes["id"])
-    XCTAssertEqual("0", xml.attributes["x"])
-    XCTAssertEqual("0", xml.attributes["y"])
-    XCTAssertEqual("empty_block", xml.attributes["type"])
-    XCTAssertEqual(0, xml.children.count)
+    let xml = try! block?.toXML()
+    XCTAssertEqual("block", xml?.name)
+    XCTAssertEqual(4, xml?.attributes.count)
+    XCTAssertEqual("uuid", xml?.attributes["id"])
+    XCTAssertEqual("0", xml?.attributes["x"])
+    XCTAssertEqual("0", xml?.attributes["y"])
+    XCTAssertEqual("empty_block", xml?.attributes["type"])
+    XCTAssertEqual(0, xml?.children.count)
   }
 
   func testSerializeXML_BlockWithInputValue() {
@@ -1156,9 +1156,9 @@ class BlockXMLTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  func parseBlockFromXML(xmlString: String, _ factory: BlockFactory) -> Block.BlockTree? {
+  func parseBlockFromXML(_ xmlString: String, _ factory: BlockFactory) -> Block.BlockTree? {
     do {
-      let xmlDoc = try AEXMLDocument(string: xmlString)
+      let xmlDoc = try AEXMLDocument(xml: xmlString)
       return try Block.blockTreeFromXML(xmlDoc.root, factory: factory)
     } catch {
     }

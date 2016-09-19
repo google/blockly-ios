@@ -86,20 +86,20 @@ public final class DropdownView: UIView {
   public weak var delegate: DropdownViewDelegate?
 
   /// The text field to render
-  private let _label = UILabel(frame: CGRectZero)
+  fileprivate let _label = UILabel(frame: CGRect.zero)
 
   /// The button for receiving taps on this dropdown
-  private lazy var _button: UIButton = {
-    let button = UIButton(type: .Custom)
-    button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
-    button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+  fileprivate lazy var _button: UIButton = {
+    let button = UIButton(type: .custom)
+    button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return button
   }()
 
   /// The drop down arrow image beside the text field
-  private let _dropDownArrow: UIImageView = {
+  fileprivate let _dropDownArrow: UIImageView = {
     let dropDownArrow = UIImageView(image: nil)
-    dropDownArrow.contentMode = .Center
+    dropDownArrow.contentMode = .center
     return dropDownArrow
   }()
 
@@ -112,11 +112,11 @@ public final class DropdownView: UIView {
    `self.dropDownArrowImage`. If nil, `DropDownView.defaultDropDownArrowImage()` is used instead.
    */
   public init(dropDownArrowImage: UIImage? = nil) {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     self.dropDownArrowImage = dropDownArrowImage ?? DropdownView.defaultDropDownArrowImage()
-    borderColor = UIColor.grayColor().CGColor
-    dropDownBackgroundColor = UIColor.whiteColor().CGColor
+    borderColor = UIColor.gray.cgColor
+    dropDownBackgroundColor = UIColor.white.cgColor
 
     configureSubviews()
   }
@@ -140,19 +140,19 @@ public final class DropdownView: UIView {
    - Returns: The required size of the theoretical instance `dropDownView`
    */
   public static func measureSize(
-    text text: String, dropDownArrowImage: UIImage?, textFont: UIFont, borderWidth: CGFloat,
+    text: String, dropDownArrowImage: UIImage?, textFont: UIFont, borderWidth: CGFloat,
          horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
   {
     // Measure text size
     let textSize = text.bky_singleLineSizeForFont(textFont)
 
     // Measure drop down arrow image size
-    let imageSize = (dropDownArrowImage?.size ?? CGSizeZero)
+    let imageSize = (dropDownArrowImage?.size ?? CGSize.zero)
 
     // Return size required
-    return CGSizeMake(
-      ceil(textSize.width + horizontalSpacing * 3 + imageSize.width + borderWidth * 2),
-      ceil(max(textSize.height + verticalSpacing * 2, imageSize.height) + borderWidth * 2))
+    return CGSize(
+      width: ceil(textSize.width + horizontalSpacing * 3 + imageSize.width + borderWidth * 2),
+      height: ceil(max(textSize.height + verticalSpacing * 2, imageSize.height) + borderWidth * 2))
   }
 
   public static func defaultDropDownArrowImage() -> UIImage? {
@@ -182,13 +182,13 @@ public final class DropdownView: UIView {
     // Re-add all views
     views.forEach({ $1.removeFromSuperview()})
     bky_addSubviews(Array(views.values))
-    sendSubviewToBack(_button)
+    sendSubview(toBack: _button)
 
     // Add constraints
     bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
   }
 
-  private dynamic func didTapButton(sender: UIButton) {
+  private dynamic func didTapButton(_ sender: UIButton) {
     delegate?.dropDownDidReceiveTap()
   }
 }
