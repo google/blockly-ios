@@ -23,7 +23,7 @@ In non-DEBUG builds, this method does nothing.
 - Parameter condition: The condition to pass to `assert(condition, message)`
 - Parameter message: The message to pass to `assert(condition, message)`
 */
-internal func bky_assert(condition: Bool, message: String) {
+internal func bky_assert(_ condition: Bool, message: String) {
   #if DEBUG
     assert(condition, message)
   #endif
@@ -36,7 +36,7 @@ In non-DEBUG builds, this method does nothing.
 
 - Parameter message: The message to pass to `assertionFailure(message)`.
 */
-internal func bky_assertionFailure(message: String) {
+internal func bky_assertionFailure(_ message: String) {
   #if DEBUG
     assertionFailure(message)
   #else

@@ -19,7 +19,7 @@ import Foundation
 Stores information on how to render and position a `Workspace` on-screen.
 */
 @objc(BKYWorkspaceLayout)
-public class WorkspaceLayout: Layout {
+open class WorkspaceLayout: Layout {
   // MARK: - Static Properties
 
   /// Flag that should be used when the canvas size of the workspace has been updated.
@@ -54,7 +54,7 @@ public class WorkspaceLayout: Layout {
 
   // MARK: - Super
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  open override func performLayout(includeChildren: Bool) {
     var topLeftMostPoint = WorkspacePointZero
     var bottomRightMostPoint = WorkspacePointZero
 
@@ -95,7 +95,7 @@ public class WorkspaceLayout: Layout {
     sendChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 
-  public override func updateLayoutDownTree() {
+  open override func updateLayoutDownTree() {
     super.updateLayoutDownTree()
 
     // When this method is called, force a redisplay at the workspace level
@@ -107,7 +107,7 @@ public class WorkspaceLayout: Layout {
   /**
   Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
   */
-  public func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
+  open func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
     return flattenedLayoutTree(ofType: BlockLayout.self).filter { $0.visible }
   }
 
@@ -118,7 +118,7 @@ public class WorkspaceLayout: Layout {
   - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func appendBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
+  open func appendBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
     blockGroupLayouts.append(blockGroupLayout)
     adoptChildLayout(blockGroupLayout)
@@ -136,7 +136,7 @@ public class WorkspaceLayout: Layout {
   - Parameter blockGroupLayout: The given block group layout.
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func removeBlockGroupLayout(blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
+  open func removeBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
     blockGroupLayouts = blockGroupLayouts.filter({ $0 != blockGroupLayout })
     removeChildLayout(blockGroupLayout)
@@ -152,7 +152,7 @@ public class WorkspaceLayout: Layout {
 
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset(updateLayout updateLayout: Bool = true) {
+  open func reset(updateLayout: Bool = true) {
     for blockGroupLayout in self.blockGroupLayouts {
       removeChildLayout(blockGroupLayout)
     }
@@ -170,7 +170,7 @@ public class WorkspaceLayout: Layout {
 
   - Parameter blockGroupLayout: The given block group layout
   */
-  public func bringBlockGroupLayoutToFront(layout: BlockGroupLayout?) {
+  open func bringBlockGroupLayoutToFront(_ layout: BlockGroupLayout?) {
     guard let blockGroupLayout = layout else {
       return
     }
@@ -191,7 +191,7 @@ public class WorkspaceLayout: Layout {
       // The maximum z-position has been reached (unbelievable!). Normalize all block group layouts.
       _zIndexCounter = 1
 
-      let ascendingBlockGroupLayouts = self.blockGroupLayouts.sort({ $0.zIndex < $1.zIndex })
+      let ascendingBlockGroupLayouts = self.blockGroupLayouts.sorted(by: { $0.zIndex < $1.zIndex })
 
       for blockGroupLayout in ascendingBlockGroupLayouts {
         _zIndexCounter += 1
@@ -203,7 +203,7 @@ public class WorkspaceLayout: Layout {
   /**
    Updates the required size of this layout based on the current positions of all blocks.
    */
-  public func updateCanvasSize() {
+  open func updateCanvasSize() {
     performLayout(includeChildren: false)
 
     // View positions need to be refreshed for the entire tree since if the canvas size changes, the

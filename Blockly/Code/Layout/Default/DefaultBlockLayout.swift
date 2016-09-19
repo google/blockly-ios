@@ -28,24 +28,24 @@ public final class DefaultBlockLayout: BlockLayout {
   // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the block.outputConnection
-  private var _outputConnection: Connection!
+  fileprivate var _outputConnection: Connection!
 
   /// For performance reasons, keep a strong reference to the block.nextConnection
-  private var _nextConnection: Connection!
+  fileprivate var _nextConnection: Connection!
 
   /// For performance reasons, keep a strong reference to the block.previousConnection
-  private var _previousConnection: Connection!
+  fileprivate var _previousConnection: Connection!
 
   /// The relative position of the output connection, expressed as a Workspace coordinate system
   /// unit
-  private var _outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The relative position of the next connection, expressed as a Workspace coordinate system unit
-  private var _nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The relative position of the previous connection, expressed as a Workspace coordinate system
   /// unit
-  private var _previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
 
   /// The position of the block's leading edge X offset, specified as a Workspace coordinate
   /// system unit.
@@ -85,7 +85,7 @@ public final class DefaultBlockLayout: BlockLayout {
 
   // MARK: - Super
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  public override func performLayout(includeChildren: Bool) {
     // TODO:(#41) Potentially move logic from this method into Block.Background to make things
     // easier to follow.
     // TODO:(#41) Handle stroke widths for the background.
@@ -109,8 +109,8 @@ public final class DefaultBlockLayout: BlockLayout {
     for inputLayout in (inputLayouts as! [DefaultInputLayout]) {
       if backgroundRow == nil || // First row
         !block.inputsInline || // External inputs
-        previousInputLayout?.input.type == .Statement || // Previous input was a statement
-        inputLayout.input.type == .Statement // Current input is a statement
+        previousInputLayout?.input.type == .statement || // Previous input was a statement
+        inputLayout.input.type == .statement // Current input is a statement
       {
         // Start a new row
         backgroundRow = BackgroundRow()
@@ -131,7 +131,7 @@ public final class DefaultBlockLayout: BlockLayout {
       inputLayout.relativePosition.y = yOffset
 
       // Update the maximum field width used
-      if inputLayout.input.type == .Statement {
+      if inputLayout.input.type == .statement {
         minimalStatementWidthRequired =
           max(minimalStatementWidthRequired, inputLayout.minimalStatementWidthRequired)
       } else if !block.inputsInline {
@@ -155,7 +155,7 @@ public final class DefaultBlockLayout: BlockLayout {
       }
 
       let lastInputLayout = backgroundRow.inputLayouts.last! as! DefaultInputLayout
-      if lastInputLayout.input.type == .Statement {
+      if lastInputLayout.input.type == .statement {
         // Maximize the statement width
         lastInputLayout.maximizeStatementWidthTo(minimalStatementWidthRequired)
 
@@ -189,7 +189,7 @@ public final class DefaultBlockLayout: BlockLayout {
     }
 
     if block.nextConnection != nil {
-      let blockBottomEdge = background.rows.reduce(0, combine: { $0 + $1.rowHeight})
+      let blockBottomEdge = background.rows.reduce(0, { $0 + $1.rowHeight})
       _nextConnectionRelativePosition =
         WorkspacePointMake(notchXOffset, blockBottomEdge + notchHeight)
 

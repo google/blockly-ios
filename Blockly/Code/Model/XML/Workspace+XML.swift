@@ -30,8 +30,8 @@ extension Workspace {
   `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
   malformed data, or contradictory data).
   */
-  public func loadBlocksFromXMLString(xmlString: String, factory: BlockFactory) throws {
-    let xmlDoc = try AEXMLDocument(string: xmlString)
+  public func loadBlocksFromXMLString(_ xmlString: String, factory: BlockFactory) throws {
+    let xmlDoc = try AEXMLDocument(xml: xmlString)
     try loadBlocksFromXML(xmlDoc.root, factory: factory)
   }
 
@@ -44,7 +44,7 @@ extension Workspace {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public func loadBlocksFromXML(xml: AEXMLElement, factory: BlockFactory) throws {
+  public func loadBlocksFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws {
     if let allBlocksXML = xml["block"].all {
       for blockXML in allBlocksXML {
         let blockTree = try Block.blockTreeFromXML(blockXML, factory: factory)

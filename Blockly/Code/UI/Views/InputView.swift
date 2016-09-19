@@ -19,25 +19,25 @@ import Foundation
  View for rendering a `InputLayout`.
  */
 @objc(BKYInputView)
-public class InputView: LayoutView {
+open class InputView: LayoutView {
 
   // MARK: - Properties
 
   /// The layout object to render
-  public var inputLayout: InputLayout? {
+  open var inputLayout: InputLayout? {
     return layout as? InputLayout
   }
 
   // MARK: - Super
 
-  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+  open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest
-    let hitTestView = super.hitTest(point, withEvent: event)
+    let hitTestView = super.hitTest(point, with: event)
     return (hitTestView == self) ? nil : hitTestView
   }
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -54,7 +54,7 @@ public class InputView: LayoutView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     for subview in self.subviews {

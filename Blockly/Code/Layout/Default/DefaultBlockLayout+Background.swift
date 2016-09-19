@@ -24,19 +24,19 @@ extension DefaultBlockLayout {
     // MARK: - Properties
 
     /// Flag if the top-left corner should be square.
-    public private(set) var squareTopLeftCorner: Bool = false
+    public fileprivate(set) var squareTopLeftCorner: Bool = false
 
     /// Flag if the bottom-left corner should be rounded
-    public private(set) var squareBottomLeftCorner: Bool = false
+    public fileprivate(set) var squareBottomLeftCorner: Bool = false
 
     /// Flag if a female previous statement connector should be rendered at the top of the block
-    public private(set) var femalePreviousStatementConnector: Bool = false
+    public fileprivate(set) var femalePreviousStatementConnector: Bool = false
 
     /// Flag if a male next statement connector should be rendered at the bottom of the block
-    public private(set) var maleNextStatementConnector: Bool = false
+    public fileprivate(set) var maleNextStatementConnector: Bool = false
 
     /// Flag if a male output connector should be rendered on the left side of the block
-    public private(set) var maleOutputConnector: Bool = false
+    public fileprivate(set) var maleOutputConnector: Bool = false
 
     /// The position of the block's leading X edge offset, specified as a Workspace coordinate
     /// system unit, relative to its entire bounding box.
@@ -44,7 +44,7 @@ extension DefaultBlockLayout {
     public var leadingEdgeXOffset: CGFloat = 0
 
     /// The rows for this block
-    public private(set) var rows = [BackgroundRow]()
+    public fileprivate(set) var rows = [BackgroundRow]()
 
     // MARK: - Public
 
@@ -53,7 +53,7 @@ extension DefaultBlockLayout {
 
     - Parameter layout: The block layout.
     */
-    public func updateRenderPropertiesFromBlockLayout(layout: DefaultBlockLayout) {
+    public func updateRenderPropertiesFromBlockLayout(_ layout: DefaultBlockLayout) {
       self.maleOutputConnector = (layout.block.outputConnection != nil)
       self.leadingEdgeXOffset = maleOutputConnector ?
         layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) : 0
@@ -82,7 +82,7 @@ extension DefaultBlockLayout {
     
     - Parameter row: The row to append.
     */
-    public func appendRow(row: BackgroundRow) {
+    public func appendRow(_ row: BackgroundRow) {
       rows.append(row)
     }
 
@@ -150,7 +150,7 @@ extension DefaultBlockLayout {
     - Parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
     used for inline rows.
     */
-    public func updateRenderPropertiesWithMinimalRowWidth(minimalRowWidth: CGFloat) {
+    public func updateRenderPropertiesWithMinimalRowWidth(_ minimalRowWidth: CGFloat) {
       if inputLayouts.isEmpty {
         return
       }
@@ -159,7 +159,7 @@ extension DefaultBlockLayout {
 
       let lastInputLayout = inputLayouts.last! as! DefaultInputLayout
 
-      if lastInputLayout.input.type == .Statement {
+      if lastInputLayout.input.type == .statement {
         self.isStatement = true
         self.rightEdge = lastInputLayout.rightEdge
         self.topPadding = lastInputLayout.statementRowTopPadding
@@ -178,7 +178,7 @@ extension DefaultBlockLayout {
           rightEdge += inputLayout.totalSize.width
 
           // Add inline connector locations
-          if inputLayout.input.type == .Value {
+          if inputLayout.input.type == .value {
             let inlineConnector = InlineConnector(
               inputLayout.relativePosition + inputLayout.inlineConnectorPosition,
               inputLayout.inlineConnectorSize)
@@ -186,7 +186,7 @@ extension DefaultBlockLayout {
           }
         }
         self.rightEdge = max(minimalRowWidth, rightEdge, lastInputLayout.rightEdge)
-        self.middleHeight = inputLayouts.map { $0.totalSize.height }.maxElement()!
+        self.middleHeight = inputLayouts.map { $0.totalSize.height }.max()!
       }
     }
 
@@ -195,7 +195,7 @@ extension DefaultBlockLayout {
     /**
     Resets all render properties to their default values.
     */
-    private func resetRenderProperties() {
+    fileprivate func resetRenderProperties() {
       self.femaleOutputConnector = false
       self.isStatement = false
       self.rightEdge = 0
@@ -220,7 +220,7 @@ extension DefaultBlockLayout {
     public var size: WorkspaceSize
 
     /// Initializer
-    private init(_ relativePosition: WorkspacePoint, _ size: WorkspaceSize) {
+    fileprivate init(_ relativePosition: WorkspacePoint, _ size: WorkspaceSize) {
       self.relativePosition = relativePosition
       self.size = size
     }

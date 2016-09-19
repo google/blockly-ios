@@ -57,7 +57,7 @@ public final class FieldDropdown: Field {
   public convenience init(
     name: String, displayNames: [String], values: [String], selectedIndex: Int) throws {
       if (displayNames.count != values.count) {
-        throw BlocklyError(.InvalidBlockDefinition,
+        throw BlocklyError(.invalidBlockDefinition,
           "displayNames.count (\(displayNames.count)) doesn't match values.count (\(values.count))")
       }
       let options = Array(
@@ -72,7 +72,7 @@ public final class FieldDropdown: Field {
     return FieldDropdown(name: name, options: options, selectedIndex: selectedIndex)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     // Update the selection index to the first available option that has the given value. If
     // there are no options the index will be set to -1. If the value given is empty or does
     // not exist the index will be set to 0.

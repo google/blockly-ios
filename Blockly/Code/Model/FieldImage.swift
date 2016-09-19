@@ -49,8 +49,8 @@ public final class FieldImage: Field {
     return FieldImage(name: name, imageURL: imageURL, size: size, altText: altText)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
-    throw BlocklyError(.IllegalState, "Image field cannot be set from string.")
+  public override func setValueFromSerializedText(_ text: String) throws {
+    throw BlocklyError(.illegalState, "Image field cannot be set from string.")
   }
 
   public override func serializedText() throws -> String? {

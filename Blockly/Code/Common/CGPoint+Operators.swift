@@ -19,12 +19,12 @@ import Foundation
 Returns the sum of two points.
 */
 internal func + (point1: CGPoint, point2: CGPoint) -> CGPoint {
-  return CGPointMake(point1.x + point2.x, point1.y + point2.y)
+  return CGPoint(x: point1.x + point2.x, y: point1.y + point2.y)
 }
 
 /**
 Returns the difference of one point from another point.
 */
 internal func - (point1: CGPoint, point2: CGPoint) -> CGPoint {
-  return CGPointMake(point1.x - point2.x, point1.y - point2.y)
+  return CGPoint(x: point1.x - point2.x, y: point1.y - point2.y)
 }

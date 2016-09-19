@@ -23,12 +23,12 @@ public struct EdgeInsets {
   public var trailing: CGFloat
 
   public var left: CGFloat {
-    return UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft ?
+    return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ?
       trailing : leading
   }
 
   public var right: CGFloat {
-    return UIApplication.sharedApplication().userInterfaceLayoutDirection == .RightToLeft ?
+    return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ?
       leading : trailing
   }
 

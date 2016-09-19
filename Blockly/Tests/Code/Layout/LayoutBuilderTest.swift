@@ -20,21 +20,18 @@ class LayoutBuilderTest: XCTestCase {
 
   var _workspaceLayout: WorkspaceLayout!
   var _blockFactory: BlockFactory!
+  var _layoutBuilder: LayoutBuilder!
 
   // MARK: - Setup
 
   override func setUp() {
     super.setUp()
 
-    _workspaceLayout = BKYAssertDoesNotThrow {
-      try WorkspaceLayout(
-        workspace: Workspace(),
-        engine: DefaultLayoutEngine(),
-        layoutBuilder: LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
-    }
+    _workspaceLayout = WorkspaceLayout(workspace: Workspace(), engine: DefaultLayoutEngine())
+    _layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
     _blockFactory = BKYAssertDoesNotThrow {
       try BlockFactory(
-        jsonPath: "all_test_blocks.json", bundle: NSBundle(forClass: self.dynamicType))
+        jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
     }
   }
 
@@ -82,7 +79,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree
     BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTree(self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(self._workspaceLayout)
     }
 
     // Verify it
@@ -128,7 +125,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree for the only top-level block
     if let blockGroupLayout = BKYAssertDoesNotThrow({
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
       })
     {
@@ -139,25 +136,25 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building layout trees for non top-level blocks (these should all return nil)
     var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
         workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockStatementMultipleInputValueInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockStatementNoNext, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockStatementOutputNoInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
@@ -198,7 +195,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree for the only top-level block
     if let blockGroupLayout = BKYAssertDoesNotThrow({
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
     })
     {
@@ -209,13 +206,13 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building layout trees for non top-level shadow blocks (these should all return nil)
     var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockShadowInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(
+      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
         blockShadowPrevious, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
@@ -235,8 +232,8 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building the layout tree this block, but in the wrong workspace
     BKYAssertThrow(errorType: BlocklyError.self) {
-      try self._workspaceLayout.layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
-        workspaceLayout: self._workspaceLayout)
+      _ = try _layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
+                                                             workspaceLayout: _workspaceLayout)
     }
   }
 
@@ -244,7 +241,7 @@ class LayoutBuilderTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func verifyWorkspaceLayoutTree(workspaceLayout: WorkspaceLayout) {
+  fileprivate func verifyWorkspaceLayoutTree(_ workspaceLayout: WorkspaceLayout) {
     let workspace = workspaceLayout.workspace
 
     // Construct dictionary of all top level blocks in the workspace, keyed by block and a flag
@@ -281,12 +278,14 @@ class LayoutBuilderTest: XCTestCase {
       topLevelBlocks.filter({ !$0.1 /* keep those that weren't processed */ }).count)
   }
 
-  private func verifyBlockGroupLayoutTree(blockGroupLayout: BlockGroupLayout, firstBlock: Block?) {
+  fileprivate func verifyBlockGroupLayoutTree(_ blockGroupLayout: BlockGroupLayout,
+                                              firstBlock: Block?)
+  {
     var currentBlock = firstBlock
 
     var i = 0
     while i < blockGroupLayout.blockLayouts.count || currentBlock != nil {
-      guard let block = currentBlock where i < blockGroupLayout.blockLayouts.count else {
+      guard let block = currentBlock , i < blockGroupLayout.blockLayouts.count else {
         XCTFail("The number of block layouts in the group doesn't match the number of " +
           "blocks in the chain")
         return
@@ -317,7 +316,7 @@ class LayoutBuilderTest: XCTestCase {
       "The number of blocks in the chain exceeds the number of block layouts in the group")
   }
 
-  private func verifyBlockLayoutTree(blockLayout: BlockLayout) {
+  fileprivate func verifyBlockLayoutTree(_ blockLayout: BlockLayout) {
     let block = blockLayout.block
 
     // Make sure the number of inputLayouts matches the number of inputs
@@ -342,7 +341,7 @@ class LayoutBuilderTest: XCTestCase {
     }
   }
 
-  private func verifyInputLayoutTree(inputLayout: InputLayout) {
+  fileprivate func verifyInputLayoutTree(_ inputLayout: InputLayout) {
     let input = inputLayout.input
 
     // Make sure the number of fieldLayouts matches the number of fields
@@ -372,7 +371,7 @@ class LayoutBuilderTest: XCTestCase {
                                firstBlock: input.connectedBlock ?? input.connectedShadowBlock)
   }
 
-  private func verifyFieldLayout(fieldLayout: FieldLayout) {
+  fileprivate func verifyFieldLayout(_ fieldLayout: FieldLayout) {
     XCTAssertNotNil(fieldLayout.field.layout)
     XCTAssertEqual(fieldLayout, fieldLayout.field.layout)
   }

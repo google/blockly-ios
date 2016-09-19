@@ -19,19 +19,19 @@ import Foundation
  Class for a `FieldNumber`-based `Layout`.
  */
 @objc(BKYFieldNumberLayout)
-public class FieldNumberLayout: FieldLayout {
+open class FieldNumberLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The target `FieldNumber` to lay out
-  public let fieldNumber: FieldNumber
+  open let fieldNumber: FieldNumber
 
   /// The current text value that should be used to render the `FieldNumber`.
   /// This value is automatically set to `self.fieldNumber.textValue` on initialization and 
   /// whenever `setValueFromLocalizedText(:)` is called.
   /// However, it can be set to any value outside of these calls (e.g. for temporary input
   /// purposes).
-  public var currentTextValue: String {
+  open var currentTextValue: String {
     didSet {
       if currentTextValue != oldValue {
         updateLayoutUpTree()
@@ -53,7 +53,7 @@ public class FieldNumberLayout: FieldLayout {
    Convenience method that calls `self.fieldNumber.setValueFromLocalizedText(text)` and
    automatically sets `self.currentTextValue` to `self.fieldNumber.textValue`.
    */
-  public func setValueFromLocalizedText(text: String) {
+  open func setValueFromLocalizedText(_ text: String) {
     fieldNumber.setValueFromLocalizedText(text)
 
     // Update `currentTextValue` to match the current localized text value of `fieldNumber`,

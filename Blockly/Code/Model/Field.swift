@@ -25,7 +25,7 @@ public protocol FieldDelegate: class {
 
    - Parameter field: The field that changed.
    */
-  func didUpdateField(field: Field)
+  func didUpdateField(_ field: Field)
 }
 
 /**
@@ -33,7 +33,7 @@ Input field.  Used for editable titles, variables, etc. This is an abstract clas
 UI on the block.  Actual instances would be `FieldLabel`, `FieldDropdown`, etc.
 */
 @objc(BKYField)
-public class Field: NSObject {
+open class Field: NSObject {
   // MARK: - Properties
 
   /// The name of the field
@@ -76,7 +76,7 @@ public class Field: NSObject {
   - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
   a `Field` subclass does not implement this method.
   */
-  public func copyField() -> Field {
+  open func copyField() -> Field {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
     return Field(name: name) // This shouldn't happen.
   }
@@ -91,7 +91,7 @@ public class Field: NSObject {
    - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
    a `Field` subclass does not implement this method.
    */
-  public func setValueFromSerializedText(text: String) throws {
+  open func setValueFromSerializedText(_ text: String) throws {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 
@@ -104,7 +104,7 @@ public class Field: NSObject {
    - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
    a `Field` subclass does not implement this method.
    */
-  public func serializedText() throws -> String? {
+  open func serializedText() throws -> String? {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
     return nil
   }
@@ -134,7 +134,8 @@ public class Field: NSObject {
    - Parameter oldValue: The old value of the instance property
    - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
-  public func didSetEditableProperty<T: Equatable>(inout editableProperty: T, _ oldValue: T)
+  @discardableResult
+  open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
     -> Bool
   {
     if !self.editable {
@@ -170,7 +171,8 @@ public class Field: NSObject {
    - Parameter oldValue: The old value of the instance property
    - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
-  public func didSetEditableProperty<T: Equatable>(inout editableProperty: T?, _ oldValue: T?)
+  @discardableResult
+  open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T?, _ oldValue: T?)
     -> Bool
   {
     if !self.editable {

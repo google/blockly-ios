@@ -27,7 +27,7 @@ class CodeGeneratorServiceTest: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    let testBundle = NSBundle(forClass: self.dynamicType)
+    let testBundle = Bundle(for: type(of: self))
     // Create the code generator
     _codeGeneratorService = CodeGeneratorService(
       jsCoreDependencies: [
@@ -68,10 +68,10 @@ class CodeGeneratorServiceTest: XCTestCase {
     }
 
     // Set up timeout expectation
-    let expectation = expectationWithDescription("Code Generation")
+    let expectation = self.expectation(description: "Code Generation")
 
     // Execute request
-    let testBundle = NSBundle(forClass: self.dynamicType)
+    let testBundle = Bundle(for: type(of: self))
     guard let request = BKYAssertDoesNotThrow({
         try CodeGeneratorService.Request(workspace: workspace,
           jsGeneratorObject: "Blockly.Python",
@@ -84,7 +84,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     }
     request.onCompletion = { code in
       XCTAssertEqual("for count in range(10):  pass",
-        code.stringByReplacingOccurrencesOfString("\n", withString: ""))
+                     code.replacingOccurrences(of: "\n", with: ""))
       expectation.fulfill()
     }
     request.onError = { error in
@@ -94,7 +94,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     _codeGeneratorService.generateCodeForRequest(request)
 
     // Wait 10s for code generation to finish
-    waitForExpectationsWithTimeout(10.0, handler: { error in
+    waitForExpectations(timeout: 10.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
@@ -124,11 +124,11 @@ class CodeGeneratorServiceTest: XCTestCase {
       try workspace.addBlockTree(loopBlock)
     }
 
-    let testBundle = NSBundle(forClass: self.dynamicType)
+    let testBundle = Bundle(for: type(of: self))
 
     for _ in 0 ..< 100 {
       // Set up timeout expectation
-      let expectation = expectationWithDescription("Code Generation")
+      let expectation = self.expectation(description: "Code Generation")
 
       // Execute request
       guard let request = BKYAssertDoesNotThrow({
@@ -142,7 +142,7 @@ class CodeGeneratorServiceTest: XCTestCase {
       }
       request.onCompletion = { code in
         XCTAssertEqual("for count in range(10):  pass",
-          code.stringByReplacingOccurrencesOfString("\n", withString: ""))
+          code.replacingOccurrences(of: "\n", with: ""))
         expectation.fulfill()
       }
       request.onError = { error in
@@ -153,7 +153,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     }
 
     // Wait 100s for code generation to finish
-    waitForExpectationsWithTimeout(100.0, handler: { error in
+    waitForExpectations(timeout: 100.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }

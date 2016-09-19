@@ -25,7 +25,7 @@ public final class DefaultInputLayout: InputLayout {
   // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the input.connection
-  private var _connection: Connection!
+  fileprivate var _connection: Connection!
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
@@ -39,7 +39,7 @@ public final class DefaultInputLayout: InputLayout {
       }
 
       let connectionPoint: WorkspacePoint
-      if input.type == .Statement {
+      if input.type == .statement {
         connectionPoint = WorkspacePointMake(
           statementIndent + self.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth) / 2,
           statementRowTopPadding +
@@ -98,7 +98,7 @@ public final class DefaultInputLayout: InputLayout {
   public var minimalFieldWidthRequired: CGFloat {
     let fieldWidth = fieldLayouts.count > 0 ?
       (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
-    let puzzleTabWidth = (!isInline && input.type == .Value) ?
+    let puzzleTabWidth = (!isInline && input.type == .value) ?
       (self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)) : 0
     return fieldWidth + puzzleTabWidth
   }
@@ -116,11 +116,11 @@ public final class DefaultInputLayout: InputLayout {
 
   // MARK: - Super
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  public override func performLayout(includeChildren: Bool) {
     resetRenderProperties()
 
     // Figure out which block group to render
-    let targetBlockGroupLayout = self.blockGroupLayout
+    let targetBlockGroupLayout = self.blockGroupLayout as BlockGroupLayout
 
     var fieldXOffset: CGFloat = 0
     var fieldMaximumHeight: CGFloat = 0
@@ -151,9 +151,9 @@ public final class DefaultInputLayout: InputLayout {
 
         // Special case: Don't add right padding to the last field of an inline dummy input if it's
         // immediately followed by another dummy/value input.
-        if self.input.type == .Dummy {
+        if self.input.type == .dummy {
           let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayoutAfterLayout(self)
-          if nextInputLayout?.input.type == .Value || nextInputLayout?.input.type == .Dummy {
+          if nextInputLayout?.input.type == .value || nextInputLayout?.input.type == .dummy {
             addRightEdgeInset = false
           }
         }
@@ -179,7 +179,7 @@ public final class DefaultInputLayout: InputLayout {
     // the UI will know how to draw the shape of a block, and set the size of the entire
     // InputLayout.
     switch (self.input.type) {
-    case .Value:
+    case .value:
       // TODO:(#41) Handle stroke widths for the inline connector cut-out
 
       // Position the block group
@@ -227,12 +227,12 @@ public final class DefaultInputLayout: InputLayout {
         self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight))
 
       self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
-    case .Statement:
+    case .statement:
       // If this is the first child for the block layout or the previous input type was a statement,
       // we need to add an empty row at the top to begin a new "C" shape.
       let previousInputLayout = (parentLayout as? BlockLayout)?.inputLayoutBeforeLayout(self)
 
-      let rowTopPadding = (self.isFirstChild || previousInputLayout?.input.type == .Statement) ?
+      let rowTopPadding = (self.isFirstChild || previousInputLayout?.input.type == .statement) ?
         self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight) : 0
       self.statementRowTopPadding = rowTopPadding
 
@@ -275,7 +275,7 @@ public final class DefaultInputLayout: InputLayout {
         self.rightEdge)
       size.height = statementRowTopPadding + statementMiddleHeight + statementRowBottomPadding
       self.contentSize = size
-    case .Dummy:
+    case .dummy:
       targetBlockGroupLayout.relativePosition = WorkspacePointZero
 
       self.rightEdge = fieldXOffset
@@ -298,7 +298,7 @@ public final class DefaultInputLayout: InputLayout {
 
   - Parameter width: A width value, specified in the Workspace coordinate system.
   */
-  internal func maximizeFieldWidthTo(width: CGFloat) {
+  internal func maximizeFieldWidthTo(_ width: CGFloat) {
     let minimalFieldWidthRequired = self.minimalFieldWidthRequired
     if width <= minimalFieldWidthRequired {
       return
@@ -309,8 +309,8 @@ public final class DefaultInputLayout: InputLayout {
     self.rightEdge += widthDifference
 
     // Shift fields based on new width and alignment
-    if self.input.alignment == .Center || self.input.alignment == .Right {
-      let shiftAmount = (self.input.alignment == .Center) ?
+    if self.input.alignment == .center || self.input.alignment == .right {
+      let shiftAmount = (self.input.alignment == .center) ?
         floor(widthDifference / 2) : widthDifference
       for fieldLayout in fieldLayouts {
         fieldLayout.relativePosition.x += shiftAmount
@@ -318,10 +318,10 @@ public final class DefaultInputLayout: InputLayout {
     }
 
     // Update block group layout and render properties
-    if self.input.type == .Statement {
+    if self.input.type == .statement {
       self.statementIndent += widthDifference
       self.blockGroupLayout.relativePosition.x += widthDifference
-    } else if self.input.type == .Value && !self.isInline {
+    } else if self.input.type == .value && !self.isInline {
       self.blockGroupLayout.relativePosition.x += widthDifference
     }
   }
@@ -338,8 +338,8 @@ public final class DefaultInputLayout: InputLayout {
 
    - Parameter width: A width value, specified in the Workspace coordinate system.
    */
-  internal func maximizeStatementWidthTo(width: CGFloat) {
-    if self.input.type == .Statement {
+  internal func maximizeStatementWidthTo(_ width: CGFloat) {
+    if self.input.type == .statement {
       // Maximize the statement width by maximizing the field width
       maximizeFieldWidthTo(width - self.statementConnectorWidth)
     }
@@ -351,11 +351,11 @@ public final class DefaultInputLayout: InputLayout {
 
    For all other inputs, this method does nothing.
 
-   - Parameter width: The width value to extend the right edge, specified in the Workspace coordinate
-   system. If this value is less than or equal to 0, this method does nothing.
+   - Parameter width: The width value to extend the right edge, specified in the Workspace
+   coordinate system. If this value is less than or equal to 0, this method does nothing.
    */
-  internal func extendStatementRightEdgeBy(width: CGFloat) {
-    if self.input.type == .Statement && width > 0 {
+  internal func extendStatementRightEdgeBy(_ width: CGFloat) {
+    if self.input.type == .statement && width > 0 {
       // Extend the right edge
       self.rightEdge += width
 
@@ -369,7 +369,7 @@ public final class DefaultInputLayout: InputLayout {
   /**
   Resets all render specific properties back to their default values.
   */
-  private func resetRenderProperties() {
+  fileprivate func resetRenderProperties() {
     self.rightEdge = 0
     self.inlineConnectorPosition = WorkspacePointZero
     self.inlineConnectorSize = WorkspaceSizeZero

@@ -26,7 +26,7 @@ class WorkspaceXMLTest: XCTestCase {
     workspace = Workspace()
     factory =
       try! BlockFactory(jsonPath: "xml_parsing_test.json",
-        bundle: NSBundle(forClass: self.dynamicType))
+        bundle: Bundle(for: type(of: self)))
 
     super.setUp()
   }
@@ -53,7 +53,7 @@ class WorkspaceXMLTest: XCTestCase {
       BlockTestStrings.NO_BLOCK_POSITION,
       BlockTestStrings.assembleBlock(BlockTestStrings.FIELD_HAS_NAME)
     ]
-    let xml = assembleWorkspace(blocks.joinWithSeparator(""))
+    let xml = assembleWorkspace(blocks.joined(separator: ""))
     try! workspace.loadBlocksFromXMLString(xml, factory: factory)
     XCTAssertEqual(4, workspace.allBlocks.count)
   }
@@ -64,7 +64,7 @@ class WorkspaceXMLTest: XCTestCase {
       BlockTestStrings.SIMPLE_BLOCK,
       BlockTestStrings.SIMPLE_BLOCK,
       ]
-      let xml = assembleWorkspace(blocks.joinWithSeparator(""))
+      let xml = assembleWorkspace(blocks.joined(separator: ""))
       try workspace.loadBlocksFromXMLString(xml, factory: factory)
       XCTFail("Should not have been able to add blocks with the same uuid")
     } catch {
@@ -210,7 +210,7 @@ class WorkspaceXMLTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func assembleWorkspace(interiorXML: String) -> String {
+  fileprivate func assembleWorkspace(_ interiorXML: String) -> String {
     return "<xml xmlns=\"http://www.w3.org/1999/xhtml\">\(interiorXML)</xml>"
   }
 }

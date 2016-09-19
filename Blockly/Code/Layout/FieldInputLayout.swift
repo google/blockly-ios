@@ -19,15 +19,15 @@ import Foundation
  Class for a `FieldInput`-based `Layout`.
  */
 @objc(BKYFieldInputLayout)
-public class FieldInputLayout: FieldLayout {
+open class FieldInputLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldInput` that backs this layout
-  public let fieldInput: FieldInput
+  open let fieldInput: FieldInput
 
   /// The value that should be used when rendering this layout
-  public var text: String {
+  open var text: String {
     return fieldInput.text
   }
 
@@ -43,7 +43,7 @@ public class FieldInputLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -56,7 +56,7 @@ public class FieldInputLayout: FieldLayout {
 
    - Parameter text: The value used to update `self.fieldInput`.
    */
-  public func updateText(text: String) {
+  open func updateText(_ text: String) {
     // Setting to new text automatically fires a listener to update the layout
     fieldInput.text = text
   }

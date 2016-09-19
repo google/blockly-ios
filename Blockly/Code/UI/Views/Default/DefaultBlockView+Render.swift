@@ -32,7 +32,7 @@ extension DefaultBlockView {
    - Parameter notchHeight: The height of the notch, specified as a Workspace coordinate system
    unit.
    */
-  public final func addNotchToPath(path: WorkspaceBezierPath, drawLeftToRight: Bool,
+  public final func addNotchToPath(_ path: WorkspaceBezierPath, drawLeftToRight: Bool,
     notchWidth: CGFloat, notchHeight: CGFloat)
   {
     if drawLeftToRight {
@@ -60,7 +60,7 @@ extension DefaultBlockView {
   ```
   - Parameter path: The Bezier path to add to.
   */
-  public final func addJaggedTeethToPath(path: WorkspaceBezierPath) {
+  public final func addJaggedTeethToPath(_ path: WorkspaceBezierPath) {
     path.addLineToPoint(8, 0, relative: true)
     path.addLineToPoint(0, 4, relative: true)
     path.addLineToPoint(8, 4, relative: true)
@@ -86,7 +86,7 @@ extension DefaultBlockView {
    - Parameter puzzleTabHeight: The height of the puzzle tab, specified as a Workspace coordinate
    system unit.
    */
-  public final func addPuzzleTabToPath(path: WorkspaceBezierPath, drawTopToBottom: Bool,
+  public final func addPuzzleTabToPath(_ path: WorkspaceBezierPath, drawTopToBottom: Bool,
     puzzleTabWidth: CGFloat, puzzleTabHeight: CGFloat)
   {
     let verticalLineHeight = puzzleTabHeight * 0.2
@@ -123,7 +123,7 @@ extension DefaultBlockView {
     system unit.
    */
   public final func movePathToTopLeftCornerStart(
-    path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
+    _ path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
   {
     path.moveToPoint(0, blockCornerRadius, relative: true)
   }
@@ -138,7 +138,8 @@ extension DefaultBlockView {
    - Parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
    system unit.
    */
-  public final func addTopLeftCornerToPath(path: WorkspaceBezierPath, blockCornerRadius: CGFloat) {
+  public final func addTopLeftCornerToPath(_ path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
+  {
     path.addArcWithCenter(WorkspacePointMake(blockCornerRadius, 0),
       radius: blockCornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),
       clockwise: true, relative: true)

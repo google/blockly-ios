@@ -31,46 +31,46 @@ extension Block {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func blockTreeFromXML(xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
+  public class func blockTreeFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
   {
-    let lowercaseTag = xml.name.lowercaseString
+    let lowercaseTag = xml.name.lowercased()
     guard lowercaseTag == XMLConstants.TAG_BLOCK || lowercaseTag == XMLConstants.TAG_SHADOW else {
       let errorMessage = "The block tag (\"\(xml.name)\") must be either " +
         "'\(XMLConstants.TAG_BLOCK)' or '\(XMLConstants.TAG_SHADOW)'"
-      throw BlocklyError(.XMLUnknownBlock, errorMessage, xml)
+      throw BlocklyError(.xmlUnknownBlock, errorMessage, xml)
     }
     guard let type = xml.attributes[XMLConstants.ATTRIBUTE_TYPE] else {
-      throw BlocklyError(.XMLUnknownBlock, "The block type may not be nil.", xml)
+      throw BlocklyError(.xmlUnknownBlock, "The block type may not be nil.", xml)
     }
     if type == "" {
-      throw BlocklyError(.XMLUnknownBlock, "The block type may not be empty.", xml)
+      throw BlocklyError(.xmlUnknownBlock, "The block type may not be empty.", xml)
     }
 
     let uuid = xml.attributes[XMLConstants.ATTRIBUTE_ID]
     let shadow = (lowercaseTag == XMLConstants.TAG_SHADOW)
 
     guard let block = try factory.buildBlock(type, uuid: uuid, shadow: shadow) else {
-      throw BlocklyError(.XMLUnknownBlock, "The block type \(type) does not exist.", xml)
+      throw BlocklyError(.xmlUnknownBlock, "The block type \(type) does not exist.", xml)
     }
 
     var allBlocks = [block]
-    let formatter = NSNumberFormatter()
+    let formatter = NumberFormatter()
     if let xString = xml.attributes[XMLConstants.ATTRIBUTE_POSITION_X],
       let yString = xml.attributes[XMLConstants.ATTRIBUTE_POSITION_Y],
-      let x = formatter.numberFromString(xString),
-      let y = formatter.numberFromString(yString)
+      let x = formatter.number(from: xString),
+      let y = formatter.number(from: yString)
     {
       block.position = WorkspacePointMake(CGFloat(x), CGFloat(y))
     }
 
     for child in xml.children {
-      switch child.name.lowercaseString {
+      switch child.name.lowercased() {
       case XMLConstants.TAG_INPUT_VALUE, XMLConstants.TAG_INPUT_STATEMENT:
         let blocks = try setInputOnBlock(block, fromXML: child, factory: factory)
-        allBlocks.appendContentsOf(blocks)
+        allBlocks.append(contentsOf: blocks)
       case XMLConstants.TAG_NEXT_STATEMENT:
         let blocks = try setNextBlockOnBlock(block, fromXML: child, factory: factory)
-        allBlocks.appendContentsOf(blocks)
+        allBlocks.append(contentsOf: blocks)
       case XMLConstants.TAG_FIELD:
         try setFieldOnBlock(block, fromXML: child)
       case XMLConstants.TAG_COMMENT:
@@ -98,41 +98,41 @@ extension Block {
   `BlocklyError`: Occurs if the block doesn't have that input or the xml is invalid.
   */
   private class func setInputOnBlock(
-    block: Block, fromXML xml: AEXMLElement, factory: BlockFactory) throws -> [Block]
+    _ block: Block, fromXML xml: AEXMLElement, factory: BlockFactory) throws -> [Block]
   {
     // Figure out which connection we're connecting to
     guard let inputName = xml.attributes[XMLConstants.ATTRIBUTE_NAME] else {
       let errorMessage = "Missing \"\(XMLConstants.ATTRIBUTE_NAME)\" attribute for input."
-      throw BlocklyError(.XMLParsing, errorMessage, xml)
+      throw BlocklyError(.xmlParsing, errorMessage, xml)
     }
     guard let input = block.firstInputWithName(inputName) else {
-      throw BlocklyError(.XMLParsing, "Could not find input on block: \(inputName)", xml)
+      throw BlocklyError(.xmlParsing, "Could not find input on block: \(inputName)", xml)
     }
     guard let inputConnection = input.connection else {
-      throw BlocklyError(.XMLParsing, "Input has no connection.")
+      throw BlocklyError(.xmlParsing, "Input has no connection.")
     }
 
     var blocks = [Block]()
 
     for child in xml.children {
-      switch child.name.lowercaseString {
+      switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this input connection's target
         let subBlockTree = try Block.blockTreeFromXML(child, factory: factory)
         try inputConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
-        blocks.appendContentsOf(subBlockTree.allBlocks)
+        blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this input connection's shadow
         let subBlockTree = try Block.blockTreeFromXML(child, factory: factory)
         try inputConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
-        blocks.appendContentsOf(subBlockTree.allBlocks)
+        blocks.append(contentsOf: subBlockTree.allBlocks)
       default:
         bky_print("Unknown element: \(child.name)")
       }
     }
 
     if blocks.count == 0 {
-      throw BlocklyError(.XMLParsing, "Missing block for input.", xml)
+      throw BlocklyError(.xmlParsing, "Missing block for input.", xml)
     }
 
     return blocks
@@ -149,33 +149,33 @@ extension Block {
    `BlocklyError`: Occurs if the block doesn't have a next connection or the xml is invalid.
    */
   private class func setNextBlockOnBlock(
-    block: Block, fromXML xml: AEXMLElement, factory: BlockFactory) throws -> [Block]
+    _ block: Block, fromXML xml: AEXMLElement, factory: BlockFactory) throws -> [Block]
   {
     guard let nextConnection = block.nextConnection else {
-      throw BlocklyError(.XMLParsing, "Block has no next connection.")
+      throw BlocklyError(.xmlParsing, "Block has no next connection.")
     }
 
     var blocks = [Block]()
 
     for child in xml.children {
-      switch child.name.lowercaseString {
+      switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this next connection's target
         let subBlockTree = try blockTreeFromXML(child, factory: factory)
         try nextConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
-        blocks.appendContentsOf(subBlockTree.allBlocks)
+        blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this next connection's shadow
         let subBlockTree = try blockTreeFromXML(child, factory: factory)
         try nextConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
-        blocks.appendContentsOf(subBlockTree.allBlocks)
+        blocks.append(contentsOf: subBlockTree.allBlocks)
       default:
         bky_print("Unknown element: \(xml.name)")
       }
     }
 
     if blocks.count == 0 {
-      throw BlocklyError(.XMLParsing, "Missing next block.", xml)
+      throw BlocklyError(.xmlParsing, "Missing next block.", xml)
     }
 
     return blocks
@@ -187,7 +187,7 @@ extension Block {
    - Parameter block: The block to update.
    - Parameter xml: The xml that describes the field to update.
    */
-  private class func setFieldOnBlock(block: Block, fromXML xml: AEXMLElement) throws {
+  private class func setFieldOnBlock(_ block: Block, fromXML xml: AEXMLElement) throws {
     // A missing or unknown field name isn't an error, it's just ignored.
     if let value = xml.value,
       let fieldName = xml.attributes[XMLConstants.ATTRIBUTE_NAME],
@@ -212,7 +212,7 @@ extension Block {
    */
   public func toXML() throws -> AEXMLElement {
     let tagName = shadow ? XMLConstants.TAG_SHADOW : XMLConstants.TAG_BLOCK
-    let blockXML = AEXMLElement(tagName, value: nil, attributes: nil)
+    let blockXML = AEXMLElement(name: tagName, value: nil, attributes: [:])
     blockXML.attributes[XMLConstants.ATTRIBUTE_TYPE] = name // `name` represents the block type
     blockXML.attributes[XMLConstants.ATTRIBUTE_ID] = uuid
 

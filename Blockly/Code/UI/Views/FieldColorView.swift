@@ -19,29 +19,29 @@ import Foundation
  View for rendering a `FieldColorLayout`.
  */
 @objc(BKYFieldColorView)
-public class FieldColorView: FieldView {
+open class FieldColorView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldColorLayout`
-  public var fieldColorLayout: FieldColorLayout? {
+  open var fieldColorLayout: FieldColorLayout? {
     return layout as? FieldColorLayout
   }
 
   /// The color button to render
-  private lazy var button: UIButton = {
-    let button = UIButton(type: .Custom)
+  fileprivate lazy var button: UIButton = {
+    let button = UIButton(type: .custom)
     button.frame = self.bounds
     button.clipsToBounds = true
-    button.layer.borderColor = UIColor.whiteColor().CGColor
-    button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    button.addTarget(self, action: #selector(didTapButton(_:)), forControlEvents: .TouchUpInside)
+    button.layer.borderColor = UIColor.white.cgColor
+    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
     return button
   }()
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(button)
   }
@@ -52,7 +52,7 @@ public class FieldColorView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -73,15 +73,15 @@ public class FieldColorView: FieldView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    button.backgroundColor = UIColor.clearColor()
+    button.backgroundColor = UIColor.clear
   }
 
   // MARK: - Private
 
-  private dynamic func didTapButton(sender: UIButton) {
+  fileprivate dynamic func didTapButton(_ sender: UIButton) {
     // Show the color picker
     let viewController = FieldColorPickerViewController()
     viewController.color = fieldColorLayout?.color
@@ -94,11 +94,11 @@ public class FieldColorView: FieldView {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldColorView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     if !(layout is FieldColorLayout) {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldColorLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     return layout.config.viewSizeFor(LayoutConfig.FieldColorButtonSize)
@@ -109,9 +109,9 @@ extension FieldColorView: FieldLayoutMeasurer {
 
 extension FieldColorView: FieldColorPickerViewControllerDelegate {
   public func fieldColorPickerViewController(
-    viewController: FieldColorPickerViewController, didPickColor color: UIColor)
+    _ viewController: FieldColorPickerViewController, didPickColor color: UIColor)
   {
     fieldColorLayout?.updateColor(color)
-    viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
   }
 }

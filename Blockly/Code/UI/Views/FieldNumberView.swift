@@ -19,37 +19,37 @@ import Foundation
  View for rendering a `FieldNumber`.
  */
 @objc(BKYFieldNumberView)
-public class FieldNumberView: FieldView {
+open class FieldNumberView: FieldView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `FieldNumberLayout`
-  public var fieldNumberLayout: FieldNumberLayout? {
+  open var fieldNumberLayout: FieldNumberLayout? {
     return layout as? FieldNumberLayout
   }
 
   /// The text field to render
-  public private(set) lazy var textField: InsetTextField = {
-    let textField = InsetTextField(frame: CGRectZero)
+  open fileprivate(set) lazy var textField: InsetTextField = {
+    let textField = InsetTextField(frame: CGRect.zero)
     textField.delegate = self
-    textField.borderStyle = .RoundedRect
-    textField.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    textField.keyboardType = .NumbersAndPunctuation
-    textField.textAlignment = .Right
+    textField.borderStyle = .roundedRect
+    textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    textField.keyboardType = .numbersAndPunctuation
+    textField.textAlignment = .right
     textField.inputAccessoryView = self.toolbar
     textField.adjustsFontSizeToFitWidth = false
     textField
-      .addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+      .addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     return textField
   }()
 
   /// A toolbar that appears above the input keyboard
-  public private(set) lazy var toolbar: UIToolbar = {
+  open fileprivate(set) lazy var toolbar: UIToolbar = {
     let toolbar = UIToolbar()
-    toolbar.barStyle = .Default
-    toolbar.translucent = true
+    toolbar.barStyle = .default
+    toolbar.isTranslucent = true
     toolbar.items = [
-      UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .Done, target: self,
+      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+      UIBarButtonItem(barButtonSystemItem: .done, target: self,
         action: #selector(didTapDoneButton(_:)))
     ]
     toolbar.sizeToFit() // This is important or else the bar won't render!
@@ -59,7 +59,7 @@ public class FieldNumberView: FieldView {
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
@@ -70,7 +70,7 @@ public class FieldNumberView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -85,35 +85,36 @@ public class FieldNumberView: FieldView {
 
         // TODO:(#27) Standardize this font
         let textField = self.textField
-        textField.font = UIFont.systemFontOfSize(14 * layout.engine.scale)
-        textField.insetPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+        textField.font = UIFont.systemFont(ofSize: 14 * layout.engine.scale)
+        textField.insetPadding =
+          layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRectZero
+    self.frame = CGRect.zero
     self.textField.text = ""
   }
 
   // MARK: - Private
 
-  private dynamic func didTapDoneButton(sender: UITextField) {
+  fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
     // Stop editing the text field
     textField.resignFirstResponder()
   }
 
-  private dynamic func textFieldDidChange(sender: UITextField) {
+  fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
     // Remove whitespace
-    textField.text = textField.text?.stringByReplacingOccurrencesOfString(" ", withString: "")
+    textField.text = textField.text?.replacingOccurrences(of: " ", with: "")
 
     // Update the text value of fieldNumberLayout, but don't actually change its value yet
     fieldNumberLayout?.currentTextValue = (textField.text ?? "")
   }
 
-  private func updateTextFieldFromFieldNumber() {
+  fileprivate func updateTextFieldFromFieldNumber() {
     let text = fieldNumberLayout?.currentTextValue ?? ""
     if textField.text != text {
       textField.text = text
@@ -125,7 +126,7 @@ public class FieldNumberView: FieldView {
 
 extension FieldNumberView: UITextFieldDelegate {
   public func textField(
-    textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+    _ textField: UITextField, shouldChangeCharactersIn range: NSRange,
     replacementString string: String) -> Bool
   {
     if string.isEmpty {
@@ -133,12 +134,12 @@ extension FieldNumberView: UITextFieldDelegate {
       return true
     } else {
       // Don't allow extra whitespace
-      return !string.stringByTrimmingCharactersInSet(
-        NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty
+      return !string.trimmingCharacters(
+        in: CharacterSet.whitespacesAndNewlines).isEmpty
     }
   }
 
-  public func textFieldDidEndEditing(textField: UITextField) {
+  public func textFieldDidEndEditing(_ textField: UITextField) {
     // Only commit the change after the user has finished editing the field
     fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
 
@@ -146,7 +147,7 @@ extension FieldNumberView: UITextFieldDelegate {
     updateTextFieldFromFieldNumber()
   }
 
-  public func textFieldShouldReturn(textField: UITextField) -> Bool {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // This will dismiss the keyboard
     textField.resignFirstResponder()
     return true
@@ -156,18 +157,18 @@ extension FieldNumberView: UITextFieldDelegate {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldNumberView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldNumberLayout = layout as? FieldNumberLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldNumberLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.floatFor(LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldNumberLayout.currentTextValue + " "
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    let font = UIFont.systemFontOfSize(14 * scale)
+    let font = UIFont.systemFont(ofSize: 14 * scale)
     var measureSize = measureText.bky_singleLineSizeForFont(font)
     measureSize.height = measureSize.height + textPadding.top + textPadding.bottom
     measureSize.width =

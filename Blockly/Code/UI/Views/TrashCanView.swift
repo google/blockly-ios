@@ -18,7 +18,7 @@ import Foundation
 /**
  An area containing a button for an animatable trash can.
  */
-public class TrashCanView: UIView {
+public final class TrashCanView: UIView {
 
   // MARK: - Struct - Padding
   public struct Padding {
@@ -37,7 +37,7 @@ public class TrashCanView: UIView {
   /// The trash can button
   public let button = UIButton()
   /// The desired size of the trash can image
-  private var _imageSize: CGSize = CGSizeZero
+  private var _imageSize: CGSize = CGSize.zero
   /// The height constraint of the trash can button
   private var _trashCanHeightConstraint: NSLayoutConstraint!
   /// The width constraint of the trash can button
@@ -56,24 +56,24 @@ public class TrashCanView: UIView {
    used as a default.
    */
   public required init(imageNamed imageName: String, size: CGSize? = nil) {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     if let imageSize = size {
       _imageSize = imageSize
     }
 
     // Load the image
-    if let image = ImageLoader.loadImage(named: imageName, forClass: self.dynamicType) {
-      button.setImage(image, forState: .Normal)
+    if let image = ImageLoader.loadImage(named: imageName, forClass: type(of: self)) {
+      button.setImage(image, for: UIControlState())
       if size == nil {
         _imageSize = image.size
       }
     }
 
     // Forces the image to completely fill the button
-    button.imageView?.contentMode = .ScaleAspectFit
-    button.contentHorizontalAlignment = .Fill
-    button.contentVerticalAlignment = .Fill
+    button.imageView?.contentMode = .scaleAspectFit
+    button.contentHorizontalAlignment = .fill
+    button.contentVerticalAlignment = .fill
 
     // Add the button and its constraints
     let views: [String: UIView] = ["button": button]
@@ -87,7 +87,7 @@ public class TrashCanView: UIView {
     _trashCanHeightConstraint = button.bky_addHeightConstraint(_imageSize.height)
     _trashCanWidthConstraint = button.bky_addWidthConstraint(_imageSize.width)
     self.translatesAutoresizingMaskIntoConstraints = false
-    self.layoutMargins = UIEdgeInsetsZero
+    self.layoutMargins = UIEdgeInsets.zero
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -105,12 +105,12 @@ public class TrashCanView: UIView {
    - Parameter trailing: The padding to add to the trailing edge of the button
    */
   public func setButtonPadding(
-    top top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat) {
+    top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat) {
 
     self.layoutMargins = bky_UIEdgeInsetsMake(top, leading, bottom, trailing)
   }
 
-  public func setHighlighted(highlighted: Bool, animated: Bool) {
+  public func setHighlighted(_ highlighted: Bool, animated: Bool) {
     if _highlighted == highlighted {
       return
     }

@@ -19,27 +19,27 @@ import Foundation
  Class for a `FieldDropdown`-based `Layout`.
  */
 @objc(BKYFieldDropdownLayout)
-public class FieldDropdownLayout: FieldLayout {
+open class FieldDropdownLayout: FieldLayout {
 
   public typealias Option = FieldDropdown.Option
 
   // MARK: - Properties
 
   /// The `FieldDropdown` that backs this layout
-  public let fieldDropdown: FieldDropdown
+  open let fieldDropdown: FieldDropdown
 
   /// The list of options that should be presented when rendering this layout
-  public var options: [Option] {
+  open var options: [Option] {
     return fieldDropdown.options
   }
 
   /// The currently selected index of `self.options`
-  public var selectedIndex: Int {
+  open var selectedIndex: Int {
     return fieldDropdown.selectedIndex
   }
 
   /// The option tuple of the currently selected index
-  public var selectedOption: Option? {
+  open var selectedOption: Option? {
     return fieldDropdown.selectedOption
   }
 
@@ -57,7 +57,7 @@ public class FieldDropdownLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -70,7 +70,7 @@ public class FieldDropdownLayout: FieldLayout {
 
    - Parameter selectedIndex: The value used to update `self.fieldDropdown.selectedIndex`.
    */
-  public func updateSelectedIndex(selectedIndex: Int) {
+  open func updateSelectedIndex(_ selectedIndex: Int) {
     // Setting to a new index automatically fires a listener to update the layout
     fieldDropdown.selectedIndex = selectedIndex
   }

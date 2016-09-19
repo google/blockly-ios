@@ -18,7 +18,7 @@ import XCTest
 
 class FieldNumberTest: XCTestCase {
 
-  private var fieldNumber: FieldNumber!
+  var fieldNumber: FieldNumber!
 
   // MARK: - Setup
 
@@ -96,7 +96,7 @@ class FieldNumberTest: XCTestCase {
 
   func testSetConstraints_IllegalArguments() {
     BKYAssertThrow("NaN minimum is not allowed.", errorType: BlocklyError.self) {
-      try self.fieldNumber.setConstraints(minimum: Double.NaN, maximum: 1.0, precision: 0.1)
+      try self.fieldNumber.setConstraints(minimum: Double.nan, maximum: 1.0, precision: 0.1)
     }
 
     BKYAssertThrow("`Double.infinity` minimum is not allowed.", errorType: BlocklyError.self) {
@@ -109,7 +109,7 @@ class FieldNumberTest: XCTestCase {
     }
 
     BKYAssertThrow("NaN maximum is not allowed.", errorType: BlocklyError.self) {
-      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: Double.NaN, precision: 0.1)
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: Double.nan, precision: 0.1)
     }
 
     BKYAssertThrow("`Double.infinity` maximum is not allowed.", errorType: BlocklyError.self) {
@@ -123,7 +123,7 @@ class FieldNumberTest: XCTestCase {
 
 
     BKYAssertThrow("NaN precision is not allowed.", errorType: BlocklyError.self) {
-      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.NaN)
+      try self.fieldNumber.setConstraints(minimum: -1.0, maximum: 1.0, precision: Double.nan)
     }
 
     BKYAssertThrow("`Double.infinity` precision is not allowed.", errorType: BlocklyError.self) {

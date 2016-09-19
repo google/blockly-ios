@@ -21,19 +21,19 @@ import Foundation
  remains in-sync.
  */
 @objc(BKYWorkspaceLayoutCoordinator)
-public class WorkspaceLayoutCoordinator: NSObject {
+open class WorkspaceLayoutCoordinator: NSObject {
   /// The workspace layout whose layout hierarchy is being managed by this object
-  public let workspaceLayout: WorkspaceLayout
+  open let workspaceLayout: WorkspaceLayout
 
   /// Builder for constructing layouts under `self.workspaceLayout`
   public final let layoutBuilder: LayoutBuilder
 
   /// Manager for tracking all connection positions under `self.workspaceLayout`. If this value
   /// is `nil`, connection positions aren't being tracked.
-  public private(set) final var connectionManager: ConnectionManager?
+  public fileprivate(set) final var connectionManager: ConnectionManager?
 
   /// Object responsible for bumping blocks away from each other
-  public let blockBumper = BlockBumper()
+  open let blockBumper = BlockBumper()
 
   // MARK: - Initializers / De-initializers
 
@@ -80,7 +80,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
   // MARK: - Public
 
-  public func addBlockTree(rootBlock: Block) throws {
+  open func addBlockTree(_ rootBlock: Block) throws {
     return try workspaceLayout.workspace.addBlockTree(rootBlock)
   }
 
@@ -92,7 +92,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
    - Throws:
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
-  public func removeBlockTree(rootBlock: Block) throws {
+  open func removeBlockTree(_ rootBlock: Block) throws {
     // Disconnect this block from anything
     if let previousConnection = rootBlock.previousConnection {
       disconnect(previousConnection)
@@ -113,7 +113,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
    - Throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
-  public func copyBlockTree(rootBlock: Block, editable: Bool) throws -> Block {
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
     return try workspaceLayout.workspace.copyBlockTree(rootBlock, editable: editable)
   }
 
@@ -123,19 +123,19 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
    - Parameter connectionPair: The pair to connect
    */
-  public func connectPair(connectionPair: ConnectionManager.ConnectionPair) {
+  open func connectPair(_ connectionPair: ConnectionManager.ConnectionPair) {
     let moving = connectionPair.moving
     let target = connectionPair.target
 
     do {
       switch (moving.type) {
-      case .InputValue:
+      case .inputValue:
         try connectValueConnections(superior: moving, inferior: target)
-      case .OutputValue:
+      case .outputValue:
         try connectValueConnections(superior: target, inferior: moving)
-      case .NextStatement:
+      case .nextStatement:
         try connectStatementConnections(superior: moving, inferior: target)
-      case .PreviousStatement:
+      case .previousStatement:
         try connectStatementConnections(superior: target, inferior: moving)
       }
     } catch let error as NSError {
@@ -143,7 +143,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  public func disconnect(connection: Connection) {
+  open func disconnect(_ connection: Connection) {
     let oldTarget = connection.targetConnection
     connection.disconnect()
 
@@ -153,7 +153,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  public func connect(connection1: Connection, _ connection2: Connection) throws {
+  open func connect(_ connection1: Connection, _ connection2: Connection) throws {
     let oldTarget1 = connection1.targetConnection
     let oldTarget2 = connection2.targetConnection
     try connection1.connectTo(connection2)
@@ -169,7 +169,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
    this method attempts to reattach it to the end of the inferior connection's block input value
    chain. If unsuccessful, the disconnected block is bumped away.
    */
-  private func connectValueConnections(superior superior: Connection, inferior: Connection) throws {
+  fileprivate func connectValueConnections(superior: Connection, inferior: Connection) throws {
     let previouslyConnectedBlock = superior.targetBlock
 
     // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
@@ -184,7 +184,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
     if let previousOutputConnection = previouslyConnectedBlock?.outputConnection {
       if let lastInputConnection = inferior.sourceBlock?.lastInputValueConnectionInChain()
-        where lastInputConnection.canConnectTo(previousOutputConnection)
+        , lastInputConnection.canConnectTo(previousOutputConnection)
       {
         // Try to reconnect previously connected block to the end of the input value chain
         try connect(lastInputConnection, previousOutputConnection)
@@ -207,7 +207,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
    `BlocklyError`: Thrown if the previous/next statements could not be connected together or if
    the previously disconnected block could not be re-connected to the end of the block chain.
    */
-  private func connectStatementConnections(superior superior: Connection, inferior: Connection)
+  fileprivate func connectStatementConnections(superior: Connection, inferior: Connection)
     throws
   {
     let previouslyConnectedBlock = superior.targetBlock
@@ -224,7 +224,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
     if let previousConnection = previouslyConnectedBlock?.previousConnection {
       if let lastConnection = inferior.sourceBlock?.lastBlockInChain().nextConnection
-        where lastConnection.canConnectTo(previousConnection)
+        , lastConnection.canConnectTo(previousConnection)
       {
         // Reconnect previously connected block to the end of the block chain
         try connect(lastConnection, previousConnection)
@@ -235,7 +235,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  private func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
+  fileprivate func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
   {
     do {
       try updateLayoutTree(forConnection: connection, oldTarget: oldTarget)
@@ -244,7 +244,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  private func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
+  fileprivate func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
   {
     do {
       if connection.shadowConnected && !connection.connected {
@@ -270,10 +270,10 @@ public class WorkspaceLayoutCoordinator: NSObject {
    - Parameter connection: The connection that should have its shadow blocks added to the layout
    tree
    */
-  private func addShadowBlockLayoutTree(forConnection connection: Connection?) throws {
+  fileprivate func addShadowBlockLayoutTree(forConnection connection: Connection?) throws {
     guard let aConnection = connection,
-      shadowBlock = aConnection.shadowBlock
-      where (aConnection.type == .NextStatement || aConnection.type == .InputValue) &&
+      let shadowBlock = aConnection.shadowBlock
+      , (aConnection.type == .nextStatement || aConnection.type == .inputValue) &&
         shadowBlock.layout == nil && !aConnection.connected else
     {
       // Only next/input connectors are responsible for updating the shadow block group
@@ -320,10 +320,10 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
    - Parameter shadowBlock: The shadow block
    */
-  private func removeShadowBlockLayoutTree(forShadowBlock shadowBlock: Block?) throws {
+  fileprivate func removeShadowBlockLayoutTree(forShadowBlock shadowBlock: Block?) throws {
     guard let shadowBlockLayout = shadowBlock?.layout,
-      shadowBlockLayoutParent = shadowBlockLayout.parentBlockGroupLayout
-      where (shadowBlock?.shadow ?? false) else
+      let shadowBlockLayoutParent = shadowBlockLayout.parentBlockGroupLayout
+      , (shadowBlock?.shadow ?? false) else
     {
       // There is no shadow block layout for this block.
       return
@@ -356,11 +356,12 @@ public class WorkspaceLayoutCoordinator: NSObject {
    - Parameter connection: The connection that changed
    - Parameter oldTarget: The previous value of `connection.targetConnection`
    */
-  private func updateLayoutTree(forConnection connection: Connection, oldTarget: Connection?) throws
+  fileprivate func updateLayoutTree(forConnection connection: Connection, oldTarget: Connection?)
+    throws
   {
     // TODO:(#29) Optimize re-rendering all layouts affected by this method
 
-    guard connection.type == .PreviousStatement || connection.type == .OutputValue else {
+    guard connection.type == .previousStatement || connection.type == .outputValue else {
       // Only previous/output connectors are responsible for updating the block group
       // layout hierarchy, not next/input connectors.
       return
@@ -369,18 +370,18 @@ public class WorkspaceLayoutCoordinator: NSObject {
     // Check that there are layouts for both the source and target blocks of this connection
     guard let sourceBlock = connection.sourceBlock,
       let sourceBlockLayout = sourceBlock.layout
-      where connection.targetConnection?.sourceInput == nil ||
+      , connection.targetConnection?.sourceInput == nil ||
         connection.targetConnection?.sourceInput?.layout != nil ||
         connection.targetConnection?.sourceBlock == nil ||
         connection.targetConnection?.sourceBlock?.layout != nil
       else
     {
-      throw BlocklyError(.IllegalState, "Can't connect a block without a layout. ")
+      throw BlocklyError(.illegalState, "Can't connect a block without a layout. ")
     }
 
     // Check that this layout is connected to a block group layout
     guard sourceBlock.layout?.parentBlockGroupLayout != nil else {
-      throw BlocklyError(.IllegalState,
+      throw BlocklyError(.illegalState,
                          "Block layout is not connected to a parent block group layout. ")
     }
 
@@ -389,7 +390,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     guard (connection.targetBlock == nil || workspace.containsBlock(connection.targetBlock!)) &&
       workspace.containsBlock(sourceBlock) else
     {
-      throw BlocklyError(.IllegalState, "Can't connect blocks from different workspaces")
+      throw BlocklyError(.illegalState, "Can't connect blocks from different workspaces")
     }
 
     // Keep a reference to the old parent block group layout, in case we need to clean it up later
@@ -437,7 +438,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
     // If the previous block group layout parent of `sourceBlockLayout` is now empty and is at the
     // the top-level of the workspace, remove it
     if let emptyBlockGroupLayout = oldParentLayout
-      where emptyBlockGroupLayout.blockLayouts.count == 0 &&
+      , emptyBlockGroupLayout.blockLayouts.count == 0 &&
         emptyBlockGroupLayout.parentLayout == workspaceLayout
     {
       Layout.doNotAnimate {
@@ -457,9 +458,9 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
    - Parameter blockLayout: The `BlockLayout` whose connections should be tracked.
    */
-  private func trackConnections(forBlockLayout blockLayout: BlockLayout) {
+  fileprivate func trackConnections(forBlockLayout blockLayout: BlockLayout) {
     guard let connectionManager = self.connectionManager
-     where blockLayout.visible else
+     , blockLayout.visible else
     {
       // Only track connections for visible block layouts
       return
@@ -477,7 +478,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
 
    - Parameter blockLayout: The `BlockLayout` whose connections should be untracked.
    */
-  private func untrackConnections(forBlockLayout blockLayout: BlockLayout) {
+  fileprivate func untrackConnections(forBlockLayout blockLayout: BlockLayout) {
     guard let connectionManager = self.connectionManager else {
       return
     }
@@ -492,7 +493,7 @@ public class WorkspaceLayoutCoordinator: NSObject {
 // MARK: - WorkspaceListener implementation
 
 extension WorkspaceLayoutCoordinator: WorkspaceListener {
-  public func workspace(workspace: Workspace, didAddBlock block: Block) {
+  public func workspace(_ workspace: Workspace, didAddBlock block: Block) {
     if !block.topLevel {
       // We only need to create layout trees for top level blocks
       return
@@ -522,7 +523,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
     }
   }
 
-  public func workspace(workspace: Workspace, willRemoveBlock block: Block) {
+  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return

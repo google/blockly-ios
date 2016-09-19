@@ -19,17 +19,17 @@ import Foundation
  View for rendering a `BlockGroupLayout`.
  */
 @objc(BKYBlockGroupView)
-public class BlockGroupView: LayoutView, ZIndexedView {
+open class BlockGroupView: LayoutView, ZIndexedView {
 
   // MARK: - Properties
 
   /// The layout object to render
-  public var blockGroupLayout: BlockGroupLayout? {
+  open var blockGroupLayout: BlockGroupLayout? {
     return layout as? BlockGroupLayout
   }
 
   /// The z-index of the block group view
-  public private(set) final var zIndex: UInt = 0 {
+  public fileprivate(set) final var zIndex: UInt = 0 {
     didSet {
       if zIndex != oldValue {
         if let superview = self.superview as? ZIndexedGroupView {
@@ -42,14 +42,14 @@ public class BlockGroupView: LayoutView, ZIndexedView {
 
   // MARK: - Super
 
-  public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+  open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest
-    let hitTestView = super.hitTest(point, withEvent: event)
+    let hitTestView = super.hitTest(point, with: event)
     return (hitTestView == self) ? nil : hitTestView
   }
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -80,7 +80,7 @@ public class BlockGroupView: LayoutView, ZIndexedView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     for subview in self.subviews {

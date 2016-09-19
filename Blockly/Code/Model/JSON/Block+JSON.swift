@@ -19,20 +19,20 @@ extension Block {
   // MARK: - Static Properties
 
   // JSON parameters
-  private static let PARAMETER_ID = "id"
+  fileprivate static let PARAMETER_ID = "id"
   // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
-  private static let PARAMETER_COLOR = "colour"
-  private static let PARAMETER_OUTPUT = "output"
-  private static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
-  private static let PARAMETER_NEXT_STATEMENT = "nextStatement"
-  private static let PARAMETER_INPUTS_INLINE = "inputsInline"
-  private static let PARAMETER_TOOLTIP = "tooltip"
-  private static let PARAMETER_HELP_URL = "helpUrl"
-  private static let PARAMETER_MESSAGE = "message"
-  private static let PARAMETER_ARGUMENTS = "args"
-  private static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
-  private static let MESSAGE_PARAMETER_ALT = "alt"
-  private static let MESSAGE_PARAMETER_TYPE = "type"
+  fileprivate static let PARAMETER_COLOR = "colour"
+  fileprivate static let PARAMETER_OUTPUT = "output"
+  fileprivate static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
+  fileprivate static let PARAMETER_NEXT_STATEMENT = "nextStatement"
+  fileprivate static let PARAMETER_INPUTS_INLINE = "inputsInline"
+  fileprivate static let PARAMETER_TOOLTIP = "tooltip"
+  fileprivate static let PARAMETER_HELP_URL = "helpUrl"
+  fileprivate static let PARAMETER_MESSAGE = "message"
+  fileprivate static let PARAMETER_ARGUMENTS = "args"
+  fileprivate static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
+  fileprivate static let MESSAGE_PARAMETER_ALT = "alt"
+  fileprivate static let MESSAGE_PARAMETER_TYPE = "type"
 
   // MARK: - Public
 
@@ -45,10 +45,10 @@ extension Block {
   malformed data, or contradictory data).
   - Returns: A new block builder.
   */
-  public class func builderFromJSON(json: [String: AnyObject]) throws -> Block.Builder
+  public class func builderFromJSON(_ json: [String: Any]) throws -> Block.Builder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
-      throw BlocklyError(.InvalidBlockDefinition,
+      throw BlocklyError(.invalidBlockDefinition,
         "Must not have both an output and a previousStatement.")
     }
 
@@ -109,11 +109,11 @@ extension Block {
         // No message found for next value of i, stop interpolating messages.
         break
       }
-      let arguments = (json[PARAMETER_ARGUMENTS + "\(i)"] as? Array<[String: AnyObject]>) ?? []
+      let arguments = (json[PARAMETER_ARGUMENTS + "\(i)"] as? Array<[String: Any]>) ?? []
       let lastDummyAlignmentString =
         (json[PARAMETER_LAST_DUMMY_ALIGNMENT + "\(i)"] as? String) ?? ""
       let lastDummyAlignment =
-        Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.Left
+        Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.left
 
       // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
@@ -143,11 +143,11 @@ extension Block {
   `Input` or `Field`.
   - Returns: An `Input.Builder` array
   */
-  internal class func interpolateMessage(message: String, arguments: Array<[String: AnyObject]>,
+  internal class func interpolateMessage(_ message: String, arguments: Array<[String: Any]>,
     lastDummyAlignment: Input.Alignment) throws -> [Input.Builder]
   {
     let tokens = Block.tokenizeMessage(message)
-    var processedIndices = [Bool](count: arguments.count, repeatedValue: false)
+    var processedIndices = [Bool](repeating: false, count: arguments.count)
     var tempFieldList = [Field]()
     var allInputBuilders = Array<Input.Builder>()
 
@@ -158,18 +158,18 @@ extension Block {
         let index = numberToken - 1
         if (index < 0 || index >= arguments.count) {
           throw BlocklyError(
-            .InvalidBlockDefinition, "Message index \"\(numberToken)\" out of range.")
+            .invalidBlockDefinition, "Message index \"\(numberToken)\" out of range.")
         } else if (processedIndices[index]) {
           throw BlocklyError(
-            .InvalidBlockDefinition, "Message index \"\(numberToken)\" duplicated.")
+            .invalidBlockDefinition, "Message index \"\(numberToken)\" duplicated.")
         }
 
-        var element: [String: AnyObject]! = arguments[index]
+        var element: [String: Any]! = arguments[index]
 
         while (element != nil) {
           guard let argumentType = element[MESSAGE_PARAMETER_TYPE] as? String else {
             throw BlocklyError(
-              .InvalidBlockDefinition, "No type for argument \"\(numberToken)\".")
+              .invalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
           if let field = try Field.fieldFromJSON(element) {
@@ -185,7 +185,7 @@ extension Block {
           } else {
             // Try getting the fallback block if it exists
             bky_print("Unknown element type [\"\(argumentType)\"]")
-            element = element[MESSAGE_PARAMETER_ALT] as? [String: AnyObject]
+            element = element[MESSAGE_PARAMETER_ALT] as? [String: Any]
           }
         }
 
@@ -193,8 +193,8 @@ extension Block {
 
       case var stringToken as String:
         // This was simply a string, append it if it's not empty
-        stringToken = stringToken.stringByTrimmingCharactersInSet(
-          NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        stringToken = stringToken.trimmingCharacters(
+          in: CharacterSet.whitespacesAndNewlines)
         if (stringToken != "") {
           tempFieldList.append(FieldLabel(name: "", text: stringToken))
         }
@@ -208,14 +208,14 @@ extension Block {
     // Throw an error if not every argument index was used
     let unusedIndices = processedIndices.filter({ $0 == false })
     if (unusedIndices.count > 0) {
-      let unusedIndicesString = unusedIndices.map({ String($0) }).joinWithSeparator(",")
-      throw BlocklyError(.InvalidBlockDefinition,
+      let unusedIndicesString = unusedIndices.map({ String($0) }).joined(separator: ",")
+      throw BlocklyError(.invalidBlockDefinition,
         "Message did not reference the following indices: \(unusedIndicesString)")
     }
 
     // If there were leftover fields we need to add a dummy input to hold them.
     if (!tempFieldList.isEmpty) {
-      let inputBuilder = Input.Builder(type: .Dummy, name: "")
+      let inputBuilder = Input.Builder(type: .dummy, name: "")
       inputBuilder.appendFields(tempFieldList)
       tempFieldList = []
       allInputBuilders.append(inputBuilder)
@@ -238,13 +238,13 @@ extension Block {
   - Parameter message: The message to tokenize
   - Returns: An array of tokens consisting of either `String` or `Int`
   */
-  internal class func tokenizeMessage(message: String) -> [NSObject] {
+  internal class func tokenizeMessage(_ message: String) -> [Any] {
     enum State {
-      case BaseCase, PercentFound, PercentAndDigitFound
+      case baseCase, percentFound, percentAndDigitFound
     }
 
-    var tokens = [NSObject]()
-    var state = State.BaseCase
+    var tokens = [Any]()
+    var state = State.baseCase
     var currentTextToken = ""
     var currentNumber = 0
     var i = message.startIndex
@@ -253,17 +253,17 @@ extension Block {
       let character = message[i]
 
       switch (state) {
-      case .BaseCase:
+      case .baseCase:
         if (character == "%") {
           // Start escape.
-          state = .PercentFound
+          state = .percentFound
         } else {
           currentTextToken.append(character)
         }
-      case .PercentFound:
+      case .percentFound:
         if let number = Int(String(character)) {
           // Number found
-          state = .PercentAndDigitFound
+          state = .percentAndDigitFound
           currentNumber = number
           if (currentTextToken != "") {
             tokens.append(currentTextToken)
@@ -272,13 +272,13 @@ extension Block {
         } else if (character == "%") {
           // Escaped %: %%
           currentTextToken.append(character)
-          state = .BaseCase
+          state = .baseCase
         } else {
           // Non-escaped % (eg. "%A"), just add it to the currentTextToken
           currentTextToken += "%\(character)"
-          state = .BaseCase
+          state = .baseCase
         }
-      case .PercentAndDigitFound:
+      case .percentAndDigitFound:
         if let number = Int(String(character)) {
           // Multi-digit number.
           currentNumber = (currentNumber * 10) + number
@@ -286,23 +286,23 @@ extension Block {
           // Not a number, add the current number token
           tokens.append(currentNumber)
           currentNumber = 0
-          i = i.predecessor()  // Parse this char again.
-          state = .BaseCase
+          i = message.index(before: i)  // Parse this char again.
+          state = .baseCase
         }
       }
 
-      i = i.successor()
+      i = message.index(after: i)
     }
 
     // Process any remaining values
     switch state {
-    case .BaseCase:
+    case .baseCase:
       if (currentTextToken != "") {
         tokens.append(currentTextToken)
       }
-    case .PercentFound:
+    case .percentFound:
       tokens.append("%")
-    case .PercentAndDigitFound:
+    case .percentAndDigitFound:
       tokens.append(currentNumber)
     }
     

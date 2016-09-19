@@ -30,19 +30,19 @@ public final class ConnectionManager: NSObject {
   /// otherwise.
   public let mainGroup: ConnectionManager.Group
 
+  /// Validator for accepting/rejecting block-level connection logic.
+  public let connectionValidator: ConnectionValidator
+
   /// Dictionary for retrieving a connection's assigned group (keyed by the connection uuid)
-  private var _groupsByConnection = Dictionary<String, ConnectionManager.Group>()
+  fileprivate var _groupsByConnection = Dictionary<String, ConnectionManager.Group>()
 
   /// All groups that have been created by this manager, including `mainGroup`
-  private var _groups = Set<ConnectionManager.Group>()
-
-  /// Validator for accepting/rejecting block-level connection logic.
-  private let _connectionValidator: ConnectionValidator
+  fileprivate var _groups = Set<ConnectionManager.Group>()
 
   // MARK: - Initializers
 
   public init(connectionValidator: ConnectionValidator = DefaultConnectionValidator()) {
-    _connectionValidator = connectionValidator
+    self.connectionValidator = connectionValidator
     self.mainGroup = ConnectionManager.Group(ownerBlock: nil)
     super.init()
     self._groups.insert(mainGroup)
@@ -58,7 +58,7 @@ public final class ConnectionManager: NSObject {
   `ownerBlock` of the connection group.
   - Returns: The newly created connection group
   */
-  public func startGroupForBlock(block: Block?) -> ConnectionManager.Group {
+  public func startGroupForBlock(_ block: Block?) -> ConnectionManager.Group {
     let newGroup = ConnectionManager.Group(ownerBlock: block)
     _groups.insert(newGroup)
 
@@ -81,7 +81,8 @@ public final class ConnectionManager: NSObject {
   - Parameter intoGroup: The receiving group. If this value is nil, the `mainGroup` is used by
   default.
   */
-  public func mergeGroup(fromGroup: ConnectionManager.Group, intoGroup: ConnectionManager.Group?) {
+  public func mergeGroup(_ fromGroup: ConnectionManager.Group, intoGroup: ConnectionManager.Group?)
+  {
     let newGroup = (intoGroup ?? self.mainGroup)
     if fromGroup == newGroup {
       return
@@ -114,7 +115,7 @@ public final class ConnectionManager: NSObject {
   is assigned to `mainGroup`.
   */
   public func trackConnection(
-    connection: Connection, assignToGroup group: ConnectionManager.Group? = nil) {
+    _ connection: Connection, assignToGroup group: ConnectionManager.Group? = nil) {
       let newGroup = (group ?? mainGroup)
 
       if _groupsByConnection[connection.uuid] == newGroup {
@@ -135,7 +136,7 @@ public final class ConnectionManager: NSObject {
 
   - Parameter connection: The connection to remove.
   */
-  public func untrackConnection(connection: Connection) {
+  public func untrackConnection(_ connection: Connection) {
     _groupsByConnection[connection.uuid]?.untrackConnection(connection)
     _groupsByConnection[connection.uuid] = nil
   }
@@ -151,7 +152,7 @@ public final class ConnectionManager: NSObject {
   `pair.target` connection is the closest compatible connection. Nil is returned if no suitable
   connection pair could be found.
   */
-  public func findBestConnectionForGroup(group: ConnectionManager.Group, maxRadius: CGFloat)
+  public func findBestConnectionForGroup(_ group: ConnectionManager.Group, maxRadius: CGFloat)
     -> ConnectionPair? {
       guard let block = group.ownerBlock else {
         return nil
@@ -185,7 +186,7 @@ public final class ConnectionManager: NSObject {
   coordinate system unit
   - Returns: A list of all nearby compatible connections.
   */
-  public func stationaryNeighboursForConnection(connection: Connection, maxRadius: CGFloat)
+  public func stationaryNeighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
     -> [Connection]
   {
     return _groups.filter({ $0.dragMode == false })
@@ -202,11 +203,11 @@ public final class ConnectionManager: NSObject {
   `BlocklyError`: Thrown with .ConnectionManagerError if (`group` == `mainGroup`) or if `group` is
   not empty.
   */
-  internal func deleteGroup(group: ConnectionManager.Group) throws {
+  internal func deleteGroup(_ group: ConnectionManager.Group) throws {
     if group == mainGroup {
-      throw BlocklyError(.ConnectionManagerError, "Cannot remove the mainGroup")
+      throw BlocklyError(.connectionManagerError, "Cannot remove the mainGroup")
     } else if !group.allConnections.isEmpty {
-      throw BlocklyError(.ConnectionManagerError, "Cannot delete non-empty group")
+      throw BlocklyError(.connectionManagerError, "Cannot delete non-empty group")
     }
 
     _groups.remove(group)
@@ -221,25 +222,26 @@ public final class ConnectionManager: NSObject {
   - Returns: The closest compatible connection and the connection group it was found in.
   */
   internal func closestConnection(
-    connection: Connection, maxRadius: CGFloat, ignoreGroup: ConnectionManager.Group?)
-    -> (Connection, ConnectionManager.Group)? {
-      var radius = maxRadius
-      var candidate: (Connection, ConnectionManager.Group)? = nil
+    _ connection: Connection, maxRadius: CGFloat, ignoreGroup: ConnectionManager.Group?)
+    -> (Connection, ConnectionManager.Group)?
+  {
+    var radius = maxRadius
+    var candidate: (Connection, ConnectionManager.Group)? = nil
 
-      for group in _groups {
-        if group == ignoreGroup {
-          continue
-        }
-
-        if let compatibleConnection = group.closestConnection(connection, maxRadius: radius,
-                                                              validator: _connectionValidator)
-        {
-          candidate = (compatibleConnection, group)
-          radius = connection.distanceFromConnection(compatibleConnection)
-        }
+    for group in _groups {
+      if group == ignoreGroup {
+        continue
       }
 
-      return candidate
+      if let compatibleConnection = group.closestConnection(connection, maxRadius: radius,
+                                                            validator: connectionValidator)
+      {
+        candidate = (compatibleConnection, group)
+        radius = connection.distanceFromConnection(compatibleConnection)
+      }
+    }
+
+    return candidate
   }
 }
 
@@ -253,15 +255,15 @@ extension ConnectionManager {
   public final class Group: NSObject, ConnectionPositionDelegate {
 
     // MARK: - Properties
-    private weak var ownerBlock: Block?
+    fileprivate weak var ownerBlock: Block?
 
-    private let _previousConnections = YSortedList()
-    private let _nextConnections = YSortedList()
-    private let _inputConnections = YSortedList()
-    private let _outputConnections = YSortedList()
+    fileprivate let _previousConnections = YSortedList()
+    fileprivate let _nextConnections = YSortedList()
+    fileprivate let _inputConnections = YSortedList()
+    fileprivate let _outputConnections = YSortedList()
 
-    private let _matchingLists: [YSortedList]
-    private let _oppositeLists: [YSortedList]
+    fileprivate let _matchingLists: [YSortedList]
+    fileprivate let _oppositeLists: [YSortedList]
 
     /// When the connection group's drag mode has been set to true, it's assumed that all
     /// connections are being moved together as a group. In this case, the group does not
@@ -276,7 +278,7 @@ extension ConnectionManager {
 
     // MARK: - Initializers
 
-    private init(ownerBlock: Block?) {
+    fileprivate init(ownerBlock: Block?) {
       self.ownerBlock = ownerBlock
 
       // NOTE: If updating this, also update Connection.OPPOSITE_TYPES array.
@@ -294,7 +296,7 @@ extension ConnectionManager {
 
     - Parameter connection: The connection to add.
     */
-    internal func trackConnection(connection: Connection) {
+    internal func trackConnection(_ connection: Connection) {
       addConnection(connection)
       connection.positionDelegate = self
     }
@@ -304,7 +306,7 @@ extension ConnectionManager {
 
     - Parameter connection: The connection to remove.
     */
-    internal func untrackConnection(connection: Connection) {
+    internal func untrackConnection(_ connection: Connection) {
       removeConnection(connection)
       if connection.positionDelegate === self {
         connection.positionDelegate = nil
@@ -319,7 +321,7 @@ extension ConnectionManager {
     - Parameter maxRadius: How far out to search for compatible connections.
     - Returns: A list of all nearby compatible connections.
     */
-    internal func neighboursForConnection(connection: Connection, maxRadius: CGFloat)
+    internal func neighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
       -> [Connection] {
         let compatibleList = _oppositeLists[connection.type.rawValue]
         return compatibleList.neighboursForConnection(connection, maxRadius: maxRadius)
@@ -333,7 +335,7 @@ extension ConnectionManager {
     - Parameter validator: The ConnectionValidator to evaluate connectability.
     - Returns: The closest compatible connection.
     */
-    internal func closestConnection(connection: Connection, maxRadius: CGFloat, validator:
+    internal func closestConnection(_ connection: Connection, maxRadius: CGFloat, validator:
                                     ConnectionValidator) -> Connection? {
       if connection.connected {
         // Don't offer to connect when already connected.
@@ -344,7 +346,7 @@ extension ConnectionManager {
                                                               validator: validator)
     }
 
-    internal func connectionsForType(type: Connection.ConnectionType) -> YSortedList {
+    internal func connectionsForType(_ type: Connection.ConnectionType) -> YSortedList {
       return _matchingLists[type.rawValue]
     }
 
@@ -353,7 +355,7 @@ extension ConnectionManager {
 
     - Parameter toGroup: The new group
     */
-    internal func transferConnectionsToGroup(toGroup: Group) {
+    internal func transferConnectionsToGroup(_ toGroup: Group) {
       for i in 0 ..< _matchingLists.count {
         let fromConnectionList = _matchingLists[i]
         let toConnectionList = toGroup._matchingLists[i]
@@ -376,7 +378,7 @@ extension ConnectionManager {
 
     - Parameter connection: The connection to add.
     */
-    private func addConnection(connection: Connection) {
+    fileprivate func addConnection(_ connection: Connection) {
       _matchingLists[connection.type.rawValue].addConnection(connection)
     }
 
@@ -385,13 +387,13 @@ extension ConnectionManager {
 
     - Parameter connection: The connection to remove.
     */
-    private func removeConnection(connection: Connection) {
+    fileprivate func removeConnection(_ connection: Connection) {
       _matchingLists[connection.type.rawValue].removeConnection(connection)
     }
 
     // MARK: - ConnectionPositionDelegate
 
-    public func willChangePositionForConnection(connection: Connection) {
+    public func willChangePositionForConnection(_ connection: Connection) {
       if dragMode {
         return
       }
@@ -400,7 +402,7 @@ extension ConnectionManager {
       removeConnection(connection)
     }
 
-    public func didChangePositionForConnection(connection: Connection) {
+    public func didChangePositionForConnection(_ connection: Connection) {
       if dragMode {
         return
       }
@@ -421,7 +423,7 @@ extension ConnectionManager {
   internal final class YSortedList {
     // MARK: - Properties
 
-    private var _connections = [Connection]()
+    fileprivate var _connections = [Connection]()
 
     internal subscript(index: Int) -> Connection {
       get {
@@ -443,8 +445,8 @@ extension ConnectionManager {
 
     - Parameter connection: The connection to insert.
     */
-    internal func addConnection(connection: Connection) {
-      _connections.insert(connection, atIndex: findPositionForConnection(connection))
+    internal func addConnection(_ connection: Connection) {
+      _connections.insert(connection, at: findPositionForConnection(connection))
     }
 
     /**
@@ -452,9 +454,9 @@ extension ConnectionManager {
 
     -Parameter connection: The connection to remove.
     */
-    internal func removeConnection(connection: Connection) {
+    internal func removeConnection(_ connection: Connection) {
       if let removalIndex = findConnection(connection) {
-        _connections.removeAtIndex(removalIndex)
+        _connections.remove(at: removalIndex)
       }
     }
 
@@ -462,7 +464,7 @@ extension ConnectionManager {
       _connections.removeAll()
     }
 
-    internal func isInYRangeForIndex(index: Int, _ baseY: CGFloat, _ maxRadius: CGFloat) -> Bool {
+    internal func isInYRangeForIndex(_ index: Int, _ baseY: CGFloat, _ maxRadius: CGFloat) -> Bool {
       let curY = _connections[index].position.y
       return (abs(curY - baseY) <= maxRadius)
     }
@@ -475,7 +477,7 @@ extension ConnectionManager {
     - Parameter connection: The connection to find.
     - Returns: The index of the connection, or nil if the connection was not found.
     */
-    internal func findConnection(connection: Connection) -> Int? {
+    internal func findConnection(_ connection: Connection) -> Int? {
       if _connections.isEmpty {
         return nil
       }
@@ -516,7 +518,7 @@ extension ConnectionManager {
     - Parameter connection: The connection to insert.
     - Returns: The candidate index.
     */
-    internal func findPositionForConnection(connection: Connection) -> Int {
+    internal func findPositionForConnection(_ connection: Connection) -> Int {
       if _connections.isEmpty {
         return 0
       }
@@ -540,7 +542,7 @@ extension ConnectionManager {
       return pointerMin
     }
 
-    internal func searchForClosestValidConnectionTo(connection: Connection, maxRadius: CGFloat,
+    internal func searchForClosestValidConnectionTo(_ connection: Connection, maxRadius: CGFloat,
                                                     validator: ConnectionValidator)
       -> Connection? {
         // Don't bother.
@@ -562,7 +564,7 @@ extension ConnectionManager {
         while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
           let distance = connection.distanceFromConnection(temp)
-          if distance < bestRadius && validator.canConnect(connection, toConnection: temp) {
+          if distance <= bestRadius && validator.canConnect(connection, toConnection: temp) {
             bestConnection = temp
             bestRadius = temp.distanceFromConnection(connection)
           }
@@ -574,7 +576,7 @@ extension ConnectionManager {
           isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
             let distance = connection.distanceFromConnection(temp)
-            if distance < bestRadius && validator.canConnect(connection, toConnection: temp) {
+            if distance <= bestRadius && validator.canConnect(connection, toConnection: temp) {
               bestConnection = temp
               bestRadius = temp.distanceFromConnection(connection)
             }
@@ -583,7 +585,7 @@ extension ConnectionManager {
         return bestConnection
     }
 
-    internal func neighboursForConnection(connection: Connection, maxRadius: CGFloat)
+    internal func neighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
       -> [Connection] {
         var neighbours = [Connection]()
         // Don't bother.
@@ -637,11 +639,11 @@ extension ConnectionManager {
         return neighbours
     }
 
-    internal func contains(connection: Connection) -> Bool {
+    internal func contains(_ connection: Connection) -> Bool {
       return findConnection(connection) != nil
     }
 
-    internal func transferConnectionsToList(toList: YSortedList) {
+    internal func transferConnectionsToList(_ toList: YSortedList) {
       // Transfer connections using merge sort
       var insertionIndex = 0
 
@@ -653,7 +655,7 @@ extension ConnectionManager {
         }
 
         // Insert the connection and increment the insertion index
-        toList._connections.insert(connection, atIndex: insertionIndex)
+        toList._connections.insert(connection, at: insertionIndex)
         insertionIndex += 1
       }
 

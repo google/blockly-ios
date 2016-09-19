@@ -38,16 +38,16 @@ class InputJSONTest: XCTestCase {
       "name": "input value",
       "align": "CENTRE",
       "check": ["String", "Boolean"]
-    ]
+    ] as [String : Any]
     guard let builder = Input.builderFromJSON(json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
 
     let input = builder.build()
-    XCTAssertEqual(Input.InputType.Value, input.type)
+    XCTAssertEqual(Input.InputType.value, input.type)
     XCTAssertEqual("input value", input.name)
-    XCTAssertEqual(Input.Alignment.Center, input.alignment)
+    XCTAssertEqual(Input.Alignment.center, input.alignment)
     XCTAssertNotNil(input.connection)
     XCTAssertNotNil(input.connection!.typeChecks)
     XCTAssertEqual(2, input.connection!.typeChecks!.count)
@@ -70,9 +70,9 @@ class InputJSONTest: XCTestCase {
     }
 
     let input = builder.build()
-    XCTAssertEqual(Input.InputType.Statement, input.type)
+    XCTAssertEqual(Input.InputType.statement, input.type)
     XCTAssertEqual("input statement", input.name)
-    XCTAssertEqual(Input.Alignment.Left, input.alignment)
+    XCTAssertEqual(Input.Alignment.left, input.alignment)
     XCTAssertNotNil(input.connection)
     XCTAssertNotNil(input.connection!.typeChecks)
     XCTAssertEqual(1, input.connection!.typeChecks!.count)
@@ -93,7 +93,7 @@ class InputJSONTest: XCTestCase {
     }
 
     let input = builder.build()
-    XCTAssertEqual(Input.InputType.Dummy, input.type)
+    XCTAssertEqual(Input.InputType.dummy, input.type)
     XCTAssertEqual("input dummy", input.name)
     XCTAssertNil(input.connection)
   }

@@ -19,23 +19,23 @@ import Foundation
  Class for a `FieldVariable`-based `Layout`.
  */
 @objc(BKYFieldVariableLayout)
-public class FieldVariableLayout: FieldLayout {
+open class FieldVariableLayout: FieldLayout {
 
   public typealias Option = (displayName: String, value: String)
 
   // MARK: - Properties
 
   /// The `FieldVariable` that backs this layout
-  public let fieldVariable: FieldVariable
+  open let fieldVariable: FieldVariable
 
   /// The list of all variable options that should be presented when rendering this layout
-  public var variables: [Option] {
-    let sortedVariableNames = fieldVariable.nameManager?.names.sort() ?? [fieldVariable.variable]
+  open var variables: [Option] {
+    let sortedVariableNames = fieldVariable.nameManager?.names.sorted() ?? [fieldVariable.variable]
     return sortedVariableNames.map { (displayName: $0, value: $0) }
   }
 
   /// The currently selected variable
-  public var variable: String {
+  open var variable: String {
     return fieldVariable.variable
   }
 
@@ -53,7 +53,7 @@ public class FieldVariableLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -66,7 +66,7 @@ public class FieldVariableLayout: FieldLayout {
 
    - Parameter variable: The value used to update `self.fieldVariable.variable`.
    */
-  public func changeToVariable(variable: String) {
+  open func changeToVariable(_ variable: String) {
     // Setting to a new variable automatically fires a listener to update the layout
     fieldVariable.changeToVariable(variable)
   }

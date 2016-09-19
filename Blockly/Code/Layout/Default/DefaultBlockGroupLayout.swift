@@ -22,7 +22,7 @@ import Foundation
 public final class DefaultBlockGroupLayout: BlockGroupLayout {
   // MARK: - Super
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  public override func performLayout(includeChildren: Bool) {
     var yOffset: CGFloat = 0
     var size = WorkspaceSizeZero
 

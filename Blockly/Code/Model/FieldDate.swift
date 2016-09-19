@@ -21,11 +21,11 @@ An input field for picking a date.
 @objc(BKYFieldDate)
 public final class FieldDate: Field {
   /// The date format to use for serialization purposes
-  private static let DATE_FORMAT = "yyyy-MM-dd"
+  fileprivate static let DATE_FORMAT = "yyyy-MM-dd"
 
   // MARK: - Properties
 
-  public var date: NSDate {
+  public var date: Date {
     didSet {
       if self.editable {
         // Normalize the new date
@@ -43,7 +43,7 @@ public final class FieldDate: Field {
 
   // MARK: - Initializers
 
-  public init(name: String, date: NSDate) {
+  public init(name: String, date: Date) {
     self.date = FieldDate.normalizeDate(date)
     super.init(name: name)
   }
@@ -58,7 +58,7 @@ public final class FieldDate: Field {
   public convenience init(name: String, stringDate: String) {
     self.init(
       name: name,
-      date: FieldDate.dateFromString(stringDate) ?? NSDate())
+      date: FieldDate.dateFromString(stringDate) ?? Date())
   }
 
   // MARK: - Super
@@ -67,11 +67,11 @@ public final class FieldDate: Field {
     return FieldDate(name: name, date: date)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     if let date = FieldDate.dateFromString(text) {
       self.date = date
     } else {
-      throw BlocklyError(.XMLParsing,
+      throw BlocklyError(.xmlParsing,
         "Could not parse '\(text)' into a date. The format of the date must be 'yyyy-MM-dd'.")
     }
   }
@@ -88,7 +88,7 @@ public final class FieldDate: Field {
   - Parameter stringDate: String of the format "yyyy-MM-dd". If the string could not be parsed into
   a valid date, self.date is not changed.
   */
-  public func setDateFromString(stringDate: String) {
+  public func setDateFromString(_ stringDate: String) {
     if let date = FieldDate.dateFromString(stringDate) {
       self.date = date
     }
@@ -99,38 +99,38 @@ public final class FieldDate: Field {
   /**
   Parses a string of the format "yyyy-MM-dd".
   */
-  internal class func dateFromString(string: String) -> NSDate? {
+  internal class func dateFromString(_ string: String) -> Date? {
     if (string.characters.count != 10) {
       return nil
     }
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.timeZone = NSTimeZone.localTimeZone()
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.autoupdatingCurrent
     dateFormatter.dateFormat = FieldDate.DATE_FORMAT
-    return dateFormatter.dateFromString(string)
+    return dateFormatter.date(from: string)
   }
 
   /**
    Returns a string representation of a date in the format "yyyy-MM-dd".
    */
-  internal class func stringFromDate(date: NSDate) -> String {
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.timeZone = NSTimeZone.localTimeZone()
+  internal class func stringFromDate(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.autoupdatingCurrent
     dateFormatter.dateFormat = FieldDate.DATE_FORMAT
-    return dateFormatter.stringFromDate(date)
+    return dateFormatter.string(from: date)
   }
 
   /**
   Normalizes a given date by setting it to 00:00:00:000 of the current timezone
   (NSTimeZone.localTimeZone).
   */
-  internal class func normalizeDate(date: NSDate) -> NSDate {
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    let components = calendar.components([.Year, .Month, .Day], fromDate: date)
+  internal class func normalizeDate(_ date: Date) -> Date {
+    let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    let components = (calendar as NSCalendar).components([.year, .month, .day], from: date)
 
-    let localCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    localCalendar.timeZone = NSTimeZone.localTimeZone()
+    var localCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    localCalendar.timeZone = TimeZone.autoupdatingCurrent
 
-    if let newDate = localCalendar.dateFromComponents(components) {
+    if let newDate = localCalendar.date(from: components) {
       return newDate
     } else {
       return date

@@ -21,7 +21,7 @@ import Foundation
  A subclass of `LayoutEngine` that adds properties specific to the default layout implementation.
  */
 @objc(BKYDefaultLayoutEngine)
-public class DefaultLayoutEngine: LayoutEngine {
+public final class DefaultLayoutEngine: LayoutEngine {
   // MARK: - Initializers
   public override init(config: LayoutConfig = DefaultLayoutConfig(), rtl: Bool? = nil,
                        minimumScale: CGFloat = 0.5, maximumScale: CGFloat = 2.0)

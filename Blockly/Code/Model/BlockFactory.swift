@@ -40,7 +40,7 @@ public class BlockFactory : NSObject {
    - Throws:
    `BlocklyError`: Occurs if any of the blocks are invalid.
    */
-  public init(jsonPath: String, bundle: NSBundle? = nil) throws {
+  public init(jsonPath: String, bundle: Bundle? = nil) throws {
     super.init()
 
     try loadFromJSONPaths([jsonPath], bundle: bundle)
@@ -54,7 +54,7 @@ public class BlockFactory : NSObject {
    - Throws:
    `BlocklyError`: Occurs if any of the blocks are invalid.
    */
-  public init(jsonPaths: [String], bundle: NSBundle? = nil) throws {
+  public init(jsonPaths: [String], bundle: Bundle? = nil) throws {
     super.init()
 
     try loadFromJSONPaths(jsonPaths, bundle: bundle)
@@ -66,19 +66,19 @@ public class BlockFactory : NSObject {
    - Parameter jsonPaths: List of paths to files containing blocks in JSON.
    - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
    */
-  public func loadFromJSONPaths(jsonPaths: [String], bundle: NSBundle? = nil) throws {
-    let aBundle = (bundle ?? NSBundle.mainBundle())
+  public func loadFromJSONPaths(_ jsonPaths: [String], bundle: Bundle? = nil) throws {
+    let aBundle = (bundle ?? Bundle.main)
 
     for jsonPath in jsonPaths {
-      guard let path = aBundle.pathForResource(jsonPath, ofType: nil) else {
-        throw BlocklyError(.FileNotFound, "Could not find \"\(jsonPath)\" in bundle [\(aBundle)]")
+      guard let path = aBundle.path(forResource: jsonPath, ofType: nil) else {
+        throw BlocklyError(.fileNotFound, "Could not find \"\(jsonPath)\" in bundle [\(aBundle)]")
       }
-      let jsonString = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+      let jsonString = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
       let json = try JSONHelper.JSONArrayFromString(jsonString)
       for blockJson in json {
-        let blockBuilder = try Block.builderFromJSON(blockJson as! [String : AnyObject])
+        let blockBuilder = try Block.builderFromJSON(blockJson as! [String : Any])
         // Ensure the builder is valid
-        try blockBuilder.build()
+        _ = try blockBuilder.build()
 
         // Save the block
         _blockBuilders[blockBuilder.name] = blockBuilder
@@ -87,24 +87,6 @@ public class BlockFactory : NSObject {
   }
 
   // MARK: - Public
-
-  /**
-   Creates a new instance of a block with the given name, adds it to a specific workspace, and
-   returns it.
-
-   - Parameter blockName: The name of the block to obtain.
-   - Parameter workspace: The workspace that should own the new block.
-   - Throws:
-   `BlocklyError`: Occurs if the block builder is missing any required pieces.
-   - Returns: A new block if the name is known, nil otherwise.
-   */
-  public func addBlock(blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
-    guard let block = try buildBlock(blockName) else {
-      return nil
-    }
-    try workspace.addBlockTree(block)
-    return block
-  }
 
   /**
    Creates a new instance of a block with the given name and returns it.
@@ -118,9 +100,29 @@ public class BlockFactory : NSObject {
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
    - Returns: A new block if the name is known, nil otherwise.
    */
-  public func buildBlock(blockName: String, uuid: String? = nil, shadow: Bool = false) throws
+  public func buildBlock(_ blockName: String, uuid: String? = nil, shadow: Bool = false) throws
     -> Block?
   {
     return try _blockBuilders[blockName]?.build(uuid: uuid, shadow: shadow)
+  }
+
+  // MARK: - Internal
+
+  /**
+   Creates a new instance of a block with the given name, adds it to a specific workspace, and
+   returns it.
+
+   - Parameter blockName: The name of the block to obtain.
+   - Parameter workspace: The workspace that should own the new block.
+   - Throws:
+   `BlocklyError`: Occurs if the block builder is missing any required pieces.
+   - Returns: A new block if the name is known, nil otherwise.
+   */
+  internal func addBlock(_ blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
+    guard let block = try buildBlock(blockName) else {
+      return nil
+    }
+    try workspace.addBlockTree(block)
+    return block
   }
 }

@@ -21,7 +21,7 @@ class ObjectPoolTest: XCTestCase {
   func testRecycler() {
     let pool = ObjectPool()
 
-    let cokeCans = [CokeCan](count: 5, repeatedValue: CokeCan())
+    let cokeCans = [CokeCan](repeating: CokeCan(), count: 5)
 
     // Recycle a bunch of cans
     for cokeCan in cokeCans {
@@ -31,18 +31,18 @@ class ObjectPoolTest: XCTestCase {
     // Check they were recycled
     for _ in 0 ..< cokeCans.count {
       let recycledCan = pool.objectForType(CokeCan.self)
-      XCTAssertEqual(true, recycledCan.recycled)
+      XCTAssertTrue(recycledCan.recycled)
     }
 
     // Get a new one, which should not have been recycled
     let freshOne = pool.objectForType(CokeCan.self)
-    XCTAssertEqual(false, freshOne.recycled)
+    XCTAssertFalse(freshOne.recycled)
   }
 
   func testPerformance() {
     let pool = ObjectPool()
 
-    measureBlock() {
+    measure() {
       let count = 10000
 
       for _ in 0 ..< count {
@@ -51,7 +51,7 @@ class ObjectPoolTest: XCTestCase {
       }
 
       for _ in 0 ..< count {
-        pool.recyclableObjectForType(CokeCan.self)
+        _ = pool.recyclableObjectForType(CokeCan.self)
       }
     }
   }

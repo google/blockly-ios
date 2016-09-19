@@ -30,24 +30,24 @@ public protocol FieldLayoutMeasurer {
   - Parameter scale: The current scale of the layout's `workspaceLayout`.
   - Returns: The amount of space needed, in UIView coordinates.
   */
-  static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize
+  static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize
 }
 
 /**
 Abstract class for a `Field`-based `Layout`.
 */
 @objc(BKYFieldLayout)
-public class FieldLayout: Layout {
+open class FieldLayout: Layout {
   // MARK: - Properties
 
   /// Object responsible for measuring the layout of this object.
-  public var measurer: FieldLayoutMeasurer.Type
+  open var measurer: FieldLayoutMeasurer.Type
 
   /// The target field to layout
   public final let field: Field
 
   /// Flag determining if user interaction should be enabled for the corresponding view
-  public var userInteractionEnabled: Bool {
+  open var userInteractionEnabled: Bool {
     return field.editable
   }
 
@@ -63,7 +63,7 @@ public class FieldLayout: Layout {
 
   // MARK: - Super
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  open override func performLayout(includeChildren: Bool) {
     // Measure the layout in the UIView coordinate system
     let layoutSize: CGSize = measurer.measureLayout(self, scale: self.engine.scale)
 
@@ -78,7 +78,7 @@ public class FieldLayout: Layout {
 // MARK: - FieldDelegate implementation
 
 extension FieldLayout: FieldDelegate {
-  public func didUpdateField(field: Field) {
+  public func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }

@@ -19,18 +19,18 @@ import Foundation
 Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
 */
 public typealias WorkspacePoint = CGPoint
-public var WorkspacePointZero: WorkspacePoint { return CGPointZero }
-public func WorkspacePointMake(x: CGFloat, _ y: CGFloat) -> WorkspacePoint {
-  return CGPointMake(x, y)
+public var WorkspacePointZero: WorkspacePoint { return CGPoint.zero }
+public func WorkspacePointMake(_ x: CGFloat, _ y: CGFloat) -> WorkspacePoint {
+  return CGPoint(x: x, y: y)
 }
 
 /**
 Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
 */
 public typealias WorkspaceSize = CGSize
-public var WorkspaceSizeZero: WorkspaceSize { return CGSizeZero }
-public func WorkspaceSizeMake(width: CGFloat, _ height: CGFloat) -> WorkspaceSize {
-  return CGSizeMake(width, height)
+public var WorkspaceSizeZero: WorkspaceSize { return CGSize.zero }
+public func WorkspaceSizeMake(_ width: CGFloat, _ height: CGFloat) -> WorkspaceSize {
+  return CGSize(width: width, height: height)
 }
 
 /**
@@ -38,9 +38,9 @@ Edge insets in the Workspace coordinate system (which is separate from the UIVie
 system).
 */
 public typealias WorkspaceEdgeInsets = UIEdgeInsets
-public var WorkspaceEdgeInsetsZero: WorkspaceEdgeInsets { return UIEdgeInsetsZero }
+public var WorkspaceEdgeInsetsZero: WorkspaceEdgeInsets { return UIEdgeInsets.zero }
 public func WorkspaceEdgeInsetsMake(
-  top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> WorkspaceEdgeInsets {
+  _ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> WorkspaceEdgeInsets {
   return UIEdgeInsetsMake(top, left, bottom, right)
 }
 
@@ -55,7 +55,7 @@ public protocol WorkspaceListener: class {
    - Parameter workspace: The workspace that added a block.
    - Parameter block: The block that was added.
   */
-  func workspace(workspace: Workspace, didAddBlock block: Block)
+  func workspace(_ workspace: Workspace, didAddBlock block: Block)
 
   /**
    Event that is called when a block will be removed from a workspace.
@@ -63,14 +63,14 @@ public protocol WorkspaceListener: class {
    - Parameter workspace: The workspace that will remove a block.
    - Parameter block: The block that will be removed.
    */
-  func workspace(workspace: Workspace, willRemoveBlock block: Block)
+  func workspace(_ workspace: Workspace, willRemoveBlock block: Block)
 }
 
 /**
 Data structure that contains `Block` instances.
 */
 @objc(BKYWorkspace)
-public class Workspace : NSObject {
+open class Workspace : NSObject {
   // MARK: - Properties
 
   /// The maximum number of blocks that this workspace may contain. If this value is set to `nil`,
@@ -88,7 +88,7 @@ public class Workspace : NSObject {
   }
 
   /// Dictionary mapping all `Block` instances in this workspace to their `uuid` value
-  public private(set) var allBlocks = [String: Block]()
+  public fileprivate(set) var allBlocks = [String: Block]()
 
   /// Flag indicating if this workspace is set to read-only
   public var readOnly: Bool = false {
@@ -141,7 +141,7 @@ public class Workspace : NSObject {
   /**
    Returns: A list of all blocks in the workspace whose `topLevel` property is true.
    */
-  public func topLevelBlocks() -> [Block] {
+  open func topLevelBlocks() -> [Block] {
     return allBlocks.values.filter({ $0.topLevel })
   }
 
@@ -154,7 +154,7 @@ public class Workspace : NSObject {
    block in the workspace or if adding the new set of blocks would exceed the maximum amount
    allowed.
    */
-  public func addBlockTree(rootBlock: Block) throws {
+  open func addBlockTree(_ rootBlock: Block) throws {
     var newBlocks = [Block]()
 
     // Gather list of all new blocks and perform state checks.
@@ -165,7 +165,7 @@ public class Workspace : NSObject {
           // The block is already in the workspace
           continue
         } else {
-          throw BlocklyError(.IllegalState,
+          throw BlocklyError(.illegalState,
             "Cannot add a block into the workspace with a uuid that is already being used by " +
             "another block")
         }
@@ -173,14 +173,14 @@ public class Workspace : NSObject {
 
       if block.shadow && block.topLevel {
         throw BlocklyError(
-          .IllegalState, "Shadow block cannot be added to the workspace as a top-level block.")
+          .illegalState, "Shadow block cannot be added to the workspace as a top-level block.")
       }
 
       newBlocks.append(block)
     }
 
-    if let maxBlocks = self.maxBlocks where (allBlocks.count + newBlocks.count) > maxBlocks {
-      throw BlocklyError(.WorkspaceExceedsCapacity,
+    if let maxBlocks = self.maxBlocks , (allBlocks.count + newBlocks.count) > maxBlocks {
+      throw BlocklyError(.workspaceExceedsCapacity,
         "Adding more blocks would exceed the maximum amount allowed (\(maxBlocks))")
     }
 
@@ -205,11 +205,11 @@ public class Workspace : NSObject {
    - Throws:
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
-  public func removeBlockTree(rootBlock: Block) throws {
+  open func removeBlockTree(_ rootBlock: Block) throws {
     if (rootBlock.previousConnection?.connected ?? false) ||
       (rootBlock.outputConnection?.connected ?? false)
     {
-      throw BlocklyError(.IllegalOperation,
+      throw BlocklyError(.illegalOperation,
         "The root block must be disconnected from its previous and/or output connections prior " +
         "to being removed from the workspace")
     }
@@ -240,7 +240,8 @@ public class Workspace : NSObject {
    - Throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
-  public func copyBlockTree(rootBlock: Block, editable: Bool) throws -> Block {
+  @discardableResult
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
     // Create a copy of the tree
     let copyResult = try rootBlock.deepCopy()
 
@@ -260,7 +261,7 @@ public class Workspace : NSObject {
   /**
   Returns if this block has been added to the workspace.
   */
-  public func containsBlock(block: Block) -> Bool {
+  open func containsBlock(_ block: Block) -> Bool {
     return (allBlocks[block.uuid] == block)
   }
 
@@ -274,7 +275,7 @@ public class Workspace : NSObject {
    - Parameter threshold: The maximum number of blocks that a block tree may contain before it is
    disabled.
    */
-  public func deactivateBlockTrees(forGroupsGreaterThan threshold: Int) {
+  open func deactivateBlockTrees(forGroupsGreaterThan threshold: Int) {
     for rootBlock in topLevelBlocks() {
       let blocks = rootBlock.allBlocksForTree()
       let deactivated = blocks.count > threshold
@@ -295,7 +296,7 @@ public class Workspace : NSObject {
    - Parameter nameManager: The `NameManager` to set
    - Parameter block: The `Block`
    */
-  private func addNameManager(nameManager: NameManager?, toBlock block: Block) {
+  private func addNameManager(_ nameManager: NameManager?, toBlock block: Block) {
     block.inputs.flatMap({ $0.fields }).forEach {
       if let fieldVariable = $0 as? FieldVariable {
         fieldVariable.nameManager = nameManager
@@ -308,7 +309,7 @@ public class Workspace : NSObject {
 
    - Parameter block: The `Block`
    */
-  private func removeNameManagerFromBlock(block: Block) {
+  private func removeNameManagerFromBlock(_ block: Block) {
     block.inputs.flatMap({ $0.fields }).forEach {
       if let fieldVariable = $0 as? FieldVariable {
         fieldVariable.nameManager = nil

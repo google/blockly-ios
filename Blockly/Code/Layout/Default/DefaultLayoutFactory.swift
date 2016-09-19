@@ -21,18 +21,18 @@ import Foundation
  A default implementation of `LayoutFactory`.
  */
 @objc(BKYDefaultLayoutFactory)
-public class DefaultLayoutFactory: NSObject {
+open class DefaultLayoutFactory: NSObject {
   /// MARK: - Type Aliases
 
   /// Closure for returning a `FieldLayout` from a given `Field` and `LayoutEngine`
   public typealias FieldLayoutCreator =
-    (field: Field, engine: LayoutEngine) throws -> FieldLayout
+    (_ field: Field, _ engine: LayoutEngine) throws -> FieldLayout
 
   // MARK: - Properties
 
   /// Dictionary that maps `Field` subclasses (using their class' `hash()` value) to their
   /// `FieldLayoutCreator`
-  private var _fieldLayoutCreators = [Int: FieldLayoutCreator]()
+  fileprivate var _fieldLayoutCreators = [Int: FieldLayoutCreator]()
 
   // MARK: - Initializers
 
@@ -101,7 +101,7 @@ public class DefaultLayoutFactory: NSObject {
     }
   }
 
-  // MARK: - Public
+  // MARK: - Open
 
   /**
    Registers the `FieldLayoutCreator` to use for a given field type, when a new `FieldLayout`
@@ -110,8 +110,8 @@ public class DefaultLayoutFactory: NSObject {
    - Parameter fieldType: The `Field.Type` that the creator should be mapped to.
    - Parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
    */
-  public func registerLayoutCreatorForFieldType(fieldType: Field.Type,
-    layoutCreator: FieldLayoutCreator)
+  open func registerLayoutCreatorForFieldType(_ fieldType: Field.Type,
+    layoutCreator: @escaping FieldLayoutCreator)
   {
     _fieldLayoutCreators[fieldType.hash()] = layoutCreator
   }
@@ -121,8 +121,8 @@ public class DefaultLayoutFactory: NSObject {
 
    - Parameter fieldType: The `Field.Type`
    */
-  public func unregisterLayoutCreatorForFieldType(fieldType: Field.Type) {
-    _fieldLayoutCreators.removeValueForKey(fieldType.hash())
+  open func unregisterLayoutCreatorForFieldType(_ fieldType: Field.Type) {
+    _fieldLayoutCreators.removeValue(forKey: fieldType.hash())
   }
 }
 
@@ -131,24 +131,24 @@ public class DefaultLayoutFactory: NSObject {
 extension DefaultLayoutFactory: LayoutFactory {
   // MARK: - Public
 
-  public func layoutForBlock(block: Block, engine: LayoutEngine) throws -> BlockLayout {
+  open func layoutForBlock(_ block: Block, engine: LayoutEngine) throws -> BlockLayout {
     return DefaultBlockLayout(block: block, engine: engine)
   }
 
-  public func layoutForBlockGroupLayout(engine engine: LayoutEngine) throws -> BlockGroupLayout {
+  open func layoutForBlockGroupLayout(engine: LayoutEngine) throws -> BlockGroupLayout {
     return DefaultBlockGroupLayout(engine: engine)
   }
 
-  public func layoutForInput(input: Input, engine: LayoutEngine) throws -> InputLayout {
+  open func layoutForInput(_ input: Input, engine: LayoutEngine) throws -> InputLayout {
     return try DefaultInputLayout(input: input, engine: engine, factory: self)
   }
 
-  public func layoutForField(field: Field, engine: LayoutEngine) throws -> FieldLayout {
-    let fieldTypeHash = field.dynamicType.hash()
+  open func layoutForField(_ field: Field, engine: LayoutEngine) throws -> FieldLayout {
+    let fieldTypeHash = type(of: field).hash()
     if let closure = _fieldLayoutCreators[fieldTypeHash] {
-      return try closure(field: field, engine: engine)
+      return try closure(field, engine)
     }
 
-    throw BlocklyError(.LayoutNotFound, "Could not find layout for \(field.dynamicType)")
+    throw BlocklyError(.layoutNotFound, "Could not find layout for \(type(of: field))")
   }
 }

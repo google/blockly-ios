@@ -19,15 +19,15 @@ import Foundation
  Class for a `FieldAngle`-based `Layout`.
  */
 @objc(BKYFieldAngleLayout)
-public class FieldAngleLayout: FieldLayout {
+open class FieldAngleLayout: FieldLayout {
 
   // MARK: - Properties
 
   /// The `FieldAngle` that backs this layout
-  public let fieldAngle: FieldAngle
+  open let fieldAngle: FieldAngle
 
   /// The text value that should be used when rendering this layout
-  public var textValue: String {
+  open var textValue: String {
     return String(fieldAngle.angle) + "°"
   }
 
@@ -43,7 +43,7 @@ public class FieldAngleLayout: FieldLayout {
   // MARK: - Super
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
-  public override func didUpdateField(field: Field) {
+  open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -57,7 +57,7 @@ public class FieldAngleLayout: FieldLayout {
    - Parameter text: A valid integer that will be used to update `self.fieldAngle`. If this value
    is not a valid integer, `self.fieldAngle` is not updated.
    */
-  public func updateAngle(fromText text: String) {
+  open func updateAngle(fromText text: String) {
     if let newAngle = Int(text) { // Only update it if it's a valid value
       // Setting to a new angle automatically fires a listener to update the layout
       fieldAngle.angle = newAngle

@@ -34,21 +34,21 @@ public final class Input : NSObject {
   @objc
   public enum BKYInputType: Int {
     /// Specifies the input is a value input.
-    case Value = 0,
+    case value = 0,
       /// Specifies the input is a statement input.
-      Statement,
+      statement,
       /// Specifies the input is a dummy input.
-      Dummy
+      dummy
 
     /// The string describing the type of this input.
     public var stringValue : String {
       return BKYInputType.stringMapping[self]!
     }
 
-    private static let stringMapping = [
-      Value: "input_value",
-      Statement: "input_statement",
-      Dummy: "input_dummy",
+    fileprivate static let stringMapping = [
+      value: "input_value",
+      statement: "input_statement",
+      dummy: "input_dummy",
     ]
 
     internal init?(string: String) {
@@ -66,21 +66,21 @@ public final class Input : NSObject {
   @objc
   public enum BKYInputAlignment: Int {
     /// Specifies the input is left-aligned
-    case Left = -1,
+    case left = -1,
       /// Specifies the input is center-aligned
-      Center = 0,
+      center = 0,
       /// Specifies the input is right-aligned
-      Right = 1
+      right = 1
 
     /// The string describing the alignment of this input.
     public var stringValue : String {
       return BKYInputAlignment.stringMapping[self]!
     }
 
-    private static let stringMapping = [
-      Left: "LEFT",
-      Center: "CENTRE",
-      Right: "RIGHT",
+    fileprivate static let stringMapping = [
+      left: "LEFT",
+      center: "CENTRE",
+      right: "RIGHT",
     ]
 
     internal init?(string: String) {
@@ -107,7 +107,7 @@ public final class Input : NSObject {
     }
   }
   /// The connection for this input, if required.
-  public private(set) var connection: Connection?
+  public fileprivate(set) var connection: Connection?
   /// The block that is connected to this input, if it exists.
   public var connectedBlock: Block? {
     return connection?.targetBlock
@@ -119,7 +119,7 @@ public final class Input : NSObject {
   /// `true` if the input is visible, `false` otherwise. Defaults to `true`.
   public var visible: Bool = true
   /// The alignment of the input
-  public var alignment: BKYInputAlignment = BKYInputAlignment.Left
+  public var alignment: BKYInputAlignment = BKYInputAlignment.left
 
   /// A delegate for listening to events on this input
   public weak var delegate: InputDelegate?
@@ -141,10 +141,10 @@ public final class Input : NSObject {
 
     super.init()
 
-    if (type == .Value) {
-      self.connection = Connection(type: .InputValue, sourceInput: self)
-    } else if (type == .Statement) {
-      self.connection = Connection(type: .NextStatement, sourceInput: self)
+    if (type == .value) {
+      self.connection = Connection(type: .inputValue, sourceInput: self)
+    } else if (type == .statement) {
+      self.connection = Connection(type: .nextStatement, sourceInput: self)
     }
 
     for field in fields {

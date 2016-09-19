@@ -19,7 +19,7 @@ import Foundation
 Helper class for doing layout calculatinos.
 */
 @objc(BKYLayoutHelper)
-public class LayoutHelper: NSObject {
+internal class LayoutHelper: NSObject {
 
   /**
   Ensure the given layout will fit within a given size, increasing the size if necessary.
@@ -29,9 +29,9 @@ public class LayoutHelper: NSObject {
   - Returns: A workspace size that now accommodates the layout.
   */
   internal static func sizeThatFitsLayout
-    (layout: Layout, fromInitialSize size: WorkspaceSize) -> WorkspaceSize {
-    return CGSizeMake(
-      max(size.width, layout.relativePosition.x + layout.totalSize.width),
-      max(size.height, layout.relativePosition.y + layout.totalSize.height))
+    (_ layout: Layout, fromInitialSize size: WorkspaceSize) -> WorkspaceSize {
+    return CGSize(
+      width: max(size.width, layout.relativePosition.x + layout.totalSize.width),
+      height: max(size.height, layout.relativePosition.y + layout.totalSize.height))
   }
 }

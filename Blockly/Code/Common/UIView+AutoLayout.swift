@@ -27,7 +27,7 @@ extension UIView {
   `translatesAutoresizingMaskIntoConstraints` property is set to this value. Defaults to false.
   */
   internal func bky_addSubviews(
-    subviews: [UIView], translatesAutoresizingMaskIntoConstraints: Bool = false)
+    _ subviews: [UIView], translatesAutoresizingMaskIntoConstraints: Bool = false)
   {
     for subview in subviews {
       subview.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints
@@ -40,7 +40,7 @@ extension UIView {
 
    - Parameter constraints: Array of objects of type `NSLayoutConstraint` or `[NSLayoutConstraint]`.
    */
-  internal func bky_addConstraints(constraints: [AnyObject]) {
+  internal func bky_addConstraints(_ constraints: [AnyObject]) {
     for object in constraints {
       if let layoutConstraint = object as? NSLayoutConstraint {
         addConstraint(layoutConstraint)
@@ -48,7 +48,7 @@ extension UIView {
         addConstraints(layoutConstraints)
       } else {
         bky_assertionFailure("Unsupported object type specified inside the `constraints` array: " +
-          "\(object.dynamicType). Values inside this array must be of type `NSLayoutConstraint` " +
+          "\(type(of: object)). Values inside this array must be of type `NSLayoutConstraint` " +
           "or `[NSLayoutConstraint]`")
       }
     }
@@ -71,10 +71,10 @@ extension UIView {
    NSLayoutConstraint.constraintsWithVisualFormat(_options:metrics:views:).
    */
   internal func bky_addVisualFormatConstraints(
-    visualFormatConstraints: [String], metrics: [String: AnyObject]?, views: [String: AnyObject])
+    _ visualFormatConstraints: [String], metrics: [String: Any]?, views: [String: Any])
   {
     for visualFormat in visualFormatConstraints {
-      let constraints = NSLayoutConstraint.constraintsWithVisualFormat(visualFormat,
+      let constraints = NSLayoutConstraint.constraints(withVisualFormat: visualFormat,
         options: [],
         metrics: metrics,
         views: views)
@@ -91,12 +91,13 @@ extension UIView {
    `UILayoutPriorityRequired`.
    - Returns: The constraint that was added.
    */
+  @discardableResult
   internal func bky_addWidthConstraint(
-    width: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+    _ width: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
   {
     let constraint =
-      NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil,
-                         attribute: .NotAnAttribute, multiplier: 1, constant: width)
+      NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil,
+                         attribute: .notAnAttribute, multiplier: 1, constant: width)
     constraint.priority = priority
     addConstraint(constraint)
     return constraint
@@ -111,12 +112,13 @@ extension UIView {
    `UILayoutPriorityRequired`.
    - Returns: The constraint that was added.
    */
+  @discardableResult
   internal func bky_addHeightConstraint(
-    height: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+    _ height: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
   {
     let constraint =
-      NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil,
-                         attribute: .NotAnAttribute, multiplier: 1, constant: height)
+      NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil,
+                         attribute: .notAnAttribute, multiplier: 1, constant: height)
     constraint.priority = priority
     addConstraint(constraint)
     return constraint
@@ -146,8 +148,8 @@ extension UIView {
    `nil`.
    */
   internal func bky_updateConstraints(
-    animated animated: Bool, duration: NSTimeInterval = 0.3, delay: NSTimeInterval = 0.0,
-    options: UIViewAnimationOptions = .CurveEaseInOut, update: () -> Void,
+    animated: Bool, duration: TimeInterval = 0.3, delay: TimeInterval = 0.0,
+    options: UIViewAnimationOptions = UIViewAnimationOptions(), update: @escaping () -> Void,
     completion: ((Bool) -> Void)? = nil) {
 
     let updateView = {
@@ -160,7 +162,7 @@ extension UIView {
       // Force pending layout changes to complete
       self.superview?.layoutIfNeeded()
 
-      UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
+      UIView.animate(withDuration: duration, delay: delay, options: options, animations: {
         updateView()
         }, completion: completion)
     } else {

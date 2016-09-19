@@ -19,18 +19,18 @@ import Foundation
  Abstract view for rendering a `BlockLayout`.
  */
 @objc(BKYBlockView)
-public class BlockView: LayoutView {
+open class BlockView: LayoutView {
   // MARK: - Properties
 
   /// Layout object to render
-  public var blockLayout: BlockLayout? {
+  open var blockLayout: BlockLayout? {
     return layout as? BlockLayout
   }
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -39,10 +39,10 @@ public class BlockView: LayoutView {
 
   // MARK: - Super
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRectZero
+    self.frame = CGRect.zero
 
     for subview in subviews {
       subview.removeFromSuperview()

@@ -19,13 +19,13 @@ import Foundation
  Layout for displaying a list of blocks in Workspace in a flow layout (in a manner similar to
  UICollectionViewFlowLayout).
  */
-public class WorkspaceFlowLayout: WorkspaceLayout {
+public final class WorkspaceFlowLayout: WorkspaceLayout {
 
   // MARK: -  LayoutDirection Enum
 
   /// Defines how consecutive block trees should be laid out relative to each other
   public enum LayoutDirection {
-    case Horizontal, Vertical
+    case horizontal, vertical
   }
 
   // MARK: - Properties
@@ -47,7 +47,7 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
   public var maximumLineBlockSize: CGFloat = 0
 
   /// The direction in which this layout should place consecutive blocks next to each other
-  public var layoutDirection = LayoutDirection.Vertical
+  public var layoutDirection = LayoutDirection.vertical
 
   // MARK: - Initializers
 
@@ -58,7 +58,7 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
     super.init(workspace: workspace, engine: engine)
   }
 
-  public override func performLayout(includeChildren includeChildren: Bool) {
+  public override func performLayout(includeChildren: Bool) {
     let xSeparatorSpace =
       self.config.workspaceUnitFor(LayoutConfig.WorkspaceFlowXSeparatorSpace)
     let ySeparatorSpace =
@@ -85,8 +85,8 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
     for item in workspaceFlow.items {
       guard let rootBlock = item.rootBlock else {
         // This must be a gap. Simply update the current xPosition or yPosition
-        xPosition += (self.layoutDirection == .Horizontal ? (item.gap ?? 0) : 0)
-        yPosition += (self.layoutDirection == .Vertical ? (item.gap ?? 0) : 0)
+        xPosition += (self.layoutDirection == .horizontal ? (item.gap ?? 0) : 0)
+        yPosition += (self.layoutDirection == .vertical ? (item.gap ?? 0) : 0)
         continue
       }
       guard let blockGroupLayout = rootBlock.layout?.parentBlockGroupLayout else {
@@ -94,7 +94,7 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
         continue
       }
 
-      if self.layoutDirection == .Vertical {
+      if self.layoutDirection == .vertical {
         // Account for aligning block groups with output tabs
         let outputTabSpacer = largestLeadingEdgeXOffset - blockGroupLayout.largestLeadingEdgeXOffset
 
@@ -113,7 +113,7 @@ public class WorkspaceFlowLayout: WorkspaceLayout {
         blockGroupLayout.relativePosition = WorkspacePointMake(xPosition, yPosition)
 
         yPosition += blockGroupLayout.totalSize.height
-      } else if self.layoutDirection == .Horizontal {
+      } else if self.layoutDirection == .horizontal {
         blockGroupLayout.edgeInsets =
           WorkspaceEdgeInsetsMake(0, 0, ySeparatorSpace, xSeparatorSpace)
 

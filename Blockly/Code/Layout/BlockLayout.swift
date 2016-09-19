@@ -21,7 +21,7 @@ import Foundation
  Abstract class for storing information on how to render and position a `Block` on-screen.
  */
 @objc(BKYBlockLayout)
-public class BlockLayout: Layout {
+open class BlockLayout: Layout {
   // MARK: - Static Properties
 
   /// Flag that should be used when `self.highlighted` has been updated
@@ -39,10 +39,10 @@ public class BlockLayout: Layout {
   public final let block: Block
 
   /// The corresponding layout objects for `self.block.inputs[]`
-  public private(set) var inputLayouts = [InputLayout]()
+  open fileprivate(set) var inputLayouts = [InputLayout]()
 
   /// A list of all `FieldLayout` objects belonging under this `BlockLayout`.
-  public var fieldLayouts: [FieldLayout] {
+  open var fieldLayouts: [FieldLayout] {
     var fieldLayouts = [FieldLayout]()
     for inputLayout in inputLayouts {
       fieldLayouts += inputLayout.fieldLayouts
@@ -51,12 +51,12 @@ public class BlockLayout: Layout {
   }
 
   /// The parent block group layout
-  public var parentBlockGroupLayout: BlockGroupLayout? {
+  open var parentBlockGroupLayout: BlockGroupLayout? {
     return parentLayout as? BlockGroupLayout
   }
 
   /// The top most block group layout for this block
-  public var rootBlockGroupLayout: BlockGroupLayout? {
+  open var rootBlockGroupLayout: BlockGroupLayout? {
     var root = parentBlockGroupLayout
     var currentLayout: Layout = self
 
@@ -72,16 +72,16 @@ public class BlockLayout: Layout {
 
   /// The first draggable `BlockLayout` up the layout tree. Returns `nil` if there is
   /// no `BlockLayout` that can be dragged.
-  public var draggableBlockLayout: BlockLayout? {
+  open var draggableBlockLayout: BlockLayout? {
     var layout: Layout? = self
 
     while let currentLayout = layout {
       if let blockLayout = currentLayout as? BlockLayout
-        where blockLayout.block.draggable
+        , blockLayout.block.draggable
       {
         return blockLayout
       } else if let blockGroupLayout = layout as? BlockGroupLayout
-        where blockGroupLayout.blockLayouts.count > 0 &&
+        , blockGroupLayout.blockLayouts.count > 0 &&
          blockGroupLayout.blockLayouts[0].block.draggable
       {
         return blockGroupLayout.blockLayouts[0]
@@ -94,7 +94,7 @@ public class BlockLayout: Layout {
   }
 
   /// Flag if this block should be highlighted
-  public var highlighted: Bool = false {
+  open var highlighted: Bool = false {
     didSet {
       if highlighted == oldValue {
         return
@@ -104,7 +104,7 @@ public class BlockLayout: Layout {
   }
 
   /// Flag indicating if this block should be visible
-  public var visible: Bool = true {
+  open var visible: Bool = true {
     didSet {
       if visible == oldValue {
         return
@@ -114,13 +114,13 @@ public class BlockLayout: Layout {
   }
 
   /// Flag determining if user interaction should be enabled for the corresponding view
-  public var userInteractionEnabled: Bool {
+  open var userInteractionEnabled: Bool {
     return !block.disabled
   }
 
   /// The position of the block's leading edge X offset, specified as a Workspace coordinate
   /// system unit.
-  public var leadingEdgeXOffset: CGFloat {
+  open var leadingEdgeXOffset: CGFloat {
     return 0
   }
 
@@ -135,14 +135,14 @@ public class BlockLayout: Layout {
     }
   }
 
-  // MARK: - Public
+  // MARK: - Open
 
   /**
   Appends an inputLayout to `self.inputLayouts` and sets its `parentLayout` to this instance.
 
   - Parameter inputLayout: The `InputLayout` to append.
   */
-  public func appendInputLayout(inputLayout: InputLayout) {
+  open func appendInputLayout(_ inputLayout: InputLayout) {
     inputLayouts.append(inputLayout)
     adoptChildLayout(inputLayout)
   }
@@ -153,8 +153,9 @@ public class BlockLayout: Layout {
   - Parameter index: The index to remove from `inputLayouts`.
   - Returns: The `BlockLayout` that was removed.
   */
-  public func removeInputLayoutAtIndex(index: Int) -> InputLayout {
-    let inputLayout = inputLayouts.removeAtIndex(index)
+  @discardableResult
+  open func removeInputLayoutAtIndex(_ index: Int) -> InputLayout {
+    let inputLayout = inputLayouts.remove(at: index)
     removeChildLayout(inputLayout)
     return inputLayout
   }
@@ -164,7 +165,7 @@ public class BlockLayout: Layout {
 
   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
-  public func reset(updateLayout updateLayout: Bool = true) {
+  open func reset(updateLayout: Bool = true) {
     while inputLayouts.count > 0 {
       removeInputLayoutAtIndex(0)
     }
@@ -184,7 +185,7 @@ public class BlockLayout: Layout {
   - Returns: If the given input layout is found at `inputLayouts[i]` where `i > 0`,
   `inputLayouts[i - 1]` is returned. Otherwise, nil is returned.
   */
-  internal func inputLayoutBeforeLayout(layout: InputLayout) -> InputLayout? {
+  internal func inputLayoutBeforeLayout(_ layout: InputLayout) -> InputLayout? {
     for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
         return i > 0 ? inputLayouts[i - 1] : nil
@@ -201,7 +202,7 @@ public class BlockLayout: Layout {
   - Returns: If the given input layout is found at `inputLayouts[i]` where
   `i < inputLayouts.count - 1`, `inputLayouts[i + 1]` is returned. Otherwise, nil is returned.
   */
-  internal func inputLayoutAfterLayout(layout: InputLayout) -> InputLayout? {
+  internal func inputLayoutAfterLayout(_ layout: InputLayout) -> InputLayout? {
     for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
         return i < (inputLayouts.count - 1) ? inputLayouts[i + 1] : nil
@@ -214,7 +215,7 @@ public class BlockLayout: Layout {
 // MARK: - ConnectionHighlightDelegate
 
 extension BlockLayout: ConnectionHighlightDelegate {
-  public func didChangeHighlightForConnection(connection: Connection) {
+  public func didChangeHighlightForConnection(_ connection: Connection) {
     sendChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
   }
 }
@@ -222,7 +223,7 @@ extension BlockLayout: ConnectionHighlightDelegate {
 // MARK: - BlockDelegate
 
 extension BlockLayout: BlockDelegate {
-  public func didUpdateBlock(block: Block) {
+  public func didUpdateBlock(_ block: Block) {
     // Refresh the block since it's been updated
     sendChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
   }

@@ -26,7 +26,7 @@ public protocol NameManagerListener {
    - Parameter nameManager: The `NameManager`
    - Parameter name: The name that was added
    */
-  optional func nameManager(nameManager: NameManager, didAddName name: String)
+  @objc optional func nameManager(_ nameManager: NameManager, didAddName name: String)
 
   /**
    Event that is fired when a `NameManager` instance has renamed a name to a different name.
@@ -35,8 +35,8 @@ public protocol NameManagerListener {
    - Parameter oldName: The old name
    - Parameter newName: The new name
    */
-  optional func nameManager(
-    nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+  @objc optional func nameManager(
+    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
 
   /**
    Event that is fired during a request to remove a name from a `NameManager` instance. If any
@@ -46,7 +46,7 @@ public protocol NameManagerListener {
    - Parameter name: The name to potentially remove
    - Returns: `true` if the name should be removed, `false` otherwise.
    */
-  optional func nameManager(nameManager: NameManager, shouldRemoveName name: String) -> Bool
+  @objc optional func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool
 
   /**
    Event that is fired when a `NameManager` instance has removed a name from its list.
@@ -54,7 +54,7 @@ public protocol NameManagerListener {
    - Parameter nameManager: The `NameManager`
    - Parameter name: The name that was removed
    */
-  optional func nameManager(nameManager: NameManager, didRemoveName name: String)
+  @objc optional func nameManager(_ nameManager: NameManager, didRemoveName name: String)
 }
 
 /**
@@ -128,7 +128,7 @@ public final class NameManager: NSObject {
 
    - Parameter name: The name to add.
    */
-  public func addName(name: String) {
+  public func addName(_ name: String) {
     let nameKey = keyForName(name)
 
     if let oldDisplayName = _names[nameKey] {
@@ -159,7 +159,8 @@ public final class NameManager: NSObject {
    - Returns: `true` if `oldName` existed in the list and was renamed to `newName`. `false`
    otherwise.
    */
-  public func renameName(oldName: String, toName newName: String) -> Bool {
+  @discardableResult
+  public func renameName(_ oldName: String, toName newName: String) -> Bool {
     let oldNameKey = keyForName(oldName)
     let newNameKey = keyForName(newName)
 
@@ -192,7 +193,8 @@ public final class NameManager: NSObject {
    - Parameter name: The name to remove.
    - Returns: `true` if the name was found and removed. `false` otherwise.
    */
-  public func requestRemovalForName(name: String) -> Bool {
+  @discardableResult
+  public func requestRemovalForName(_ name: String) -> Bool {
     let nameKey = keyForName(name)
 
     if let displayName = _names[nameKey] {
@@ -229,7 +231,7 @@ public final class NameManager: NSObject {
    - Parameter name: The `String` to look up.
    - Returns: `true` if a `name`'s has been added. `false` otherwise.
    */
-  public func containsName(name: String) -> Bool{
+  public func containsName(_ name: String) -> Bool{
     return _names[keyForName(name)] != nil
   }
 
@@ -240,7 +242,7 @@ public final class NameManager: NSObject {
    - Parameter name2: The second name to compare
    - Returns: `true` if they are equal, `false` otherwise.
    */
-  public func namesAreEqual(name1: String, _ name2: String) -> Bool {
+  public func namesAreEqual(_ name1: String, _ name2: String) -> Bool {
     return keyForName(name1) == keyForName(name2)
   }
 
@@ -266,7 +268,7 @@ public final class NameManager: NSObject {
    - Parameter addToList: Whether to add the generated name to the used names list.
    - Returns: A unique name.
    */
-  public func generateUniqueName(name: String, addToList: Bool) -> String {
+  public func generateUniqueName(_ name: String, addToList: Bool) -> String {
     var uniqueName = name
 
     if containsName(uniqueName) {
@@ -275,18 +277,18 @@ public final class NameManager: NSObject {
       var variableCount = 2 // This will be the suffix part of the unique name
 
       // Figure out if `name` is already made up of a text part and a number part (eg. "foo6")
-      if let match = _regex.firstMatchInString(
-        name, options: [], range: NSMakeRange(0, name.utf16.count))
-        where match.numberOfRanges == 3 &&
-          match.rangeAtIndex(1).location != NSNotFound &&
-          match.rangeAtIndex(2).location != NSNotFound
+      if let match = _regex.firstMatch(
+        in: name, options: [], range: NSMakeRange(0, name.utf16.count))
+        , match.numberOfRanges == 3 &&
+          match.rangeAt(1).location != NSNotFound &&
+          match.rangeAt(2).location != NSNotFound
       {
-        if let textRange = bky_rangeFromNSRange(match.rangeAtIndex(1), forString: name),
-          numberRange = bky_rangeFromNSRange(match.rangeAtIndex(2), forString: name),
-          number = Int(name.substringWithRange(numberRange))
+        if let textRange = bky_rangeFromNSRange(match.rangeAt(1), forString: name),
+          let numberRange = bky_rangeFromNSRange(match.rangeAt(2), forString: name),
+          let number = Int(name.substring(with: numberRange))
         {
           // `name` ends in a number. Use that (number + 1) as the variable counter
-          baseName = name.substringWithRange(textRange)
+          baseName = name.substring(with: textRange)
           variableCount = number + 1
         }
       }
@@ -311,7 +313,7 @@ public final class NameManager: NSObject {
   /**
    Returns a lowercase key for a given name.
    */
-  private func keyForName(name: String) -> String {
-    return name.lowercaseString
+  private func keyForName(_ name: String) -> String {
+    return name.lowercased()
   }
 }

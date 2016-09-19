@@ -34,13 +34,13 @@ import WebKit
  handles these problems.
  */
 @objc(BKYCodeGenerator)
-public class CodeGenerator: NSObject {
+public final class CodeGenerator: NSObject {
 
   // MARK: - Typealiases
   public typealias LoadCompletionClosure = (Void) -> Void
-  public typealias LoadFailureClosure = (error: String) -> Void
-  public typealias CompletionClosure = (code: String) -> Void
-  public typealias ErrorClosure = (error: String) -> Void
+  public typealias LoadFailureClosure = (_ error: String) -> Void
+  public typealias CompletionClosure = (_ code: String) -> Void
+  public typealias ErrorClosure = (_ error: String) -> Void
   /**
    Tuple defining where to find a local file.
 
@@ -48,19 +48,19 @@ public class CodeGenerator: NSObject {
    - Parameter bundle: The bundle in which to find `file`. If nil is specified, the main bundle
    should be used.
   */
-  public typealias BundledFile = (file: String, bundle: NSBundle?)
+  public typealias BundledFile = (file: String, bundle: Bundle?)
 
   // MARK: - Enum - State
   public enum State {
-    case Initialized, Loading, ReadyForUse, Unusable, GeneratingCode
+    case initialized, loading, readyForUse, unusable, generatingCode
   }
 
   // MARK: - Static Properties
   /// Internal JS file that is used to communicate between the iOS code and JS code
-  private static let CODE_GENERATOR_BRIDGE_JS = "code_generator/code_generator_bridge.js"
+  fileprivate static let CODE_GENERATOR_BRIDGE_JS = "code_generator/code_generator_bridge.js"
   /// The name used to reference this iOS object when executing callbacks from the JS code.
   /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
-  private static let JS_CALLBACK_NAME = "CodeGenerator"
+  fileprivate static let JS_CALLBACK_NAME = "CodeGenerator"
 
   // MARK: - Properties
 
@@ -73,24 +73,24 @@ public class CodeGenerator: NSObject {
   /// List of JSON files containing block definitions
   public let jsonBlockDefinitions: [BundledFile]
   /// The current state of the code generator
-  public private(set) var state: State = .Initialized
+  public fileprivate(set) var state: State = .initialized
 
   /// The webview used for generating code
-  private var webView: WKWebView!
+  fileprivate var webView: WKWebView!
   /// Handler responsible for interpreting messages from the JS code
-  private var scriptMessageHandler: ScriptMessageHandler!
+  fileprivate var scriptMessageHandler: ScriptMessageHandler!
   /// Object for tracking the webview's initial load event
-  private weak var loadingNavigation: WKNavigation?
+  fileprivate weak var loadingNavigation: WKNavigation?
 
   /// Callback that is executed when the web view has finished loading all necessary resources and
   /// the code generator is ready for use
-  private var onLoadCompletion: LoadCompletionClosure?
+  fileprivate var onLoadCompletion: LoadCompletionClosure?
   /// Callback that is executed when the web view has failed to load all necessary resources
-  private var onLoadFailure: LoadFailureClosure?
+  fileprivate var onLoadFailure: LoadFailureClosure?
   /// Callback that is executed when code generation completes successfully
-  private var onCompletion: CompletionClosure?
+  fileprivate var onCompletion: CompletionClosure?
   /// Callback that is executed when code generation fails
-  private var onError: ErrorClosure?
+  fileprivate var onError: ErrorClosure?
 
   // MARK: - Initializers
 
@@ -135,12 +135,12 @@ public class CodeGenerator: NSObject {
     configuration.userContentController = userContentController
 
     // Create the web view
-    self.webView = WKWebView(frame: CGRectZero, configuration: configuration)
+    self.webView = WKWebView(frame: CGRect.zero, configuration: configuration)
     self.webView.navigationDelegate = self
 
     // Set the initial state and load a blank page
-    self.state = .Loading
-    self.loadingNavigation = self.webView.loadHTMLString("", baseURL: NSURL(string: "about:blank")!)
+    self.state = .loading
+    self.loadingNavigation = self.webView.loadHTMLString("", baseURL: URL(string: "about:blank")!)
   }
 
   deinit {
@@ -160,37 +160,37 @@ public class CodeGenerator: NSObject {
    - Parameter workspaceXML: The workspace XML
    */
   internal func generateCodeForWorkspaceXML(
-    workspaceXML: String, completion: CompletionClosure, error: ErrorClosure)
+    _ workspaceXML: String, completion: @escaping CompletionClosure, error: @escaping ErrorClosure)
   {
     var errorMessage: String?
     switch (self.state) {
-    case .GeneratingCode:
+    case .generatingCode:
       errorMessage = "Another code generation request is still being processed. " +
         "Please wait until `self.state == .ReadyForUse`."
-    case .Initialized, .Loading:
+    case .initialized, .loading:
       errorMessage = "The code generator is not ready for use yet. " +
         "Please wait until `self.state == .ReadyForUse`."
-    case .Unusable:
+    case .unusable:
       errorMessage = "This code generator is unusable. " +
         "Please check the JS/JSON dependencies used to create this `CodeGenerator`."
-    case .ReadyForUse:
+    case .readyForUse:
       break
     }
 
     if  errorMessage != nil {
-      error(error: errorMessage!)
+      error(errorMessage!)
       return
     }
 
-    self.state = .GeneratingCode
+    self.state = .generatingCode
     self.onCompletion = completion
     self.onError = error
 
     // Remove unnecessary whitespace from the XML
     let trimmedXML = workspaceXML
-      .stringByReplacingOccurrencesOfString("\r", withString: "")
-      .stringByReplacingOccurrencesOfString("\n", withString: "")
-      .stringByReplacingOccurrencesOfString("\t", withString: "")
+      .replacingOccurrences(of: "\r", with: "")
+      .replacingOccurrences(of: "\n", with: "")
+      .replacingOccurrences(of: "\t", with: "")
 
     let js =
       "CodeGeneratorBridge.generateCodeForWorkspace(" +
@@ -213,51 +213,51 @@ public class CodeGenerator: NSObject {
   - Throws:
   `BlocklyError`: Thrown if there was an error loading the file.
   */
-  private func contentsOfFile(bundledFile: BundledFile) throws -> String {
-    let fromBundle = bundledFile.bundle ?? NSBundle.mainBundle()
+  fileprivate func contentsOfFile(_ bundledFile: BundledFile) throws -> String {
+    let fromBundle = bundledFile.bundle ?? Bundle.main
     let file = bundledFile.file
-    if let path = fromBundle.pathForResource(file, ofType: nil) {
+    if let path = fromBundle.path(forResource: file, ofType: nil) {
       do {
-        let string = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+        let string = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
         return string
       } catch let error as NSError {
-        throw BlocklyError(.FileNotReadable, "File could not be read ('\(file)'):\n\(error)")
+        throw BlocklyError(.fileNotReadable, "File could not be read ('\(file)'):\n\(error)")
       }
     } else {
-      throw BlocklyError(.FileNotFound, "File could not be found ('\(file)').")
+      throw BlocklyError(.fileNotFound, "File could not be found ('\(file)').")
     }
   }
 
-  private func loadCompleted() {
+  fileprivate func loadCompleted() {
     let onLoadCompletion = self.onLoadCompletion
-    self.state = .ReadyForUse
+    self.state = .readyForUse
     self.onLoadCompletion = nil
     self.onLoadFailure = nil
     onLoadCompletion?()
   }
 
-  private func loadFailed(error: String) {
+  fileprivate func loadFailed(_ error: String) {
     let onLoadFailure = self.onLoadFailure
-    self.state = .Unusable
+    self.state = .unusable
     self.onLoadCompletion = nil
     self.onLoadFailure = nil
-    onLoadFailure?(error: error)
+    onLoadFailure?(error)
   }
 
-  private func codeGenerationCompleted(code: String) {
+  fileprivate func codeGenerationCompleted(_ code: String) {
     let onCompletion = self.onCompletion
-    self.state = .ReadyForUse
+    self.state = .readyForUse
     self.onCompletion = nil
     self.onError = nil
-    onCompletion?(code: code)
+    onCompletion?(code)
   }
 
-  private func codeGenerationFailed(error: String) {
+  fileprivate func codeGenerationFailed(_ error: String) {
     let onError = self.onError
-    self.state = .ReadyForUse
+    self.state = .readyForUse
     self.onCompletion = nil
     self.onError = nil
-    onError?(error: error)
+    onError?(error)
   }
 }
 
@@ -267,7 +267,7 @@ public class CodeGenerator: NSObject {
  Methods that are executed when `self.webView` has finished loading.
  */
 extension CodeGenerator: WKNavigationDelegate {
-  public func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if self.loadingNavigation != navigation {
       return
     }
@@ -284,7 +284,7 @@ extension CodeGenerator: WKNavigationDelegate {
 
       // Load our special bridge file
       jsScripts.append(try contentsOfFile((file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
-        bundle: NSBundle(forClass: CodeGenerator.self))))
+        bundle: Bundle(for: CodeGenerator.self))))
 
       // Load JS dependencies
       for bundledFile in jsCoreDependencies {
@@ -309,7 +309,7 @@ extension CodeGenerator: WKNavigationDelegate {
       // the very end of the scripts, which is what will be returned on completion.
       jsScripts.append("0;")
 
-      let js = jsScripts.joinWithSeparator("\n")
+      let js = jsScripts.joined(separator: "\n")
 
       self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
         if error != nil {
@@ -324,7 +324,7 @@ extension CodeGenerator: WKNavigationDelegate {
   }
 
   public func webView(
-    webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError)
+    _ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error)
   {
     loadFailed("Could not load WKWebView: \(error)")
   }
@@ -343,31 +343,31 @@ extension CodeGenerator {
    `CodeGenerator` to do this.
    */
   @objc(BKYCodeGeneratorScriptMessageHandler)
-  private class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
+  fileprivate class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
     /// The code generator that owns this message handler
-    private unowned let codeGenerator: CodeGenerator
+    fileprivate unowned let codeGenerator: CodeGenerator
     /// The user content controller this message handler attaches itself to
-    private unowned let userContentController: WKUserContentController
+    fileprivate unowned let userContentController: WKUserContentController
 
-    private init(codeGenerator: CodeGenerator, userContentController: WKUserContentController) {
+    fileprivate init(codeGenerator: CodeGenerator, userContentController: WKUserContentController) {
       self.codeGenerator = codeGenerator
       self.userContentController = userContentController
       super.init()
 
       // Register self to handle messages from the JS code
-      self.userContentController.addScriptMessageHandler(self, name: CodeGenerator.JS_CALLBACK_NAME)
+      self.userContentController.add(self, name: CodeGenerator.JS_CALLBACK_NAME)
     }
 
-    private func cleanUp() {
+    fileprivate func cleanUp() {
       // Unregister self from handling messages from the JS code
-      self.userContentController.removeScriptMessageHandlerForName(CodeGenerator.JS_CALLBACK_NAME)
+      self.userContentController.removeScriptMessageHandler(forName: CodeGenerator.JS_CALLBACK_NAME)
     }
 
-    @objc func userContentController(userContentController: WKUserContentController,
-      didReceiveScriptMessage message: WKScriptMessage)
+    @objc func userContentController(_ userContentController: WKUserContentController,
+      didReceive message: WKScriptMessage)
     {
-      if let dictionary = message.body as? [String: AnyObject]
-        where (dictionary["method"] as? String) == "generateCodeForWorkspace"
+      if let dictionary = message.body as? [String: Any]
+        , (dictionary["method"] as? String) == "generateCodeForWorkspace"
       {
         if let code = dictionary["code"] as? String {
           codeGenerator.codeGenerationCompleted(code)

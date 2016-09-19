@@ -28,7 +28,8 @@ public protocol FieldViewDelegate {
    - Parameter fromView: The `UIView` where the popover should pop up from
    - Returns: True if the `viewController` was presented. False otherwise.
    */
-  func fieldView(fieldView: FieldView,
+  @discardableResult
+  func fieldView(_ fieldView: FieldView,
                  requestedToPresentPopoverViewController viewController: UIViewController,
                                                          fromView: UIView) -> Bool
 }
@@ -37,7 +38,7 @@ public protocol FieldViewDelegate {
  Abstract view for rendering a `FieldLayout`.
  */
 @objc(BKYFieldView)
-public class FieldView: LayoutView {
+open class FieldView: LayoutView {
 
   // MARK: - Properties
 
@@ -45,13 +46,13 @@ public class FieldView: LayoutView {
   public weak var delegate: FieldViewDelegate?
 
   /// The layout object to render
-  private var fieldLayout: FieldLayout? {
+  fileprivate var fieldLayout: FieldLayout? {
     return layout as? FieldLayout
   }
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -67,7 +68,7 @@ public class FieldView: LayoutView {
       }
 
       // Enable/disable user interaction
-      self.userInteractionEnabled = fieldLayout.userInteractionEnabled
+      self.isUserInteractionEnabled = fieldLayout.userInteractionEnabled
     }
   }
 }

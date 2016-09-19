@@ -19,16 +19,16 @@ import Foundation
  Subclass of Workspace that should be used to populate a `WorkspaceFlowLayout`.
  */
 @objc(BKYWorkspaceFlow)
-public class WorkspaceFlow: Workspace {
+open class WorkspaceFlow: Workspace {
   /// Defines information on how each item should be laid out in the layout.
   public class Item {
-    public private(set) var rootBlock: Block?
-    public private(set) var gap: CGFloat?
+    public fileprivate(set) var rootBlock: Block?
+    public fileprivate(set) var gap: CGFloat?
 
-    private init(rootBlock: Block) {
+    fileprivate init(rootBlock: Block) {
       self.rootBlock = rootBlock
     }
-    private init(gap: CGFloat) {
+    fileprivate init(gap: CGFloat) {
       self.gap = gap
     }
   }
@@ -36,18 +36,18 @@ public class WorkspaceFlow: Workspace {
   // MARK: - Properties
 
   /// List of all elements that have been added
-  public private(set) var items = [Item]()
+  public fileprivate(set) var items = [Item]()
 
   // MARK: - Super
 
-  public override func addBlockTree(rootBlock: Block) throws {
+  open override func addBlockTree(_ rootBlock: Block) throws {
     try super.addBlockTree(rootBlock)
 
     items.append(Item(rootBlock: rootBlock))
     layout?.updateLayoutUpTree()
   }
 
-  public override func removeBlockTree(rootBlock: Block) throws {
+  open override func removeBlockTree(_ rootBlock: Block) throws {
     try super.removeBlockTree(rootBlock)
 
     // Remove item for this block (by only keeping blocks that don't match this rootBlock)
@@ -63,7 +63,7 @@ public class WorkspaceFlow: Workspace {
    - Parameter gap: The gap space, expressed as a Workspace coordinate system unit
    - Note: Trailing gaps are truncated and ignored on layout.
    */
-  public func addGap(gap: CGFloat = 24) {
+  open func addGap(_ gap: CGFloat = 24) {
     items.append(Item(gap: gap))
     layout?.updateLayoutUpTree()
   }

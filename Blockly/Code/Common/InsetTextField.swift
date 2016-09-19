@@ -18,11 +18,11 @@ import Foundation
 /**
  A subclass of `UITextField` that allows for setting the padding around the text.
  */
-public class InsetTextField: UITextField {
+open class InsetTextField: UITextField {
   // MARK: - Properties
 
   /// The amount of padding that should be added around the text
-  public var insetPadding = EdgeInsets() {
+  open var insetPadding = EdgeInsets() {
     didSet {
       _uiEdgeInsetPadding = bky_UIEdgeInsetsMake(
         insetPadding.top, insetPadding.leading, insetPadding.bottom, insetPadding.trailing)
@@ -31,15 +31,15 @@ public class InsetTextField: UITextField {
 
   /// The amount of padding that should be added around the text, irrespective of layout
   /// direction.
-  private var _uiEdgeInsetPadding = UIEdgeInsetsZero
+  fileprivate var _uiEdgeInsetPadding = UIEdgeInsets.zero
 
   // MARK: - Super
 
-  public override func textRectForBounds(bounds: CGRect) -> CGRect {
+  open override func textRect(forBounds bounds: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 
-  public override func editingRectForBounds(bounds: CGRect) -> CGRect {
+  open override func editingRect(forBounds bounds: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 }

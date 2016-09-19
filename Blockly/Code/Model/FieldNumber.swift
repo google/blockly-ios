@@ -15,6 +15,18 @@
 
 import Foundation
 
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+
 /**
  Text field for inputting a number value.
  */
@@ -23,7 +35,7 @@ public final class FieldNumber: Field {
   // MARK: - Static Properties
 
   /// The maximum number of digits allowed after the decimal place
-  private static let MAXIMUM_FRACTION_DIGITS = 100
+  fileprivate static let MAXIMUM_FRACTION_DIGITS = 100
 
   // MARK: - Properties
 
@@ -41,14 +53,14 @@ public final class FieldNumber: Field {
   }
   /// The localized text representation of `self.value`
   public var textValue: String {
-    return _localizedNumberFormatter.stringFromNumber(NSNumber(double: value)) ?? String(value)
+    return _localizedNumberFormatter.string(from: NSNumber(value: value as Double)) ?? String(value)
   }
   /// The minimum value of `self.value`. If `nil`, `self.value` is unconstrained by a minimum value.
-  public private(set) var minimumValue: Double? = nil {
+  public fileprivate(set) var minimumValue: Double? = nil {
     didSet { didSetEditableProperty(&minimumValue, oldValue) }
   }
   /// The maximum value of `self.value`. If `nil`, `self.value` is unconstrained by a maximum value.
-  public private(set) var maximumValue: Double? = nil {
+  public fileprivate(set) var maximumValue: Double? = nil {
     didSet { didSetEditableProperty(&maximumValue, oldValue) }
   }
   /**
@@ -59,7 +71,7 @@ public final class FieldNumber: Field {
 
    If `nil`, `self.value` is unconstrained by a precision value.
    */
-  public private(set) var precision: Double? = nil {
+  public fileprivate(set) var precision: Double? = nil {
     didSet {
       if didSetEditableProperty(&self.precision, oldValue) {
         updateNumberFormatter()
@@ -71,23 +83,23 @@ public final class FieldNumber: Field {
     return precision != nil && precision! == round(precision!)
   }
   /// The actual minimum value of the field, based on `self.precision` and `self.minimumValue`
-  private var _effectiveMinimumValue: Double?
+  fileprivate var _effectiveMinimumValue: Double?
   /// The actual maximum value of the field, based on `self.precision` and `self.maximumValue`
-  private var _effectiveMaximumValue: Double?
+  fileprivate var _effectiveMaximumValue: Double?
 
   /// Number formatter used for outputting the value as localized text
-  private let _localizedNumberFormatter: NSNumberFormatter = {
+  fileprivate let _localizedNumberFormatter: NumberFormatter = {
     // Note: `self._localizedNumberFormatter` is already set to the default locale.
-    let numberFormatter = NSNumberFormatter()
+    let numberFormatter = NumberFormatter()
     numberFormatter.minimumIntegerDigits = 1
     return numberFormatter
   }()
 
   /// Number formatter used for serializing the value
-  private let _serializedNumberFormatter: NSNumberFormatter = {
+  fileprivate let _serializedNumberFormatter: NumberFormatter = {
     // Set the locale of the serialized number formatter to "English".
-    let numberFormatter = NSNumberFormatter()
-    numberFormatter.locale = NSLocale(localeIdentifier: "en")
+    let numberFormatter = NumberFormatter()
+    numberFormatter.locale = Locale(identifier: "en")
     numberFormatter.minimumIntegerDigits = 1
     return numberFormatter
   }()
@@ -113,12 +125,12 @@ public final class FieldNumber: Field {
     return number
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     self.value = try valueFromText(text, numberFormatter: _serializedNumberFormatter)
   }
 
   public override func serializedText() throws -> String? {
-    return _serializedNumberFormatter.stringFromNumber(NSNumber(double: value))
+    return _serializedNumberFormatter.string(from: NSNumber(value: value as Double))
   }
 
   // MARK: - Public
@@ -130,7 +142,8 @@ public final class FieldNumber: Field {
    - Returns: `true` if the value was set successfully using the localized text, or `false`
    otherwise.
    */
-  public func setValueFromLocalizedText(text: String) -> Bool {
+  @discardableResult
+  public func setValueFromLocalizedText(_ text: String) -> Bool {
     do {
       self.value = try valueFromText(text, numberFormatter: _localizedNumberFormatter)
       return true
@@ -151,7 +164,7 @@ public final class FieldNumber: Field {
    - Throws:
    `BlocklyError`: Thrown if invalid parameter values are passed for constraints. 
    */
-  public func setConstraints(minimum minimum: Double?, maximum: Double?, precision: Double?) throws
+  public func setConstraints(minimum: Double?, maximum: Double?, precision: Double?) throws
   {
     if !self.editable {
       return
@@ -161,16 +174,16 @@ public final class FieldNumber: Field {
       (maximum?.isFinite ?? true) &&
       (precision?.isFinite ?? true) else
     {
-      throw BlocklyError(.IllegalArgument, "Constraints cannot be infinite nor NaN.")
+      throw BlocklyError(.illegalArgument, "Constraints cannot be infinite nor NaN.")
     }
 
     guard (minimum ?? -DBL_MAX) <= (maximum ?? DBL_MAX) else {
-      throw BlocklyError(.IllegalArgument,
+      throw BlocklyError(.illegalArgument,
         "`minimum` value [\(minimum)] must be less than `maximum` value [\(maximum)].")
     }
 
     guard precision == nil || precision! > 0 else {
-      throw BlocklyError(.IllegalArgument, "`precision` [\(precision)] must be positive.")
+      throw BlocklyError(.illegalArgument, "`precision` [\(precision)] must be positive.")
     }
 
     var effectiveMinimum: Double? = nil
@@ -198,7 +211,7 @@ public final class FieldNumber: Field {
       }
 
       guard (effectiveMinimum ?? -DBL_MAX) <= (effectiveMaximum ?? DBL_MAX) else {
-        throw BlocklyError(.IllegalArgument, "No valid value in range.")
+        throw BlocklyError(.illegalArgument, "No valid value in range.")
       }
     } else {
       effectiveMinimum = minimum
@@ -221,7 +234,7 @@ public final class FieldNumber: Field {
    Given a value, returns a value based on the current values of `self.minimumValue`,
    `self.maximumValue`, and `self.precision`.
    */
-  private func constrainedValue(value: Double) -> Double {
+  fileprivate func constrainedValue(_ value: Double) -> Double {
     var constrainedValue = value
     if let precision = self.precision {
       // NOTE: round(...) in iOS will round towards positive infinity for positive values and
@@ -240,10 +253,10 @@ public final class FieldNumber: Field {
 
     // Run the value through formatter to limit significant digits.
     if let formattedValue =
-        _serializedNumberFormatter.stringFromNumber(NSNumber(double: constrainedValue)),
+        _serializedNumberFormatter.string(from: NSNumber(value: constrainedValue as Double)),
       let newDoubleValue =
-        _serializedNumberFormatter.numberFromString(formattedValue)?.doubleValue
-      where newDoubleValue.isFinite
+        _serializedNumberFormatter.number(from: formattedValue)?.doubleValue
+      , newDoubleValue.isFinite
     {
       constrainedValue = newDoubleValue
     }
@@ -254,18 +267,18 @@ public final class FieldNumber: Field {
   /**
    Updates the internal number formatters based on the current value of `self.precision`.
    */
-  private func updateNumberFormatter() {
+  fileprivate func updateNumberFormatter() {
     // Figure out minimum/maximum number of fraction digits based on `self.precision`
     let minimumFractionDigits: Int
     let maximumFractionDigits: Int
 
     if let precision = self.precision {
       let precisionString = String(precision)
-      if let decimalRange = precisionString.rangeOfString(".") where !self.isInteger {
+      if let decimalRange = precisionString.range(of: ".") , !self.isInteger {
         // Set the min/max number of fraction digits to the same number of digits after the
         // decimal place of `self.precision`
         let significantDigits =
-          precisionString.substringFromIndex(decimalRange.endIndex).characters.count
+          precisionString.substring(from: decimalRange.upperBound).characters.count
         let fractionDigits = min(significantDigits, FieldNumber.MAXIMUM_FRACTION_DIGITS)
         minimumFractionDigits = fractionDigits
         maximumFractionDigits = fractionDigits
@@ -295,22 +308,24 @@ public final class FieldNumber: Field {
    - Throws:
    `BlocklyError`: Thrown if the text value could not be parsed into a valid `Double`.
    */
-  private func valueFromText(text: String, numberFormatter: NSNumberFormatter) throws -> Double {
+  fileprivate func valueFromText(_ text: String, numberFormatter: NumberFormatter) throws
+    -> Double
+  {
     let trimmedText =
-      text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+      text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
     if trimmedText.isEmpty {
-      throw BlocklyError(.IllegalArgument,
+      throw BlocklyError(.illegalArgument,
         "An empty value cannot be parsed into a number. The value must be a valid number.")
     }
 
-    guard let value = numberFormatter.numberFromString(text)?.doubleValue else {
-      throw BlocklyError(.IllegalArgument,
+    guard let value = numberFormatter.number(from: text)?.doubleValue else {
+      throw BlocklyError(.illegalArgument,
         "Could not parse value [`\(text)`] into a number. The value must be a valid number.")
     }
 
     if !value.isFinite {
-      throw BlocklyError(.IllegalArgument, "Value [`\(text)`] cannot be NaN or infinite.")
+      throw BlocklyError(.illegalArgument, "Value [`\(text)`] cannot be NaN or infinite.")
     }
 
     return value

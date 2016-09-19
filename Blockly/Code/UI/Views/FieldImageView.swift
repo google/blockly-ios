@@ -19,27 +19,27 @@ import Foundation
  View for rendering a `FieldImageLayout`.
  */
 @objc(BKYFieldImageView)
-public class FieldImageView: FieldView {
+open class FieldImageView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldImageLayout`
-  public var fieldImageLayout: FieldImageLayout? {
+  open var fieldImageLayout: FieldImageLayout? {
     return layout as? FieldImageLayout
   }
 
   /// The image to render
-  private lazy var imageView: UIImageView = {
+  fileprivate lazy var imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.frame = self.bounds
-    imageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-    imageView.contentMode = .ScaleAspectFill
+    imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
 
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     addSubview(imageView)
   }
@@ -50,7 +50,7 @@ public class FieldImageView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -68,10 +68,10 @@ public class FieldImageView: FieldView {
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRectZero
+    self.frame = CGRect.zero
     self.imageView.image = nil
   }
 }
@@ -79,11 +79,11 @@ public class FieldImageView: FieldView {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldImageView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldImageLayout = layout as? FieldImageLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldImageLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     return layout.engine.viewSizeFromWorkspaceSize(fieldImageLayout.size)

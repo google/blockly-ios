@@ -18,7 +18,7 @@ import XCTest
 
 class FieldJSONTest: XCTestCase {
 
-  private var workspace: Workspace!
+  var workspace: Workspace!
 
   // MARK: - Super
 
@@ -29,7 +29,7 @@ class FieldJSONTest: XCTestCase {
   // MARK: - fieldFromJSON - Angle
 
   func testFieldFromJSON_AngleValid() {
-    let json = ["type": "field_angle", "name": "FIELD ANGLE", "angle": 880]
+    let json = ["type": "field_angle", "name": "FIELD ANGLE", "angle": 880] as [String : Any]
     let field: FieldAngle
     do {
       if let fieldAngle = try Field.fieldFromJSON(json) as? FieldAngle {
@@ -50,7 +50,7 @@ class FieldJSONTest: XCTestCase {
   // MARK: - fieldFromJSON - Checkbox
 
   func testFieldFromJSON_CheckboxValid() {
-    let json = ["type": "field_checkbox", "name": "Something", "checked": true]
+    let json = ["type": "field_checkbox", "name": "Something", "checked": true] as [String : Any]
     let field: FieldCheckbox
     do {
       if let fieldCheckbox = try Field.fieldFromJSON(json) as? FieldCheckbox {
@@ -115,12 +115,11 @@ class FieldJSONTest: XCTestCase {
     }
 
     XCTAssertEqual("ABC", field.name)
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    calendar.timeZone = NSTimeZone.localTimeZone()
-    let components = calendar.components([.Year, .Month, .Day], fromDate: field.date)
-    XCTAssertEqual(2016, components.year)
-    XCTAssertEqual(2, components.month)
-    XCTAssertEqual(29, components.day)
+    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    calendar.timeZone = TimeZone.autoupdatingCurrent
+    XCTAssertEqual(2016, calendar.component(.year, from: field.date))
+    XCTAssertEqual(2, calendar.component(.month, from: field.date))
+    XCTAssertEqual(29, calendar.component(.day, from: field.date))
   }
 
   // MARK: - fieldFromJSON - Dropdown
@@ -130,7 +129,7 @@ class FieldJSONTest: XCTestCase {
       "type": "field_dropdown",
       "name": "Dropdown",
       "options": [["Option 1", "VALUE 1"], ["Option 2", "VALUE 2"], ["Option 3", "VALUE 3"]],
-    ]
+    ] as [String : Any]
     let field: FieldDropdown
     do {
       if let fieldDropdown = try Field.fieldFromJSON(json) as? FieldDropdown {
@@ -164,7 +163,7 @@ class FieldJSONTest: XCTestCase {
       "width": 200000,
       "src": "http://media.firebox.com/pic/p5294_column_grid_12.jpg",
       "alt": "Unicorn Power",
-    ]
+    ] as [String : Any]
     let field: FieldImage
     do {
       if let fieldImage = try Field.fieldFromJSON(json) as? FieldImage {
@@ -245,7 +244,7 @@ class FieldJSONTest: XCTestCase {
       "min": -50,
       "max": 50.500,
       "precision": 0.1,
-      ]
+      ] as [String : Any]
     let field: FieldNumber
     do {
       if let fieldNumber = try Field.fieldFromJSON(json) as? FieldNumber {

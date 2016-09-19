@@ -35,14 +35,14 @@ class ConnectionTest: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    input = createConnection(.InputValue, shadow: false)
-    output = createConnection(.OutputValue, shadow: false)
-    next = createConnection(.NextStatement, shadow: false)
-    previous = createConnection(.PreviousStatement, shadow: false)
-    shadowInput = createConnection(.InputValue, shadow: true)
-    shadowOutput = createConnection(.OutputValue, shadow: true)
-    shadowNext = createConnection(.NextStatement, shadow: true)
-    shadowPrevious = createConnection(.PreviousStatement, shadow: true)
+    input = createConnection(.inputValue, shadow: false)
+    output = createConnection(.outputValue, shadow: false)
+    next = createConnection(.nextStatement, shadow: false)
+    previous = createConnection(.previousStatement, shadow: false)
+    shadowInput = createConnection(.inputValue, shadow: true)
+    shadowOutput = createConnection(.outputValue, shadow: true)
+    shadowNext = createConnection(.nextStatement, shadow: true)
+    shadowPrevious = createConnection(.previousStatement, shadow: true)
   }
 
   // MARK: - Tests
@@ -146,7 +146,7 @@ class ConnectionTest: XCTestCase {
   func testConnect_shadowFailures() {
     // Shadows hit the same checks as normal blocks.
     // Do light verification to guard against that changing
-    let shadowInput2 = createConnection(.InputValue, shadow: true)
+    let shadowInput2 = createConnection(.inputValue, shadow: true)
 
     BKYAssertThrow("Connections cannot connect to themselves!", errorType: BlocklyError.self) {
       try self.shadowInput.connectTo(self.shadowInput)
@@ -211,23 +211,23 @@ class ConnectionTest: XCTestCase {
   }
 
   func testCanConnectWithReasonTo_InvalidSameBlock() {
-    let connection1 = createConnection(.InputValue)
-    let connection2 = createConnection(.OutputValue)
+    let connection1 = createConnection(.inputValue)
+    let connection2 = createConnection(.outputValue)
     connection2.sourceBlock = connection1.sourceBlock
     XCTAssertEqual(Connection.CheckResult.ReasonSelfConnection,
       connection1.canConnectWithReasonTo(connection2))
   }
 
   func testCanConnectWithReasonTo_InvalidWrongTypes() {
-    let connection1 = createConnection(.OutputValue)
-    let connection2 = createConnection(.OutputValue)
+    let connection1 = createConnection(.outputValue)
+    let connection2 = createConnection(.outputValue)
     XCTAssertEqual(Connection.CheckResult.ReasonWrongType,
       connection1.canConnectWithReasonTo(connection2))
   }
 
   func testCanConnectWithReasonTo_InvalidAlreadyConnected() {
     BKYAssertDoesNotThrow { try self.output.connectTo(self.input) }
-    let output2 = createConnection(.OutputValue)
+    let output2 = createConnection(.outputValue)
     XCTAssertEqual(Connection.CheckResult.ReasonMustDisconnect,
       input.canConnectWithReasonTo(output2))
   }
@@ -277,22 +277,22 @@ class ConnectionTest: XCTestCase {
   }
 
   func testCanConnectShadowWithReasonTo_InvalidSameBlock() {
-    let connection1 = createConnection(.InputValue)
-    let connection2 = createConnection(.OutputValue, shadow: true)
+    let connection1 = createConnection(.inputValue)
+    let connection2 = createConnection(.outputValue, shadow: true)
     connection2.sourceBlock = connection1.sourceBlock
     let canConnectReason = connection1.canConnectShadowWithReasonTo(connection2)
     XCTAssertTrue(canConnectReason.intersectsWith(Connection.CheckResult.ReasonSelfConnection))
   }
 
   func testCanConnectShadowWithReasonTo_InvalidWrongTypes() {
-    let connection1 = createConnection(.OutputValue, shadow: true)
-    let connection2 = createConnection(.OutputValue, shadow: true)
+    let connection1 = createConnection(.outputValue, shadow: true)
+    let connection2 = createConnection(.outputValue, shadow: true)
     XCTAssertEqual(Connection.CheckResult.ReasonWrongType,
                    connection1.canConnectShadowWithReasonTo(connection2))
   }
 
   func testCanConnectShadowWithReasonTo_InvalidAlreadyConnected() {
-    let shadowOutput2 = createConnection(.OutputValue, shadow: true)
+    let shadowOutput2 = createConnection(.outputValue, shadow: true)
     BKYAssertDoesNotThrow { try self.input.connectShadowTo(self.shadowOutput) }
     XCTAssertEqual(Connection.CheckResult.ReasonMustDisconnect,
                    input.canConnectShadowWithReasonTo(shadowOutput2))
@@ -326,8 +326,8 @@ class ConnectionTest: XCTestCase {
   }
 
   func testDistanceFromConnection() {
-    let connection1 = createConnection(.NextStatement, 0, 0)
-    let connection2 = createConnection(.InputValue, 0, 0)
+    let connection1 = createConnection(.nextStatement, 0, 0)
+    let connection2 = createConnection(.inputValue, 0, 0)
     XCTAssertEqual(0, connection1.distanceFromConnection(connection2))
 
     connection2.moveToPosition(WorkspacePointMake(5.20403, 0))
@@ -351,8 +351,8 @@ class ConnectionTest: XCTestCase {
   }
 
   func testTypeChecksMatchWithConnection() {
-    let connection1 = createConnection(.PreviousStatement)
-    let connection2 = createConnection(.NextStatement)
+    let connection1 = createConnection(.previousStatement)
+    let connection2 = createConnection(.nextStatement)
 
     connection1.typeChecks = nil
     connection2.typeChecks = nil
@@ -385,8 +385,8 @@ class ConnectionTest: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func createConnection(
-    type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0, shadow: Bool = false)
+  fileprivate func createConnection(
+    _ type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0, shadow: Bool = false)
     -> Connection
   {
     let block = try! Block.Builder(name: "test").build(shadow: shadow)

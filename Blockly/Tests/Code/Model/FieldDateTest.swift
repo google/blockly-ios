@@ -21,25 +21,25 @@ class FieldDateTest: XCTestCase {
   // MARK: - Internal static methods
 
   func testParseDate_validDates() {
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    calendar.timeZone = NSTimeZone.localTimeZone()
-    var date: NSDate
-    var components: NSDateComponents
+    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    calendar.timeZone = TimeZone.autoupdatingCurrent
+    var date: Date
+    var components: DateComponents
 
     date = FieldDate.dateFromString("2000-01-01")!
-    components = calendar.components([.Year, .Month, .Day], fromDate: date)
+    components = calendar.dateComponents([.year, .month, .day], from: date)
     XCTAssertEqual(2000, components.year)
     XCTAssertEqual(1, components.month)
     XCTAssertEqual(1, components.day)
 
     date = FieldDate.dateFromString("2020-02-29")!
-    components = calendar.components([.Year, .Month, .Day], fromDate: date)
+    components = calendar.dateComponents([.year, .month, .day], from: date)
     XCTAssertEqual(2020, components.year)
     XCTAssertEqual(2, components.month)
     XCTAssertEqual(29, components.day)
 
     date = FieldDate.dateFromString("2112-12-12")!
-    components = calendar.components([.Year, .Month, .Day], fromDate: date)
+    components = calendar.dateComponents([.year, .month, .day], from: date)
     XCTAssertEqual(2112, components.year)
     XCTAssertEqual(12, components.month)
     XCTAssertEqual(12, components.day)

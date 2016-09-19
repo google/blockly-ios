@@ -30,7 +30,7 @@ public protocol LayoutFactory: class {
    - Throws:
    `BlocklyError`: Thrown if no suitable `BlockLayout` could be found for the `block`.
    */
-  func layoutForBlock(block: Block, engine: LayoutEngine) throws -> BlockLayout
+  func layoutForBlock(_ block: Block, engine: LayoutEngine) throws -> BlockLayout
 
   /**
    Builds and returns a `BlockGroupLayout` for a given layout engine.
@@ -40,7 +40,7 @@ public protocol LayoutFactory: class {
    - Throws:
    `BlocklyError`: Thrown if no suitable `BlockGroupLayout` could be found.
    */
-  func layoutForBlockGroupLayout(engine engine: LayoutEngine) throws -> BlockGroupLayout
+  func layoutForBlockGroupLayout(engine: LayoutEngine) throws -> BlockGroupLayout
 
   /**
    Builds and returns an `InputLayout` for a given input and layout engine.
@@ -51,7 +51,7 @@ public protocol LayoutFactory: class {
    - Throws:
    `BlocklyError`: Thrown if no suitable `InputLayout` could be found for the `input`.
    */
-  func layoutForInput(input: Input, engine: LayoutEngine) throws -> InputLayout
+  func layoutForInput(_ input: Input, engine: LayoutEngine) throws -> InputLayout
 
   /**
    Builds and returns a `FieldLayout` for a given field and layout engine, using the
@@ -64,5 +64,5 @@ public protocol LayoutFactory: class {
     - Throws:
     `BlocklyError`: Thrown if no suitable `FieldLayout` could be found for the `field`.
    */
-  func layoutForField(field: Field, engine: LayoutEngine) throws -> FieldLayout
+  func layoutForField(_ field: Field, engine: LayoutEngine) throws -> FieldLayout
 }

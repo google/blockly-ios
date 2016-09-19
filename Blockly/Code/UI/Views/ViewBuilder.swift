@@ -30,7 +30,7 @@ public protocol ViewBuilderDelegate {
    - Parameter parentView: The parent `UIView`
    */
   func viewBuilder(
-    viewBuilder: ViewBuilder, didAddChild childView: UIView, toParent parentView: UIView)
+    _ viewBuilder: ViewBuilder, didAddChild childView: UIView, toParent parentView: UIView)
 
   /**
    Event that is called when the `ViewBuilder` has removed a child view from a parent view.
@@ -40,7 +40,7 @@ public protocol ViewBuilderDelegate {
    - Parameter parentView: The parent `UIView`
    */
   func viewBuilder(
-    viewBuilder: ViewBuilder, didRemoveChild childView: UIView, fromParent parentView: UIView)
+    _ viewBuilder: ViewBuilder, didRemoveChild childView: UIView, fromParent parentView: UIView)
 }
 
 // MARK: - ViewBuilder Class
@@ -49,7 +49,7 @@ public protocol ViewBuilderDelegate {
  Class for maintaining the `View` hierarchy from a `Layout` hierarchy.
  */
 @objc(BKYViewBuilder)
-public class ViewBuilder: NSObject {
+open class ViewBuilder: NSObject {
   // MARK: - Properties
 
   /// Factory responsible for creating new `View` instances
@@ -73,7 +73,7 @@ public class ViewBuilder: NSObject {
    - Throws:
    `BlocklyError`: Thrown if the view tree could not be created for this workspace.
    */
-  public func buildViewTree(forWorkspaceView workspaceView: WorkspaceView) throws {
+  open func buildViewTree(forWorkspaceView workspaceView: WorkspaceView) throws {
     guard let workspaceLayout = workspaceView.workspaceLayout else {
       return
     }
@@ -104,7 +104,7 @@ public class ViewBuilder: NSObject {
    - Parameter layout: The root of the `Layout` tree
    - Parameter parentView: The parent view on which to add the newly created view tree.
    */
-  private func addViewTree(forLayout layout: Layout, toParent parentView: UIView) {
+  fileprivate func addViewTree(forLayout layout: Layout, toParent parentView: UIView) {
     let view: LayoutView
 
     do {
@@ -131,7 +131,7 @@ public class ViewBuilder: NSObject {
     }
   }
 
-  private func addChild(childView: UIView, toParent parentView: UIView) {
+  fileprivate func addChild(_ childView: UIView, toParent parentView: UIView) {
     if let workspaceView = parentView as? WorkspaceView,
       let blockGroupView = childView as? BlockGroupView
     {
@@ -142,7 +142,7 @@ public class ViewBuilder: NSObject {
     delegate?.viewBuilder(self, didAddChild: childView, toParent: parentView)
   }
 
-  private func removeChild(childView: UIView, fromParent parentView: UIView) {
+  fileprivate func removeChild(_ childView: UIView, fromParent parentView: UIView) {
     if let workspaceView = parentView as? WorkspaceView,
       let blockGroupView = childView as? BlockGroupView
     {
@@ -158,7 +158,7 @@ public class ViewBuilder: NSObject {
 }
 
 extension ViewBuilder: LayoutHierarchyListener {
-  public func layout(layout: Layout,
+  public func layout(_ layout: Layout,
     didAdoptChildLayout childLayout: Layout, fromOldParentLayout oldParentLayout: Layout?)
   {
     guard let parentView = ViewManager.sharedInstance.findViewForLayout(layout) else {
@@ -175,7 +175,7 @@ extension ViewBuilder: LayoutHierarchyListener {
     }
   }
 
-  public func layout(layout: Layout, didRemoveChildLayout childLayout: Layout) {
+  public func layout(_ layout: Layout, didRemoveChildLayout childLayout: Layout) {
     guard
       let parentView = ViewManager.sharedInstance.findViewForLayout(layout),
       let childView = ViewManager.sharedInstance.findViewForLayout(childLayout) else

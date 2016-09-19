@@ -40,7 +40,7 @@ public final class FieldInput: Field {
     return FieldInput(name: name, text: text)
   }
 
-  public override func setValueFromSerializedText(text: String) throws {
+  public override func setValueFromSerializedText(_ text: String) throws {
     self.text = text
   }
 

@@ -157,13 +157,13 @@ class BlockTestStrings {
   static let FRANKENBLOCK_DEFAULT_VALUES =
   FRANKENBLOCK_DEFAULT_VALUES_START + FRANKENBLOCK_DEFAULT_VALUES_END
 
-  class func assembleBlock(interior: String) -> String {
+  class func assembleBlock(_ interior: String) -> String {
     return assembleComplexBlock(tag: "block", type: "frankenblock", id: "1",
                          position: WorkspacePointMake(37, 13), interior: interior)
   }
 
   class func assembleComplexBlock(
-    tag tag: String, type: String, id: String?, position: WorkspacePoint?, interior: String)
+    tag: String, type: String, id: String?, position: WorkspacePoint?, interior: String)
     -> String
   {
     var attributes = "type=\"\(type)\""

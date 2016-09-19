@@ -19,16 +19,16 @@ import Foundation
  View for rendering a `FieldVariableLayout`.
  */
 @objc(BKYFieldVariableView)
-public class FieldVariableView: FieldView {
+open class FieldVariableView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldVariableLayout`
-  public var fieldVariableLayout: FieldVariableLayout? {
+  open var fieldVariableLayout: FieldVariableLayout? {
     return layout as? FieldVariableLayout
   }
 
   /// The dropdown to render
-  private lazy var dropDownView: DropdownView = {
+  fileprivate lazy var dropDownView: DropdownView = {
     let dropDownView = DropdownView()
     dropDownView.delegate = self
     return dropDownView
@@ -37,7 +37,7 @@ public class FieldVariableView: FieldView {
   // MARK: - Initializers
 
   public required init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
 
     configureSubviews()
   }
@@ -48,7 +48,7 @@ public class FieldVariableView: FieldView {
 
   // MARK: - Super
 
-  public override func refreshView(
+  open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -66,12 +66,12 @@ public class FieldVariableView: FieldView {
         dropDownView.borderCornerRadius =
           fieldVariableLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
         // TODO:(#27) Standardize this font
-        dropDownView.textFont = UIFont.systemFontOfSize(14 * fieldVariableLayout.engine.scale)
+        dropDownView.textFont = UIFont.systemFont(ofSize: 14 * fieldVariableLayout.engine.scale)
       }
     }
   }
 
-  public override func prepareForReuse() {
+  open override func prepareForReuse() {
     super.prepareForReuse()
 
     dropDownView.text = ""
@@ -79,7 +79,7 @@ public class FieldVariableView: FieldView {
 
   // MARK: - Private
 
-  private func configureSubviews() {
+  fileprivate func configureSubviews() {
     let views: [String: UIView] = ["dropDownView": dropDownView]
     let constraints = [
       "H:|[dropDownView]|",
@@ -93,11 +93,11 @@ public class FieldVariableView: FieldView {
 // MARK: - FieldLayoutMeasurer implementation
 
 extension FieldVariableView: FieldLayoutMeasurer {
-  public static func measureLayout(layout: FieldLayout, scale: CGFloat) -> CGSize {
+  public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
     guard let fieldVariableLayout = layout as? FieldVariableLayout else {
-      bky_assertionFailure("`layout` is of type `\(layout.dynamicType)`. " +
+      bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldVariableLayout`.")
-      return CGSizeZero
+      return CGSize.zero
     }
 
     let borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
@@ -105,7 +105,7 @@ extension FieldVariableView: FieldLayoutMeasurer {
     let ySpacing = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
     let measureText = fieldVariableLayout.variable
     // TODO:(#27) Standardize this font
-    let font = UIFont.systemFontOfSize(14 * scale)
+    let font = UIFont.systemFont(ofSize: 14 * scale)
 
     return DropdownView.measureSize(
       text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
@@ -125,13 +125,13 @@ extension FieldVariableView: DropdownViewDelegate {
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
     // TODO:(#27) Standardize this font
-    viewController.textLabelFont = UIFont.systemFontOfSize(18)
+    viewController.textLabelFont = UIFont.systemFont(ofSize: 18)
 
     // Populate options
     let options = fieldVariableLayout.variables
     viewController.options = options
     viewController.selectedIndex =
-      options.indexOf { $0.value == fieldVariableLayout.variable } ?? -1
+      options.index { $0.value == fieldVariableLayout.variable } ?? -1
     delegate?.fieldView(self,
                         requestedToPresentPopoverViewController: viewController, fromView: self)
   }
@@ -140,11 +140,11 @@ extension FieldVariableView: DropdownViewDelegate {
 // MARK: - DropdownOptionsViewControllerDelegate
 
 extension FieldVariableView: DropdownOptionsViewControllerDelegate {
-  public func dropdownOptionsViewController(viewController: DropdownOptionsViewController,
+  public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
                                             didSelectOptionIndex optionIndex: Int)
   {
     // Change to a new variable
     fieldVariableLayout?.changeToVariable(viewController.options[optionIndex].value)
-    viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
   }
 }

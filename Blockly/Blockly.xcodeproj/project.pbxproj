@@ -26,6 +26,7 @@
 		FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726831B83F99300777B49 /* FieldLayout.swift */; };
 		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
 		FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */; };
+		FA27D9E21D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27D9E11D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift */; };
 		FA2DFC071B7174350072A278 /* block_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_json_test.json */; };
 		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
 		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
@@ -100,7 +101,6 @@
 		FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */; };
 		FA99C3B51C6EE0B100FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
 		FA99C3B61C6EE3B600FA5A02 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */; };
-		FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
 		FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4031C73DE1800FA5A02 /* Input+XML.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
@@ -233,13 +233,6 @@
 			remoteGlobalIDString = 8B4A92DF1BDD5D330011F36F;
 			remoteInfo = "AEXML watchOS";
 		};
-		FA99C3AC1C6EE0A400FA5A02 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8BFE78A919F0054100914487;
-			remoteInfo = AEXMLExample;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -263,6 +256,7 @@
 		FA2726831B83F99300777B49 /* FieldLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldLayout.swift; sourceTree = "<group>"; };
 		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
 		FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolTest.swift; sourceTree = "<group>"; };
+		FA27D9E11D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinatorTest.swift; sourceTree = "<group>"; };
 		FA2DFC061B7174350072A278 /* block_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_json_test.json; sourceTree = "<group>"; };
 		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
@@ -339,7 +333,6 @@
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceViewController.swift; sourceTree = "<group>"; };
 		FA99C3931C6EE0A400FA5A02 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
-		FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXML+Helper.swift"; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
 		FA99C4031C73DE1800FA5A02 /* Input+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+XML.swift"; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
@@ -498,6 +491,7 @@
 				FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */,
 				FA3786A31BFFDF08009D18DF /* LayoutBuilderTest.swift */,
 				FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */,
+				FA27D9E11D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift */,
 				FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */,
 			);
 			path = Layout;
@@ -714,13 +708,12 @@
 			isa = PBXGroup;
 			children = (
 				FA99C39F1C6EE0A400FA5A02 /* AEXML.framework */,
+				FA99C3AB1C6EE0A400FA5A02 /* AEXML.framework */,
 				FA99C3A11C6EE0A400FA5A02 /* AEXML iOS Tests.xctest */,
-				FA99C3A31C6EE0A400FA5A02 /* AEXML.framework */,
-				FA99C3A51C6EE0A400FA5A02 /* AEXML OSX Tests.xctest */,
 				FA99C3A71C6EE0A400FA5A02 /* AEXML.framework */,
 				FA99C3A91C6EE0A400FA5A02 /* AEXML tvOS Tests.xctest */,
-				FA99C3AB1C6EE0A400FA5A02 /* AEXML.framework */,
-				FA99C3AD1C6EE0A400FA5A02 /* AEXMLExample.app */,
+				FA99C3A31C6EE0A400FA5A02 /* AEXML.framework */,
+				FA99C3A51C6EE0A400FA5A02 /* AEXML OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -745,7 +738,6 @@
 		FAA86FF21C64272C000C7C61 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FA99C3B71C6EE65100FA5A02 /* AEXML+Helper.swift */,
 				FAA86FF31C64272C000C7C61 /* Array+Helper.swift */,
 				FAA86FF41C64272C000C7C61 /* Assertions.swift */,
 				FAA86FF51C64272C000C7C61 /* BlocklyError.swift */,
@@ -891,14 +883,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Google Inc.";
 				TargetAttributes = {
 					FA548C041B630BAC008BC59C = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0800;
 					};
 					FA548C0F1B630BAD008BC59C = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -974,13 +968,6 @@
 			fileType = wrapper.framework;
 			path = AEXML.framework;
 			remoteRef = FA99C3AA1C6EE0A400FA5A02 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA99C3AD1C6EE0A400FA5A02 /* AEXMLExample.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = AEXMLExample.app;
-			remoteRef = FA99C3AC1C6EE0A400FA5A02 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1116,7 +1103,6 @@
 				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
 				FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */,
 				FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */,
-				FA99C3B81C6EE65100FA5A02 /* AEXML+Helper.swift in Sources */,
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
@@ -1168,6 +1154,7 @@
 				FA5CC18B1CE2A2C6005C550D /* NameManagerTest.swift in Sources */,
 				FAFAEE3B1CDA81F500698179 /* XCTestCase+Helper.swift in Sources */,
 				FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */,
+				FA27D9E21D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift in Sources */,
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
 				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
 				FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */,
@@ -1203,8 +1190,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1214,6 +1203,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1250,8 +1240,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1260,6 +1252,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1280,6 +1273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1294,6 +1288,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1301,6 +1296,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1314,6 +1310,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1334,6 +1331,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1348,7 +1346,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
