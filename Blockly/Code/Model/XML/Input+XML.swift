@@ -63,10 +63,10 @@ extension Input {
     let xml = AEXMLElement(
       name: elementName, value: nil, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
     if let connectedBlock = connectedBlock {
-      xml.addChild(try connectedBlock.toXML())
+      xml.add(child: try connectedBlock.toXML())
     }
     if let connectedShadowBlock = connectedShadowBlock {
-      xml.addChild(try connectedShadowBlock.toXML())
+      xml.add(child: try connectedShadowBlock.toXML())
     }
     xmlElements.append(xml)
 

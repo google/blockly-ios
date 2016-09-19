@@ -45,7 +45,7 @@ extension Block {
   malformed data, or contradictory data).
   - Returns: A new block builder.
   */
-  public class func builderFromJSON(_ json: [String: Any]) throws -> Block.Builder
+  public class func builderFrom(json: [String: Any]) throws -> Block.Builder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.invalidBlockDefinition,
@@ -67,29 +67,29 @@ extension Block {
 
     if let output = json[PARAMETER_OUTPUT] {
       if let typeCheck = output as? String {
-        try builder.setOutputConnectionEnabled(true, typeChecks: [typeCheck])
+        try builder.setOutputConnection(enabled: true, typeChecks: [typeCheck])
       } else if let typeChecks = output as? [String] {
-        try builder.setOutputConnectionEnabled(true, typeChecks: typeChecks)
+        try builder.setOutputConnection(enabled: true, typeChecks: typeChecks)
       } else {
-        try builder.setOutputConnectionEnabled(true)
+        try builder.setOutputConnection(enabled: true)
       }
     }
     if let previousStatement = json[PARAMETER_PREVIOUS_STATEMENT] {
       if let typeCheck = previousStatement as? String {
-        try builder.setPreviousConnectionEnabled(true, typeChecks: [typeCheck])
+        try builder.setPreviousConnection(enabled: true, typeChecks: [typeCheck])
       } else if let typeChecks = previousStatement as? [String] {
-        try builder.setPreviousConnectionEnabled(true, typeChecks: typeChecks)
+        try builder.setPreviousConnection(enabled: true, typeChecks: typeChecks)
       } else {
-        try builder.setPreviousConnectionEnabled(true)
+        try builder.setPreviousConnection(enabled: true)
       }
     }
     if let nextStatement = json[PARAMETER_NEXT_STATEMENT] {
       if let typeCheck = nextStatement as? String {
-        try builder.setNextConnectionEnabled(true, typeChecks: [typeCheck])
+        try builder.setNextConnection(enabled: true, typeChecks: [typeCheck])
       } else if let typeChecks = nextStatement as? [String] {
-        try builder.setNextConnectionEnabled(true, typeChecks: typeChecks)
+        try builder.setNextConnection(enabled: true, typeChecks: typeChecks)
       } else {
-        try builder.setNextConnectionEnabled(true)
+        try builder.setNextConnection(enabled: true)
       }
     }
     if let inputsInline = json[PARAMETER_INPUTS_INLINE] as? Bool {
@@ -117,8 +117,8 @@ extension Block {
 
       // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
-      builder.inputBuilders += try interpolateMessage(
-        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
+      builder.inputBuilders += try interpolate(
+        message: message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
 
       i += 1
     }
@@ -143,10 +143,10 @@ extension Block {
   `Input` or `Field`.
   - Returns: An `Input.Builder` array
   */
-  internal class func interpolateMessage(_ message: String, arguments: Array<[String: Any]>,
+  internal class func interpolate(message: String, arguments: Array<[String: Any]>,
     lastDummyAlignment: Input.Alignment) throws -> [Input.Builder]
   {
-    let tokens = Block.tokenizeMessage(message)
+    let tokens = Block.tokenize(message: message)
     var processedIndices = [Bool](repeating: false, count: arguments.count)
     var tempFieldList = [Field]()
     var allInputBuilders = Array<Input.Builder>()
@@ -238,7 +238,7 @@ extension Block {
   - Parameter message: The message to tokenize
   - Returns: An array of tokens consisting of either `String` or `Int`
   */
-  internal class func tokenizeMessage(_ message: String) -> [Any] {
+  internal class func tokenize(message: String) -> [Any] {
     enum State {
       case baseCase, percentFound, percentAndDigitFound
     }

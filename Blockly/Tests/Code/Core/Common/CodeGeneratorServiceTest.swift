@@ -50,13 +50,13 @@ class CodeGeneratorServiceTest: XCTestCase {
     let workspace = Workspace()
     guard
       let loopBlock = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("controls_repeat_ext")
+        try self._blockFactory.buildBlock(name: "controls_repeat_ext")
       }),
       let loopValueBlock = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("math_number")
+        try self._blockFactory.buildBlock(name: "math_number")
       }),
-      let parentInput = loopBlock.firstInputWithName("TIMES"),
-      let fieldInput = loopValueBlock.firstFieldWithName("NUM") as? FieldInput else
+      let parentInput = loopBlock.firstInputWith(name: "TIMES"),
+      let fieldInput = loopValueBlock.firstFieldWith(name: "NUM") as? FieldInput else
     {
       XCTFail("Could not build blocks")
       return
@@ -91,7 +91,7 @@ class CodeGeneratorServiceTest: XCTestCase {
       XCTFail("Error occurred during code generation: \(error)")
       expectation.fulfill()
     }
-    _codeGeneratorService.generateCodeForRequest(request)
+    _codeGeneratorService.generateCodeFor(request: request)
 
     // Wait 10s for code generation to finish
     waitForExpectations(timeout: 10.0, handler: { error in
@@ -107,13 +107,13 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     guard
       let loopBlock = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("controls_repeat_ext")
+        try self._blockFactory.buildBlock(name: "controls_repeat_ext")
       }),
       let loopValueBlock = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("math_number")
+        try self._blockFactory.buildBlock(name: "math_number")
       }),
-      let parentInput = loopBlock.firstInputWithName("TIMES"),
-      let fieldInput = loopValueBlock.firstFieldWithName("NUM") as? FieldInput else
+      let parentInput = loopBlock.firstInputWith(name: "TIMES"),
+      let fieldInput = loopValueBlock.firstFieldWith(name: "NUM") as? FieldInput else
     {
       XCTFail("Could not build blocks")
       return
@@ -149,7 +149,7 @@ class CodeGeneratorServiceTest: XCTestCase {
         XCTFail("Error occurred during code generation: \(error)")
         expectation.fulfill()
       }
-      _codeGeneratorService.generateCodeForRequest(request)
+      _codeGeneratorService.generateCodeFor(request: request)
     }
 
     // Wait 100s for code generation to finish

@@ -140,7 +140,7 @@ public final class DefaultBlockView: BlockView {
           layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
         backgroundLayer.animationDuration =
           layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
-        backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
+        backgroundLayer.set(bezierPath: self.blockBackgroundBezierPath(), animated: animated)
         backgroundLayer.frame = self.bounds
       }
 
@@ -171,7 +171,7 @@ public final class DefaultBlockView: BlockView {
     // isn't animated into view based on the previous block layout.
     _disableLayerChangeAnimations = true
 
-    _backgroundLayer.setBezierPath(nil, animated: false)
+    _backgroundLayer.set(bezierPath: nil, animated: false)
     removeHighlightLayer()
   }
 
@@ -202,7 +202,7 @@ public final class DefaultBlockView: BlockView {
     // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
     highlightLayer.zPosition = 1
     highlightLayer.animationDuration = layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
-    highlightLayer.setBezierPath(path, animated: animated)
+    highlightLayer.set(bezierPath: path, animated: animated)
     highlightLayer.frame = bounds
   }
 

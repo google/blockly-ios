@@ -43,7 +43,7 @@ public class BlockFactory : NSObject {
   public init(jsonPath: String, bundle: Bundle? = nil) throws {
     super.init()
 
-    try loadFromJSONPaths([jsonPath], bundle: bundle)
+    try loadFrom(jsonPaths: [jsonPath], bundle: bundle)
   }
 
   /**
@@ -57,7 +57,7 @@ public class BlockFactory : NSObject {
   public init(jsonPaths: [String], bundle: Bundle? = nil) throws {
     super.init()
 
-    try loadFromJSONPaths(jsonPaths, bundle: bundle)
+    try loadFrom(jsonPaths: jsonPaths, bundle: bundle)
   }
 
   /**
@@ -66,7 +66,7 @@ public class BlockFactory : NSObject {
    - Parameter jsonPaths: List of paths to files containing blocks in JSON.
    - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
    */
-  public func loadFromJSONPaths(_ jsonPaths: [String], bundle: Bundle? = nil) throws {
+  public func loadFrom(jsonPaths: [String], bundle: Bundle? = nil) throws {
     let aBundle = (bundle ?? Bundle.main)
 
     for jsonPath in jsonPaths {
@@ -76,7 +76,7 @@ public class BlockFactory : NSObject {
       let jsonString = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
       let json = try JSONHelper.JSONArrayFromString(jsonString)
       for blockJson in json {
-        let blockBuilder = try Block.builderFromJSON(blockJson as! [String : Any])
+        let blockBuilder = try Block.builderFrom(json: blockJson as! [String : Any])
         // Ensure the builder is valid
         _ = try blockBuilder.build()
 
@@ -91,7 +91,7 @@ public class BlockFactory : NSObject {
   /**
    Creates a new instance of a block with the given name and returns it.
 
-   - Parameter blockName: The name of the block to build.
+   - Parameter name: The name of the block to build.
    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
    - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
@@ -100,10 +100,10 @@ public class BlockFactory : NSObject {
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
    - Returns: A new block if the name is known, nil otherwise.
    */
-  public func buildBlock(_ blockName: String, uuid: String? = nil, shadow: Bool = false) throws
+  public func buildBlock(name: String, uuid: String? = nil, shadow: Bool = false) throws
     -> Block?
   {
-    return try _blockBuilders[blockName]?.build(uuid: uuid, shadow: shadow)
+    return try _blockBuilders[name]?.build(uuid: uuid, shadow: shadow)
   }
 
   // MARK: - Internal
@@ -112,14 +112,14 @@ public class BlockFactory : NSObject {
    Creates a new instance of a block with the given name, adds it to a specific workspace, and
    returns it.
 
-   - Parameter blockName: The name of the block to obtain.
+   - Parameter name: The name of the block to obtain.
    - Parameter workspace: The workspace that should own the new block.
    - Throws:
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
    - Returns: A new block if the name is known, nil otherwise.
    */
-  internal func addBlock(_ blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
-    guard let block = try buildBlock(blockName) else {
+  internal func addBlock(name: String, toWorkspace workspace: Workspace) throws -> Block? {
+    guard let block = try buildBlock(name: name) else {
       return nil
     }
     try workspace.addBlockTree(block)

@@ -53,7 +53,7 @@ open class BezierPathLayer: CAShapeLayer {
    - Parameter bezierPath: The `UIBezierPath` to draw.
    - Parameter animated: Flag determining if the draw should be animated or not.
    */
-  open func setBezierPath(_ bezierPath: UIBezierPath?, animated: Bool) {
+  open func set(bezierPath: UIBezierPath?, animated: Bool) {
     if self.bezierPath == bezierPath {
       return
     }

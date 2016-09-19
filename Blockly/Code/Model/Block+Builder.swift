@@ -163,7 +163,7 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has a next or previous connection.
      */
-    public func setOutputConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setOutputConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
         throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
@@ -180,7 +180,7 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has an output connection.
      */
-    public func setNextConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setNextConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
         throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }
@@ -197,7 +197,7 @@ extension Block {
      - Throws:
      `BlocklyError`: Occurs if the builder already has an output connection.
      */
-    public func setPreviousConnectionEnabled(_ enabled: Bool, typeChecks: [String]? = nil) throws {
+    public func setPreviousConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
       if enabled && outputConnectionEnabled {
         throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
       }

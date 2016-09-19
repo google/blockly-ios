@@ -40,19 +40,19 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     // Create blocks
     guard
       let blockStatementOutputNoInput = BKYAssertDoesNotThrow({
-        try _blockFactory.buildBlock("output_no_input")
+        try _blockFactory.buildBlock(name: "output_no_input")
       }),
       let blockInputOutput = BKYAssertDoesNotThrow({
-        try _blockFactory.buildBlock("simple_input_output")
+        try _blockFactory.buildBlock(name: "simple_input_output")
       }),
       let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
-        try _blockFactory.buildBlock("statement_multiple_value_input")
+        try _blockFactory.buildBlock(name: "statement_multiple_value_input")
       }),
       let blockStatementNoNext = BKYAssertDoesNotThrow({
-        try _blockFactory.buildBlock("statement_no_next")
+        try _blockFactory.buildBlock(name: "statement_no_next")
       }),
       let blockStatementStatementInput = BKYAssertDoesNotThrow({
-        try _blockFactory.buildBlock("statement_statement_input")
+        try _blockFactory.buildBlock(name: "statement_statement_input")
       }) else
     {
       XCTFail("Could not create blocks")
@@ -142,7 +142,7 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
-        try builder2.setOutputConnectionEnabled(true)
+        try builder2.setOutputConnection(enabled: true)
         return try builder2.build()
       }) else
     {
@@ -192,7 +192,7 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
-        try builder2.setOutputConnectionEnabled(true)
+        try builder2.setOutputConnection(enabled: true)
         return try builder2.build()
       }) else
     {
@@ -247,12 +247,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     // Create blocks with opposite value connections
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
         let builder1 = Block.Builder(name: "test1")
-        try builder1.setNextConnectionEnabled(true)
+      try builder1.setNextConnection(enabled: true)
         return try builder1.build()
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
-        try builder2.setPreviousConnectionEnabled(true)
+        try builder2.setPreviousConnection(enabled: true)
         return try builder2.build()
       }) else
     {
@@ -309,12 +309,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     // Create blocks with opposite value connections
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
       let builder1 = Block.Builder(name: "test1")
-      try builder1.setNextConnectionEnabled(true)
+      try builder1.setNextConnection(enabled: true)
       return try builder1.build()
     }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
-        try builder2.setPreviousConnectionEnabled(true)
+        try builder2.setPreviousConnection(enabled: true)
         return try builder2.build()
       }) else
     {

@@ -86,9 +86,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       let loopIcon = UIImage(named: "icon_loop")
       let loops = toolbox.addCategory("Loops", color: UIColor.yellow, icon: loopIcon)
-      if let repeatBlock = try _blockFactory.buildBlock("controls_repeat_ext"),
-        let repeatBlockInput = repeatBlock.firstInputWithName("TIMES"),
-        let numberBlock = try _blockFactory.buildBlock("non_negative_integer", shadow: true)
+      if let repeatBlock = try _blockFactory.buildBlock(name: "controls_repeat_ext"),
+        let repeatBlockInput = repeatBlock.firstInputWith(name: "TIMES"),
+        let numberBlock = try _blockFactory.buildBlock(name: "non_negative_integer", shadow: true)
       {
         // Add shadow block to repeat loop
         try repeatBlockInput.connection?.connectShadowTo(numberBlock.outputConnection)
@@ -100,10 +100,11 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let prevNextCategory =
         toolbox.addCategory("Prev / Next", color: UIColor.green, icon: prevNextIcon)
       try addBlock("statement_no_input", toWorkspace: prevNextCategory)
-      if let statementValueInputBlock = try _blockFactory.buildBlock("statement_value_input"),
-        let noNextBlock = try _blockFactory.buildBlock("statement_value_input", shadow: true),
-        let noNextBlock2 = try _blockFactory.buildBlock("statement_no_input", shadow: true),
-        let simpleInputOutput = try _blockFactory.buildBlock("simple_input_output", shadow: true)
+      if let statementValueInputBlock = try _blockFactory.buildBlock(name: "statement_value_input"),
+        let noNextBlock = try _blockFactory.buildBlock(name: "statement_value_input", shadow: true),
+        let noNextBlock2 = try _blockFactory.buildBlock(name: "statement_no_input", shadow: true),
+        let simpleInputOutput = try _blockFactory.buildBlock(
+          name: "simple_input_output", shadow: true)
       {
         // Add shadow block to next block
         try statementValueInputBlock.nextConnection?.connectShadowTo(noNextBlock.previousConnection)
@@ -147,7 +148,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   @discardableResult
   private func addBlock(_ blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
-    if let block = try _blockFactory.buildBlock(blockName) {
+    if let block = try _blockFactory.buildBlock(name: blockName) {
       try workspace.addBlockTree(block)
       return block
     }

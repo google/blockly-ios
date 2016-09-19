@@ -60,7 +60,7 @@ class BlockLayoutTest: XCTestCase {
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
-      XCTAssertNil(blockLayout.inputLayoutBeforeLayout(dummyInputLayout))
+      XCTAssertNil(blockLayout.inputLayoutBefore(layout: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
     }
@@ -91,14 +91,15 @@ class BlockLayoutTest: XCTestCase {
       for i in 0 ..< inputLayouts.count {
         let previousInputLayout : InputLayout? = (i > 0 ? inputLayouts[i - 1] : nil)
         let currentInputLayout = inputLayouts[i]
-        XCTAssertEqual(previousInputLayout, blockLayout.inputLayoutBeforeLayout(currentInputLayout))
+        XCTAssertEqual(previousInputLayout,
+          blockLayout.inputLayoutBefore(layout: currentInputLayout))
       }
 
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
-      XCTAssertNil(blockLayout.inputLayoutBeforeLayout(dummyInputLayout))
+      XCTAssertNil(blockLayout.inputLayoutBefore(layout: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
     }
@@ -122,7 +123,7 @@ class BlockLayoutTest: XCTestCase {
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
-      XCTAssertNil(blockLayout.inputLayoutAfterLayout(dummyInputLayout))
+      XCTAssertNil(blockLayout.inputLayoutAfter(layout: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
     }
@@ -154,14 +155,14 @@ class BlockLayoutTest: XCTestCase {
         let currentInputLayout = inputLayouts[i]
         let nextInputLayout : InputLayout? =
           (i < inputLayouts.count - 1 ? inputLayouts[i + 1] : nil)
-        XCTAssertEqual(nextInputLayout, blockLayout.inputLayoutAfterLayout(currentInputLayout))
+        XCTAssertEqual(nextInputLayout, blockLayout.inputLayoutAfter(layout: currentInputLayout))
       }
 
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
-      XCTAssertNil(blockLayout.inputLayoutAfterLayout(dummyInputLayout))
+      XCTAssertNil(blockLayout.inputLayoutAfter(layout: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
     }

@@ -29,7 +29,7 @@ class BlockJSONTest: XCTestCase {
     do {
       let jsonString = try String(contentsOfFile: path!, encoding: String.Encoding.utf8)
       let json = try JSONHelper.JSONDictionaryFromString(jsonString)
-      block = try Block.builderFromJSON(json).build()
+      block = try Block.builderFrom(json: json).build()
       try! workspace.addBlockTree(block)
     } catch let error as NSError {
       XCTFail("Error: \(error.localizedDescription)")
@@ -166,12 +166,12 @@ class BlockJSONTest: XCTestCase {
   // MARK: - tokenizeMessage
 
   func testTokenizeMessage_emptyMessage() {
-    let tokens = Block.tokenizeMessage("")
+    let tokens = Block.tokenize(message: "")
     XCTAssertEqual(0, tokens.count)
   }
 
   func testTokenizeMessage_emojiMessage() {
-    let tokens = Block.tokenizeMessage("👋 %1 🌏")
+    let tokens = Block.tokenize(message: "👋 %1 🌏")
     XCTAssertEqual(3, tokens.count)
     if tokens.count >= 3 {
       XCTAssertEqual("👋 ", tokens[0] as? String)
@@ -181,7 +181,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_simpleMessage() {
-    let tokens = Block.tokenizeMessage("Simple text")
+    let tokens = Block.tokenize(message: "Simple text")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("Simple text", tokens[0] as? String)
@@ -189,7 +189,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_complexMessage() {
-    let tokens = Block.tokenizeMessage("  token1%1%%%3another\n%29 😸📺 %1234567890")
+    let tokens = Block.tokenize(message: "  token1%1%%%3another\n%29 😸📺 %1234567890")
     XCTAssertEqual(8, tokens.count)
     if tokens.count >= 8 {
       XCTAssertEqual("  token1", tokens[0] as? String)
@@ -204,7 +204,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_unescapePercent() {
-    let tokens = Block.tokenizeMessage("blah%blahblah")
+    let tokens = Block.tokenize(message: "blah%blahblah")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("blah%blahblah", tokens[0] as? String)
@@ -212,7 +212,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_trailingPercent() {
-    let tokens = Block.tokenizeMessage("%")
+    let tokens = Block.tokenize(message: "%")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("%", tokens[0] as? String)

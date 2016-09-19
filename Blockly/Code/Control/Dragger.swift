@@ -118,7 +118,7 @@ public final class Dragger: NSObject {
       (touchPosition - gestureData.touchStartPosition)
 
     // Move to the new position (only update the canvas size at the very end of the drag)
-    layout.parentBlockGroupLayout?.moveToWorkspacePosition(position, updateCanvasSize: false)
+    layout.parentBlockGroupLayout?.moveTo(workspacePosition: position, updateCanvasSize: false)
 
     // Update the highlighted connection for this drag
     updateHighlightedConnectionForDrag(gestureData)
@@ -161,7 +161,7 @@ public final class Dragger: NSObject {
       }
 
       // Bump any neighbours of the block layout
-      workspaceLayoutCoordinator.blockBumper.bumpNeighboursOfBlockLayout(layout)
+      workspaceLayoutCoordinator.blockBumper.bumpNeighboursOf(blockLayout: layout)
 
       // Update the highlighted connections for all other drags (due to potential changes in block
       // sizes)

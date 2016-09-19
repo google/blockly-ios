@@ -81,7 +81,7 @@ open class LayoutBuilder: NSObject {
       try layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
     let position = block.position
     // If this Block has a position use it to initialize the layout's position.
-    blockGroupLayout.moveToWorkspacePosition(position)
+    blockGroupLayout.moveTo(workspacePosition: position)
 
     try buildLayoutTreeForBlockGroupLayout(blockGroupLayout, block: block)
 
@@ -112,7 +112,7 @@ open class LayoutBuilder: NSObject {
     }
 
     // Add to block group layout
-    blockGroupLayout.appendBlockLayouts(blockLayouts, updateLayout: false)
+    blockGroupLayout.append(blockLayouts: blockLayouts, updateLayout: false)
   }
 
   /**
@@ -133,7 +133,7 @@ open class LayoutBuilder: NSObject {
     // Build the input layouts for this block
     for input in block.inputs {
       let inputLayout = try buildLayoutTreeForInput(input, engine: engine)
-      blockLayout.appendInputLayout(inputLayout)
+      blockLayout.append(inputLayout: inputLayout)
     }
 
     return blockLayout

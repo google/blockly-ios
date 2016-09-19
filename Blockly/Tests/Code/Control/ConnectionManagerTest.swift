@@ -216,7 +216,7 @@ class ConnectionManagerTest: XCTestCase {
 
     XCTAssertEqual(5, list.count)
     let conn = createConnection(0, 3, .previousStatement)
-    XCTAssertEqual(3, list.findPositionForConnection(conn))
+    XCTAssertEqual(3, list.findPositionFor(connection: conn))
   }
 
   func testYSortedListFind() {
@@ -449,7 +449,7 @@ class ConnectionManagerTest: XCTestCase {
   fileprivate func getNeighbourHelper(
     _ list: ConnectionManager.YSortedList, x: CGFloat, y: CGFloat, radius: CGFloat) -> [Connection]
   {
-    return list.neighboursForConnection(createConnection(x, y, .nextStatement), maxRadius: radius)
+    return list.neighboursFor(connection: createConnection(x, y, .nextStatement), maxRadius: radius)
   }
 
   fileprivate func searchList(_ list: ConnectionManager.YSortedList, x: CGFloat, y: CGFloat,

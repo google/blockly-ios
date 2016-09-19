@@ -25,7 +25,7 @@ public protocol BlockDelegate: class {
 
    - Parameter block: The `Block` that changed.
    */
-  func didUpdateBlock(_ block: Block)
+  func didUpdate(block: Block)
 }
 
 /**
@@ -92,27 +92,27 @@ public final class Block : NSObject {
   public let color: UIColor
   /// Tooltip text of the block
   public var tooltip: String {
-    didSet { didSetEditableProperty(&tooltip, oldValue) }
+    didSet { didSet(editableProperty: &tooltip, oldValue) }
   }
   /// The comment text of the block
   public var comment: String {
-    didSet { didSetEditableProperty(&comment, oldValue) }
+    didSet { didSet(editableProperty: &comment, oldValue) }
   }
   /// A help URL to learn more info about this block
   public var helpURL: String {
-    didSet { didSetEditableProperty(&helpURL, oldValue) }
+    didSet { didSet(editableProperty: &helpURL, oldValue) }
   }
   /// Flag indicating if this block may be deleted
   public var deletable: Bool {
-    didSet { didSetProperty(deletable, oldValue) }
+    didSet { didSet(property: deletable, oldValue) }
   }
   /// Flag indicating if this block may be moved by the user
   public var movable: Bool {
-    didSet { didSetProperty(movable, oldValue) }
+    didSet { didSet(property: movable, oldValue) }
   }
   /// Flag indicating if this block has had its user interaction disabled
   public var disabled: Bool  {
-    didSet { didSetProperty(disabled, oldValue) }
+    didSet { didSet(property: disabled, oldValue) }
   }
   /// Flag indicating if this block may be dragged by the user
   public var draggable: Bool {
@@ -301,7 +301,7 @@ public final class Block : NSObject {
    - Parameter name: The input name
    - Returns: The first input with that name or nil.
    */
-  public func firstInputWithName(_ name: String) -> Input? {
+  public func firstInputWith(name: String) -> Input? {
     if name == "" {
       return nil
     }
@@ -319,7 +319,7 @@ public final class Block : NSObject {
    - Parameter name: The field name
    - Returns: The first field with that name or nil.
    */
-  public func firstFieldWithName(_ name: String) -> Field? {
+  public func firstFieldWith(name: String) -> Field? {
     if name == "" {
       return nil
     }
@@ -455,7 +455,7 @@ public final class Block : NSObject {
    - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  public func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
+  public func didSet<T: Equatable>(editableProperty: inout T, _ oldValue: T)
     -> Bool
   {
     if !self.editable {
@@ -464,7 +464,7 @@ public final class Block : NSObject {
     if editableProperty == oldValue {
       return false
     }
-    delegate?.didUpdateBlock(self)
+    delegate?.didUpdate(block: self)
     return true
   }
 
@@ -487,11 +487,11 @@ public final class Block : NSObject {
    - Returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  public func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {
+  public func didSet<T: Equatable>(property: T, _ oldValue: T) -> Bool {
     if property == oldValue {
       return false
     }
-    delegate?.didUpdateBlock(self)
+    delegate?.didUpdate(block: self)
     return true
   }
 }

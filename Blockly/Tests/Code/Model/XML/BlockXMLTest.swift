@@ -37,7 +37,7 @@ class BlockXMLTest: XCTestCase {
       XCTAssertEqual(WorkspacePointMake(37, 13), rootBlock.position)
       XCTAssertEqual("3", rootBlock.uuid)
       XCTAssertEqual("simple_block",
-        (rootBlock.firstFieldWithName("text_input") as? FieldInput)?.text)
+        (rootBlock.firstFieldWith(name: "text_input") as? FieldInput)?.text)
     } else {
       XCTFail("Block tree was not parsed")
     }
@@ -46,7 +46,7 @@ class BlockXMLTest: XCTestCase {
     if let rootBlock = parseBlockFromXML(BlockTestStrings.NO_BLOCK_ID, factory)?.rootBlock {
       XCTAssertEqual(WorkspacePointMake(-135, -902), rootBlock.position)
       XCTAssertEqual("no_block_id",
-        (rootBlock.firstFieldWithName("text_input") as? FieldInput)?.text)
+        (rootBlock.firstFieldWith(name: "text_input") as? FieldInput)?.text)
     } else {
       XCTFail("Block tree was not parsed")
     }
@@ -62,7 +62,7 @@ class BlockXMLTest: XCTestCase {
       parseBlockFromXML(BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_GOOD), factory)
     {
       XCTAssertEqual(2, blockTree.allBlocks.count)
-      let block = blockTree.rootBlock.firstInputWithName("value_input")?.connectedBlock
+      let block = blockTree.rootBlock.firstInputWith(name: "value_input")?.connectedBlock
       XCTAssertEqual("6", block?.uuid)
     } else {
       XCTFail("Block tree was not parsed")
@@ -107,7 +107,7 @@ class BlockXMLTest: XCTestCase {
       BlockTestStrings.assembleBlock(BlockTestStrings.FIELD_HAS_NAME), factory)
     {
       XCTAssertEqual("field_has_name",
-        (blockTree.rootBlock.firstFieldWithName("text_input") as? FieldInput)?.text)
+        (blockTree.rootBlock.firstFieldWith(name: "text_input") as? FieldInput)?.text)
     } else {
       XCTFail("Block tree was not parsed")
     }
@@ -126,7 +126,7 @@ class BlockXMLTest: XCTestCase {
       parseBlockFromXML(BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_GOOD), factory)
     {
       XCTAssertEqual(2, blockTree.allBlocks.count)
-      let block = blockTree.rootBlock.firstInputWithName("NAME")?.connectedBlock
+      let block = blockTree.rootBlock.firstInputWith(name: "NAME")?.connectedBlock
       XCTAssertEqual("11", block?.uuid)
     } else {
       XCTFail("Block tree was not parsed")
@@ -168,7 +168,7 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithShadowInputValue() {
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_SHADOW)
     if let blockTree = parseBlockFromXML(xml, factory),
-      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection
+      let connection = blockTree.rootBlock.firstInputWith(name: "value_input")?.connection
     {
       XCTAssertEqual(2, blockTree.allBlocks.count)
       XCTAssertFalse(connection.connected)
@@ -181,7 +181,7 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithRealAndShadowInputValues() {
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_SHADOW_GOOD)
     if let blockTree = parseBlockFromXML(xml, factory),
-      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection
+      let connection = blockTree.rootBlock.firstInputWith(name: "value_input")?.connection
     {
       XCTAssertEqual(3, blockTree.allBlocks.count)
       XCTAssertTrue(connection.connected)
@@ -198,7 +198,7 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithShadowInputStatement() {
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_SHADOW_ONLY)
     if let blockTree = parseBlockFromXML(xml, factory),
-      let connection = blockTree.rootBlock.firstInputWithName("NAME")?.connection
+      let connection = blockTree.rootBlock.firstInputWith(name: "NAME")?.connection
     {
       XCTAssertEqual(2, blockTree.allBlocks.count)
       XCTAssertFalse(connection.connected)
@@ -211,7 +211,7 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithRealAndShadowInputStatements() {
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.STATEMENT_REAL_AND_SHADOW)
     if let blockTree = parseBlockFromXML(xml, factory),
-      let connection = blockTree.rootBlock.firstInputWithName("NAME")?.connection
+      let connection = blockTree.rootBlock.firstInputWith(name: "NAME")?.connection
     {
       XCTAssertTrue(connection.connected)
       XCTAssertEqual("STATEMENT_REAL", connection.targetBlock?.uuid)
@@ -257,7 +257,7 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithValidNestedShadowBlocks() {
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.NESTED_SHADOW_GOOD)
     if let blockTree = parseBlockFromXML(xml, factory),
-      let connection = blockTree.rootBlock.firstInputWithName("value_input")?.connection,
+      let connection = blockTree.rootBlock.firstInputWith(name: "value_input")?.connection,
       let nextConnection = blockTree.rootBlock.nextConnection
     {
       XCTAssertFalse(connection.connected)
@@ -288,7 +288,7 @@ class BlockXMLTest: XCTestCase {
   // MARK: - XML Serialization Tests
 
   func testSerializeXML_SimpleBlockWithPosition() {
-    let block = try! factory.buildBlock("empty_block", uuid: "block_uuid") as Block!
+    let block = try! factory.buildBlock(name: "empty_block", uuid: "block_uuid") as Block!
     block?.position = WorkspacePointMake(999, -111)
 
     // This is the xml we expect from `block`:
@@ -304,7 +304,7 @@ class BlockXMLTest: XCTestCase {
   }
 
   func testSerializeXML_SimpleBlockWithNoPosition() {
-    let block = try! factory.buildBlock("empty_block", uuid: "uuid") as Block!
+    let block = try! factory.buildBlock(name: "empty_block", uuid: "uuid") as Block!
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"0\" y=\"0\" />
@@ -321,13 +321,13 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithInputValue() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("frankenblock", uuid: "364")
+        try self.factory.buildBlock(name: "frankenblock", uuid: "364")
       }),
       let input = BKYAssertDoesNotThrow({
-        block.firstInputWithName("value_input")
+        block.firstInputWith(name: "value_input")
       }),
       let inputBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_foo", uuid: "126")
+        try self.factory.buildBlock(name: "output_foo", uuid: "126")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -402,13 +402,13 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithInputStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("frankenblock", uuid: "1000")
+        try self.factory.buildBlock(name: "frankenblock", uuid: "1000")
       }),
       let input = BKYAssertDoesNotThrow({
-        block.firstInputWithName("NAME")
+        block.firstInputWith(name: "NAME")
       }),
       let inputBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "2000")
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "2000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -527,10 +527,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithNextStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "1000")
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "1000")
       }),
       let nextBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "2000")
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "2000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -585,7 +585,7 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_ShadowBlock() {
     guard let block = BKYAssertDoesNotThrow(
-      { try self.factory.buildBlock("empty_block", uuid: "abc", shadow: true) }) else
+      { try self.factory.buildBlock(name: "empty_block", uuid: "abc", shadow: true) }) else
     {
       XCTFail("Could not build block")
       return
@@ -612,10 +612,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowInputValue() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("simple_input_output", uuid: "364")
+        try self.factory.buildBlock(name: "simple_input_output", uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_foo", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.buildBlock(name: "output_foo", uuid: "VALUE_SHADOW", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -624,7 +624,7 @@ class BlockXMLTest: XCTestCase {
     block.position = WorkspacePointMake(37, 13)
 
     BKYAssertDoesNotThrow { () -> Void in
-      let input = block.firstInputWithName("value")
+      let input = block.firstInputWith(name: "value")
       try input?.connection?.connectShadowTo(shadowBlock.outputConnection)
     }
 
@@ -671,13 +671,13 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_BlockWithRealAndShadowInputValues() {
     guard let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("simple_input_output", uuid: "364")
+        try self.factory.buildBlock(name: "simple_input_output", uuid: "364")
       }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_foo", uuid: "VALUE_REAL")
+        try self.factory.buildBlock(name: "output_foo", uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_foo", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.buildBlock(name: "output_foo", uuid: "VALUE_SHADOW", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -686,7 +686,7 @@ class BlockXMLTest: XCTestCase {
     block.position = WorkspacePointMake(37, 13)
 
     BKYAssertDoesNotThrow { () -> Void in
-      let input = block.firstInputWithName("value")
+      let input = block.firstInputWith(name: "value")
       try input?.connection?.connectTo(realBlock.outputConnection)
       try input?.connection?.connectShadowTo(shadowBlock.outputConnection)
     }
@@ -746,10 +746,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowInputStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_statement_input", uuid: "1000")
+        try self.factory.buildBlock(name: "statement_statement_input", uuid: "1000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "2000", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "2000", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -759,7 +759,7 @@ class BlockXMLTest: XCTestCase {
     shadowBlock.position = WorkspacePointMake(100, 50)
 
     BKYAssertDoesNotThrow { () -> Void in
-      try block.firstInputWithName("statement input")?.connection?
+      try block.firstInputWith(name: "statement input")?.connection?
         .connectShadowTo(shadowBlock.previousConnection)
     }
 
@@ -807,13 +807,13 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithRealAndShadowInputStatements() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_statement_input", uuid: "1000")
+        try self.factory.buildBlock(name: "statement_statement_input", uuid: "1000")
       }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "2000")
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "2000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "3000", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "3000", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -824,7 +824,7 @@ class BlockXMLTest: XCTestCase {
     shadowBlock.position = WorkspacePointMake(100, 50)
 
     BKYAssertDoesNotThrow { () -> Void in
-      let input = block.firstInputWithName("statement input")
+      let input = block.firstInputWith(name: "statement input")
       try input?.connection?.connectTo(realBlock.previousConnection)
       try input?.connection?.connectShadowTo(shadowBlock.previousConnection)
     }
@@ -884,10 +884,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowNextStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "364")
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -941,13 +941,13 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_BlockWithRealAndShadowNextStatements() {
     guard let block = BKYAssertDoesNotThrow({
-      try self.factory.buildBlock("statement_no_input", uuid: "364")
+      try self.factory.buildBlock(name: "statement_no_input", uuid: "364")
     }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_input_no_next", uuid: "VALUE_REAL")
+        try self.factory.buildBlock(name: "statement_input_no_next", uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -1014,19 +1014,22 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithNestedShadowBlocks() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_multiple_value_input", uuid: "777")
+        try self.factory.buildBlock(name: "statement_multiple_value_input", uuid: "777")
       }),
       let parentValueShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("simple_input_output", uuid: "SHADOW_VALUE1", shadow: true)
+        try self.factory.buildBlock(name: "simple_input_output", uuid: "SHADOW_VALUE1",
+        shadow: true)
       }),
       let childValueShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_foo", uuid: "SHADOW_VALUE2", shadow: true)
+        try self.factory.buildBlock(name: "output_foo", uuid: "SHADOW_VALUE2", shadow: true)
       }),
       let parentNextShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_input", uuid: "SHADOW_STATEMENT1", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_input", uuid: "SHADOW_STATEMENT1",
+        shadow: true)
       }),
       let childNextShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("statement_no_next", uuid: "SHADOW_STATEMENT2", shadow: true)
+        try self.factory.buildBlock(name: "statement_no_next", uuid: "SHADOW_STATEMENT2",
+        shadow: true)
       }) else
     {
       XCTFail("Could not build blocks")
@@ -1037,7 +1040,7 @@ class BlockXMLTest: XCTestCase {
 
     // Connect the blocks together
     BKYAssertDoesNotThrow { () -> Void in
-      try block.firstInputWithName("value_1")?.connection?
+      try block.firstInputWith(name: "value_1")?.connection?
         .connectShadowTo(parentValueShadowBlock.outputConnection)
       try parentValueShadowBlock.onlyValueInput()?.connection?
         .connectShadowTo(childValueShadowBlock.outputConnection)
@@ -1159,7 +1162,7 @@ class BlockXMLTest: XCTestCase {
   func parseBlockFromXML(_ xmlString: String, _ factory: BlockFactory) -> Block.BlockTree? {
     do {
       let xmlDoc = try AEXMLDocument(xml: xmlString)
-      return try Block.blockTreeFromXML(xmlDoc.root, factory: factory)
+      return try Block.blockTreeFrom(xml: xmlDoc.root, factory: factory)
     } catch {
     }
 

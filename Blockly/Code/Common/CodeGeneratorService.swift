@@ -66,7 +66,7 @@ public final class CodeGeneratorService: NSObject {
 
    - Parameter request: The request
    */
-  public func generateCodeForRequest(_ request: Request) {
+  public func generateCodeFor(request: Request) {
     request.codeGeneratorService = self
     requestQueue.addOperation(request)
   }
@@ -74,7 +74,7 @@ public final class CodeGeneratorService: NSObject {
   /**
    Cancels code generation for a given request.
    */
-  public func cancelRequest(_ request: Request) {
+  public func cancel(request: Request) {
     request.cancel()
   }
 
@@ -87,7 +87,7 @@ public final class CodeGeneratorService: NSObject {
 
   // MARK: - Private
 
-  fileprivate func executeRequest(_ request: Request) {
+  fileprivate func execute(request: Request) {
     if let codeGenerator = self.codeGenerator ,
       (compareLists(codeGenerator.jsonBlockDefinitions, request.jsonBlockDefinitions) &&
       compareLists(codeGenerator.jsBlockGenerators, request.jsBlockGenerators) &&
@@ -95,8 +95,8 @@ public final class CodeGeneratorService: NSObject {
     {
       // No JS/JSON files have changed since the last request. Use the existing code generator.
       codeGenerator.generateCodeForWorkspaceXML(request.workspaceXML,
-        completion: request.completeRequestWithCode,
-        error: request.completeRequestWithError)
+        completion: request.completeRequestWith(code:),
+        error: request.completeRequestWith(error:))
     } else {
       // Use a new code generator (`CodeGenerator` must be instantiated on the main thread)
       DispatchQueue.main.async(execute: {
@@ -107,11 +107,11 @@ public final class CodeGeneratorService: NSObject {
           jsonBlockDefinitions: request.jsonBlockDefinitions,
           onLoadCompletion: {
             self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
-              completion: request.completeRequestWithCode,
-              error: request.completeRequestWithError)
+              completion: request.completeRequestWith(code:),
+              error: request.completeRequestWith(error:))
           }, onLoadFailure: { (error) -> Void in
             self.codeGenerator = nil // Nil out this self.codeGenerator so we don't use it again
-            request.completeRequestWithError(error)
+            request.completeRequestWith(error: error)
           })
       })
     }
@@ -229,7 +229,7 @@ extension CodeGeneratorService {
       // Execute the request. The operation will eventually execute:
       // completeRequestWithCode(...) or
       // completeRequestWithError(...)
-      codeGeneratorService?.executeRequest(self)
+      codeGeneratorService?.execute(request: self)
     }
 
     open override func cancel() {
@@ -240,7 +240,7 @@ extension CodeGeneratorService {
 
     // MARK: - Private
 
-    fileprivate func completeRequestWithCode(_ code: String) {
+    fileprivate func completeRequestWith(code: String) {
       DispatchQueue.main.async {
         if !self.isCancelled {
           self.onCompletion?(code)
@@ -249,7 +249,7 @@ extension CodeGeneratorService {
       }
     }
 
-    fileprivate func completeRequestWithError(_ error: String) {
+    fileprivate func completeRequestWith(error: String) {
       DispatchQueue.main.async {
         if !self.isCancelled {
           self.onError?(error)

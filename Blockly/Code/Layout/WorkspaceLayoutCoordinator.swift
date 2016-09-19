@@ -294,7 +294,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         aConnection.sourceBlock.layout?.parentBlockGroupLayout) // For a block's next statement
     {
       Layout.doNotAnimate {
-        blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
+        blockGroupLayout.append(blockLayouts: shadowBlockLayouts, updateLayout: true)
         blockGroupLayout.performLayout(includeChildren: true)
         blockGroupLayout.refreshViewPositionsForTree()
       }
@@ -331,7 +331,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
     // Remove all layouts connected to this shadow block layout
     let removedLayouts = shadowBlockLayoutParent
-      .removeAllStartingFromBlockLayout(shadowBlockLayout, updateLayout: false)
+      .removeAllStartingFrom(blockLayout: shadowBlockLayout, updateLayout: false)
       .flatMap { $0.flattenedLayoutTree(ofType: BlockLayout.self) }
 
     for removedLayout in removedLayouts {
@@ -406,11 +406,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
       if let targetInputLayout = targetConnection.sourceInput?.layout {
         // Move them to target input's block group layout
         targetInputLayout.blockGroupLayout
-          .claimBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
+          .claim(blockLayout: sourceBlockLayout, updateLayouts: true)
       } else if let targetBlockLayout = targetConnection.sourceBlock.layout {
         // Move them to the target block's group layout
         targetBlockLayout.parentBlockGroupLayout?
-          .claimBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
+          .claim(blockLayout: sourceBlockLayout, updateLayouts: true)
       }
     } else {
       // The connection is no longer connected to anything.
@@ -429,7 +429,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         self.workspaceLayout.bringBlockGroupLayoutToFront(blockGroupLayout)
       }
 
-      blockGroupLayout.claimBlockLayoutAndFollowers(sourceBlockLayout, updateLayouts: true)
+      blockGroupLayout.claim(blockLayout: sourceBlockLayout, updateLayouts: true)
     }
 
     // Re-create the shadow block layout tree for the previous connection target (if it has one).

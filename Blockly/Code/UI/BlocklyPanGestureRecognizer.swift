@@ -288,7 +288,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    - Parameter view: The view to calculate the location of the touch position.
    - Return: The difference between the current position and the previous position.
    */
-  open func firstTouchDeltaInView(_ view: UIView?) -> CGPoint {
+  open func firstTouchDeltaIn(view: UIView?) -> CGPoint {
     if _touches.count > 0 {
       let currentPosition = _touches[0].location(in: view)
       let previousPosition = _touches[0].previousLocation(in: view)
@@ -306,7 +306,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    - Parameter block: The old `BlockView` to be tracked.
    - Parameter newBlock: The new `BlockView` to be tracked.
    */
-  open func replaceBlock(_ block: BlockView, withNewBlock newBlock: BlockView) {
+  open func replace(block: BlockView, withNewBlock newBlock: BlockView) {
     guard let touchIndex = _blocks.index(of: block) else {
       return
     }
@@ -319,10 +319,10 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
    - Parameter view: The `UIView` to be checked against.
    */
-  open func isTouchingView(_ otherView: UIView) -> Bool {
+  open func isTouching(view: UIView) -> Bool {
     for touch in _touches {
-      let touchPosition = touch.location(in: otherView)
-      if otherView.bounds.contains(touchPosition) {
+      let touchPosition = touch.location(in: view)
+      if view.bounds.contains(touchPosition) {
         return true
       }
     }

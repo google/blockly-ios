@@ -47,7 +47,7 @@ extension Workspace {
   public func loadBlocksFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws {
     if let allBlocksXML = xml["block"].all {
       for blockXML in allBlocksXML {
-        let blockTree = try Block.blockTreeFromXML(blockXML, factory: factory)
+        let blockTree = try Block.blockTreeFrom(xml: blockXML, factory: factory)
         try addBlockTree(blockTree.rootBlock)
       }
     }
@@ -72,7 +72,7 @@ extension Workspace {
       attributes: ["xmlns": "http://www.w3.org/1999/xhtml"])
 
     for block in topLevelBlocks() {
-      rootXML.addChild(try block.toXML())
+      rootXML.add(child: try block.toXML())
     }
 
     return xmlDoc
