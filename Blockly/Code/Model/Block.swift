@@ -25,7 +25,7 @@ public protocol BlockDelegate: class {
 
    - Parameter block: The `Block` that changed.
    */
-  func didUpdateBlock(_ block: Block)
+  func didUpdate(block: Block)
 }
 
 /**
@@ -301,7 +301,7 @@ public final class Block : NSObject {
    - Parameter name: The input name
    - Returns: The first input with that name or nil.
    */
-  public func firstInputWithName(_ name: String) -> Input? {
+  public func firstInput(withName name: String) -> Input? {
     if name == "" {
       return nil
     }
@@ -319,7 +319,7 @@ public final class Block : NSObject {
    - Parameter name: The field name
    - Returns: The first field with that name or nil.
    */
-  public func firstFieldWithName(_ name: String) -> Field? {
+  public func firstField(withName name: String) -> Field? {
     if name == "" {
       return nil
     }
@@ -464,7 +464,7 @@ public final class Block : NSObject {
     if editableProperty == oldValue {
       return false
     }
-    delegate?.didUpdateBlock(self)
+    delegate?.didUpdate(block: self)
     return true
   }
 
@@ -491,7 +491,7 @@ public final class Block : NSObject {
     if property == oldValue {
       return false
     }
-    delegate?.didUpdateBlock(self)
+    delegate?.didUpdate(block: self)
     return true
   }
 }

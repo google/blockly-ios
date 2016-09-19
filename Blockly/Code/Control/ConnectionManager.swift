@@ -186,11 +186,11 @@ public final class ConnectionManager: NSObject {
   coordinate system unit
   - Returns: A list of all nearby compatible connections.
   */
-  public func stationaryNeighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
+  public func stationaryNeighbors(forConnection connection: Connection, maxRadius: CGFloat)
     -> [Connection]
   {
     return _groups.filter({ $0.dragMode == false })
-      .flatMap({ $0.neighboursForConnection(connection, maxRadius: maxRadius)})
+      .flatMap({ $0.neighbors(forConnection: connection, maxRadius: maxRadius)})
   }
 
   // MARK: - Internal - For testing only
@@ -321,10 +321,10 @@ extension ConnectionManager {
     - Parameter maxRadius: How far out to search for compatible connections.
     - Returns: A list of all nearby compatible connections.
     */
-    internal func neighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
+    internal func neighbors(forConnection connection: Connection, maxRadius: CGFloat)
       -> [Connection] {
         let compatibleList = _oppositeLists[connection.type.rawValue]
-        return compatibleList.neighboursForConnection(connection, maxRadius: maxRadius)
+        return compatibleList.neighbors(forConnection: connection, maxRadius: maxRadius)
     }
 
     /**
@@ -393,20 +393,20 @@ extension ConnectionManager {
 
     // MARK: - ConnectionPositionDelegate
 
-    public func willChangePositionForConnection(_ connection: Connection) {
+    public func willChangePosition(forConnection connection: Connection) {
       if dragMode {
         return
       }
       // Position will change, temporarily remove it. It will be re-added in
-      // didChangePositionForConnection(:).
+      // didChangePosition(forConnection:).
       removeConnection(connection)
     }
 
-    public func didChangePositionForConnection(_ connection: Connection) {
+    public func didChangePosition(forConnection connection: Connection) {
       if dragMode {
         return
       }
-      // This call was immediately preceded by willChangePositionForConnection(:)
+      // This call was immediately preceded by willChangePosition(forConnection:)
       addConnection(connection)
     }
   }
@@ -446,7 +446,7 @@ extension ConnectionManager {
     - Parameter connection: The connection to insert.
     */
     internal func addConnection(_ connection: Connection) {
-      _connections.insert(connection, at: findPositionForConnection(connection))
+      _connections.insert(connection, at: findPosition(forConnection: connection))
     }
 
     /**
@@ -483,7 +483,7 @@ extension ConnectionManager {
       }
 
       // Should have the right y position.
-      let bestGuess = findPositionForConnection(connection)
+      let bestGuess = findPosition(forConnection: connection)
       if bestGuess >= _connections.count {
         // Not in list.
         return nil
@@ -518,7 +518,7 @@ extension ConnectionManager {
     - Parameter connection: The connection to insert.
     - Returns: The candidate index.
     */
-    internal func findPositionForConnection(_ connection: Connection) -> Int {
+    internal func findPosition(forConnection connection: Connection) -> Int {
       if _connections.isEmpty {
         return 0
       }
@@ -551,10 +551,10 @@ extension ConnectionManager {
         }
 
         let baseY = connection.position.y
-        // findPositionForConnection finds an index for insertion, which is always after any
+        // findPositionFor(connection:) finds an index for insertion, which is always after any
         // block with the same y index.  We want to search both forward and back, so search
         // on both sides of the index.
-        let closestIndex = findPositionForConnection(connection)
+        let closestIndex = findPosition(forConnection: connection)
 
         var bestConnection: Connection?
         var bestRadius = maxRadius
@@ -585,19 +585,19 @@ extension ConnectionManager {
         return bestConnection
     }
 
-    internal func neighboursForConnection(_ connection: Connection, maxRadius: CGFloat)
+    internal func neighbors(forConnection connection: Connection, maxRadius: CGFloat)
       -> [Connection] {
-        var neighbours = [Connection]()
+        var neighbors = [Connection]()
         // Don't bother.
         if _connections.isEmpty {
-          return neighbours
+          return neighbors
         }
 
         let baseY = connection.position.y
-        // findPositionForConnection finds an index for insertion, which is always after any
+        // findPositionFor(connection:) finds an index for insertion, which is always after any
         // block with the same y index.  We want to search both forward and back, so search
         // on both sides of the index.
-        let closestIndex = findPositionForConnection(connection)
+        let closestIndex = findPosition(forConnection: connection)
 
         // Walk forward and back on the y axis looking for the closest x,y point.
         // If both connections are connected, that's probably fine.  But if
@@ -616,7 +616,7 @@ extension ConnectionManager {
             connection.distanceFromConnection(temp) <= maxRadius &&
             couldConnect)
           {
-            neighbours.append(temp)
+            neighbors.append(temp)
           }
           pointerMin -= 1
         }
@@ -632,11 +632,11 @@ extension ConnectionManager {
               connection.distanceFromConnection(temp) <= maxRadius &&
               couldConnect)
             {
-              neighbours.append(temp)
+              neighbors.append(temp)
             }
             pointerMax += 1
         }
-        return neighbours
+        return neighbors
     }
 
     internal func contains(_ connection: Connection) -> Bool {

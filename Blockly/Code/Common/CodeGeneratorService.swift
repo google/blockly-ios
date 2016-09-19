@@ -66,7 +66,7 @@ public final class CodeGeneratorService: NSObject {
 
    - Parameter request: The request
    */
-  public func generateCodeForRequest(_ request: Request) {
+  public func generateCode(forRequest request: Request) {
     request.codeGeneratorService = self
     requestQueue.addOperation(request)
   }
@@ -95,8 +95,8 @@ public final class CodeGeneratorService: NSObject {
     {
       // No JS/JSON files have changed since the last request. Use the existing code generator.
       codeGenerator.generateCodeForWorkspaceXML(request.workspaceXML,
-        completion: request.completeRequestWithCode,
-        error: request.completeRequestWithError)
+        completion: request.completeRequest(withCode:),
+        error: request.completeRequest(withError:))
     } else {
       // Use a new code generator (`CodeGenerator` must be instantiated on the main thread)
       DispatchQueue.main.async(execute: {
@@ -107,11 +107,11 @@ public final class CodeGeneratorService: NSObject {
           jsonBlockDefinitions: request.jsonBlockDefinitions,
           onLoadCompletion: {
             self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
-              completion: request.completeRequestWithCode,
-              error: request.completeRequestWithError)
+              completion: request.completeRequest(withCode:),
+              error: request.completeRequest(withError:))
           }, onLoadFailure: { (error) -> Void in
             self.codeGenerator = nil // Nil out this self.codeGenerator so we don't use it again
-            request.completeRequestWithError(error)
+            request.completeRequest(withError: error)
           })
       })
     }
@@ -240,7 +240,7 @@ extension CodeGeneratorService {
 
     // MARK: - Private
 
-    fileprivate func completeRequestWithCode(_ code: String) {
+    fileprivate func completeRequest(withCode code: String) {
       DispatchQueue.main.async {
         if !self.isCancelled {
           self.onCompletion?(code)
@@ -249,7 +249,7 @@ extension CodeGeneratorService {
       }
     }
 
-    fileprivate func completeRequestWithError(_ error: String) {
+    fileprivate func completeRequest(withError error: String) {
       DispatchQueue.main.async {
         if !self.isCancelled {
           self.onError?(error)

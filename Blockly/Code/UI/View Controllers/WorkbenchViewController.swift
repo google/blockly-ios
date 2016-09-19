@@ -500,7 +500,7 @@ open class WorkbenchViewController: UIViewController {
     let newBlock = try workspaceLayoutCoordinator.copyBlockTree(blockLayout.block, editable: true)
 
     // Set its new workspace position
-    newBlock.layout?.parentBlockGroupLayout?.moveToWorkspacePosition(newWorkspacePosition)
+    newBlock.layout?.parentBlockGroupLayout?.move(toWorkspacePosition: newWorkspacePosition)
 
     // Because there are listeners on the layout hierarchy to update the corresponding view
     // hierarchy when layouts change, we just need to find the view that was automatically created.
@@ -976,7 +976,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
         guard let newBlock = copyBlockToWorkspace(blockView) else {
           return
         }
-        gesture.replaceBlock(block, withNewBlock: newBlock)
+        gesture.replace(block: block, withNewBlock: newBlock)
         blockView = newBlock
       } else if inTrash {
         let oldBlock = blockView
@@ -984,7 +984,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
         guard let newBlock = copyBlockToWorkspace(blockView) else {
           return
         }
-        gesture.replaceBlock(block, withNewBlock: newBlock)
+        gesture.replace(block: block, withNewBlock: newBlock)
         blockView = newBlock
         removeBlockFromTrash(oldBlock)
       }
@@ -1049,7 +1049,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
       // For toolbox blocks, only fire the pan gesture if the user is panning in the direction
       // perpendicular to the toolbox scrolling. Otherwise, don't let it fire, so the user can
       // simply continue scrolling the toolbox.
-      let delta = panGestureRecognizer.firstTouchDeltaInView(panGestureRecognizer.view)
+      let delta = panGestureRecognizer.firstTouchDelta(inView: panGestureRecognizer.view)
 
       // Figure out angle of delta vector, relative to the scroll direction
       let radians: CGFloat

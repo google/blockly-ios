@@ -206,14 +206,14 @@ public final class CodeGenerator: NSObject {
   // MARK: - Private
 
   /**
-  Returns the `String` contents from a given file.
+   Returns the `String` contents from a given file.
 
-  - Parameter bundledFile: The path to the file.
-  - Returns: The contents of the file.
-  - Throws:
-  `BlocklyError`: Thrown if there was an error loading the file.
-  */
-  fileprivate func contentsOfFile(_ bundledFile: BundledFile) throws -> String {
+   - Parameter bundledFile: The path to the file.
+   - Returns: The contents of the file.
+   - Throws:
+   `BlocklyError`: Thrown if there was an error loading the file.
+   */
+  fileprivate func contents(ofBundledFile bundledFile: BundledFile) throws -> String {
     let fromBundle = bundledFile.bundle ?? Bundle.main
     let file = bundledFile.file
     if let path = fromBundle.path(forResource: file, ofType: nil) {
@@ -283,22 +283,22 @@ extension CodeGenerator: WKNavigationDelegate {
       var jsScripts = [String]()
 
       // Load our special bridge file
-      jsScripts.append(try contentsOfFile((file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
+      jsScripts.append(try contents(ofBundledFile: (file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
         bundle: Bundle(for: CodeGenerator.self))))
 
       // Load JS dependencies
       for bundledFile in jsCoreDependencies {
-        jsScripts.append(try contentsOfFile(bundledFile))
+        jsScripts.append(try contents(ofBundledFile: bundledFile))
       }
 
       // Load block generators
       for bundledFile in jsBlockGenerators {
-        jsScripts.append(try contentsOfFile(bundledFile))
+        jsScripts.append(try contents(ofBundledFile: bundledFile))
       }
 
       // Finally, import all the block definitions
       for bundledFile in jsonBlockDefinitions {
-        let fileContents = try contentsOfFile(bundledFile)
+        let fileContents = try contents(ofBundledFile: bundledFile)
         let fileContentsParameter = fileContents.bky_escapedJavaScriptParameter()
         let js = "CodeGeneratorBridge.importBlockDefinitions(\"\(fileContentsParameter)\")"
         jsScripts.append(js)

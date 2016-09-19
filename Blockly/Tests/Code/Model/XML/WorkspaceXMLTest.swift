@@ -164,12 +164,12 @@ class WorkspaceXMLTest: XCTestCase {
   func testSerializeXML_NestedBlocks() {
     guard
       let parent = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("simple_input_output", uuid: "parentBlock")
+        try self.factory.makeBlock(name: "simple_input_output", uuid: "parentBlock")
       }),
       let child = BKYAssertDoesNotThrow({
-        try self.factory.buildBlock("output_no_input", uuid: "childBlock")
+        try self.factory.makeBlock(name: "output_no_input", uuid: "childBlock")
       }),
-      let parentInput = parent.firstInputWithName("value") else
+      let parentInput = parent.firstInput(withName: "value") else
     {
       XCTFail("Could not build blocks")
       return

@@ -152,7 +152,7 @@ public final class DefaultInputLayout: InputLayout {
         // Special case: Don't add right padding to the last field of an inline dummy input if it's
         // immediately followed by another dummy/value input.
         if self.input.type == .dummy {
-          let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayoutAfterLayout(self)
+          let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
           if nextInputLayout?.input.type == .value || nextInputLayout?.input.type == .dummy {
             addRightEdgeInset = false
           }
@@ -230,7 +230,7 @@ public final class DefaultInputLayout: InputLayout {
     case .statement:
       // If this is the first child for the block layout or the previous input type was a statement,
       // we need to add an empty row at the top to begin a new "C" shape.
-      let previousInputLayout = (parentLayout as? BlockLayout)?.inputLayoutBeforeLayout(self)
+      let previousInputLayout = (parentLayout as? BlockLayout)?.inputLayout(before: self)
 
       let rowTopPadding = (self.isFirstChild || previousInputLayout?.input.type == .statement) ?
         self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight) : 0

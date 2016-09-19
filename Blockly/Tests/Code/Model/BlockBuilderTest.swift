@@ -21,7 +21,7 @@ class BlockBuilderTest: XCTestCase {
   func testBuildBlock() {
     let workspace = Workspace()
     let block = buildFrankenBlock(workspace)
-    validateFrankenblock(block)
+    validate(frankenblock: block)
   }
 
   func testBuildFromBlock() {
@@ -34,7 +34,7 @@ class BlockBuilderTest: XCTestCase {
 
     let blockCopy = try! Block.Builder(block: block).build()
     try! workspace.addBlockTree(blockCopy)
-    validateFrankenblock(blockCopy)
+    validate(frankenblock: blockCopy)
 
     // Validate that the block was deep copied
     XCTAssertTrue(block !== blockCopy)
@@ -48,7 +48,7 @@ class BlockBuilderTest: XCTestCase {
 
   }
 
-  internal func validateFrankenblock(_ block: Block) {
+  internal func validate(frankenblock block: Block) {
     XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
     XCTAssertEqualWithAccuracy(
@@ -132,8 +132,8 @@ class BlockBuilderTest: XCTestCase {
     fields = []
 
     do {
-      try bob.setPreviousConnectionEnabled(true)
-      try bob.setNextConnectionEnabled(true, typeChecks: ["Boolean", "Number", "Array"])
+      try bob.setPreviousConnection(enabled: true)
+      try bob.setNextConnection(enabled: true, typeChecks: ["Boolean", "Number", "Array"])
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }

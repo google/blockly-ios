@@ -45,8 +45,8 @@ class WorkspaceTest: XCTestCase {
 
   func testDeactivateBlockTrees() {
     let builder = Block.Builder(name: "block")
-    BKYAssertDoesNotThrow { try builder.setPreviousConnectionEnabled(true) }
-    BKYAssertDoesNotThrow { try builder.setNextConnectionEnabled(true) }
+    BKYAssertDoesNotThrow { try builder.setPreviousConnection(enabled: true) }
+    BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 
     guard
       let orphanBlock = BKYAssertDoesNotThrow({ try builder.build() }),
@@ -165,8 +165,8 @@ class WorkspaceTest: XCTestCase {
 
   func testMaxBlocks_Tree() {
     let builder = Block.Builder(name: "block")
-    BKYAssertDoesNotThrow { try builder.setPreviousConnectionEnabled(true) }
-    BKYAssertDoesNotThrow { try builder.setNextConnectionEnabled(true) }
+    BKYAssertDoesNotThrow { try builder.setPreviousConnection(enabled: true) }
+    BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 
     guard
       let orphanBlock = BKYAssertDoesNotThrow({ try builder.build() }),

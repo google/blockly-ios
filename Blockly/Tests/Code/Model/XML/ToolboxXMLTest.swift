@@ -113,7 +113,7 @@ class ToolboxXMLTest: XCTestCase {
 
     let loopBlock = toolbox.categories[0].items[0].rootBlock
     XCTAssertEqual("controls_repeat_ext", loopBlock?.name)
-    XCTAssertEqual("math_number", loopBlock?.firstInputWithName("TIMES")?.connectedBlock?.name)
+    XCTAssertEqual("math_number", loopBlock?.firstInput(withName: "TIMES")?.connectedBlock?.name)
   }
 
   func testParseXML_BadXML() {

@@ -81,7 +81,7 @@ open class LayoutBuilder: NSObject {
       try layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
     let position = block.position
     // If this Block has a position use it to initialize the layout's position.
-    blockGroupLayout.moveToWorkspacePosition(position)
+    blockGroupLayout.move(toWorkspacePosition: position)
 
     try buildLayoutTreeForBlockGroupLayout(blockGroupLayout, block: block)
 
