@@ -25,3 +25,16 @@ Contributions made by corporations are covered by a different agreement than
 the one above, the
 [Software Grant and Corporate Contributor License Agreement]
 (https://cla.developers.google.com/about/google-corporate).
+
+### Updating dependency projects
+
+For simplicity purposes, dependency projects for Blockly are maintained as copies inside the repo
+and are managed using [Carthage](https://github.com/Carthage/Carthage).
+
+Any pull requests looking to update these dependencies should follow this process:
+
+1. Open a terminal window and navigate to Blockly's root directory.
+2. Execute `carthage update`. This will create a root folder named `Carthage` with all dependency
+projects.
+3. Delete the folder `third_party/Carthage`.
+4. Move the `Carthage` folder to `third_party/Carthage`.

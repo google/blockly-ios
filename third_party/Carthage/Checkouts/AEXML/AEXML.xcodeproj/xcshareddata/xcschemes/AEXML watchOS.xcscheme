@@ -17,7 +17,7 @@
                BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
                BuildableName = "AEXML.framework"
                BlueprintName = "AEXML watchOS"
-               ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
+               ReferencedContainer = "container:AEXML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
             BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML watchOS"
-            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
+            ReferencedContainer = "container:AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -67,7 +67,7 @@
             BlueprintIdentifier = "8B4A92DE1BDD5D330011F36F"
             BuildableName = "AEXML.framework"
             BlueprintName = "AEXML watchOS"
-            ReferencedContainer = "container:../../../../Carthage/Checkouts/AEXML/AEXML.xcodeproj">
+            ReferencedContainer = "container:AEXML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
