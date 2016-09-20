@@ -153,7 +153,7 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add block group layouts
     for _ in 0 ..< 10 {
       let blockGroupLayout =
-        try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts[blockGroupLayout.uuid] = blockGroupLayout
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
       // The block group's parent should be set to the _workspaceLayout now
@@ -174,7 +174,7 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add block group layouts
     for _ in 0 ..< 10 {
       let blockGroupLayout =
-        try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts.append(blockGroupLayout)
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
@@ -197,7 +197,7 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add block group layouts
     for _ in 0 ..< 10 {
       let blockGroupLayout =
-        try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
       allBlockGroupLayouts.append(blockGroupLayout)
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }
@@ -218,7 +218,7 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add block group layouts
     for _ in 0 ..< 10 {
       let blockGroupLayout =
-        try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
       blockGroupLayout.zIndex = 0
       _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
     }

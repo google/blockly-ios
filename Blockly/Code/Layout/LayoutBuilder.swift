@@ -78,7 +78,7 @@ open class LayoutBuilder: NSObject {
     }
 
     let blockGroupLayout =
-      try layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
+      try layoutFactory.makeBlockGroupLayout(engine: workspaceLayout.engine)
     let position = block.position
     // If this Block has a position use it to initialize the layout's position.
     blockGroupLayout.move(toWorkspacePosition: position)
@@ -127,7 +127,7 @@ open class LayoutBuilder: NSObject {
   */
   open func buildLayoutTreeForBlock(_ block: Block, engine: LayoutEngine) throws -> BlockLayout
   {
-    let blockLayout = try layoutFactory.layoutForBlock(block, engine: engine)
+    let blockLayout = try layoutFactory.makeBlockLayout(block: block, engine: engine)
     block.delegate = blockLayout // Have the layout listen for events on the block
 
     // Build the input layouts for this block
@@ -149,7 +149,7 @@ open class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
   open func buildLayoutTreeForInput(_ input: Input, engine: LayoutEngine) throws -> InputLayout {
-    let inputLayout = try layoutFactory.layoutForInput(input, engine: engine)
+    let inputLayout = try layoutFactory.makeInputLayout(input: input, engine: engine)
     input.delegate = inputLayout // Have the layout listen for events on the input
 
     // Build field layouts for this input
@@ -180,7 +180,7 @@ open class LayoutBuilder: NSObject {
    `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
    */
   open func buildLayoutForField(_ field: Field, engine: LayoutEngine) throws -> FieldLayout {
-    let fieldLayout = try layoutFactory.layoutForField(field, engine: engine)
+    let fieldLayout = try layoutFactory.makeFieldLayout(field: field, engine: engine)
     field.delegate = fieldLayout // Have the layout listen for events on the field
     return fieldLayout
   }

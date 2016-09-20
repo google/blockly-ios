@@ -284,7 +284,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Nothing is connected to aConnection. Re-create the shadow block hierarchy since it doesn't
     // exist.
     let shadowBlockGroupLayout =
-      try layoutBuilder.layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
+      try layoutBuilder.layoutFactory.makeBlockGroupLayout(engine: workspaceLayout.engine)
     try layoutBuilder.buildLayoutTreeForBlockGroupLayout(shadowBlockGroupLayout, block: shadowBlock)
     let shadowBlockLayouts = shadowBlockGroupLayout.blockLayouts
 
@@ -420,7 +420,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
       // position of the block that was disconnected
       let layoutFactory = layoutBuilder.layoutFactory
       let blockGroupLayout =
-        try layoutFactory.layoutForBlockGroupLayout(engine: workspaceLayout.engine)
+        try layoutFactory.makeBlockGroupLayout(engine: workspaceLayout.engine)
       blockGroupLayout.relativePosition = sourceBlockLayout.absolutePosition
 
       Layout.doNotAnimate {

@@ -125,7 +125,7 @@ extension Field {
       // Color
       registerType(FIELD_TYPE_COLOR) {
         (json: [String: Any]) throws -> Field in
-        let color = ColorHelper.colorFromRGB(json[PARAMETER_COLOR] as? String ?? "")
+        let color = ColorHelper.makeColor(rgb: json[PARAMETER_COLOR] as? String ?? "")
         return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           color: (color ?? UIColor.red))

@@ -976,7 +976,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
         guard let newBlock = copyBlockToWorkspace(blockView) else {
           return
         }
-        gesture.replace(block: block, withNewBlock: newBlock)
+        gesture.replaceBlock(block, with: newBlock)
         blockView = newBlock
       } else if inTrash {
         let oldBlock = blockView
@@ -984,8 +984,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
         guard let newBlock = copyBlockToWorkspace(blockView) else {
           return
         }
-        gesture.replace(block: block, withNewBlock: newBlock)
-        blockView = newBlock
+        gesture.replaceBlock(block, with: newBlock)
         removeBlockFromTrash(oldBlock)
       }
 

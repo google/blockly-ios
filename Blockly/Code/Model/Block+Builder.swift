@@ -77,7 +77,7 @@ extension Block {
     public init(name: String) {
       super.init()
       self.name = name
-      self.color = ColorHelper.colorFromHue(0)
+      self.color = ColorHelper.makeColor(hue: 0)
     }
 
     /**

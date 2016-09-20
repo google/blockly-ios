@@ -38,7 +38,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func testAppendBlockLayoutsEmpty() {
     let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+      try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
 
     XCTAssertEqual(0, blockGroupLayout.blockLayouts.count)
 
@@ -50,7 +50,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func testAppendBlockLayoutsNonEmpty() {
     let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+      try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
@@ -152,7 +152,7 @@ class BlockGroupLayoutTest: XCTestCase {
   func testReset() {
     // Create block group with a bunch of block layouts
     let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+      try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
     var blockLayouts = [BlockLayout]()
     for _ in 0 ..< 10 {
       blockLayouts.append(createBlockLayout())
@@ -169,7 +169,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func testMoveToWorkspacePositionForTopLevelBlockGroup() {
     let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+      try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
     blockGroupLayout.relativePosition = WorkspacePointMake(30, 30)
 
     // Add block group to workspace
@@ -217,7 +217,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   func createBlockGroupLayout(numberOfBlockLayouts: Int) -> BlockGroupLayout {
     let blockGroupLayout =
-      try! _layoutFactory.layoutForBlockGroupLayout(engine: _workspaceLayout.engine)
+      try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
 
     // Add a bunch of block layouts
     var blockLayouts = [BlockLayout]()
@@ -233,7 +233,7 @@ class BlockGroupLayoutTest: XCTestCase {
   func createBlockLayout() -> BlockLayout {
     let block = try! Block.Builder(name: "test").build()
     try! _workspaceLayout.workspace.addBlockTree(block)
-    let layout = try! _layoutFactory.layoutForBlock(block, engine: _workspaceLayout.engine)
+    let layout = try! _layoutFactory.makeBlockLayout(block: block, engine: _workspaceLayout.engine)
     block.delegate = layout
     return layout
   }

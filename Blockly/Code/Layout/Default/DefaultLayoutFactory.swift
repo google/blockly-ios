@@ -40,61 +40,61 @@ open class DefaultLayoutFactory: NSObject {
     super.init()
 
     // Register layout creators for default fields
-    registerLayoutCreatorForFieldType(FieldAngle.self) {
+    registerLayoutCreator(forFieldType: FieldAngle.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldAngleLayout(
         fieldAngle: field as! FieldAngle, engine: engine, measurer: FieldAngleView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldCheckbox.self) {
+    registerLayoutCreator(forFieldType: FieldCheckbox.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldCheckboxLayout(
         fieldCheckbox: field as! FieldCheckbox, engine: engine, measurer: FieldCheckboxView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldColor.self) {
+    registerLayoutCreator(forFieldType: FieldColor.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldColorLayout(
         fieldColor: field as! FieldColor, engine: engine, measurer: FieldColorView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldDate.self) {
+    registerLayoutCreator(forFieldType: FieldDate.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldDateLayout(
         fieldDate: field as! FieldDate, engine: engine, measurer: FieldDateView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldDropdown.self) {
+    registerLayoutCreator(forFieldType: FieldDropdown.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldDropdownLayout(
         fieldDropdown: field as! FieldDropdown, engine: engine, measurer: FieldDropdownView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldImage.self) {
+    registerLayoutCreator(forFieldType: FieldImage.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldImageLayout(
         fieldImage: field as! FieldImage, engine: engine, measurer: FieldImageView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldInput.self) {
+    registerLayoutCreator(forFieldType: FieldInput.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldInputLayout(
         fieldInput: field as! FieldInput, engine: engine, measurer: FieldInputView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldLabel.self) {
+    registerLayoutCreator(forFieldType: FieldLabel.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldLabelLayout(
         fieldLabel: field as! FieldLabel, engine: engine, measurer: FieldLabelView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldNumber.self) {
+    registerLayoutCreator(forFieldType: FieldNumber.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldNumberLayout(
         fieldNumber: field as! FieldNumber, engine: engine, measurer: FieldNumberView.self)
     }
 
-    registerLayoutCreatorForFieldType(FieldVariable.self) {
+    registerLayoutCreator(forFieldType: FieldVariable.self) {
       (field: Field, engine: LayoutEngine) throws -> FieldLayout in
       return FieldVariableLayout(
         fieldVariable: field as! FieldVariable, engine: engine, measurer: FieldVariableView.self)
@@ -110,7 +110,7 @@ open class DefaultLayoutFactory: NSObject {
    - Parameter fieldType: The `Field.Type` that the creator should be mapped to.
    - Parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
    */
-  open func registerLayoutCreatorForFieldType(_ fieldType: Field.Type,
+  open func registerLayoutCreator(forFieldType fieldType: Field.Type,
     layoutCreator: @escaping FieldLayoutCreator)
   {
     _fieldLayoutCreators[fieldType.hash()] = layoutCreator
@@ -121,7 +121,7 @@ open class DefaultLayoutFactory: NSObject {
 
    - Parameter fieldType: The `Field.Type`
    */
-  open func unregisterLayoutCreatorForFieldType(_ fieldType: Field.Type) {
+  open func unregisterLayoutCreator(forFieldType fieldType: Field.Type) {
     _fieldLayoutCreators.removeValue(forKey: fieldType.hash())
   }
 }
@@ -131,19 +131,19 @@ open class DefaultLayoutFactory: NSObject {
 extension DefaultLayoutFactory: LayoutFactory {
   // MARK: - Public
 
-  open func layoutForBlock(_ block: Block, engine: LayoutEngine) throws -> BlockLayout {
+  open func makeBlockLayout(block: Block, engine: LayoutEngine) throws -> BlockLayout {
     return DefaultBlockLayout(block: block, engine: engine)
   }
 
-  open func layoutForBlockGroupLayout(engine: LayoutEngine) throws -> BlockGroupLayout {
+  open func makeBlockGroupLayout(engine: LayoutEngine) throws -> BlockGroupLayout {
     return DefaultBlockGroupLayout(engine: engine)
   }
 
-  open func layoutForInput(_ input: Input, engine: LayoutEngine) throws -> InputLayout {
+  open func makeInputLayout(input: Input, engine: LayoutEngine) throws -> InputLayout {
     return try DefaultInputLayout(input: input, engine: engine, factory: self)
   }
 
-  open func layoutForField(_ field: Field, engine: LayoutEngine) throws -> FieldLayout {
+  open func makeFieldLayout(field: Field, engine: LayoutEngine) throws -> FieldLayout {
     let fieldTypeHash = type(of: field).hash()
     if let closure = _fieldLayoutCreators[fieldTypeHash] {
       return try closure(field, engine)
