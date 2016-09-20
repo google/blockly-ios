@@ -25,7 +25,7 @@ public final class JSONHelper: NSObject {
   - Parameter jsonString: The JSON string
   - Returns: Either a Dictionary<String, Any> or Array<Any>
   */
-  public static func JSONObjectFromString(_ jsonString: String) throws -> Any {
+  public static func makeJSONObject(jsonString: String) throws -> Any {
     guard
       let jsonData =
         jsonString.data(using: String.Encoding.utf8, allowLossyConversion: false) else
@@ -43,11 +43,11 @@ public final class JSONHelper: NSObject {
   - Parameter jsonString: A valid JSON string dictionary
   - Returns: The JSON dictionary
   */
-  public static func JSONDictionaryFromString(_ jsonString: String) throws
+  public static func makeJSONDictionary(jsonString: String) throws
     -> Dictionary<String, Any>
   {
     // Parse jsonString into json dictionary
-    guard let json = try JSONObjectFromString(jsonString) as? Dictionary<String, Any> else {
+    guard let json = try makeJSONObject(jsonString: jsonString) as? Dictionary<String, Any> else {
       throw BlocklyError(.jsonInvalidTypecast,
         "Could not convert Any to Dictionary<String, Any>")
     }
@@ -60,9 +60,9 @@ public final class JSONHelper: NSObject {
   - Parameter jsonString: A valid JSON string array
   - Returns: The JSON array
   */
-  public static func JSONArrayFromString(_ jsonString: String) throws -> [Any] {
+  public static func makeJSONArray(jsonString: String) throws -> [Any] {
     // Parse jsonString into json array
-    guard let json = try JSONObjectFromString(jsonString) as? [Any] else {
+    guard let json = try makeJSONObject(jsonString: jsonString) as? [Any] else {
       throw BlocklyError(.jsonInvalidTypecast, "Could not convert Any to [Any]")
     }
     return json

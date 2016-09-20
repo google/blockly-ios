@@ -993,10 +993,10 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
       }
 
       addUIStateValue(.draggingBlock)
-      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
+      _dragger.startDragging(blockLayout: blockLayout, touchPosition: workspacePosition)
     } else if touchState == .changed || touchState == .ended {
       addUIStateValue(.draggingBlock)
-      _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
+      _dragger.continueDragging(blockLayout: blockLayout, touchPosition: workspacePosition)
 
       if isGestureTouchingTrashCan(gesture) && blockLayout.block.deletable {
         addUIStateValue(.trashCanHighlighted)
@@ -1020,7 +1020,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }
       } else {
-        _dragger.finishDraggingBlockLayout(blockLayout)
+        _dragger.finishDragging(blockLayout: blockLayout)
       }
 
       // HACK: Re-add gesture tracking for the block view, as there is a problem re-recognizing

@@ -63,7 +63,7 @@ extension Field {
   - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
-  internal static func fieldFromJSON(_ json: [String: Any]) throws -> Field? {
+  internal static func makeField(json: [String: Any]) throws -> Field? {
     let type = json[PARAMETER_TYPE] as? String ?? ""
     if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
       return try creationHandler(json)

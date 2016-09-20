@@ -144,14 +144,14 @@ open class FieldColorPickerViewController: UICollectionViewController {
   {
     let cell = collectionView.dequeueReusableCell(
       withReuseIdentifier: _reusableCellIdentifier, for: indexPath) as! FieldColorPickerViewCell
-    cell.color = colorForIndexPath(indexPath)
+    cell.color = makeColor(indexPath: indexPath)
     return cell
   }
 
   open override func collectionView(
     _ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
   {
-    if let color = colorForIndexPath(indexPath) {
+    if let color = makeColor(indexPath: indexPath) {
       delegate?.fieldColorPickerViewController(self, didPickColor: color)
     }
   }
@@ -189,7 +189,7 @@ open class FieldColorPickerViewController: UICollectionViewController {
     }
   }
 
-  fileprivate func colorForIndexPath(_ indexPath: IndexPath) -> UIColor? {
+  fileprivate func makeColor(indexPath: IndexPath) -> UIColor? {
     return ColorHelper.makeColor(rgb: self.colors[(indexPath as NSIndexPath).row])
   }
 }

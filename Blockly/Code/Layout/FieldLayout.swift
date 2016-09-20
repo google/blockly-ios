@@ -71,7 +71,7 @@ open class FieldLayout: Layout {
     self.contentSize = self.engine.workspaceSizeFromViewSize(layoutSize)
 
     // Force this field to be redisplayed
-    sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+    sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
   }
 }
 

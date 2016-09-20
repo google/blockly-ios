@@ -28,7 +28,7 @@ class BlockJSONTest: XCTestCase {
     var block: Block
     do {
       let jsonString = try String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-      let json = try JSONHelper.JSONDictionaryFromString(jsonString)
+      let json = try JSONHelper.makeJSONDictionary(jsonString: jsonString)
       block = try Block.makeBuilder(json: json).build()
       try! workspace.addBlockTree(block)
     } catch let error as NSError {

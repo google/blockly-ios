@@ -47,7 +47,7 @@ public final class Dragger: NSObject {
   - Parameter touchPosition: The initial touch position, specified in the Workspace coordinate
   system
   */
-  public func startDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
+  public func startDragging(blockLayout layout: BlockLayout, touchPosition: WorkspacePoint) {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator,
       let connectionManager = workspaceLayoutCoordinator.connectionManager
       , layout.block.draggable &&
@@ -100,7 +100,7 @@ public final class Dragger: NSObject {
   - Parameter touchPosition: The current touch position, specified in the Workspace coordinate
   system
   */
-  public func continueDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
+  public func continueDragging(blockLayout layout: BlockLayout, touchPosition: WorkspacePoint) {
     guard let gestureData = _dragGestureData[layout.uuid] else {
       return
     }
@@ -121,7 +121,7 @@ public final class Dragger: NSObject {
     layout.parentBlockGroupLayout?.move(toWorkspacePosition: position, updateCanvasSize: false)
 
     // Update the highlighted connection for this drag
-    updateHighlightedConnectionForDrag(gestureData)
+    updateHighlightedConnection(forDrag: gestureData)
 
     // Now that the drag is complete, unset the flag
     gestureData.connectionGroup.dragMode = false
@@ -132,7 +132,7 @@ public final class Dragger: NSObject {
 
   - Parameter layout: The given block layout
   */
-  public func finishDraggingBlockLayout(_ layout: BlockLayout) {
+  public func finishDragging(blockLayout layout: BlockLayout) {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator else {
       return
     }
@@ -144,7 +144,7 @@ public final class Dragger: NSObject {
 
       // If this block can be connected to anything, connect it.
       if let drag = _dragGestureData[layout.uuid],
-        let connectionPair = findBestConnectionForDrag(drag)
+        let connectionPair = findBestConnection(forDrag: drag)
       {
         workspaceLayoutCoordinator.connectPair(connectionPair)
 
@@ -166,7 +166,7 @@ public final class Dragger: NSObject {
       // Update the highlighted connections for all other drags (due to potential changes in block
       // sizes)
       for (_, gestureData) in _dragGestureData {
-        updateHighlightedConnectionForDrag(gestureData)
+        updateHighlightedConnection(forDrag: gestureData)
       }
     }
   }
@@ -206,7 +206,7 @@ public final class Dragger: NSObject {
     workspaceLayoutCoordinator?.connectionManager?
       .mergeGroup(gestureData.connectionGroup, intoGroup: group)
 
-    removeHighlightedConnectionForDrag(gestureData)
+    removeHighlightedConnection(forDrag: gestureData)
     _dragGestureData[uuid] = nil
   }
 
@@ -215,11 +215,11 @@ public final class Dragger: NSObject {
 
   - Parameter drag: The `DragGestureData` that is being tracked for the block.
   */
-  fileprivate func updateHighlightedConnectionForDrag(_ drag: DragGestureData) {
-    let connectionPair = findBestConnectionForDrag(drag)
+  fileprivate func updateHighlightedConnection(forDrag drag: DragGestureData) {
+    let connectionPair = findBestConnection(forDrag: drag)
     if connectionPair?.target != drag.highlightedConnection {
       // The highlight has changed, remove the old highlight
-      removeHighlightedConnectionForDrag(drag)
+      removeHighlightedConnection(forDrag: drag)
 
       // Add the new highlight (if something was found)
       if let blockLayout = drag.blockLayout,
@@ -236,7 +236,7 @@ public final class Dragger: NSObject {
 
   - Parameter drag: The drag.
   */
-  fileprivate func removeHighlightedConnectionForDrag(_ drag: DragGestureData) {
+  fileprivate func removeHighlightedConnection(forDrag drag: DragGestureData) {
     if let blockLayout = drag.blockLayout {
       drag.highlightedConnection?.removeHighlightForBlock(blockLayout.block)
       drag.highlightedConnection = nil
@@ -246,7 +246,7 @@ public final class Dragger: NSObject {
   /**
   Returns the most suitable connection pair for a given drag, if one exists.
   */
-  fileprivate func findBestConnectionForDrag(_ drag: DragGestureData)
+  fileprivate func findBestConnection(forDrag drag: DragGestureData)
     -> ConnectionManager.ConnectionPair?
   {
     if let workspaceLayout = workspaceLayoutCoordinator?.workspaceLayout,
