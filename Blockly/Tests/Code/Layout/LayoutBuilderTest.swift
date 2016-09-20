@@ -43,22 +43,23 @@ class LayoutBuilderTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let _ = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("no_connections", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "no_connections", toWorkspace: workspace)
       }),
       let blockStatementOutputNoInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "output_no_input", toWorkspace: workspace)
       }),
       let blockInputOutput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "simple_input_output", toWorkspace: workspace)
       }),
       let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_multiple_value_input",
+        toWorkspace: workspace)
       }),
       let blockStatementNoNext = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_no_next", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_no_next", toWorkspace: workspace)
       }),
       let blockStatementStatementInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_statement_input", toWorkspace: workspace)
       }) else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
@@ -92,19 +93,20 @@ class LayoutBuilderTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let blockStatementOutputNoInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "output_no_input", toWorkspace: workspace)
       }),
       let blockInputOutput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("simple_input_output", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "simple_input_output", toWorkspace: workspace)
       }),
       let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_multiple_value_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_multiple_value_input",
+        toWorkspace: workspace)
       }),
       let blockStatementNoNext = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_no_next", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_no_next", toWorkspace: workspace)
       }),
       let blockStatementStatementInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+        try self._blockFactory.addBlock(name: "statement_statement_input", toWorkspace: workspace)
       }) else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -166,16 +168,16 @@ class LayoutBuilderTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let blockStatementMultipleInputValueInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("statement_multiple_value_input")
+        try self._blockFactory.makeBlock(name: "statement_multiple_value_input")
       }),
       let blockStatementStatementInput = BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("statement_statement_input")
+        try self._blockFactory.makeBlock(name: "statement_statement_input")
       }),
       let blockShadowInput =  BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("simple_input_output", shadow: true)
+        try self._blockFactory.makeBlock(name: "simple_input_output", shadow: true)
       }),
       let blockShadowPrevious =  BKYAssertDoesNotThrow({
-        try self._blockFactory.buildBlock("statement_no_next", shadow: true)
+        try self._blockFactory.makeBlock(name: "statement_no_next", shadow: true)
       }) else
     {
       XCTFail("Blocks couldn't be loaded")
@@ -223,7 +225,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Add a blocks to workspace2
     guard let block = BKYAssertDoesNotThrow({
-      try self._blockFactory.addBlock("output_no_input", toWorkspace: workspace2)
+      try self._blockFactory.addBlock(name: "output_no_input", toWorkspace: workspace2)
     }) else
     {
       XCTFail("Block couldn't be loaded into the workspace")

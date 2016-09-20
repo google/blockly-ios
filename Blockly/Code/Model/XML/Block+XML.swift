@@ -31,7 +31,7 @@ extension Block {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func blockTreeFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
+  public class func blockTree(fromXml xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
   {
     let lowercaseTag = xml.name.lowercased()
     guard lowercaseTag == XMLConstants.TAG_BLOCK || lowercaseTag == XMLConstants.TAG_SHADOW else {
@@ -49,7 +49,7 @@ extension Block {
     let uuid = xml.attributes[XMLConstants.ATTRIBUTE_ID]
     let shadow = (lowercaseTag == XMLConstants.TAG_SHADOW)
 
-    guard let block = try factory.buildBlock(type, uuid: uuid, shadow: shadow) else {
+    guard let block = try factory.makeBlock(name: type, uuid: uuid, shadow: shadow) else {
       throw BlocklyError(.xmlUnknownBlock, "The block type \(type) does not exist.", xml)
     }
 
@@ -72,7 +72,7 @@ extension Block {
         let blocks = try setNextBlockOnBlock(block, fromXML: child, factory: factory)
         allBlocks.append(contentsOf: blocks)
       case XMLConstants.TAG_FIELD:
-        try setFieldOnBlock(block, fromXML: child)
+        try setField(onBlock: block, fromXML: child)
       case XMLConstants.TAG_COMMENT:
         if let commentText = child.value {
           block.comment = commentText
@@ -105,7 +105,7 @@ extension Block {
       let errorMessage = "Missing \"\(XMLConstants.ATTRIBUTE_NAME)\" attribute for input."
       throw BlocklyError(.xmlParsing, errorMessage, xml)
     }
-    guard let input = block.firstInputWithName(inputName) else {
+    guard let input = block.firstInput(withName: inputName) else {
       throw BlocklyError(.xmlParsing, "Could not find input on block: \(inputName)", xml)
     }
     guard let inputConnection = input.connection else {
@@ -118,12 +118,12 @@ extension Block {
       switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this input connection's target
-        let subBlockTree = try Block.blockTreeFromXML(child, factory: factory)
+        let subBlockTree = try Block.blockTree(fromXml: child, factory: factory)
         try inputConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this input connection's shadow
-        let subBlockTree = try Block.blockTreeFromXML(child, factory: factory)
+        let subBlockTree = try Block.blockTree(fromXml: child, factory: factory)
         try inputConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       default:
@@ -161,12 +161,12 @@ extension Block {
       switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this next connection's target
-        let subBlockTree = try blockTreeFromXML(child, factory: factory)
+        let subBlockTree = try blockTree(fromXml: child, factory: factory)
         try nextConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this next connection's shadow
-        let subBlockTree = try blockTreeFromXML(child, factory: factory)
+        let subBlockTree = try blockTree(fromXml: child, factory: factory)
         try nextConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       default:
@@ -187,11 +187,11 @@ extension Block {
    - Parameter block: The block to update.
    - Parameter xml: The xml that describes the field to update.
    */
-  private class func setFieldOnBlock(_ block: Block, fromXML xml: AEXMLElement) throws {
+  private class func setField(onBlock block: Block, fromXML xml: AEXMLElement) throws {
     // A missing or unknown field name isn't an error, it's just ignored.
     if let value = xml.value,
       let fieldName = xml.attributes[XMLConstants.ATTRIBUTE_NAME],
-      let field = block.firstFieldWithName(fieldName)
+      let field = block.firstField(withName: fieldName)
     {
       try field.setValueFromSerializedText(value)
     }

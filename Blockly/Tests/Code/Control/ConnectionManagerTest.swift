@@ -216,7 +216,7 @@ class ConnectionManagerTest: XCTestCase {
 
     XCTAssertEqual(5, list.count)
     let conn = createConnection(0, 3, .previousStatement)
-    XCTAssertEqual(3, list.findPositionForConnection(conn))
+    XCTAssertEqual(3, list.findPosition(forConnection: conn))
   }
 
   func testYSortedListFind() {
@@ -300,11 +300,11 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertEqual(5, result?.position.y)
   }
 
-  func testYSortedListGetNeighbours() {
+  func testYSortedListGetNeighbors() {
     let list = manager.mainGroup.connectionsForType(.previousStatement)
 
     // Search an empty list
-    XCTAssertTrue(getNeighbourHelper(list, x: 10, y: 10, radius: 100).isEmpty)
+    XCTAssertTrue(getNeighborHelper(list, x: 10, y: 10, radius: 100).isEmpty)
 
     // Make a list
     for i in 0 ..< 10 {
@@ -312,36 +312,36 @@ class ConnectionManagerTest: XCTestCase {
     }
 
     // Test block belongs at beginning
-    var result = getNeighbourHelper(list, x: 0, y: 0, radius: 4)
+    var result = getNeighborHelper(list, x: 0, y: 0, radius: 4)
     XCTAssertEqual(5, result.count)
     for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i]))
     }
 
     // Test block belongs at middle
-    result = getNeighbourHelper(list, x: 0, y: 4, radius: 2)
+    result = getNeighborHelper(list, x: 0, y: 4, radius: 2)
     XCTAssertEqual(5, result.count)
     for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i + 2]))
     }
 
     // Test block belongs at end
-    result = getNeighbourHelper(list, x: 0, y: 9, radius: 4)
+    result = getNeighborHelper(list, x: 0, y: 9, radius: 4)
     XCTAssertEqual(5, result.count)
     for i in 0 ..< result.count {
       XCTAssertTrue(result.contains(list[i + 5]))
     }
 
-    // Test block has no neighbours due to being out of range in the x direction
-    result = getNeighbourHelper(list, x: 10, y: 9, radius: 4)
+    // Test block has no neighbors due to being out of range in the x direction
+    result = getNeighborHelper(list, x: 10, y: 9, radius: 4)
     XCTAssertTrue(result.isEmpty)
 
-    // Test block has no neighbours due to being out of range in the y direction
-    result = getNeighbourHelper(list, x: 0, y: 19, radius: 4)
+    // Test block has no neighbors due to being out of range in the y direction
+    result = getNeighborHelper(list, x: 0, y: 19, radius: 4)
     XCTAssertTrue(result.isEmpty)
 
-    // Test block has no neighbours due to being out of range diagonally
-    result = getNeighbourHelper(list, x: -2, y: -2, radius: 2)
+    // Test block has no neighbors due to being out of range diagonally
+    result = getNeighborHelper(list, x: -2, y: -2, radius: 2)
     XCTAssertTrue(result.isEmpty)
   }
 
@@ -446,10 +446,10 @@ class ConnectionManagerTest: XCTestCase {
     return true
   }
 
-  fileprivate func getNeighbourHelper(
+  fileprivate func getNeighborHelper(
     _ list: ConnectionManager.YSortedList, x: CGFloat, y: CGFloat, radius: CGFloat) -> [Connection]
   {
-    return list.neighboursForConnection(createConnection(x, y, .nextStatement), maxRadius: radius)
+    return list.neighbors(forConnection: createConnection(x, y, .nextStatement), maxRadius: radius)
   }
 
   fileprivate func searchList(_ list: ConnectionManager.YSortedList, x: CGFloat, y: CGFloat,

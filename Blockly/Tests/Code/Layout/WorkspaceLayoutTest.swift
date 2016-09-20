@@ -43,17 +43,17 @@ class WorkspaceLayoutTest: XCTestCase {
     // Add blocks to the workspace
     guard
       let _ =
-        try! _blockFactory.addBlock("no_connections", toWorkspace: workspace),
+        try! _blockFactory.addBlock(name: "no_connections", toWorkspace: workspace),
       let blockMathNumber =
-        try! _blockFactory.addBlock("math_number", toWorkspace: workspace),
+        try! _blockFactory.addBlock(name: "math_number", toWorkspace: workspace),
       let blockInputOutput =
-        try! _blockFactory.addBlock("simple_input_output", toWorkspace: workspace),
+        try! _blockFactory.addBlock(name: "simple_input_output", toWorkspace: workspace),
       let blockMultipleInputOutput =
-        try! _blockFactory.addBlock("multiple_input_output", toWorkspace: workspace),
+        try! _blockFactory.addBlock(name: "multiple_input_output", toWorkspace: workspace),
       let blockStatementValueInput =
-        try! _blockFactory.addBlock("statement_value_input", toWorkspace: workspace),
+        try! _blockFactory.addBlock(name: "statement_value_input", toWorkspace: workspace),
       let blockStatementStatementInput =
-        try! _blockFactory.addBlock("statement_statement_input", toWorkspace: workspace)
+        try! _blockFactory.addBlock(name: "statement_statement_input", toWorkspace: workspace)
       else
     {
       XCTFail("Blocks couldn't be loaded into the workspace")
@@ -124,7 +124,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Add blocks to the workspace
     let block = BKYAssertDoesNotThrow {
-      try self._blockFactory.addBlock("no_connections", toWorkspace: workspace)
+      try self._blockFactory.addBlock(name: "no_connections", toWorkspace: workspace)
     }
 
     // Build the layout tree

@@ -26,7 +26,7 @@ extension Array where Element: AnyObject {
 
   - Parameter element: The element to remove
   */
-  public mutating func bky_removeAllOccurrencesOfElement(_ element: Element) {
+  public mutating func bky_removeAllOccurrences(of element: Element) {
     self = self.filter({ $0 !== element })
   }
 
@@ -36,7 +36,7 @@ extension Array where Element: AnyObject {
    - Parameter object: The object to remove
    - Returns: True if the element was found and removed. False if the element was not found.
    */
-  public mutating func bky_removeFirstOccurrenceOfElement(_ element: Element) -> Bool {
+  public mutating func bky_removeFirstOccurrence(of element: Element) -> Bool {
     for i in 0 ..< self.count {
       if self[i] === element {
         remove(at: i)

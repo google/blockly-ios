@@ -93,7 +93,7 @@ open class BlockGroupLayout: Layout {
   - Returns: The `BlockLayout` that was removed.
   */
   @discardableResult
-  open func removeBlockLayoutAtIndex(_ index: Int, updateLayout: Bool = true) -> BlockLayout {
+  open func removeBlockLayout(atIndex index: Int, updateLayout: Bool = true) -> BlockLayout {
     let removedLayout = blockLayouts.remove(at: index)
     removeChildLayout(removedLayout)
 
@@ -115,7 +115,7 @@ open class BlockGroupLayout: Layout {
    - Parameter updateLayouts: If true, all parent layouts of this layout and of `blockLayout`'s
    previous parent will be updated.
    */
-  open func claimBlockLayoutAndFollowers(_ blockLayout: BlockLayout, updateLayouts: Bool = true) {
+  open func claimWithFollowers(blockLayout: BlockLayout, updateLayouts: Bool = true) {
     let oldParentLayout = blockLayout.parentBlockGroupLayout
 
     var transferredLayouts = [BlockLayout]()
@@ -154,13 +154,13 @@ open class BlockGroupLayout: Layout {
   - Returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
-  open func removeAllStartingFromBlockLayout(_ blockLayout: BlockLayout, updateLayout: Bool = true)
+  open func removeAllBlockLayouts(startingFrom blockLayout: BlockLayout, updateLayout: Bool = true)
     -> [BlockLayout] {
       var removedElements = [BlockLayout]()
 
       if let index = blockLayouts.index(of: blockLayout) {
         while (index < blockLayouts.count) {
-          let removedLayout = removeBlockLayoutAtIndex(index, updateLayout: false)
+          let removedLayout = removeBlockLayout(atIndex: index, updateLayout: false)
           removedElements.append(removedLayout)
         }
 
@@ -182,7 +182,7 @@ open class BlockGroupLayout: Layout {
    */
   open func reset(updateLayout: Bool = true) {
     while blockLayouts.count > 0 {
-      removeBlockLayoutAtIndex(0, updateLayout: false)
+      removeBlockLayout(atIndex: 0, updateLayout: false)
     }
 
     if updateLayout {
@@ -191,15 +191,15 @@ open class BlockGroupLayout: Layout {
   }
 
   /**
-  If this instance's `parentLayout` is an instance of `WorkspaceLayout`, this method changes
-  `relativePosition` to the position. If not, this method does nothing.
+   If this instance's `parentLayout` is an instance of `WorkspaceLayout`, this method changes
+   `relativePosition` to the position. If not, this method does nothing.
 
-  - Parameter position: The relative position within its parent's Workspace layout, specified as a
-  Workspace coordinate system point.
-  - Parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
-  the current positions of its block groups.
-  */
-  open func moveToWorkspacePosition(_ position: WorkspacePoint, updateCanvasSize: Bool = true) {
+   - Parameter position: The relative position within its parent's Workspace layout, specified
+   as a Workspace coordinate system point.
+   - Parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
+   the current positions of its block groups.
+   */
+  open func move(toWorkspacePosition position: WorkspacePoint, updateCanvasSize: Bool = true) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
       self.relativePosition = position
       refreshViewPositionsForTree(includeFields: false)

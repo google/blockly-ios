@@ -75,7 +75,7 @@ class BlockGroupLayoutTest: XCTestCase {
     let blockGroupLayout = createBlockGroupLayout(numberOfBlockLayouts: 10)
 
     // Remove block layout from beginning
-    let blockLayout = blockGroupLayout.removeBlockLayoutAtIndex(0)
+    let blockLayout = blockGroupLayout.removeBlockLayout(atIndex: 0)
 
     // Check that its parent is nil
     XCTAssertNil(blockLayout.parentLayout)
@@ -89,7 +89,7 @@ class BlockGroupLayoutTest: XCTestCase {
     let blockGroupLayout = createBlockGroupLayout(numberOfBlockLayouts: 10)
 
     // Remove block layout from beginning
-    let blockLayout = blockGroupLayout.removeBlockLayoutAtIndex(5)
+    let blockLayout = blockGroupLayout.removeBlockLayout(atIndex: 5)
 
     // Check that its parent is nil
     XCTAssertNil(blockLayout.parentLayout)
@@ -103,7 +103,7 @@ class BlockGroupLayoutTest: XCTestCase {
     let blockGroupLayout = createBlockGroupLayout(numberOfBlockLayouts: 10)
 
     // Remove block layout from beginning
-    let blockLayout = blockGroupLayout.removeBlockLayoutAtIndex(9)
+    let blockLayout = blockGroupLayout.removeBlockLayout(atIndex: 9)
 
     // Check that its parent is nil
     XCTAssertNil(blockLayout.parentLayout)
@@ -120,7 +120,7 @@ class BlockGroupLayoutTest: XCTestCase {
     // Remove all from a given block layout
     let removalIndex = 3
     let blockLayout = blockGroupLayout.blockLayouts[removalIndex]
-    let removedBlockLayouts = blockGroupLayout.removeAllStartingFromBlockLayout(blockLayout)
+    let removedBlockLayouts = blockGroupLayout.removeAllBlockLayouts(startingFrom: blockLayout)
 
     // Check array counts for block group and removedLayouts
     XCTAssertEqual(removalIndex, blockGroupLayout.blockLayouts.count)
@@ -140,7 +140,8 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Try remove a block layout that doesn't actually exist in the group
     let randomBlockLayout = createBlockLayout()
-    let removedBlockLayouts = blockGroupLayout.removeAllStartingFromBlockLayout(randomBlockLayout)
+    let removedBlockLayouts =
+      blockGroupLayout.removeAllBlockLayouts(startingFrom: randomBlockLayout)
 
     // Nothing should have been removed, but the returned list should contain the target block
     XCTAssertEqual(initialNumberOfBlockLayouts, blockGroupLayout.blockLayouts.count)
@@ -176,7 +177,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Move to new workspace position
     let newPosition = WorkspacePointMake(-10.134, 30)
-    blockGroupLayout.moveToWorkspacePosition(newPosition)
+    blockGroupLayout.move(toWorkspacePosition: newPosition)
 
     // Check that it has a new relative position
     XCTAssertEqual(newPosition, blockGroupLayout.relativePosition)
@@ -186,7 +187,7 @@ class BlockGroupLayoutTest: XCTestCase {
     // Add a block to the workspace that has an input value (which automatically contains a block
     // group layout).
     let workspace = _workspaceLayout.workspace
-    guard let blockInputOutput = try! _blockFactory.addBlock("simple_input_output",
+    guard let blockInputOutput = try! _blockFactory.addBlock(name: "simple_input_output",
       toWorkspace: workspace) else {
         XCTFail("Blocks couldn't be loaded into the workspace")
         return
@@ -204,7 +205,7 @@ class BlockGroupLayoutTest: XCTestCase {
       // Nothing should happen
       let currentPosition = blockGroupLayout.relativePosition
       let newPosition = currentPosition + WorkspacePointMake(10, 10)
-      blockGroupLayout.moveToWorkspacePosition(newPosition)
+      blockGroupLayout.move(toWorkspacePosition: newPosition)
 
       XCTAssertEqual(currentPosition, blockGroupLayout.relativePosition)
     } else {

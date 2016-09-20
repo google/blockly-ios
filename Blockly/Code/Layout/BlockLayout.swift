@@ -154,7 +154,7 @@ open class BlockLayout: Layout {
   - Returns: The `BlockLayout` that was removed.
   */
   @discardableResult
-  open func removeInputLayoutAtIndex(_ index: Int) -> InputLayout {
+  open func removeInputLayout(atIndex index: Int) -> InputLayout {
     let inputLayout = inputLayouts.remove(at: index)
     removeChildLayout(inputLayout)
     return inputLayout
@@ -167,7 +167,7 @@ open class BlockLayout: Layout {
   */
   open func reset(updateLayout: Bool = true) {
     while inputLayouts.count > 0 {
-      removeInputLayoutAtIndex(0)
+      removeInputLayout(atIndex: 0)
     }
 
     if updateLayout {
@@ -185,7 +185,7 @@ open class BlockLayout: Layout {
   - Returns: If the given input layout is found at `inputLayouts[i]` where `i > 0`,
   `inputLayouts[i - 1]` is returned. Otherwise, nil is returned.
   */
-  internal func inputLayoutBeforeLayout(_ layout: InputLayout) -> InputLayout? {
+  internal func inputLayout(before layout: InputLayout) -> InputLayout? {
     for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
         return i > 0 ? inputLayouts[i - 1] : nil
@@ -202,7 +202,7 @@ open class BlockLayout: Layout {
   - Returns: If the given input layout is found at `inputLayouts[i]` where
   `i < inputLayouts.count - 1`, `inputLayouts[i + 1]` is returned. Otherwise, nil is returned.
   */
-  internal func inputLayoutAfterLayout(_ layout: InputLayout) -> InputLayout? {
+  internal func inputLayout(after layout: InputLayout) -> InputLayout? {
     for i in 0 ..< inputLayouts.count {
       if inputLayouts[i] == layout {
         return i < (inputLayouts.count - 1) ? inputLayouts[i + 1] : nil
@@ -215,7 +215,7 @@ open class BlockLayout: Layout {
 // MARK: - ConnectionHighlightDelegate
 
 extension BlockLayout: ConnectionHighlightDelegate {
-  public func didChangeHighlightForConnection(_ connection: Connection) {
+  public func didChangeHighlight(forConnection connection: Connection) {
     sendChangeEventWithFlags(BlockLayout.Flag_UpdateConnectionHighlight)
   }
 }
@@ -223,7 +223,7 @@ extension BlockLayout: ConnectionHighlightDelegate {
 // MARK: - BlockDelegate
 
 extension BlockLayout: BlockDelegate {
-  public func didUpdateBlock(_ block: Block) {
+  public func didUpdate(block: Block) {
     // Refresh the block since it's been updated
     sendChangeEventWithFlags(BlockLayout.Flag_NeedsDisplay)
   }

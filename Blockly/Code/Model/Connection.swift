@@ -25,7 +25,7 @@ public protocol ConnectionHighlightDelegate {
 
   - Parameter connection: The connection whose `highlighted` value has changed.
   */
-  func didChangeHighlightForConnection(_ connection: Connection)
+  func didChangeHighlight(forConnection: Connection)
 }
 
 /**
@@ -38,14 +38,14 @@ public protocol ConnectionPositionDelegate {
 
   - Parameter connection: The connection whose `position` value will change.
   */
-  func willChangePositionForConnection(_ connection: Connection)
+  func willChangePosition(forConnection connection: Connection)
 
   /**
   Event that is called immediately after the connection's `position` has changed.
 
   - Parameter connection: The connection whose `position` value has changed.
   */
-  func didChangePositionForConnection(_ connection: Connection)
+  func didChangePosition(forConnection connection: Connection)
 }
 
 /**
@@ -459,7 +459,7 @@ public final class Connection : NSObject {
       _highlights.insert(block.uuid)
 
       if _highlights.count == 1 {
-        highlightDelegate?.didChangeHighlightForConnection(self)
+        highlightDelegate?.didChangeHighlight(forConnection: self)
       }
     }
   }
@@ -475,7 +475,7 @@ public final class Connection : NSObject {
       _highlights.remove(block.uuid)
 
       if _highlights.count == 0 {
-        highlightDelegate?.didChangeHighlightForConnection(self)
+        highlightDelegate?.didChangeHighlight(forConnection: self)
       }
     }
   }
@@ -497,10 +497,10 @@ public final class Connection : NSObject {
       return
     }
 
-    positionDelegate?.willChangePositionForConnection(self)
+    positionDelegate?.willChangePosition(forConnection: self)
     self.position.x = newX
     self.position.y = newY
-    positionDelegate?.didChangePositionForConnection(self)
+    positionDelegate?.didChangePosition(forConnection: self)
   }
 
   // MARK: - Internal - For testing only
