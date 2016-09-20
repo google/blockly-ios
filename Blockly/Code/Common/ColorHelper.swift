@@ -27,7 +27,7 @@ public class ColorHelper: NSObject {
    - Parameter alpha: The alpha to set on the color. Defaults to 1.0, if none specified.
    - Returns: A parsed RGB color, or nil if the string could not be parsed.
    */
-  public static func colorFromRGB(_ rgb: String, alpha: Float = 1.0) -> UIColor? {
+  public static func color(fromRGB rgb: String, alpha: Float = 1.0) -> UIColor? {
     var rgbUpper = rgb.uppercased()
 
     // Strip "#" if it exists
@@ -63,7 +63,7 @@ public class ColorHelper: NSObject {
    - Parameter alpha: (Optional) The alpha. Defaults to 1.0.
    - Returns: A `UIColor`
    */
-  public static func colorFromHue(_ hue: CGFloat, saturation: CGFloat = 0.45,
+  public static func color(fromHue hue: CGFloat, saturation: CGFloat = 0.45,
     brightness: CGFloat = 0.65, alpha: CGFloat = 1.0) -> UIColor
   {
     return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)

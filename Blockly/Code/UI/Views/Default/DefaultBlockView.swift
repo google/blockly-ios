@@ -126,8 +126,8 @@ public final class DefaultBlockView: BlockView {
           fillColor = layout.block.color
 
           if layout.block.shadow {
-            strokeColor = self.shadowColorForColor(strokeColor, config: layout.config)
-            fillColor = self.shadowColorForColor(fillColor, config: layout.config)
+            strokeColor = self.shadowColor(forColor: strokeColor, config: layout.config)
+            fillColor = self.shadowColor(forColor: fillColor, config: layout.config)
           }
         }
 
@@ -151,7 +151,7 @@ public final class DefaultBlockView: BlockView {
       {
         // Update highlight
         if let path = self.blockHighlightBezierPath() {
-          self.addHighlightLayerWithPath(path, animated: animated)
+          self.addHighlightLayer(withPath: path, animated: animated)
         } else {
           self.removeHighlightLayer()
         }
@@ -177,7 +177,7 @@ public final class DefaultBlockView: BlockView {
 
   // MARK: - Private
 
-  fileprivate func addHighlightLayerWithPath(_ path: UIBezierPath, animated: Bool) {
+  fileprivate func addHighlightLayer(withPath path: UIBezierPath, animated: Bool) {
     guard let layout = self.defaultBlockLayout else {
       return
     }
@@ -236,8 +236,8 @@ public final class DefaultBlockView: BlockView {
 
       if i == 0 && background.femalePreviousStatementConnector {
         // Draw previous statement connector
-        addNotchToPath(
-          path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
+        addNotch(
+          toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
       }
 
       path.addLineToPoint(
@@ -260,8 +260,8 @@ public final class DefaultBlockView: BlockView {
           path.currentWorkspacePoint.y, relative: false)
 
         // Draw notch
-        addNotchToPath(
-          path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
+        addNotch(
+          toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineToPoint(
           xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
@@ -281,7 +281,7 @@ public final class DefaultBlockView: BlockView {
       } else if row.femaleOutputConnector {
         // Draw female output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y
-        addPuzzleTabToPath(path, drawTopToBottom: true,
+        addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
         bky_assert(restOfVerticalEdge >= 0,
@@ -305,7 +305,7 @@ public final class DefaultBlockView: BlockView {
     if background.maleNextStatementConnector {
       path.addLineToPoint(
         xLeftEdgeOffset + notchWidth, path.currentWorkspacePoint.y, relative: false)
-      addNotchToPath(path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
+      addNotch(toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
     path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
@@ -316,7 +316,7 @@ public final class DefaultBlockView: BlockView {
       // Add male connector
       path.addLineToPoint(0, puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
 
-      addPuzzleTabToPath(path, drawTopToBottom: false,
+      addPuzzleTab(toPath: path, drawTopToBottom: false,
         puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
     }
 
@@ -341,14 +341,14 @@ public final class DefaultBlockView: BlockView {
         // Left edge
         path.addLineToPoint(0, -(inlineConnector.size.height - puzzleTabHeight), relative: true)
         // Puzzle notch
-        addPuzzleTabToPath(path, drawTopToBottom: false,
+        addPuzzleTab(toPath: path, drawTopToBottom: false,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
       }
     }
 
     let viewBezierPath = path.viewBezierPath
     if layout.engine.rtl {
-      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
+      applyRtlTransform(toBezierPath: viewBezierPath, layout: layout)
     }
 
     return viewBezierPath
@@ -387,7 +387,7 @@ public final class DefaultBlockView: BlockView {
         path.moveToPoint(connectionRelativePosition +
           WorkspacePointMake(puzzleTabWidth, -puzzleTabHeight / 2),
           relative: false)
-        addPuzzleTabToPath(path, drawTopToBottom: true,
+        addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         break
       case .previousStatement, .nextStatement:
@@ -395,28 +395,28 @@ public final class DefaultBlockView: BlockView {
         path.moveToPoint(connectionRelativePosition -
           WorkspacePointMake(notchWidth / 2, notchHeight),
           relative: false)
-        addNotchToPath(
-          path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
+        addNotch(
+          toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         break
       }
     }
 
     let viewBezierPath = path.viewBezierPath
     if layout.engine.rtl {
-      applyRtlTransformToBezierPath(viewBezierPath, layout: layout)
+      applyRtlTransform(toBezierPath: viewBezierPath, layout: layout)
     }
 
     return viewBezierPath
   }
 
-  fileprivate func applyRtlTransformToBezierPath(_ path: UIBezierPath, layout: BlockLayout) {
+  fileprivate func applyRtlTransform(toBezierPath path: UIBezierPath, layout: BlockLayout) {
     var transform = CGAffineTransform.identity
     transform = transform.scaledBy(x: CGFloat(-1.0), y: CGFloat(1.0))
     transform = transform.translatedBy(x: -layout.viewFrame.size.width, y: CGFloat(0))
     path.apply(transform)
   }
 
-  fileprivate func shadowColorForColor(_ color: UIColor, config: LayoutConfig) -> UIColor {
+  fileprivate func shadowColor(forColor color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
     hsba.saturation *= config.floatFor(DefaultLayoutConfig.BlockShadowSaturationMultiplier)
     hsba.brightness =

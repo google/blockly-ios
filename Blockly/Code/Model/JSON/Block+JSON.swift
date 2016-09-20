@@ -58,9 +58,9 @@ extension Block {
 
     if let colorHue = json[PARAMETER_COLOR] as? CGFloat {
       let hue = (min(max(colorHue, 0), 360)) / 360
-      builder.color = ColorHelper.colorFromHue(hue)
+      builder.color = ColorHelper.color(fromHue: hue)
     } else if let colorString = json[PARAMETER_COLOR] as? String,
-              let color = ColorHelper.colorFromRGB(colorString)
+        let color = ColorHelper.color(fromRGB: colorString)
     {
       builder.color = color
     }

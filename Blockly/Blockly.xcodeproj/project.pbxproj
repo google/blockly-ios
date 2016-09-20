@@ -106,7 +106,6 @@
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
 		FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */; };
 		FAA4D4E71D07D6BF007312BD /* ZIndexedGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4D4E61D07D6BF007312BD /* ZIndexedGroupView.swift */; };
-		FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF31C64272C000C7C61 /* Array+Helper.swift */; };
 		FAA870021C64272C000C7C61 /* Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF41C64272C000C7C61 /* Assertions.swift */; };
 		FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF51C64272C000C7C61 /* BlocklyError.swift */; };
 		FAA870041C64272C000C7C61 /* CGPoint+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */; };
@@ -338,7 +337,6 @@
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
 		FA9D2FBC1C111A1300D0E528 /* WorkspaceFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceFlowLayout.swift; sourceTree = "<group>"; };
 		FAA4D4E61D07D6BF007312BD /* ZIndexedGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIndexedGroupView.swift; sourceTree = "<group>"; };
-		FAA86FF31C64272C000C7C61 /* Array+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
 		FAA86FF41C64272C000C7C61 /* Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assertions.swift; sourceTree = "<group>"; };
 		FAA86FF51C64272C000C7C61 /* BlocklyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyError.swift; sourceTree = "<group>"; };
 		FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Operators.swift"; sourceTree = "<group>"; };
@@ -738,7 +736,6 @@
 		FAA86FF21C64272C000C7C61 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FAA86FF31C64272C000C7C61 /* Array+Helper.swift */,
 				FAA86FF41C64272C000C7C61 /* Assertions.swift */,
 				FAA86FF51C64272C000C7C61 /* BlocklyError.swift */,
 				FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */,
@@ -1095,7 +1092,6 @@
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */,
-				FAA870011C64272C000C7C61 /* Array+Helper.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,

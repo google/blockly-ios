@@ -180,7 +180,7 @@ open class FieldColorPickerViewController: UICollectionViewController {
 
     // Set the selected color, if it exists in the color picker
     for i in 0 ..< colors.count {
-      if selectedColor == ColorHelper.colorFromRGB(colors[i]) {
+      if selectedColor == ColorHelper.color(fromRGB: colors[i]) {
         let indexPath = IndexPath(row: i, section: 0)
         self.collectionView?.selectItem(
           at: indexPath, animated: animated, scrollPosition: .centeredVertically)
@@ -190,7 +190,7 @@ open class FieldColorPickerViewController: UICollectionViewController {
   }
 
   fileprivate func colorForIndexPath(_ indexPath: IndexPath) -> UIColor? {
-    return ColorHelper.colorFromRGB(self.colors[(indexPath as NSIndexPath).row])
+    return ColorHelper.color(fromRGB: self.colors[(indexPath as NSIndexPath).row])
   }
 }
 

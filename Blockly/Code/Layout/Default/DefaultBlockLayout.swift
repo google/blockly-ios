@@ -102,7 +102,7 @@ public final class DefaultBlockLayout: BlockLayout {
 
     // Set the background properties based on the block layout and remove all rows from the
     // background
-    self.background.updateRenderPropertiesFromBlockLayout(self)
+    self.background.updateRenderProperties(fromBlockLayout: self)
     self.background.removeAllRows()
 
     // Update relative position/size of inputs
@@ -157,7 +157,7 @@ public final class DefaultBlockLayout: BlockLayout {
       let lastInputLayout = backgroundRow.inputLayouts.last! as! DefaultInputLayout
       if lastInputLayout.input.type == .statement {
         // Maximize the statement width
-        lastInputLayout.maximizeStatementWidthTo(minimalStatementWidthRequired)
+        lastInputLayout.maximizeStatement(toWidth: minimalStatementWidthRequired)
 
         if !block.inputsInline {
           // Extend the right edge of the statement (ie. the top and bottom parts of the "C" shape)
@@ -167,11 +167,11 @@ public final class DefaultBlockLayout: BlockLayout {
         }
       } else if !block.inputsInline {
         // Maximize the amount of space for fields
-        lastInputLayout.maximizeFieldWidthTo(minimalWidthRequired)
+        lastInputLayout.maximizeField(toWidth: minimalWidthRequired)
       }
 
       // Update the background row based on the new max width
-      backgroundRow.updateRenderPropertiesWithMinimalRowWidth(minimalWidthRequired)
+      backgroundRow.updateRenderProperties(withMinimalRowWidth: minimalWidthRequired)
     }
 
     var size = WorkspaceSizeZero

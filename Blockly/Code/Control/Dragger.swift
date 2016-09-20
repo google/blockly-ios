@@ -79,7 +79,7 @@ public final class Dragger: NSObject {
         layout.rootBlockGroupLayout)
 
       // Start a new connection group for this block group layout
-      let newConnectionGroup = connectionManager.startGroupForBlock(block)
+      let newConnectionGroup = connectionManager.startGroup(forBlock: block)
 
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
@@ -256,7 +256,7 @@ public final class Dragger: NSObject {
         LayoutConfig.BlockSnapDistance, defaultValue: LayoutConfig.Unit(0)).workspaceUnit
 
       return
-        connectionManager.findBestConnectionForGroup(drag.connectionGroup, maxRadius: maxRadius)
+        connectionManager.findBestConnection(forGroup: drag.connectionGroup, maxRadius: maxRadius)
     }
     return nil
   }

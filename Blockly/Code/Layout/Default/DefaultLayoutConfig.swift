@@ -112,9 +112,9 @@ open class DefaultLayoutConfig: LayoutConfig {
 
     setColor(UIColor.darkGray, forKey: DefaultLayoutConfig.BlockStrokeDefaultColor)
     setColor(UIColor.blue, forKey: DefaultLayoutConfig.BlockStrokeHighlightColor)
-    setColor(ColorHelper.colorFromRGB("555555"),
+    setColor(ColorHelper.color(fromRGB: "555555"),
              forKey: DefaultLayoutConfig.BlockStrokeDisabledColor)
-    setColor(ColorHelper.colorFromRGB("dddddd"),
+    setColor(ColorHelper.color(fromRGB: "dddddd"),
              forKey: DefaultLayoutConfig.BlockFillDisabledColor)
     setFloat(0.7, forKey: DefaultLayoutConfig.BlockDraggingFillColorAlpha)
     setFloat(0.8, forKey: DefaultLayoutConfig.BlockDraggingStrokeColorAlpha)

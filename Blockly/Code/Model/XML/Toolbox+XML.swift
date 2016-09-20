@@ -69,7 +69,7 @@ extension Toolbox {
       if let colorString = categoryNode.attributes["colour"] {
         if let colorHue = NumberFormatter().number(from: colorString) {
           let hue = (min(max(CGFloat(colorHue), 0), 360)) / 360
-          color = ColorHelper.colorFromHue(hue)
+          color = ColorHelper.color(fromHue: hue)
         } else {
           bky_print("Invalid toolbox category color: \"\(colorString)\"")
         }

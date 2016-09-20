@@ -298,7 +298,7 @@ public final class DefaultInputLayout: InputLayout {
 
   - Parameter width: A width value, specified in the Workspace coordinate system.
   */
-  internal func maximizeFieldWidthTo(_ width: CGFloat) {
+  internal func maximizeField(toWidth width: CGFloat) {
     let minimalFieldWidthRequired = self.minimalFieldWidthRequired
     if width <= minimalFieldWidthRequired {
       return
@@ -338,10 +338,10 @@ public final class DefaultInputLayout: InputLayout {
 
    - Parameter width: A width value, specified in the Workspace coordinate system.
    */
-  internal func maximizeStatementWidthTo(_ width: CGFloat) {
+  internal func maximizeStatement(toWidth width: CGFloat) {
     if self.input.type == .statement {
       // Maximize the statement width by maximizing the field width
-      maximizeFieldWidthTo(width - self.statementConnectorWidth)
+      maximizeField(toWidth: width - self.statementConnectorWidth)
     }
   }
 
