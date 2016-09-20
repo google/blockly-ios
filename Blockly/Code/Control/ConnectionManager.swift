@@ -58,7 +58,7 @@ public final class ConnectionManager: NSObject {
   `ownerBlock` of the connection group.
   - Returns: The newly created connection group
   */
-  public func startGroupForBlock(_ block: Block?) -> ConnectionManager.Group {
+  public func startGroup(forBlock block: Block?) -> ConnectionManager.Group {
     let newGroup = ConnectionManager.Group(ownerBlock: block)
     _groups.insert(newGroup)
 
@@ -90,7 +90,7 @@ public final class ConnectionManager: NSObject {
 
     let allConnections = fromGroup.allConnections
 
-    fromGroup.transferConnectionsToGroup(newGroup)
+    fromGroup.transferConnections(toGroup: newGroup)
 
     for connection in allConnections {
       // Update dictionary of groups by connection
@@ -152,7 +152,7 @@ public final class ConnectionManager: NSObject {
   `pair.target` connection is the closest compatible connection. Nil is returned if no suitable
   connection pair could be found.
   */
-  public func findBestConnectionForGroup(_ group: ConnectionManager.Group, maxRadius: CGFloat)
+  public func findBestConnection(forGroup group: ConnectionManager.Group, maxRadius: CGFloat)
     -> ConnectionPair? {
       guard let block = group.ownerBlock else {
         return nil
@@ -342,32 +342,32 @@ extension ConnectionManager {
         return nil
       }
       let compatibleList = _oppositeLists[connection.type.rawValue]
-      return compatibleList.searchForClosestValidConnectionTo(connection, maxRadius: maxRadius,
+      return compatibleList.searchForClosestValidConnection(to: connection, maxRadius: maxRadius,
                                                               validator: validator)
     }
 
-    internal func connectionsForType(_ type: Connection.ConnectionType) -> YSortedList {
+    internal func connections(forType type: Connection.ConnectionType) -> YSortedList {
       return _matchingLists[type.rawValue]
     }
 
     /**
     Moves connections that are being tracked by this group to another group.
 
-    - Parameter toGroup: The new group
+    - Parameter group: The new group
     */
-    internal func transferConnectionsToGroup(_ toGroup: Group) {
+    internal func transferConnections(toGroup group: Group) {
       for i in 0 ..< _matchingLists.count {
         let fromConnectionList = _matchingLists[i]
-        let toConnectionList = toGroup._matchingLists[i]
+        let toConnectionList = group._matchingLists[i]
 
         // Set the position delegate to the new group
         let affectedConnections = fromConnectionList._connections
         for connection in affectedConnections {
-          connection.positionDelegate = toGroup
+          connection.positionDelegate = group
         }
 
         // And now transfer the connections over to the corresponding list in the new group
-        fromConnectionList.transferConnectionsToList(toConnectionList)
+        fromConnectionList.transferConnections(toList: toConnectionList)
       }
     }
 
@@ -464,7 +464,7 @@ extension ConnectionManager {
       _connections.removeAll()
     }
 
-    internal func isInYRangeForIndex(_ index: Int, _ baseY: CGFloat, _ maxRadius: CGFloat) -> Bool {
+    internal func isInYRange(forIndex index: Int, _ baseY: CGFloat, _ maxRadius: CGFloat) -> Bool {
       let curY = _connections[index].position.y
       return (abs(curY - baseY) <= maxRadius)
     }
@@ -542,7 +542,7 @@ extension ConnectionManager {
       return pointerMin
     }
 
-    internal func searchForClosestValidConnectionTo(_ connection: Connection, maxRadius: CGFloat,
+    internal func searchForClosestValidConnection(to connection: Connection, maxRadius: CGFloat,
                                                     validator: ConnectionValidator)
       -> Connection? {
         // Don't bother.
@@ -561,7 +561,7 @@ extension ConnectionManager {
 
         // Walk forward and back on the y axis looking for the closest x,y point.
         var pointerMin = closestIndex - 1
-        while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
+        while (pointerMin >= 0 && isInYRange(forIndex: pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
           let distance = connection.distanceFromConnection(temp)
           if distance <= bestRadius && validator.canConnect(connection, toConnection: temp) {
@@ -573,7 +573,7 @@ extension ConnectionManager {
 
         var pointerMax = closestIndex
         while (pointerMax < _connections.count &&
-          isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
+          isInYRange(forIndex: pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
             let distance = connection.distanceFromConnection(temp)
             if distance <= bestRadius && validator.canConnect(connection, toConnection: temp) {
@@ -603,7 +603,7 @@ extension ConnectionManager {
         // If both connections are connected, that's probably fine.  But if
         // either one of them is unconnected, then there could be confusion.
         var pointerMin = closestIndex - 1
-        while (pointerMin >= 0 && isInYRangeForIndex(pointerMin, baseY, maxRadius)) {
+        while (pointerMin >= 0 && isInYRange(forIndex: pointerMin, baseY, maxRadius)) {
           let temp = _connections[pointerMin]
           let connectReason = connection.canConnectWithReasonTo(temp)
           // We use Connection rather than ConnectionValidator here, because neighbors are
@@ -623,7 +623,7 @@ extension ConnectionManager {
 
         var pointerMax = closestIndex
         while (pointerMax < _connections.count &&
-          isInYRangeForIndex(pointerMax, baseY, maxRadius)) {
+          isInYRange(forIndex: pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
             let connectReason = connection.canConnectWithReasonTo(temp)
             let couldConnect = connectReason.intersectsWith(.CanConnect) ||
@@ -643,19 +643,19 @@ extension ConnectionManager {
       return findConnection(connection) != nil
     }
 
-    internal func transferConnectionsToList(_ toList: YSortedList) {
+    internal func transferConnections(toList list: YSortedList) {
       // Transfer connections using merge sort
       var insertionIndex = 0
 
       for connection in _connections {
         // Find the next insertion index
-        while insertionIndex < toList.count &&
-          toList[insertionIndex].position.y < connection.position.y  {
+        while insertionIndex < list.count &&
+          list[insertionIndex].position.y < connection.position.y  {
             insertionIndex += 1
         }
 
         // Insert the connection and increment the insertion index
-        toList._connections.insert(connection, at: insertionIndex)
+        list._connections.insert(connection, at: insertionIndex)
         insertionIndex += 1
       }
 

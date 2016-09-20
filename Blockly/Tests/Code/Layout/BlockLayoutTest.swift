@@ -59,7 +59,7 @@ class BlockLayoutTest: XCTestCase {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
-        try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -98,7 +98,7 @@ class BlockLayoutTest: XCTestCase {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
-        try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -122,7 +122,7 @@ class BlockLayoutTest: XCTestCase {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
-        try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")
@@ -161,7 +161,7 @@ class BlockLayoutTest: XCTestCase {
       // Test for an input layout that doesn't exist in blockLayout
       let dummyInput = Input.Builder(type: .dummy, name: "test").build()
       let dummyInputLayout =
-        try! _layoutFactory.layoutForInput(dummyInput, engine: _workspaceLayout.engine)
+        try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))
     } else {
       XCTFail("Couldn't build block layout")

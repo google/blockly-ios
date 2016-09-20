@@ -21,24 +21,24 @@ class ColorHelperTest: XCTestCase {
   // MARK: - bky_colorFromRGB
 
   func testColorFromRGB_valid() {
-    assertValuesForColor(ColorHelper.colorFromRGB("000000")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "000000")!,
       red: 0x00, green: 0x00, blue: 0x00, alpha: 1.0)
-    assertValuesForColor(ColorHelper.colorFromRGB("ABCDEF")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "ABCDEF")!,
       red: 0xAB, green: 0xCD, blue: 0xEF, alpha: 1.0)
-    assertValuesForColor(ColorHelper.colorFromRGB("123456")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "123456")!,
       red: 0x12, green: 0x34, blue: 0x56, alpha: 1.0)
-    assertValuesForColor(ColorHelper.colorFromRGB("789000")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "789000")!,
       red: 0x78, green: 0x90, blue: 0x00, alpha: 1.0)
-    assertValuesForColor(ColorHelper.colorFromRGB("abcdef")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "abcdef")!,
       red: 0xab, green: 0xcd, blue: 0xef, alpha: 1.0)
-    assertValuesForColor(ColorHelper.colorFromRGB("#678901")!,
+    assertValuesForColor(ColorHelper.makeColor(rgb: "#678901")!,
       red: 0x67, green: 0x89, blue: 0x01, alpha: 1.0)
   }
 
   func testColorFromRGB_invalid() {
-    XCTAssertNil(ColorHelper.colorFromRGB("00000AB"))
-    XCTAssertNil(ColorHelper.colorFromRGB("0000A"))
-    XCTAssertNil(ColorHelper.colorFromRGB("##000000"))
+    XCTAssertNil(ColorHelper.makeColor(rgb: "00000AB"))
+    XCTAssertNil(ColorHelper.makeColor(rgb: "0000A"))
+    XCTAssertNil(ColorHelper.makeColor(rgb: "##000000"))
   }
 
   // MARK - Helper

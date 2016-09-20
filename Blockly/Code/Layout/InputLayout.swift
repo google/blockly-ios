@@ -60,7 +60,7 @@ open class InputLayout: Layout {
     // Create `self.blockGroupLayout` and `self.shadowBlockGroupLayout`.
     // This is done after super.init because you can't call a throwing method prior to
     // initialization.
-    blockGroupLayout = try factory.layoutForBlockGroupLayout(engine: engine)
+    blockGroupLayout = try factory.makeBlockGroupLayout(engine: engine)
     adoptChildLayout(blockGroupLayout)
   }
 

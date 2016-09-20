@@ -53,7 +53,7 @@ extension DefaultBlockLayout {
 
     - Parameter layout: The block layout.
     */
-    public func updateRenderPropertiesFromBlockLayout(_ layout: DefaultBlockLayout) {
+    public func updateRenderProperties(fromBlockLayout layout: DefaultBlockLayout) {
       self.maleOutputConnector = (layout.block.outputConnection != nil)
       self.leadingEdgeXOffset = maleOutputConnector ?
         layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) : 0
@@ -150,7 +150,7 @@ extension DefaultBlockLayout {
     - Parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
     used for inline rows.
     */
-    public func updateRenderPropertiesWithMinimalRowWidth(_ minimalRowWidth: CGFloat) {
+    public func updateRenderProperties(withMinimalRowWidth minimalRowWidth: CGFloat) {
       if inputLayouts.isEmpty {
         return
       }

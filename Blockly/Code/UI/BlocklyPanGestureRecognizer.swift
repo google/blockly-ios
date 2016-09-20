@@ -306,7 +306,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    - Parameter block: The old `BlockView` to be tracked.
    - Parameter newBlock: The new `BlockView` to be tracked.
    */
-  open func replace(block: BlockView, withNewBlock newBlock: BlockView) {
+  open func replaceBlock(_ block: BlockView, with newBlock: BlockView) {
     guard let touchIndex = _blocks.index(of: block) else {
       return
     }
