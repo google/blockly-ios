@@ -63,7 +63,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
-    try layoutBuilder.buildLayoutTree(workspaceLayout)
+    try layoutBuilder.buildLayoutTree(forWorkspaceLayout: workspaceLayout)
 
     // Perform a layout update for the entire tree
     workspaceLayout.updateLayoutDownTree()
@@ -285,7 +285,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // exist.
     let shadowBlockGroupLayout =
       try layoutBuilder.layoutFactory.makeBlockGroupLayout(engine: workspaceLayout.engine)
-    try layoutBuilder.buildLayoutTreeForBlockGroupLayout(shadowBlockGroupLayout, block: shadowBlock)
+    try layoutBuilder.buildLayoutTree(forBlockGroupLayout: shadowBlockGroupLayout,
+                                      block: shadowBlock)
     let shadowBlockLayouts = shadowBlockGroupLayout.blockLayouts
 
     // Add shadow block layouts to proper block group
@@ -311,7 +312,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     if allBlockLayouts.count > 0 {
-      workspaceLayout.sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -342,7 +343,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     if removedLayouts.count > 0 {
-      workspaceLayout.sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -502,7 +503,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
     do {
       // Create the layout tree for this newly added block
       if let blockGroupLayout =
-        try layoutBuilder.buildLayoutTreeForTopLevelBlock(block, workspaceLayout: workspaceLayout)
+        try layoutBuilder.buildLayoutTree(forTopLevelBlock: block, workspaceLayout: workspaceLayout)
       {
         // Perform a layout for the tree
         blockGroupLayout.updateLayoutDownTree()
@@ -516,7 +517,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
         workspaceLayout.updateCanvasSize()
 
         // Schedule change event for an added block layout
-        workspaceLayout.sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+        workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
       }
     } catch let error as NSError {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
@@ -537,7 +538,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 
       workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
 
-      workspaceLayout.sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 }

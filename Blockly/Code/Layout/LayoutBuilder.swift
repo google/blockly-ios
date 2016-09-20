@@ -42,7 +42,7 @@ open class LayoutBuilder: NSObject {
   - Note: To increase performance during initialization, this should only be called after the entire
   workspace model has been constructed.
   */
-  open func buildLayoutTree(_ workspaceLayout: WorkspaceLayout) throws {
+  open func buildLayoutTree(forWorkspaceLayout workspaceLayout: WorkspaceLayout) throws {
     let workspace = workspaceLayout.workspace
 
     // Remove all child layouts
@@ -50,7 +50,7 @@ open class LayoutBuilder: NSObject {
 
     // Create layouts for every top-level block in the workspace
     for topLevelBlock in workspace.topLevelBlocks() {
-      _ = try buildLayoutTreeForTopLevelBlock(topLevelBlock, workspaceLayout: workspaceLayout)
+      _ = try buildLayoutTree(forTopLevelBlock: topLevelBlock, workspaceLayout: workspaceLayout)
     }
   }
 
@@ -63,7 +63,7 @@ open class LayoutBuilder: NSObject {
   `BlocklyError`: Thrown if the block is not part of the workspace this builder is associated with,
   or if the layout tree could not be created for this block.
   */
-  open func buildLayoutTreeForTopLevelBlock(_ block: Block, workspaceLayout: WorkspaceLayout)
+  open func buildLayoutTree(forTopLevelBlock block: Block, workspaceLayout: WorkspaceLayout)
     throws -> BlockGroupLayout?
   {
     // Check that block is part of this workspace and is a top-level block
@@ -83,7 +83,7 @@ open class LayoutBuilder: NSObject {
     // If this Block has a position use it to initialize the layout's position.
     blockGroupLayout.move(toWorkspacePosition: position)
 
-    try buildLayoutTreeForBlockGroupLayout(blockGroupLayout, block: block)
+    try buildLayoutTree(forBlockGroupLayout: blockGroupLayout, block: block)
 
     workspaceLayout.appendBlockGroupLayout(blockGroupLayout, updateLayout: false)
     workspaceLayout.bringBlockGroupLayoutToFront(blockGroupLayout)
@@ -97,7 +97,7 @@ open class LayoutBuilder: NSObject {
   - Parameter blockGroupLayout: The block group layout to build
   - Parameter block: The top-level block to use as the first child of `blockGroupLayout`.
   */
-  open func buildLayoutTreeForBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout, block: Block)
+  open func buildLayoutTree(forBlockGroupLayout blockGroupLayout: BlockGroupLayout, block: Block)
     throws
   {
     blockGroupLayout.reset(updateLayout: false)
@@ -106,7 +106,7 @@ open class LayoutBuilder: NSObject {
     var blockLayouts = [BlockLayout]()
     var currentBlock: Block? = block
     while let block = currentBlock {
-      let blockLayout = try buildLayoutTreeForBlock(block, engine: blockGroupLayout.engine)
+      let blockLayout = try buildLayoutTree(forBlock: block, engine: blockGroupLayout.engine)
       blockLayouts.append(blockLayout)
       currentBlock = currentBlock?.nextBlock ?? currentBlock?.nextShadowBlock
     }
@@ -125,14 +125,14 @@ open class LayoutBuilder: NSObject {
   - Throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the block's inputs.
   */
-  open func buildLayoutTreeForBlock(_ block: Block, engine: LayoutEngine) throws -> BlockLayout
+  open func buildLayoutTree(forBlock block: Block, engine: LayoutEngine) throws -> BlockLayout
   {
     let blockLayout = try layoutFactory.makeBlockLayout(block: block, engine: engine)
     block.delegate = blockLayout // Have the layout listen for events on the block
 
     // Build the input layouts for this block
     for input in block.inputs {
-      let inputLayout = try buildLayoutTreeForInput(input, engine: engine)
+      let inputLayout = try buildLayoutTree(forInput: input, engine: engine)
       blockLayout.appendInputLayout(inputLayout)
     }
 
@@ -148,23 +148,23 @@ open class LayoutBuilder: NSObject {
   - Throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
-  open func buildLayoutTreeForInput(_ input: Input, engine: LayoutEngine) throws -> InputLayout {
+  open func buildLayoutTree(forInput input: Input, engine: LayoutEngine) throws -> InputLayout {
     let inputLayout = try layoutFactory.makeInputLayout(input: input, engine: engine)
     input.delegate = inputLayout // Have the layout listen for events on the input
 
     // Build field layouts for this input
     for field in input.fields {
-      let fieldLayout = try buildLayoutForField(field, engine: engine)
+      let fieldLayout = try buildLayout(forField: field, engine: engine)
       inputLayout.appendFieldLayout(fieldLayout)
     }
 
     if let connectedBlock = input.connectedBlock {
       // Build the block group layout underneath this input
-      try buildLayoutTreeForBlockGroupLayout(inputLayout.blockGroupLayout, block: connectedBlock)
+      try buildLayoutTree(forBlockGroupLayout: inputLayout.blockGroupLayout, block: connectedBlock)
     } else if let connectedShadowBlock = input.connectedShadowBlock {
       // Build the shadow block group layout underneath this input
-      try buildLayoutTreeForBlockGroupLayout(
-        inputLayout.blockGroupLayout, block: connectedShadowBlock)
+      try buildLayoutTree(forBlockGroupLayout: inputLayout.blockGroupLayout,
+        block: connectedShadowBlock)
     }
 
     return inputLayout
@@ -179,7 +179,7 @@ open class LayoutBuilder: NSObject {
    - Throws:
    `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
    */
-  open func buildLayoutForField(_ field: Field, engine: LayoutEngine) throws -> FieldLayout {
+  open func buildLayout(forField field: Field, engine: LayoutEngine) throws -> FieldLayout {
     let fieldLayout = try layoutFactory.makeFieldLayout(field: field, engine: engine)
     field.delegate = fieldLayout // Have the layout listen for events on the field
     return fieldLayout

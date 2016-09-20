@@ -32,7 +32,7 @@ class FieldJSONTest: XCTestCase {
     let json = ["type": "field_angle", "name": "FIELD ANGLE", "angle": 880] as [String : Any]
     let field: FieldAngle
     do {
-      if let fieldAngle = try Field.fieldFromJSON(json) as? FieldAngle {
+      if let fieldAngle = try Field.makeField(json: json) as? FieldAngle {
         field = fieldAngle
       } else {
         XCTFail("Could not parse json into a FieldAngle")
@@ -53,7 +53,7 @@ class FieldJSONTest: XCTestCase {
     let json = ["type": "field_checkbox", "name": "Something", "checked": true] as [String : Any]
     let field: FieldCheckbox
     do {
-      if let fieldCheckbox = try Field.fieldFromJSON(json) as? FieldCheckbox {
+      if let fieldCheckbox = try Field.makeField(json: json) as? FieldCheckbox {
         field = fieldCheckbox
       } else {
         XCTFail("Could not parse json into a FieldColor")
@@ -74,7 +74,7 @@ class FieldJSONTest: XCTestCase {
     let json = ["type": "field_colour", "name": "ABC", "colour": "#00fFAa"]
     let field: FieldColor
     do {
-      if let fieldColor = try Field.fieldFromJSON(json) as? FieldColor {
+      if let fieldColor = try Field.makeField(json: json) as? FieldColor {
         field = fieldColor
       } else {
         XCTFail("Could not parse json into a FieldColor")
@@ -103,7 +103,7 @@ class FieldJSONTest: XCTestCase {
     let json = ["type": "field_date", "name": "ABC", "date": "2016-02-29"]
     let field: FieldDate
     do {
-      if let fieldDate = try Field.fieldFromJSON(json) as? FieldDate {
+      if let fieldDate = try Field.makeField(json: json) as? FieldDate {
         field = fieldDate
       } else {
         XCTFail("Could not parse json into a FieldDate")
@@ -132,7 +132,7 @@ class FieldJSONTest: XCTestCase {
     ] as [String : Any]
     let field: FieldDropdown
     do {
-      if let fieldDropdown = try Field.fieldFromJSON(json) as? FieldDropdown {
+      if let fieldDropdown = try Field.makeField(json: json) as? FieldDropdown {
         field = fieldDropdown
       } else {
         XCTFail("Could not parse json into a FieldDropdown")
@@ -166,7 +166,7 @@ class FieldJSONTest: XCTestCase {
     ] as [String : Any]
     let field: FieldImage
     do {
-      if let fieldImage = try Field.fieldFromJSON(json) as? FieldImage {
+      if let fieldImage = try Field.makeField(json: json) as? FieldImage {
         field = fieldImage
       } else {
         XCTFail("Could not parse json into a FieldImage")
@@ -194,7 +194,7 @@ class FieldJSONTest: XCTestCase {
     ]
     let field: FieldInput
     do {
-      if let fieldInput = try Field.fieldFromJSON(json) as? FieldInput {
+      if let fieldInput = try Field.makeField(json: json) as? FieldInput {
         field = fieldInput
       } else {
         XCTFail("Could not parse json into a FieldInput")
@@ -219,7 +219,7 @@ class FieldJSONTest: XCTestCase {
     ]
     let field: FieldLabel
     do {
-      if let fieldLabel = try Field.fieldFromJSON(json) as? FieldLabel {
+      if let fieldLabel = try Field.makeField(json: json) as? FieldLabel {
         field = fieldLabel
       } else {
         XCTFail("Could not parse json into a FieldLabel")
@@ -247,7 +247,7 @@ class FieldJSONTest: XCTestCase {
       ] as [String : Any]
     let field: FieldNumber
     do {
-      if let fieldNumber = try Field.fieldFromJSON(json) as? FieldNumber {
+      if let fieldNumber = try Field.makeField(json: json) as? FieldNumber {
         field = fieldNumber
       } else {
         XCTFail("Could not parse json into a FieldNumber")
@@ -275,7 +275,7 @@ class FieldJSONTest: XCTestCase {
     ]
     let field: FieldVariable
     do {
-      if let fieldVariable = try Field.fieldFromJSON(json) as? FieldVariable {
+      if let fieldVariable = try Field.makeField(json: json) as? FieldVariable {
         field = fieldVariable
       } else {
         XCTFail("Could not parse json into a FieldVariable")

@@ -39,7 +39,7 @@ class InputJSONTest: XCTestCase {
       "align": "CENTRE",
       "check": ["String", "Boolean"]
     ] as [String : Any]
-    guard let builder = Input.builderFromJSON(json) else {
+    guard let builder = Input.makeBuilder(json: json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -64,7 +64,7 @@ class InputJSONTest: XCTestCase {
       "align": "LEFT",
       "check": "CustomCheckType"
     ]
-    guard let builder = Input.builderFromJSON(json) else {
+    guard let builder = Input.makeBuilder(json: json) else {
       XCTFail("Could not parse json into an Input")
       return
     }
@@ -87,7 +87,7 @@ class InputJSONTest: XCTestCase {
       "name": "input dummy",
       "check": "Broken!" // This shouldn't be used
     ]
-    guard let builder = Input.builderFromJSON(json) else {
+    guard let builder = Input.makeBuilder(json: json) else {
       XCTFail("Could not parse json into an Input")
       return
     }

@@ -25,7 +25,7 @@ extension Input {
   - Returns: An `Input.Builder` instance based on the JSON dictionary, or `nil` if there was
   insufficient data in the dictionary.
   */
-  internal static func builderFromJSON(_ json: [String: Any]) -> Input.Builder? {
+  internal static func makeBuilder(json: [String: Any]) -> Input.Builder? {
     guard let type = Input.InputType(string: ((json["type"] as? String) ?? "")) else {
       return nil
     }

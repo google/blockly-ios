@@ -83,7 +83,7 @@ open class InputLayout: Layout {
   - Returns: The `FieldLayout` that was removed.
   */
   @discardableResult
-  open func removeFieldLayoutAtIndex(_ index: Int) -> FieldLayout {
+  open func removeFieldLayout(atIndex index: Int) -> FieldLayout {
     let fieldLayout = fieldLayouts.remove(at: index)
     removeChildLayout(fieldLayout)
     return fieldLayout
@@ -97,7 +97,7 @@ open class InputLayout: Layout {
   */
   open func reset(updateLayout: Bool) {
     while fieldLayouts.count > 0 {
-      removeFieldLayoutAtIndex(0)
+      removeFieldLayout(atIndex: 0)
     }
 
     self.blockGroupLayout.reset(updateLayout: false)

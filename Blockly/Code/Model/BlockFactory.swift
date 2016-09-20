@@ -74,7 +74,7 @@ public class BlockFactory : NSObject {
         throw BlocklyError(.fileNotFound, "Could not find \"\(jsonPath)\" in bundle [\(aBundle)]")
       }
       let jsonString = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
-      let json = try JSONHelper.JSONArrayFromString(jsonString)
+      let json = try JSONHelper.makeJSONArray(string: jsonString)
       for blockJson in json {
         let blockBuilder = try Block.makeBuilder(json: blockJson as! [String : Any])
         // Ensure the builder is valid
