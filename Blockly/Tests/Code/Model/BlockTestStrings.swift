@@ -159,7 +159,7 @@ class BlockTestStrings {
 
   class func assembleBlock(_ interior: String) -> String {
     return assembleComplexBlock(tag: "block", type: "frankenblock", id: "1",
-                         position: WorkspacePointMake(37, 13), interior: interior)
+                         position: WorkspacePoint(x: 37, y: 13), interior: interior)
   }
 
   class func assembleComplexBlock(

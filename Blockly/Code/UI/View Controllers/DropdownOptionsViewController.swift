@@ -148,7 +148,7 @@ open class DropdownOptionsViewController: UITableViewController {
     let xPadding =
       cellPadding.left + cellPadding.right + (selectedIndex == row ? accessoryWidth : 0)
     let width = width - xPadding
-    var size = text.bky_multiLineSizeForFont(textLabelFont, constrainedToWidth: width)
+    var size = text.bky_multiLineSize(forFont: textLabelFont, constrainedToWidth: width)
 
     // Add the cell padding back to the measured text size
     size.height += cellPadding.top + cellPadding.bottom

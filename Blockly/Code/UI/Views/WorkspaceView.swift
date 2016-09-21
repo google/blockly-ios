@@ -188,7 +188,7 @@ open class WorkspaceView: LayoutView {
    */
   open func scrollBlockIntoView(_ block: Block, animated: Bool) {
     guard let blockLayout = block.layout,
-      let blockView = ViewManager.sharedInstance.findBlockViewForLayout(blockLayout) else
+      let blockView = ViewManager.sharedInstance.findBlockView(forLayout: blockLayout) else
     {
       return
     }
@@ -237,7 +237,7 @@ open class WorkspaceView: LayoutView {
   */
   open func workspacePositionFromViewPoint(_ point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
-      return WorkspacePointZero
+      return WorkspacePoint.zero
     }
 
     var viewPoint = point

@@ -64,13 +64,13 @@ open class ToolboxLayout: NSObject {
     super.init()
 
     for category in self.toolbox.categories {
-      addLayoutCoordinatorForToolboxCategory(category)
+      addLayoutCoordinator(forToolboxCategory: category)
     }
   }
 
   // MARK: - Private
 
-  private func addLayoutCoordinatorForToolboxCategory(_ category: Toolbox.Category) {
+  private func addLayoutCoordinator(forToolboxCategory category: Toolbox.Category) {
     do {
       let layout =
         WorkspaceFlowLayout(workspace: category, engine: engine, layoutDirection: layoutDirection)

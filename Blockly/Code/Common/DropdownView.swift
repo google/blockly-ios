@@ -144,7 +144,7 @@ public final class DropdownView: UIView {
          horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
   {
     // Measure text size
-    let textSize = text.bky_singleLineSizeForFont(textFont)
+    let textSize = text.bky_singleLineSize(forFont: textFont)
 
     // Measure drop down arrow image size
     let imageSize = (dropDownArrowImage?.size ?? CGSize.zero)

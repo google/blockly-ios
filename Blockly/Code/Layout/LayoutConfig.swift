@@ -148,27 +148,27 @@ open class LayoutConfig: NSObject {
     super.init()
 
     // Set default values for base config keys
-    setUnit(Unit(25), forKey: LayoutConfig.BlockBumpDistance)
-    setUnit(Unit(25), forKey: LayoutConfig.BlockSnapDistance)
-    setUnit(Unit(10), forKey: LayoutConfig.InlineXPadding)
-    setUnit(Unit(5), forKey: LayoutConfig.InlineYPadding)
-    setUnit(Unit(10), forKey: LayoutConfig.WorkspaceFlowXSeparatorSpace)
-    setUnit(Unit(10), forKey: LayoutConfig.WorkspaceFlowYSeparatorSpace)
+    setUnit(Unit(25), for: LayoutConfig.BlockBumpDistance)
+    setUnit(Unit(25), for: LayoutConfig.BlockSnapDistance)
+    setUnit(Unit(10), for: LayoutConfig.InlineXPadding)
+    setUnit(Unit(5), for: LayoutConfig.InlineYPadding)
+    setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
+    setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
-    setUnit(Unit(18), forKey: LayoutConfig.FieldMinimumHeight)
-    setUnit(Unit(5), forKey: LayoutConfig.FieldCornerRadius)
-    setUnit(Unit(1), forKey: LayoutConfig.FieldLineWidth)
-    setSize(Size(WorkspaceSizeMake(44, 44)), forKey: LayoutConfig.FieldColorButtonSize)
-    setUnit(Unit(2), forKey: LayoutConfig.FieldColorButtonBorderWidth)
+    setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
+    setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
+    setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
+    setSize(Size(WorkspaceSize(width: 44, height: 44)), for: LayoutConfig.FieldColorButtonSize)
+    setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
 
     // Use the default system colors by setting these config values to nil
-    setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchOnTintColor)
-    setColor(nil, forKey: LayoutConfig.FieldCheckboxSwitchTintColor)
+    setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
+    setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
 
-    setEdgeInsets(EdgeInsets(4, 8, 4, 8), forKey: LayoutConfig.FieldTextFieldInsetPadding)
-    setFloat(300, forKey: LayoutConfig.FieldTextFieldMaximumWidth)
+    setEdgeInsets(EdgeInsets(4, 8, 4, 8), for: LayoutConfig.FieldTextFieldInsetPadding)
+    setFloat(300, for: LayoutConfig.FieldTextFieldMaximumWidth)
 
-    setDouble(0.3, forKey: LayoutConfig.ViewAnimationDuration)
+    setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
   }
 
   // MARK: - Public
@@ -190,7 +190,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `unit` that was set.
    */
   @discardableResult
-  public func setUnit(_ unit: Unit?, forKey key: PropertyKey) -> Unit? {
+  public func setUnit(_ unit: Unit?, for key: PropertyKey) -> Unit? {
     _units[key] = unit
     return unit
   }
@@ -204,8 +204,8 @@ open class LayoutConfig: NSObject {
    - Returns: The mapped `Unit` value.
    */
   @inline(__always)
-  public func unitFor(_ key: PropertyKey, defaultValue: Unit = Unit(0, 0)) -> Unit {
-    return _units[key] ?? setUnit(defaultValue, forKey: key)!
+  public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0, 0)) -> Unit {
+    return _units[key] ?? setUnit(defaultValue, for: key)!
   }
 
   /**
@@ -217,8 +217,8 @@ open class LayoutConfig: NSObject {
    - Returns: The `viewUnit` of the mapped `Unit` value.
    */
   @inline(__always)
-  public func viewUnitFor(_ key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
-    return unitFor(key, defaultValue: defaultValue).viewUnit
+  public func viewUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
+    return unit(for: key, defaultValue: defaultValue).viewUnit
   }
 
   /**
@@ -230,8 +230,8 @@ open class LayoutConfig: NSObject {
    - Returns: The `workspaceUnit` of the mapped `Unit` value.
    */
   @inline(__always)
-  public func workspaceUnitFor(_ key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
-    return unitFor(key, defaultValue: defaultValue).workspaceUnit
+  public func workspaceUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
+    return unit(for: key, defaultValue: defaultValue).workspaceUnit
   }
 
   /**
@@ -242,7 +242,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `size` that was set.
    */
   @discardableResult
-  public func setSize(_ size: Size?, forKey key: PropertyKey) -> Size? {
+  public func setSize(_ size: Size?, for key: PropertyKey) -> Size? {
     _sizes[key] = size
     return size
   }
@@ -256,8 +256,8 @@ open class LayoutConfig: NSObject {
    - Returns: The mapped `Size` value.
    */
   @inline(__always)
-  public func sizeFor(_ key: PropertyKey, defaultValue: Size = Size(WorkspaceSizeZero)) -> Size {
-    return _sizes[key] ?? setSize(defaultValue, forKey: key)!
+  public func size(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero)) -> Size {
+    return _sizes[key] ?? setSize(defaultValue, for: key)!
   }
 
   /**
@@ -269,10 +269,10 @@ open class LayoutConfig: NSObject {
    - Returns: The `viewSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func viewSizeFor(_ key: PropertyKey, defaultValue: Size = Size(WorkspaceSizeZero))
+  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero))
     -> CGSize
   {
-    return sizeFor(key).viewSize
+    return size(for: key).viewSize
   }
 
   /**
@@ -284,10 +284,10 @@ open class LayoutConfig: NSObject {
    - Returns: The `workspaceSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func workspaceSizeFor(_ key: PropertyKey, defaultValue: Size = Size(WorkspaceSizeZero))
+  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero))
     -> WorkspaceSize
   {
-    return sizeFor(key).workspaceSize
+    return size(for: key).workspaceSize
   }
 
   /**
@@ -298,7 +298,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `color` that was set.
    */
   @discardableResult
-  public func setColor(_ color: UIColor?, forKey key: PropertyKey) -> UIColor? {
+  public func setColor(_ color: UIColor?, for key: PropertyKey) -> UIColor? {
     _colors[key] = color
     return color
   }
@@ -312,8 +312,8 @@ open class LayoutConfig: NSObject {
    - Returns: The `key`'s value
    */
   @inline(__always)
-  public func colorFor(_ key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
-    return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, forKey: key) : nil)
+  public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
+    return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
   }
 
   /**
@@ -324,7 +324,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `Double` that was set.
    */
   @discardableResult
-  public func setDouble(_ double: Double, forKey key: PropertyKey) -> Double {
+  public func setDouble(_ double: Double, for key: PropertyKey) -> Double {
     _doubles[key] = double
     return double
   }
@@ -338,8 +338,8 @@ open class LayoutConfig: NSObject {
    - Returns: The `key`'s value
    */
   @inline(__always)
-  public func doubleFor(_ key: PropertyKey, defaultValue: Double = 0) -> Double {
-    return _doubles[key] ?? setDouble(defaultValue, forKey: key)
+  public func double(for key: PropertyKey, defaultValue: Double = 0) -> Double {
+    return _doubles[key] ?? setDouble(defaultValue, for: key)
   }
 
   /**
@@ -350,7 +350,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `edgeInset` that was set.
    */
   @discardableResult
-  public func setEdgeInsets(_ edgeInsets: EdgeInsets, forKey key: PropertyKey) -> EdgeInsets {
+  public func setEdgeInsets(_ edgeInsets: EdgeInsets, for key: PropertyKey) -> EdgeInsets {
     _edgeInsets[key] = edgeInsets
     return edgeInsets
   }
@@ -364,10 +364,10 @@ open class LayoutConfig: NSObject {
    - Returns: The `key`'s value
    */
   @inline(__always)
-  public func edgeInsetsFor(_ key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
+  public func edgeInsets(for key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
     -> EdgeInsets
   {
-    return _edgeInsets[key] ?? setEdgeInsets(defaultValue, forKey: key)
+    return _edgeInsets[key] ?? setEdgeInsets(defaultValue, for: key)
   }
 
   /**
@@ -378,7 +378,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `float` that was set.
    */
   @discardableResult
-  public func setFloat(_ float: CGFloat, forKey key: PropertyKey) -> CGFloat {
+  public func setFloat(_ float: CGFloat, for key: PropertyKey) -> CGFloat {
     _floats[key] = float
     return float
   }
@@ -392,8 +392,8 @@ open class LayoutConfig: NSObject {
    - Returns: The `key`'s value
    */
   @inline(__always)
-  public func floatFor(_ key: PropertyKey, defaultValue: CGFloat = 0) -> CGFloat {
-    return _floats[key] ?? setFloat(defaultValue, forKey: key)
+  public func float(for key: PropertyKey, defaultValue: CGFloat = 0) -> CGFloat {
+    return _floats[key] ?? setFloat(defaultValue, for: key)
   }
 
   /**
@@ -402,7 +402,7 @@ open class LayoutConfig: NSObject {
 
    - Parameter engine: The `LayoutEngine` used to update all config values
    */
-  open func updateViewValuesFromEngine(_ engine: LayoutEngine) {
+  open func updateViewValues(fromEngine engine: LayoutEngine) {
     for (_, var unit) in _units {
       unit.viewUnit = engine.viewUnitFromWorkspaceUnit(unit.workspaceUnit)
     }

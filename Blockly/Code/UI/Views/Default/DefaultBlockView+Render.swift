@@ -94,22 +94,22 @@ extension DefaultBlockView {
 
     if drawTopToBottom {
       path.addLineToPoint(0, verticalLineHeight, relative: true)
-      path.addCurveToPoint(WorkspacePointMake(-puzzleTabWidth, roundedHalfPieceHeight),
-        controlPoint1: WorkspacePointMake(0, roundedHalfPieceHeight * 1.25),
-        controlPoint2: WorkspacePointMake(-puzzleTabWidth, -roundedHalfPieceHeight),
+      path.addCurveToPoint(WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
+        controlPoint1: WorkspacePoint(x: 0, y: roundedHalfPieceHeight * 1.25),
+        controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
         relative: true)
-      path.addSmoothCurveToPoint(WorkspacePointMake(puzzleTabWidth, roundedHalfPieceHeight),
-        controlPoint2: WorkspacePointMake(puzzleTabWidth, -roundedHalfPieceHeight * 0.3125),
+      path.addSmoothCurveToPoint(WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight),
+        controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight * 0.3125),
         relative: true)
       path.addLineToPoint(0, verticalLineHeight, relative: true)
     } else {
       path.addLineToPoint(0, -verticalLineHeight, relative: true)
-      path.addCurveToPoint(WorkspacePointMake(-puzzleTabWidth, -roundedHalfPieceHeight),
-        controlPoint1: WorkspacePointMake(0, -roundedHalfPieceHeight * 1.25),
-        controlPoint2: WorkspacePointMake(-puzzleTabWidth, roundedHalfPieceHeight),
+      path.addCurveToPoint(WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
+        controlPoint1: WorkspacePoint(x: 0, y: -roundedHalfPieceHeight * 1.25),
+        controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
         relative: true)
-      path.addSmoothCurveToPoint(WorkspacePointMake(puzzleTabWidth, -roundedHalfPieceHeight),
-        controlPoint2: WorkspacePointMake(puzzleTabWidth, roundedHalfPieceHeight * 0.3125),
+      path.addSmoothCurveToPoint(WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight),
+        controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight * 0.3125),
         relative: true)
       path.addLineToPoint(0, -verticalLineHeight, relative: true)
     }
@@ -140,7 +140,7 @@ extension DefaultBlockView {
    */
   public final func addTopLeftCorner(toPath path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
   {
-    path.addArcWithCenter(WorkspacePointMake(blockCornerRadius, 0),
+    path.addArcWithCenter(WorkspacePoint(x: blockCornerRadius, y: 0),
       radius: blockCornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),
       clockwise: true, relative: true)
   }

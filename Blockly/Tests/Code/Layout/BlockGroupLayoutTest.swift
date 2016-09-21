@@ -170,13 +170,13 @@ class BlockGroupLayoutTest: XCTestCase {
   func testMoveToWorkspacePositionForTopLevelBlockGroup() {
     let blockGroupLayout =
       try! _layoutFactory.makeBlockGroupLayout(engine: _workspaceLayout.engine)
-    blockGroupLayout.relativePosition = WorkspacePointMake(30, 30)
+    blockGroupLayout.relativePosition = WorkspacePoint(x: 30, y: 30)
 
     // Add block group to workspace
     _workspaceLayout.appendBlockGroupLayout(blockGroupLayout)
 
     // Move to new workspace position
-    let newPosition = WorkspacePointMake(-10.134, 30)
+    let newPosition = WorkspacePoint(x: -10.134, y: 30)
     blockGroupLayout.move(toWorkspacePosition: newPosition)
 
     // Check that it has a new relative position
@@ -204,7 +204,7 @@ class BlockGroupLayoutTest: XCTestCase {
       // Try to move the block group layout belonging to the input to a new workspace position.
       // Nothing should happen
       let currentPosition = blockGroupLayout.relativePosition
-      let newPosition = currentPosition + WorkspacePointMake(10, 10)
+      let newPosition = currentPosition + WorkspacePoint(x: 10, y: 10)
       blockGroupLayout.move(toWorkspacePosition: newPosition)
 
       XCTAssertEqual(currentPosition, blockGroupLayout.relativePosition)

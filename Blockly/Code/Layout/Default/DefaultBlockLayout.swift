@@ -38,14 +38,14 @@ public final class DefaultBlockLayout: BlockLayout {
 
   /// The relative position of the output connection, expressed as a Workspace coordinate system
   /// unit
-  fileprivate var _outputConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _outputConnectionRelativePosition: WorkspacePoint = WorkspacePoint.zero
 
   /// The relative position of the next connection, expressed as a Workspace coordinate system unit
-  fileprivate var _nextConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _nextConnectionRelativePosition: WorkspacePoint = WorkspacePoint.zero
 
   /// The relative position of the previous connection, expressed as a Workspace coordinate system
   /// unit
-  fileprivate var _previousConnectionRelativePosition: WorkspacePoint = WorkspacePointZero
+  fileprivate var _previousConnectionRelativePosition: WorkspacePoint = WorkspacePoint.zero
 
   /// The position of the block's leading edge X offset, specified as a Workspace coordinate
   /// system unit.
@@ -91,7 +91,7 @@ public final class DefaultBlockLayout: BlockLayout {
     // TODO:(#41) Handle stroke widths for the background.
 
     let outputPuzzleTabXOffset = block.outputConnection != nil ?
-      self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) : 0
+      self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) : 0
     var xOffset: CGFloat = 0
     var yOffset: CGFloat = 0
     var minimalFieldWidthRequired: CGFloat = 0
@@ -174,24 +174,24 @@ public final class DefaultBlockLayout: BlockLayout {
       backgroundRow.updateRenderProperties(withMinimalRowWidth: minimalWidthRequired)
     }
 
-    var size = WorkspaceSizeZero
+    var size = WorkspaceSize.zero
     for inputLayout in inputLayouts {
       size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
     }
 
     // Update connection relative positions
     let notchXOffset = outputPuzzleTabXOffset +
-      self.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth) / 2
-    let notchHeight = self.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight)
+      self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) / 2
+    let notchHeight = self.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
 
     if block.previousConnection != nil {
-      _previousConnectionRelativePosition = WorkspacePointMake(notchXOffset, notchHeight)
+      _previousConnectionRelativePosition = WorkspacePoint(x: notchXOffset, y: notchHeight)
     }
 
     if block.nextConnection != nil {
       let blockBottomEdge = background.rows.reduce(0, { $0 + $1.rowHeight})
       _nextConnectionRelativePosition =
-        WorkspacePointMake(notchXOffset, blockBottomEdge + notchHeight)
+        WorkspacePoint(x: notchXOffset, y: blockBottomEdge + notchHeight)
 
       // TODO:(#41) Make the size.height a property of self.background
       // Create room to draw the notch height at the bottom
@@ -199,8 +199,8 @@ public final class DefaultBlockLayout: BlockLayout {
     }
 
     if block.outputConnection != nil {
-      _outputConnectionRelativePosition = WorkspacePointMake(
-        0, self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight) / 2)
+      _outputConnectionRelativePosition = WorkspacePoint(
+        x: 0, y: self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
     }
 
     // Update the size required for this block

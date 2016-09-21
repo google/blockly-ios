@@ -32,7 +32,7 @@ open class LayoutView: UIView {
       if let previousValue = oldValue {
         previousValue.delegate = nil
         // Automatically untrack this view in the ViewManager
-        ViewManager.sharedInstance.uncacheViewForLayout(previousValue)
+        ViewManager.sharedInstance.uncacheView(forLayout: previousValue)
       }
 
       if let newValue = layout {
@@ -70,7 +70,7 @@ open class LayoutView: UIView {
    */
   open func runAnimatableCode(_ animated: Bool, code: @escaping () -> Void) {
     if animated {
-      let duration = layout?.config.doubleFor(LayoutConfig.ViewAnimationDuration) ?? 0
+      let duration = layout?.config.double(for: LayoutConfig.ViewAnimationDuration) ?? 0
       if duration > 0 {
         UIView.animate(
           withDuration: duration,
