@@ -506,7 +506,7 @@ open class WorkbenchViewController: UIViewController {
     // hierarchy when layouts change, we just need to find the view that was automatically created.
     guard
       let newBlockLayout = newBlock.layout,
-      let newBlockView = ViewManager.sharedInstance.findBlockViewForLayout(newBlockLayout) else
+      let newBlockView = ViewManager.sharedInstance.findBlockView(forLayout: newBlockLayout) else
     {
       throw BlocklyError(.viewNotFound, "View could not be located for the copied block")
     }
@@ -688,7 +688,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
-      addGestureTrackingForBlockView(blockView)
+      addGestureTracking(forBlockView: blockView)
     }
   }
 
@@ -696,7 +696,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
-      removeGestureTrackingForBlockView(blockView)
+      removeGestureTracking(forBlockView: blockView)
     }
   }
 
@@ -743,7 +743,7 @@ extension WorkbenchViewController {
 
     // TODO:(#45) This should be copying the root block layout, not the root block view.
     let rootBlockView: BlockView! =
-      ViewManager.sharedInstance.findBlockViewForLayout(rootBlockLayout)
+      ViewManager.sharedInstance.findBlockView(forLayout: rootBlockLayout)
 
 
     // Copy the block view into the workspace view
@@ -793,7 +793,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: A given block view.
    */
-  fileprivate func addGestureTrackingForBlockView(_ blockView: BlockView) {
+  fileprivate func addGestureTracking(forBlockView blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
 
     let tapGesture =
@@ -806,7 +806,7 @@ extension WorkbenchViewController {
 
    - Parameter blockView: A given block view.
    */
-  fileprivate func removeGestureTrackingForBlockView(_ blockView: BlockView) {
+  fileprivate func removeGestureTracking(forBlockView blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
 
     if let blockLayout = blockView.blockLayout {
@@ -1026,7 +1026,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
 
       // HACK: Re-add gesture tracking for the block view, as there is a problem re-recognizing
       // them when dragging multiple blocks simultaneously
-      addGestureTrackingForBlockView(blockView)
+      addGestureTracking(forBlockView: blockView)
 
       // Update the UI state
       removeUIStateValue(.draggingBlock)

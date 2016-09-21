@@ -85,7 +85,7 @@ public final class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   public func addLineToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
-    addLineToPoint(WorkspacePointMake(x, y), relative: relative)
+    addLineToPoint(WorkspacePoint(x: x, y: y), relative: relative)
   }
 
   /**
@@ -258,7 +258,7 @@ public final class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   public func moveToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
-    moveToPoint(WorkspacePointMake(x, y), relative: relative)
+    moveToPoint(WorkspacePoint(x: x, y: y), relative: relative)
   }
 
   /**

@@ -51,7 +51,7 @@ open class LayoutEngine: NSObject {
 
       if scale != oldValue {
         // Now that the scale has changed, update all the view values in the config,
-        config.updateViewValuesFromEngine(self)
+        config.updateViewValues(fromEngine: self)
       }
     }
   }
@@ -84,7 +84,7 @@ open class LayoutEngine: NSObject {
       rtl ?? (UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft)
     super.init()
 
-    config.updateViewValuesFromEngine(self)
+    config.updateViewValues(fromEngine: self)
 
     self.minimumScale = minimumScale
     self.maximumScale = maximumScale
@@ -108,9 +108,9 @@ open class LayoutEngine: NSObject {
     } else if scale == 1 {
       return point
     } else {
-      return WorkspacePointMake(
-        workspaceUnitFromViewUnit(point.x),
-        workspaceUnitFromViewUnit(point.y))
+      return WorkspacePoint(
+        x: workspaceUnitFromViewUnit(point.x),
+        y: workspaceUnitFromViewUnit(point.y))
     }
   }
 
@@ -127,9 +127,9 @@ open class LayoutEngine: NSObject {
     } else if scale == 1 {
       return size
     } else {
-      return WorkspaceSizeMake(
-        workspaceUnitFromViewUnit(size.width),
-        workspaceUnitFromViewUnit(size.height))
+      return WorkspaceSize(
+        width: workspaceUnitFromViewUnit(size.width),
+        height: workspaceUnitFromViewUnit(size.height))
     }
   }
 

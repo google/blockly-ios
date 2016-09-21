@@ -56,7 +56,7 @@ extension DefaultBlockLayout {
     public func updateRenderProperties(fromBlockLayout layout: DefaultBlockLayout) {
       self.maleOutputConnector = (layout.block.outputConnection != nil)
       self.leadingEdgeXOffset = maleOutputConnector ?
-        layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) : 0
+        layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) : 0
       self.femalePreviousStatementConnector = (layout.block.previousConnection != nil)
       self.maleNextStatementConnector = (layout.block.nextConnection != nil)
 

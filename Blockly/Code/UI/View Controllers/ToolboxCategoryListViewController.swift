@@ -64,14 +64,14 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
       // Update the UI to match the new selected category.
 
       if selectedCategory != nil,
-        let indexPath = indexPathForCategory(selectedCategory),
+        let indexPath = indexPath(forCategory: selectedCategory),
         let cell = self.collectionView?.cellForItem(at: indexPath) , !cell.isSelected
       {
         // Select the new value (which automatically deselects the previous value)
         self.collectionView?.selectItem(
           at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition())
       } else if selectedCategory == nil,
-        let indexPath = indexPathForCategory(oldValue)
+        let indexPath = indexPath(forCategory: oldValue)
       {
         // No new category was selected. Just de-select the previous value.
         self.collectionView?.deselectItem(at: indexPath, animated: true)
@@ -153,7 +153,7 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
       let cell = collectionView.dequeueReusableCell(
         withReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier,
         for: indexPath) as! ToolboxCategoryListViewCell
-      cell.loadCategory(categoryForIndexPath(indexPath), orientation: orientation)
+      cell.loadCategory(category(forIndexPath: indexPath), orientation: orientation)
       cell.isSelected = (selectedCategory == cell.category)
       return cell
   }
@@ -181,7 +181,7 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
 
   // MARK: - Private
 
-  fileprivate func indexPathForCategory(_ category: Toolbox.Category?) -> IndexPath? {
+  fileprivate func indexPath(forCategory category: Toolbox.Category?) -> IndexPath? {
     if toolboxLayout == nil || category == nil {
       return nil
     }
@@ -194,7 +194,7 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
     return nil
   }
 
-  fileprivate func categoryForIndexPath(_ indexPath: IndexPath) -> Toolbox.Category {
+  fileprivate func category(forIndexPath indexPath: IndexPath) -> Toolbox.Category {
     return toolboxLayout!.categoryLayoutCoordinators[(indexPath as NSIndexPath).row].workspaceLayout.workspace
       as! Toolbox.Category
   }
@@ -207,8 +207,8 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath) -> CGSize
   {
-    let category = categoryForIndexPath(indexPath)
-    let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
+    let indexedCategory = category(forIndexPath: indexPath)
+    let size = ToolboxCategoryListViewCell.sizeRequired(forCategory: indexedCategory)
 
     // Flip width/height for the vertical orientation (its contents are actually rotated 90 degrees)
     return (orientation == .vertical) ? CGSize(width: size.height, height: size.width) : size
@@ -340,7 +340,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     }
     colorTagView.backgroundColor = category.color
 
-    let size = ToolboxCategoryListViewCell.sizeRequiredForCategory(category)
+    let size = ToolboxCategoryListViewCell.sizeRequired(forCategory: category)
     rotationView.center = self.contentView.center // We need the rotation to occur in the center
     rotationView.bounds = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
@@ -353,13 +353,13 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     }
   }
 
-  static func sizeRequiredForCategory(_ category: Toolbox.Category) -> CGSize {
+  static func sizeRequired(forCategory category: Toolbox.Category) -> CGSize {
     let size: CGSize
     if let icon = category.icon {
       size = CGSize(width: max(icon.size.width, IconSize.width),
                     height: max(icon.size.height, IconSize.height))
     } else {
-      size = category.name.bky_singleLineSizeForFont(fontForNameLabel())
+      size = category.name.bky_singleLineSize(forFont: fontForNameLabel())
     }
 
     return CGSize(width: size.width + LabelInsets.left + LabelInsets.right, height: CellHeight)

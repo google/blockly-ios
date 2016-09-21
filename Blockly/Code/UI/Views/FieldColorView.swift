@@ -65,9 +65,9 @@ open class FieldColorView: FieldView {
       if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
         let button = self.button
         button.layer.borderWidth =
-          fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldColorButtonBorderWidth)
+          fieldColorLayout.config.viewUnit(for: LayoutConfig.FieldColorButtonBorderWidth)
         button.layer.cornerRadius =
-          fieldColorLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+          fieldColorLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
         button.backgroundColor = fieldColorLayout.color
       }
     }
@@ -101,7 +101,7 @@ extension FieldColorView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    return layout.config.viewSizeFor(LayoutConfig.FieldColorButtonSize)
+    return layout.config.viewSize(for: LayoutConfig.FieldColorButtonSize)
   }
 }
 

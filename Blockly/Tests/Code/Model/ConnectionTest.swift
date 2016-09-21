@@ -330,23 +330,23 @@ class ConnectionTest: XCTestCase {
     let connection2 = createConnection(.inputValue, 0, 0)
     XCTAssertEqual(0, connection1.distanceFromConnection(connection2))
 
-    connection2.moveToPosition(WorkspacePointMake(5.20403, 0))
+    connection2.moveToPosition(WorkspacePoint(x: 5.20403, y: 0))
     XCTAssertEqual(5.20403, connection1.distanceFromConnection(connection2))
 
-    connection2.moveToPosition(WorkspacePointMake(0, 9.234))
+    connection2.moveToPosition(WorkspacePoint(x: 0, y: 9.234))
     XCTAssertEqual(9.234, connection1.distanceFromConnection(connection2))
 
-    connection2.moveToPosition(WorkspacePointMake(3, 4))
+    connection2.moveToPosition(WorkspacePoint(x: 3, y: 4))
     XCTAssertEqual(5, connection1.distanceFromConnection(connection2))
 
-    connection2.moveToPosition(WorkspacePointMake(-2, 0))
+    connection2.moveToPosition(WorkspacePoint(x: -2, y: 0))
     XCTAssertEqual(2, connection1.distanceFromConnection(connection2))
 
-    connection2.moveToPosition(WorkspacePointMake(0, -1.5))
+    connection2.moveToPosition(WorkspacePoint(x: 0, y: -1.5))
     XCTAssertEqual(1.5, connection1.distanceFromConnection(connection2))
 
-    connection1.moveToPosition(WorkspacePointMake(10, 10))
-    connection2.moveToPosition(WorkspacePointMake(310, -390))
+    connection1.moveToPosition(WorkspacePoint(x: 10, y: 10))
+    connection2.moveToPosition(WorkspacePoint(x: 310, y: -390))
     XCTAssertEqual(500, connection1.distanceFromConnection(connection2))
   }
 
@@ -393,7 +393,7 @@ class ConnectionTest: XCTestCase {
     allBlocks.append(block) // Keep a reference of the block so it doesn't get dealloced
 
     let connection = Connection(type: type, sourceInput: nil)
-    connection.moveToPosition(WorkspacePointMake(x, y))
+    connection.moveToPosition(WorkspacePoint(x: x, y: y))
     connection.sourceBlock = block
     return connection
   }

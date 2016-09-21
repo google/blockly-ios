@@ -62,9 +62,9 @@ open class FieldVariableView: FieldView {
         let dropDownView = self.dropDownView
         dropDownView.text = fieldVariableLayout.variable
         dropDownView.borderWidth =
-          fieldVariableLayout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
+          fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
         dropDownView.borderCornerRadius =
-          fieldVariableLayout.config.viewUnitFor(LayoutConfig.FieldCornerRadius)
+          fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
         // TODO:(#27) Standardize this font
         dropDownView.textFont = UIFont.systemFont(ofSize: 14 * fieldVariableLayout.engine.scale)
       }
@@ -100,9 +100,9 @@ extension FieldVariableView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let borderWidth = layout.config.viewUnitFor(LayoutConfig.FieldLineWidth)
-    let xSpacing = layout.config.viewUnitFor(LayoutConfig.InlineXPadding)
-    let ySpacing = layout.config.viewUnitFor(LayoutConfig.InlineYPadding)
+    let borderWidth = layout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
+    let xSpacing = layout.config.viewUnit(for: LayoutConfig.InlineXPadding)
+    let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
     let measureText = fieldVariableLayout.variable
     // TODO:(#27) Standardize this font
     let font = UIFont.systemFont(ofSize: 14 * scale)

@@ -87,7 +87,7 @@ public final class FieldVariable: Field {
   public func renameVariable(_ variable: String) {
     let oldName = self.variable
     self.variable = variable
-    nameManager?.renameName(oldName, toName: variable)
+    nameManager?.renameName(oldName, to: variable)
   }
 
   /**

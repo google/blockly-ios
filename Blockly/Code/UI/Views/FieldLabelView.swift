@@ -86,6 +86,6 @@ extension FieldLabelView: FieldLayoutMeasurer {
     }
 
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    return fieldLabelLayout.text.bky_singleLineSizeForFont(UIFont.systemFont(ofSize: 14 * scale))
+    return fieldLabelLayout.text.bky_singleLineSize(forFont: UIFont.systemFont(ofSize: 14 * scale))
   }
 }

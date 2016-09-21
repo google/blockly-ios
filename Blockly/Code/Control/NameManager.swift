@@ -160,7 +160,7 @@ public final class NameManager: NSObject {
    otherwise.
    */
   @discardableResult
-  public func renameName(_ oldName: String, toName newName: String) -> Bool {
+  public func renameName(_ oldName: String, to newName: String) -> Bool {
     let oldNameKey = keyForName(oldName)
     let newNameKey = keyForName(newName)
 

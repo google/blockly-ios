@@ -49,7 +49,7 @@ extension String {
    - Parameter width: The maximum width the string can occupy when rendered.
    - Returns: The size required to render the string.
   */
-  public func bky_multiLineSizeForFont(_ font: UIFont, constrainedToWidth width: CGFloat) -> CGSize
+  public func bky_multiLineSize(forFont font: UIFont, constrainedToWidth width: CGFloat) -> CGSize
   {
     let attributes = [NSFontAttributeName: font]
     return self.bky_multiLineSizeWithAttributes(attributes, constrainedToWidth: width)
@@ -62,7 +62,7 @@ extension String {
    - Parameter font: The font used to render the string.
    - Returns: The size required to render the string.
    */
-  public func bky_singleLineSizeForFont(_ font: UIFont) -> CGSize {
+  public func bky_singleLineSize(forFont font: UIFont) -> CGSize {
     let attributes = [NSFontAttributeName: font]
     let boundingBox = self.boundingRect(
       with: CGSize(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)),

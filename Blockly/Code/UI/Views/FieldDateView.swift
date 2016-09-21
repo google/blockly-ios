@@ -95,7 +95,7 @@ open class FieldDateView: FieldView {
         // TODO:(#27) Standardize this font
         textField.font = UIFont.systemFont(ofSize: 14 * fieldDateLayout.engine.scale)
         textField.insetPadding =
-          fieldDateLayout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+          fieldDateLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -146,10 +146,10 @@ extension FieldDateView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsetsFor(LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let text = fieldDateLayout.textValue
     // TODO:(#27) Use a standardized font size that can be configurable for the project
-    var measureSize = text.bky_singleLineSizeForFont(UIFont.systemFont(ofSize: 14 * scale))
+    var measureSize = text.bky_singleLineSize(forFont: UIFont.systemFont(ofSize: 14 * scale))
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width += textPadding.leading + textPadding.trailing
     return measureSize

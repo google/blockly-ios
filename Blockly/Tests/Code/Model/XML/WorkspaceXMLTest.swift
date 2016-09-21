@@ -35,14 +35,14 @@ class WorkspaceXMLTest: XCTestCase {
 
   func testParseXML_SimpleBlock() {
     let xml = assembleWorkspace(BlockTestStrings.SIMPLE_BLOCK)
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
+    try! workspace.loadBlocks(fromXMLString: xml, factory: factory)
     XCTAssertEqual(1, workspace.allBlocks.count)
   }
 
   func testParseXML_NestedBlocks() {
     let nestedBlockXML = BlockTestStrings.assembleBlock(BlockTestStrings.VALUE_GOOD)
     let xml = assembleWorkspace(nestedBlockXML)
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
+    try! workspace.loadBlocks(fromXMLString: xml, factory: factory)
     XCTAssertEqual(2, workspace.allBlocks.count)
   }
 
@@ -54,7 +54,7 @@ class WorkspaceXMLTest: XCTestCase {
       BlockTestStrings.assembleBlock(BlockTestStrings.FIELD_HAS_NAME)
     ]
     let xml = assembleWorkspace(blocks.joined(separator: ""))
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
+    try! workspace.loadBlocks(fromXMLString: xml, factory: factory)
     XCTAssertEqual(4, workspace.allBlocks.count)
   }
 
@@ -65,7 +65,7 @@ class WorkspaceXMLTest: XCTestCase {
       BlockTestStrings.SIMPLE_BLOCK,
       ]
       let xml = assembleWorkspace(blocks.joined(separator: ""))
-      try workspace.loadBlocksFromXMLString(xml, factory: factory)
+      try workspace.loadBlocks(fromXMLString: xml, factory: factory)
       XCTFail("Should not have been able to add blocks with the same uuid")
     } catch {
       // Success!
@@ -74,20 +74,20 @@ class WorkspaceXMLTest: XCTestCase {
 
   func testParseXML_EmptyXMLNormalEndTag() {
     let xml = assembleWorkspace("")
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
+    try! workspace.loadBlocks(fromXMLString: xml, factory: factory)
     XCTAssertEqual(0, workspace.allBlocks.count)
   }
 
   func testParseXML_EmptyXMLAbbreviatedEndTag() {
     let xml = "\r\n<xml xmlns=\"http://www.w3.org/1999/xhtml\" />"
-    try! workspace.loadBlocksFromXMLString(xml, factory: factory)
+    try! workspace.loadBlocks(fromXMLString: xml, factory: factory)
     XCTAssertEqual(0, workspace.allBlocks.count)
   }
 
   func testParseXML_BadXML() {
     do {
       let xml = assembleWorkspace("<ty\"xmlahsdjkf<><J><JJ>Ji23j.,zxcj123.;;.?>?.//>?..<><")
-      try workspace.loadBlocksFromXMLString(xml, factory: factory)
+      try workspace.loadBlocks(fromXMLString: xml, factory: factory)
       XCTFail("Should not have been able to load bad xml")
     } catch {
       // Success!
@@ -95,7 +95,7 @@ class WorkspaceXMLTest: XCTestCase {
 
     do {
       let xml = assembleWorkspace("<type=\"xml_no_name\">")
-      try workspace.loadBlocksFromXMLString(xml, factory: factory)
+      try workspace.loadBlocks(fromXMLString: xml, factory: factory)
       XCTFail("Should not have been able to load bad xml")
     } catch {
       // Success!

@@ -132,7 +132,7 @@ class TurtleViewController: UIViewController {
       let toolboxPath = "Turtle/level_1/toolbox.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
-        let toolbox = try Toolbox.toolboxFromXMLString(xmlString, factory: _blockFactory)
+        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
         try _workbenchViewController.loadToolbox(toolbox)
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")

@@ -83,9 +83,9 @@ open class WorkspaceLayout: Layout {
 
     // Update size required for the workspace
     self.contentOrigin = topLeftMostPoint
-    self.contentSize = WorkspaceSizeMake(
-      bottomRightMostPoint.x - topLeftMostPoint.x,
-      bottomRightMostPoint.y - topLeftMostPoint.y)
+    self.contentSize = WorkspaceSize(
+      width: bottomRightMostPoint.x - topLeftMostPoint.x,
+      height: bottomRightMostPoint.y - topLeftMostPoint.y)
 
 
     // Set the content offset so children are automatically placed relative to (0, 0)

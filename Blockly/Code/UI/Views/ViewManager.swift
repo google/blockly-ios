@@ -47,7 +47,7 @@ public final class ViewManager: NSObject {
 
    - Parameter layout: The given layout
    */
-  public func uncacheViewForLayout(_ layout: Layout) {
+  public func uncacheView(forLayout layout: Layout) {
     _views[layout.uuid] = nil
   }
 
@@ -58,7 +58,7 @@ public final class ViewManager: NSObject {
    - Parameter layout: The `BlockLayout` to look for
    - Returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findBlockViewForLayout(_ layout: BlockLayout) -> BlockView? {
+  public func findBlockView(forLayout layout: BlockLayout) -> BlockView? {
     return (_views[layout.uuid] as? BlockView) ?? nil
   }
 
@@ -69,7 +69,7 @@ public final class ViewManager: NSObject {
    - Parameter layout: The `FieldLayout` to look for
    - Returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findFieldViewForLayout(_ layout: FieldLayout) -> FieldView? {
+  public func findFieldView(forLayout layout: FieldLayout) -> FieldView? {
     return (_views[layout.uuid] as? FieldView) ?? nil
   }
 
@@ -80,7 +80,7 @@ public final class ViewManager: NSObject {
    - Parameter layout: The `Layout` to look for
    - Returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
    */
-  public func findViewForLayout(_ layout: Layout) -> LayoutView? {
+  public func findView(forLayout layout: Layout) -> LayoutView? {
     return _views[layout.uuid]
   }
 }

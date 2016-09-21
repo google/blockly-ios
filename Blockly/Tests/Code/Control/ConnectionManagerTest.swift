@@ -61,14 +61,14 @@ class ConnectionManagerTest: XCTestCase {
   func testConnectionManagerMoveTo() {
     let offsetX: CGFloat = 10
     let offsetY: CGFloat  = -10
-    let offset = WorkspacePointMake(offsetX, offsetY)
+    let offset = WorkspacePoint(x: offsetX, y: offsetY)
     let conn = createConnection(0, 0, .previousStatement)
     manager.trackConnection(conn)
 
     // Move to this position + the given offset.
     var moveX: CGFloat = 15
     var moveY: CGFloat = 20
-    conn.moveToPosition(WorkspacePointMake(moveX, moveY), withOffset: offset)
+    conn.moveToPosition(WorkspacePoint(x: moveX, y: moveY), withOffset: offset)
     XCTAssertEqual(moveX + offsetX, conn.position.x)
     XCTAssertEqual(moveY + offsetY, conn.position.y)
     // Connection should still be in the list
@@ -80,7 +80,7 @@ class ConnectionManagerTest: XCTestCase {
     // connection manager.
     moveX = 10
     moveY = 100
-    conn.moveToPosition(WorkspacePointMake(moveX, moveY), withOffset: offset)
+    conn.moveToPosition(WorkspacePoint(x: moveX, y: moveY), withOffset: offset)
     XCTAssertFalse(manager.mainGroup.connections(forType: .previousStatement).contains(conn))
     XCTAssertEqual(moveX + offsetX, conn.position.x)
     XCTAssertEqual(moveY + offsetY, conn.position.y)
@@ -95,7 +95,7 @@ class ConnectionManagerTest: XCTestCase {
 
     XCTAssertEqual(two, manager.closestConnection(one, maxRadius: 20.0, ignoreGroup: nil)?.0)
     // Move connections farther apart
-    two.moveToPosition(WorkspacePointMake(100, 100))
+    two.moveToPosition(WorkspacePoint(x: 100, y: 100))
     XCTAssertNil(manager.closestConnection(one, maxRadius: 20.0, ignoreGroup: nil))
 
     // Don't offer to connect an already connected left (male) value plug to
@@ -468,7 +468,7 @@ class ConnectionManagerTest: XCTestCase {
     try! workspace.addBlockTree(block)
 
     let conn = Connection(type: type, sourceInput: sourceInput)
-    conn.moveToPosition(WorkspacePointMake(x, y))
+    conn.moveToPosition(WorkspacePoint(x: x, y: y))
     conn.sourceBlock = block
 
     return conn

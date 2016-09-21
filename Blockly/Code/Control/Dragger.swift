@@ -252,8 +252,8 @@ public final class Dragger: NSObject {
     if let workspaceLayout = workspaceLayoutCoordinator?.workspaceLayout,
       let connectionManager = workspaceLayoutCoordinator?.connectionManager
     {
-      let maxRadius = workspaceLayout.config.unitFor(
-        LayoutConfig.BlockSnapDistance, defaultValue: LayoutConfig.Unit(0)).workspaceUnit
+      let maxRadius = workspaceLayout.config.unit(
+        for: LayoutConfig.BlockSnapDistance, defaultValue: LayoutConfig.Unit(0)).workspaceUnit
 
       return
         connectionManager.findBestConnection(forGroup: drag.connectionGroup, maxRadius: maxRadius)

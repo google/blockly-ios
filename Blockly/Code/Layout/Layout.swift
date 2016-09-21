@@ -326,9 +326,9 @@ open class Layout: NSObject {
     // are "dirty"
 
     // Update the layout's absolute position in the workspace
-    self.absolutePosition = WorkspacePointMake(
-      parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
-      parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
+    self.absolutePosition = WorkspacePoint(
+      x: parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
+      y: parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
 
     // Update the view frame, if needed
     if (includeFields || !(self is FieldLayout))

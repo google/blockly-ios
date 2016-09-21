@@ -32,11 +32,11 @@ extension Toolbox {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func toolboxFromXMLString(_ xmlString: String, factory: BlockFactory) throws
+  public class func makeToolbox(xmlString: String, factory: BlockFactory) throws
     -> Toolbox
   {
     let xmlDoc = try AEXMLDocument(xml: xmlString)
-    return try toolboxFromXML(xmlDoc, factory: factory)
+    return try makeToolbox(xml: xmlDoc, factory: factory)
   }
 
   /**
@@ -50,7 +50,7 @@ extension Toolbox {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func toolboxFromXML(_ xml: AEXMLElement, factory: BlockFactory) throws -> Toolbox {
+  public class func makeToolbox(xml: AEXMLElement, factory: BlockFactory) throws -> Toolbox {
     let toolboxNode = xml["toolbox"]
 
     if let error = toolboxNode.error {
