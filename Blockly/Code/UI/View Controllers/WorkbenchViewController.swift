@@ -985,6 +985,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
           return
         }
         gesture.replaceBlock(block, with: newBlock)
+        blockView = newBlock
         removeBlockFromTrash(oldBlock)
       }
 
