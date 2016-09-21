@@ -15,6 +15,7 @@
 
 import Foundation
 
+@objc(BKYDefaultBlockView)
 public final class DefaultBlockView: BlockView {
 
   // MARK: - Properties

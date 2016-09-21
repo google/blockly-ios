@@ -29,7 +29,7 @@ class BlockJSONTest: XCTestCase {
     do {
       let jsonString = try String(contentsOfFile: path!, encoding: String.Encoding.utf8)
       let json = try JSONHelper.makeJSONDictionary(string: jsonString)
-      block = try Block.makeBuilder(json: json).build()
+      block = try Block.makeBuilder(json: json).makeBlock()
       try! workspace.addBlockTree(block)
     } catch let error as NSError {
       XCTFail("Error: \(error.localizedDescription)")

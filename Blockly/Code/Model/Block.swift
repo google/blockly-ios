@@ -341,7 +341,7 @@ public final class Block : NSObject {
    `BlocklyError`: Thrown if copied blocks could not be connected to each other.
    */
   public func deepCopy() throws -> BlockTree {
-    let newBlock = try Block.Builder(block: self).build(shadow: shadow)
+    let newBlock = try Block.Builder(block: self).makeBlock(shadow: shadow)
     var copiedBlocks = [Block]()
     copiedBlocks.append(newBlock)
 

@@ -389,7 +389,7 @@ class ConnectionTest: XCTestCase {
     _ type: Connection.ConnectionType, _ x: CGFloat = 0, _ y: CGFloat = 0, shadow: Bool = false)
     -> Connection
   {
-    let block = try! Block.Builder(name: "test").build(shadow: shadow)
+    let block = try! Block.Builder(name: "test").makeBlock(shadow: shadow)
     allBlocks.append(block) // Keep a reference of the block so it doesn't get dealloced
 
     let connection = Connection(type: type, sourceInput: nil)

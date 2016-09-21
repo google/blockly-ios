@@ -18,6 +18,7 @@ import Foundation
 /**
  Protocol that a `UIView` must conform to in order to be inserted into a `ZIndexedGroupView`.
  */
+@objc(BKYZIndexedView)
 public protocol ZIndexedView {
   /// The z-index of the view. Views with higher z-index values will always appear above ones with
   /// lower values.
@@ -33,6 +34,7 @@ public protocol ZIndexedView {
  on this class may have adverse effects. Adding any view other than one that conforms to
  `ZIndexedView` will result in an app crash.
  */
+@objc(BKYZIndexedGroupView)
 public final class ZIndexedGroupView: UIView {
   // MARK: - Properties
 

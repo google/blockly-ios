@@ -138,12 +138,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
         let builder1 = Block.Builder(name: "test1")
         builder1.inputBuilders.append(Input.Builder(type: .value, name: "input1"))
-        return try builder1.build()
+        return try builder1.makeBlock()
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
         try builder2.setOutputConnection(enabled: true)
-        return try builder2.build()
+        return try builder2.makeBlock()
       }) else
     {
       XCTFail("Could not create blocks")
@@ -188,12 +188,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
         let builder1 = Block.Builder(name: "test1")
         builder1.inputBuilders.append(Input.Builder(type: .value, name: "input1"))
-        return try builder1.build()
+        return try builder1.makeBlock()
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
         try builder2.setOutputConnection(enabled: true)
-        return try builder2.build()
+        return try builder2.makeBlock()
       }) else
     {
       XCTFail("Could not create blocks")
@@ -248,12 +248,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
         let builder1 = Block.Builder(name: "test1")
       try builder1.setNextConnection(enabled: true)
-        return try builder1.build()
+        return try builder1.makeBlock()
       }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
         try builder2.setPreviousConnection(enabled: true)
-        return try builder2.build()
+        return try builder2.makeBlock()
       }) else
     {
       XCTFail("Could not create blocks")
@@ -310,12 +310,12 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     guard let block1 = BKYAssertDoesNotThrow({ () -> Block in
       let builder1 = Block.Builder(name: "test1")
       try builder1.setNextConnection(enabled: true)
-      return try builder1.build()
+      return try builder1.makeBlock()
     }),
       let block2 = BKYAssertDoesNotThrow({ () -> Block in
         let builder2 = Block.Builder(name: "test2")
         try builder2.setPreviousConnection(enabled: true)
-        return try builder2.build()
+        return try builder2.makeBlock()
       }) else
     {
       XCTFail("Could not create blocks")

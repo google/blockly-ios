@@ -32,7 +32,7 @@ class WorkspaceTest: XCTestCase {
 
   func testAddBlockTree_TopLevelShadowBlockFailure() {
     guard let shadowBlock =
-      BKYAssertDoesNotThrow({ try Block.Builder(name: "shadow").build(shadow: true) }) else
+      BKYAssertDoesNotThrow({ try Block.Builder(name: "shadow").makeBlock(shadow: true) }) else
     {
       XCTFail("Could not create block")
       return
@@ -49,9 +49,9 @@ class WorkspaceTest: XCTestCase {
     BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 
     guard
-      let orphanBlock = BKYAssertDoesNotThrow({ try builder.build() }),
-      let parentBlock = BKYAssertDoesNotThrow({ try builder.build() }),
-      let childBlock = BKYAssertDoesNotThrow({ try builder.build() }) else
+      let orphanBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }),
+      let parentBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }),
+      let childBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }) else
     {
       XCTFail("Could not build blocks")
       return
@@ -93,8 +93,8 @@ class WorkspaceTest: XCTestCase {
   }
 
   func testReadOnly() {
-    guard let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").build() }),
-      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").build() }) else
+    guard let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").makeBlock() }),
+      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").makeBlock() }) else
     {
       XCTFail("Could not create blocks")
       return
@@ -133,15 +133,15 @@ class WorkspaceTest: XCTestCase {
   }
 
   func testMaxBlocks_None() {
-    let workspace = Workspace(maxBlocks: nil)
+    let workspace = Workspace()
     XCTAssertNil(workspace.maxBlocks)
     XCTAssertNil(workspace.remainingCapacity)
   }
 
   func testMaxBlocks_One() {
     guard
-      let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").build() }),
-      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").build() }) else
+      let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").makeBlock() }),
+      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").makeBlock() }) else
     {
       XCTFail("Could not build blocks")
       return
@@ -169,9 +169,9 @@ class WorkspaceTest: XCTestCase {
     BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 
     guard
-      let orphanBlock = BKYAssertDoesNotThrow({ try builder.build() }),
-      let parentBlock = BKYAssertDoesNotThrow({ try builder.build() }),
-      let childBlock = BKYAssertDoesNotThrow({ try builder.build() }) else
+      let orphanBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }),
+      let parentBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }),
+      let childBlock = BKYAssertDoesNotThrow({ try builder.makeBlock() }) else
     {
       XCTFail("Could not build blocks")
       return

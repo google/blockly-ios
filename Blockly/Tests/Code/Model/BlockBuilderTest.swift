@@ -18,13 +18,13 @@ import XCTest
 
 class BlockBuilderTest: XCTestCase {
 
-  func testBuildBlock() {
+  func testMakeBlock() {
     let workspace = Workspace()
     let block = buildFrankenBlock(workspace)
     validate(frankenblock: block)
   }
 
-  func testBuildFromBlock() {
+  func testMakeBlockFromBlock() {
     let workspace = Workspace()
     let block = buildFrankenBlock(workspace)
     let block2 = buildFrankenBlock(workspace)
@@ -32,7 +32,7 @@ class BlockBuilderTest: XCTestCase {
     let block3 = buildFrankenBlock(workspace)
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
-    let blockCopy = try! Block.Builder(block: block).build()
+    let blockCopy = try! Block.Builder(block: block).makeBlock()
     try! workspace.addBlockTree(blockCopy)
     validate(frankenblock: blockCopy)
 
@@ -141,7 +141,7 @@ class BlockBuilderTest: XCTestCase {
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
-    let block = try! bob.build()
+    let block = try! bob.makeBlock()
     try! workspace.addBlockTree(block)
     return block
   }

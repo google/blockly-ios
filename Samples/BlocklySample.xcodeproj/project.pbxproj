@@ -15,6 +15,7 @@
 		FAA5E1A81D8F8553006FFC36 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA5E19B1D8F8525006FFC36 /* AEXML.framework */; };
 		FAA5E1A91D8F8553006FFC36 /* AEXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA5E19B1D8F8525006FFC36 /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAA870261C642850000C7C61 /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA870231C642849000C7C61 /* Blockly.framework */; };
+		FAC357E51D9244A2003FB436 /* TestObjCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC357E41D9244A2003FB436 /* TestObjCViewController.m */; };
 		FAE2A63A1C756A750085D36B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE2A6301C756A750085D36B /* Images.xcassets */; };
 		FAE2A6421C756A8D0085D36B /* Turtle in Resources */ = {isa = PBXBuildFile; fileRef = FAE2A6411C756A8D0085D36B /* Turtle */; };
 		FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6441C756AA20085D36B /* AppDelegate.swift */; };
@@ -128,6 +129,8 @@
 		FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoPickerViewController.swift; sourceTree = "<group>"; };
 		FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../third_party/Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 		FAA8701D1C642849000C7C61 /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly/Blockly.xcodeproj; sourceTree = "<group>"; };
+		FAC357E41D9244A2003FB436 /* TestObjCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObjCViewController.m; sourceTree = "<group>"; };
+		FAC357ED1D92598C003FB436 /* TestObjCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObjCViewController.h; sourceTree = "<group>"; };
 		FAE2A6301C756A750085D36B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FAE2A6411C756A8D0085D36B /* Turtle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Turtle; sourceTree = "<group>"; };
 		FAE2A6441C756AA20085D36B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -248,6 +251,8 @@
 				FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */,
 				FAE2A6461C756AA20085D36B /* SampleObjCObject.h */,
 				FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */,
+				FAC357ED1D92598C003FB436 /* TestObjCViewController.h */,
+				FAC357E41D9244A2003FB436 /* TestObjCViewController.m */,
 				FA5F28B01C756B73008384BE /* TurtleViewController.swift */,
 				FA433FA51C77FE6A0009FDC2 /* TurtleViewController.xib */,
 			);
@@ -411,6 +416,7 @@
 			files = (
 				FAE2A6491C756AA20085D36B /* SimpleWorkbenchViewController.swift in Sources */,
 				FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */,
+				FAC357E51D9244A2003FB436 /* TestObjCViewController.m in Sources */,
 				FA5F28B11C756B73008384BE /* TurtleViewController.swift in Sources */,
 				FA5F2BC41C7692D0008384BE /* DemoPickerViewController.swift in Sources */,
 			);

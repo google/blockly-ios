@@ -273,13 +273,13 @@ class BlockTest: XCTestCase {
         try self._blockFactory.makeBlock(name: "simple_input_output", uuid: "2")
       }),
       let outputShadow = BKYAssertDoesNotThrow({
-        try self._blockFactory.makeBlock(name: "simple_input_output", uuid: "3", shadow: true)
+        try self._blockFactory.makeBlock(name: "simple_input_output", shadow: true, uuid: "3")
       }),
       let next = BKYAssertDoesNotThrow({
         try self._blockFactory.makeBlock(name: "statement_no_next", uuid: "2")
       }),
       let shadowNext = BKYAssertDoesNotThrow({
-        try self._blockFactory.makeBlock(name: "statement_no_next", uuid: "2", shadow: true)
+        try self._blockFactory.makeBlock(name: "statement_no_next", shadow: true, uuid: "2")
       }) else
     {
       XCTFail("Couldn't initialize blocks")
@@ -307,7 +307,7 @@ class BlockTest: XCTestCase {
   }
 
   func testDeepCopy_DoesNotCopyUUID() {
-    let original = BKYAssertDoesNotThrow { try Block.Builder(name: "test").build() }
+    let original = BKYAssertDoesNotThrow { try Block.Builder(name: "test").makeBlock() }
     let copy = BKYAssertDoesNotThrow { try original?.deepCopy() }
 
     XCTAssertNotNil(original)
@@ -322,7 +322,7 @@ class BlockTest: XCTestCase {
     blockBuilder.editable = true
     blockBuilder.inputBuilders = [inputBuilder]
 
-    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.build() }) else {
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.makeBlock() }) else {
       XCTFail("Couldn't create block")
       return
     }
@@ -348,7 +348,7 @@ class BlockTest: XCTestCase {
     blockBuilder.editable = false
     blockBuilder.inputBuilders = [inputBuilder]
 
-    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.build() }) else {
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.makeBlock() }) else {
       XCTFail("Couldn't create block")
       return
     }
