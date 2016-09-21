@@ -129,7 +129,7 @@ class WorkspaceLayoutTest: XCTestCase {
 
     // Build the layout tree
     BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(_workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
     }
 
     let blockLayout = block?.layout

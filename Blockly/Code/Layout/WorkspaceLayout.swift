@@ -92,14 +92,14 @@ open class WorkspaceLayout: Layout {
     self.childContentOffset = WorkspacePointZero - topLeftMostPoint
 
     // Update the canvas size
-    sendChangeEventWithFlags(WorkspaceLayout.Flag_UpdateCanvasSize)
+    sendChangeEvent(withFlags: WorkspaceLayout.Flag_UpdateCanvasSize)
   }
 
   open override func updateLayoutDownTree() {
     super.updateLayoutDownTree()
 
     // When this method is called, force a redisplay at the workspace level
-    sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+    sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
   }
 
   // MARK: - Public
@@ -125,7 +125,7 @@ open class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -143,7 +143,7 @@ open class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      sendChangeEventWithFlags(WorkspaceLayout.Flag_NeedsDisplay)
+      sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     }
   }
 
@@ -160,7 +160,7 @@ open class WorkspaceLayout: Layout {
 
     if updateLayout {
       updateLayoutUpTree()
-      sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+      sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
     }
   }
 

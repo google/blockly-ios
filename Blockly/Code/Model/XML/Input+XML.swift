@@ -34,9 +34,9 @@ extension Input {
     case InputType.dummy:
       xmlElements = []
     case InputType.value:
-      xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_VALUE)
+      xmlElements = try toXML(withName: XMLConstants.TAG_INPUT_VALUE)
     case InputType.statement:
-      xmlElements = try toXMLWithName(XMLConstants.TAG_INPUT_STATEMENT)
+      xmlElements = try toXML(withName: XMLConstants.TAG_INPUT_STATEMENT)
     }
 
     // Create xml elements for each field
@@ -51,7 +51,7 @@ extension Input {
 
   // MARK: - Private
 
-  fileprivate func toXMLWithName(_ elementName: String) throws -> [AEXMLElement] {
+  fileprivate func toXML(withName elementName: String) throws -> [AEXMLElement] {
     if connectedBlock == nil && connectedShadowBlock == nil {
       // No block connected, don't include any xml for this input
       return []

@@ -195,7 +195,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
     // Build its layout tree
     do {
-      try _layoutBuilder.buildLayoutTree(_workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
     } catch let error as NSError {
       XCTFail("Couldn't build the layout tree: \(error)")
     }

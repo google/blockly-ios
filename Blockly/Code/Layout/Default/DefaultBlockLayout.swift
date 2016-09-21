@@ -207,6 +207,6 @@ public final class DefaultBlockLayout: BlockLayout {
     self.contentSize = size
 
     // Force this block to be redisplayed
-    sendChangeEventWithFlags(Layout.Flag_NeedsDisplay)
+    sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
   }
 }

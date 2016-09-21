@@ -48,7 +48,7 @@ open class BlockGroupLayout: Layout {
       if zIndex == oldValue {
         return
       }
-      sendChangeEventWithFlags(BlockGroupLayout.Flag_UpdateZIndex)
+      sendChangeEvent(withFlags: BlockGroupLayout.Flag_UpdateZIndex)
     }
   }
 
@@ -58,7 +58,7 @@ open class BlockGroupLayout: Layout {
       if dragging == oldValue {
         return
       }
-      sendChangeEventWithFlags(BlockGroupLayout.Flag_UpdateDragging)
+      sendChangeEvent(withFlags: BlockGroupLayout.Flag_UpdateDragging)
     }
   }
 

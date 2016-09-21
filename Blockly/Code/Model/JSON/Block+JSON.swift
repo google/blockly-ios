@@ -172,11 +172,11 @@ extension Block {
               .invalidBlockDefinition, "No type for argument \"\(numberToken)\".")
           }
 
-          if let field = try Field.fieldFromJSON(element) {
+          if let field = try Field.makeField(json: element) {
             // Add field to field list
             tempFieldList.append(field)
             break
-          } else if let inputBuilder = Input.builderFromJSON(element) {
+          } else if let inputBuilder = Input.makeBuilder(json: element) {
             // Add current field list to input, and add input to input list
             inputBuilder.appendFields(tempFieldList)
             tempFieldList = []

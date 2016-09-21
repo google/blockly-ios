@@ -80,7 +80,7 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree
     BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: self._workspaceLayout)
     }
 
     // Verify it
@@ -127,8 +127,8 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree for the only top-level block
     if let blockGroupLayout = BKYAssertDoesNotThrow({
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
       })
     {
       verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
@@ -138,26 +138,26 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building layout trees for non top-level blocks (these should all return nil)
     var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(blockInputOutput,
+      try _layoutBuilder.buildLayoutTree(forTopLevelBlock: blockInputOutput,
         workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementMultipleInputValueInput, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockStatementMultipleInputValueInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementNoNext, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockStatementNoNext, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementOutputNoInput, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockStatementOutputNoInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
   }
@@ -197,8 +197,8 @@ class LayoutBuilderTest: XCTestCase {
 
     // Build layout tree for the only top-level block
     if let blockGroupLayout = BKYAssertDoesNotThrow({
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockStatementStatementInput, workspaceLayout: self._workspaceLayout)
     })
     {
       verifyBlockGroupLayoutTree(blockGroupLayout, firstBlock: blockStatementStatementInput)
@@ -208,14 +208,14 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building layout trees for non top-level shadow blocks (these should all return nil)
     var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockShadowInput, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockShadowInput, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
 
     emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTreeForTopLevelBlock(
-        blockShadowPrevious, workspaceLayout: self._workspaceLayout)
+      try _layoutBuilder.buildLayoutTree(
+        forTopLevelBlock: blockShadowPrevious, workspaceLayout: self._workspaceLayout)
     }
     XCTAssertNil(emptyBlockGroup)
   }
@@ -234,8 +234,8 @@ class LayoutBuilderTest: XCTestCase {
 
     // Try building the layout tree this block, but in the wrong workspace
     BKYAssertThrow(errorType: BlocklyError.self) {
-      _ = try _layoutBuilder.buildLayoutTreeForTopLevelBlock(block,
-                                                             workspaceLayout: _workspaceLayout)
+      _ = try _layoutBuilder.buildLayoutTree(forTopLevelBlock: block,
+                                             workspaceLayout: _workspaceLayout)
     }
   }
 

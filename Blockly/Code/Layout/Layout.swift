@@ -129,7 +129,7 @@ open class Layout: NSObject {
   public internal(set) final var viewFrame: CGRect = CGRect.zero {
     didSet {
       if viewFrame != oldValue {
-        sendChangeEventWithFlags(Layout.Flag_UpdateViewFrame)
+        sendChangeEvent(withFlags: Layout.Flag_UpdateViewFrame)
       }
     }
   }
@@ -198,7 +198,7 @@ open class Layout: NSObject {
 
   - Parameter flags: `LayoutFlag` options to send with the change event
   */
-  public final func sendChangeEventWithFlags(_ flags: LayoutFlag) {
+  public final func sendChangeEvent(withFlags flags: LayoutFlag) {
     // Send change event
     delegate?.layoutDidChange(self, withFlags: flags, animated: animateChangeEvent)
   }
