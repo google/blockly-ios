@@ -94,7 +94,8 @@ public final class Connection : NSObject {
       CheckResult(value: .reasonInferiorBlockShadowMismatch)
 
     /// Specific reasons why two connections are able or unable connect
-    public enum Value: Int {
+    @objc
+    public enum BKYConnectionCheckResultValue: Int {
       case canConnect = 1, reasonSelfConnection, reasonWrongType, reasonMustDisconnect,
       reasonTargetNull, reasonShadowNull, reasonChecksFailed, reasonCannotSetShadowForTarget,
       reasonInferiorBlockShadowMismatch
@@ -122,6 +123,9 @@ public final class Connection : NSObject {
         }
       }
     }
+
+    /// Specific reasons why two connections are able or unable connect
+    public typealias Value = BKYConnectionCheckResultValue
 
     ///  The underlying raw value for the `CheckResult`.
     public let rawValue : Int

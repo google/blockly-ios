@@ -18,6 +18,7 @@ import Foundation
 /**
 Abstract class for rendering a `UIView` backed by a `Layout`.
 */
+@objc(BKYLayoutView)
 open class LayoutView: UIView {
 
   // MARK: - Properties

@@ -18,6 +18,7 @@ import Foundation
 /**
  A view controller for displaying blocks in a trash can.
  */
+@objc(BKYTrashCanViewController)
 public final class TrashCanViewController: WorkspaceViewController {
 
   // MARK: - Static Properties

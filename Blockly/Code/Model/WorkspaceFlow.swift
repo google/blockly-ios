@@ -21,7 +21,8 @@ import Foundation
 @objc(BKYWorkspaceFlow)
 open class WorkspaceFlow: Workspace {
   /// Defines information on how each item should be laid out in the layout.
-  public class Item {
+  @objc(BKYWorkspaceFlowItem)
+  public class Item: NSObject {
     public fileprivate(set) var rootBlock: Block?
     public fileprivate(set) var gap: CGFloat?
 

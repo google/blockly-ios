@@ -599,6 +599,7 @@ extension WorkspaceView {
   /**
    The scroll view used by `WorkspaceView`.
    */
+  @objc(BKYWorkspaceScrollView)
   open class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
     open var containerView: ZIndexedGroupView = {

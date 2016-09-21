@@ -100,10 +100,10 @@ public class BlockFactory : NSObject {
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
    - Returns: A new block if the name is known, nil otherwise.
    */
-  public func makeBlock(name: String, uuid: String? = nil, shadow: Bool = false) throws
+  public func makeBlock(name: String, shadow: Bool = false, uuid: String? = nil) throws
     -> Block?
   {
-    return try _blockBuilders[name]?.build(uuid: uuid, shadow: shadow)
+    return try _blockBuilders[name]?.build(shadow: shadow, uuid: uuid)
   }
 
   // MARK: - Internal

@@ -18,6 +18,7 @@ import Foundation
 /**
  A subclass of `UITextField` that allows for setting the padding around the text.
  */
+@objc(BKYInsetTextField)
 open class InsetTextField: UITextField {
   // MARK: - Properties
 

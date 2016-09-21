@@ -18,6 +18,7 @@ import Foundation
 /**
  Delegate for events that occur on `FieldDropdownOptionsViewController`.
  */
+@objc(BKYFieldColorPickerViewControllerDelegate)
 public protocol FieldColorPickerViewControllerDelegate: class {
   /**
    Event that is called when the user has selected a color for a color field.

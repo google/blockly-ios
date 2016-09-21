@@ -52,6 +52,7 @@ public protocol BlocklyPanGestureDelegate: class {
 /**
  The blockly gesture recognizer, which detects pan gestures on blocks in the workspace.
  */
+@objc(BKYBlocklyPanGestureRecognizer)
 open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   // MARK: - Properties
 

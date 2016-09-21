@@ -127,11 +127,19 @@ open class Workspace : NSObject {
   // MARK: - Initializers
 
   /**
-  Initializer for a Workspace.
+   Creates a Workspace, with no maximum capacity.
+   */
+  public override init() {
+    self.maxBlocks = nil
+    super.init()
+  }
 
-  - Parameter maxBlocks: Optional parameter for setting `self.maxBlocks`.
-  */
-  public init(maxBlocks: Int? = nil) {
+  /**
+   Creates a Workspace, specifying a maximum capacity.
+
+   - Parameter maxBlocks: The maximum number of blocks allowed in this workspace.
+   */
+  public init(maxBlocks: Int) {
     self.maxBlocks = maxBlocks
     super.init()
   }

@@ -18,6 +18,7 @@ import Foundation
 /**
  Delegate for events that occur on `DropdownView`.
  */
+@objc(BKYDropdownViewDelegate)
 public protocol DropdownViewDelegate: class {
   /**
    Event that is called when the user has tapped on the dropdown.

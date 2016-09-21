@@ -37,7 +37,8 @@ open class WorkbenchViewController: UIViewController {
   // MARK: - Style Enum
 
   /// Defines the style of the workbench
-  public enum Style {
+  @objc
+  public enum BKYWorkbenchViewControllerStyle: Int {
     /// Style where the toolbox is positioned vertically, the trash can is located in the
     /// bottom-right corner, and the trash folder flies out from the bottom
     case defaultStyle,
@@ -69,6 +70,9 @@ open class WorkbenchViewController: UIViewController {
       }
     }
   }
+
+  /// Defines the style of the workbench
+  public typealias Style = BKYWorkbenchViewControllerStyle
 
   // MARK: - UIState Struct
 
@@ -208,23 +212,35 @@ open class WorkbenchViewController: UIViewController {
   // MARK: - Initializers
 
   /**
+   Creates the workbench with defaults for `self.engine`, `self.layoutBuilder`,
+   `self.viewFactory`.
+
+   - Parameter style: The `Style` to use for this laying out items in this view controller.
+   */
+  public init(style: Style) {
+    self.style = style
+    self.engine = DefaultLayoutEngine()
+    self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+    self.viewFactory = ViewFactory()
+    super.init(nibName: nil, bundle: nil)
+    commonInit()
+  }
+
+  /**
    Creates the workbench.
 
    - Parameter style: The `Style` to use for this laying out items in this view controller.
-   - Parameter engine: [Optional] Value used for `self.layoutEngine`. If no value is specified, a
-   new `LayoutEngine` is automatically created.
-   - Parameter layoutBuilder: [Optional] Value used for `self.layoutBuilder`. If no value is
-   specified, a new `LayoutBuilder` is automatically created.
-   - Parameter layoutBuilder: [Optional] Value used for `self.viewFactory`. If no value is
-   specified, a new `ViewFactory` is automatically created.
+   - Parameter engine: Value used for `self.layoutEngine`.
+   - Parameter layoutBuilder: Value used for `self.layoutBuilder`.
+   - Parameter layoutBuilder: Value used for `self.viewFactory`.
    */
-  public init(style: Style, engine: LayoutEngine? = nil, layoutBuilder: LayoutBuilder? = nil,
-              viewFactory: ViewFactory? = nil)
+  public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
+              viewFactory: ViewFactory)
   {
     self.style = style
-    self.engine = (engine ?? DefaultLayoutEngine())
-    self.layoutBuilder = (layoutBuilder ?? LayoutBuilder(layoutFactory: DefaultLayoutFactory()))
-    self.viewFactory = (viewFactory ?? ViewFactory())
+    self.engine = engine
+    self.layoutBuilder = layoutBuilder
+    self.viewFactory = viewFactory
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }

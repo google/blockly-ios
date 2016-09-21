@@ -74,6 +74,7 @@ extension Toolbox {
       self.name = name
       self.color = color
       self.icon = icon
+      super.init()
     }
   }
 }

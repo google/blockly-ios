@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-//
-//  Use this file to import your target's public headers that you would like to expose to Swift.
-//
+#import <Blockly/Blockly-Swift.h>
+#import <UIKit/UIKit.h>
 
-#import "TestObjCViewController.h"
+@interface TestObjCViewController: UIViewController
+
+@end
