@@ -15,95 +15,98 @@
 
 import Foundation
 
-extension Input {
+/**
+Builder for creating `Input` instances.
+*/
+@objc(BKYInputBuilder)
+public final class InputBuilder: NSObject {
+  // MARK: - Static Properties
+
+  // MARK: - Properties
+
+  /// The type (value, statement, dummy) of the `Input`.
+  public var type: Input.InputType
+  /// The type checks for the connection of this `Input`. Defaults to `[String]?`.
+  public var connectionTypeChecks: [String]?
+  /// The name of the `Input`.
+  public var name: String
+  /// Specifies whether this `Input` is visible. Defaults to `true`.
+  public var visible: Bool = true
+  /// Specifies the alignment for the `Input`. Defaults to `BKYInputAlignment.Left`.
+  public var alignment: Input.Alignment = Input.Alignment.left
+  /// A list of `Field` objects for the `Input`. Defaults to `[]`.
+  public fileprivate(set) var fields: [Field] = []
+
+  // MARK: - Initializers
+
   /**
-  Builder for creating instances of `Input`.
-  */
-  @objc(BKYInputBuilder)
-  public final class Builder: NSObject {
-    // MARK: - Static Properties
+   Initializes an input builder with a type and string.
 
-    // MARK: - Properties
-
-    /// The type (value, statement, dummy) of the `Input`.
-    public var type: BKYInputType
-    /// The type checks for the connection of this `Input`. Defaults to `[String]?`.
-    public var connectionTypeChecks: [String]?
-    /// The name of the `Input`.
-    public var name: String
-    /// Specifies whether this `Input` is visible. Defaults to `true`.
-    public var visible: Bool = true
-    /// Specifies the alignment for the `Input`. Defaults to `BKYInputAlignment.Left`.
-    public var alignment: BKYInputAlignment = BKYInputAlignment.left
-    /// A list of `Field` objects for the `Input`. Defaults to `[]`.
-    public fileprivate(set) var fields: [Field] = []
-
-    // MARK: - Initializers
-
-    /**
-     Initializes an input builder with a type and string.
-
-     - Parameter type: The type of the `Input`.
-     - Parameter name: The name of the `Input`.
-     */
-    public init(type: InputType, name: String) {
-      self.type = type
-      self.name = name
-    }
-
-    /**
-     Initialize a builder from an existing input. All values that are not specific to
-     a single instance of a input will be copied in to the builder. Any associated layouts are not
-     copied into the builder.
-
-     - Parameter input: The `Input` to copy.
-    */
-    public init(input: Input) {
-      self.type = input.type
-      self.name = input.name
-      self.alignment = input.alignment
-      self.visible = input.visible
-      self.connectionTypeChecks = input.connection?.typeChecks
-      super.init()
-
-      appendFields(input.fields)
-    }
-
-    // MARK: - Public
-
-    /**
-    Creates a new `Input` given the current state of the builder.
-
-    - Returns: A new input
-    */
-    public func build() -> Input {
-      let input = Input(type: self.type, name: self.name, fields: fields.map{ $0.copyField() })
-      input.visible = visible
-      input.alignment = alignment
-
-      if let connection = input.connection {
-        connection.typeChecks = self.connectionTypeChecks
-      }
-
-      return input
-    }
-
-    /**
-    Appends a copy of a field to `fields`.
-
-    - Parameter field: The `Field` to copy and append.
-    */
-    public func appendField(_ field: Field) {
-      appendFields([field])
-    }
-
-    /**
-    Appends a copies of fields to `fields`.
-
-    - Parameter fields: The list of `Field`'s to copy and append.
-    */
-    public func appendFields(_ fields: [Field]) {
-      self.fields.append(contentsOf: fields.map({ $0.copyField()}))
-    }
+   - Parameter type: The type of the `Input`.
+   - Parameter name: The name of the `Input`.
+   */
+  public init(type: Input.InputType, name: String) {
+    self.type = type
+    self.name = name
   }
+
+  /**
+   Initialize a builder from an existing input. All values that are not specific to
+   a single instance of a input will be copied in to the builder. Any associated layouts are not
+   copied into the builder.
+
+   - Parameter input: The `Input` to copy.
+  */
+  public init(input: Input) {
+    self.type = input.type
+    self.name = input.name
+    self.alignment = input.alignment
+    self.visible = input.visible
+    self.connectionTypeChecks = input.connection?.typeChecks
+    super.init()
+
+    appendFields(input.fields)
+  }
+
+  // MARK: - Public
+
+  /**
+  Creates a new `Input` given the current state of the builder.
+
+  - Returns: A new input
+  */
+  public func build() -> Input {
+    let input = Input(type: self.type, name: self.name, fields: fields.map{ $0.copyField() })
+    input.visible = visible
+    input.alignment = alignment
+
+    if let connection = input.connection {
+      connection.typeChecks = self.connectionTypeChecks
+    }
+
+    return input
+  }
+
+  /**
+  Appends a copy of a field to `fields`.
+
+  - Parameter field: The `Field` to copy and append.
+  */
+  public func appendField(_ field: Field) {
+    appendFields([field])
+  }
+
+  /**
+  Appends a copies of fields to `fields`.
+
+  - Parameter fields: The list of `Field`'s to copy and append.
+  */
+  public func appendFields(_ fields: [Field]) {
+    self.fields.append(contentsOf: fields.map({ $0.copyField()}))
+  }
+}
+
+extension Input {
+  /// Builder for creating `Input` instances
+  public typealias Builder = InputBuilder
 }

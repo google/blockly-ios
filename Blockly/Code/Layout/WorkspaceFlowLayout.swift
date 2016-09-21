@@ -19,14 +19,19 @@ import Foundation
  Layout for displaying a list of blocks in Workspace in a flow layout (in a manner similar to
  UICollectionViewFlowLayout).
  */
+@objc(BKYWorkspaceFlowLayout)
 public final class WorkspaceFlowLayout: WorkspaceLayout {
 
   // MARK: -  LayoutDirection Enum
 
   /// Defines how consecutive block trees should be laid out relative to each other
-  public enum LayoutDirection {
+  @objc
+  public enum BKYWorkspaceFlowLayoutDirection: Int {
     case horizontal, vertical
   }
+
+  /// Defines how consecutive block trees should be laid out relative to each other
+  public typealias LayoutDirection = BKYWorkspaceFlowLayoutDirection
 
   // MARK: - Properties
 

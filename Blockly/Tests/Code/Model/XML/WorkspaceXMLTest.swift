@@ -117,7 +117,7 @@ class WorkspaceXMLTest: XCTestCase {
 
   func testSerializeXML_OneBlock() {
     let workspace = Workspace()
-    let block = try! Block.Builder(name: "test").build(uuid: "12345")
+    let block = try! Block.Builder(name: "test").makeBlock(uuid: "12345")
     try! workspace.addBlockTree(block)
     let xml = try! workspace.toXML()
 
@@ -143,8 +143,8 @@ class WorkspaceXMLTest: XCTestCase {
 
   func testSerializeXML_MultipleBlocks() {
     let workspace = Workspace()
-    let block1 = try! Block.Builder(name: "test1").build(uuid: "100")
-    let block2 = try! Block.Builder(name: "test2").build(uuid: "200")
+    let block1 = try! Block.Builder(name: "test1").makeBlock(uuid: "100")
+    let block2 = try! Block.Builder(name: "test2").makeBlock(uuid: "200")
     try! workspace.addBlockTree(block1)
     try! workspace.addBlockTree(block2)
     let xml = try! workspace.toXML()

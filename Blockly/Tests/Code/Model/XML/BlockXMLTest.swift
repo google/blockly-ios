@@ -585,7 +585,7 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_ShadowBlock() {
     guard let block = BKYAssertDoesNotThrow(
-      { try self.factory.makeBlock(name: "empty_block", uuid: "abc", shadow: true) }) else
+      { try self.factory.makeBlock(name: "empty_block", shadow: true, uuid: "abc") }) else
     {
       XCTFail("Could not build block")
       return
@@ -615,7 +615,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "simple_input_output", uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_foo", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.makeBlock(name: "output_foo", shadow: true, uuid: "VALUE_SHADOW")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -677,7 +677,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "output_foo", uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_foo", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.makeBlock(name: "output_foo", shadow: true, uuid: "VALUE_SHADOW")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -749,7 +749,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "statement_statement_input", uuid: "1000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "2000", shadow: true)
+        try self.factory.makeBlock(name: "statement_no_input", shadow: true, uuid: "2000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -813,7 +813,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "statement_no_input", uuid: "2000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "3000", shadow: true)
+        try self.factory.makeBlock(name: "statement_no_input", shadow: true, uuid: "3000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -887,7 +887,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "statement_no_input", uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.makeBlock(name: "statement_no_next", shadow: true, uuid: "VALUE_SHADOW")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -947,7 +947,7 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "statement_input_no_next", uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_next", uuid: "VALUE_SHADOW", shadow: true)
+        try self.factory.makeBlock(name: "statement_no_next", shadow: true, uuid: "VALUE_SHADOW")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -1017,19 +1017,19 @@ class BlockXMLTest: XCTestCase {
         try self.factory.makeBlock(name: "statement_multiple_value_input", uuid: "777")
       }),
       let parentValueShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "simple_input_output", uuid: "SHADOW_VALUE1",
-        shadow: true)
+        try self.factory.makeBlock(
+          name: "simple_input_output", shadow: true, uuid: "SHADOW_VALUE1")
       }),
       let childValueShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_foo", uuid: "SHADOW_VALUE2", shadow: true)
+        try self.factory.makeBlock(name: "output_foo", shadow: true, uuid: "SHADOW_VALUE2")
       }),
       let parentNextShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "SHADOW_STATEMENT1",
-        shadow: true)
+        try self.factory.makeBlock(
+          name: "statement_no_input", shadow: true, uuid: "SHADOW_STATEMENT1")
       }),
       let childNextShadowBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_next", uuid: "SHADOW_STATEMENT2",
-        shadow: true)
+        try self.factory.makeBlock(
+          name: "statement_no_next", shadow: true, uuid: "SHADOW_STATEMENT2")
       }) else
     {
       XCTFail("Could not build blocks")

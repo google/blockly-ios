@@ -45,7 +45,7 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
     let builder = Block.Builder(name: "test")
-    let block = try! builder.build()
+    let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -73,7 +73,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .value, name: "input4"))
-    let block = try! builder.build()
+    let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -108,7 +108,7 @@ class BlockLayoutTest: XCTestCase {
   func testInputLayoutAfterLayoutEmpty() {
     // Create block with no inputs
     let builder = Block.Builder(name: "test")
-    let block = try! builder.build()
+    let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree
@@ -136,7 +136,7 @@ class BlockLayoutTest: XCTestCase {
     builder.inputBuilders.append(Input.Builder(type: .dummy, name: "input2"))
     builder.inputBuilders.append(Input.Builder(type: .statement, name: "input3"))
     builder.inputBuilders.append(Input.Builder(type: .value, name: "input4"))
-    let block = try! builder.build()
+    let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
     // Build layout tree

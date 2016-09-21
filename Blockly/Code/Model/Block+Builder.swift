@@ -15,194 +15,209 @@
 
 import Foundation
 
-extension Block {
+/**
+ Builder for creating `Block` instances.
+ */
+@objc(BKYBlockBuilder)
+public final class BlockBuilder: NSObject {
+  // MARK: - Static Properties
+  private static let CONFLICTING_CONNECTIONS_ERROR =
+   "Block cannot have both an output and a either a previous or next statement."
+
+  // MARK: - Properties
+
+  // These values are publicly immutable in `Block`
+
+  /// The name of the block. Defaults to `""`.
+  public var name: String = ""
+  /// The color of the block. Defaults to `UIColor.clear`.
+  public var color: UIColor = UIColor.clear
+  /// Specifies the output connection is enabled. Defaults to `false`.
+  public private(set) var outputConnectionEnabled: Bool = false
+  /// Specifies the output type checks. Defaults to `nil`.
+  public private(set) var outputConnectionTypeChecks: [String]?
+  /// Specifies the next connection is enabled. Defaults to `false`.
+  public private(set) var nextConnectionEnabled: Bool = false
+  /// Specifies the next connection type checks. Defaults to `nil`.
+  public private(set) var nextConnectionTypeChecks: [String]?
+  /// Specifies the previous connection is enabled. Defaults to `false`.
+  public private(set) var previousConnectionEnabled: Bool = false
+  /// Specifies the previous connection type checks. Defaults to `nil`.
+  public private(set) var previousConnectionTypeChecks: [String]?
+  /// The builders for inputs on the block. Defaults to `[]`.
+  public var inputBuilders: [Input.Builder] = []
+  /// Sepcifies the inputs are inline. Defaults to `false`.
+  public var inputsInline: Bool = false
+
+  // These values are publicly mutable in `Block`
+
+  /// The tooltip of the block. Defaults to `""`.
+  public var tooltip: String = ""
+  /// The comment of the block. Defaults to `""`.
+  public var comment: String = ""
+  /// The help URL of the block. Defaults to `""`.
+  public var helpURL: String = ""
+  /// Specifies the block is deletable. Defaults to `true`.
+  public var deletable: Bool = true
+  /// Specifies the block is movable. Defaults to `true`.
+  public var movable: Bool = true
+  /// Specifies the block is editable. Defaults to `true`.
+  public var editable: Bool = true
+  /// Specifies the block is disabled. Defaults to `false`.
+  public var disabled: Bool = false
+
+  // MARK: - Initializers
+
   /**
-   Builder for creating instances of `Block`.
+   Initializes the block builder. Requires a name for the block to be built.
+
+   - Parameter name: The name of the block to be built.
    */
-  @objc(BKYBlockBuilder)
-  public final class Builder: NSObject {
-    // MARK: - Static Properties
-    private static let CONFLICTING_CONNECTIONS_ERROR =
-    "Block cannot have both an output and a either a previous or next statement."
-
-    // MARK: - Properties
-
-    // These values are publicly immutable in `Block`
-
-    /// The name of the block. Defaults to `""`.
-    public var name: String = ""
-    /// The color of the block. Defaults to `UIColor.clear`.
-    public var color: UIColor = UIColor.clear
-    /// Specifies the output connection is enabled. Defaults to `false`.
-    public private(set) var outputConnectionEnabled: Bool = false
-    /// Specifies the output type checks. Defaults to `nil`.
-    public private(set) var outputConnectionTypeChecks: [String]?
-    /// Specifies the next connection is enabled. Defaults to `false`.
-    public private(set) var nextConnectionEnabled: Bool = false
-    /// Specifies the next connection type checks. Defaults to `nil`.
-    public private(set) var nextConnectionTypeChecks: [String]?
-    /// Specifies the previous connection is enabled. Defaults to `false`.
-    public private(set) var previousConnectionEnabled: Bool = false
-    /// Specifies the previous connection type checks. Defaults to `nil`.
-    public private(set) var previousConnectionTypeChecks: [String]?
-    /// The builders for inputs on the block. Defaults to `[]`.
-    public var inputBuilders: [Input.Builder] = []
-    /// Sepcifies the inputs are inline. Defaults to `false`.
-    public var inputsInline: Bool = false
-
-    // These values are publicly mutable in `Block`
-
-    /// The tooltip of the block. Defaults to `""`.
-    public var tooltip: String = ""
-    /// The comment of the block. Defaults to `""`.
-    public var comment: String = ""
-    /// The help URL of the block. Defaults to `""`.
-    public var helpURL: String = ""
-    /// Specifies the block is deletable. Defaults to `true`.
-    public var deletable: Bool = true
-    /// Specifies the block is movable. Defaults to `true`.
-    public var movable: Bool = true
-    /// Specifies the block is editable. Defaults to `true`.
-    public var editable: Bool = true
-    /// Specifies the block is disabled. Defaults to `false`.
-    public var disabled: Bool = false
-
-    // MARK: - Initializers
-
-    /**
-     Initializes the block builder. Requires a name for the block to be built.
-
-     - Parameter name: The name of the block to be built.
-     */
-    public init(name: String) {
-      super.init()
-      self.name = name
-      self.color = ColorHelper.makeColor(hue: 0)
-    }
-
-    /**
-     Initialize a builder from an existing block. All values that are not specific to
-     a single instance of a block will be copied in to the builder. Any associated layouts are not
-     copied into the builder.
-
-     - Parameter block: The block to be copied.
-    */
-    public init(block: Block) {
-      name = block.name
-      color = block.color
-      inputsInline = block.inputsInline
-
-      tooltip = block.tooltip
-      comment = block.comment
-      helpURL = block.helpURL
-      deletable = block.deletable
-      movable = block.movable
-      editable = block.editable
-      disabled = block.disabled
-
-      outputConnectionEnabled = block.outputConnection != nil ? true : false
-      outputConnectionTypeChecks = block.outputConnection?.typeChecks
-      nextConnectionEnabled = block.nextConnection != nil ? true : false
-      nextConnectionTypeChecks = block.nextConnection?.typeChecks
-      previousConnectionEnabled = block.previousConnection != nil ? true : false
-      previousConnectionTypeChecks = block.previousConnection?.typeChecks
-
-      inputBuilders.append(contentsOf: block.inputs.map({ Input.Builder(input: $0) }))
-    }
-
-    // MARK: - Public
-
-    /**
-    Creates a new block given the current state of the builder.
-
-    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
-    assigned to the block.
-    - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
-    The default value is `false`.
-    - Throws:
-    `BlocklyError`: Occurs if the block is missing any required pieces.
-    - Returns: A new block.
-    */
-    public func build(uuid: String? = nil, shadow: Bool = false) throws -> Block {
-      if name == "" {
-        throw BlocklyError(.invalidBlockDefinition, "Block name may not be empty")
-      }
-      var outputConnection: Connection?
-      var nextConnection: Connection?
-      var previousConnection: Connection?
-      if outputConnectionEnabled {
-        outputConnection = Connection(type: .outputValue)
-        outputConnection!.typeChecks = outputConnectionTypeChecks
-      }
-      if nextConnectionEnabled {
-        nextConnection = Connection(type: .nextStatement)
-        nextConnection!.typeChecks = nextConnectionTypeChecks
-      }
-      if previousConnectionEnabled {
-        previousConnection = Connection(type: .previousStatement)
-        previousConnection!.typeChecks = previousConnectionTypeChecks
-      }
-      let inputs = inputBuilders.map({ $0.build() })
-
-      let block = Block(
-        uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,
-        shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL, deletable: deletable,
-        movable: movable, disabled: disabled, editable: editable,
-        outputConnection: outputConnection, previousConnection: previousConnection,
-        nextConnection: nextConnection)
-
-      return block
-    }
-
-    /**
-     Specifies an output connection on the builder, and optionally the type checks to go with it.
-
-     - Parameter enabled: Specifies the resulting block should have an output connection.
-     - Parameter typeChecks: [Optional] Specifies the type checks for the given output connection.
-       Defaults to `nil`.
-     - Throws:
-     `BlocklyError`: Occurs if the builder already has a next or previous connection.
-     */
-    public func setOutputConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
-      if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
-        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
-      }
-      self.outputConnectionEnabled = enabled
-      self.outputConnectionTypeChecks = typeChecks
-    }
-
-    /**
-     Specifies an next connection on the builder, and optionally the type checks to go with it.
-
-     - Parameter enabled: Specifies the resulting block should have a next connection.
-     - Parameter typeChecks: [Optional] Specifies the type checks for the given next connection.
-       Defaults to `nil`.
-     - Throws:
-     `BlocklyError`: Occurs if the builder already has an output connection.
-     */
-    public func setNextConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
-      if enabled && outputConnectionEnabled {
-        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
-      }
-      self.nextConnectionEnabled = enabled
-      self.nextConnectionTypeChecks = typeChecks
-    }
-
-    /**
-     Specifies a previous connection on the builder, and optionally the type checks to go with it.
-
-     - Parameter enabled: Specifies the resulting block should have a previous connection.
-     - Parameter typeChecks: [Optional] Specifies the type checks for the given previous connection.
-       Defaults to `nil`.
-     - Throws:
-     `BlocklyError`: Occurs if the builder already has an output connection.
-     */
-    public func setPreviousConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
-      if enabled && outputConnectionEnabled {
-        throw BlocklyError(.invalidBlockDefinition, Builder.CONFLICTING_CONNECTIONS_ERROR)
-      }
-      self.previousConnectionEnabled = enabled
-      self.previousConnectionTypeChecks = typeChecks
-    }
+  public init(name: String) {
+    super.init()
+    self.name = name
+    self.color = ColorHelper.makeColor(hue: 0)
   }
+
+  /**
+   Initialize a builder from an existing block. All values that are not specific to
+   a single instance of a block will be copied in to the builder. Any associated layouts are not
+   copied into the builder.
+
+   - Parameter block: The block to be copied.
+  */
+  public init(block: Block) {
+    name = block.name
+    color = block.color
+    inputsInline = block.inputsInline
+
+    tooltip = block.tooltip
+    comment = block.comment
+    helpURL = block.helpURL
+    deletable = block.deletable
+    movable = block.movable
+    editable = block.editable
+    disabled = block.disabled
+
+    outputConnectionEnabled = block.outputConnection != nil ? true : false
+    outputConnectionTypeChecks = block.outputConnection?.typeChecks
+    nextConnectionEnabled = block.nextConnection != nil ? true : false
+    nextConnectionTypeChecks = block.nextConnection?.typeChecks
+    previousConnectionEnabled = block.previousConnection != nil ? true : false
+    previousConnectionTypeChecks = block.previousConnection?.typeChecks
+
+    inputBuilders.append(contentsOf: block.inputs.map({ Input.Builder(input: $0) }))
+  }
+
+  // MARK: - Public
+
+  /**
+   Creates a new block given the current state of the builder, assigned with a new UUID.
+
+   - Parameter shadow: Specifies if the resulting block should be a shadow block.
+   - Throws:
+   `BlocklyError`: Occurs if the block is missing any required pieces.
+   - Returns: A new block.
+   */
+  public func makeBlock(shadow: Bool) throws -> Block {
+    return try makeBlock(shadow: shadow, uuid: nil)
+  }
+
+  /**
+   Creates a new block given the current state of the builder.
+
+   - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
+   The default value is `false`.
+   - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
+   assigned to the block.
+   - Throws:
+   `BlocklyError`: Occurs if the block is missing any required pieces.
+   - Returns: A new block.
+   */
+  public func makeBlock(shadow: Bool = false, uuid: String? = nil) throws -> Block {
+    if name == "" {
+      throw BlocklyError(.invalidBlockDefinition, "Block name may not be empty")
+    }
+    var outputConnection: Connection?
+    var nextConnection: Connection?
+    var previousConnection: Connection?
+    if outputConnectionEnabled {
+      outputConnection = Connection(type: .outputValue)
+      outputConnection!.typeChecks = outputConnectionTypeChecks
+    }
+    if nextConnectionEnabled {
+      nextConnection = Connection(type: .nextStatement)
+      nextConnection!.typeChecks = nextConnectionTypeChecks
+    }
+    if previousConnectionEnabled {
+      previousConnection = Connection(type: .previousStatement)
+      previousConnection!.typeChecks = previousConnectionTypeChecks
+    }
+    let inputs = inputBuilders.map({ $0.build() })
+
+    let block = Block(
+      uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,
+      shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL, deletable: deletable,
+      movable: movable, disabled: disabled, editable: editable,
+      outputConnection: outputConnection, previousConnection: previousConnection,
+      nextConnection: nextConnection)
+
+    return block
+  }
+
+  /**
+   Specifies an output connection on the builder, and optionally the type checks to go with it.
+
+   - Parameter enabled: Specifies the resulting block should have an output connection.
+   - Parameter typeChecks: [Optional] Specifies the type checks for the given output connection.
+     Defaults to `nil`.
+   - Throws:
+   `BlocklyError`: Occurs if the builder already has a next or previous connection.
+   */
+  public func setOutputConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
+    if enabled && (nextConnectionEnabled || previousConnectionEnabled) {
+      throw BlocklyError(.invalidBlockDefinition, BlockBuilder.CONFLICTING_CONNECTIONS_ERROR)
+    }
+    self.outputConnectionEnabled = enabled
+    self.outputConnectionTypeChecks = typeChecks
+  }
+
+  /**
+   Specifies an next connection on the builder, and optionally the type checks to go with it.
+
+   - Parameter enabled: Specifies the resulting block should have a next connection.
+   - Parameter typeChecks: [Optional] Specifies the type checks for the given next connection.
+     Defaults to `nil`.
+   - Throws:
+   `BlocklyError`: Occurs if the builder already has an output connection.
+   */
+  public func setNextConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
+    if enabled && outputConnectionEnabled {
+      throw BlocklyError(.invalidBlockDefinition, BlockBuilder.CONFLICTING_CONNECTIONS_ERROR)
+    }
+    self.nextConnectionEnabled = enabled
+    self.nextConnectionTypeChecks = typeChecks
+  }
+
+  /**
+   Specifies a previous connection on the builder, and optionally the type checks to go with it.
+
+   - Parameter enabled: Specifies the resulting block should have a previous connection.
+   - Parameter typeChecks: [Optional] Specifies the type checks for the given previous connection.
+     Defaults to `nil`.
+   - Throws:
+   `BlocklyError`: Occurs if the builder already has an output connection.
+   */
+  public func setPreviousConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
+    if enabled && outputConnectionEnabled {
+      throw BlocklyError(.invalidBlockDefinition, BlockBuilder.CONFLICTING_CONNECTIONS_ERROR)
+    }
+    self.previousConnectionEnabled = enabled
+    self.previousConnectionTypeChecks = typeChecks
+  }
+}
+
+extension Block {
+  /// Builder for creating `Block` instances
+  public typealias Builder = BlockBuilder
 }

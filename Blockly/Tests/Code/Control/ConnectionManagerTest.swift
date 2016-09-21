@@ -464,7 +464,7 @@ class ConnectionManagerTest: XCTestCase {
     _ x: CGFloat, _ y: CGFloat, _ type: Connection.ConnectionType, sourceInput: Input? = nil)
     -> Connection
   {
-    let block = try! Block.Builder(name: "test").build()
+    let block = try! Block.Builder(name: "test").makeBlock()
     try! workspace.addBlockTree(block)
 
     let conn = Connection(type: type, sourceInput: sourceInput)

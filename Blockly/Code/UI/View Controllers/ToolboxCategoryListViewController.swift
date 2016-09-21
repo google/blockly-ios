@@ -20,6 +20,7 @@ import Foundation
 /**
  Handler for events that occur on `ToolboxCategoryListViewController`.
  */
+@objc(BKYToolboxCategoryListViewControllerDelegate)
 public protocol ToolboxCategoryListViewControllerDelegate: class {
   /**
   Event that occurs when a category has been selected.
@@ -39,12 +40,19 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 /**
  A view for displaying a vertical list of categories from a `Toolbox`.
  */
+@objc(BKYToolboxCategoryListViewController)
 public final class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Orientation Enum
-  public enum Orientation {
-    case horizontal, vertical
+
+  /// Possible view orientations for the toolbox category list
+  @objc
+  public enum BKYToolboxCategoryListViewControllerOrientation: Int {
+    case horizontal = 0, vertical
   }
+
+  /// Possible view orientations for the toolbox category list
+  public typealias Orientation = BKYToolboxCategoryListViewControllerOrientation
 
   // MARK: - Properties
 
@@ -220,6 +228,7 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
 /**
  An individual cell category list view cell.
 */
+@objc(BKYToolboxCategoryListViewCell)
 private class ToolboxCategoryListViewCell: UICollectionViewCell {
   static let ReusableCellIdentifier = "ToolboxCategoryListViewCell"
 

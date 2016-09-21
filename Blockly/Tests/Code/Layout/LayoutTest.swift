@@ -62,7 +62,7 @@ class LayoutTest: XCTestCase {
   }
 
   func flattenedLayoutTree_ByTypeFound() {
-    guard let block = BKYAssertDoesNotThrow({ try Block.Builder(name: "test").build() }) else {
+    guard let block = BKYAssertDoesNotThrow({ try Block.Builder(name: "test").makeBlock() }) else {
       XCTFail("Could not build block")
       return
     }

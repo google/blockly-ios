@@ -18,6 +18,7 @@ import Foundation
 /**
  Delegate for events that occur on `DropdownOptionsViewController`.
  */
+@objc(BKYDropdownOptionsViewControllerDelegate)
 public protocol DropdownOptionsViewControllerDelegate: class {
   /**
    Event that is called when the user has selected an option for the drop-down field.

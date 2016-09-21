@@ -22,6 +22,7 @@ class DemoPickerViewController: UITableViewController {
   private let DEMO_VIEW_CONTROLLERS = [
     "Simple Workbench Demo",
     "Turtle Demo",
+    "Objective-C Demo",
   ]
 
   override func viewDidLoad() {
@@ -54,6 +55,8 @@ class DemoPickerViewController: UITableViewController {
       viewController = SimpleWorkbenchViewController()
     case 1:
       viewController = TurtleViewController()
+    case 2:
+      viewController = TestObjCViewController()
     default:
       break
     }

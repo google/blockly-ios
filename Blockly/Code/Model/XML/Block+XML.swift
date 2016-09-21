@@ -49,7 +49,7 @@ extension Block {
     let uuid = xml.attributes[XMLConstants.ATTRIBUTE_ID]
     let shadow = (lowercaseTag == XMLConstants.TAG_SHADOW)
 
-    guard let block = try factory.makeBlock(name: type, uuid: uuid, shadow: shadow) else {
+    guard let block = try factory.makeBlock(name: type, shadow: shadow, uuid: uuid) else {
       throw BlocklyError(.xmlUnknownBlock, "The block type \(type) does not exist.", xml)
     }
 

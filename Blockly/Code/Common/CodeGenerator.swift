@@ -51,9 +51,15 @@ public final class CodeGenerator: NSObject {
   public typealias BundledFile = (file: String, bundle: Bundle?)
 
   // MARK: - Enum - State
-  public enum State {
-    case initialized, loading, readyForUse, unusable, generatingCode
+
+  /// Possible states for the code generator
+  @objc
+  public enum BKYCodeGeneratorState: Int {
+    case initialized = 0, loading, readyForUse, unusable, generatingCode
   }
+
+  /// Possible states for the code generator
+  public typealias State = BKYCodeGeneratorState
 
   // MARK: - Static Properties
   /// Internal JS file that is used to communicate between the iOS code and JS code

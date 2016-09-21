@@ -17,11 +17,8 @@ import Foundation
 
 /**
 Protocol for measuring the size of a `Layout` when it is rendered.
-
-- TODO:(#39) The Obj-C bridging header isn't generated properly for this protocol, where the
-protocol is not forward declared before the class that uses it. This is a bug with Xcode 7 beta 6.
-When it's fixed, add in "@objc(BKYLayoutMeasurer)".
 */
+@objc(BKYFieldLayoutMeasurer)
 public protocol FieldLayoutMeasurer {
   /**
   Measures and returns the amount of space needed to render a `FieldLayout`, in a `UIView`.

@@ -18,6 +18,7 @@ import Foundation
 /**
  A view for displaying the blocks inside of a `Toolbox.Category`.
  */
+@objc(BKYToolboxCategoryViewController)
 public final class ToolboxCategoryViewController: WorkspaceViewController {
 
   // MARK: - Static Properties
