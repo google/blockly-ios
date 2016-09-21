@@ -40,5 +40,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
       'SWIFT_OPTIMIZATION_LEVEL' => '-Owholemodule',
       'SWIFT_OPTIMIZATION_LEVEL[config=Debug]' => '-Onone',
+      'SWIFT_VERSION' => '3.0',
   }
+
 end
