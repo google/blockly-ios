@@ -167,7 +167,7 @@ open class WorkspaceView: LayoutView {
    - Parameter blockView: The `BlockView`
    - Returns: The `blockView`'s corresponding Workspace position
    */
-  public final func workspacePositionFromBlockView(_ blockView: UIView) -> WorkspacePoint {
+  public final func workspacePosition(fromBlockView blockView: UIView) -> WorkspacePoint {
     var blockViewPoint = CGPoint.zero
     if (workspaceLayout?.engine.rtl ?? false) {
       // In RTL, the block's workspace position is mapped to the top-right corner point (whereas
@@ -176,7 +176,7 @@ open class WorkspaceView: LayoutView {
     }
     let workspaceViewPosition =
       blockView.convert(blockViewPoint, to: scrollView.containerView)
-    return workspacePositionFromViewPoint(workspaceViewPosition)
+    return workspacePosition(fromViewPoint: workspaceViewPosition)
   }
 
   /**
@@ -235,7 +235,7 @@ open class WorkspaceView: LayoutView {
   - Parameter point: The `UIView` point
   - Returns: The corresponding `WorkspacePoint`
   */
-  open func workspacePositionFromViewPoint(_ point: CGPoint) -> WorkspacePoint {
+  open func workspacePosition(fromViewPoint point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
       return WorkspacePoint.zero
     }

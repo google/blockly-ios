@@ -36,15 +36,15 @@ extension DefaultBlockView {
     notchWidth: CGFloat, notchHeight: CGFloat)
   {
     if drawLeftToRight {
-      path.addLineToPoint(notchWidth - 15, 0, relative: true)
-      path.addLineToPoint(6, notchHeight, relative: true)
-      path.addLineToPoint(3, 0, relative: true)
-      path.addLineToPoint(6, -notchHeight, relative: true)
+      path.addLineTo(x: notchWidth - 15, y: 0, relative: true)
+      path.addLineTo(x: 6, y: notchHeight, relative: true)
+      path.addLineTo(x: 3, y: 0, relative: true)
+      path.addLineTo(x: 6, y: -notchHeight, relative: true)
     } else {
-      path.addLineToPoint(-6, notchHeight, relative: true)
-      path.addLineToPoint(-3, 0, relative: true)
-      path.addLineToPoint(-6, -notchHeight, relative: true)
-      path.addLineToPoint(-(notchWidth - 15), 0, relative: true)
+      path.addLineTo(x: -6, y: notchHeight, relative: true)
+      path.addLineTo(x: -3, y: 0, relative: true)
+      path.addLineTo(x: -6, y: -notchHeight, relative: true)
+      path.addLineTo(x: -(notchWidth - 15), y: 0, relative: true)
     }
   }
 
@@ -61,11 +61,11 @@ extension DefaultBlockView {
   - Parameter path: The Bezier path to add to.
   */
   public final func addJaggedTeeth(toPath path: WorkspaceBezierPath) {
-    path.addLineToPoint(8, 0, relative: true)
-    path.addLineToPoint(0, 4, relative: true)
-    path.addLineToPoint(8, 4, relative: true)
-    path.addLineToPoint(-16, 8, relative: true)
-    path.addLineToPoint(8, 4, relative: true)
+    path.addLineTo(x: 8, y: 0, relative: true)
+    path.addLineTo(x: 0, y: 4, relative: true)
+    path.addLineTo(x: 8, y: 4, relative: true)
+    path.addLineTo(x: -16, y: 8, relative: true)
+    path.addLineTo(x: 8, y: 4, relative: true)
   }
 
   /**
@@ -93,25 +93,25 @@ extension DefaultBlockView {
     let roundedHalfPieceHeight = puzzleTabHeight * 0.3
 
     if drawTopToBottom {
-      path.addLineToPoint(0, verticalLineHeight, relative: true)
-      path.addCurveToPoint(WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
+      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
+      path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
         controlPoint1: WorkspacePoint(x: 0, y: roundedHalfPieceHeight * 1.25),
         controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
         relative: true)
-      path.addSmoothCurveToPoint(WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight),
+      path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight),
         controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight * 0.3125),
         relative: true)
-      path.addLineToPoint(0, verticalLineHeight, relative: true)
+      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
     } else {
-      path.addLineToPoint(0, -verticalLineHeight, relative: true)
-      path.addCurveToPoint(WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
+      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
+      path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
         controlPoint1: WorkspacePoint(x: 0, y: -roundedHalfPieceHeight * 1.25),
         controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
         relative: true)
-      path.addSmoothCurveToPoint(WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight),
+      path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight),
         controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight * 0.3125),
         relative: true)
-      path.addLineToPoint(0, -verticalLineHeight, relative: true)
+      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
     }
   }
 
@@ -125,7 +125,7 @@ extension DefaultBlockView {
   public final func movePathToTopLeftCornerStart(
     _ path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
   {
-    path.moveToPoint(0, blockCornerRadius, relative: true)
+    path.moveTo(x: 0, y: blockCornerRadius, relative: true)
   }
 
   /**
@@ -140,7 +140,7 @@ extension DefaultBlockView {
    */
   public final func addTopLeftCorner(toPath path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
   {
-    path.addArcWithCenter(WorkspacePoint(x: blockCornerRadius, y: 0),
+    path.addArc(withCenter: WorkspacePoint(x: blockCornerRadius, y: 0),
       radius: blockCornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),
       clockwise: true, relative: true)
   }

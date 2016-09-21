@@ -228,7 +228,7 @@ public final class DefaultBlockView: BlockView {
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
 
-    path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
+    path.moveTo(x: xLeftEdgeOffset, y: 0, relative: false)
 
     for i in 0 ..< background.rows.count {
       let row = background.rows[i]
@@ -241,13 +241,13 @@ public final class DefaultBlockView: BlockView {
           toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
       }
 
-      path.addLineToPoint(
-        xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y, relative: false)
+      path.addLineTo(
+        x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y, relative: false)
 
       // Draw top padding
       let topPadding = row.topPadding + previousBottomPadding
       if topPadding > 0 {
-        path.addLineToPoint(0, topPadding, relative: true)
+        path.addLineTo(x: 0, y: topPadding, relative: true)
       }
 
       // DRAW THE RIGHT EDGES
@@ -256,24 +256,24 @@ public final class DefaultBlockView: BlockView {
         // Draw the "C" part of a statement block
 
         // Inner-ceiling of "C"
-        path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent + notchWidth,
-          path.currentWorkspacePoint.y, relative: false)
+        path.addLineTo(
+          x: xLeftEdgeOffset + row.statementIndent + notchWidth,
+          y: path.currentWorkspacePoint.y, relative: false)
 
         // Draw notch
         addNotch(
           toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
-        path.addLineToPoint(
-          xLeftEdgeOffset + row.statementIndent, path.currentWorkspacePoint.y, relative: false)
+        path.addLineTo(
+          x: xLeftEdgeOffset + row.statementIndent, y: path.currentWorkspacePoint.y, relative: false)
 
         // Inner-left side of "C"
-        path.addLineToPoint(0, row.middleHeight, relative: true)
+        path.addLineTo(x: 0, y: row.middleHeight, relative: true)
 
         if i == (background.rows.count - 1) {
           // If there is no other row after this, draw the inner-floor of the "C".
-          path.addLineToPoint(
-            xLeftEdgeOffset + row.rightEdge, path.currentWorkspacePoint.y,
+          path.addLineTo(
+            x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y,
             relative: false)
         } else {
           // If there is another row after this, the inner-floor of the "C" is drawn by the
@@ -287,10 +287,10 @@ public final class DefaultBlockView: BlockView {
         let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
         bky_assert(restOfVerticalEdge >= 0,
           message: "Middle height for the block layout is less than the space needed")
-        path.addLineToPoint(0, restOfVerticalEdge, relative: true)
+        path.addLineTo(x: 0, y: restOfVerticalEdge, relative: true)
       } else {
         // Simply draw the middle height for the vertical edge
-        path.addLineToPoint(0, row.middleHeight, relative: true)
+        path.addLineTo(x: 0, y: row.middleHeight, relative: true)
       }
 
       // Store bottom padding (to draw into the the top padding of the next row)
@@ -298,24 +298,24 @@ public final class DefaultBlockView: BlockView {
     }
 
     if previousBottomPadding > 0 {
-      path.addLineToPoint(0, previousBottomPadding, relative: true)
+      path.addLineTo(x: 0, y: previousBottomPadding, relative: true)
     }
 
     // DRAW THE BOTTOM EDGES
 
     if background.maleNextStatementConnector {
-      path.addLineToPoint(
-        xLeftEdgeOffset + notchWidth, path.currentWorkspacePoint.y, relative: false)
+      path.addLineTo(
+        x: xLeftEdgeOffset + notchWidth, y: path.currentWorkspacePoint.y, relative: false)
       addNotch(toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
-    path.addLineToPoint(xLeftEdgeOffset, path.currentWorkspacePoint.y, relative: false)
+    path.addLineTo(x: xLeftEdgeOffset, y: path.currentWorkspacePoint.y, relative: false)
 
     // DRAW THE LEFT EDGES
 
     if background.maleOutputConnector {
       // Add male connector
-      path.addLineToPoint(0, puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
+      path.addLineTo(x: 0, y: puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
 
       addPuzzleTab(toPath: path, drawTopToBottom: false,
         puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
@@ -327,20 +327,20 @@ public final class DefaultBlockView: BlockView {
     path.viewBezierPath.usesEvenOddFillRule = true
     for backgroundRow in background.rows {
       for inlineConnector in backgroundRow.inlineConnectors {
-        path.moveToPoint(
-          inlineConnector.relativePosition.x + puzzleTabWidth,
-          inlineConnector.relativePosition.y,
+        path.moveTo(
+          x: inlineConnector.relativePosition.x + puzzleTabWidth,
+          y: inlineConnector.relativePosition.y,
           relative: false)
 
         let xEdgeWidth = inlineConnector.size.width - puzzleTabWidth
         // Top edge
-        path.addLineToPoint(xEdgeWidth, 0, relative: true)
+        path.addLineTo(x: xEdgeWidth, y: 0, relative: true)
         // Right edge
-        path.addLineToPoint(0, inlineConnector.size.height, relative: true)
+        path.addLineTo(x: 0, y: inlineConnector.size.height, relative: true)
         // Bottom edge
-        path.addLineToPoint(-xEdgeWidth, 0, relative: true)
+        path.addLineTo(x: -xEdgeWidth, y: 0, relative: true)
         // Left edge
-        path.addLineToPoint(0, -(inlineConnector.size.height - puzzleTabHeight), relative: true)
+        path.addLineTo(x: 0, y: -(inlineConnector.size.height - puzzleTabHeight), relative: true)
         // Puzzle notch
         addPuzzleTab(toPath: path, drawTopToBottom: false,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
@@ -385,7 +385,7 @@ public final class DefaultBlockView: BlockView {
       case .inputValue, .outputValue:
         // The connection point is set to the apex of the puzzle tab's curve. Move the point before
         // drawing it.
-        path.moveToPoint(connectionRelativePosition +
+        path.move(to: connectionRelativePosition +
           WorkspacePoint(x: puzzleTabWidth, y: -puzzleTabHeight / 2),
           relative: false)
         addPuzzleTab(toPath: path, drawTopToBottom: true,
@@ -393,7 +393,7 @@ public final class DefaultBlockView: BlockView {
         break
       case .previousStatement, .nextStatement:
         // The connection point is set to the bottom of the notch. Move the point before drawing it.
-        path.moveToPoint(connectionRelativePosition -
+        path.move(to: connectionRelativePosition -
           WorkspacePoint(x: notchWidth / 2, y: notchHeight),
           relative: false)
         addNotch(
