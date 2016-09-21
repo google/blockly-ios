@@ -96,15 +96,15 @@ open class Layout: NSObject {
   public fileprivate(set) final var childLayouts = Set<Layout>()
 
   /// Position relative to `self.parentLayout`
-  internal final var relativePosition: WorkspacePoint = WorkspacePointZero
+  internal final var relativePosition: WorkspacePoint = WorkspacePoint.zero
   /// Content size of this layout
-  internal final var contentSize: WorkspaceSize = WorkspaceSizeZero {
+  internal final var contentSize: WorkspaceSize = WorkspaceSize.zero {
     didSet {
       updateTotalSize()
     }
   }
   /// Inline edge insets for the layout.
-  internal final var edgeInsets: WorkspaceEdgeInsets = WorkspaceEdgeInsetsZero {
+  internal final var edgeInsets: WorkspaceEdgeInsets = WorkspaceEdgeInsets.zero {
     didSet {
       updateTotalSize()
     }
@@ -113,14 +113,14 @@ open class Layout: NSObject {
   // TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final
   /// Absolute position of this layout, relative to the root node, in the Workspace coordinate
   /// system.
-  internal var absolutePosition: WorkspacePoint = WorkspacePointZero
+  internal var absolutePosition: WorkspacePoint = WorkspacePoint.zero
   /// Total size used by this layout. This value is calculated by combining `edgeInsets` and
   /// `contentSize`.
-  internal fileprivate(set) final var totalSize: WorkspaceSize = WorkspaceSizeZero
+  internal fileprivate(set) final var totalSize: WorkspaceSize = WorkspaceSize.zero
 
   /// An offset that should be applied to the positions of `childLayouts`, specified in the
   /// Workspace coordinate system.
-  internal final var childContentOffset: WorkspacePoint = WorkspacePointZero
+  internal final var childContentOffset: WorkspacePoint = WorkspacePoint.zero
 
   /**
   UIView frame for this layout relative to its parent *view* node's layout. For example, the parent
@@ -291,9 +291,9 @@ open class Layout: NSObject {
   */
   internal final func refreshViewPositionsForTree(includeFields: Bool = true) {
     refreshViewPositionsForTree(
-      parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePointZero),
+      parentAbsolutePosition: (parentLayout?.absolutePosition ?? WorkspacePoint.zero),
       parentContentSize: (parentLayout?.contentSize ?? self.contentSize),
-      contentOffset: (parentLayout?.childContentOffset ?? WorkspacePointZero),
+      contentOffset: (parentLayout?.childContentOffset ?? WorkspacePoint.zero),
       rtl: self.engine.rtl,
       includeFields: includeFields)
   }
@@ -326,9 +326,9 @@ open class Layout: NSObject {
     // are "dirty"
 
     // Update the layout's absolute position in the workspace
-    self.absolutePosition = WorkspacePointMake(
-      parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
-      parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
+    self.absolutePosition = WorkspacePoint(
+      x: parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
+      y: parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
 
     // Update the view frame, if needed
     if (includeFields || !(self is FieldLayout))

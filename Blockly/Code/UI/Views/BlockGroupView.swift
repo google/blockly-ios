@@ -64,7 +64,7 @@ open class BlockGroupView: LayoutView, ZIndexedView {
       // (the new blocks will change from fully opaque to translucent, and then quickly animate
       // back to fully opaque)
       self.alpha = layout.dragging ?
-        layout.config.floatFor(DefaultLayoutConfig.BlockDraggingFillColorAlpha) : 1.0
+        layout.config.float(for: DefaultLayoutConfig.BlockDraggingFillColorAlpha) : 1.0
     }
 
     runAnimatableCode(animated) {

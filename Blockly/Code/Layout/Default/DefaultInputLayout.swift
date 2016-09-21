@@ -40,19 +40,19 @@ public final class DefaultInputLayout: InputLayout {
 
       let connectionPoint: WorkspacePoint
       if input.type == .statement {
-        connectionPoint = WorkspacePointMake(
-          statementIndent + self.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth) / 2,
-          statementRowTopPadding +
-            self.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight))
+        connectionPoint = WorkspacePoint(
+          x: statementIndent + self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) / 2,
+          y: statementRowTopPadding +
+            self.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight))
       } else if isInline {
-        connectionPoint = WorkspacePointMake(
-          inlineConnectorPosition.x,
-          inlineConnectorPosition.y +
-            self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight) / 2)
+        connectionPoint = WorkspacePoint(
+          x: inlineConnectorPosition.x,
+          y: inlineConnectorPosition.y +
+            self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
       } else {
-        connectionPoint = WorkspacePointMake(
-          rightEdge - self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth),
-          self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight) / 2)
+        connectionPoint = WorkspacePoint(
+          x: rightEdge - self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth),
+          y: self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
       }
 
       _connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
@@ -67,11 +67,11 @@ public final class DefaultInputLayout: InputLayout {
 
   /// For inline value inputs, the relative position of where to begin rendering the input
   /// connector (ie. the female puzzle piece), expressed as a Workspace coordinate system unit.
-  public var inlineConnectorPosition: WorkspacePoint = WorkspacePointZero
+  public var inlineConnectorPosition: WorkspacePoint = WorkspacePoint.zero
 
   /// For inline value inputs, the size of the input connector (ie. the female puzzle piece),
   /// expressed as a Workspace coordinate system unit.
-  public var inlineConnectorSize: WorkspaceSize = WorkspaceSizeZero
+  public var inlineConnectorSize: WorkspaceSize = WorkspaceSize.zero
 
   /// For statement inputs, the relative x-position of where to begin rendering the inner left
   /// edge of the "C" shaped block, expressed as a Workspace coordinate system unit.
@@ -99,7 +99,7 @@ public final class DefaultInputLayout: InputLayout {
     let fieldWidth = fieldLayouts.count > 0 ?
       (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
     let puzzleTabWidth = (!isInline && input.type == .value) ?
-      (self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)) : 0
+      (self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)) : 0
     return fieldWidth + puzzleTabWidth
   }
 
@@ -139,11 +139,11 @@ public final class DefaultInputLayout: InputLayout {
 
       // Add inline x/y padding for each field
       fieldLayout.edgeInsets.left =
-        self.config.workspaceUnitFor(DefaultLayoutConfig.InlineXPadding)
+        self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
       fieldLayout.edgeInsets.top =
-        self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
+        self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
       fieldLayout.edgeInsets.bottom =
-        self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
+        self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
       if i == fieldLayouts.count - 1 {
         // Add right padding to the last field
@@ -160,7 +160,7 @@ public final class DefaultInputLayout: InputLayout {
 
         if addRightEdgeInset {
           fieldLayout.edgeInsets.right =
-            self.config.workspaceUnitFor(DefaultLayoutConfig.InlineXPadding)
+            self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
         }
       }
 
@@ -190,31 +190,32 @@ public final class DefaultInputLayout: InputLayout {
       var inlineConnectorMaximumYPoint: CGFloat = 0
       if self.isInline {
         targetBlockGroupLayout.edgeInsets.top =
-          self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
         targetBlockGroupLayout.edgeInsets.bottom =
-          self.config.workspaceUnitFor(DefaultLayoutConfig.InlineYPadding)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
-        self.inlineConnectorPosition = WorkspacePointMake(
-          targetBlockGroupLayout.relativePosition.x,
-          targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
+        self.inlineConnectorPosition = WorkspacePoint(
+          x: targetBlockGroupLayout.relativePosition.x,
+          y: targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
 
         let minimumInlineConnectorSize =
-          self.config.workspaceSizeFor(DefaultLayoutConfig.MinimumInlineConnectorSize)
+          self.config.workspaceSize(for: DefaultLayoutConfig.MinimumInlineConnectorSize)
         let inlineConnectorWidth = max(targetBlockGroupLayout.contentSize.width,
-          self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth) +
+          self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) +
           minimumInlineConnectorSize.width)
         let inlineConnectorHeight =
           max(targetBlockGroupLayout.contentSize.height, minimumInlineConnectorSize.height)
-        self.inlineConnectorSize = WorkspaceSizeMake(inlineConnectorWidth, inlineConnectorHeight)
+        self.inlineConnectorSize = WorkspaceSize(width: inlineConnectorWidth,
+                                                 height: inlineConnectorHeight)
         self.rightEdge = inlineConnectorPosition.x + inlineConnectorSize.width +
-          self.config.workspaceUnitFor(DefaultLayoutConfig.InlineXPadding)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
 
         inlineConnectorMaximumYPoint = inlineConnectorPosition.y + inlineConnectorSize.height +
           targetBlockGroupLayout.edgeInsets.bottom
         widthRequired = self.rightEdge
       } else {
         self.rightEdge = targetBlockGroupLayout.relativePosition.x +
-          self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
         widthRequired = max(
           targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.totalSize.width,
           self.rightEdge)
@@ -224,16 +225,16 @@ public final class DefaultInputLayout: InputLayout {
         fieldMaximumYPoint,
         inlineConnectorMaximumYPoint,
         targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.totalSize.height,
-        self.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight))
+        self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight))
 
-      self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
+      self.contentSize = WorkspaceSize(width: widthRequired, height: heightRequired)
     case .statement:
       // If this is the first child for the block layout or the previous input type was a statement,
       // we need to add an empty row at the top to begin a new "C" shape.
       let previousInputLayout = (parentLayout as? BlockLayout)?.inputLayout(before: self)
 
       let rowTopPadding = (self.isFirstChild || previousInputLayout?.input.type == .statement) ?
-        self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight) : 0
+        self.config.workspaceUnit(for: DefaultLayoutConfig.StatementSectionHeight) : 0
       self.statementRowTopPadding = rowTopPadding
 
       // Update field layouts to pad with extra row
@@ -244,19 +245,19 @@ public final class DefaultInputLayout: InputLayout {
       // Make sure there's some space for the statement indent (eg. if there were no fields
       // specified)
       fieldXOffset = max(fieldXOffset,
-        self.config.workspaceUnitFor(DefaultLayoutConfig.InlineXPadding))
+        self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding))
 
       // Set statement render properties
       self.statementIndent = fieldXOffset
       self.statementConnectorWidth =
-        self.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth) +
-        self.config.workspaceUnitFor(DefaultLayoutConfig.StatementMinimumConnectorWidth)
+        self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) +
+        self.config.workspaceUnit(for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
       self.rightEdge = statementIndent + statementConnectorWidth
 
       // If this is the last child for the block layout, we need to add an empty row at the bottom
       // to end the "C" shape.
       self.statementRowBottomPadding = self.isLastChild ?
-        self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight) : 0
+        self.config.workspaceUnit(for: DefaultLayoutConfig.StatementSectionHeight) : 0
 
       // Reposition block group layout
       targetBlockGroupLayout.relativePosition.x = statementIndent
@@ -266,22 +267,22 @@ public final class DefaultInputLayout: InputLayout {
       // space to the bottom of the middle part to show this is possible
       self.statementMiddleHeight = max(
         targetBlockGroupLayout.totalSize.height, fieldMaximumHeight,
-        self.config.workspaceUnitFor(DefaultLayoutConfig.StatementSectionHeight))
+        self.config.workspaceUnit(for: DefaultLayoutConfig.StatementSectionHeight))
 
       // Set total size
-      var size = WorkspaceSizeZero
+      var size = WorkspaceSize.zero
       size.width =
         max(targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.totalSize.width,
         self.rightEdge)
       size.height = statementRowTopPadding + statementMiddleHeight + statementRowBottomPadding
       self.contentSize = size
     case .dummy:
-      targetBlockGroupLayout.relativePosition = WorkspacePointZero
+      targetBlockGroupLayout.relativePosition = WorkspacePoint.zero
 
       self.rightEdge = fieldXOffset
       let widthRequired = self.rightEdge
       let heightRequired = fieldMaximumYPoint
-      self.contentSize = WorkspaceSizeMake(widthRequired, heightRequired)
+      self.contentSize = WorkspaceSize(width: widthRequired, height: heightRequired)
     }
   }
 
@@ -371,8 +372,8 @@ public final class DefaultInputLayout: InputLayout {
   */
   fileprivate func resetRenderProperties() {
     self.rightEdge = 0
-    self.inlineConnectorPosition = WorkspacePointZero
-    self.inlineConnectorSize = WorkspaceSizeZero
+    self.inlineConnectorPosition = WorkspacePoint.zero
+    self.inlineConnectorSize = WorkspaceSize.zero
     self.statementIndent = 0
     self.statementConnectorWidth = 0
     self.statementRowTopPadding = 0

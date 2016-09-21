@@ -61,7 +61,7 @@ open class ViewFactory: NSObject {
    - Throws:
    `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
    */
-  open func viewForLayout(_ layout: Layout) throws -> LayoutView {
+  open func makeView(layout: Layout) throws -> LayoutView {
     // Get a fresh view and populate it with the layout
     let layoutType = type(of: layout)
     if let viewType = _viewMapping[layoutType.hash()],

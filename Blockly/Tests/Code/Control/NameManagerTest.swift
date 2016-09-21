@@ -118,21 +118,21 @@ class NameManagerTest: XCTestCase {
     _nameManager.listeners.add(listener)
 
     _nameManager.addName("foo")
-    XCTAssertTrue(_nameManager.renameName("foo", toName: "BAR"))
+    XCTAssertTrue(_nameManager.renameName("foo", to: "BAR"))
     XCTAssertEqual(["BAR"], _nameManager.names)
     XCTAssertTrue(listener.renamedName)
   }
 
   func testRenameName_CaseInsensitive() {
     _nameManager.addName("bar")
-    XCTAssertTrue(_nameManager.renameName("BAR", toName: "XYZ"))
+    XCTAssertTrue(_nameManager.renameName("BAR", to: "XYZ"))
     XCTAssertEqual(["XYZ"], _nameManager.names)
   }
 
   func testRenameName_ToAnotherExistingName() {
     _nameManager.addName("foo")
     _nameManager.addName("bar")
-    XCTAssertTrue(_nameManager.renameName("bar", toName: "FOO"))
+    XCTAssertTrue(_nameManager.renameName("bar", to: "FOO"))
     XCTAssertEqual(["FOO"], _nameManager.names) // There should only be one name now
   }
 
@@ -140,7 +140,7 @@ class NameManagerTest: XCTestCase {
     let listener = NameManagerTestListener()
     _nameManager.listeners.add(listener)
 
-    XCTAssertFalse(_nameManager.renameName("NON EXISTENT NAME", toName: "SOME NAME"))
+    XCTAssertFalse(_nameManager.renameName("NON EXISTENT NAME", to: "SOME NAME"))
     XCTAssertFalse(listener.renamedName)
   }
 }

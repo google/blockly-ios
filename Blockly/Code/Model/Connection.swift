@@ -191,7 +191,7 @@ public final class Connection : NSObject {
   NOTE: While this value *should* be stored in a Layout subclass, it's more efficient to simply
   store the absolute position here since it's the only relevant property needed.
   */
-  public fileprivate(set) var position: WorkspacePoint = WorkspacePointZero
+  public fileprivate(set) var position: WorkspacePoint = WorkspacePoint.zero
   /// The connection that this one is connected to
   public fileprivate(set) weak var targetConnection: Connection?
   /// The shadow connection that this one is connected to
@@ -492,7 +492,7 @@ public final class Connection : NSObject {
   view.
   */
   public func moveToPosition(
-    _ position: WorkspacePoint, withOffset offset: WorkspacePoint = WorkspacePointZero)
+    _ position: WorkspacePoint, withOffset offset: WorkspacePoint = WorkspacePoint.zero)
   {
     let newX = position.x + offset.x
     let newY = position.y + offset.y

@@ -19,30 +19,17 @@ import Foundation
 Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
 */
 public typealias WorkspacePoint = CGPoint
-public var WorkspacePointZero: WorkspacePoint { return CGPoint.zero }
-public func WorkspacePointMake(_ x: CGFloat, _ y: CGFloat) -> WorkspacePoint {
-  return CGPoint(x: x, y: y)
-}
 
 /**
 Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
 */
 public typealias WorkspaceSize = CGSize
-public var WorkspaceSizeZero: WorkspaceSize { return CGSize.zero }
-public func WorkspaceSizeMake(_ width: CGFloat, _ height: CGFloat) -> WorkspaceSize {
-  return CGSize(width: width, height: height)
-}
 
 /**
 Edge insets in the Workspace coordinate system (which is separate from the UIView coordinate
 system).
 */
 public typealias WorkspaceEdgeInsets = UIEdgeInsets
-public var WorkspaceEdgeInsetsZero: WorkspaceEdgeInsets { return UIEdgeInsets.zero }
-public func WorkspaceEdgeInsetsMake(
-  _ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> WorkspaceEdgeInsets {
-  return UIEdgeInsetsMake(top, left, bottom, right)
-}
 
 /**
  Listener protocol for events that occur on a `Workspace` instance.

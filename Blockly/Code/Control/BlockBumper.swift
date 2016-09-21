@@ -34,7 +34,7 @@ open class BlockBumper: NSObject {
   /// system unit. This value is read from `self.workspaceLayout.config` using the key
   /// `LayoutConfig.BlockBumpDistance`. If no value exists for that key, this defaults to `0`.
   private var bumpDistance: CGFloat {
-    return workspaceLayout?.config.unitFor(LayoutConfig.BlockBumpDistance).workspaceUnit ?? 0
+    return workspaceLayout?.config.unit(for: LayoutConfig.BlockBumpDistance).workspaceUnit ?? 0
   }
 
   // MARK: - Public
@@ -56,9 +56,9 @@ open class BlockBumper: NSObject {
 
     let dx = stationaryConnection.position.x + bumpDistance - impingingConnection.position.x
     let dy = stationaryConnection.position.y + bumpDistance - impingingConnection.position.y
-    let newPosition = WorkspacePointMake(
-      blockGroupLayout.absolutePosition.x + dx,
-      blockGroupLayout.absolutePosition.y + dy)
+    let newPosition = WorkspacePoint(
+      x: blockGroupLayout.absolutePosition.x + dx,
+      y: blockGroupLayout.absolutePosition.y + dy)
     blockGroupLayout.move(toWorkspacePosition: newPosition)
     workspaceLayout?.bringBlockGroupLayoutToFront(blockGroupLayout)
   }

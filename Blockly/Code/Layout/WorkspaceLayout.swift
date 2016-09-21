@@ -40,7 +40,7 @@ open class WorkspaceLayout: Layout {
   private var _maximumZIndexCounter: UInt = (UInt.max - 1)
 
   /// The origin (x, y) coordinates of where all blocks are positioned in the workspace
-  internal final var contentOrigin: WorkspacePoint = WorkspacePointZero
+  internal final var contentOrigin: WorkspacePoint = WorkspacePoint.zero
 
   // MARK: - Initializers
 
@@ -55,8 +55,8 @@ open class WorkspaceLayout: Layout {
   // MARK: - Super
 
   open override func performLayout(includeChildren: Bool) {
-    var topLeftMostPoint = WorkspacePointZero
-    var bottomRightMostPoint = WorkspacePointZero
+    var topLeftMostPoint = WorkspacePoint.zero
+    var bottomRightMostPoint = WorkspacePoint.zero
 
     // Update relative position/size of blocks
     for i in 0 ..< self.blockGroupLayouts.count {
@@ -83,13 +83,13 @@ open class WorkspaceLayout: Layout {
 
     // Update size required for the workspace
     self.contentOrigin = topLeftMostPoint
-    self.contentSize = WorkspaceSizeMake(
-      bottomRightMostPoint.x - topLeftMostPoint.x,
-      bottomRightMostPoint.y - topLeftMostPoint.y)
+    self.contentSize = WorkspaceSize(
+      width: bottomRightMostPoint.x - topLeftMostPoint.x,
+      height: bottomRightMostPoint.y - topLeftMostPoint.y)
 
 
     // Set the content offset so children are automatically placed relative to (0, 0)
-    self.childContentOffset = WorkspacePointZero - topLeftMostPoint
+    self.childContentOffset = WorkspacePoint.zero - topLeftMostPoint
 
     // Update the canvas size
     sendChangeEvent(withFlags: WorkspaceLayout.Flag_UpdateCanvasSize)

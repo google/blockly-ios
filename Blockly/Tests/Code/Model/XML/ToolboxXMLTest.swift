@@ -32,14 +32,14 @@ class ToolboxXMLTest: XCTestCase {
 
   func testParseXML_EmptyToolbox() {
     let xmlString = "<toolbox></toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(0, toolbox.categories.count)
   }
 
   func testParseXML_EmptyCategory() {
     let xmlString = "<toolbox><category name='abc' colour='180'></category></toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual("abc", toolbox.categories[0].name)
@@ -53,7 +53,7 @@ class ToolboxXMLTest: XCTestCase {
         "<category name='cat1'></category>" +
         "<category name='cat2'></category>" +
       "</toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(2, toolbox.categories.count)
     XCTAssertEqual("cat1", toolbox.categories[0].name)
@@ -65,7 +65,7 @@ class ToolboxXMLTest: XCTestCase {
     "<toolbox>" +
       "<category name='cat1'><block type='multiple_input_output'></block></category>" +
     "</toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual(1, toolbox.categories[0].items.count)
@@ -82,7 +82,7 @@ class ToolboxXMLTest: XCTestCase {
         "<sep></sep>" +
       "</category>" +
     "</toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(1, toolbox.categories.count)
 
@@ -105,7 +105,7 @@ class ToolboxXMLTest: XCTestCase {
         "</block>" +
       "</category>" +
     "</toolbox>"
-    let toolbox = try! Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual(2, toolbox.categories[0].allBlocks.count)
@@ -119,7 +119,7 @@ class ToolboxXMLTest: XCTestCase {
   func testParseXML_BadXML() {
     do {
       let xmlString = "<toolboxa></toolboxa>"
-      _ = try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+      _ = try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
       XCTAssertEqual(BlocklyError.Code.xmlParsing.rawValue, error.code)
@@ -131,7 +131,7 @@ class ToolboxXMLTest: XCTestCase {
   func testParseXML_UnknownBlock() {
     do {
       let xmlString = "<toolbox><category><block id='unknownblock'></block></category></toolbox>"
-      _ = try Toolbox.toolboxFromXMLString(xmlString, factory: factory)
+      _ = try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
       XCTAssertEqual(BlocklyError.Code.xmlUnknownBlock.rawValue, error.code)

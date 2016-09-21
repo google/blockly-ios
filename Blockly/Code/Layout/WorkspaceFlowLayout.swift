@@ -65,11 +65,11 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
 
   public override func performLayout(includeChildren: Bool) {
     let xSeparatorSpace =
-      self.config.workspaceUnitFor(LayoutConfig.WorkspaceFlowXSeparatorSpace)
+      self.config.workspaceUnit(for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
     let ySeparatorSpace =
-      self.config.workspaceUnitFor(LayoutConfig.WorkspaceFlowYSeparatorSpace)
+      self.config.workspaceUnit(for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
-    var size = WorkspaceSizeZero
+    var size = WorkspaceSize.zero
     var xPosition = CGFloat(xSeparatorSpace)
     var yPosition = CGFloat(ySeparatorSpace)
 
@@ -104,7 +104,8 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
         let outputTabSpacer = largestLeadingEdgeXOffset - blockGroupLayout.largestLeadingEdgeXOffset
 
         blockGroupLayout.edgeInsets =
-          WorkspaceEdgeInsetsMake(0, outputTabSpacer, ySeparatorSpace, xSeparatorSpace)
+          WorkspaceEdgeInsets(top: 0, left: outputTabSpacer,
+                              bottom: ySeparatorSpace, right: xSeparatorSpace)
 
         if self.maximumLineBlockSize > 0 &&
           yPosition + blockGroupLayout.totalSize.height > self.maximumLineBlockSize
@@ -115,12 +116,12 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
         }
 
         // Set position
-        blockGroupLayout.relativePosition = WorkspacePointMake(xPosition, yPosition)
+        blockGroupLayout.relativePosition = WorkspacePoint(x: xPosition, y: yPosition)
 
         yPosition += blockGroupLayout.totalSize.height
       } else if self.layoutDirection == .horizontal {
         blockGroupLayout.edgeInsets =
-          WorkspaceEdgeInsetsMake(0, 0, ySeparatorSpace, xSeparatorSpace)
+          WorkspaceEdgeInsets(top: 0, left: 0, bottom: ySeparatorSpace, right: xSeparatorSpace)
 
         if self.maximumLineBlockSize > 0 &&
           xPosition + blockGroupLayout.totalSize.width > self.maximumLineBlockSize
@@ -131,7 +132,7 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
         }
 
         // Set position
-        blockGroupLayout.relativePosition = WorkspacePointMake(xPosition, yPosition)
+        blockGroupLayout.relativePosition = WorkspacePoint(x: xPosition, y: yPosition)
 
         xPosition += blockGroupLayout.totalSize.width
       }

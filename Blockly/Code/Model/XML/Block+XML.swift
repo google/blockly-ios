@@ -60,7 +60,7 @@ extension Block {
       let x = formatter.number(from: xString),
       let y = formatter.number(from: yString)
     {
-      block.position = WorkspacePointMake(CGFloat(x), CGFloat(y))
+      block.position = WorkspacePoint(x: CGFloat(x), y: CGFloat(y))
     }
 
     for child in xml.children {

@@ -89,7 +89,7 @@ class FieldXMLTest: XCTestCase {
 
   func testSerializeXML_FieldImage() {
     let field =
-      FieldImage(name: "a_field", imageURL: "some_image.png", size: WorkspaceSizeZero, altText: "")
+      FieldImage(name: "a_field", imageURL: "some_image.png", size: WorkspaceSize.zero, altText: "")
     let fieldXML = BKYAssertDoesNotThrow { try field.toXML() }
 
     // Expected: nil

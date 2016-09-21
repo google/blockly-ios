@@ -30,7 +30,7 @@ public final class WorkspaceBezierPath: NSObject {
   /// The translated bezier path in the UIView coordinate system.
   public let viewBezierPath: UIBezierPath
   /// The current point of the bezier path, specified in the Workspace coordinate system.
-  public private(set) var currentWorkspacePoint: WorkspacePoint = WorkspacePointZero
+  public private(set) var currentWorkspacePoint: WorkspacePoint = WorkspacePoint.zero
   /// The `LayoutEngine` used to calculate scaling between a Workspace and the UIView
   private let _layoutEngine: LayoutEngine
   /**
@@ -85,7 +85,7 @@ public final class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   public func addLineToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
-    addLineToPoint(WorkspacePointMake(x, y), relative: relative)
+    addLineToPoint(WorkspacePoint(x: x, y: y), relative: relative)
   }
 
   /**
@@ -258,7 +258,7 @@ public final class WorkspaceBezierPath: NSObject {
   if it should be an absolute point.
   */
   public func moveToPoint(_ x: CGFloat, _ y: CGFloat, relative: Bool) {
-    moveToPoint(WorkspacePointMake(x, y), relative: relative)
+    moveToPoint(WorkspacePoint(x: x, y: y), relative: relative)
   }
 
   /**

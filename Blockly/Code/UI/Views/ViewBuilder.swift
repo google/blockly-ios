@@ -109,7 +109,7 @@ open class ViewBuilder: NSObject {
 
     do {
       // Create a new one from the factory
-      view = try viewFactory.viewForLayout(layout)
+      view = try viewFactory.makeView(layout: layout)
     } catch {
       // Couldn't retrieve a view for this layout, just return nil (not all layouts need to have a
       // view)
@@ -161,11 +161,11 @@ extension ViewBuilder: LayoutHierarchyListener {
   public func layout(_ layout: Layout,
     didAdoptChildLayout childLayout: Layout, fromOldParentLayout oldParentLayout: Layout?)
   {
-    guard let parentView = ViewManager.sharedInstance.findViewForLayout(layout) else {
+    guard let parentView = ViewManager.sharedInstance.findView(forLayout: layout) else {
       return
     }
 
-    if let childView = ViewManager.sharedInstance.findViewForLayout(childLayout) {
+    if let childView = ViewManager.sharedInstance.findView(forLayout: childLayout) {
       // The child view already exists. Simply transfer the child view over to the new parent view.
       parentView.addSubview(childView)
       return
@@ -177,8 +177,8 @@ extension ViewBuilder: LayoutHierarchyListener {
 
   public func layout(_ layout: Layout, didRemoveChildLayout childLayout: Layout) {
     guard
-      let parentView = ViewManager.sharedInstance.findViewForLayout(layout),
-      let childView = ViewManager.sharedInstance.findViewForLayout(childLayout) else
+      let parentView = ViewManager.sharedInstance.findView(forLayout: layout),
+      let childView = ViewManager.sharedInstance.findView(forLayout: childLayout) else
     {
       return
     }

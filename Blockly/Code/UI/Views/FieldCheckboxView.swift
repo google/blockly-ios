@@ -66,9 +66,9 @@ open class FieldCheckboxView: FieldView {
         switchButton.isOn = fieldCheckboxLayout.checked
 
         let tintColor =
-          fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchTintColor)
+          fieldCheckboxLayout.config.color(for: LayoutConfig.FieldCheckboxSwitchTintColor)
         let onTintColor =
-          fieldCheckboxLayout.config.colorFor(LayoutConfig.FieldCheckboxSwitchOnTintColor)
+          fieldCheckboxLayout.config.color(for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
 
         if switchButton.tintColor != tintColor {
           // Whenever `tintColor` is set, it messes up the switch's transition animation.

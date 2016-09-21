@@ -93,8 +93,8 @@ public final class DefaultBlockView: BlockView {
 
       if flags.intersectsWith([BlockLayout.Flag_NeedsDisplay, BlockLayout.Flag_UpdateViewFrame]) {
         self.alpha = layout.block.disabled ?
-          layout.config.floatFor(DefaultLayoutConfig.BlockDisabledAlpha) :
-          layout.config.floatFor(DefaultLayoutConfig.BlockDefaultAlpha)
+          layout.config.float(for: DefaultLayoutConfig.BlockDisabledAlpha) :
+          layout.config.float(for: DefaultLayoutConfig.BlockDefaultAlpha)
       }
 
       // Special case for determining if we need to force a bezier path redraw. The reason is that
@@ -116,13 +116,13 @@ public final class DefaultBlockView: BlockView {
 
         if layout.block.disabled {
           strokeColor =
-            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
           fillColor =
-            layout.config.colorFor(DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
+            layout.config.color(for: DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
         } else {
           strokeColor = (layout.highlighted ?
-            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor) :
-            layout.config.colorFor(DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor) :
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
             UIColor.clear
           fillColor = layout.block.color
 
@@ -137,10 +137,10 @@ public final class DefaultBlockView: BlockView {
         backgroundLayer.strokeColor = strokeColor.cgColor
         backgroundLayer.fillColor = fillColor.cgColor
         backgroundLayer.lineWidth = layout.highlighted ?
-          layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight) :
-          layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthRegular)
+          layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight) :
+          layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthRegular)
         backgroundLayer.animationDuration =
-          layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
+          layout.config.double(for: LayoutConfig.ViewAnimationDuration)
         backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
         backgroundLayer.frame = self.bounds
       }
@@ -193,16 +193,16 @@ public final class DefaultBlockView: BlockView {
 
     // Configure highlight
     highlightLayer.lineWidth =
-      layout.config.viewUnitFor(DefaultLayoutConfig.BlockLineWidthHighlight)
+      layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight)
     highlightLayer.strokeColor =
-      layout.config.colorFor(DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor ??
+      layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor ??
       UIColor.clear.cgColor
     highlightLayer.fillColor = nil
     // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
     // larger line width
     // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
     highlightLayer.zPosition = 1
-    highlightLayer.animationDuration = layout.config.doubleFor(LayoutConfig.ViewAnimationDuration)
+    highlightLayer.animationDuration = layout.config.double(for: LayoutConfig.ViewAnimationDuration)
     highlightLayer.setBezierPath(path, animated: animated)
     highlightLayer.frame = bounds
   }
@@ -223,10 +223,10 @@ public final class DefaultBlockView: BlockView {
     let background = layout.background
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset = background.leadingEdgeXOffset // Note: this is the right edge in RTL
-    let notchWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth)
-    let notchHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight)
-    let puzzleTabWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
-    let puzzleTabHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight)
+    let notchWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
+    let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
+    let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
+    let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
 
     path.moveToPoint(xLeftEdgeOffset, 0, relative: false)
 
@@ -365,10 +365,10 @@ public final class DefaultBlockView: BlockView {
       return nil
     }
 
-    let notchWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchWidth)
-    let notchHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.NotchHeight)
-    let puzzleTabWidth = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabWidth)
-    let puzzleTabHeight = layout.config.workspaceUnitFor(DefaultLayoutConfig.PuzzleTabHeight)
+    let notchWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
+    let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
+    let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
+    let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
 
     // Build path for each highlighted connection
     let path = WorkspaceBezierPath(engine: layout.engine)
@@ -386,7 +386,7 @@ public final class DefaultBlockView: BlockView {
         // The connection point is set to the apex of the puzzle tab's curve. Move the point before
         // drawing it.
         path.moveToPoint(connectionRelativePosition +
-          WorkspacePointMake(puzzleTabWidth, -puzzleTabHeight / 2),
+          WorkspacePoint(x: puzzleTabWidth, y: -puzzleTabHeight / 2),
           relative: false)
         addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
@@ -394,7 +394,7 @@ public final class DefaultBlockView: BlockView {
       case .previousStatement, .nextStatement:
         // The connection point is set to the bottom of the notch. Move the point before drawing it.
         path.moveToPoint(connectionRelativePosition -
-          WorkspacePointMake(notchWidth / 2, notchHeight),
+          WorkspacePoint(x: notchWidth / 2, y: notchHeight),
           relative: false)
         addNotch(
           toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
@@ -419,9 +419,9 @@ public final class DefaultBlockView: BlockView {
 
   fileprivate func shadowColor(forColor color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
-    hsba.saturation *= config.floatFor(DefaultLayoutConfig.BlockShadowSaturationMultiplier)
+    hsba.saturation *= config.float(for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
     hsba.brightness =
-      max(hsba.brightness * config.floatFor(DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
+      max(hsba.brightness * config.float(for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
     return UIColor(
       hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)
   }
