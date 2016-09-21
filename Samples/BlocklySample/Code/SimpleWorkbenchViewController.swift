@@ -155,7 +155,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     return nil
   }
 
-  private func addChainedBlocksToWorkspace(_ workspace: Workspace) throws {
+  private func addChainedBlocks(toWorkspace workspace: Workspace) throws {
     if let block1 = try buildChainedStatementBlock(workspace) {
       if let block2 = try buildOutputBlock(workspace) {
         try block1.inputs[1].connection?.connectTo(block2.outputConnection)
@@ -171,7 +171,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  private func addToolboxBlocksToWorkspace(_ workspace: Workspace) throws {
+  private func addToolboxBlocks(toWorkspace workspace: Workspace) throws {
     let blocks = ["controls_repeat_ext", "controls_whileUntil", "math_number",
       "simple_input_output", "multiple_input_output", "statement_no_input", "statement_value_input",
       "statement_multiple_value_input", "statement_statement_input", "output_no_input",
@@ -182,7 +182,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     }
   }
 
-  private func addSpaghettiBlocksToWorkspace(_ workspace: Workspace) throws {
+  private func addSpaghettiBlocks(toWorkspace workspace: Workspace) throws {
     try buildSpaghettiBlock(workspace, level: 4, blocksPerLevel: 5)
   }
 
