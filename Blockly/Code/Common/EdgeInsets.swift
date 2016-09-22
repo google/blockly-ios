@@ -15,27 +15,45 @@
 
 /**
  Defines inset distances for views/layouts, that allows for both LTR and RTL layouts.
- */
-public struct EdgeInsets {
-  public var top: CGFloat
-  public var leading: CGFloat
-  public var bottom: CGFloat
-  public var trailing: CGFloat
 
+ - Note: To determine whether the current device is in LTR or RTL, this class uses
+ `UIApplication.shared.userInterfaceLayoutDirection`.
+ */
+public typealias EdgeInsets = BKYEdgeInsets
+
+extension EdgeInsets {
+  /// The inset distance for the left edge.
+  /// In LTR layouts, this value is equal to `self.leading`.
+  /// In RTL layouts, this value is equal to `self.trailing`.
   public var left: CGFloat {
     return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ?
       trailing : leading
   }
 
+  /// The inset distance for the right edge.
+  /// In LTR layouts, this value is equal to `self.trailing`.
+  /// In RTL layouts, this value is equal to `self.leading`.
   public var right: CGFloat {
     return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ?
       leading : trailing
   }
 
+  /**
+   Creates edge insets, with each inset value set to zero.
+   */
   public init() {
     self.init(0, 0, 0, 0)
   }
 
+  /**
+   Creates edge insets, with given values for each edge.
+
+   - Parameter top: Top edge inset
+   - Parameter leading: Leading edge inset
+   - Parameter bottom: Bottom edge inset
+   - Parameter trailing: Trailing edge inset
+   - Returns: A `BKYEdgeInsets`.
+   */
   public init(_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) {
     self.top = top
     self.leading = leading

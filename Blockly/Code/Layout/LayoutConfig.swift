@@ -20,40 +20,6 @@ import Foundation
  */
 @objc(BKYLayoutConfig)
 open class LayoutConfig: NSObject {
-  // MARK: - Structs
-
-  /**
-   Struct for representing a unit value in both the Workspace coordinate system and UIView
-   coordinate system.
-   */
-  public struct Unit {
-    /// The unit value specified in the Workspace coordinate system
-    public var workspaceUnit: CGFloat
-    /// The unit value specified in the UIView coordinate system
-    public var viewUnit: CGFloat
-
-    public init(_ workspaceUnit: CGFloat, _ viewUnit: CGFloat? = nil) {
-      self.workspaceUnit = workspaceUnit
-      self.viewUnit = viewUnit ?? workspaceUnit
-    }
-  }
-
-  /**
-   Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
-   system and UIView coordinate system.
-   */
-  public struct Size {
-    /// The size value specified in the Workspace coordinate system
-    public var workspaceSize: WorkspaceSize
-    /// The size value specified in the UIView coordinate system
-    public var viewSize: CGSize
-
-    public init(_ workspaceSize: WorkspaceSize, _ viewSize: CGSize? = nil) {
-      self.workspaceSize = workspaceSize
-      self.viewSize = viewSize ?? workspaceSize
-    }
-  }
-
   // MARK: - Type Alias
 
   /// Type alias defining the property key.
@@ -190,7 +156,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `unit` that was set.
    */
   @discardableResult
-  public func setUnit(_ unit: Unit?, for key: PropertyKey) -> Unit? {
+  public func setUnit(_ unit: Unit, for key: PropertyKey) -> Unit {
     _units[key] = unit
     return unit
   }
@@ -204,8 +170,8 @@ open class LayoutConfig: NSObject {
    - Returns: The mapped `Unit` value.
    */
   @inline(__always)
-  public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0, 0)) -> Unit {
-    return _units[key] ?? setUnit(defaultValue, for: key)!
+  public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> Unit {
+    return _units[key] ?? setUnit(defaultValue, for: key)
   }
 
   /**
@@ -242,7 +208,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `size` that was set.
    */
   @discardableResult
-  public func setSize(_ size: Size?, for key: PropertyKey) -> Size? {
+  public func setSize(_ size: Size, for key: PropertyKey) -> Size {
     _sizes[key] = size
     return size
   }
@@ -257,7 +223,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func size(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero)) -> Size {
-    return _sizes[key] ?? setSize(defaultValue, for: key)!
+    return _sizes[key] ?? setSize(defaultValue, for: key)
   }
 
   /**

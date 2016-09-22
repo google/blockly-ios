@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "BKYEdgeInsets.h"
 
-//! Project version number for Blockly.
-FOUNDATION_EXPORT double BlocklyVersionNumber;
+BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
+  BKYEdgeInsets edgeInsets;
+  edgeInsets.top = top;
+  edgeInsets.leading = leading;
+  edgeInsets.bottom = bottom;
+  edgeInsets.trailing = trailing;
+  return edgeInsets;
+}
 
-//! Project version string for Blockly.
-FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
-
-// Public headers for Blockly
-#import <Blockly/BKYEdgeInsets.h>
-#import <Blockly/BKYLayoutConfigStructs.h>
-#import <Blockly/BKYWorkspaceUnits.h>
+BKYEdgeInsets const BKYEdgeInsetsZero = { .top = 0, .leading = 0, .bottom = 0, .trailing = 0 };

@@ -21,19 +21,7 @@ import Foundation
 @objc(BKYTrashCanView)
 public final class TrashCanView: UIView {
 
-  // MARK: - Struct - Padding
-  public struct Padding {
-    public var top: CGFloat
-    public var leading: CGFloat
-    public var bottom: CGFloat
-    public var trailing: CGFloat
-    public init(_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) {
-      self.top = top
-      self.leading = leading
-      self.bottom = bottom
-      self.trailing = trailing
-    }
-  }
+  // MARK: - Properties
 
   /// The trash can button
   public let button = UIButton()
