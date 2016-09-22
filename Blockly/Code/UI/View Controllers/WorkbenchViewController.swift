@@ -509,7 +509,7 @@ open class WorkbenchViewController: UIViewController {
     // the position for the newly created block.
     // Note: This is done before creating a new block since adding a new block might change the
     // workspace's size, which would mess up this position calculation.
-    let newWorkspacePosition = workspaceView.workspacePositionFromBlockView(blockView)
+    let newWorkspacePosition = workspaceView.workspacePosition(fromBlockView: blockView)
 
     // Create a deep copy of this block in this workspace (which will automatically create a layout
     // tree for the block)
@@ -979,7 +979,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
 
     var blockView = block
     let touchPosition = touch.location(in: workspaceView.scrollView.containerView)
-    let workspacePosition = workspaceView.workspacePositionFromViewPoint(touchPosition)
+    let workspacePosition = workspaceView.workspacePosition(fromViewPoint: touchPosition)
 
     // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
