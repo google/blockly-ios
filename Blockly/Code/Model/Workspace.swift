@@ -16,22 +16,6 @@
 import Foundation
 
 /**
-Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
-*/
-public typealias WorkspacePoint = CGPoint
-
-/**
-Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
-*/
-public typealias WorkspaceSize = CGSize
-
-/**
-Edge insets in the Workspace coordinate system (which is separate from the UIView coordinate
-system).
-*/
-public typealias WorkspaceEdgeInsets = UIEdgeInsets
-
-/**
  Listener protocol for events that occur on a `Workspace` instance.
  */
 @objc(BKYWorkspaceListener)

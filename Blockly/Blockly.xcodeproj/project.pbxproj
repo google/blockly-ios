@@ -13,6 +13,13 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
+		FA10391F1D934139005FDF1D /* BKYWorkspaceUnits.h in Headers */ = {isa = PBXBuildFile; fileRef = FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA1039241D935D9E005FDF1D /* BKYWorkspaceUnits.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */; };
+		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
+		FA10392B1D9371FE005FDF1D /* BKYEdgeInsets.h in Headers */ = {isa = PBXBuildFile; fileRef = FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA10392C1D9371FE005FDF1D /* BKYEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */; };
+		FA1039301D93A7EC005FDF1D /* BKYLayoutConfigStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
 		FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631631CE44285008DDBC8 /* DropdownView.swift */; };
@@ -124,6 +131,7 @@
 		FAA8701A1C642805000C7C61 /* TrashCanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870161C642805000C7C61 /* TrashCanViewController.swift */; };
 		FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA870171C642805000C7C61 /* WorkbenchViewController.swift */; };
 		FAABDD631CA20BA400F9E7D4 /* BlockBumper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABDD621CA20BA400F9E7D4 /* BlockBumper.swift */; };
+		FAB30CFF1D93B428003A3226 /* BKYLayoutConfigStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = FA10392F1D93A7EC005FDF1D /* BKYLayoutConfigStructs.m */; };
 		FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */; };
 		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
@@ -192,6 +200,14 @@
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
+		FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYWorkspaceUnits.h; sourceTree = "<group>"; };
+		FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYWorkspaceUnits.m; sourceTree = "<group>"; };
+		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
+		FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYEdgeInsets.h; sourceTree = "<group>"; };
+		FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYEdgeInsets.m; sourceTree = "<group>"; };
+		FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYLayoutConfigStructs.h; sourceTree = "<group>"; };
+		FA10392F1D93A7EC005FDF1D /* BKYLayoutConfigStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYLayoutConfigStructs.m; sourceTree = "<group>"; };
+		FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutConfig+Structs.swift"; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
 		FA1631631CE44285008DDBC8 /* DropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownView.swift; sourceTree = "<group>"; };
@@ -398,6 +414,9 @@
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FA4E83EA1CACF00A009FB0CD /* LayoutEngine.swift */,
 				FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */,
+				FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */,
+				FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */,
+				FA10392F1D93A7EC005FDF1D /* BKYLayoutConfigStructs.m */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */,
 				FA4E840A1CAE4AAE009FB0CD /* ToolboxLayout.swift */,
@@ -647,6 +666,9 @@
 				FA9D2FBA1C11176700D0E528 /* Toolbox.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
 				FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */,
+				FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */,
+				FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */,
+				FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -680,6 +702,8 @@
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
 				FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */,
+				FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */,
+				FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -765,6 +789,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA10392B1D9371FE005FDF1D /* BKYEdgeInsets.h in Headers */,
+				FA10391F1D934139005FDF1D /* BKYWorkspaceUnits.h in Headers */,
+				FA1039301D93A7EC005FDF1D /* BKYLayoutConfigStructs.h in Headers */,
 				FA548C611B63144A008BC59C /* Blockly.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -912,9 +939,11 @@
 				FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAD652401CB7210C00F73F11 /* DefaultBlockLayout+Background.swift in Sources */,
+				FA1039241D935D9E005FDF1D /* BKYWorkspaceUnits.m in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
 				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
+				FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
@@ -964,6 +993,7 @@
 				FA2DFCBF1B72DD1D0072A278 /* FieldImage.swift in Sources */,
 				FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */,
 				FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */,
+				FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */,
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
 				FAA870191C642805000C7C61 /* DropdownOptionsViewController.swift in Sources */,
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
@@ -972,6 +1002,8 @@
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
+				FA10392C1D9371FE005FDF1D /* BKYEdgeInsets.m in Sources */,
+				FAB30CFF1D93B428003A3226 /* BKYLayoutConfigStructs.m in Sources */,
 				FAC034FE1D5167210017C1C8 /* FieldLabelLayout.swift in Sources */,
 				FAE557791BE02B270019D0D4 /* Dragger.swift in Sources */,
 				FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */,
@@ -1192,6 +1224,7 @@
 		FA548C1F1B630BAD008BC59C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1213,6 +1246,7 @@
 		FA548C201B630BAD008BC59C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

@@ -14,6 +14,8 @@
  */
 
 #import "TestObjCViewController.h"
+#import <Blockly/Blockly.h>
+#import <Blockly/Blockly-Swift.h>
 
 @implementation TestObjCViewController
 
@@ -39,19 +41,25 @@
   blockBuilder.inputBuilders = inputBuilders;
 
   // Create workspace
-  BKYBlock *defaultBlock = [blockBuilder makeBlockWithShadow:NO error:nil];
   BKYWorkspace *workspace = [[BKYWorkspace alloc] init];
-  [workspace addBlockTree:defaultBlock error:nil];
+
+  blockBuilder.position = BKYWorkspacePointMake(0, 0);
+  BKYBlock *block1 = [blockBuilder makeBlockAsShadow:NO error:nil];
+  [workspace addBlockTree:block1 error:nil];
+
+  blockBuilder.position = BKYWorkspacePointMake(100, 100);
+  BKYBlock *block2 = [blockBuilder makeBlockAsShadow:NO error:nil];
+  [workspace addBlockTree:block2 error:nil];
 
   // Create toolbox
-  BKYBlock *toolboxBlock = [blockBuilder makeBlockWithShadow:NO error:nil];
+  BKYBlock *toolboxBlock = [blockBuilder makeBlockAsShadow:NO error:nil];
   BKYToolbox *toolbox = [[BKYToolbox alloc] init];
   BKYToolboxCategory *category = [toolbox addCategory:@"Test" color:[UIColor blueColor] icon:nil];
   [category addBlockTree:toolboxBlock error:nil];
 
   // Load workbench with workspace and toolbox
   BKYWorkbenchViewController *viewController =
-  [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleDefaultStyle];
+    [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleDefaultStyle];
   [viewController loadWorkspace:workspace connectionManager:nil error:nil];
   [viewController loadToolbox:toolbox error:nil];
 
