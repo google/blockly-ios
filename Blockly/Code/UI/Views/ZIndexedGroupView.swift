@@ -55,7 +55,9 @@ public final class ZIndexedGroupView: UIView {
 
       // If the touch is inside any child of this view, return the hit test for it.
       if (target.bounds.contains(pointForTargetView)) {
-        return target.hitTest(pointForTargetView, with: event)
+        if let hitView = target.hitTest(pointForTargetView, with: event) {
+          return hitView
+        }
       }
     }
 
