@@ -52,7 +52,7 @@ public final class Block : NSObject {
   /// on the edge of the block (`false`)
   public let inputsInline: Bool
   /// The absolute position of the block, in the Workspace coordinate system
-  public internal(set) var position: WorkspacePoint = WorkspacePoint.zero
+  public internal(set) var position: WorkspacePoint
   /// Flag indicating if this is a shadow block (`true`) or not (`false)
   public let shadow: Bool
   /// The `.OutputValue` connection for this block
@@ -157,8 +157,8 @@ public final class Block : NSObject {
   */
   internal init(
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
-    shadow: Bool, tooltip: String , comment: String, helpURL: String, deletable: Bool,
-    movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
+    position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
+    deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
     previousConnection: Connection?, nextConnection: Connection?)
   {
     self.uuid = uuid ?? UUID().uuidString
@@ -166,6 +166,7 @@ public final class Block : NSObject {
     self.color = color
     self.inputs = inputs
     self.inputsInline = inputsInline
+    self.position = position
     self.shadow = shadow
     self.outputConnection = outputConnection
     self.previousConnection = previousConnection

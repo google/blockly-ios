@@ -65,7 +65,7 @@ open class WorkspaceView: LayoutView {
   open var allowZoom = false
 
   /// The last known value for `workspaceLayout.contentOrigin`
-  fileprivate var _lastKnownContentOrigin: CGPoint = CGPoint.zero
+  fileprivate var _lastKnownContentOrigin: WorkspacePoint = WorkspacePoint.zero
 
   /// The offset of the view when zooming begins
   fileprivate var _zoomBeginOffset: CGPoint = CGPoint.zero

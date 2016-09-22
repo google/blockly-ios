@@ -13,8 +13,22 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "BKYLayoutConfigStructs.h"
 
-@interface TestObjCViewController: UIViewController
+// MARK: - BKYLayoutConfigUnit
 
-@end
+BKYLayoutConfigUnit BKYLayoutConfigUnitMake(CGFloat workspaceUnit) {
+  BKYLayoutConfigUnit unit;
+  unit.workspaceUnit = workspaceUnit;
+  unit.viewUnit = workspaceUnit;
+  return unit;
+}
+
+// MARK: - BKYLayoutConfigSize
+
+BKYLayoutConfigSize BKYLayoutConfigSizeMake(BKYWorkspaceSize workspaceSize) {
+  BKYLayoutConfigSize size;
+  size.workspaceSize = workspaceSize;
+  size.viewSize = CGSizeMake(workspaceSize.width, workspaceSize.height);
+  return size;
+}

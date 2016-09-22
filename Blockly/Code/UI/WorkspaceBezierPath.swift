@@ -267,7 +267,7 @@ public final class WorkspaceBezierPath: NSObject {
   public func removeAllPoints() {
     viewBezierPath.removeAllPoints()
 
-    self.currentWorkspacePoint = CGPoint.zero
+    currentWorkspacePoint = WorkspacePoint.zero
     _reflectionOfLastCurveControlPoint = nil
   }
 

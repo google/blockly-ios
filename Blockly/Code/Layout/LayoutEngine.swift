@@ -29,7 +29,6 @@ open class LayoutEngine: NSObject {
 
   // MARK: - Properties
 
-
   /// The minimum scale that the engine can have, relative to the Workspace coordinate system.
   public fileprivate(set) final var minimumScale: CGFloat = 0.5
 
@@ -106,7 +105,7 @@ open class LayoutEngine: NSObject {
     if scale == 0 {
       return WorkspacePoint.zero
     } else if scale == 1 {
-      return point
+      return WorkspacePoint(x: point.x, y: point.y)
     } else {
       return WorkspacePoint(
         x: workspaceUnitFromViewUnit(point.x),
@@ -125,7 +124,7 @@ open class LayoutEngine: NSObject {
     if scale == 0 {
       return WorkspaceSize.zero
     } else if scale == 1 {
-      return size
+      return WorkspaceSize(width: size.width, height: size.height)
     } else {
       return WorkspaceSize(
         width: workspaceUnitFromViewUnit(size.width),
@@ -178,7 +177,7 @@ open class LayoutEngine: NSObject {
     if scale == 0 {
       return CGPoint.zero
     } else if scale == 1 {
-      return point
+      return CGPoint(x: point.x, y: point.y)
     } else {
       return CGPoint(x: viewUnitFromWorkspaceUnit(point.x), y: viewUnitFromWorkspaceUnit(point.y))
     }
@@ -213,7 +212,7 @@ open class LayoutEngine: NSObject {
     if scale == 0 {
       return CGSize.zero
     } else if scale == 1 {
-      return size
+      return CGSize(width: size.width, height: size.height)
     } else {
       return CGSize(
         width: viewUnitFromWorkspaceUnit(size.width),

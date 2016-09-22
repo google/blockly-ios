@@ -168,7 +168,7 @@ extension Field {
           name: (json[PARAMETER_NAME] as? String ?? ""),
           imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
             "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
-          size: CGSize(
+          size: WorkspaceSize(
             width: CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
             height: CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
           altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))

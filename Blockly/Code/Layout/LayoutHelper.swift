@@ -30,7 +30,7 @@ internal class LayoutHelper: NSObject {
   */
   internal static func sizeThatFitsLayout
     (_ layout: Layout, fromInitialSize size: WorkspaceSize) -> WorkspaceSize {
-    return CGSize(
+    return WorkspaceSize(
       width: max(size.width, layout.relativePosition.x + layout.totalSize.width),
       height: max(size.height, layout.relativePosition.y + layout.totalSize.height))
   }

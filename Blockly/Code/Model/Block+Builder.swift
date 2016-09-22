@@ -48,6 +48,9 @@ public final class BlockBuilder: NSObject {
   public var inputBuilders: [Input.Builder] = []
   /// Sepcifies the inputs are inline. Defaults to `false`.
   public var inputsInline: Bool = false
+  /// The absolute position of the block, in the Workspace coordinate system.
+  /// Defaults to `WorkspacePoint.zero`.
+  public var position: WorkspacePoint = WorkspacePoint.zero
 
   // These values are publicly mutable in `Block`
 
@@ -90,6 +93,7 @@ public final class BlockBuilder: NSObject {
     name = block.name
     color = block.color
     inputsInline = block.inputsInline
+    position = block.position
 
     tooltip = block.tooltip
     comment = block.comment
@@ -157,8 +161,8 @@ public final class BlockBuilder: NSObject {
 
     let block = Block(
       uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,
-      shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL, deletable: deletable,
-      movable: movable, disabled: disabled, editable: editable,
+      position: position, shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL,
+      deletable: deletable, movable: movable, disabled: disabled, editable: editable,
       outputConnection: outputConnection, previousConnection: previousConnection,
       nextConnection: nextConnection)
 
