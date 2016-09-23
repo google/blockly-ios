@@ -42,6 +42,13 @@ open class BlockGroupView: LayoutView, ZIndexedView {
 
   // MARK: - Super
 
+  /**
+   The hit test for block group views. Only returns if one of its children is hit test, since the
+   block group view itself shouldn't be tappable.
+
+   - Parameter point: The `CGPoint` to be hit tested.
+   - Parameter event: The `UIEvent` for the hit test.
+   */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest
@@ -49,6 +56,12 @@ open class BlockGroupView: LayoutView, ZIndexedView {
     return (hitTestView == self) ? nil : hitTestView
   }
 
+  /**
+   Refreshes the block group view, when necessary.
+
+   - Parameter flags: The `LayoutFlag` to refresh the view.
+   - Parameter animated: `true` if the view should animate during the refresh.
+   */
   open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {

@@ -30,6 +30,13 @@ open class InputView: LayoutView {
 
   // MARK: - Super
 
+  /**
+   The hit test for input views. Doesn't return itself if it's the only view that gets hit, since
+   it needs to be a child of a block that should get hit.
+
+   - Parameter point: The `CGPoint` to hit test.
+   - Parameter event: The `UIEvent` for this hit test.
+   */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest

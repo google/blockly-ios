@@ -110,6 +110,7 @@ open class LayoutConfig: NSObject {
 
   // MARK: - Initializers
 
+  /// Initializer for layout config.
   public override init() {
     super.init()
 

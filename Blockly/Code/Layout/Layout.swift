@@ -110,7 +110,8 @@ open class Layout: NSObject {
     }
   }
 
-  // TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final
+  /// TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final
+
   /// Absolute position of this layout, relative to the root node, in the Workspace coordinate
   /// system.
   internal var absolutePosition: WorkspacePoint = WorkspacePoint.zero
@@ -142,6 +143,11 @@ open class Layout: NSObject {
 
   // MARK: - Initializers
 
+  /**
+   Initializes an empty Layout.
+
+   - Parameter engine: The `LayoutEngine` to build this layout.
+   */
   public init(engine: LayoutEngine) {
     self.uuid = UUID().uuidString
     self.engine = engine
@@ -378,8 +384,8 @@ open class Layout: NSObject {
 // MARK: - Layout Animation
 
 extension Layout {
-  // TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren't made
-  // automatically on connection changes, revisit whether an animation stack is needed.
+  /// TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren't made
+  /// automatically on connection changes, revisit whether an animation stack is needed.
 
   /// Stack that keeps track of whether future layout code changes should be animated.
   fileprivate static var _animationStack = [Bool]()

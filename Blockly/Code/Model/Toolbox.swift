@@ -40,6 +40,14 @@ open class Toolbox: NSObject {
 
   // MARK: - Public
 
+  /**
+   Adds a category to the toolbox.
+
+   - Parameter categoryName: The name of the new category.
+   - Parameter color: The color of the new category.
+   - Parameter icon: The `UIImage` icon for the new category.
+   - Return: The new category.
+   */
   open func addCategory(_ categoryName: String, color: UIColor, icon: UIImage? = nil) -> Category {
     let category = Category(name: categoryName, color: color, icon: icon)
     category.readOnly = self.readOnly

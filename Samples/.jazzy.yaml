@@ -21,9 +21,9 @@ custom_categories:
     children:
     - BlockBumper
     - ConnectionManager
+    - ConnectionValidator
     - Dragger
     - NameManager
-    - ConnectionValidator
 
   - name: Layout
     children:

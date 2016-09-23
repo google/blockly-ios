@@ -126,6 +126,12 @@ open class BlockLayout: Layout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the block layout.
+
+   - Parameter block: The given `Block` for this block layout.
+   - Parameter engine: The layout engine to build this block layout.
+   */
   public init(block: Block, engine: LayoutEngine) {
     self.block = block
     super.init(engine: engine)

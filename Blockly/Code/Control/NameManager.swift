@@ -103,6 +103,7 @@ public final class NameManager: NSObject {
 
   // MARK: - Initializers
 
+  /// Initializes the name manager.
   public override init() {
     let pattern = NameManager.REGULAR_EXPRESSION_PATTERN
     do {

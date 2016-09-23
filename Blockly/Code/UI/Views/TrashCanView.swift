@@ -79,6 +79,7 @@ public final class TrashCanView: UIView {
     self.layoutMargins = UIEdgeInsets.zero
   }
 
+  /// The `NSCoder` initializer for trash can view. NOTE: This is currently unsupported.
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -99,6 +100,12 @@ public final class TrashCanView: UIView {
     self.layoutMargins = bky_UIEdgeInsetsMake(top, leading, bottom, trailing)
   }
 
+  /**
+   Sets the highlighted state for the trash can view.
+
+   - Parameter highlighted: Specifies whether the view is highlighted.
+   - Parameter animated: Specifies whether the hightlight is animated.
+   */
   public func setHighlighted(_ highlighted: Bool, animated: Bool) {
     if _highlighted == highlighted {
       return
