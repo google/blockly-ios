@@ -84,12 +84,17 @@ open class WorkspaceView: LayoutView {
 
   // MARK: - Initializers
 
+  /// Default initializer for workspace view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(scrollView)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -132,6 +137,7 @@ open class WorkspaceView: LayoutView {
     scrollView.containerView.frame = CGRect.zero
   }
 
+  /// Lays out the subviews for workspace view. Updates the canvas size as necessary.
   open override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -509,23 +515,49 @@ open class WorkspaceView: LayoutView {
 // MARK: - UIScrollViewDelegate Implementation
 
 extension WorkspaceView: UIScrollViewDelegate {
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view scrolls.
+
+   - Parameter scrollView: The `UIScrollView` that was scrolled.
+   */
   public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view finishes decelerating.
+
+   - Parameter scrollView: The `UIScrollView` that decelerated.
+   */
   public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view finishes dragging.
+
+   - Parameter scrollView: The `UIScrollView` that was dragged.
+   */
   public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
   {
     removeExcessScrollSpace()
   }
 
+  /**
+   Delegate for the `UIScrollView`. Specifies the view to be zoomed when the `UIScrollView` zooms.
+
+   - Parameter scrollView: The `UIScrollView` that will zoom.
+   */
   public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
     return self.scrollView.containerView
   }
 
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view is about to zoom. Stores information
+   to center zooming.
+
+   - Parameter scrollView: The `UIScrollView` that will zoom.
+   */
   public func scrollViewWillBeginZooming(_ zoomScrollView: UIScrollView, with view: UIView?) {
     _scrollViewShowedVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
     _scrollViewShowedHorizontalScrollIndicator = scrollView.showsHorizontalScrollIndicator
@@ -543,6 +575,12 @@ extension WorkspaceView: UIScrollViewDelegate {
     _zoomBeginOffset = offset
   }
 
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view zooms. Ensures that the zoom is
+   centered on the pinch.
+
+   - Parameter scrollView: The `UIScrollView` that was zoomed.
+   */
   public func scrollViewDidZoom(_ zoomScrollView: UIScrollView) {
     // Reset the offset while zooming, so we stay centered on the same point.
     var offset = _zoomBeginOffset
@@ -552,6 +590,13 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.contentOffset = offset - _zoomPinchOffset
   }
 
+  /**
+   Delegate for the `UIScrollView`. Called when the scroll view finishes zooming. Sets the scale on
+   the engine and resets the scroll view's zoom, so state can be maintained when saving the
+   workspace.
+
+   - Parameter scrollView: The `UIScrollView` that was zoomed.
+   */
   public func scrollViewDidEndZooming(_ scrollView: UIScrollView,
                                       with view: UIView?, atScale scale: CGFloat) {
     guard let workspaceLayout = self.workspaceLayout else {
@@ -610,6 +655,11 @@ extension WorkspaceView {
 
     // MARK: - Initializers
 
+    /**
+     Initializer for the scroll view inside the workspace view.
+
+     - Parameter frame: The frame for the workspace view.
+     */
     fileprivate override init(frame: CGRect) {
       super.init(frame: frame)
 
@@ -618,6 +668,10 @@ extension WorkspaceView {
       delaysContentTouches = false
     }
 
+    /**
+     :nodoc:
+     NOTE: This is currently unsupported.
+     */
     public required init?(coder aDecoder: NSCoder) {
       fatalError("Called unsupported initializer")
     }

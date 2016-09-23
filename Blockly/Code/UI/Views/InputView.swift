@@ -30,6 +30,14 @@ open class InputView: LayoutView {
 
   // MARK: - Super
 
+  /**
+   Returns the farthest descendant of the receiver in the view hierarchy that contains a specified
+   point. Unlike the default implementation, block group view will not return itself, since it
+   should return the owning block.
+
+   - Parameter point: The `CGPoint` to hit test.
+   - Parameter event: The `UIEvent` for this hit test.
+   */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest

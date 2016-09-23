@@ -99,6 +99,7 @@ extension LayoutView: LayoutDelegate {
 // MARK: - Recyclable implementation
 
 extension LayoutView: Recyclable {
+  /// Prepares the view for reuse.
   public func prepareForReuse() {
     // NOTE: It is the responsibility of the superview to remove its subviews and not the other way
     // around. Thus, this method does not handle removing this view from its superview.
