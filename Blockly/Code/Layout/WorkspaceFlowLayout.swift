@@ -27,7 +27,10 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
   /// Defines how consecutive block trees should be laid out relative to each other
   @objc
   public enum BKYWorkspaceFlowLayoutDirection: Int {
-    case horizontal, vertical
+    /// Consecutive block trees will be laid out horizontally.
+    case horizontal,
+      /// Consecutive block trees will be laid out vertically.
+      vertical
   }
 
   /// Defines how consecutive block trees should be laid out relative to each other
@@ -56,6 +59,13 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializer for workspace flow layout.
+
+   - Parameter workspace: The `WorkspaceFlow` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - Parameter layoutDirection: The direction (horizontal or vertical) for this layout.
+   */
   public init(workspace: WorkspaceFlow, engine: LayoutEngine, layoutDirection: LayoutDirection)
   {
     self.workspaceFlow = workspace

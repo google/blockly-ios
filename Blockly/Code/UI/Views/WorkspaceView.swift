@@ -84,12 +84,17 @@ open class WorkspaceView: LayoutView {
 
   // MARK: - Initializers
 
+  /// Default initializer for workspace view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(scrollView)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -132,6 +137,7 @@ open class WorkspaceView: LayoutView {
     scrollView.containerView.frame = CGRect.zero
   }
 
+  /// :nodoc:
   open override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -509,23 +515,28 @@ open class WorkspaceView: LayoutView {
 // MARK: - UIScrollViewDelegate Implementation
 
 extension WorkspaceView: UIScrollViewDelegate {
+  /// :nodoc:
   public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
+  /// :nodoc:
   public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
 
+  /// :nodoc:
   public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
   {
     removeExcessScrollSpace()
   }
 
+  /// :nodoc:
   public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
     return self.scrollView.containerView
   }
 
+  /// :nodoc:
   public func scrollViewWillBeginZooming(_ zoomScrollView: UIScrollView, with view: UIView?) {
     _scrollViewShowedVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
     _scrollViewShowedHorizontalScrollIndicator = scrollView.showsHorizontalScrollIndicator
@@ -543,6 +554,7 @@ extension WorkspaceView: UIScrollViewDelegate {
     _zoomBeginOffset = offset
   }
 
+  /// :nodoc:
   public func scrollViewDidZoom(_ zoomScrollView: UIScrollView) {
     // Reset the offset while zooming, so we stay centered on the same point.
     var offset = _zoomBeginOffset
@@ -552,6 +564,7 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.contentOffset = offset - _zoomPinchOffset
   }
 
+  /// :nodoc:
   public func scrollViewDidEndZooming(_ scrollView: UIScrollView,
                                       with view: UIView?, atScale scale: CGFloat) {
     guard let workspaceLayout = self.workspaceLayout else {
@@ -610,6 +623,11 @@ extension WorkspaceView {
 
     // MARK: - Initializers
 
+    /**
+     Initializer for the scroll view inside the workspace view.
+
+     - Parameter frame: The frame for the workspace view.
+     */
     fileprivate override init(frame: CGRect) {
       super.init(frame: frame)
 
@@ -618,6 +636,10 @@ extension WorkspaceView {
       delaysContentTouches = false
     }
 
+    /**
+     :nodoc:
+     - Warning: This is currently unsupported.
+     */
     public required init?(coder aDecoder: NSCoder) {
       fatalError("Called unsupported initializer")
     }

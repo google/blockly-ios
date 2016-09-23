@@ -50,6 +50,13 @@ open class FieldLayout: Layout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the field layout.
+
+   - Parameter field: The `Field` model object to create a layout for.
+   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this field.
+   */
   public init(field: Field, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.field = field
     self.measurer = measurer

@@ -29,16 +29,22 @@ open class BlockView: LayoutView {
 
   // MARK: - Initializers
 
+  /// Default initializer for block views.
   public required init() {
     super.init(frame: CGRect.zero)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
