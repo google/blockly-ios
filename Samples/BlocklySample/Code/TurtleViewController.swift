@@ -270,7 +270,7 @@ class TurtleViewController: UIViewController {
   fileprivate func addBlock(_ blockName: String,
     inputBlockName: String? = nil, toCategory category: Toolbox.Category) throws -> Block
   {
-    let block = (try _blockFactory.makeBlock(name: blockName))!
+    let block = try _blockFactory.makeBlock(name: blockName)
 
     // Connect an input block (if it was specified).
     // Note: We keep a reference to the input block in this scope, so it isn't deallocated before
@@ -278,8 +278,8 @@ class TurtleViewController: UIViewController {
     let childBlock: Block?
 
     if let anInputBlockName = inputBlockName,
-      let inputBlock = try _blockFactory.makeBlock(name: anInputBlockName)
-      , block.inputs.count > 0
+      let inputBlock = try? _blockFactory.makeBlock(name: anInputBlockName),
+      block.inputs.count > 0
     {
       childBlock = inputBlock
       try block.inputs[0].connection?.connectTo(childBlock?.inferiorConnection)

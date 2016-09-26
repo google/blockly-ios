@@ -40,7 +40,11 @@ open class Toolbox: NSObject {
 
   // MARK: - Public
 
-  open func addCategory(_ categoryName: String, color: UIColor, icon: UIImage? = nil) -> Category {
+  open func addCategory(_ categoryName: String, color: UIColor) -> Category {
+    return addCategory(categoryName, color: color, icon: nil)
+  }
+
+  open func addCategory(_ categoryName: String, color: UIColor, icon: UIImage?) -> Category {
     let category = Category(name: categoryName, color: color, icon: icon)
     category.readOnly = self.readOnly
 

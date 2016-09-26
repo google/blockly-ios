@@ -403,16 +403,29 @@ open class WorkbenchViewController: UIViewController {
    rendered into the view controller.
 
    - Parameter workspace: The `Workspace` to load
+   - Throws:
+   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
+   - Note: A `ConnectionManager` is automatically created for the `WorkspaceLayoutCoordinator`.
+   */
+  open func loadWorkspace(_ workspace: Workspace) throws {
+    try loadWorkspace(workspace, connectionManager: ConnectionManager())
+  }
+
+  /**
+   Automatically creates a `WorkspaceLayout` and `WorkspaceLayoutCoordinator` for a given workspace
+   (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
+   rendered into the view controller.
+
+   - Parameter workspace: The `Workspace` to load
    - Parameter connectionManager: A `ConnectionManager` to track connections in the workspace.
-   If none is specified, a default one is automatically created.
    - Throws:
    `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
    */
-  open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager? = nil)
+  open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager)
       throws {
     // Create a layout for the workspace, which is required for viewing the workspace
     let workspaceLayout = WorkspaceLayout(workspace: workspace, engine: engine)
-    let aConnectionManager = connectionManager ?? ConnectionManager()
+    let aConnectionManager = connectionManager
     _workspaceLayoutCoordinator =
       try WorkspaceLayoutCoordinator(workspaceLayout: workspaceLayout,
                                      layoutBuilder: layoutBuilder,
