@@ -86,9 +86,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       let loopIcon = UIImage(named: "icon_loop")
       let loops = toolbox.addCategory("Loops", color: UIColor.yellow, icon: loopIcon)
-      if let repeatBlock = try _blockFactory.makeBlock(name: "controls_repeat_ext"),
+      if let repeatBlock = try? _blockFactory.makeBlock(name: "controls_repeat_ext"),
         let repeatBlockInput = repeatBlock.firstInput(withName: "TIMES"),
-        let numberBlock = try _blockFactory.makeBlock(name: "non_negative_integer", shadow: true)
+        let numberBlock = try? _blockFactory.makeBlock(name: "non_negative_integer", shadow: true)
       {
         // Add shadow block to repeat loop
         try repeatBlockInput.connection?.connectShadowTo(numberBlock.outputConnection)
@@ -100,10 +100,11 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let prevNextCategory =
         toolbox.addCategory("Prev / Next", color: UIColor.green, icon: prevNextIcon)
       try addBlock("statement_no_input", toWorkspace: prevNextCategory)
-      if let statementValueInputBlock = try _blockFactory.makeBlock(name: "statement_value_input"),
-        let noNextBlock = try _blockFactory.makeBlock(name: "statement_value_input", shadow: true),
-        let noNextBlock2 = try _blockFactory.makeBlock(name: "statement_no_input", shadow: true),
-        let simpleInputOutput = try _blockFactory.makeBlock(
+      if
+        let statementValueInputBlock = try? _blockFactory.makeBlock(name: "statement_value_input"),
+        let noNextBlock = try? _blockFactory.makeBlock(name: "statement_value_input", shadow: true),
+        let noNextBlock2 = try? _blockFactory.makeBlock(name: "statement_no_input", shadow: true),
+        let simpleInputOutput = try? _blockFactory.makeBlock(
           name: "simple_input_output", shadow: true)
       {
         // Add shadow block to next block
@@ -148,7 +149,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   @discardableResult
   private func addBlock(_ blockName: String, toWorkspace workspace: Workspace) throws -> Block? {
-    if let block = try _blockFactory.makeBlock(name: blockName) {
+    if let block = try? _blockFactory.makeBlock(name: blockName) {
       try workspace.addBlockTree(block)
       return block
     }

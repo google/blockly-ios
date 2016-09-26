@@ -60,6 +60,8 @@ public class BlockFactory : NSObject {
     try load(jsonPaths: jsonPaths, bundle: bundle)
   }
 
+  // MARK: - Public
+
   /**
    Loads blocks from a list of json files.
 
@@ -86,24 +88,37 @@ public class BlockFactory : NSObject {
     }
   }
 
-  // MARK: - Public
-
   /**
-   Creates a new instance of a block with the given name and returns it.
+   Creates and returns a new `Block` with the given name.
 
    - Parameter name: The name of the block to build.
+   - Throws:
+   `BlocklyError`: Occurs if the block builder for the given name could not be found or if the
+   block builder is missing any required pieces.
+   - Returns: A new `Block`.
+   */
+  public func makeBlock(name: String) throws -> Block {
+    return try makeBlock(name: name, shadow: false, uuid: nil)
+  }
+
+  /**
+   Creates and returns a new `Block` with the given name.
+
+   - Parameter name: The name of the block to build.
+   - Parameter shadow: `true` if the resulting block should be a shadow block, `false` otherwise.
    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
-   - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
-   The default value is `false`.
    - Throws:
-   `BlocklyError`: Occurs if the block builder is missing any required pieces.
-   - Returns: A new block if the name is known, nil otherwise.
+   `BlocklyError`: Occurs if the block builder for the given name could not be found or if the
+   block builder is missing any required pieces.
+   - Returns: A new `Block`.
    */
-  public func makeBlock(name: String, shadow: Bool = false, uuid: String? = nil) throws
-    -> Block?
-  {
-    return try _blockBuilders[name]?.makeBlock(shadow: shadow, uuid: uuid)
+  public func makeBlock(name: String, shadow: Bool, uuid: String? = nil) throws -> Block {
+    guard let blockBuilder = _blockBuilders[name] else {
+      throw BlocklyError(.illegalArgument,
+                         "No block named '\(name)' has been added to this block factory.")
+    }
+    return try blockBuilder.makeBlock(shadow: shadow, uuid: uuid)
   }
 
   // MARK: - Internal
@@ -119,7 +134,7 @@ public class BlockFactory : NSObject {
    - Returns: A new block if the name is known, nil otherwise.
    */
   internal func addBlock(name: String, toWorkspace workspace: Workspace) throws -> Block? {
-    guard let block = try makeBlock(name: name) else {
+    guard let block = try? makeBlock(name: name) else {
       return nil
     }
     try workspace.addBlockTree(block)

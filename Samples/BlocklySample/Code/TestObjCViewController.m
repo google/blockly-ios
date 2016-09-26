@@ -51,16 +51,19 @@
   BKYBlock *block2 = [blockBuilder makeBlockAsShadow:NO error:nil];
   [workspace addBlockTree:block2 error:nil];
 
-  // Create toolbox
-  BKYBlock *toolboxBlock = [blockBuilder makeBlockAsShadow:NO error:nil];
+  // Create toolbox with some blocks in it
+  BKYBlockFactory *blockFactory =
+    [[BKYBlockFactory alloc] initWithJsonPath:@"Blocks/test_blocks.json" bundle:nil error:nil];
+  BKYBlock *repeatBlock = [blockFactory makeBlockWithName:@"statement_no_input" error:nil];
+
   BKYToolbox *toolbox = [[BKYToolbox alloc] init];
   BKYToolboxCategory *category = [toolbox addCategory:@"Test" color:[UIColor blueColor] icon:nil];
-  [category addBlockTree:toolboxBlock error:nil];
+  [category addBlockTree:repeatBlock error:nil];
 
   // Load workbench with workspace and toolbox
   BKYWorkbenchViewController *viewController =
     [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleDefaultStyle];
-  [viewController loadWorkspace:workspace connectionManager:nil error:nil];
+  [viewController loadWorkspace:workspace error:nil];
   [viewController loadToolbox:toolbox error:nil];
 
   // Add workbench to this view controller
