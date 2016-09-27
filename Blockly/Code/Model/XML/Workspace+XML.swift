@@ -22,13 +22,13 @@ extension Workspace {
   // MARK: - Public
 
   /**
-  Loads blocks from an XML string into the workspace.
+   Loads blocks from an XML string into the workspace.
 
-  - Parameter xmlString: The string that contains all the block data.
-  - Parameter factory: The BlockFactory to use to build blocks.
-  - Throws:
-  `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
-  malformed data, or contradictory data).
+   - Parameter xmlString: The string that contains all the block data.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
+   - Throws:
+     `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
+     malformed data, or contradictory data).
   */
   public func loadBlocks(fromXMLString xmlString: String, factory: BlockFactory) throws {
     let xmlDoc = try AEXMLDocument(xml: xmlString)
@@ -39,10 +39,10 @@ extension Workspace {
    Loads blocks from an XML object into the workspace.
 
    - Parameter xml: The object that contains all the block data.
-   - Parameter factory: The BlockFactory to use to build blocks.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
    - Throws:
-   `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
-   malformed data, or contradictory data).
+     `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
+     malformed data, or contradictory data).
    */
   public func loadBlocks(fromXML xml: AEXMLElement, factory: BlockFactory) throws {
     if let allBlocksXML = xml["block"].all {

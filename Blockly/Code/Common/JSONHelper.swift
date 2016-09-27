@@ -15,6 +15,7 @@
 
 import Foundation
 
+/// Handles the translation from json strings to Swift `Dictionary` and `Array`.
 @objc(BKYJSONHelper)
 public final class JSONHelper: NSObject {
   // MARK: - Public

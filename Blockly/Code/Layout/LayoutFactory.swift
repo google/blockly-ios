@@ -24,7 +24,7 @@ public protocol LayoutFactory: class {
    Builds and returns a `BlockLayout` for a given block and layout engine.
 
    - Parameter block: The given `Block`
-   - Parameter engine: The `LayoutEngine` to associate with the new layout
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
    - Returns: A new `BlockLayout` instance or nil, if either `workspace.layout` is nil or no
    suitable layout could be found for the block.
    - Throws:

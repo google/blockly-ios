@@ -36,12 +36,17 @@ open class FieldVariableView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the variable field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     configureSubviews()
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -71,6 +76,7 @@ open class FieldVariableView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 

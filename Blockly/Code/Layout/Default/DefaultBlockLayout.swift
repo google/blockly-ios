@@ -76,6 +76,12 @@ public final class DefaultBlockLayout: BlockLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the default block layout.
+
+   - Parameter block: The `Block` model corresponding to the layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   */
   public override init(block: Block, engine: LayoutEngine) {
     _outputConnection = block.outputConnection
     _nextConnection = block.nextConnection
@@ -193,8 +199,8 @@ public final class DefaultBlockLayout: BlockLayout {
       _nextConnectionRelativePosition =
         WorkspacePoint(x: notchXOffset, y: blockBottomEdge + notchHeight)
 
-      // TODO:(#41) Make the size.height a property of self.background
-      // Create room to draw the notch height at the bottom
+      /// TODO:(#41) Make the size.height a property of self.background
+      /// Create room to draw the notch height at the bottom
       size.height += notchHeight
     }
 

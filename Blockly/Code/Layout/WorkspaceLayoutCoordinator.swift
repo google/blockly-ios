@@ -80,6 +80,14 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
   // MARK: - Public
 
+  /**
+   Adds a block tree (a block and its children) to the workspace handled by the workspace layout
+   coordinator.
+   
+   - Parameter rootBlock: The parent `Block` to add.
+   - throws:
+     `BlocklyError`: If the block to be added would put the workspace into an illegal state.
+   */
   open func addBlockTree(_ rootBlock: Block) throws {
     return try workspaceLayout.workspace.addBlockTree(rootBlock)
   }
@@ -143,6 +151,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
+  /**
+   Disconnects a specified connection.
+
+   - Parameter connection: The connection to be disconnected.
+   */
   open func disconnect(_ connection: Connection) {
     let oldTarget = connection.targetConnection
     connection.disconnect()
@@ -153,6 +166,13 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
+
+  /**
+   Connects a pair of `Connections`
+
+   - Parameter connection1: The first connection to be connected.
+   - Parameter connection2: The connction to connect to.
+   */
   open func connect(_ connection1: Connection, _ connection2: Connection) throws {
     let oldTarget1 = connection1.targetConnection
     let oldTarget2 = connection2.targetConnection

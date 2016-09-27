@@ -55,7 +55,16 @@ public final class CodeGenerator: NSObject {
   /// Possible states for the code generator
   @objc
   public enum BKYCodeGeneratorState: Int {
-    case initialized = 0, loading, readyForUse, unusable, generatingCode
+    /// Signifies the `CodeGenerator` has been initialized.
+    case initialized = 0,
+      /// Signifies the `CodeGenerator` is currently loading.
+      loading,
+      /// Signifies the `CodeGenerator` is not loading or generating, and ready to be used.
+      readyForUse,
+      /// Signifies the `CodeGenerator` is unusable, due to a failure.
+      unusable,
+      /// Signifies the `CodeGenerator` is currently generating code.
+      generatingCode
   }
 
   /// Possible states for the code generator
@@ -273,6 +282,7 @@ public final class CodeGenerator: NSObject {
  Methods that are executed when `self.webView` has finished loading.
  */
 extension CodeGenerator: WKNavigationDelegate {
+  /// :nodoc:
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if self.loadingNavigation != navigation {
       return
@@ -329,6 +339,7 @@ extension CodeGenerator: WKNavigationDelegate {
     }
   }
 
+  /// :nodoc:
   public func webView(
     _ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error)
   {

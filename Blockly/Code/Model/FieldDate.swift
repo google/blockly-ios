@@ -25,6 +25,7 @@ public final class FieldDate: Field {
 
   // MARK: - Properties
 
+  /// The `Date` object that specifies the date in the date field.
   public var date: Date {
     didSet {
       if self.editable {
@@ -43,13 +44,20 @@ public final class FieldDate: Field {
 
   // MARK: - Initializers
 
+
+  /**
+   Initializes the date field.
+
+   - Parameter name: The name of the date field.
+   - Parameter date: `Date` that specifies the default date.
+   */
   public init(name: String, date: Date) {
     self.date = FieldDate.normalizeDate(date)
     super.init(name: name)
   }
 
   /**
-  Initializer for FieldDate.
+  Initializer for the date field.
 
   - Parameter name: The name.
   - Parameter stringDate: String of the format "yyyy-MM-dd". If the string couldn't be parsed into a

@@ -22,18 +22,28 @@ An image field used for titles, labels, etc.
 public final class FieldImage: Field {
   // MARK: - Properties
 
+  /// The `WorkspaceSize` of the image field.
   public var size: WorkspaceSize {
     didSet { didSetEditableProperty(&size, oldValue) }
   }
+  /// The URL of the image in the image field.
   public var imageURL: String {
     didSet { didSetEditableProperty(&imageURL, oldValue) }
   }
+  /// The alt text for the image field.
   public var altText: String {
     didSet { didSetEditableProperty(&altText, oldValue) }
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the image field.
+
+   - Parameter name: The name of the image field.
+   - Parameter imageURL: The URL of the image to populate the image field.
+   - Parameter altText: The alt text for the image field.
+   */
   public init(
     name: String, imageURL: String, size: WorkspaceSize, altText: String) {
       self.imageURL = imageURL

@@ -45,6 +45,13 @@ open class FieldDropdownLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the dropdown field layout.
+
+   - Parameter fieldDropdown: The `FieldDropdown` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(
     fieldDropdown: FieldDropdown, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type)
   {
@@ -56,7 +63,8 @@ open class FieldDropdownLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// :nodoc:
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
