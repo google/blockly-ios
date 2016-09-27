@@ -36,6 +36,7 @@ open class DefaultLayoutFactory: NSObject {
 
   // MARK: - Initializers
 
+  /// Initializes the default layout factory.
   public override init() {
     super.init()
 

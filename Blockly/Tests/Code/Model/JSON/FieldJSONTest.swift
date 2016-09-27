@@ -180,7 +180,7 @@ class FieldJSONTest: XCTestCase {
     XCTAssertEqual("Image", field.name)
     XCTAssertEqual(100000, field.size.height)
     XCTAssertEqual(200000, field.size.width)
-    XCTAssertEqual("http://media.firebox.com/pic/p5294_column_grid_12.jpg", field.imageURL)
+    XCTAssertEqual("http://media.firebox.com/pic/p5294_column_grid_12.jpg", field.imageLocation)
     XCTAssertEqual("Unicorn Power", field.altText)
   }
 

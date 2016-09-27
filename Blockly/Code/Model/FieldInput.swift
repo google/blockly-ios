@@ -29,6 +29,12 @@ public final class FieldInput: Field {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the input field.
+
+   - Parameter name: The name of this field.
+   - Parameter text: The initial text for this field.
+   */
   public init(name: String, text: String) {
     self.text = text
     super.init(name: name)

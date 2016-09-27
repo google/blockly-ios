@@ -22,12 +22,20 @@ An input field for a checkbox.
 public final class FieldCheckbox: Field {
   // MARK: - Properties
 
+  /// `true` if the checkbox field is checked, `false` if it is not.
   public var checked: Bool {
     didSet { didSetEditableProperty(&checked, oldValue) }
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the checkbox field.
+
+   - Parameter name: The name of this field.
+   - Parameter checked: The initial value of the checkbox. `true` if it is checked, `false` if it
+     is not.
+   */
   public init(name: String, checked: Bool) {
     self.checked = checked
 

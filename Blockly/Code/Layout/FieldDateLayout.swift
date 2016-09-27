@@ -36,6 +36,13 @@ open class FieldDateLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the date field layout.
+
+   - Parameter fieldDate: The `FieldDate` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldDate: FieldDate, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type,
               dateFormatter: DateFormatter? = nil)
   {
@@ -57,7 +64,7 @@ open class FieldDateLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

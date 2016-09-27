@@ -15,6 +15,7 @@
 
 import Foundation
 
+/// Handles the translation from JSON strings to Swift `Dictionary` and `Array`.
 @objc(BKYJSONHelper)
 public final class JSONHelper: NSObject {
   // MARK: - Public
@@ -46,7 +47,7 @@ public final class JSONHelper: NSObject {
   public static func makeJSONDictionary(string: String) throws
     -> Dictionary<String, Any>
   {
-    // Parse jsonString into json dictionary
+    // Parse jsonString into JSON dictionary
     guard let json = try makeJSONObject(string: string) as? Dictionary<String, Any> else {
       throw BlocklyError(.jsonInvalidTypecast,
         "Could not convert Any to Dictionary<String, Any>")
