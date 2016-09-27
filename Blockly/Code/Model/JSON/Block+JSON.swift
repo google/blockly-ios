@@ -19,7 +19,7 @@ extension Block {
   // MARK: - Static Properties
 
   // JSON parameters
-  fileprivate static let PARAMETER_ID = "id"
+  fileprivate static let PARAMETER_TYPE = "type"
   // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
   fileprivate static let PARAMETER_COLOR = "colour"
   fileprivate static let PARAMETER_OUTPUT = "output"
@@ -53,7 +53,7 @@ extension Block {
     }
 
     // Build the block
-    let blockName = (json[PARAMETER_ID] as? String) ?? ""
+    let blockName = (json[PARAMETER_TYPE] as? String) ?? ""
     let builder = Block.Builder(name: blockName)
 
     if let colorHue = json[PARAMETER_COLOR] as? CGFloat {

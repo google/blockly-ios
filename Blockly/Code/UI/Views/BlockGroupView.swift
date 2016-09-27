@@ -42,6 +42,15 @@ open class BlockGroupView: LayoutView, ZIndexedView {
 
   // MARK: - Super
 
+  /**
+   Returns the farthest descendant of the receiver in the view hierarchy that contains a specified
+   point. Unlike the default implementation, block group view will not return itself.
+
+   - Parameter point: A point specified in the receiver’s local coordinate system (bounds).
+   - Parameter event: The event that warranted a call to this method. If you are calling this method
+     from outside your event-handling code, you may specify nil.
+   - Returns: The view object that is the farthest descendent the current view and contains `point`.
+   */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Override hitTest so it doesn't return itself as a view if this is the only visible view that
     // gets hitTest
@@ -49,6 +58,14 @@ open class BlockGroupView: LayoutView, ZIndexedView {
     return (hitTestView == self) ? nil : hitTestView
   }
 
+  /**
+   Refreshes the block group view, when necessary.
+
+   - Parameter flags: `LayoutFlag` indicating which parts of the view to refresh. Defaults to
+     `LayoutFlag.All` if no value is specified.
+   - Parameter animated: `true` if the view should animate during the refresh. `false` if the view
+     should refresh immediately. Defaults to `false`.
+   */
   open override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {

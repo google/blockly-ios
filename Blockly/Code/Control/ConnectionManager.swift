@@ -41,6 +41,11 @@ public final class ConnectionManager: NSObject {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the connection manager with a `ConnectionValidator`
+
+   - Parameter connectionValidator: The `ConnectionValidator` for block-level validation.
+   */
   public init(connectionValidator: ConnectionValidator = DefaultConnectionValidator()) {
     self.connectionValidator = connectionValidator
     self.mainGroup = ConnectionManager.Group(ownerBlock: nil)

@@ -4,6 +4,7 @@ module: Blockly
 author: Google
 author_url: http://www.google.com
 copyright: ''
+skip_undocumented: true
 
 custom_categories:
   - name: Model
@@ -21,9 +22,9 @@ custom_categories:
     children:
     - BlockBumper
     - ConnectionManager
+    - ConnectionValidator
     - Dragger
     - NameManager
-    - ConnectionValidator
 
   - name: Layout
     children:

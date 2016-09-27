@@ -60,6 +60,11 @@ open class ViewBuilder: NSObject {
 
   // MARK: - Initializer
 
+  /**
+   Initializer for the view builder.
+
+   - Parameter viewFactory: The `ViewFactory` to construct views built by the builder.
+   */
   public init(viewFactory: ViewFactory) {
     self.viewFactory = viewFactory
   }

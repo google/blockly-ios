@@ -84,12 +84,17 @@ open class WorkspaceView: LayoutView {
 
   // MARK: - Initializers
 
+  /// Default initializer for workspace view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(scrollView)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -610,6 +615,11 @@ extension WorkspaceView {
 
     // MARK: - Initializers
 
+    /**
+     Initializer for the scroll view inside the workspace view.
+
+     - Parameter frame: The frame for the workspace view.
+     */
     fileprivate override init(frame: CGRect) {
       super.init(frame: frame)
 
@@ -618,6 +628,10 @@ extension WorkspaceView {
       delaysContentTouches = false
     }
 
+    /**
+     :nodoc:
+     - Warning: This is currently unsupported.
+     */
     public required init?(coder aDecoder: NSCoder) {
       fatalError("Called unsupported initializer")
     }

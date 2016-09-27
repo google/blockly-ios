@@ -15,9 +15,9 @@
 
 import Foundation
 
-/*
-Stores information on how to render and position a `Workspace` on-screen.
-*/
+/**
+ Stores information on how to render and position a `Workspace` on-screen.
+ */
 @objc(BKYWorkspaceLayout)
 open class WorkspaceLayout: Layout {
   // MARK: - Static Properties
@@ -44,6 +44,12 @@ open class WorkspaceLayout: Layout {
 
   // MARK: - Initializers
 
+  /**
+   Initializer for workspace layout.
+
+   - Parameter workspace: The `Workspace` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   */
   public init(workspace: Workspace, engine: LayoutEngine) {
     self.workspace = workspace
     super.init(engine: engine)

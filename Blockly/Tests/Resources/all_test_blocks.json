@@ -1,5 +1,5 @@
 [{
-  "id": "block_output",
+  "type": "block_output",
   "message0": "%1 RIGHT ALIGN %2 DUMMY INPUT %3 CENTER ALIGN %4 STATEMENT RIGHT ALIGN %5 LEFT ALIGN Blockly Blockly Blockly %6",
   "args0": [
             {
@@ -37,7 +37,7 @@
   "helpUrl": "http://www.example.com/"
 },
 {
-  "id": "block_statement",
+  "type": "block_statement",
   "message0": "%1 LEFT ALIGN %2 CENTER ALIGN %3 DUMMY INPUT DUMMY INPUT %4 LEFT ALIGN Blockly Blockly Blockly %5 STATEMENT RIGHT ALIGN %6",
   "args0": [
             {
@@ -74,7 +74,7 @@
   "helpUrl": "http://www.example.com/"
 },
   {
-  "id": "controls_repeat_ext",
+  "type": "controls_repeat_ext",
   "message0": "repeat %1 times %2 %3",
   "args0": [
             {
@@ -94,7 +94,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "controls_whileUntil",
+  "type": "controls_whileUntil",
   "message0": "repeat %1 %2 %3",
   "args0": [
             {
@@ -124,7 +124,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "math_number",
+  "type": "math_number",
   "message0": "%1",
   "args0": [
             {
@@ -139,7 +139,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "simple_input_output",
+  "type": "simple_input_output",
   "message0": "test block %1",
   "args0": [
             {
@@ -152,7 +152,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "multiple_input_output",
+  "type": "multiple_input_output",
   "message0": "test block %1 %2",
   "args0": [
             {
@@ -169,7 +169,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "statement_no_input",
+  "type": "statement_no_input",
   "message0": "test block ",
   "args0": [],
   "previousStatement": null,
@@ -178,7 +178,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "statement_value_input",
+  "type": "statement_value_input",
   "message0": "test block %1",
   "args0": [
             {
@@ -192,7 +192,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "statement_multiple_value_input",
+  "type": "statement_multiple_value_input",
   "message0": "test block %1 %2",
   "args0": [
             {
@@ -210,7 +210,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "statement_statement_input",
+  "type": "statement_statement_input",
   "message0": "test block %1",
   "args0": [
             {
@@ -224,7 +224,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "output_no_input",
+  "type": "output_no_input",
   "message0": "output no input",
   "args0": [],
   "output": null,
@@ -232,7 +232,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "statement_no_next",
+  "type": "statement_no_next",
   "message0": "test block",
   "args0": [],
   "previousStatement": null,
@@ -240,7 +240,7 @@
   "helpUrl": "http://www.example.com/"
   },
   {
-  "id": "no_connections",
+  "type": "no_connections",
   "message0": "no connections",
   "args0": [],
   "tooltip": "",

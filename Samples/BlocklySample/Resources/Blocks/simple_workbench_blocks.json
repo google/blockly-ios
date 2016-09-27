@@ -1,5 +1,5 @@
 [{
-  "id": "block_output",
+  "type": "block_output",
   "message0": "%1 RIGHT ALIGN %2 DUMMY INPUT %3 CENTER ALIGN %4 STATEMENT RIGHT ALIGN %5 LEFT ALIGN Blockly Blockly Blockly %6",
   "args0": [
             {
@@ -38,7 +38,7 @@
   "colour": "#ffff00",
 },
 {
-  "id": "block_statement",
+  "type": "block_statement",
   "message0": "%1 LEFT ALIGN %2 CENTER ALIGN %3 DUMMY INPUT DUMMY INPUT %4 LEFT ALIGN Blockly Blockly Blockly %5 STATEMENT RIGHT ALIGN %6",
   "args0": [
             {
@@ -76,7 +76,7 @@
   "colour": "#ffff00",
 },
   {
-  "id": "controls_repeat_ext",
+  "type": "controls_repeat_ext",
   "message0": "repeat %1 times %2 %3",
   "args0": [
             {
@@ -97,7 +97,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "controls_whileUntil",
+  "type": "controls_whileUntil",
   "message0": "repeat %1 %2 %3",
   "args0": [
             {
@@ -128,7 +128,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "math_number",
+  "type": "math_number",
   "message0": "%1",
   "args0": [
             {
@@ -143,7 +143,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "simple_input_output",
+  "type": "simple_input_output",
   "message0": "test block %1",
   "args0": [
             {
@@ -157,7 +157,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "multiple_input_output",
+  "type": "multiple_input_output",
   "message0": "test block %1 %2",
   "args0": [
             {
@@ -175,7 +175,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "statement_no_input",
+  "type": "statement_no_input",
   "message0": "test block ",
   "args0": [],
   "previousStatement": null,
@@ -185,7 +185,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "statement_value_input",
+  "type": "statement_value_input",
   "message0": "test block %1",
   "args0": [
             {
@@ -200,7 +200,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "statement_multiple_value_input",
+  "type": "statement_multiple_value_input",
   "message0": "test block %1 %2",
   "args0": [
             {
@@ -219,7 +219,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "statement_statement_input",
+  "type": "statement_statement_input",
   "message0": "test block %1",
   "args0": [
             {
@@ -234,7 +234,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "output_no_input",
+  "type": "output_no_input",
   "message0": "output no input",
   "args0": [],
   "output": null,
@@ -243,7 +243,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "statement_no_next",
+  "type": "statement_no_next",
   "message0": "test block",
   "args0": [],
   "previousStatement": null,
@@ -252,7 +252,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "text_input_block",
+  "type": "text_input_block",
   "message0": "Input block 🍍 %1 🍅",
   "args0": [
            {
@@ -267,7 +267,7 @@
   "colour": "#ffff00",
   },
   {
-  "id": "test_dropdown",
+  "type": "test_dropdown",
   "message0": "%1",
   "args0": [
            {
@@ -321,7 +321,7 @@
   "colour": "#ffff00",
  },
  {
- "id": "colour_picker",
+ "type": "colour_picker",
  "message0": "%1",
  "args0": [
            {
@@ -336,7 +336,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "date_picker",
+ "type": "date_picker",
  "message0": "%1",
  "args0": [
            {
@@ -351,7 +351,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "checkbox",
+ "type": "checkbox",
  "message0": "Add secret sauce: %1",
  "args0": [
            {
@@ -366,7 +366,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "local_image",
+ "type": "local_image",
  "message0": "Local image: %1",
  "args0": [
            {
@@ -384,7 +384,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "web_image",
+ "type": "web_image",
  "message0": "Web image: %1",
  "args0": [
            {
@@ -402,7 +402,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "angle",
+ "type": "angle",
  "message0": "Angle: %1",
  "args0": [
            {
@@ -417,7 +417,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "any_number",
+ "type": "any_number",
  "message0": "Double: %1",
  "args0": [
            {
@@ -429,7 +429,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "non_negative_integer",
+ "type": "non_negative_integer",
  "message0": "%1",
  "args0": [
            {
@@ -443,7 +443,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "currency",
+ "type": "currency",
  "message0": "$ %1",
  "args0": [
            {
@@ -456,7 +456,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "constrained_decimal",
+ "type": "constrained_decimal",
  "message0": "-50.0 < %1 < 50.0",
  "args0": [
            {
@@ -471,7 +471,7 @@
  "colour": "#ffff00",
  },
  {
- "id": "variables_get",
+ "type": "variables_get",
  "message0": "get %1",
  "args0": [
            {
@@ -486,7 +486,7 @@
  "helpUrl": "https://github.com/google/blockly/wiki/Variables#get"
  },
  {
- "id": "variables_set",
+ "type": "variables_set",
  "message0": "set %1 to %2",
  "args0": [
            {

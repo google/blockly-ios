@@ -28,17 +28,17 @@ open class BlockGroupLayout: Layout {
   /// Flag that should be used when `self.dragging` has been updated
   public static let Flag_UpdateDragging = LayoutFlag(1)
 
-  /*
-  A list of sequential block layouts that belong to this group. While this class doesn't enforce
-  it, the following should hold true:
+  /**
+   A list of sequential block layouts that belong to this group. While this class doesn't enforce
+   it, the following should hold true:
 
-  1) When `i < blockLayouts.count - 1`:
+   1) When `i < blockLayouts.count - 1`:
 
-  `blockLayouts[i].block.nextBlock = blockLayouts[i + 1].block`
+   `blockLayouts[i].block.nextBlock = blockLayouts[i + 1].block`
 
-  2) When `i >= 1`:
+   2) When `i >= 1`:
 
-  `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
+   `blockLayouts[i].block.previousBlock = blockLayouts[i - 1].block`
   */
   open fileprivate(set) var blockLayouts = [BlockLayout]()
 

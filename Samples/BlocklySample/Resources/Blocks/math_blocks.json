@@ -1,6 +1,6 @@
 [
   {
-    "id": "math_number",
+    "type": "math_number",
     "message0": "%1",
     "args0": [
       {
