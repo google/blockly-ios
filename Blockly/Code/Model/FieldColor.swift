@@ -22,12 +22,19 @@ An input field for a color value.
 public final class FieldColor: Field {
   // MARK: - Properties
 
+  /// The `UIColor` specified by the color field.
   public var color: UIColor {
     didSet { didSetEditableProperty(&color, oldValue) }
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the color field.
+
+   - Parameter name: The name of the color field.
+   - Parameter color: The `UIColor` for the field to specify, to start.
+   */
   public init(name: String, color: UIColor) {
     self.color = color
 

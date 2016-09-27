@@ -33,6 +33,13 @@ open class FieldAngleLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the angle field layout.
+
+   - Parameter fieldAngle: The `FieldAngle` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldAngle: FieldAngle, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldAngle = fieldAngle
     super.init(field: fieldAngle, engine: engine, measurer: measurer)
@@ -42,7 +49,8 @@ open class FieldAngleLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// :nodoc:
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

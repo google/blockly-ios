@@ -55,12 +55,17 @@ open class FieldAngleView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the angle field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -90,6 +95,7 @@ open class FieldAngleView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
@@ -114,6 +120,7 @@ open class FieldAngleView: FieldView {
 // MARK: - UITextFieldDelegate
 
 extension FieldAngleView: UITextFieldDelegate {
+  /// :nodoc:
   public func textField(_ textField: UITextField,
     shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
   {
@@ -124,12 +131,14 @@ extension FieldAngleView: UITextFieldDelegate {
     return true
   }
 
+  /// :nodoc:
   public func textFieldDidBeginEditing(_ textField: UITextField) {
     // Temporarily remove any non-number characters from the text
     let invalidCharacters = CharacterSet.decimalDigits.inverted
     textField.text = textField.text?.bky_removingOccurrences(ofCharacterSet: invalidCharacters)
   }
 
+  /// :nodoc:
   public func textFieldDidEndEditing(_ textField: UITextField) {
     // Only commit the change after the user has finished editing the field
     fieldAngleLayout?.updateAngle(fromText: (textField.text ?? ""))
@@ -138,6 +147,7 @@ extension FieldAngleView: UITextFieldDelegate {
     updateTextFieldFromLayout()
   }
 
+  /// :nodoc:
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // This will dismiss the keyboard
     textField.resignFirstResponder()

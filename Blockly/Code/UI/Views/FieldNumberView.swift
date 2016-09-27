@@ -58,12 +58,17 @@ open class FieldNumberView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the number field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -92,6 +97,7 @@ open class FieldNumberView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
@@ -125,6 +131,7 @@ open class FieldNumberView: FieldView {
 // MARK: - UITextFieldDelegate implementation
 
 extension FieldNumberView: UITextFieldDelegate {
+  /// :nodoc:
   public func textField(
     _ textField: UITextField, shouldChangeCharactersIn range: NSRange,
     replacementString string: String) -> Bool
@@ -139,6 +146,7 @@ extension FieldNumberView: UITextFieldDelegate {
     }
   }
 
+  /// :nodoc:
   public func textFieldDidEndEditing(_ textField: UITextField) {
     // Only commit the change after the user has finished editing the field
     fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
@@ -147,6 +155,7 @@ extension FieldNumberView: UITextFieldDelegate {
     updateTextFieldFromFieldNumber()
   }
 
+  /// :nodoc:
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // This will dismiss the keyboard
     textField.resignFirstResponder()

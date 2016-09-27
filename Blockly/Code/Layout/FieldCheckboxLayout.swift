@@ -33,6 +33,13 @@ open class FieldCheckboxLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the checkbox field layout.
+
+   - Parameter fieldCheckbox: The `FieldCheckbox` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(
     fieldCheckbox: FieldCheckbox, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type)
   {
@@ -44,7 +51,8 @@ open class FieldCheckboxLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// :nodoc:
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

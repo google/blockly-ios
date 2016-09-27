@@ -66,12 +66,17 @@ open class FieldDateView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the date field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -100,6 +105,7 @@ open class FieldDateView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
@@ -128,6 +134,7 @@ open class FieldDateView: FieldView {
 // MARK: - UITextFieldDelegate
 
 extension FieldDateView: UITextFieldDelegate {
+  /// :nodoc:
   public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
     replacementString string: String) -> Bool
   {

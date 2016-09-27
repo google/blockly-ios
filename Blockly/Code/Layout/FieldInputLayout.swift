@@ -42,7 +42,8 @@ open class FieldInputLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// :nodoc:
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

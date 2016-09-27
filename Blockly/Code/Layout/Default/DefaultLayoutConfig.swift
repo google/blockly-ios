@@ -93,6 +93,7 @@ open class DefaultLayoutConfig: LayoutConfig {
 
   // MARK: - Initializers
 
+  /// Initializes the default layout config.
   public override init() {
     super.init()
 

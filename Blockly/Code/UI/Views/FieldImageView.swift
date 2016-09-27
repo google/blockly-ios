@@ -38,12 +38,17 @@ open class FieldImageView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the image field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(imageView)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -68,6 +73,7 @@ open class FieldImageView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 

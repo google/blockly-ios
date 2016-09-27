@@ -36,6 +36,7 @@ open class FieldDropdownView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the dropdown field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
@@ -43,6 +44,10 @@ open class FieldDropdownView: FieldView {
     configureSubviews()
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -72,6 +77,7 @@ open class FieldDropdownView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 

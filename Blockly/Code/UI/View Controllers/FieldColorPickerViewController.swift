@@ -102,6 +102,10 @@ open class FieldColorPickerViewController: UICollectionViewController {
     super.init(collectionViewLayout: _flowLayout)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }

@@ -36,12 +36,17 @@ open class FieldLabelView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the label field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(label)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -67,6 +72,7 @@ open class FieldLabelView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 

@@ -40,12 +40,17 @@ open class FieldInputView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the input field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
 
+  /**
+   :nodoc:
+   NOTE: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
@@ -77,6 +82,7 @@ open class FieldInputView: FieldView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
@@ -93,6 +99,7 @@ open class FieldInputView: FieldView {
 // MARK: - UITextFieldDelegate
 
 extension FieldInputView: UITextFieldDelegate {
+  /// :nodoc:
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // This will dismiss the keyboard
     textField.resignFirstResponder()

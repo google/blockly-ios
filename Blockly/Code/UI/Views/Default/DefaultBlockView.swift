@@ -15,6 +15,9 @@
 
 import Foundation
 
+/**
+ A default implementation of `BlockView`.
+ */
 @objc(BKYDefaultBlockView)
 public final class DefaultBlockView: BlockView {
 
@@ -36,6 +39,7 @@ public final class DefaultBlockView: BlockView {
 
   // MARK: - Initializers
 
+  /// Initializes the default block view.
   public required init() {
     super.init()
 
@@ -43,12 +47,24 @@ public final class DefaultBlockView: BlockView {
     self.layer.addSublayer(_backgroundLayer)
   }
 
+  /// :nodoc:
+  /// - Warning: This is currently unsupported.
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
 
   // MARK: - Super
 
+  /**
+   Returns the farthest descendant of the receiver in the view hierarchy that contains a specified
+   `point`. Unlike the default implementation, default block view will only return itself if the
+   `point` lies within the bezier curve of the block.
+
+   - Parameter point: A point specified in the receiver’s local coordinate system (bounds).
+   - Parameter event: The event that warranted a call to this method. If you are calling this method
+     from outside your event-handling code, you may specify nil.
+   - Returns: The view object that is the farthest descendent the current view and contains `point`.
+  */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     let hitTestView = super.hitTest(point, with: event)
 
@@ -165,6 +181,7 @@ public final class DefaultBlockView: BlockView {
     }
   }
 
+  /// :nodoc:
   open override func prepareForReuse() {
     super.prepareForReuse()
 
