@@ -40,12 +40,17 @@ open class FieldColorView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the color field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(button)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }

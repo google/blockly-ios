@@ -60,7 +60,7 @@ class BlockJSONTest: XCTestCase {
       return
     }
     XCTAssertEqual("http://33.media.tumblr.com/tumblr_lhtb1e4oc11qhp8pjo1_400.gif",
-                   fieldImage.imageURL)
+                   fieldImage.imageLocation)
     XCTAssertEqual(100, fieldImage.size.width)
     XCTAssertEqual(100, fieldImage.size.height)
     XCTAssertEqual("Cool Dance!", fieldImage.altText)

@@ -33,6 +33,13 @@ open class FieldImageLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the image field layout.
+
+   - Parameter fieldImage: The `FieldImage` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldImage: FieldImage, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldImage = fieldImage
     super.init(field: fieldImage, engine: engine, measurer: measurer)
@@ -42,7 +49,7 @@ open class FieldImageLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
@@ -62,12 +69,12 @@ open class FieldImageLayout: FieldLayout {
     // Load image in the background
     DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { () -> Void in
       // Try loading from a local file first
-      let imageURL = self.fieldImage.imageURL
-      var image = ImageLoader.loadImage(named: imageURL, forClass: FieldImageLayout.self)
+      let imageLocation = self.fieldImage.imageLocation
+      var image = ImageLoader.loadImage(named: imageLocation, forClass: FieldImageLayout.self)
 
       // Try loading image from the web (if we couldn't load from local)
       if image == nil,
-        let url = URL(string: imageURL)
+        let url = URL(string: imageLocation)
       {
         do {
           let data = try Data(contentsOf: url, options: .alwaysMapped)

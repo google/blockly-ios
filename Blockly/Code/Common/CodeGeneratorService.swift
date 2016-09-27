@@ -166,6 +166,16 @@ extension CodeGeneratorService {
 
     // MARK: - Initializers
 
+    /**
+     Initializer for the code generator service.
+
+     - Parameter workspaceXML: The XML to use for generating code.
+     - Parameter jsGeneratorObject: The name of the JS object that generates code.
+       (e.g. 'Blockly.Python')
+     - Parameter jsBlockGenerators: The list of JS files containing block generators.
+     - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
+     - Parameter completion: Callback that is executed when code generation completes successfully.
+     */
     public init(workspaceXML: String,
       jsGeneratorObject: String,
       jsBlockGenerators: [CodeGenerator.BundledFile],
@@ -180,6 +190,16 @@ extension CodeGeneratorService {
       self.onError = error
     }
 
+    /**
+     Initializer for the code generator service.
+
+     - Parameter workspace: The workspace to use for generating code.
+     - Parameter jsGeneratorObject: The name of the JS object that generates code.
+       (e.g. 'Blockly.Python')
+     - Parameter jsBlockGenerators: The list of JS files containing block generators.
+     - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
+     - Parameter completion: Callback that is executed when code generation completes successfully.
+     */
     public convenience init(workspace: Workspace,
       jsGeneratorObject: String,
       jsBlockGenerators: [CodeGenerator.BundledFile],
@@ -194,6 +214,7 @@ extension CodeGeneratorService {
     // MARK: - Super
 
     fileprivate var _executing: Bool = false
+    /// `true` if the generator is executing, `false` otherwise.
     open override var isExecuting: Bool {
       get { return _executing }
       set {
@@ -207,6 +228,7 @@ extension CodeGeneratorService {
     }
 
     fileprivate var _finished: Bool = false
+    /// `true` if the generator has finished running, `false` otherwise.
     open override var isFinished: Bool {
       get { return _finished }
       set {
@@ -219,6 +241,7 @@ extension CodeGeneratorService {
       }
     }
 
+    /// Starts the code generator service.
     open override func start() {
       if self.isCancelled {
         finishOperation()
@@ -232,6 +255,7 @@ extension CodeGeneratorService {
       codeGeneratorService?.executeRequest(self)
     }
 
+    /// Cancels the code generator service.
     open override func cancel() {
       self.onCompletion = nil
       self.onError = nil

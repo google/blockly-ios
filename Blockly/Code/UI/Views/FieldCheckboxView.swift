@@ -39,12 +39,17 @@ open class FieldCheckboxView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the checkbox field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(switchButton)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }

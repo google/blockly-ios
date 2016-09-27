@@ -166,7 +166,7 @@ extension Field {
         (json: [String: Any]) throws -> Field in
         return FieldImage(
           name: (json[PARAMETER_NAME] as? String ?? ""),
-          imageURL: (json[PARAMETER_IMAGE_URL] as? String ??
+          imageLocation: (json[PARAMETER_IMAGE_URL] as? String ??
             "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
           size: WorkspaceSize(
             width: CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
