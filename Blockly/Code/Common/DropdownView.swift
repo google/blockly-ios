@@ -156,6 +156,11 @@ public final class DropdownView: UIView {
       height: ceil(max(textSize.height + verticalSpacing * 2, imageSize.height) + borderWidth * 2))
   }
 
+  /**
+   Returns the default drop down arrow image for the dropdown view.
+
+   - Returns: The `UIImage` containing the default drop down arrow.
+   */
   public static func defaultDropDownArrowImage() -> UIImage? {
     return ImageLoader.loadImage(named: "arrow_dropdown", forClass: DropdownView.self)
   }

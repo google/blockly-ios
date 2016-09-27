@@ -33,6 +33,13 @@ open class FieldColorLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the color field layout.
+
+   - Parameter fieldColor: The `FieldColor` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldColor: FieldColor, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldColor = fieldColor
     super.init(field: fieldColor, engine: engine, measurer: measurer)
@@ -42,7 +49,7 @@ open class FieldColorLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

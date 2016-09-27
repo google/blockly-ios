@@ -16,27 +16,45 @@
 import Foundation
 
 /**
-An image field used for titles, labels, etc.
-*/
+ An image field used for titles, labels, etc.
+ */
 @objc(BKYFieldImage)
 public final class FieldImage: Field {
   // MARK: - Properties
 
+  /// The `WorkspaceSize` of this field.
   public var size: WorkspaceSize {
     didSet { didSetEditableProperty(&size, oldValue) }
   }
-  public var imageURL: String {
-    didSet { didSetEditableProperty(&imageURL, oldValue) }
+  /**
+   The location of the image in this field.
+
+   Specifies the location of a local image resource, either as an image asset name or a location
+   relative to the main resource bundle of the app. As a fallback, this can specify the location
+   of a URL web image to fetch.
+   */
+  public var imageLocation: String {
+    didSet { didSetEditableProperty(&imageLocation, oldValue) }
   }
+  /// The alt text for this field.
   public var altText: String {
     didSet { didSetEditableProperty(&altText, oldValue) }
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the image field.
+
+   - Parameter name: The name of this field.
+   - Parameter imageLocation: The location of the image in this field. Specifies the location of a
+     local image resource, either as an image asset name or a location relative to the main resource
+     bundle of the app. As a fallback, this can specify the location of a URL web image to fetch.
+   - Parameter altText: The alt text for this field.
+   */
   public init(
-    name: String, imageURL: String, size: WorkspaceSize, altText: String) {
-      self.imageURL = imageURL
+    name: String, imageLocation: String, size: WorkspaceSize, altText: String) {
+      self.imageLocation = imageLocation
       self.size = size
       self.altText = altText
 
@@ -46,7 +64,7 @@ public final class FieldImage: Field {
   // MARK: - Super
 
   public override func copyField() -> Field {
-    return FieldImage(name: name, imageURL: imageURL, size: size, altText: altText)
+    return FieldImage(name: name, imageLocation: imageLocation, size: size, altText: altText)
   }
 
   public override func setValueFromSerializedText(_ text: String) throws {

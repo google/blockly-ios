@@ -22,6 +22,7 @@ An input field for a 0 to 360 angle.
 public final class FieldAngle: Field {
   // MARK: - Properties
 
+  /// The current angle stored in this field.
   public var angle: Int {
     didSet {
       // Normalize the value that was set
@@ -32,6 +33,12 @@ public final class FieldAngle: Field {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the angle field.
+
+   - Parameter name: The name of this field.
+   - Parameter angle: The initial angle for this field.
+   */
   public init(name: String, angle: Int) {
     self.angle = FieldAngle.normalizeAngle(angle)
 

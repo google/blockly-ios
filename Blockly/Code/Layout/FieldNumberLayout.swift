@@ -41,6 +41,13 @@ open class FieldNumberLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the label number layout.
+
+   - Parameter fieldNumber: The `FieldNumber` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldNumber: FieldNumber, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldNumber = fieldNumber
     self.currentTextValue = fieldNumber.textValue

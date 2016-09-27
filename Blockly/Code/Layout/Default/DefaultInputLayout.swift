@@ -15,23 +15,23 @@
 
 import UIKit
 
-/*
+/**
  A default implementation of `InputLayout`.
  */
 @objc(BKYDefaultInputLayout)
 public final class DefaultInputLayout: InputLayout {
   // MARK: - Properties
 
-  // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
+  /// TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the input.connection
   fileprivate var _connection: Connection!
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
-      // TODO:(#29) This is method is eating into performance. During method execution,
-      // "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
-      // often and take about 15% of CPU time.
+      /// TODO:(#29) This is method is eating into performance. During method execution,
+      /// "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
+      /// often and take about 15% of CPU time.
 
       // Update connection position
       if _connection == nil {
@@ -103,12 +103,23 @@ public final class DefaultInputLayout: InputLayout {
     return fieldWidth + puzzleTabWidth
   }
 
+  /// The minimal amount of width required to render the child statements of the input, specified as
+  /// a Workspace coordinate system unit.
   public var minimalStatementWidthRequired: CGFloat {
     return statementIndent + statementConnectorWidth
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the default input layout.
+
+   - Parameter input: The `Input` model object associated with this layout.
+   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
+   - Throws:
+     `BlocklyError`: Occurs if the `LayoutFactory` cannot build a block.
+   */
   public override init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
     self._connection = input.connection
     try super.init(input: input, engine: engine, factory: factory)
