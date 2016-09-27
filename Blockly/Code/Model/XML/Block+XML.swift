@@ -25,7 +25,7 @@ extension Block {
    Creates a new block and subblocks from an XML object.
 
    - Parameter xml: The element that contains this block's data.
-   - Parameter factory: The BlockFactory to use to build blocks.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
    - Returns: A `BlockTree` tuple of all blocks that were created.
    - Throws:
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
@@ -88,14 +88,14 @@ extension Block {
   // MARK: - Internal
 
   /**
-  Creates a set of blocks from xml and connects them to one of the block's inputs.
+   Creates a set of blocks from xml and connects them to one of the block's inputs.
 
-  - Parameter block: The block to connect to.
-  - Parameter xml: The XML that describes the input and blocks to attach.
-  - Parameter factory: The BlockFactory used to create the new blocks.
-  - Returns: An array of all `Block` instances that were created.
-  - Throws:
-  `BlocklyError`: Occurs if the block doesn't have that input or the xml is invalid.
+   - Parameter block: The block to connect to.
+   - Parameter xml: The XML that describes the input and blocks to attach.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
+   - Returns: An array of all `Block` instances that were created.
+   - Throws:
+     `BlocklyError`: Occurs if the block doesn't have that input or the xml is invalid.
   */
   private class func setInputOnBlock(
     _ block: Block, fromXML xml: AEXMLElement, factory: BlockFactory) throws -> [Block]
@@ -143,7 +143,7 @@ extension Block {
 
    - Parameter block: The block to connect to.
    - Parameter xml: The XML that describes the blocks to attach.
-   - Parameter factory: The BlockFactory to use to create the new blocks.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
    - Returns: An array of all `Block` instances that were created.
    - Throws:
    `BlocklyError`: Occurs if the block doesn't have a next connection or the xml is invalid.

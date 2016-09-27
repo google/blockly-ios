@@ -25,8 +25,7 @@ extension Toolbox {
    Creates a new `Toolbox` from an XML string.
 
    - Parameter xmlString: The string that contains this toolbox's data.
-   - Parameter factory: The `BlockFactory` used to find the definitions of the blocks associated
-   with this toolbox.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
    - Returns: A `Toolbox`
    - Throws:
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
@@ -43,8 +42,7 @@ extension Toolbox {
    Creates a new `Toolbox` from an XML object.
 
    - Parameter xml: The element that contains this toolbox's data.
-   - Parameter factory: The `BlockFactory` used to find the definitions of the blocks associated
-   with this toolbox.
+   - Parameter factory: The `BlockFactory` to use to build blocks.
    - Returns: A `Toolbox`
    - Throws:
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,

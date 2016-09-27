@@ -106,6 +106,12 @@ public final class FieldNumber: Field {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the number field.
+
+   - Parameter name: The name of this field.
+   - Parameter value: The default value of this field.
+   */
   public init(name: String, value: Double) {
     self.value = value
     super.init(name: name)

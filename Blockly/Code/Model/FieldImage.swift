@@ -16,24 +16,34 @@
 import Foundation
 
 /**
-An image field used for titles, labels, etc.
-*/
+ An image field used for titles, labels, etc.
+ */
 @objc(BKYFieldImage)
 public final class FieldImage: Field {
   // MARK: - Properties
 
+  /// The `WorkspaceSize` of this field.
   public var size: WorkspaceSize {
     didSet { didSetEditableProperty(&size, oldValue) }
   }
+  /// The URL of the image in this field.
   public var imageURL: String {
     didSet { didSetEditableProperty(&imageURL, oldValue) }
   }
+  /// The alt text for this field.
   public var altText: String {
     didSet { didSetEditableProperty(&altText, oldValue) }
   }
 
   // MARK: - Initializers
 
+  /**
+   Initializes the image field.
+
+   - Parameter name: The name of this field.
+   - Parameter imageURL: The URL of the image to populate this field.
+   - Parameter altText: The alt text for this field.
+   */
   public init(
     name: String, imageURL: String, size: WorkspaceSize, altText: String) {
       self.imageURL = imageURL

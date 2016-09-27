@@ -43,6 +43,12 @@ public final class FieldVariable: Field {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the variable field.
+
+   - Parameter name: The name of this field.
+   - Parameter variable: The initial variable name to set for this field.
+   */
   public init(name: String, variable: String) {
     self.variable = variable
 

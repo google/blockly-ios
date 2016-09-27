@@ -40,12 +40,17 @@ open class FieldInputView: FieldView {
 
   // MARK: - Initializers
 
+  /// Initializes the input field view.
   public required init() {
     super.init(frame: CGRect.zero)
 
     addSubview(textField)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }

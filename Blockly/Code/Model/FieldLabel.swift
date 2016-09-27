@@ -29,6 +29,12 @@ public final class FieldLabel: Field {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the label field.
+
+   - Parameter name: The name of this field.
+   - Parameter text: The default text of this field.
+   */
   public init(name: String, text: String) {
     self.text = text
     super.init(name: name)
