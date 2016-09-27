@@ -164,10 +164,10 @@ class WorkspaceXMLTest: XCTestCase {
   func testSerializeXML_NestedBlocks() {
     guard
       let parent = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "simple_input_output", uuid: "parentBlock")
+        try self.factory.makeBlock(name: "simple_input_output", shadow: false, uuid: "parentBlock")
       }),
       let child = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_no_input", uuid: "childBlock")
+        try self.factory.makeBlock(name: "output_no_input", shadow: false, uuid: "childBlock")
       }),
       let parentInput = parent.firstInput(withName: "value") else
     {

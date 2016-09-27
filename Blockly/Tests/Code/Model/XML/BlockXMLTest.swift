@@ -288,7 +288,9 @@ class BlockXMLTest: XCTestCase {
   // MARK: - XML Serialization Tests
 
   func testSerializeXML_SimpleBlockWithPosition() {
-    let block = try! factory.makeBlock(name: "empty_block", uuid: "block_uuid") as Block!
+    let block = BKYAssertDoesNotThrow {
+      try factory.makeBlock(name: "empty_block", shadow: false, uuid: "block_uuid")
+    }
     block?.position = WorkspacePoint(x: 999, y: -111)
 
     // This is the xml we expect from `block`:
@@ -304,7 +306,9 @@ class BlockXMLTest: XCTestCase {
   }
 
   func testSerializeXML_SimpleBlockWithNoPosition() {
-    let block = try! factory.makeBlock(name: "empty_block", uuid: "uuid") as Block!
+    let block = BKYAssertDoesNotThrow {
+      try factory.makeBlock(name: "empty_block", shadow: false, uuid: "uuid")
+    }
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"0\" y=\"0\" />
@@ -321,13 +325,13 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithInputValue() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "frankenblock", uuid: "364")
+        try self.factory.makeBlock(name: "frankenblock", shadow: false, uuid: "364")
       }),
       let input = BKYAssertDoesNotThrow({
         block.firstInput(withName: "value_input")
       }),
       let inputBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_foo", uuid: "126")
+        try self.factory.makeBlock(name: "output_foo", shadow: false, uuid: "126")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -402,13 +406,13 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithInputStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "frankenblock", uuid: "1000")
+        try self.factory.makeBlock(name: "frankenblock", shadow: false, uuid: "1000")
       }),
       let input = BKYAssertDoesNotThrow({
         block.firstInput(withName: "NAME")
       }),
       let inputBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "2000")
+        try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "2000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -527,10 +531,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithNextStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "1000")
+        try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "1000")
       }),
       let nextBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "2000")
+        try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "2000")
       }) else
     {
       XCTFail("Could not build blocks")
@@ -612,7 +616,7 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowInputValue() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "simple_input_output", uuid: "364")
+        try self.factory.makeBlock(name: "simple_input_output", shadow: false, uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "output_foo", shadow: true, uuid: "VALUE_SHADOW")
@@ -671,10 +675,10 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_BlockWithRealAndShadowInputValues() {
     guard let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "simple_input_output", uuid: "364")
+        try self.factory.makeBlock(name: "simple_input_output", shadow: false, uuid: "364")
       }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "output_foo", uuid: "VALUE_REAL")
+        try self.factory.makeBlock(name: "output_foo", shadow: false, uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "output_foo", shadow: true, uuid: "VALUE_SHADOW")
@@ -746,7 +750,7 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowInputStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_statement_input", uuid: "1000")
+        try self.factory.makeBlock(name: "statement_statement_input", shadow: false, uuid: "1000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "statement_no_input", shadow: true, uuid: "2000")
@@ -807,10 +811,10 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithRealAndShadowInputStatements() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_statement_input", uuid: "1000")
+        try self.factory.makeBlock(name: "statement_statement_input", shadow: false, uuid: "1000")
       }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "2000")
+        try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "2000")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "statement_no_input", shadow: true, uuid: "3000")
@@ -884,7 +888,7 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithShadowNextStatement() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_no_input", uuid: "364")
+        try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "364")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "statement_no_next", shadow: true, uuid: "VALUE_SHADOW")
@@ -941,10 +945,11 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_BlockWithRealAndShadowNextStatements() {
     guard let block = BKYAssertDoesNotThrow({
-      try self.factory.makeBlock(name: "statement_no_input", uuid: "364")
+      try self.factory.makeBlock(name: "statement_no_input", shadow: false, uuid: "364")
     }),
       let realBlock = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_input_no_next", uuid: "VALUE_REAL")
+        try self.factory.makeBlock(
+          name: "statement_input_no_next", shadow: false, uuid: "VALUE_REAL")
       }),
       let shadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(name: "statement_no_next", shadow: true, uuid: "VALUE_SHADOW")
@@ -1014,7 +1019,8 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithNestedShadowBlocks() {
     guard
       let block = BKYAssertDoesNotThrow({
-        try self.factory.makeBlock(name: "statement_multiple_value_input", uuid: "777")
+        try self.factory.makeBlock(
+          name: "statement_multiple_value_input", shadow: false, uuid: "777")
       }),
       let parentValueShadowBlock = BKYAssertDoesNotThrow({
         try self.factory.makeBlock(
