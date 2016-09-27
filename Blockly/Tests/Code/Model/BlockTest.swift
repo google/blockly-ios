@@ -267,16 +267,16 @@ class BlockTest: XCTestCase {
   func testDeepCopy_ShadowBlock() {
     guard
       let root = BKYAssertDoesNotThrow({
-        try self._blockFactory.makeBlock(name: "statement_value_input", uuid: "1")
+        try self._blockFactory.makeBlock(name: "statement_value_input", shadow: false, uuid: "1")
       }),
       let output = BKYAssertDoesNotThrow({
-        try self._blockFactory.makeBlock(name: "simple_input_output", uuid: "2")
+        try self._blockFactory.makeBlock(name: "simple_input_output", shadow: false, uuid: "2")
       }),
       let outputShadow = BKYAssertDoesNotThrow({
         try self._blockFactory.makeBlock(name: "simple_input_output", shadow: true, uuid: "3")
       }),
       let next = BKYAssertDoesNotThrow({
-        try self._blockFactory.makeBlock(name: "statement_no_next", uuid: "2")
+        try self._blockFactory.makeBlock(name: "statement_no_next", shadow: false, uuid: "2")
       }),
       let shadowNext = BKYAssertDoesNotThrow({
         try self._blockFactory.makeBlock(name: "statement_no_next", shadow: true, uuid: "2")

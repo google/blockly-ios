@@ -1,6 +1,6 @@
 [
   {
-    "id": "controls_repeat_ext",
+    "type": "controls_repeat_ext",
     "message0": "repeat %1 times %2 %3",
     "args0": [
       {
