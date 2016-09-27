@@ -30,6 +30,9 @@ open class ViewFactory: NSObject {
   /// `LayoutView` type
   private var _viewMapping = [Int: Recyclable.Type]()
 
+  /**
+   Initializes the view factory, and registers the default `Layout`/`View` relationships
+   */
   public override init() {
     super.init()
 

@@ -30,16 +30,26 @@ open class BezierPathLayer: CAShapeLayer {
 
   // MARK: - Initializers
 
+  /// Default initializer for bezier path layer.
   public override init() {
     super.init()
     self.fillRule = kCAFillRuleEvenOdd
   }
 
+  /**
+   Initializes the path with a layer.
+
+   - Parameter layer: The layer from which custom fields should be copied.
+   */
   public override init(layer: Any) {
     super.init(layer: layer)
     self.fillRule = kCAFillRuleEvenOdd
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     self.fillRule = kCAFillRuleEvenOdd

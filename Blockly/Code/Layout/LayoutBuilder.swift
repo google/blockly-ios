@@ -27,6 +27,11 @@ open class LayoutBuilder: NSObject {
 
   // MARK: - Initializer
 
+  /**
+   Initializes the layout builder.
+
+   - Parameter layoutFactory: The `LayoutFactory` for layout creation.
+   */
   public init(layoutFactory: LayoutFactory) {
     self.layoutFactory = layoutFactory
   }

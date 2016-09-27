@@ -15,7 +15,7 @@
 
 import UIKit
 
-/*
+/**
  Abstract class for storing information on how to render and position an `Input` on-screen.
  */
 @objc(BKYInputLayout)
@@ -53,6 +53,13 @@ open class InputLayout: Layout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the input layout.
+
+   - Parameter input: The `Input` model for this layout.
+   - Parameter engine: The `LayoutEngine` that will build this layout.
+   - Parameter factory: The `LayoutFactory` to build the blockGroupLayout.
+   */
   public init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
     self.input = input
     super.init(engine: engine)
