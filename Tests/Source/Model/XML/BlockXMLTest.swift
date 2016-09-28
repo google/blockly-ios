@@ -24,8 +24,10 @@ class BlockXMLTest: XCTestCase {
   var factory: BlockFactory!
 
   override func setUp() {
-    factory = try! BlockFactory(jsonPath: "xml_parsing_test.json",
-      bundle: Bundle(for: type(of: self)))
+    factory = BlockFactory()
+    BKYAssertDoesNotThrow {
+      try factory.load(fromJSONPaths: ["xml_parsing_test.json"], bundle: Bundle(for: type(of: self)))
+    }
 
     super.setUp()
   }

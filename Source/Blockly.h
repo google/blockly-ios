@@ -22,6 +22,7 @@ FOUNDATION_EXPORT double BlocklyVersionNumber;
 FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
 
 // Public headers for Blockly
+#import <Blockly/BKYBlockJSONFile.h>
 #import <Blockly/BKYEdgeInsets.h>
 #import <Blockly/BKYLayoutConfigStructs.h>
 #import <Blockly/BKYWorkspaceUnits.h>

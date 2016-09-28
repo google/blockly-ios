@@ -18,39 +18,87 @@ import XCTest
 
 class BlockFactoryJSONTest: XCTestCase {
 
-  func testLoadBlocks() {
-    let workspace = Workspace()
-    do {
-      let factory = try BlockFactory(jsonPath: "block_factory_json_test.json",
-        bundle: Bundle(for: type(of: self)))
-      if let _ = try! factory.addBlock(name: "block_id_1", toWorkspace: workspace) {
-        // expected
-      } else {
-        XCTFail("Factory is missing block_id_1")
-      }
-      if let _ = try! factory.addBlock(name: "block_id_2", toWorkspace: workspace) {
-        // expected
-      } else {
-        XCTFail("Factory is missing block_id_2")
-      }
-    } catch let error as NSError {
-      XCTFail("Error: \(error.localizedDescription)")
+  var _blockFactory: BlockFactory!
+
+  override func setUp() {
+    super.setUp()
+    _blockFactory = BlockFactory()
+  }
+
+  func testLoadBlocksFromColorDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "colour_picker")
     }
+    _blockFactory.load(fromDefaultFiles: .ColorDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "colour_picker") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromLogicDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "controls_if")
+    }
+    _blockFactory.load(fromDefaultFiles: .LogicDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "controls_if") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromLoopDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "controls_repeat_ext")
+    }
+    _blockFactory.load(fromDefaultFiles: .LoopDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "controls_repeat_ext") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromMathDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "math_number")
+    }
+    _blockFactory.load(fromDefaultFiles: .MathDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "math_number") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromVariableDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "variables_get")
+    }
+    _blockFactory.load(fromDefaultFiles: .VariableDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "variables_get") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromJSONPaths() {
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["block_factory_json_test.json"],
+                             bundle: Bundle(for: type(of: self)))
+    }
+
+    let block1 = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "block_id_1") }
+    XCTAssertNotNil(block1, "Factory is missing block_id_1")
+
+    let block2 = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "block_id_2") }
+    XCTAssertNotNil(block2, "Factory is missing block_id_2")
   }
 
   func testMultipleBlocks() {
-    let workspace = Workspace()
-    do {
-      let factory = try BlockFactory(jsonPath: "block_factory_json_test.json",
-        bundle: Bundle(for: type(of: self)))
-      if let block1 = try! factory.addBlock(name: "block_id_1", toWorkspace: workspace) {
-        let block2 = try! factory.addBlock(name: "block_id_1", toWorkspace: workspace)
-        XCTAssertTrue(block1 !== block2, "BlockFactory returned the same block instance twice")
-      } else {
-        XCTFail("Factory is missing block_id_1")
-      }
-    } catch let error as NSError {
-      XCTFail("Error: \(error.localizedDescription)")
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["block_factory_json_test.json"],
+                             bundle: Bundle(for: type(of: self)))
     }
+
+    let firstBlockCopy = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "block_id_1") }
+    let secondBlockCopy = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "block_id_1") }
+    XCTAssertNotNil(firstBlockCopy)
+    XCTAssertNotNil(secondBlockCopy)
+    XCTAssertTrue(firstBlockCopy !== secondBlockCopy,
+                  "BlockFactory returned the same block instance twice")
   }
 }

@@ -52,13 +52,16 @@
   [workspace addBlockTree:block2 error:nil];
 
   // Create toolbox with some blocks in it
-  BKYBlockFactory *blockFactory =
-    [[BKYBlockFactory alloc] initWithJsonPath:@"Blocks/test_blocks.json" bundle:nil error:nil];
-  BKYBlock *repeatBlock = [blockFactory makeBlockWithName:@"statement_no_input" error:nil];
+  BKYBlockFactory *blockFactory = [[BKYBlockFactory alloc] init];
+  [blockFactory loadFromJSONPaths:@[@"Blocks/test_blocks.json"] bundle:nil error:nil];
+  [blockFactory loadFromDefaultFiles:BKYBlockJSONFileAllDefault];
+  BKYBlock *statementBlock = [blockFactory makeBlockWithName:@"statement_no_input" error:nil];
+  BKYBlock *mathNumberBlock = [blockFactory makeBlockWithName:@"math_number" error:nil];
 
   BKYToolbox *toolbox = [[BKYToolbox alloc] init];
   BKYToolboxCategory *category = [toolbox addCategory:@"Test" color:[UIColor blueColor] icon:nil];
-  [category addBlockTree:repeatBlock error:nil];
+  [category addBlockTree:statementBlock error:nil];
+  [category addBlockTree:mathNumberBlock error:nil];
 
   // Load workbench with workspace and toolbox
   BKYWorkbenchViewController *viewController =

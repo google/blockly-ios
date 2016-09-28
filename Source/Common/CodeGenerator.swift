@@ -72,7 +72,7 @@ public final class CodeGenerator: NSObject {
 
   // MARK: - Static Properties
   /// Internal JS file that is used to communicate between the iOS code and JS code
-  fileprivate static let CODE_GENERATOR_BRIDGE_JS = "code_generator/code_generator_bridge.js"
+  fileprivate static let CODE_GENERATOR_BRIDGE_JS = "CodeGenerator/code_generator_bridge.js"
   /// The name used to reference this iOS object when executing callbacks from the JS code.
   /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
   fileprivate static let JS_CALLBACK_NAME = "CodeGenerator"

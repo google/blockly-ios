@@ -20,7 +20,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Super
 
   /// Factory that produces block instances from a parsed json file
-  var _blockFactory: BlockFactory!
+  let _blockFactory = BlockFactory()
 
   // MARK: - Initializers
 
@@ -36,9 +36,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   }
 
   private func commonInit() {
-    // Load the block factory
+    // Load blocks into the block factory
     do {
-      _blockFactory = try BlockFactory(jsonPath: "Blocks/simple_workbench_blocks.json")
+      try _blockFactory.load(fromJSONPaths: ["Blocks/simple_workbench_blocks.json"])
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
     }
