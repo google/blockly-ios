@@ -25,9 +25,9 @@ CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
   if (!!definitions) {
     var jsonArr = JSON.parse(definitions);
     for (var index = 0; index < jsonArr.length; index++) {
-      var elem = jsonArr[index];
-      Blockly.Blocks[elem.id] = {
-        init: CodeGeneratorBridge.initFactory(elem)
+      var block = jsonArr[index];
+      Blockly.Blocks[block.type] = {
+        init: CodeGeneratorBridge.initFactory(block)
       };
     }
   }

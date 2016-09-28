@@ -41,14 +41,13 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     // Create the block factory
     _blockFactory = BlockFactory()
-    BKYAssertDoesNotThrow {
-      try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"], bundle: testBundle)
-    }
   }
 
   // MARK: - Tests
 
   func testPythonCodeGeneration() {
+    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+
     // Build workspace with simple repeat loop
     let workspace = Workspace()
     guard
@@ -59,13 +58,13 @@ class CodeGeneratorServiceTest: XCTestCase {
         try self._blockFactory.makeBlock(name: "math_number")
       }),
       let parentInput = loopBlock.firstInput(withName: "TIMES"),
-      let fieldInput = loopValueBlock.firstField(withName: "NUM") as? FieldInput else
+      let fieldNumber = loopValueBlock.firstField(withName: "NUM") as? FieldNumber else
     {
       XCTFail("Could not build blocks")
       return
     }
     BKYAssertDoesNotThrow { () -> Void in
-      fieldInput.text = "10"
+      fieldNumber.value = 10
       try parentInput.connection?.connectTo(loopValueBlock.inferiorConnection)
       try workspace.addBlockTree(loopBlock)
     }
@@ -104,7 +103,9 @@ class CodeGeneratorServiceTest: XCTestCase {
     })
   }
 
-  func testCodeGenerationWithManyRequests() {
+  func testPythonCodeGenerationWithManyRequests() {
+    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+
     // Build workspace with simple repeat loop
     let workspace = Workspace()
 
@@ -116,13 +117,13 @@ class CodeGeneratorServiceTest: XCTestCase {
         try self._blockFactory.makeBlock(name: "math_number")
       }),
       let parentInput = loopBlock.firstInput(withName: "TIMES"),
-      let fieldInput = loopValueBlock.firstField(withName: "NUM") as? FieldInput else
+      let fieldInput = loopValueBlock.firstField(withName: "NUM") as? FieldNumber else
     {
       XCTFail("Could not build blocks")
       return
     }
     BKYAssertDoesNotThrow { () -> Void in
-      fieldInput.text = "10"
+      fieldInput.value = 10
       try parentInput.connection?.connectTo(loopValueBlock.inferiorConnection)
       try workspace.addBlockTree(loopBlock)
     }
@@ -157,6 +158,72 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     // Wait 100s for code generation to finish
     waitForExpectations(timeout: 100.0, handler: { error in
+      if let error = error {
+        XCTFail("Code generation timed out: \(error)")
+      }
+    })
+  }
+
+  func testJSCodeGenerationWithCustomDefinitions() {
+    let testBundle = Bundle(for: type(of: self))
+
+    // Load custom block into block factory
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["code_generator_blocks.json"], bundle: testBundle)
+    }
+
+    // Build workspace with the custom colour block
+    let workspace = Workspace()
+    guard
+      let colorBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.makeBlock(name: "custom_colour_block")
+      }),
+      let fieldColor = colorBlock.firstField(withName: "COLOUR") as? FieldColor else
+    {
+      XCTFail("Could not build block")
+      return
+    }
+
+    guard let color = ColorHelper.makeColor(rgb: "abcdef") else {
+      XCTFail("Could not create color")
+      return
+    }
+    fieldColor.color = color
+
+    BKYAssertDoesNotThrow {
+      try workspace.addBlockTree(colorBlock)
+    }
+
+    // Set up timeout expectation
+    let expectation = self.expectation(description: "Code Generation")
+
+    // Execute request
+    guard let request = BKYAssertDoesNotThrow({
+      try CodeGeneratorService.Request(
+        workspace: workspace,
+        jsGeneratorObject: "Blockly.JavaScript",
+        jsBlockGenerators: [
+          (file: "blockly_web/javascript_compressed.js", bundle: testBundle),
+          (file: "code_generator_generators.js", bundle: testBundle),
+        ],
+        jsonBlockDefinitions: [(file: "code_generator_blocks.json", bundle: testBundle)])
+    }) else
+    {
+      XCTFail("Could not build code generation request")
+      return
+    }
+    request.onCompletion = { code in
+      XCTAssertEqual("#abcdef", code)
+      expectation.fulfill()
+    }
+    request.onError = { error in
+      XCTFail("Error occurred during code generation: \(error)")
+      expectation.fulfill()
+    }
+    _codeGeneratorService.generateCode(forRequest: request)
+
+    // Wait 10s for code generation to finish
+    waitForExpectations(timeout: 10.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
