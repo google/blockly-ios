@@ -94,7 +94,7 @@
 		FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC1801CE29B6C005C550D /* RangeHelper.swift */; };
 		FA5CC18B1CE2A2C6005C550D /* NameManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */; };
 		FA5CC18D1CE2AE81005C550D /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18C1CE2AE81005C550D /* WeakSet.swift */; };
-		FA5F2BC61C76A2E6008384BE /* code_generator in Resources */ = {isa = PBXBuildFile; fileRef = FA5F2BC51C76A2E6008384BE /* code_generator */; };
+		FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */ = {isa = PBXBuildFile; fileRef = FA5F2BC51C76A2E6008384BE /* CodeGenerator */; };
 		FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XML.swift */; };
 		FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
@@ -103,6 +103,9 @@
 		FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */; };
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
+		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
+		FA77D3F21D9B88820014CBC4 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84250F1D3451510092CDDC /* ViewBuilder.swift */; };
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
 		FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84251B1D3459EC0092CDDC /* InputView.swift */; };
@@ -285,7 +288,7 @@
 		FA5CC1801CE29B6C005C550D /* RangeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeHelper.swift; sourceTree = "<group>"; };
 		FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameManagerTest.swift; sourceTree = "<group>"; };
 		FA5CC18C1CE2AE81005C550D /* WeakSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
-		FA5F2BC51C76A2E6008384BE /* code_generator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = code_generator; sourceTree = "<group>"; };
+		FA5F2BC51C76A2E6008384BE /* CodeGenerator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CodeGenerator; sourceTree = "<group>"; };
 		FA6085F61C6D469F003B6076 /* Workspace+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XML.swift"; sourceTree = "<group>"; };
 		FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
@@ -294,6 +297,9 @@
 		FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Helper.swift"; sourceTree = "<group>"; };
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
+		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
+		FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYBlockJSONFile.h; sourceTree = "<group>"; };
+		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA84250F1D3451510092CDDC /* ViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBuilder.swift; sourceTree = "<group>"; };
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
@@ -443,6 +449,8 @@
 		FA2DFC0C1B7177760072A278 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */,
+				FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */,
 				FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */,
 				FA2DFC0E1B7177760072A278 /* Input+JSON.swift */,
 				FA2DFC111B7177B10072A278 /* Field+JSON.swift */,
@@ -677,7 +685,8 @@
 			isa = PBXGroup;
 			children = (
 				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
-				FA5F2BC51C76A2E6008384BE /* code_generator */,
+				FA5F2BC51C76A2E6008384BE /* CodeGenerator */,
+				FA77D3971D9B54290014CBC4 /* Default */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -789,6 +798,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA77D3F21D9B88820014CBC4 /* BKYBlockJSONFile.h in Headers */,
 				FA10392B1D9371FE005FDF1D /* BKYEdgeInsets.h in Headers */,
 				FA10391F1D934139005FDF1D /* BKYWorkspaceUnits.h in Headers */,
 				FA1039301D93A7EC005FDF1D /* BKYLayoutConfigStructs.h in Headers */,
@@ -878,8 +888,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA77D3981D9B54290014CBC4 /* Default in Resources */,
 				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
-				FA5F2BC61C76A2E6008384BE /* code_generator in Resources */,
+				FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +953,7 @@
 				FA1039241D935D9E005FDF1D /* BKYWorkspaceUnits.m in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
 				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
+				FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
 				FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,

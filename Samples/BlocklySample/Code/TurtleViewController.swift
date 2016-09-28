@@ -53,10 +53,10 @@ class TurtleViewController: UIViewController {
   var _lastHighlightedBlockUUID: String?
 
   /// Factory that produces block instances from a parsed json file
-  var _blockFactory: BlockFactory!
+  let _blockFactory = BlockFactory()
 
   /// Date formatter for timestamping events
-  var _dateFormatter = DateFormatter()
+  let _dateFormatter = DateFormatter()
 
   // MARK: - Initializers
 
@@ -72,14 +72,10 @@ class TurtleViewController: UIViewController {
   }
 
   private func commonInit() {
-    // Load the block factory
+    // Load blocks into the block factory
     do {
-      _blockFactory = try BlockFactory(jsonPaths: [
-        "Turtle/turtle_blocks.json",
-        "Blocks/colour_blocks.json",
-        "Blocks/math_blocks.json",
-        "Blocks/loop_blocks.json"
-        ])
+      _blockFactory.load(fromDefaultFiles: [.ColorDefault, .MathDefault, .LoopDefault])
+      try _blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
     }

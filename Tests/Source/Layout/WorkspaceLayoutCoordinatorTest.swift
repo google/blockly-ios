@@ -23,9 +23,10 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
   // MARK: - Setup
 
   override func setUp() {
-    _blockFactory = BKYAssertDoesNotThrow {
-      try BlockFactory(
-        jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
+    _blockFactory = BlockFactory()
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"],
+                             bundle: Bundle(for: type(of: self)))
     }
     _workspaceLayoutCoordinator = BKYAssertDoesNotThrow {
       let workspaceLayout = WorkspaceLayout(workspace: Workspace(), engine: DefaultLayoutEngine())
