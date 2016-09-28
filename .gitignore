@@ -40,6 +40,9 @@ xcuserdata
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # /third_party/Carthage/Checkouts
 
+# Exclude the default Carthage location
+/Carthage
+
 # Exclude the Carthage Build folder
 /third_party/Carthage/Build
 
