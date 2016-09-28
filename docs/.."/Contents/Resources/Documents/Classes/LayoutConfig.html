@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>LayoutConfig Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/LayoutConfig" class="dashAnchor"></a>
+    <a title="LayoutConfig Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Blockly Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Blockly Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        LayoutConfig Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Model.html">Model</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Block.html">Block</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlockFactory.html">BlockFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Connection.html">Connection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Connection/BKYConnectionType.html">– BKYConnectionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Connection/CheckResult.html">– CheckResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Field.html">Field</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Field/JSONRegistry.html">– JSONRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Input.html">Input</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Input/BKYInputType.html">– BKYInputType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Input/BKYInputAlignment.html">– BKYInputAlignment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Toolbox.html">Toolbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Toolbox/Category.html">– Category</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Workspace.html">Workspace</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceFlow.html">WorkspaceFlow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceFlow/Item.html">– Item</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Control.html">Control</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BlockBumper.html">BlockBumper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ConnectionManager.html">ConnectionManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ConnectionManager/Group.html">– Group</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionValidator.html">ConnectionValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Dragger.html">Dragger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NameManager.html">NameManager</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Layout.html">Layout</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BlockLayout.html">BlockLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InputLayout.html">InputLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldLayout.html">FieldLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Layout.html">Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LayoutBuilder.html">LayoutBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LayoutConfig.html">LayoutConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LayoutEngine.html">LayoutEngine</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LayoutFactory.html">LayoutFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ToolboxLayout.html">ToolboxLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceLayout.html">WorkspaceLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceFlowLayout.html">WorkspaceFlowLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceFlowLayout/BKYWorkspaceFlowLayoutDirection.html">– BKYWorkspaceFlowLayoutDirection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../View.html">View</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BezierPathLayer.html">BezierPathLayer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlockView.html">BlockView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlockGroupView.html">BlockGroupView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldView.html">FieldView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InputView.html">InputView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LayoutView.html">LayoutView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TrashCanView.html">TrashCanView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ViewBuilder.html">ViewBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ViewFactory.html">ViewFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ViewManager.html">ViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceView.html">WorkspaceView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceView/ScrollView.html">– ScrollView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ZIndexedGroupView.html">ZIndexedGroupView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../View Controller.html">View Controller</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DropdownOptionsViewController.html">DropdownOptionsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldColorPickerViewController.html">FieldColorPickerViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ToolboxCategoryListViewController.html">ToolboxCategoryListViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController47BKYToolboxCategoryListViewControllerOrientation">– BKYToolboxCategoryListViewControllerOrientation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ToolboxCategoryViewController.html">ToolboxCategoryViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TrashCanViewController.html">TrashCanViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkbenchViewController/BKYWorkbenchViewControllerStyle.html">– BKYWorkbenchViewControllerStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkbenchViewController/UIState.html">– UIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Common.html">Common</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BlocklyError.html">BlocklyError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlocklyError/BKYBlocklyErrorCode.html">– BKYBlocklyErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CodeGenerator.html">CodeGenerator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CodeGenerator/BKYCodeGeneratorState.html">– BKYCodeGeneratorState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CodeGeneratorService.html">CodeGeneratorService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CodeGeneratorService/Request.html">– Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ColorHelper.html">ColorHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DropdownView.html">DropdownView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageLoader.html">ImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InsetTextField.html">InsetTextField</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/JSONHelper.html">JSONHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ObjectPool.html">ObjectPool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceBezierPath.html">WorkspaceBezierPath</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Fields.html">Fields</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/FieldAngle.html">FieldAngle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldCheckbox.html">FieldCheckbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldColor.html">FieldColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDate.html">FieldDate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDropdown.html">FieldDropdown</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldImage.html">FieldImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldInput.html">FieldInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldLabel.html">FieldLabel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldNumber.html">FieldNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldVariable.html">FieldVariable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../FieldLayouts.html">FieldLayouts</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/FieldAngleLayout.html">FieldAngleLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldCheckboxLayout.html">FieldCheckboxLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldColorLayout.html">FieldColorLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDateLayout.html">FieldDateLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDropdownLayout.html">FieldDropdownLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldImageLayout.html">FieldImageLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldInputLayout.html">FieldInputLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldLabelLayout.html">FieldLabelLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldNumberLayout.html">FieldNumberLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldVariableLayout.html">FieldVariableLayout</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../FieldViews.html">FieldViews</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/FieldAngleView.html">FieldAngleView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldCheckboxView.html">FieldCheckboxView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldColorView.html">FieldColorView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDateView.html">FieldDateView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldDropdownView.html">FieldDropdownView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldImageView.html">FieldImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldInputView.html">FieldInputView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldLabelView.html">FieldLabelView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldNumberView.html">FieldNumberView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FieldVariableView.html">FieldVariableView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Default Implementation.html">Default Implementation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockGroupLayout.html">DefaultBlockGroupLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockLayout/Background.html">– Background</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockLayout/BackgroundRow.html">– BackgroundRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockLayout/InlineConnector.html">– InlineConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultBlockView.html">DefaultBlockView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultConnectionValidator.html">DefaultConnectionValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultInputLayout.html">DefaultInputLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultLayoutConfig.html">DefaultLayoutConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultLayoutEngine.html">DefaultLayoutEngine</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultLayoutFactory.html">DefaultLayoutFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BlockBuilder.html">BlockBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BlocklyPanGestureRecognizer/BKYBlocklyPanGestureRecognizerTouchState.html">– BKYBlocklyPanGestureRecognizerTouchState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InputBuilder.html">InputBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WorkspaceLayoutCoordinator.html">WorkspaceLayoutCoordinator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/EdgeInsets.html">EdgeInsets</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/WorkspacePoint.html">WorkspacePoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/WorkspaceSize.html">WorkspaceSize</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Functions.html#/s:F7Blocklyoi1pFTVSC17BKYWorkspacePointS0__S0_">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Functions.html#/s:F7Blocklyoi1sFTVSC17BKYWorkspacePointS0__S0_">-(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/BlockDelegate.html">BlockDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BlocklyPanGestureDelegate.html">BlocklyPanGestureDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionHighlightDelegate.html">ConnectionHighlightDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionPositionDelegate.html">ConnectionPositionDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DropdownOptionsViewControllerDelegate.html">DropdownOptionsViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DropdownViewDelegate.html">DropdownViewDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FieldColorPickerViewControllerDelegate.html">FieldColorPickerViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FieldDelegate.html">FieldDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FieldLayoutMeasurer.html">FieldLayoutMeasurer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FieldViewDelegate.html">FieldViewDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Protocols.html#/s:P7Blockly13InputDelegate">InputDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LayoutDelegate.html">LayoutDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LayoutHierarchyListener.html">LayoutHierarchyListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/NameManagerListener.html">NameManagerListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Recyclable.html">Recyclable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ToolboxCategoryListViewControllerDelegate.html">ToolboxCategoryListViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ViewBuilderDelegate.html">ViewBuilderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/WorkbenchViewControllerDelegate.html">WorkbenchViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/WorkspaceListener.html">WorkspaceListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/WorkspaceViewControllerDelegate.html">WorkspaceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ZIndexedView.html">ZIndexedView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Structs.html">Other Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/LayoutFlag.html">LayoutFlag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WeakSet.html">WeakSet</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Typealiases.html">Other Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:C7Blockly5Block7Builder">Builder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:C7Blockly5Input7Builder">Builder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:7Blockly10EdgeInsets">EdgeInsets</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:7Blockly19WorkspaceEdgeInsets">WorkspaceEdgeInsets</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:7Blockly14WorkspacePoint">WorkspacePoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>LayoutConfig</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kt">LayoutConfig</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>UI configuration for all layout elements.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Type%20Alias"></a>
+                <a name="//apple_ref/swift/Section/Type Alias" class="dashAnchor"></a>
+                <a href="#/Type%20Alias">
+                  <h3 class="section-name">Type Alias</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C7Blockly12LayoutConfig11PropertyKey"></a>
+                    <a name="//apple_ref/swift/Alias/PropertyKey" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Type alias defining the property key.
+To create a new one, call <code><a href="../Classes/LayoutConfig.html#/s:ZFC7Blockly12LayoutConfig14newPropertyKeyFT_Si">LayoutConfig.newPropertyKey()</a></code>, rather than instantiating
+the underlying type directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">PropertyKey</span> <span class="o">=</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Static%20Properties"></a>
+                <a name="//apple_ref/swift/Section/Static Properties" class="dashAnchor"></a>
+                <a href="#/Static%20Properties">
+                  <h3 class="section-name">Static Properties</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig17BlockBumpDistanceSi"></a>
+                    <a name="//apple_ref/swift/Variable/BlockBumpDistance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig17BlockBumpDistanceSi">BlockBumpDistance</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] The distance to bump blocks away from each other</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockBumpDistance</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig17BlockSnapDistanceSi"></a>
+                    <a name="//apple_ref/swift/Variable/BlockSnapDistance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig17BlockSnapDistanceSi">BlockSnapDistance</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] The maximum distance allowed for blocks to <q>snap</q> toward each other at the end of
+drags, if they have compatible connections near each other.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockSnapDistance</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi"></a>
+                    <a name="//apple_ref/swift/Variable/InlineXPadding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi">InlineXPadding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] Horizontal padding around inline elements (such as fields or inputs)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">InlineXPadding</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig14InlineYPaddingSi"></a>
+                    <a name="//apple_ref/swift/Variable/InlineYPadding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig14InlineYPaddingSi">InlineYPadding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] Vertical padding around inline elements (such as fields or inputs)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">InlineYPadding</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig28WorkspaceFlowXSeparatorSpaceSi"></a>
+                    <a name="//apple_ref/swift/Variable/WorkspaceFlowXSeparatorSpace" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig28WorkspaceFlowXSeparatorSpaceSi">WorkspaceFlowXSeparatorSpace</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] Horizontal space between blocks for <code><a href="../Classes/WorkspaceFlowLayout.html">WorkspaceFlowLayout</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">WorkspaceFlowXSeparatorSpace</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig28WorkspaceFlowYSeparatorSpaceSi"></a>
+                    <a name="//apple_ref/swift/Variable/WorkspaceFlowYSeparatorSpace" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig28WorkspaceFlowYSeparatorSpaceSi">WorkspaceFlowYSeparatorSpace</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] Vertical space between blocks for for <code><a href="../Classes/WorkspaceFlowLayout.html">WorkspaceFlowLayout</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">WorkspaceFlowYSeparatorSpace</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig18FieldMinimumHeightSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldMinimumHeight" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig18FieldMinimumHeightSi">FieldMinimumHeight</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] Minimum height of field rows</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldMinimumHeight</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig17FieldCornerRadiusSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldCornerRadius" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig17FieldCornerRadiusSi">FieldCornerRadius</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] If necessary, the rounded corner radius of a field</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldCornerRadius</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig14FieldLineWidthSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldLineWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig14FieldLineWidthSi">FieldLineWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] If necessary, the line stroke width of a field</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldLineWidth</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig27FieldColorButtonBorderWidthSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldColorButtonBorderWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig27FieldColorButtonBorderWidthSi">FieldColorButtonBorderWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code>] The border width to use when rendering the <code><a href="../Classes/FieldColor.html">FieldColor</a></code> button</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldColorButtonBorderWidth</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldColorButtonSize" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi">FieldColorButtonSize</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code>] The button size to use when rendering a <code><a href="../Classes/FieldColor.html">FieldColor</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldColorButtonSize</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig30FieldCheckboxSwitchOnTintColorSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldCheckboxSwitchOnTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig30FieldCheckboxSwitchOnTintColorSi">FieldCheckboxSwitchOnTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code>UIColor</code>] The color to use for the <code><a href="../Classes/FieldCheckboxView.html">FieldCheckboxView</a></code> switch&rsquo;s <q>onTintColor</q>. A value of
+<code>nil</code> means that the system default should be used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldCheckboxSwitchOnTintColor</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig28FieldCheckboxSwitchTintColorSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldCheckboxSwitchTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig28FieldCheckboxSwitchTintColorSi">FieldCheckboxSwitchTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code>UIColor</code>] The color to use for the <code><a href="../Classes/FieldCheckboxView.html">FieldCheckboxView</a></code> switch&rsquo;s <q>tintColor</q>. A value of
+<code>nil</code> means that the system default should be used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldCheckboxSwitchTintColor</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig26FieldTextFieldInsetPaddingSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldTextFieldInsetPadding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldInsetPaddingSi">FieldTextFieldInsetPadding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code>EdgeInsets</code>] For fields that use an <code><a href="../Classes/InsetTextField.html">InsetTextField</a></code>, this is the <code>insetPadding</code> that
+should be used for each one</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldTextFieldInsetPadding</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig26FieldTextFieldMaximumWidthSi"></a>
+                    <a name="//apple_ref/swift/Variable/FieldTextFieldMaximumWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldMaximumWidthSi">FieldTextFieldMaximumWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code>CGFloat</code>] For fields that use a <code>UITextField</code>, this is the maximum width that should be
+used for each one, specified as a UIView coordinate system unit.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">FieldTextFieldMaximumWidth</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly12LayoutConfig21ViewAnimationDurationSi"></a>
+                    <a name="//apple_ref/swift/Variable/ViewAnimationDuration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7Blockly12LayoutConfig21ViewAnimationDurationSi">ViewAnimationDuration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[<code>Double</code>] The animation duration to use when running animatable code inside a <code><a href="../Classes/LayoutView.html">LayoutView</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">ViewAnimationDuration</span> <span class="o">=</span> <span class="kt">LayoutConfig</span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public"></a>
+                <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
+                <a href="#/Public">
+                  <h3 class="section-name">Public</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC7Blockly12LayoutConfig14newPropertyKeyFT_Si"></a>
+                    <a name="//apple_ref/swift/Method/newPropertyKey()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC7Blockly12LayoutConfig14newPropertyKeyFT_Si">newPropertyKey()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">newPropertyKey</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig7setUnitFTVSC19BKYLayoutConfigUnit3forSi_S1_"></a>
+                    <a name="//apple_ref/swift/Method/setUnit(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig7setUnitFTVSC19BKYLayoutConfigUnit3forSi_S1_">setUnit(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter unit: The <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi">LayoutConfig.InlineXPadding</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>unit</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setUnit</span><span class="p">(</span><span class="n">_</span> <span class="nv">unit</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>unit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Unit</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.InlineXPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>unit</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig4unitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_S1_"></a>
+                    <a name="//apple_ref/swift/Method/unit(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig4unitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_S1_">unit(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi">LayoutConfig.InlineXPadding</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no value was found for <code>key</code>, this value is automatically
+assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unit</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.InlineXPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no value was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig8viewUnitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_V12CoreGraphics7CGFloat"></a>
+                    <a name="//apple_ref/swift/Method/viewUnit(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig8viewUnitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_V12CoreGraphics7CGFloat">viewUnit(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>viewUnit</code> of the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi">LayoutConfig.InlineXPadding</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no value was found for <code>key</code>, this value is automatically
+assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>viewUnit</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">viewUnit</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.InlineXPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no value was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>viewUnit</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig13workspaceUnitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_V12CoreGraphics7CGFloat"></a>
+                    <a name="//apple_ref/swift/Method/workspaceUnit(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig13workspaceUnitFT3forSi12defaultValueVSC19BKYLayoutConfigUnit_V12CoreGraphics7CGFloat">workspaceUnit(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>workspaceUnit</code> of the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig14InlineXPaddingSi">LayoutConfig.InlineXPadding</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no value was found for <code>key</code>, this value is automatically
+assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>workspaceUnit</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceUnit</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.InlineXPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no value was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>workspaceUnit</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig7setSizeFTVSC19BKYLayoutConfigSize3forSi_S1_"></a>
+                    <a name="//apple_ref/swift/Method/setSize(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig7setSizeFTVSC19BKYLayoutConfigSize3forSi_S1_">setSize(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter size: The <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi">LayoutConfig.FieldColorButtonSize</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>size</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setSize</span><span class="p">(</span><span class="n">_</span> <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Size</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldColorButtonSize</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>size</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig4sizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_S1_"></a>
+                    <a name="//apple_ref/swift/Method/size(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig4sizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_S1_">size(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi">LayoutConfig.FieldColorButtonSize</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">size</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span><span class="p">(</span><span class="kt"><a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a></span><span class="o">.</span><span class="n">zero</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldColorButtonSize</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>Size</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig8viewSizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_VSC6CGSize"></a>
+                    <a name="//apple_ref/swift/Method/viewSize(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig8viewSizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_VSC6CGSize">viewSize(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>viewSize</code> of the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi">LayoutConfig.FieldColorButtonSize</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>viewSize</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">viewSize</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span><span class="p">(</span><span class="kt"><a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a></span><span class="o">.</span><span class="n">zero</span><span class="p">))</span>
+    <span class="o">-&gt;</span> <span class="kt">CGSize</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldColorButtonSize</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>Size</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>viewSize</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig13workspaceSizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_VSC16BKYWorkspaceSize"></a>
+                    <a name="//apple_ref/swift/Method/workspaceSize(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig13workspaceSizeFT3forSi12defaultValueVSC19BKYLayoutConfigSize_VSC16BKYWorkspaceSize">workspaceSize(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>workspaceSize</code> of the <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig20FieldColorButtonSizeSi">LayoutConfig.FieldColorButtonSize</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>workspaceSize</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceSize</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span> <span class="o">=</span> <span class="kt"><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></span><span class="p">(</span><span class="kt"><a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a></span><span class="o">.</span><span class="n">zero</span><span class="p">))</span>
+    <span class="o">-&gt;</span> <span class="kt"><a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldColorButtonSize</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>Size</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>workspaceSize</code> of the mapped <code><a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a></code> value.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig8setColorFTGSqCSo7UIColor_3forSi_GSqS1__"></a>
+                    <a name="//apple_ref/swift/Method/setColor(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig8setColorFTGSqCSo7UIColor_3forSi_GSqS1__">setColor(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code>UIColor</code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter color: The <code>UIColor</code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig30FieldCheckboxSwitchOnTintColorSi">LayoutConfig.FieldCheckboxSwitchOnTintColor</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>color</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setColor</span><span class="p">(</span><span class="n">_</span> <span class="nv">color</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>color</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>UIColor</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldCheckboxSwitchOnTintColor</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>color</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig5colorFT3forSi12defaultValueGSqCSo7UIColor__GSqS1__"></a>
+                    <a name="//apple_ref/swift/Method/color(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig5colorFT3forSi12defaultValueGSqCSo7UIColor__GSqS1__">color(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>UIColor</code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig30FieldCheckboxSwitchOnTintColorSi">LayoutConfig.FieldCheckboxSwitchOnTintColor</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code>UIColor</code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>key</code>&rsquo;s value
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">color</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldCheckboxSwitchOnTintColor</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>UIColor</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>key</code>’s value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig9setDoubleFTSd3forSi_Sd"></a>
+                    <a name="//apple_ref/swift/Method/setDouble(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig9setDoubleFTSd3forSi_Sd">setDouble(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code>Double</code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter double: The <code>Double</code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig21ViewAnimationDurationSi">LayoutConfig.ViewAnimationDuration</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>Double</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setDouble</span><span class="p">(</span><span class="n">_</span> <span class="nv">double</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>double</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Double</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.ViewAnimationDuration</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>Double</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig6doubleFT3forSi12defaultValueSd_Sd"></a>
+                    <a name="//apple_ref/swift/Method/double(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig6doubleFT3forSi12defaultValueSd_Sd">double(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>Double</code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig21ViewAnimationDurationSi">LayoutConfig.ViewAnimationDuration</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code>Double</code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>key</code>&rsquo;s value
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">double</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.ViewAnimationDuration</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>Double</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>key</code>’s value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig13setEdgeInsetsFTVSC13BKYEdgeInsets3forSi_S1_"></a>
+                    <a name="//apple_ref/swift/Method/setEdgeInsets(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig13setEdgeInsetsFTVSC13BKYEdgeInsets3forSi_S1_">setEdgeInsets(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code>EdgeInsets</code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter edgeInset: The <code>EdgeInsets</code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldInsetPaddingSi">LayoutConfig.FieldTextFieldInsetPadding</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>edgeInset</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setEdgeInsets</span><span class="p">(</span><span class="n">_</span> <span class="nv">edgeInsets</span><span class="p">:</span> <span class="kt">EdgeInsets</span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">EdgeInsets</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>edgeInset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>EdgeInsets</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldTextFieldInsetPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>edgeInset</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig10edgeInsetsFT3forSi12defaultValueVSC13BKYEdgeInsets_S1_"></a>
+                    <a name="//apple_ref/swift/Method/edgeInsets(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig10edgeInsetsFT3forSi12defaultValueVSC13BKYEdgeInsets_S1_">edgeInsets(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>EdgeInsets</code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldInsetPaddingSi">LayoutConfig.FieldTextFieldInsetPadding</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code>EdgeInsets</code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>key</code>&rsquo;s value
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">edgeInsets</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt">EdgeInsets</span> <span class="o">=</span> <span class="kt">EdgeInsets</span><span class="p">())</span>
+    <span class="o">-&gt;</span> <span class="kt">EdgeInsets</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldTextFieldInsetPadding</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>EdgeInsets</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>key</code>’s value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig8setFloatFTV12CoreGraphics7CGFloat3forSi_S2_"></a>
+                    <a name="//apple_ref/swift/Method/setFloat(_:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig8setFloatFTV12CoreGraphics7CGFloat3forSi_S2_">setFloat(_:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code>CGFloat</code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter float: The <code>CGFloat</code> value
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldMaximumWidthSi">LayoutConfig.FieldTextFieldMaximumWidth</a></code>)
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>float</code> that was set.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setFloat</span><span class="p">(</span><span class="n">_</span> <span class="nv">float</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>float</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>CGFloat</code> value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldTextFieldMaximumWidth</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>float</code> that was set.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig5floatFT3forSi12defaultValueV12CoreGraphics7CGFloat_S2_"></a>
+                    <a name="//apple_ref/swift/Method/float(for:defaultValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig5floatFT3forSi12defaultValueV12CoreGraphics7CGFloat_S2_">float(for:defaultValue:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>CGFloat</code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter key: The <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code> (e.g. <code><a href="../Classes/LayoutConfig.html#/s:ZvC7Blockly12LayoutConfig26FieldTextFieldMaximumWidthSi">LayoutConfig.FieldTextFieldMaximumWidth</a></code>)
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter defaultValue: [Optional] If no <code>CGFloat</code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    The <code>key</code>&rsquo;s value
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">float</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>LayoutConfig.FieldTextFieldMaximumWidth</code>)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>CGFloat</code> was found for <code>key</code>, this value is automatically assigned to <code>key</code> and used instead.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>key</code>’s value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig16updateViewValuesFT10fromEngineCS_12LayoutEngine_T_"></a>
+                    <a name="//apple_ref/swift/Method/updateViewValues(fromEngine:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Blockly12LayoutConfig16updateViewValuesFT10fromEngineCS_12LayoutEngine_T_">updateViewValues(fromEngine:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the UIView coordinate system values for all config values that have been stored
+in this instance, by using a given <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter engine: The <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code> used to update all config values
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">updateViewValues</span><span class="p">(</span><span class="n">fromEngine</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>engine</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>LayoutEngine</code> used to update all config values</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FE7BlocklyVSC19BKYLayoutConfigUnitcFV12CoreGraphics7CGFloatS0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FE7BlocklyVSC19BKYLayoutConfigUnitcFV12CoreGraphics7CGFloatS0_">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a unit for use inside a <code>LayoutConfig</code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter workspaceUnit: The value to use for <code>self.workspaceUnit</code>.
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <code>self.viewUnit</code> is automatically initialized to the correct value based on the given
+<code>workspaceUnit</code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspaceUnit</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspaceUnit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value to use for <code>self.workspaceUnit</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FE7BlocklyVSC19BKYLayoutConfigSizecFVSC16BKYWorkspaceSizeS0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FE7BlocklyVSC19BKYLayoutConfigSizecFVSC16BKYWorkspaceSizeS0_">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a size for use inside a <code>LayoutConfig</code>.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter workspaceSize: The value to use for <code>self.workspaceSize</code>.
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <code>self.viewSize</code> is automatically initialized to the correct value based on the given
+<code>workspaceSize</code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspaceSize</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspaceSize</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value to use for <code>self.workspaceSize</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
