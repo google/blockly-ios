@@ -49,11 +49,14 @@ extension Toolbox {
    malformed data, or contradictory data).
    */
   public class func makeToolbox(xml: AEXMLElement, factory: BlockFactory) throws -> Toolbox {
-    let toolboxNode = xml["toolbox"]
-
+    // Allow both "xml" (preferred) or "toolbox" as the root node
+    var toolboxNode = xml["xml"]
+    if toolboxNode.error != nil {
+      toolboxNode = xml["toolbox"]
+    }
     if let error = toolboxNode.error {
-      // if let error = toolboxNode.error {
-      throw BlocklyError(.xmlParsing, "An AEXMLError occurred parsing the <toolbox> node: \(error)")
+      throw BlocklyError(.xmlParsing,
+        "An AEXMLError occurred parsing the root node. Expected \"<xml>\": \(error)")
     }
 
     let toolbox = Toolbox()
@@ -68,6 +71,8 @@ extension Toolbox {
         if let colorHue = NumberFormatter().number(from: colorString) {
           let hue = (min(max(CGFloat(colorHue), 0), 360)) / 360
           color = ColorHelper.makeColor(hue: hue)
+        } else if let aColor = ColorHelper.makeColor(rgb: colorString) {
+          color = aColor
         } else {
           bky_print("Invalid toolbox category color: \"\(colorString)\"")
         }

@@ -22,24 +22,50 @@ class ToolboxXMLTest: XCTestCase {
   var factory: BlockFactory!
 
   override func setUp() {
-    factory = try! BlockFactory(jsonPath: "all_test_blocks.json",
-      bundle: Bundle(for: type(of: self)))
+    factory = BKYAssertDoesNotThrow {
+      try BlockFactory(jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
+    }
 
     super.setUp()
   }
 
   // MARK: - XML Parsing Tests
 
-  func testParseXML_EmptyToolbox() {
+  func testParseXML_EmptyToolboxWithXMLRoot() {
+    let xmlString = "<xml></xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
+
+    XCTAssertEqual(0, toolbox.categories.count)
+  }
+
+  func testParseXML_EmptyToolboxWithToolboxRoot() {
     let xmlString = "<toolbox></toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(0, toolbox.categories.count)
   }
 
   func testParseXML_EmptyCategory() {
-    let xmlString = "<toolbox><category name='abc' colour='180'></category></toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    let xmlString = "<xml><category name='abc' colour='180'></category></xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual("abc", toolbox.categories[0].name)
@@ -47,13 +73,38 @@ class ToolboxXMLTest: XCTestCase {
       accuracy: TestConstants.ACCURACY_CGF)
   }
 
+  func testParseXML_EmptyCategoryWithRGBColor() {
+    let xmlString = "<xml><category name='abc' colour='#ff0000'></category></xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+        try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+      }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
+
+    XCTAssertEqual(1, toolbox.categories.count)
+    XCTAssertEqual("abc", toolbox.categories[0].name)
+    let rgba = toolbox.categories[0].color.bky_rgba()
+    XCTAssertEqualWithAccuracy(1.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
+  }
+
   func testParseXML_TwoCategory() {
     let xmlString =
-      "<toolbox>" +
+      "<xml>" +
         "<category name='cat1'></category>" +
         "<category name='cat2'></category>" +
-      "</toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+      "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(2, toolbox.categories.count)
     XCTAssertEqual("cat1", toolbox.categories[0].name)
@@ -62,10 +113,16 @@ class ToolboxXMLTest: XCTestCase {
 
   func testParseXML_SimpleBlock() {
     let xmlString =
-    "<toolbox>" +
+    "<xml>" +
       "<category name='cat1'><block type='multiple_input_output'></block></category>" +
-    "</toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual(1, toolbox.categories[0].items.count)
@@ -74,15 +131,21 @@ class ToolboxXMLTest: XCTestCase {
 
   func testParseXML_TwoBlocksWithGaps() {
     let xmlString =
-    "<toolbox>" +
+    "<xml>" +
       "<category name='cat1'>" +
         "<block type='block_output'></block>" +
         "<sep gap='10' />" +
         "<block type='block_statement'></block>" +
         "<sep></sep>" +
       "</category>" +
-    "</toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(1, toolbox.categories.count)
 
@@ -96,7 +159,7 @@ class ToolboxXMLTest: XCTestCase {
 
   func testParseXML_NestedBlocks() {
     let xmlString =
-    "<toolbox>" +
+    "<xml>" +
       "<category name='cat1'>" +
         "<block type='controls_repeat_ext'>" +
           "<value name='TIMES'>" +
@@ -104,8 +167,14 @@ class ToolboxXMLTest: XCTestCase {
           "</value>" +
         "</block>" +
       "</category>" +
-    "</toolbox>"
-    let toolbox = try! Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual(2, toolbox.categories[0].allBlocks.count)
@@ -130,7 +199,7 @@ class ToolboxXMLTest: XCTestCase {
 
   func testParseXML_UnknownBlock() {
     do {
-      let xmlString = "<toolbox><category><block id='unknownblock'></block></category></toolbox>"
+      let xmlString = "<xml><category><block id='unknownblock'></block></category></xml>"
       _ = try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {

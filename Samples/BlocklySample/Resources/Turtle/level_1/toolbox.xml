@@ -13,7 +13,7 @@
   ~  limitations under the License.
   -->
 
-<toolbox>
+<xml>
   <category name="Turtle" colour="160">
     <block type="turtle_move">
       <value name="VALUE">
@@ -63,4 +63,4 @@
   <category name="Math" colour="230">
     <block type="math_number" />
   </category>
-</toolbox>
+</xml>
