@@ -40,7 +40,10 @@ class CodeGeneratorServiceTest: XCTestCase {
       ])
 
     // Create the block factory
-    _blockFactory = try! BlockFactory(jsonPath: "all_test_blocks.json", bundle: testBundle)
+    _blockFactory = BlockFactory()
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"], bundle: testBundle)
+    }
   }
 
   // MARK: - Tests

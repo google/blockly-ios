@@ -29,9 +29,10 @@ class LayoutBuilderTest: XCTestCase {
 
     _workspaceLayout = WorkspaceLayout(workspace: Workspace(), engine: DefaultLayoutEngine())
     _layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
-    _blockFactory = BKYAssertDoesNotThrow {
-      try BlockFactory(
-        jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
+    _blockFactory = BlockFactory()
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"],
+                             bundle: Bundle(for: type(of: self)))
     }
   }
 

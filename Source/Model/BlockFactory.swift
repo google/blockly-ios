@@ -16,59 +16,48 @@
 import Foundation
 
 /**
- Factory for instantiating new blocks by name. Blocks can be loaded in from a
- JSON file or be added manually.
+ Factory for instantiating new `Block` instances by name.
+
+ Block definitions can be loaded into the factory from:
+ - Default files defined by the Blockly library
+ - Custom JSON files
  */
 @objc(BKYBlockFactory)
 public class BlockFactory : NSObject {
 
   internal var _blockBuilders = Dictionary<String, Block.Builder>()
 
-  // MARK: - Initializers
-
-  /**
-   Creates a BlockFactory.
-   */
-  public override init() {
-  }
-
-  /**
-   Creates a BlockFactory with blocks loaded from a json file.
-
-   - Parameter jsonPath: Path to file containing blocks in JSON.
-   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
-   - Throws:
-   `BlocklyError`: Occurs if any of the blocks are invalid.
-   */
-  public init(jsonPath: String, bundle: Bundle? = nil) throws {
-    super.init()
-
-    try load(jsonPaths: [jsonPath], bundle: bundle)
-  }
-
-  /**
-   Creates a BlockFactory with blocks loaded from a list of json files.
-
-   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
-   - Parameter bundle: The bundle to find the json files. If nil, NSBundle.mainBundle() is used.
-   - Throws:
-   `BlocklyError`: Occurs if any of the blocks are invalid.
-   */
-  public init(jsonPaths: [String], bundle: Bundle? = nil) throws {
-    super.init()
-
-    try load(jsonPaths: jsonPaths, bundle: bundle)
-  }
-
   // MARK: - Public
 
   /**
-   Loads blocks from a list of json files.
+   Loads blocks from a list of default files defined by the Blockly library.
 
-   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
-   - Parameter bundle: The bundle to find the json file. If nil, NSBundle.mainBundle() is used.
+   - Parameter defaultFiles: The list of default block definition files that should be loaded.
+   - Note: This method will overwrite any existing block definitions that contain the same name.
    */
-  public func load(jsonPaths: [String], bundle: Bundle? = nil) throws {
+  public func load(fromDefaultFiles defaultFiles: BlockJSONFile) {
+    let bundle = Bundle(for: type(of: self))
+
+    do {
+      try load(fromJSONPaths: defaultFiles.fileLocations, bundle: bundle)
+    } catch let error as NSError {
+      bky_assertionFailure("Could not load default block definition files in library bundle: " +
+        "\(defaultFiles.fileLocations).\nError: \(error)")
+    }
+  }
+
+  /**
+   Loads blocks from a list of JSON files.
+
+   - Note: This method will overwrite any existing block definitions that contain the same name.
+   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
+   - Parameter bundle: The bundle containing the JSON paths. If `nil` is specified,
+   `NSBundle.mainBundle()` is used by default.
+   - Throws:
+   `BlocklyError`: Thrown if a JSON file could not be found or read, or if the JSON contains
+   invalid block definition(s).
+   */
+  public func load(fromJSONPaths jsonPaths: [String], bundle: Bundle? = nil) throws {
     let aBundle = (bundle ?? Bundle.main)
 
     for jsonPath in jsonPaths {

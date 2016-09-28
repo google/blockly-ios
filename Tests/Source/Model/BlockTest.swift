@@ -23,8 +23,11 @@ class BlockTest: XCTestCase {
 
   override func setUp() {
     _workspace = Workspace()
-    _blockFactory = try! BlockFactory(
-      jsonPath: "all_test_blocks.json", bundle: Bundle(for: type(of: self)))
+    _blockFactory = BlockFactory()
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"],
+                             bundle: Bundle(for: type(of: self)))
+    }
   }
 
   func testTopLevel() {

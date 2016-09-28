@@ -16,7 +16,7 @@
   },
   {
     "type": "colour_random",
-    "message0": "random color",
+    "message0": "random colour",
     "args0": [],
     "output": null,
     "colour": 20,
