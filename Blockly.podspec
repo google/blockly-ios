@@ -27,11 +27,11 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc     = true
 
-  s.source_files     = 'Blockly/Code/**/*'
+  s.source_files     = 'Source/**/*'
 
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
   # is why we include Blockly.xcassets through '.resources', instead of '.resource_bundles'.
-  s.resources = ['Blockly/Resources/Blockly.xcassets', 'Blockly/Resources/code_generator']
+  s.resources = ['Resources/Blockly.xcassets', 'Resources/code_generator']
 
   s.frameworks        = 'WebKit'
   s.ios.dependency 'AEXML', '~> 4.0.0'
