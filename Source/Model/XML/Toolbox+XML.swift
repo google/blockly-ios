@@ -87,7 +87,7 @@ extension Toolbox {
         bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
       }
 
-      let category = toolbox.addCategory(name, color: color ?? UIColor.clear, icon: icon)
+      let category = toolbox.addCategory(name: name, color: color ?? UIColor.clear, icon: icon)
 
       for subNode in categoryNode.children {
         switch subNode.name {
@@ -109,6 +109,21 @@ extension Toolbox {
         default:
           bky_print("Unknown element: \(xml.name)")
         }
+      }
+    }
+
+    // Allow non-categorized blocks. These will appear in their own category at the very end.
+    if let uncategorizedBlocks = toolboxNode["block"].all,
+      uncategorizedBlocks.count > 0
+    {
+      // TODO:(#101) Localize "Blocks"
+      let categoryName = "Blocks"
+      let color = ColorHelper.makeColor(hue: (160.0 / 360.0))
+      let category = toolbox.addCategory(name: categoryName, color: color, icon: nil)
+
+      for blockNode in uncategorizedBlocks {
+        let blockTree = try Block.blockTree(fromXml: blockNode, factory: factory)
+        try category.addBlockTree(blockTree.rootBlock)
       }
     }
 

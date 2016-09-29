@@ -59,7 +59,8 @@
   BKYBlock *mathNumberBlock = [blockFactory makeBlockWithName:@"math_number" error:nil];
 
   BKYToolbox *toolbox = [[BKYToolbox alloc] init];
-  BKYToolboxCategory *category = [toolbox addCategory:@"Test" color:[UIColor blueColor] icon:nil];
+  BKYToolboxCategory *category =
+    [toolbox addCategoryWithName:@"Test" color:[UIColor blueColor] icon:nil];
   [category addBlockTree:statementBlock error:nil];
   [category addBlockTree:mathNumberBlock error:nil];
 
