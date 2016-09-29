@@ -122,6 +122,10 @@ public final class DropdownView: UIView {
     configureSubviews()
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
