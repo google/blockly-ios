@@ -28,7 +28,7 @@ public final class CodeGeneratorService: NSObject {
   // MARK: - Properties
 
   /// List of core Blockly JS dependencies
-  fileprivate let jsCoreDependencies: [CodeGenerator.BundledFile]
+  fileprivate let jsCoreDependencies: [BundledFile]
   /// Current code generator
   fileprivate var codeGenerator: CodeGenerator?
   /// Operation queue of all pending code generation requests
@@ -46,7 +46,7 @@ public final class CodeGeneratorService: NSObject {
      - Blockly default blocks (eg. 'blocks_compressed.js')
      - A default list of messages (eg. 'msg/js/en.js')
    */
-  public init(jsCoreDependencies: [CodeGenerator.BundledFile]) {
+  public init(jsCoreDependencies: [BundledFile]) {
     self.jsCoreDependencies = jsCoreDependencies
     super.init()
 
@@ -66,7 +66,7 @@ public final class CodeGeneratorService: NSObject {
 
    - Parameter request: The request
    */
-  public func generateCode(forRequest request: Request) {
+  public func generateCode(forRequest request: CodeGeneratorServiceRequest) {
     request.codeGeneratorService = self
     requestQueue.addOperation(request)
   }
@@ -74,7 +74,7 @@ public final class CodeGeneratorService: NSObject {
   /**
    Cancels code generation for a given request.
    */
-  public func cancelRequest(_ request: Request) {
+  public func cancelRequest(_ request: CodeGeneratorServiceRequest) {
     request.cancel()
   }
 
@@ -87,7 +87,7 @@ public final class CodeGeneratorService: NSObject {
 
   // MARK: - Private
 
-  fileprivate func executeRequest(_ request: Request) {
+  open func executeRequest(_ request: CodeGeneratorServiceRequest) {
     if let codeGenerator = self.codeGenerator ,
       (compareLists(codeGenerator.jsonBlockDefinitions, request.jsonBlockDefinitions) &&
       compareLists(codeGenerator.jsBlockGenerators, request.jsBlockGenerators) &&
@@ -118,14 +118,16 @@ public final class CodeGeneratorService: NSObject {
   }
 
   fileprivate func compareLists(
-    _ list1: [CodeGenerator.BundledFile], _ list2: [CodeGenerator.BundledFile]) -> Bool
+    _ list1: [BundledFile], _ list2: [BundledFile]) -> Bool
   {
     if list1.count != list2.count {
       return false
     }
     var mutableList1 = list1
     for path2 in list2 {
-      if let index = mutableList1.index(where: { $0.file == path2.file && $0.bundle == path2.bundle }) {
+      if let index = mutableList1.index(where:
+        { $0.path == path2.path && $0.bundle == path2.bundle })
+      {
         mutableList1.remove(at: index)
       } else {
         return false
@@ -138,155 +140,4 @@ public final class CodeGeneratorService: NSObject {
 // MARK: - CodeGeneratorService.Request Class
 
 extension CodeGeneratorService {
-  /**
-   Request object for generating code for a workspace.
-   */
-  open class Request: Operation {
-    // MARK: - Typealiases
-    public typealias CompletionClosure = (_ code: String) -> Void
-    public typealias ErrorClosure = (_ error: String) -> Void
-
-    // MARK: - Properties
-    /// The workspace XML to use when generating code
-    open let workspaceXML: String
-    /// The name of the JS object that generates code (e.g. 'Blockly.Python')
-    open let jsGeneratorObject: String
-    /// List of block generator JS files (e.g. ['python_compressed.js'])
-    open let jsBlockGenerators: [CodeGenerator.BundledFile]
-    /// List of JSON files containing block definitions
-    open let jsonBlockDefinitions: [CodeGenerator.BundledFile]
-    /// Callback that is executed when code generation completes successfully. This is always
-    /// executed on the main thread.
-    open var onCompletion: CompletionClosure?
-    /// Callback that is executed when code generation fails. This is always executed on the main
-    /// thread.
-    open var onError: ErrorClosure?
-    /// The code generator service used for executing this request.
-    fileprivate weak var codeGeneratorService: CodeGeneratorService?
-
-    // MARK: - Initializers
-
-    /**
-     Initializer for the code generator service.
-
-     - Parameter workspaceXML: The XML to use for generating code.
-     - Parameter jsGeneratorObject: The name of the JS object that generates code.
-       (e.g. 'Blockly.Python')
-     - Parameter jsBlockGenerators: The list of JS files containing block generators.
-     - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
-     - Parameter completion: Callback that is executed when code generation completes successfully.
-     */
-    public init(workspaceXML: String,
-      jsGeneratorObject: String,
-      jsBlockGenerators: [CodeGenerator.BundledFile],
-      jsonBlockDefinitions: [CodeGenerator.BundledFile],
-      completion: CompletionClosure? = nil, error: ErrorClosure? = nil)
-    {
-      self.workspaceXML = workspaceXML
-      self.jsGeneratorObject = jsGeneratorObject
-      self.jsBlockGenerators = jsBlockGenerators
-      self.jsonBlockDefinitions = jsonBlockDefinitions
-      self.onCompletion = completion
-      self.onError = error
-    }
-
-    /**
-     Initializer for the code generator service.
-
-     - Parameter workspace: The workspace to use for generating code.
-     - Parameter jsGeneratorObject: The name of the JS object that generates code.
-       (e.g. 'Blockly.Python')
-     - Parameter jsBlockGenerators: The list of JS files containing block generators.
-     - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
-     - Parameter completion: Callback that is executed when code generation completes successfully.
-     */
-    public convenience init(workspace: Workspace,
-      jsGeneratorObject: String,
-      jsBlockGenerators: [CodeGenerator.BundledFile],
-      jsonBlockDefinitions: [CodeGenerator.BundledFile],
-      completion: CompletionClosure? = nil, error: ErrorClosure? = nil) throws
-    {
-      self.init(workspaceXML: try workspace.toXML().xml,
-        jsGeneratorObject: jsGeneratorObject, jsBlockGenerators: jsBlockGenerators,
-        jsonBlockDefinitions: jsonBlockDefinitions, completion: completion, error: error)
-    }
-
-    // MARK: - Super
-
-    fileprivate var _executing: Bool = false
-    /// `true` if the generator is executing, `false` otherwise.
-    open override var isExecuting: Bool {
-      get { return _executing }
-      set {
-        if _executing == newValue {
-          return
-        }
-        willChangeValue(forKey: "isExecuting")
-        _executing = newValue
-        didChangeValue(forKey: "isExecuting")
-      }
-    }
-
-    fileprivate var _finished: Bool = false
-    /// `true` if the generator has finished running, `false` otherwise.
-    open override var isFinished: Bool {
-      get { return _finished }
-      set {
-        if _finished == newValue {
-          return
-        }
-        willChangeValue(forKey: "isFinished")
-        _finished = newValue
-        didChangeValue(forKey: "isFinished")
-      }
-    }
-
-    /// Starts the code generator service.
-    open override func start() {
-      if self.isCancelled {
-        finishOperation()
-        return
-      }
-      self.isExecuting = true
-
-      // Execute the request. The operation will eventually execute:
-      // completeRequestWithCode(...) or
-      // completeRequestWithError(...)
-      codeGeneratorService?.executeRequest(self)
-    }
-
-    /// Cancels the code generator service.
-    open override func cancel() {
-      self.onCompletion = nil
-      self.onError = nil
-      super.cancel()
-    }
-
-    // MARK: - Private
-
-    fileprivate func completeRequest(withCode code: String) {
-      DispatchQueue.main.async {
-        if !self.isCancelled {
-          self.onCompletion?(code)
-        }
-        self.finishOperation()
-      }
-    }
-
-    fileprivate func completeRequest(withError error: String) {
-      DispatchQueue.main.async {
-        if !self.isCancelled {
-          self.onError?(error)
-        }
-        self.finishOperation()
-      }
-    }
-
-    fileprivate func finishOperation() {
-      self.onCompletion = nil
-      self.onError = nil
-      self.isExecuting = false
-      self.isFinished = true
-    }
-  }
 }

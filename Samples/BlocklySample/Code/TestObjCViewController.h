@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
+#import <Blockly/Blockly-Swift.h>
 #import <UIKit/UIKit.h>
 
 @interface TestObjCViewController: UIViewController
+
+@property BKYCodeGeneratorService *codeGeneratorService;
+@property BKYWorkspace *workspace;
 
 @end
