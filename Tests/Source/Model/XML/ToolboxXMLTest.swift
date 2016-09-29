@@ -112,7 +112,7 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqual("cat2", toolbox.categories[1].name)
   }
 
-  func testParseXML_SimpleBlock() {
+  func testParseXML_SimpleCategorizedBlock() {
     let xmlString =
     "<xml>" +
       "<category name='cat1'><block type='multiple_input_output'></block></category>" +
@@ -128,6 +128,26 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual(1, toolbox.categories[0].items.count)
     XCTAssertEqual("multiple_input_output", toolbox.categories[0].items[0].rootBlock?.name)
+  }
+
+  func testParseXML_SimpleUncategorizedBlocks() {
+    let xmlString =
+      "<xml>" +
+        "<block type='block_output'></block>" +
+        "<block type='block_output'></block>" +
+      "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
+
+    XCTAssertEqual(1, toolbox.categories.count)
+    XCTAssertEqual(2, toolbox.categories[0].items.count)
+    XCTAssertEqual("block_output", toolbox.categories[0].items[0].rootBlock?.name)
+    XCTAssertEqual("block_output", toolbox.categories[0].items[1].rootBlock?.name)
   }
 
   func testParseXML_TwoBlocksWithGaps() {

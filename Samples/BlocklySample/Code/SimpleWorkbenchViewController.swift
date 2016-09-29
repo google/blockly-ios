@@ -85,7 +85,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let toolbox = Toolbox()
 
       let loopIcon = UIImage(named: "icon_loop")
-      let loops = toolbox.addCategory("Loops", color: UIColor.yellow, icon: loopIcon)
+      let loops = toolbox.addCategory(name: "Loops", color: UIColor.yellow, icon: loopIcon)
       if let repeatBlock = try? _blockFactory.makeBlock(name: "controls_repeat_ext"),
         let repeatBlockInput = repeatBlock.firstInput(withName: "TIMES"),
         let numberBlock = try? _blockFactory.makeBlock(name: "non_negative_integer", shadow: true)
@@ -98,7 +98,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
       let prevNextIcon = UIImage(named: "icon_prevnext")
       let prevNextCategory =
-        toolbox.addCategory("Prev / Next", color: UIColor.green, icon: prevNextIcon)
+        toolbox.addCategory(name: "Prev / Next", color: UIColor.green, icon: prevNextIcon)
       try addBlock("statement_no_input", toWorkspace: prevNextCategory)
       if
         let statementValueInputBlock = try? _blockFactory.makeBlock(name: "statement_value_input"),
@@ -120,7 +120,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       try addBlock("block_statement", toWorkspace: prevNextCategory)
 
       let blockIcon = UIImage(named: "icon_block")
-      let random = toolbox.addCategory("Random", color: UIColor.orange, icon: blockIcon)
+      let random = toolbox.addCategory(name: "Random", color: UIColor.orange, icon: blockIcon)
       try addBlock("web_image", toWorkspace: random)
       try addBlock("local_image", toWorkspace: random)
       try addBlock("angle", toWorkspace: random)

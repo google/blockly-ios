@@ -47,8 +47,8 @@ open class Toolbox: NSObject {
    - Parameter color: The color of the new category.
    - Returns: The new category.
    */
-  open func addCategory(_ categoryName: String, color: UIColor) -> Category {
-    return addCategory(categoryName, color: color, icon: nil)
+  open func addCategory(name: String, color: UIColor) -> Category {
+    return addCategory(name: name, color: color, icon: nil)
   }
 
   /**
@@ -59,8 +59,8 @@ open class Toolbox: NSObject {
   - Parameter icon: The `UIImage` icon for the new category.
   - Returns: The new category.
   */
-  open func addCategory(_ categoryName: String, color: UIColor, icon: UIImage?) -> Category {
-    let category = Category(name: categoryName, color: color, icon: icon)
+  open func addCategory(name: String, color: UIColor, icon: UIImage?) -> Category {
+    let category = Category(name: name, color: color, icon: icon)
     category.readOnly = self.readOnly
 
     self.categories.append(category)
