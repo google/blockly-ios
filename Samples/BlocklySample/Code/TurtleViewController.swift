@@ -84,11 +84,11 @@ class TurtleViewController: UIViewController {
     _codeGeneratorService = CodeGeneratorService(
       jsCoreDependencies: [
         // The JS file containing the Blockly engine
-        (file: "Turtle/blockly_web/blockly_compressed.js", bundle: nil),
+        BundledFile(path: "Turtle/blockly_web/blockly_compressed.js"),
         // The JS file containing all Blockly default blocks
-        (file: "Turtle/blockly_web/blocks_compressed.js", bundle: nil),
+        BundledFile(path: "Turtle/blockly_web/blocks_compressed.js"),
         // The JS file containing a list of internationalized messages
-        (file: "Turtle/blockly_web/msg/js/en.js", bundle: nil)
+        BundledFile(path: "Turtle/blockly_web/msg/js/en.js")
       ])
   }
 
@@ -197,13 +197,15 @@ class TurtleViewController: UIViewController {
         addTimestampedText("Generating code...")
 
         // Request code generation.
-        let request = try CodeGeneratorService.Request(workspace: workspace,
+        let request = try CodeGeneratorServiceRequest(workspace: workspace,
           jsGeneratorObject: "Blockly.JavaScript",
           jsBlockGenerators: [
-            (file: "Turtle/blockly_web/javascript_compressed.js", bundle: nil),
-            (file: "Turtle/generators.js", bundle: nil)
+            BundledFile(path: "Turtle/blockly_web/javascript_compressed.js"),
+            BundledFile(path: "Turtle/generators.js")
           ],
-          jsonBlockDefinitions: [(file: "Turtle/turtle_blocks.json", bundle: nil)])
+          jsonBlockDefinitions: [
+            BundledFile(path: "Turtle/turtle_blocks.json")
+          ])
 
         // Note: A single set of request listeners like this is sufficient for most cases, but
         // dynamic completion and error listeners may be created for each call if needed.

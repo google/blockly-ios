@@ -17,8 +17,16 @@
 #import <Blockly/Blockly.h>
 #import <Blockly/Blockly-Swift.h>
 
-@implementation TestObjCViewController
+@interface TestObjCViewController ()
 
+@property(nonatomic) BKYCodeGeneratorService *codeGeneratorService;
+@property(nonatomic) BKYWorkspace *workspace;
+
+@end
+
+
+/// TODO (#40) - Create Obj-C sample project.
+@implementation TestObjCViewController
 // MARK: - Super
 
 - (void)viewDidLoad {
@@ -41,15 +49,7 @@
   blockBuilder.inputBuilders = inputBuilders;
 
   // Create workspace
-  BKYWorkspace *workspace = [[BKYWorkspace alloc] init];
-
-  blockBuilder.position = BKYWorkspacePointMake(0, 0);
-  BKYBlock *block1 = [blockBuilder makeBlockAsShadow:NO error:nil];
-  [workspace addBlockTree:block1 error:nil];
-
-  blockBuilder.position = BKYWorkspacePointMake(100, 100);
-  BKYBlock *block2 = [blockBuilder makeBlockAsShadow:NO error:nil];
-  [workspace addBlockTree:block2 error:nil];
+  _workspace = [[BKYWorkspace alloc] init];
 
   // Create toolbox with some blocks in it
   BKYBlockFactory *blockFactory = [[BKYBlockFactory alloc] init];
@@ -67,13 +67,56 @@
   // Load workbench with workspace and toolbox
   BKYWorkbenchViewController *viewController =
     [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleDefaultStyle];
-  [viewController loadWorkspace:workspace error:nil];
+  [viewController loadWorkspace:_workspace error:nil];
   [viewController loadToolbox:toolbox error:nil];
+
+  _codeGeneratorService = [[BKYCodeGeneratorService alloc] initWithJsCoreDependencies:@[
+    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blockly_compressed.js"],
+    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blocks_compressed.js"],
+    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/msg/js/en.js"]]];
+
+  BKYBlock *block = [blockFactory makeBlockWithName:@"math_number" error:nil];
+  [_workspace addBlockTree:block error:nil];
 
   // Add workbench to this view controller
   [self addChildViewController:viewController];
   [self.view addSubview:viewController.view];
   viewController.view.bounds = self.view.bounds;
+
+   [self addGenerateButton];
+}
+
+- (void)generateCode:(UIButton *)button {
+  BKYCodeGeneratorServiceRequest *request =
+    [[BKYCodeGeneratorServiceRequest alloc]
+      initWithWorkspace:_workspace
+      jsGeneratorObject:@"Blockly.JavaScript"
+      jsBlockGenerators:
+        @[[BKYBundledFile fileWithPath:@"Turtle/blockly_web/javascript_compressed.js"],
+          [BKYBundledFile fileWithPath:@"Turtle/generators.js"]]
+      jsonBlockDefinitions:
+        @[[BKYBundledFile fileWithPath:@"Turtle/turtle_blocks.json"]]
+      error:nil];
+  request.onCompletion = ^(NSString *code) {
+    NSLog(@"Successfully generated code:");
+    NSLog(@"%@", code);
+  };
+  request.onError = ^(NSString *error) {
+    NSLog(@"Failed to generate code.");
+    NSLog(@"ERROR: %@", error);
+  };
+
+  [_codeGeneratorService generateCodeForRequest:request];
+}
+
+- (void)addGenerateButton {
+  UIBarButtonItem *generateButton = [[UIBarButtonItem alloc]
+    initWithTitle:@"Generate"
+    style:UIBarButtonItemStylePlain
+    target:self
+    action:@selector(generateCode:)];
+  generateButton.title = @"Generate";
+  self.navigationItem.rightBarButtonItem = generateButton;
 }
 
 - (BOOL)prefersStatusBarHidden {

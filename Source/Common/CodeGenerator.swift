@@ -41,14 +41,6 @@ public final class CodeGenerator: NSObject {
   public typealias LoadFailureClosure = (_ error: String) -> Void
   public typealias CompletionClosure = (_ code: String) -> Void
   public typealias ErrorClosure = (_ error: String) -> Void
-  /**
-   Tuple defining where to find a local file.
-
-   - Parameter file: The path to a local file
-   - Parameter bundle: The bundle in which to find `file`. If nil is specified, the main bundle
-   should be used.
-  */
-  public typealias BundledFile = (file: String, bundle: Bundle?)
 
   // MARK: - Enum - State
 
@@ -229,8 +221,8 @@ public final class CodeGenerator: NSObject {
    `BlocklyError`: Thrown if there was an error loading the file.
    */
   fileprivate func contents(ofBundledFile bundledFile: BundledFile) throws -> String {
-    let fromBundle = bundledFile.bundle ?? Bundle.main
-    let file = bundledFile.file
+    let fromBundle = bundledFile.bundle
+    let file = bundledFile.path
     if let path = fromBundle.path(forResource: file, ofType: nil) {
       do {
         let string = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
@@ -298,8 +290,9 @@ extension CodeGenerator: WKNavigationDelegate {
       var jsScripts = [String]()
 
       // Load our special bridge file
-      jsScripts.append(try contents(ofBundledFile: (file: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
-        bundle: Bundle(for: CodeGenerator.self))))
+      jsScripts.append(try contents(ofBundledFile:
+        BundledFile(path: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
+          bundle: Bundle(for: CodeGenerator.self))))
 
       // Load JS dependencies
       for bundledFile in jsCoreDependencies {
