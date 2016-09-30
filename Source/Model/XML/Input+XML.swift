@@ -19,7 +19,7 @@ import AEXML
 // MARK: - XML Serialization
 
 extension Input {
-  // MARK: - Public
+  // MARK: - Internal
 
   /**
    Creates XML elements for this input and all of its descendants.
@@ -28,20 +28,20 @@ extension Input {
    - Throws:
    `BlocklyError`: Thrown if there was an error serializing this input or any of its descendants.
    */
-  public func toXML() throws -> [AEXMLElement] {
+  internal func toXMLElement() throws -> [AEXMLElement] {
     var xmlElements: [AEXMLElement]
     switch type {
     case InputType.dummy:
       xmlElements = []
     case InputType.value:
-      xmlElements = try toXML(withName: XMLConstants.TAG_INPUT_VALUE)
+      xmlElements = try toXMLElement(withName: XMLConstants.TAG_INPUT_VALUE)
     case InputType.statement:
-      xmlElements = try toXML(withName: XMLConstants.TAG_INPUT_STATEMENT)
+      xmlElements = try toXMLElement(withName: XMLConstants.TAG_INPUT_STATEMENT)
     }
 
     // Create xml elements for each field
     for field in fields {
-      if let fieldXML = try field.toXML() {
+      if let fieldXML = try field.toXMLElement() {
         xmlElements.append(fieldXML)
       }
     }
@@ -51,7 +51,7 @@ extension Input {
 
   // MARK: - Private
 
-  fileprivate func toXML(withName elementName: String) throws -> [AEXMLElement] {
+  fileprivate func toXMLElement(withName elementName: String) throws -> [AEXMLElement] {
     if connectedBlock == nil && connectedShadowBlock == nil {
       // No block connected, don't include any xml for this input
       return []
@@ -63,10 +63,10 @@ extension Input {
     let xml = AEXMLElement(
       name: elementName, value: nil, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
     if let connectedBlock = connectedBlock {
-      xml.addChild(try connectedBlock.toXML())
+      xml.addChild(try connectedBlock.toXMLElement())
     }
     if let connectedShadowBlock = connectedShadowBlock {
-      xml.addChild(try connectedShadowBlock.toXML())
+      xml.addChild(try connectedShadowBlock.toXMLElement())
     }
     xmlElements.append(xml)
 

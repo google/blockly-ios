@@ -19,7 +19,7 @@ import AEXML
 // MARK: - XML Serialization
 
 extension Field {
-  // MARK: - Public
+  // MARK: - Internal
 
   /**
    Creates an XML element for this field.
@@ -29,7 +29,7 @@ extension Field {
    - Throws:
    `BlocklyError`: Thrown if there was an error serializing this field.
    */
-  public func toXML() throws -> AEXMLElement? {
+  internal func toXMLElement() throws -> AEXMLElement? {
     if let serializedText = try self.serializedText() {
       return AEXMLElement(name: XMLConstants.TAG_FIELD,
                           value: serializedText, attributes: [XMLConstants.ATTRIBUTE_NAME: name])
