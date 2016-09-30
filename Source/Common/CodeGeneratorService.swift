@@ -206,7 +206,7 @@ extension CodeGeneratorService {
       jsonBlockDefinitions: [CodeGenerator.BundledFile],
       completion: CompletionClosure? = nil, error: ErrorClosure? = nil) throws
     {
-      self.init(workspaceXML: try workspace.toXML().xml,
+      self.init(workspaceXML: try workspace.toXML(),
         jsGeneratorObject: jsGeneratorObject, jsBlockGenerators: jsBlockGenerators,
         jsonBlockDefinitions: jsonBlockDefinitions, completion: completion, error: error)
     }

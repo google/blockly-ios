@@ -60,19 +60,33 @@ extension Workspace {
   // MARK: - Public
 
   /**
-   Creates an XML document representing the current state of this workspace.
+   Returns an XML string representing the current state of this workspace.
+
+   - Returns: The XML string.
+   - Throws:
+   `BlocklyError`: Thrown if there was an error serializing any of the blocks in the workspace.
+   */
+  @objc(toXMLWithError:)
+  public func toXML() throws -> String {
+    return try toXMLDocument().xml
+  }
+
+  // MARK: - Internal
+
+  /**
+   Creates and returns an XML document representing the current state of this workspace.
 
    - Returns: An XML document.
    - Throws:
    `BlocklyError`: Thrown if there was an error serializing any of the blocks in the workspace.
    */
-  public func toXML() throws -> AEXMLDocument {
+  internal func toXMLDocument() throws -> AEXMLDocument {
     let xmlDoc = AEXMLDocument()
     let rootXML = xmlDoc.addChild(name: "xml", value: nil,
-      attributes: ["xmlns": "http://www.w3.org/1999/xhtml"])
+                                  attributes: ["xmlns": "http://www.w3.org/1999/xhtml"])
 
     for block in topLevelBlocks() {
-      rootXML.addChild(try block.toXML())
+      rootXML.addChild(try block.toXMLElement())
     }
 
     return xmlDoc

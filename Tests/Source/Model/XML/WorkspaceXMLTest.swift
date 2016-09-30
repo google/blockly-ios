@@ -107,7 +107,7 @@ class WorkspaceXMLTest: XCTestCase {
 
   func testSerializeXML_EmptyWorkspace() {
     let workspace = Workspace()
-    let xml = try! workspace.toXML()
+    let xml = try! workspace.toXMLDocument()
 
     // Expected: <xml xmlns="http://www.w3.org/1999/xhtml" />
     XCTAssertEqual("xml", xml.root.name)
@@ -120,7 +120,7 @@ class WorkspaceXMLTest: XCTestCase {
     let workspace = Workspace()
     let block = try! Block.Builder(name: "test").makeBlock(uuid: "12345")
     try! workspace.addBlockTree(block)
-    let xml = try! workspace.toXML()
+    let xml = try! workspace.toXMLDocument()
 
     // Expected:
     // <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -148,7 +148,7 @@ class WorkspaceXMLTest: XCTestCase {
     let block2 = try! Block.Builder(name: "test2").makeBlock(uuid: "200")
     try! workspace.addBlockTree(block1)
     try! workspace.addBlockTree(block2)
-    let xml = try! workspace.toXML()
+    let xml = try! workspace.toXMLDocument()
 
     // Expected:
     // <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -179,7 +179,7 @@ class WorkspaceXMLTest: XCTestCase {
 
     let workspace = Workspace()
     BKYAssertDoesNotThrow { try workspace.addBlockTree(parent) }
-    guard let xml = BKYAssertDoesNotThrow({ try workspace.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try workspace.toXMLDocument() }) else {
       XCTFail("Could not build XML")
       return
     }
