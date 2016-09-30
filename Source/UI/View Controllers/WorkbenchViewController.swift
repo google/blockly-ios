@@ -148,9 +148,9 @@ open class WorkbenchViewController: UIViewController {
   /// The factory for creating views
   public final let viewFactory: ViewFactory
 
-  /// The current style of workbench
+  /// The style of workbench
   public final let style: Style
-  /// The workspace that has been loaded via `loadWorkspace(:)`
+  /// The current state of the main workspace
   open var workspace: Workspace? {
     return _workspaceLayout?.workspace
   }
@@ -384,6 +384,15 @@ open class WorkbenchViewController: UIViewController {
     let trashGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     trashGesture.delegate = self
     _trashCanViewController.view.addGestureRecognizer(trashGesture)
+
+    // Create a default workspace, if one doesn't already exist
+    if workspace == nil {
+      do {
+        try loadWorkspace(Workspace())
+      } catch let error as NSError {
+        bky_print("Could not create a default workspace: \(error)")
+      }
+    }
   }
 
   open override func viewDidLoad() {
