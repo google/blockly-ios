@@ -297,7 +297,7 @@ class BlockXMLTest: XCTestCase {
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"37\" y=\"13\" />
-    let xml = try! block?.toXML()
+    let xml = try! block?.toXMLElement()
     XCTAssertEqual("block", xml?.name)
     XCTAssertEqual(4, xml?.attributes.count)
     XCTAssertEqual("block_uuid", xml?.attributes["id"])
@@ -314,7 +314,7 @@ class BlockXMLTest: XCTestCase {
 
     // This is the xml we expect from `block`:
     // <block type=\"empty_block\" id=\"364\" x=\"0\" y=\"0\" />
-    let xml = try! block?.toXML()
+    let xml = try! block?.toXMLElement()
     XCTAssertEqual("block", xml?.name)
     XCTAssertEqual(4, xml?.attributes.count)
     XCTAssertEqual("uuid", xml?.attributes["id"])
@@ -352,7 +352,7 @@ class BlockXMLTest: XCTestCase {
     //   <field name="checkbox">true</field>
     // </block>
 
-    let xml = try! block.toXML()
+    let xml = try! block.toXMLElement()
 
     // Test: <block id="364" x="37" y="13" type="frankenblock">
     XCTAssertEqual("block", xml.name)
@@ -437,7 +437,7 @@ class BlockXMLTest: XCTestCase {
     //   <field name="colour">#ff0000</field>
     // </block>
 
-    let xml = try! block.toXML()
+    let xml = try! block.toXMLElement()
 
     // Test: <block type="frankenblock" id="1000" x="0" y="0">
     XCTAssertEqual("block", xml.name)
@@ -556,7 +556,7 @@ class BlockXMLTest: XCTestCase {
     //   </next>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not build XML")
       return
     }
@@ -601,7 +601,7 @@ class BlockXMLTest: XCTestCase {
     // This is the xml we expect from `block`:
     // <shadow type=\"empty_block\" id=\"abc\" x=\"350\" y=\"-10\" />
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }
@@ -641,7 +641,7 @@ class BlockXMLTest: XCTestCase {
     //   </value>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }
@@ -705,7 +705,7 @@ class BlockXMLTest: XCTestCase {
     //   </value>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }
@@ -776,7 +776,7 @@ class BlockXMLTest: XCTestCase {
     //   </statement>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not build XML")
       return
     }
@@ -843,7 +843,7 @@ class BlockXMLTest: XCTestCase {
     //   </statement>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not build XML")
       return
     }
@@ -912,7 +912,7 @@ class BlockXMLTest: XCTestCase {
     //   </next>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }
@@ -975,7 +975,7 @@ class BlockXMLTest: XCTestCase {
     //   </next>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }
@@ -1076,7 +1076,7 @@ class BlockXMLTest: XCTestCase {
     //   </next>
     // </block>
 
-    guard let xml = BKYAssertDoesNotThrow({ try block.toXML() }) else {
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
       XCTFail("Could not serialize block into XML")
       return
     }

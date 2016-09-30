@@ -186,15 +186,30 @@ extension Block {
 
    - Parameter block: The block to update.
    - Parameter xml: The xml that describes the field to update.
+   - Note: A missing or unknown field name/value isn't an error, it's just ignored.
+   - Throws:
+   `BlocklyError`: Thrown if there was a problem setting the field value from serialized text.
    */
   private class func setField(onBlock block: Block, fromXML xml: AEXMLElement) throws {
-    // A missing or unknown field name isn't an error, it's just ignored.
-    if let value = xml.value,
-      let fieldName = xml.attributes[XMLConstants.ATTRIBUTE_NAME],
-      let field = block.firstField(withName: fieldName)
-    {
-      try field.setValueFromSerializedText(value)
+    guard let fieldName = xml.attributes[XMLConstants.ATTRIBUTE_NAME] else {
+      bky_print("Skipping setting field for block type '\(block.name)'. " +
+        "Missing required field attribute '\(XMLConstants.ATTRIBUTE_NAME)':\n\(xml.xmlCompact)")
+      return
     }
+
+    guard let field = block.firstField(withName: fieldName) else {
+      bky_print("Skipping setting field for block type '\(block.name)'. " +
+        "Could not find field name '\(fieldName)':\n\(xml.xmlCompact)")
+      return
+    }
+
+    guard let value = xml.value else {
+      bky_print("Skipping setting field for block type '\(block.name)'. " +
+        "Missing value for field:\n\(xml.xmlCompact)")
+      return
+    }
+
+    try field.setValueFromSerializedText(value)
   }
 }
 
@@ -204,13 +219,28 @@ extension Block {
   // MARK: - Public
 
   /**
-   Creates an XML element representing this block and all of its descendants.
+   Returns an XML string representing the current state of this block and all of its descendants.
+
+   - Returns: The XML string.
+   - Throws:
+   `BlocklyError`: Thrown if there was an error serializing this block or any of its descendants.
+   */
+  @objc(toXMLWithError:)
+  public func toXML() throws -> String {
+    return try toXMLElement().xml
+  }
+
+  // MARK: - Internal
+
+  /**
+   Creates and returns an XML element representing the current state of this block and all of its
+   descendants.
 
    - Returns: An XML element.
    - Throws:
    `BlocklyError`: Thrown if there was an error serializing this block or any of its descendants.
    */
-  public func toXML() throws -> AEXMLElement {
+  internal func toXMLElement() throws -> AEXMLElement {
     let tagName = shadow ? XMLConstants.TAG_SHADOW : XMLConstants.TAG_BLOCK
     let blockXML = AEXMLElement(name: tagName, value: nil, attributes: [:])
     blockXML.attributes[XMLConstants.ATTRIBUTE_TYPE] = name // `name` represents the block type
@@ -222,7 +252,7 @@ extension Block {
     }
 
     for input in inputs {
-      for inputXMLElement in try input.toXML() {
+      for inputXMLElement in try input.toXMLElement() {
         blockXML.addChild(inputXMLElement)
       }
     }
@@ -230,10 +260,10 @@ extension Block {
     if nextBlock != nil || nextShadowBlock != nil {
       let nextChild = blockXML.addChild(name: XMLConstants.TAG_NEXT_STATEMENT)
       if let nextBlock = self.nextBlock {
-        nextChild.addChild(try nextBlock.toXML())
+        nextChild.addChild(try nextBlock.toXMLElement())
       }
       if let nextShadowBlock = self.nextShadowBlock {
-        nextChild.addChild(try nextShadowBlock.toXML())
+        nextChild.addChild(try nextShadowBlock.toXMLElement())
       }
     }
 
