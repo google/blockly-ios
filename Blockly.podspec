@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.resources = ['Resources/Blockly.xcassets', 'Resources/code_generator']
 
   s.frameworks        = 'WebKit'
-  s.ios.dependency 'AEXML', '~> 4.0.0'
+  s.ios.dependency 'AEXML', '~> 4.0.1'
 
   # Enable whole-module-optimization for all builds except for Debug builds
   s.pod_target_xcconfig = {
