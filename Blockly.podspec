@@ -30,17 +30,23 @@ Pod::Spec.new do |s|
   s.source_files     = 'Source/**/*'
 
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
-  # is why we include Blockly.xcassets through '.resources', instead of '.resource_bundles'.
-  s.resources = ['Resources/Blockly.xcassets', 'Resources/code_generator']
+  # is why we use '.resources', instead of '.resource_bundles' (or else Blockly.xcassets wouldn't
+  # be included properly).
+  s.resources = 'Resources/**'
 
   s.frameworks        = 'WebKit'
   s.ios.dependency 'AEXML', '~> 4.0.1'
 
-  # Enable whole-module-optimization for all builds except for Debug builds
   s.pod_target_xcconfig = {
+      # Enable whole-module-optimization for all builds except for Debug builds
       'SWIFT_OPTIMIZATION_LEVEL' => '-Owholemodule',
       'SWIFT_OPTIMIZATION_LEVEL[config=Debug]' => '-Onone',
+
+      # Let Xcode know Blockly uses Swift 3.0 syntax
       'SWIFT_VERSION' => '3.0',
+
+      # Swift standard libraries need to be included for Blockly to work!
+      'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES',
   }
 
 end
