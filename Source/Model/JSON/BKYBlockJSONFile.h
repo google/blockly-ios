@@ -21,16 +21,25 @@
 typedef NS_OPTIONS(NSInteger, BlockJSONFile) {
   // Option for specifying the file containing JSON definitions for default color blocks.
   BKYBlockJSONFileColorDefault CF_SWIFT_NAME(ColorDefault) = 1 << 0,
+  // Option for specifying the file containing JSON definitions for default list blocks.
+  BKYBlockJSONFileListDefault CF_SWIFT_NAME(ListDefault) = 1 << 1,
   // Option for specifying the file containing JSON definitions for default logic blocks.
-  BKYBlockJSONFileLogicDefault CF_SWIFT_NAME(LogicDefault) = 1 << 1,
+  BKYBlockJSONFileLogicDefault CF_SWIFT_NAME(LogicDefault) = 1 << 2,
   // Option for specifying the file containing JSON definitions for default loop blocks.
-  BKYBlockJSONFileLoopDefault CF_SWIFT_NAME(LoopDefault) = 1 << 2,
+  BKYBlockJSONFileLoopDefault CF_SWIFT_NAME(LoopDefault) = 1 << 3,
   // Option for specifying the file containing JSON definitions for default math blocks.
-  BKYBlockJSONFileMathDefault CF_SWIFT_NAME(MathDefault) = 1 << 3,
+  BKYBlockJSONFileMathDefault CF_SWIFT_NAME(MathDefault) = 1 << 4,
+  // Option for specifying the file containing JSON definitions for default text blocks.
+  BKYBlockJSONFileTextDefault CF_SWIFT_NAME(TextDefault) = 1 << 5,
   // Option for specifying the file containing JSON definitions for default variable blocks.
-  BKYBlockJSONFileVariableDefault CF_SWIFT_NAME(VariableDefault) = 1 << 4,
+  BKYBlockJSONFileVariableDefault CF_SWIFT_NAME(VariableDefault) = 1 << 6,
   // Option for specifying files containing JSON definitions for all default blocks.
   BKYBlockJSONFileAllDefault CF_SWIFT_NAME(AllDefault) =
-    BKYBlockJSONFileColorDefault | BKYBlockJSONFileLogicDefault | BKYBlockJSONFileLoopDefault |
-    BKYBlockJSONFileMathDefault | BKYBlockJSONFileVariableDefault
+    BKYBlockJSONFileColorDefault |
+    BKYBlockJSONFileListDefault |
+    BKYBlockJSONFileLogicDefault |
+    BKYBlockJSONFileLoopDefault |
+    BKYBlockJSONFileMathDefault |
+    BKYBlockJSONFileTextDefault |
+    BKYBlockJSONFileVariableDefault
 };
