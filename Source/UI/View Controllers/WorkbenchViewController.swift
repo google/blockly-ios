@@ -127,10 +127,10 @@ open class WorkbenchViewController: UIViewController {
     return workspaceViewController.workspaceView
   }
 
-  // The trash can view
+  /// The trash can view.
   open fileprivate(set) var trashCanView: TrashCanView?
 
-  // The toolbox category view controller
+  /// The toolbox category view controller.
   open fileprivate(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
     didSet {
       // We need to listen for when block views are added/removed from the block list
@@ -245,6 +245,10 @@ open class WorkbenchViewController: UIViewController {
     commonInit()
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     // TODO:(#52) Support the ability to create view controllers from XIBs.
     // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.

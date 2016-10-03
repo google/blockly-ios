@@ -15,6 +15,9 @@
 
 import Foundation
 
+/**
+ Extends the `UIColor` class to support color formats needed by Blockly.
+*/
 extension UIColor {
   /**
    Returns a tuple representing the hue, saturation, brightness, and alpha values of this color.

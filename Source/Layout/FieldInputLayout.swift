@@ -33,6 +33,13 @@ open class FieldInputLayout: FieldLayout {
 
   // MARK: - Initializers
 
+  /**
+   Initializes the input field layout.
+
+   - Parameter fieldInput: The `FieldInput` model for this layout.
+   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   */
   public init(fieldInput: FieldInput, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldInput = fieldInput
     super.init(field: fieldInput, engine: engine, measurer: measurer)
@@ -43,6 +50,7 @@ open class FieldInputLayout: FieldLayout {
   // MARK: - Super
 
   /// TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

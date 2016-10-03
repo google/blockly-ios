@@ -29,6 +29,7 @@ public final class BlocklyError: NSError {
   // TODO:(#59) Clean up error codes to follow some sort of convention.
 
   // MARK: - Enum - Code
+  /// Signifies the type of error to be thrown by `BlockError`.
   @objc
   public enum BKYBlocklyErrorCode: Int {
     /// This block is illegally defined.

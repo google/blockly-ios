@@ -15,6 +15,9 @@
 
 import Foundation
 
+/**
+ Extends the `UIView` class with convenience functions for Blockly.
+ */
 extension UIView {
   // MARK: - Public
 

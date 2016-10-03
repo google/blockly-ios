@@ -48,7 +48,10 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
   /// Possible view orientations for the toolbox category list
   @objc
   public enum BKYToolboxCategoryListViewControllerOrientation: Int {
-    case horizontal = 0, vertical
+    /// Specifies the toolbox is horizontally-oriented.
+    case horizontal = 0,
+      /// Specifies the toolbox is vertically-oriented.
+      vertical
   }
 
   /// Possible view orientations for the toolbox category list
@@ -92,6 +95,11 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
 
   // MARK: - Initializers
 
+  /**
+   Initializes the toolbox category list view controller.
+
+   - Parameter orientation: The `Orientation` for the view.
+   */
   public required init(orientation: Orientation) {
     self.orientation = orientation
 
@@ -106,6 +114,10 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
     super.init(collectionViewLayout: flowLayout)
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }

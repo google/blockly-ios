@@ -18,22 +18,50 @@ import UIKit
 // TODO:(#120) This delegate only exists right now so `WorkbenchViewController` can attach
 // gesture recognizers on the BlockView. Refactor this so the gesture recognizers are managed
 // in this view controller and then this delegate can be deleted.
+
+/**
+ Protocol for events that occur on a `WorkspaceViewController` instance.
+ */
 @objc(BKYWorkspaceViewControllerDelegate)
 public protocol WorkspaceViewControllerDelegate {
+  /**
+   Called when a new `BlockView` is added to a `WorkspaceViewController`.
+
+   - Parameter workspaceViewController: The `WorkspaceViewController` where the block was added.
+   - Parameter blockView: The `BlockView` that was added to the workspace.
+   */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
 
+  /**
+   Called when a new `BlockView` is removed from a `WorkspaceViewController`.
+
+   - Parameter workspaceViewController: The `WorkspaceViewController` where the block was removed.
+   - Parameter blockView: The `BlockView` that was removed from the workspace.
+   */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
 
-  // TODO:(#135) The following two methods only exist right now so that the state can be updated in
-  // `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
-  // that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
-  // can change state behaviour. Once state handling has been refactored, these two methods can be
-  // deleted.
+  /// TODO:(#135) The following two methods only exist right now so that the state can be updated in
+  /// `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
+  /// that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
+  /// can change state behaviour. Once state handling has been refactored, these two methods can be
+  /// deleted.
+
+  /**
+   Called when the `WorkspaceViewController` is about to present a view controller.
+
+   - Parameter workspaceViewController: The `WorkspaceViewController` presenting a view controller.
+   - Parameter willPresentViewController: The `UIViewController` about to be presented.
+   */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
 
+  /**
+   Called when the `WorkspaceViewController` was dismissed.
+
+   - Parameter workspaceViewController: The `WorkspaceViewController` that was dismissed.
+   */
   func workspaceViewControllerDismissedViewController(
     _ workspaceViewController: WorkspaceViewController)
 }
@@ -85,6 +113,10 @@ open class WorkspaceViewController: UIViewController {
     _viewBuilder.delegate = self
   }
 
+  /**
+   :nodoc:
+   - Warning: This is currently unsupported.
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
   }
