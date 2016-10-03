@@ -1,0 +1,120 @@
+Blockly  BlockGroupView  prepareForReuse prepareForReuse()
+Blockly  BlockDelegate didUpdate didUpdate(block:)
+BlocklyErrorCode
+Blockly BlockView  prepareForReuse prepareForReuse()
+Blockly  CodeGenerator webView :didFinish:)
+Blockly  CodeGenerator webView :didFail:withError:)
+Blockly  CodeGeneratorService  executeRequest :)
+Blockly  Connection  CheckResult   canConnect
+Blockly  Connection  CheckResult   reasonSelfConnection
+Blockly  Connection  CheckResult   reasonWrongType
+Blockly  Connection  CheckResult   reasonMustDisconnect
+Blockly  Connection  CheckResult   reasonTargetNull
+Blockly  Connection  CheckResult   reasonShadowNull
+Blockly  Connection  CheckResult   reasonChecksFailed
+Blockly  Connection  CheckResult   reasonCannotSetShadowForTarget
+Blockly  Connection  CheckResult   reasonInferiorBlockShadowMismatch
+Blockly  DefaultBlockView  prepareForReuse prepareForReuse()
+Blockly  DropdownOptionsViewController  viewDidLoad viewDidLoad()
+Blockly  DropdownOptionsViewController  viewWillAppear :)
+Blockly  DropdownOptionsViewController  numberOfSections SinumberOfSections(in:)
+Blockly  DropdownOptionsViewController tableView :numberOfRowsInSection:)
+Blockly  DropdownOptionsViewController tableView :heightForRowAt:)
+Blockly  DropdownOptionsViewController tableView :cellForRowAt:)
+Blockly  DropdownOptionsViewController tableView :didSelectRowAt:)
+Blockly  DropdownViewc init(coder:)
+Blockly  FieldAngleView  prepareForReuse prepareForReuse()
+Blockly  FieldAngleView textField :shouldChangeCharactersIn:replacementString:)
+Blockly  FieldAngleView  textFieldDidBeginEditing :)
+Blockly  FieldAngleView  textFieldDidEndEditing :)
+Blockly  FieldAngleView  textFieldShouldReturn :)
+Blockly  FieldCheckboxView  prepareForReuse prepareForReuse()
+Blockly  FieldColorPickerViewControllerc init()
+Blockly  FieldColorPickerViewController  viewDidLoad viewDidLoad()
+Blockly  FieldColorPickerViewController  viewWillAppear :)
+Blockly  FieldColorPickerViewController  viewDidAppear :)
+Blockly  FieldColorPickerViewController  numberOfSections SinumberOfSections(in:)
+Blockly  FieldColorPickerViewController  collectionView :numberOfItemsInSection:)
+Blockly  FieldColorPickerViewController  collectionView :cellForItemAt:)
+Blockly  FieldColorPickerViewController  collectionView :didSelectItemAt:)
+Blockly  FieldColorPickerViewController  refreshView refreshView()
+Blockly  FieldColorView  prepareForReuse prepareForReuse()
+Blockly  FieldDateLayout  dateFormatter DateFormatterdateFormatter
+Blockly  FieldDateView  prepareForReuse prepareForReuse()
+Blockly  FieldDateView textField :shouldChangeCharactersIn:replacementString:)
+Blockly  FieldDropdownView  prepareForReuse prepareForReuse()
+Blockly  FieldImageView  prepareForReuse prepareForReuse()
+Blockly  FieldInputLayoutc init(fieldInput:engine:measurer:)
+Blockly  FieldInputView  prepareForReuse prepareForReuse()
+Blockly  FieldInputView  textFieldShouldReturn :)
+Blockly  FieldLabelView  prepareForReuse prepareForReuse()
+Blockly  FieldNumberView  prepareForReuse prepareForReuse()
+Blockly  FieldNumberView textField :shouldChangeCharactersIn:replacementString:)
+Blockly  FieldNumberView  textFieldDidEndEditing :)
+Blockly  FieldNumberView  textFieldShouldReturn :)
+Blockly  FieldVariableView  prepareForReuse prepareForReuse()
+Blockly InputView  prepareForReuse prepareForReuse()
+Blockly  LayoutConfigc init()
+Blockly  NameManagerc init()
+Blockly  ToolboxCategoryListViewController   horizontal
+Blockly  ToolboxCategoryListViewController   vertical
+Blockly  ToolboxCategoryListViewControllerc init(orientation:)
+Blockly  ToolboxCategoryListViewControllerc init(coder:)
+Blockly  ToolboxCategoryListViewController  viewDidLoad viewDidLoad()
+Blockly  ToolboxCategoryListViewController  numberOfSections SinumberOfSections(in:)
+Blockly  ToolboxCategoryListViewController  collectionView :numberOfItemsInSection:)
+Blockly  ToolboxCategoryListViewController  collectionView :cellForItemAt:)
+Blockly  ToolboxCategoryListViewController  collectionView :didSelectItemAt:)
+Blockly  ToolboxCategoryListViewController  collectionView :layout:sizeForItemAt:)
+Blockly  ToolboxCategoryViewController  viewDidLoad viewDidLoad()
+Blockly  TrashCanViewControllerc init(coder:)
+Blockly  TrashCanViewController  viewDidLoad viewDidLoad()
+Blockly  TrashCanViewController  observeValue observeValue(forKeyPath:of:change:context:)
+Blockly  WorkbenchViewController   alternate
+Blockly  WorkbenchViewController  defaultState
+Blockly  WorkbenchViewController  trashCanOpen
+Blockly  WorkbenchViewController  trashCanHighlighted
+Blockly  WorkbenchViewController  categoryOpen
+Blockly  WorkbenchViewController  editingTextField
+Blockly  WorkbenchViewController  draggingBlock
+Blockly  WorkbenchViewController  presentingPopover
+Blockly  WorkbenchViewController  didPanWorkspace
+Blockly  WorkbenchViewController  didTapWorkspace
+Blockly  WorkbenchViewController  defaultState
+Blockly  WorkbenchViewController  trashCanOpen
+Blockly  WorkbenchViewController  trashCanHighlighted
+Blockly  WorkbenchViewController  categoryOpen
+Blockly  WorkbenchViewController  editingTextField
+Blockly  WorkbenchViewController  draggingBlock
+Blockly  WorkbenchViewController  presentingPopover
+Blockly  WorkbenchViewController  didPanWorkspace
+Blockly  WorkbenchViewController  didTapWorkspace
+Blockly  WorkbenchViewController  ValueValue
+Blockly  WorkbenchViewController  init(value:)
+Blockly  WorkbenchViewController  :)
+Blockly  WorkbenchViewController  trashCanView trashCanView
+Blockly  WorkbenchViewController  toolboxCategoryViewController toolboxCategoryViewController
+Blockly  WorkbenchViewControllerc init(coder:)
+Blockly  WorkbenchViewController loadView loadView()
+Blockly  WorkbenchViewController  viewDidLoad viewDidLoad()
+Blockly  WorkbenchViewController  workspaceViewController :didAddBlockView:)
+Blockly  WorkbenchViewController  workspaceViewController :didRemoveBlockView:)
+Blockly  WorkbenchViewController  workspaceViewController :willPresentViewController:)
+Blockly  WorkbenchViewController  workspaceViewControllerDismissedViewController :)
+Blockly  WorkbenchViewController  scrollBlockIntoView :animated:)
+Blockly  WorkbenchViewController  gestureRecognizerShouldBegin :)
+Blockly  WorkbenchViewController  gestureRecognizer :shouldBeRequiredToFailBy:)
+Blockly  WorkspaceView  prepareForReuse prepareForReuse()
+Blockly  WorkspaceView  layoutSubviews layoutSubviews()
+Blockly  WorkspaceView  scrollViewDidScroll :)
+Blockly  WorkspaceView  scrollViewDidEndDecelerating :)
+Blockly  WorkspaceView  scrollViewDidEndDragging :willDecelerate:)
+Blockly  WorkspaceView  viewForZooming viewForZooming(in:)
+Blockly  WorkspaceView  scrollViewWillBeginZooming :with:)
+Blockly  WorkspaceView  scrollViewDidZoom :)
+Blockly  WorkspaceView  scrollViewDidEndZooming :with:atScale:)
+Blockly  WorkspaceViewControllerc init(coder:)
+Blockly  WorkspaceViewController loadView loadView()
+Blockly  WorkspaceViewController  adaptivePresentationStyle UIModalPresentationStyleadaptivePresentationStyle(for:)
+Blockly  WorkspaceViewController  popoverPresentationControllerDidDismissPopover :)
+Blockly  WorkspaceViewController dismiss dismiss(animated:completion:)
