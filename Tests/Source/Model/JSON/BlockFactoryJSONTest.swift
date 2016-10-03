@@ -35,6 +35,16 @@ class BlockFactoryJSONTest: XCTestCase {
     XCTAssertNotNil(block)
   }
 
+  func testLoadBlocksFromListDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "lists_create_empty")
+    }
+    _blockFactory.load(fromDefaultFiles: .ListDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "lists_create_empty") }
+    XCTAssertNotNil(block)
+  }
+
   func testLoadBlocksFromLogicDefault() {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "controls_if")
@@ -62,6 +72,16 @@ class BlockFactoryJSONTest: XCTestCase {
     _blockFactory.load(fromDefaultFiles: .MathDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "math_number") }
+    XCTAssertNotNil(block)
+  }
+
+  func testLoadBlocksFromTextDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "text")
+    }
+    _blockFactory.load(fromDefaultFiles: .TextDefault)
+
+    let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "text") }
     XCTAssertNotNil(block)
   }
 
