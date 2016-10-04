@@ -53,16 +53,17 @@
 
   // Create toolbox with some blocks in it
   BKYBlockFactory *blockFactory = [[BKYBlockFactory alloc] init];
-  [blockFactory loadFromJSONPaths:@[@"Blocks/test_blocks.json"] bundle:nil error:nil];
+  [blockFactory loadFromJSONPaths:@[@"Turtle/turtle_blocks.json"] bundle:nil error:nil];
   [blockFactory loadFromDefaultFiles:BKYBlockJSONFileAllDefault];
-  BKYBlock *statementBlock = [blockFactory makeBlockWithName:@"statement_no_input" error:nil];
-  BKYBlock *mathNumberBlock = [blockFactory makeBlockWithName:@"math_number" error:nil];
 
-  BKYToolbox *toolbox = [[BKYToolbox alloc] init];
-  BKYToolboxCategory *category =
-    [toolbox addCategoryWithName:@"Test" color:[UIColor blueColor] icon:nil];
-  [category addBlockTree:statementBlock error:nil];
-  [category addBlockTree:mathNumberBlock error:nil];
+  NSString *toolboxPath = @"Blocks/toolbox_basic.xml";
+  NSString *bundlePath = [[NSBundle mainBundle] pathForResource:toolboxPath ofType:nil];
+  NSString *xmlString = [NSString stringWithContentsOfFile:bundlePath
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:nil];
+  BKYToolbox *toolbox = [BKYToolbox makeToolboxWithXmlString:xmlString
+                                                     factory:blockFactory
+                                                       error:nil];
 
   // Load workbench with workspace and toolbox
   BKYWorkbenchViewController *viewController =
@@ -74,9 +75,6 @@
     [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blockly_compressed.js"],
     [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blocks_compressed.js"],
     [BKYBundledFile fileWithPath:@"Turtle/blockly_web/msg/js/en.js"]]];
-
-  BKYBlock *block = [blockFactory makeBlockWithName:@"math_number" error:nil];
-  [_workspace addBlockTree:block error:nil];
 
   // Add workbench to this view controller
   [self addChildViewController:viewController];

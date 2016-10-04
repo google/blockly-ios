@@ -74,7 +74,7 @@ class TurtleViewController: UIViewController {
   private func commonInit() {
     // Load blocks into the block factory
     do {
-      _blockFactory.load(fromDefaultFiles: [.ColorDefault, .MathDefault, .LoopDefault])
+      _blockFactory.load(fromDefaultFiles: BlockJSONFile.AllDefault)
       try _blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
@@ -125,7 +125,7 @@ class TurtleViewController: UIViewController {
 
     // Load the toolbox
     do {
-      let toolboxPath = "Turtle/level_1/toolbox.xml"
+      let toolboxPath = "Turtle/toolbox.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
         let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
