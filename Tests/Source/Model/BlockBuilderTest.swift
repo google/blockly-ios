@@ -137,7 +137,7 @@ class BlockBuilderTest: XCTestCase {
     } catch let error as NSError {
       XCTFail("Error: \(error)")
     }
-    bob.color = ColorHelper.makeColor(hue: 20 / 360)
+    bob.color = ColorHelper.makeColor(hue: 20)
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 

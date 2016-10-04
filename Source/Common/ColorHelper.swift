@@ -55,17 +55,29 @@ public class ColorHelper: NSObject {
   }
 
   /**
-   Returns a `UIColor` based on hue, saturation, brightness, and alpha values.
+   Returns a `UIColor` based on a given hue, with defaults set for saturation (0.45),
+   brightness (0.65), and alpha (1.0).
 
-   - Parameter hue: The hue
-   - Parameter saturation: (Optional) The saturation. Defaults to 0.45.
-   - Parameter brightness: (Optional) The brightness. Defaults to 0.65.
-   - Parameter alpha: (Optional) The alpha. Defaults to 1.0.
+   - Parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
    - Returns: A `UIColor`
    */
-  public static func makeColor(hue: CGFloat, saturation: CGFloat = 0.45,
-    brightness: CGFloat = 0.65, alpha: CGFloat = 1.0) -> UIColor
+  public static func makeColor(hue: CGFloat) -> UIColor {
+    return makeColor(hue: hue, saturation: 0.45, brightness: 0.65, alpha: 1.0)
+  }
+
+  /**
+   Returns a `UIColor` based on hue, saturation, brightness, and alpha values.
+
+   - Parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
+   - Parameter saturation: The saturation, which should be a value between 0.0 and 1.0.
+   - Parameter brightness: The brightness, which should be a value between 0.0 and 1.0.
+   - Parameter alpha: The alpha.
+   - Returns: A `UIColor`
+   */
+  public static func makeColor(
+    hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) -> UIColor
   {
-    return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    let percentHue = (min(max(hue, 0), 360)) / 360
+    return UIColor(hue: percentHue, saturation: saturation, brightness: brightness, alpha: alpha)
   }
 }

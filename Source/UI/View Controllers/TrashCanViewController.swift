@@ -72,7 +72,9 @@ public final class TrashCanViewController: WorkspaceViewController {
   }
 
   deinit {
-    view.removeObserver(self, forKeyPath: "bounds")
+    if isViewLoaded {
+      view.removeObserver(self, forKeyPath: "bounds")
+    }
   }
 
   // MARK: - Super

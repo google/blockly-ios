@@ -75,8 +75,7 @@ extension Toolbox {
       // "color"
       if let colorString = categoryNode.attributes["colour"] {
         if let colorHue = NumberFormatter().number(from: colorString) {
-          let hue = (min(max(CGFloat(colorHue), 0), 360)) / 360
-          color = ColorHelper.makeColor(hue: hue)
+          color = ColorHelper.makeColor(hue: CGFloat(colorHue))
         } else if let aColor = ColorHelper.makeColor(rgb: colorString) {
           color = aColor
         } else {
@@ -106,7 +105,7 @@ extension Toolbox {
     {
       // TODO:(#101) Localize "Blocks"
       let categoryName = "Blocks"
-      let color = ColorHelper.makeColor(hue: (160.0 / 360.0))
+      let color = ColorHelper.makeColor(hue: 160)
       let category = toolbox.addCategory(name: categoryName, color: color, icon: nil)
 
       for blockNode in toolboxNode.children {
