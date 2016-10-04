@@ -345,6 +345,55 @@ class ConnectionManagerTest: XCTestCase {
     XCTAssertTrue(result.isEmpty)
   }
 
+  func testYSortedListGetNeighborsWithDifferentTypes() {
+    let list = manager.mainGroup.connections(forType: .previousStatement)
+
+    let previousConnection = createConnection(0, 0, .previousStatement)
+    previousConnection.typeChecks = ["String"]
+    list.addConnection(previousConnection)
+
+    let nextConnection = createConnection(0, 0, .nextStatement)
+    nextConnection.typeChecks = ["Bool"]
+    list.addConnection(nextConnection)
+
+    // These connections can't connect
+    XCTAssertEqual(false, nextConnection.canConnectTo(previousConnection))
+
+    // But the next connection should appear in the previous connection's neighbor list
+    let neighbors = list.neighbors(forConnection: previousConnection, maxRadius: 10)
+    XCTAssertEqual(1, neighbors.count)
+    XCTAssertEqual(nextConnection, neighbors.first)
+  }
+
+  func testYSortedListGetNeighborsWithShadows() {
+    let list = manager.mainGroup.connections(forType: .previousStatement)
+
+    let previousConnection = createConnection(0, 0, .previousStatement)
+    list.addConnection(previousConnection)
+
+    let shadowBlock = BKYAssertDoesNotThrow {
+      try Block.Builder(name: "test").makeBlock(shadow: true)
+    }
+    XCTAssertNotNil(shadowBlock)
+
+    let shadowNextConnection = createConnection(0, 0, .nextStatement)
+    shadowNextConnection.sourceBlock = shadowBlock
+    list.addConnection(shadowNextConnection)
+
+    let shadowPreviousConnection = createConnection(0, 0, .previousStatement)
+    shadowPreviousConnection.sourceBlock = shadowBlock
+    list.addConnection(shadowPreviousConnection)
+
+    // These connections can't connect
+    XCTAssertEqual(false, shadowNextConnection.canConnectTo(previousConnection))
+    XCTAssertEqual(false, shadowPreviousConnection.canConnectTo(previousConnection))
+
+    // But only next connection should appear in the previous connection's neighbor list
+    let neighbors = list.neighbors(forConnection: previousConnection, maxRadius: 10)
+    XCTAssertEqual(1, neighbors.count)
+    XCTAssertEqual(shadowNextConnection, neighbors.first)
+  }
+
   func testYSortedListTransferConnectionsToEmptyGroup() {
     let group1 = manager.startGroup(forBlock: nil)
     let group2 = manager.startGroup(forBlock: nil)

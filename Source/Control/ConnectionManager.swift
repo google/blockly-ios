@@ -614,12 +614,13 @@ extension ConnectionManager {
           // We use Connection rather than ConnectionValidator here, because neighbors are
           // used to check for bumping like blocks away from each other. Two blocks might
           // be unable to connect, but we want to make sure their blocks don't obscure one
-          // another, so neighbors returns anything that could connect.
-          let couldConnect = connectReason.intersectsWith(.CanConnect) ||
-                             connectReason.intersectsWith(.ReasonMustDisconnect)
+          // another, so neighbors returns anything that looks like it could connect.
+          let allowedConnectionReasons: Connection.CheckResult = [
+            .CanConnect, .ReasonMustDisconnect, .ReasonTypeChecksFailed,
+            .ReasonCannotSetShadowForTarget]
           if ((!connection.connected || !temp.connected) &&
             connection.distanceFromConnection(temp) <= maxRadius &&
-            couldConnect)
+            connectReason.union(allowedConnectionReasons) == allowedConnectionReasons)
           {
             neighbors.append(temp)
           }
@@ -631,11 +632,12 @@ extension ConnectionManager {
           isInYRange(forIndex: pointerMax, baseY, maxRadius)) {
             let temp = _connections[pointerMax]
             let connectReason = connection.canConnectWithReasonTo(temp)
-            let couldConnect = connectReason.intersectsWith(.CanConnect) ||
-              connectReason.intersectsWith(.ReasonMustDisconnect)
+            let allowedConnectionReasons: Connection.CheckResult = [
+              .CanConnect, .ReasonMustDisconnect, .ReasonTypeChecksFailed,
+              .ReasonCannotSetShadowForTarget]
             if ((!connection.connected || !temp.connected) &&
               connection.distanceFromConnection(temp) <= maxRadius &&
-              couldConnect)
+              connectReason.union(allowedConnectionReasons) == allowedConnectionReasons)
             {
               neighbors.append(temp)
             }

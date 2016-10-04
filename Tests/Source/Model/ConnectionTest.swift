@@ -236,7 +236,7 @@ class ConnectionTest: XCTestCase {
     input.typeChecks = ["string"]
     output.typeChecks = ["bool"]
     XCTAssertEqual(
-      Connection.CheckResult.ReasonChecksFailed, input.canConnectWithReasonTo(output))
+      Connection.CheckResult.ReasonTypeChecksFailed, input.canConnectWithReasonTo(output))
   }
 
   func testCanConnectWithReasonTo_InvalidShadowBlockForTarget() {
@@ -301,7 +301,7 @@ class ConnectionTest: XCTestCase {
   func testCanConnectShadowWithReasonTo_InvalidTypeChecks() {
     next.typeChecks = ["string"]
     shadowPrevious.typeChecks = ["bool"]
-    XCTAssertEqual(Connection.CheckResult.ReasonChecksFailed,
+    XCTAssertEqual(Connection.CheckResult.ReasonTypeChecksFailed,
                    next.canConnectShadowWithReasonTo(shadowPrevious))
   }
 
