@@ -57,8 +57,7 @@ extension Block {
     let builder = Block.Builder(name: blockName)
 
     if let colorHue = json[PARAMETER_COLOR] as? CGFloat {
-      let hue = (min(max(colorHue, 0), 360)) / 360
-      builder.color = ColorHelper.makeColor(hue: hue)
+      builder.color = ColorHelper.makeColor(hue: colorHue)
     } else if let colorString = json[PARAMETER_COLOR] as? String,
         let color = ColorHelper.makeColor(rgb: colorString)
     {
