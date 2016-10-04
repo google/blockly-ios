@@ -54,11 +54,11 @@
         "name": "DIR",
         "options": [
           [
-            "right by \u21BB",
+            "right \u21BB by",
             "turnRight"
           ],
           [
-            "left by \u21BA'",
+            "left \u21BA by",
             "turnLeft"
           ]
         ]
@@ -164,18 +164,18 @@
   },
   {
     "type": "turtle_move",
-    "message0": "%1 %2",
+    "message0": "move %1 %2",
     "args0": [
       {
         "type": "field_dropdown",
         "name": "DIR",
         "options": [
           [
-            "move forward",
+            "forward",
             "moveForward"
           ],
           [
-            "move backward",
+            "backward",
             "moveBackward"
           ]
         ]
@@ -189,22 +189,22 @@
     "nextStatement": null,
     "colour": 160,
     "tooltip": "Move the turtle forward or backward",
-    "helpUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#metkk9"
+    "blockFactoryUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#metkk9"
   },
   {
     "type": "turtle_turn",
-    "message0": "%1 %2",
+    "message0": "turn %1 %2",
     "args0": [
       {
         "type": "field_dropdown",
         "name": "DIR",
         "options": [
           [
-            "turn right ↻",
+            "right \u21BB",
             "turnRight"
           ],
           [
-            "turn left ↺",
+            "left \u21BA",
             "turnLeft"
           ]
         ]
@@ -218,7 +218,7 @@
     "nextStatement": null,
     "colour": 160,
     "tooltip": "",
-    "helpUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#nwzsuj"
+    "blockFactoryUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#nwzsuj"
   },
   {
     "type": "turtle_width",
@@ -233,7 +233,7 @@
     "nextStatement": null,
     "colour": 160,
     "tooltip": "",
-    "helpUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wkz8h4"
+    "blockFactoryUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wkz8h4"
   },
   {
     "type": "turtle_colour",
@@ -249,6 +249,6 @@
     "nextStatement": null,
     "colour": 20,
     "tooltip": "",
-    "helpUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wkz8h4"
+    "blockFactoryUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wkz8h4"
   }
 ]

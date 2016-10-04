@@ -13,8 +13,11 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "BaseTurtleViewController.h"
 
-@interface TestObjCViewController: UIViewController
+#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
+
+@interface TurtleObjCViewController: BaseTurtleViewController <WKScriptMessageHandler>
 
 @end
