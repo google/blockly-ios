@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 
+#import <Blockly/Blockly.h>
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-@interface TestObjCViewController: UIViewController
+@interface TestObjCViewController: UIViewController <WKScriptMessageHandler, WorkbenchViewControllerDelegate>
 
 @end

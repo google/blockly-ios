@@ -28,28 +28,26 @@ class TurtleViewController: UIViewController {
 
   // MARK: - Properties
 
-  /// The view for holding `self.webView`
+  /// The parent view for `self.webView`
   @IBOutlet var webViewContainer: UIView!
-  /// The button for executing the block code
-  @IBOutlet var playButton: UIButton!
   /// Text to show generated code
   @IBOutlet var codeText: UILabel!
-  /// The view for holding `self.workbenchViewController.view`
+  /// The parent view for `self.workbenchViewController.view`
   @IBOutlet var editorView: UIView!
 
   /// The web view that runs the turtle code (this is not an outlet because WKWebView isn't
   /// supported by Interface Builder)
   var _webView: WKWebView!
-  /// The block editor
+  /// The workbench for the blocks.
   var _workbenchViewController: WorkbenchViewController!
   /// Code generator service
   var _codeGeneratorService: CodeGeneratorService!
 
-  /// Flag indicating if highlighting a block should be enabled
+  /// Flag indicating if highlighting a block is enabled.
   var _allowBlockHighlighting: Bool = false
-  /// Flag indicating if scrolling a block into view should be enabled
+  /// Flag indicating if scrolling a block into view is enabled.
   var _allowScrollingToBlockView: Bool = false
-  /// The UUID of the last block that was highlighted
+  /// The UUID of the last block that was highlighted.
   var _lastHighlightedBlockUUID: String?
 
   /// Factory that produces block instances from a parsed json file
@@ -74,7 +72,7 @@ class TurtleViewController: UIViewController {
   private func commonInit() {
     // Load blocks into the block factory
     do {
-      _blockFactory.load(fromDefaultFiles: [.ColorDefault, .MathDefault, .LoopDefault])
+      _blockFactory.load(fromDefaultFiles: BlockJSONFile.AllDefault)
       try _blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
     } catch let error as NSError {
       print("An error occurred loading the test blocks: \(error)")
@@ -125,7 +123,7 @@ class TurtleViewController: UIViewController {
 
     // Load the toolbox
     do {
-      let toolboxPath = "Turtle/level_1/toolbox.xml"
+      let toolboxPath = "Turtle/toolbox.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
         let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)

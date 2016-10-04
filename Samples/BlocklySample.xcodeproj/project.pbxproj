@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3035DCFF1DA45C940087B9CC /* TestObjCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3035DCFE1DA45C940087B9CC /* TestObjCViewController.xib */; };
+		30F63ED61DA596880071926B /* SimpleWorkbench in Resources */ = {isa = PBXBuildFile; fileRef = 30F63ED51DA596880071926B /* SimpleWorkbench */; };
 		FA1ED8911D9B43C600A5B19A /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; };
 		FA1ED8921D9B43C600A5B19A /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA433FA61C77FE6A0009FDC2 /* TurtleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA433FA51C77FE6A0009FDC2 /* TurtleViewController.xib */; };
@@ -20,7 +22,6 @@
 		FAE2A6421C756A8D0085D36B /* Turtle in Resources */ = {isa = PBXBuildFile; fileRef = FAE2A6411C756A8D0085D36B /* Turtle */; };
 		FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6441C756AA20085D36B /* AppDelegate.swift */; };
 		FAE2A6491C756AA20085D36B /* SimpleWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */; };
-		FAFD372C1C8F747F00C77049 /* Blocks in Resources */ = {isa = PBXBuildFile; fileRef = FAFD372B1C8F747F00C77049 /* Blocks */; };
 		FAFD37631C93C76C00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37621C93C76C00C77049 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3035DCFE1DA45C940087B9CC /* TestObjCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestObjCViewController.xib; sourceTree = "<group>"; };
+		30F63ED51DA596880071926B /* SimpleWorkbench */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SimpleWorkbench; sourceTree = "<group>"; };
 		FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
 		FA433FA51C77FE6A0009FDC2 /* TurtleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TurtleViewController.xib; sourceTree = "<group>"; };
 		FA548C2A1B6312AE008BC59C /* BlocklySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,7 +139,6 @@
 		FAE2A6451C756AA20085D36B /* BlocklySample-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BlocklySample-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAE2A6461C756AA20085D36B /* SampleObjCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleObjCObject.h; sourceTree = "<group>"; };
 		FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleWorkbenchViewController.swift; sourceTree = "<group>"; };
-		FAFD372B1C8F747F00C77049 /* Blocks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Blocks; sourceTree = "<group>"; };
 		FAFD37621C93C76C00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -234,7 +236,7 @@
 		FAE2A62D1C756A750085D36B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FAFD372B1C8F747F00C77049 /* Blocks */,
+				30F63ED51DA596880071926B /* SimpleWorkbench */,
 				FAE2A6411C756A8D0085D36B /* Turtle */,
 				FAE2A6301C756A750085D36B /* Images.xcassets */,
 			);
@@ -251,6 +253,7 @@
 				FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */,
 				FAC357ED1D92598C003FB436 /* TestObjCViewController.h */,
 				FAC357E41D9244A2003FB436 /* TestObjCViewController.m */,
+				3035DCFE1DA45C940087B9CC /* TestObjCViewController.xib */,
 				FA5F28B01C756B73008384BE /* TurtleViewController.swift */,
 				FA433FA51C77FE6A0009FDC2 /* TurtleViewController.xib */,
 			);
@@ -399,9 +402,10 @@
 			files = (
 				FAE2A63A1C756A750085D36B /* Images.xcassets in Resources */,
 				FAE2A6421C756A8D0085D36B /* Turtle in Resources */,
+				3035DCFF1DA45C940087B9CC /* TestObjCViewController.xib in Resources */,
 				FA433FA61C77FE6A0009FDC2 /* TurtleViewController.xib in Resources */,
+				30F63ED61DA596880071926B /* SimpleWorkbench in Resources */,
 				FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */,
-				FAFD372C1C8F747F00C77049 /* Blocks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

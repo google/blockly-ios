@@ -18,12 +18,50 @@ import UIKit
 /**
  Delegate for events that occur on `WorkbenchViewController`.
  */
+@objc
 public protocol WorkbenchViewControllerDelegate: class {
   /**
    Event that is called when a `WorkbenchViewController` updates its `state`.
    */
   func workbenchViewController(_ workbenchViewController: WorkbenchViewController,
                                didUpdateState state: WorkbenchViewController.UIState)
+}
+
+/// Defines possible UI states that the view controller may be in
+@objc(BKYUIState)
+public final class BlocklyUIState : NSObject, OptionSet {
+  public static let defaultState = BlocklyUIState(value: .defaultState)
+  public static let trashCanOpen = BlocklyUIState(value: .trashCanOpen)
+  public static let trashCanHighlighted = BlocklyUIState(value: .trashCanHighlighted)
+  public static let categoryOpen = BlocklyUIState(value: .categoryOpen)
+  public static let editingTextField = BlocklyUIState(value: .editingTextField)
+  public static let draggingBlock = BlocklyUIState(value: .draggingBlock)
+  public static let presentingPopover = BlocklyUIState(value: .presentingPopover)
+  public static let didPanWorkspace = BlocklyUIState(value: .didPanWorkspace)
+  public static let didTapWorkspace = BlocklyUIState(value: .didTapWorkspace)
+
+  public enum Value: Int {
+    case defaultState = 1,
+    trashCanOpen,
+    trashCanHighlighted,
+    categoryOpen,
+    editingTextField,
+    draggingBlock,
+    presentingPopover,
+    didPanWorkspace,
+    didTapWorkspace
+  }
+  public let rawValue : Int
+  public required init(rawValue: Int) {
+    self.rawValue = rawValue
+  }
+  public convenience init(value: Value) {
+    self.init(rawValue: 1 << value.rawValue)
+  }
+
+  public func intersectsWith(_ other: BlocklyUIState) -> Bool {
+    return intersection(other).rawValue != 0
+  }
 }
 
 /**
@@ -74,43 +112,8 @@ open class WorkbenchViewController: UIViewController {
   /// Defines the style of the workbench
   public typealias Style = BKYWorkbenchViewControllerStyle
 
-  // MARK: - UIState Struct
-
-  /// Defines possible UI states that the view controller may be in
-  public struct UIState : OptionSet {
-    public static let defaultState = UIState(value: .defaultState)
-    public static let trashCanOpen = UIState(value: .trashCanOpen)
-    public static let trashCanHighlighted = UIState(value: .trashCanHighlighted)
-    public static let categoryOpen = UIState(value: .categoryOpen)
-    public static let editingTextField = UIState(value: .editingTextField)
-    public static let draggingBlock = UIState(value: .draggingBlock)
-    public static let presentingPopover = UIState(value: .presentingPopover)
-    public static let didPanWorkspace = UIState(value: .didPanWorkspace)
-    public static let didTapWorkspace = UIState(value: .didTapWorkspace)
-
-    public enum Value: Int {
-      case defaultState = 1,
-        trashCanOpen,
-        trashCanHighlighted,
-        categoryOpen,
-        editingTextField,
-        draggingBlock,
-        presentingPopover,
-        didPanWorkspace,
-        didTapWorkspace
-    }
-    public let rawValue : Int
-    public init(rawValue: Int) {
-      self.rawValue = rawValue
-    }
-    public init(value: Value) {
-      self.init(rawValue: 1 << value.rawValue)
-    }
-
-    public func intersectsWith(_ other: UIState) -> Bool {
-      return intersection(other).rawValue != 0
-    }
-  }
+  /// Defines the UI state of the workbench
+  public typealias UIState = BlocklyUIState
 
   // MARK: - Properties
 

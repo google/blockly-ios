@@ -7,12 +7,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TurtleViewController" customModule="BlocklySample" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TestObjCViewController">
             <connections>
-                <outlet property="codeText" destination="dy5-Ed-Mca" id="c9l-xo-2RV"/>
-                <outlet property="editorView" destination="hlr-l4-ZK6" id="CGs-Af-nNG"/>
+                <outlet property="codeText" destination="dy5-Ed-Mca" id="aJ4-Pq-zag"/>
+                <outlet property="editorView" destination="hlr-l4-ZK6" id="4Z6-aE-aPK"/>
                 <outlet property="view" destination="F31-zb-6fR" id="PD3-BP-cWt"/>
-                <outlet property="webViewContainer" destination="yB9-Zi-GcW" id="Dbd-3m-Ern"/>
+                <outlet property="webViewContainer" destination="yB9-Zi-GcW" id="3oE-n0-nYF"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -20,7 +20,8 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qta-1E-It5">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qta-1E-It5">
+                    <frame key="frameInset" minX="360" width="240" height="64"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t5G-8l-hVk">
                             <constraints>
@@ -33,7 +34,7 @@
                                 <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="didPressPlayButton:" destination="-1" eventType="touchUpInside" id="thq-bD-INt"/>
+                                <action selector="didPressPlayButton:" destination="-1" eventType="touchUpInside" id="nsp-bJ-6Tj"/>
                             </connections>
                         </button>
                     </subviews>
@@ -50,7 +51,8 @@
                         </mask>
                     </variation>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybU-Pj-zgv">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ybU-Pj-zgv">
+                    <frame key="frameInset" minX="360" minY="332" width="240" height="268"/>
                     <subviews>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dy5-Ed-Mca">
                             <accessibility key="accessibilityConfiguration" label="Code Text"/>
@@ -67,10 +69,12 @@
                         <constraint firstAttribute="bottom" secondItem="dy5-Ed-Mca" secondAttribute="bottom" constant="8" id="wsJ-YO-RuG"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yB9-Zi-GcW" userLabel="Web View Container">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yB9-Zi-GcW" userLabel="Web View Container">
+                    <frame key="frameInset" minX="360" minY="64" width="240" height="268"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
+                    <frame key="frameInset" width="360" height="600"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>

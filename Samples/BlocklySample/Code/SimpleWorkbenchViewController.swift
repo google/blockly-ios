@@ -37,11 +37,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func commonInit() {
     // Load blocks into the block factory
-    do {
-      try _blockFactory.load(fromJSONPaths: ["Blocks/simple_workbench_blocks.json"])
-    } catch let error as NSError {
-      print("An error occurred loading the test blocks: \(error)")
-    }
+    _blockFactory.load(fromDefaultFiles: BlockJSONFile.AllDefault)
   }
 
   // MARK: - Super
@@ -82,66 +78,14 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
   private func loadToolbox() {
     // Create a toolbox
     do {
-      let toolbox = Toolbox()
-
-      let loopIcon = UIImage(named: "icon_loop")
-      let loops = toolbox.addCategory(name: "Loops", color: UIColor.yellow, icon: loopIcon)
-      if let repeatBlock = try? _blockFactory.makeBlock(name: "controls_repeat_ext"),
-        let repeatBlockInput = repeatBlock.firstInput(withName: "TIMES"),
-        let numberBlock = try? _blockFactory.makeBlock(name: "non_negative_integer", shadow: true)
-      {
-        // Add shadow block to repeat loop
-        try repeatBlockInput.connection?.connectShadowTo(numberBlock.outputConnection)
-        try loops.addBlockTree(repeatBlock)
+      let toolboxPath = "SimpleWorkbench/toolbox_basic.xml"
+      if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
+        let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
+        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
+        try loadToolbox(toolbox)
+      } else {
+        print("Could not load toolbox XML from '\(toolboxPath)'")
       }
-      try addBlock("controls_whileUntil", toWorkspace: loops)
-
-      let prevNextIcon = UIImage(named: "icon_prevnext")
-      let prevNextCategory =
-        toolbox.addCategory(name: "Prev / Next", color: UIColor.green, icon: prevNextIcon)
-      try addBlock("statement_no_input", toWorkspace: prevNextCategory)
-      if
-        let statementValueInputBlock = try? _blockFactory.makeBlock(name: "statement_value_input"),
-        let noNextBlock = try? _blockFactory.makeBlock(name: "statement_value_input", shadow: true),
-        let noNextBlock2 = try? _blockFactory.makeBlock(name: "statement_no_input", shadow: true),
-        let simpleInputOutput = try? _blockFactory.makeBlock(
-          name: "simple_input_output", shadow: true)
-      {
-        // Add shadow block to next block
-        try statementValueInputBlock.nextConnection?.connectShadowTo(noNextBlock.previousConnection)
-        try noNextBlock.lastInputValueConnectionInChain()?.connectShadowTo(
-          simpleInputOutput.outputConnection)
-        try noNextBlock.nextConnection?.connectShadowTo(noNextBlock2.previousConnection)
-        try prevNextCategory.addBlockTree(statementValueInputBlock)
-      }
-      try addBlock("statement_multiple_value_input", toWorkspace: prevNextCategory)
-      try addBlock("statement_no_next", toWorkspace: prevNextCategory)
-      try addBlock("statement_statement_input", toWorkspace: prevNextCategory)
-      try addBlock("block_statement", toWorkspace: prevNextCategory)
-
-      let blockIcon = UIImage(named: "icon_block")
-      let random = toolbox.addCategory(name: "Random", color: UIColor.orange, icon: blockIcon)
-      try addBlock("web_image", toWorkspace: random)
-      try addBlock("local_image", toWorkspace: random)
-      try addBlock("angle", toWorkspace: random)
-      try addBlock("checkbox", toWorkspace: random)
-      try addBlock("date_picker", toWorkspace: random)
-      try addBlock("colour_picker", toWorkspace: random)
-      try addBlock("test_dropdown", toWorkspace: random)
-      try addBlock("text_input_block", toWorkspace: random)
-      try addBlock("any_number", toWorkspace: random)
-      try addBlock("currency", toWorkspace: random)
-      try addBlock("constrained_decimal", toWorkspace: random)
-      random.addGap(40)
-      try addBlock("variables_get", toWorkspace: random)
-      try addBlock("variables_set", toWorkspace: random)
-      random.addGap(40)
-      try addBlock("simple_input_output", toWorkspace: random)
-      try addBlock("multiple_input_output", toWorkspace: random)
-      try addBlock("output_no_input", toWorkspace: random)
-      try addBlock("block_output", toWorkspace: random)
-
-      try loadToolbox(toolbox)
     } catch let error as NSError {
       print("An error occurred loading the toolbox: \(error)")
     }
