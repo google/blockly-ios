@@ -52,7 +52,7 @@ public final class Block : NSObject {
   /// on the edge of the block (`false`)
   public let inputsInline: Bool
   /// The absolute position of the block, in the Workspace coordinate system
-  public internal(set) var position: WorkspacePoint
+  public var position: WorkspacePoint
   /// Flag indicating if this is a shadow block (`true`) or not (`false)
   public let shadow: Bool
   /// The `.OutputValue` connection for this block

@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TurtleViewController" customModule="BlocklySample" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseTurtleViewController">
             <connections>
-                <outlet property="codeText" destination="dy5-Ed-Mca" id="c9l-xo-2RV"/>
-                <outlet property="editorView" destination="hlr-l4-ZK6" id="CGs-Af-nNG"/>
-                <outlet property="playButton" destination="t5G-8l-hVk" id="gkr-aO-00g"/>
+                <outlet property="codeText" destination="dy5-Ed-Mca" id="aJ4-Pq-zag"/>
+                <outlet property="editorView" destination="hlr-l4-ZK6" id="4Z6-aE-aPK"/>
                 <outlet property="view" destination="F31-zb-6fR" id="PD3-BP-cWt"/>
-                <outlet property="webViewContainer" destination="yB9-Zi-GcW" id="Dbd-3m-Ern"/>
+                <outlet property="webViewContainer" destination="yB9-Zi-GcW" id="3oE-n0-nYF"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="F31-zb-6fR">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qta-1E-It5">
-                    <rect key="frame" x="360" y="0.0" width="240" height="64"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qta-1E-It5">
+                    <frame key="frameInset" minX="360" width="240" height="64"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t5G-8l-hVk">
-                            <rect key="frame" x="8" y="8" width="132" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="pDf-ov-Wdr"/>
                             </constraints>
@@ -32,14 +31,14 @@
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
                             <state key="highlighted">
-                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="didPressPlayButton:" destination="-1" eventType="touchUpInside" id="thq-bD-INt"/>
+                                <action selector="didPressPlayButton:" destination="-1" eventType="touchUpInside" id="nsp-bJ-6Tj"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="t5G-8l-hVk" firstAttribute="leading" secondItem="qta-1E-It5" secondAttribute="leading" constant="8" id="doR-MA-N8E"/>
                         <constraint firstAttribute="width" constant="240" id="jOi-51-ssV"/>
@@ -52,18 +51,17 @@
                         </mask>
                     </variation>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybU-Pj-zgv">
-                    <rect key="frame" x="360" y="332" width="240" height="268"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ybU-Pj-zgv">
+                    <frame key="frameInset" minX="360" minY="332" width="240" height="268"/>
                     <subviews>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dy5-Ed-Mca">
-                            <rect key="frame" x="8" y="8" width="0.0" height="0.0"/>
                             <accessibility key="accessibilityConfiguration" label="Code Text"/>
                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="15"/>
-                            <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="dy5-Ed-Mca" firstAttribute="top" secondItem="ybU-Pj-zgv" secondAttribute="top" constant="8" id="CCp-4o-6r5"/>
                         <constraint firstAttribute="trailing" secondItem="dy5-Ed-Mca" secondAttribute="trailing" constant="8" id="h9v-Kq-ssT"/>
@@ -71,16 +69,16 @@
                         <constraint firstAttribute="bottom" secondItem="dy5-Ed-Mca" secondAttribute="bottom" constant="8" id="wsJ-YO-RuG"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yB9-Zi-GcW" userLabel="Web View Container">
-                    <rect key="frame" x="360" y="64" width="240" height="268"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yB9-Zi-GcW" userLabel="Web View Container">
+                    <frame key="frameInset" minX="360" minY="64" width="240" height="268"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
-                    <rect key="frame" x="0.0" y="0.0" width="360" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlr-l4-ZK6">
+                    <frame key="frameInset" width="360" height="600"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qta-1E-It5" firstAttribute="top" secondItem="F31-zb-6fR" secondAttribute="top" id="1PX-6c-lBR"/>
                 <constraint firstAttribute="bottom" secondItem="ybU-Pj-zgv" secondAttribute="bottom" id="4eF-da-151"/>
