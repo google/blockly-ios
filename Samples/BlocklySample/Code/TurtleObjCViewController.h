@@ -13,9 +13,16 @@
  * limitations under the License.
  */
 
-//
-//  Use this file to import your target's public headers that you would like to expose to Swift.
-//
+#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-#import "TurtleObjCViewController.h"
-#import "TurtleViewControllerInterface.h"
+@interface TurtleObjCViewController: UIViewController
+
+/// The parent view for `self.webView`.
+@property (weak, nonatomic) IBOutlet UIView *webViewContainer;
+/// Text to show generated code.
+@property (weak, nonatomic) IBOutlet UILabel *codeText;
+/// The parent view for `self.workbenchViewController.view`.
+@property (weak, nonatomic) IBOutlet UIView *editorView;
+
+@end

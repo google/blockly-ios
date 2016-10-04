@@ -14,7 +14,19 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-@interface TestObjCViewController: UIViewController
+/// The common protocol for both turtle view controllers. Any outlets required by
+/// `TurtleViewController.xib` should be declared here.
+@protocol TurtleViewControllerInterface
+
+/// The parent view for `self.webView`.
+@property (weak, nonatomic) IBOutlet UIView *webViewContainer;
+/// Text to show generated code.
+@property (weak, nonatomic) IBOutlet UILabel *codeText;
+/// The parent view for `self.workbenchViewController.view`.
+@property (weak, nonatomic) IBOutlet UIView *editorView;
+
+- (IBAction)didPressPlayButton:(UIButton *)sender;
 
 @end
