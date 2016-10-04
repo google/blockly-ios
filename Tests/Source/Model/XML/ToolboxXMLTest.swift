@@ -150,7 +150,7 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqual("block_output", toolbox.categories[0].items[1].rootBlock?.name)
   }
 
-  func testParseXML_TwoBlocksWithGaps() {
+  func testParseXML_TwoCategorizedBlocksWithGaps() {
     let xmlString =
     "<xml>" +
       "<category name='cat1'>" +
@@ -159,6 +159,32 @@ class ToolboxXMLTest: XCTestCase {
         "<block type='block_statement'></block>" +
         "<sep></sep>" +
       "</category>" +
+    "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
+
+    XCTAssertEqual(1, toolbox.categories.count)
+
+    let category = toolbox.categories[0]
+    XCTAssertEqual(4, category.items.count)
+    XCTAssertEqual("block_output", category.items[0].rootBlock?.name)
+    XCTAssertEqual(10, category.items[1].gap)
+    XCTAssertEqual("block_statement", category.items[2].rootBlock?.name)
+    XCTAssertNotNil(category.items[3].gap)
+  }
+
+  func testParseXML_TwoUncategorizedBlocksWithGaps() {
+    let xmlString =
+      "<xml>" +
+        "<block type='block_output'></block>" +
+        "<sep gap='10' />" +
+        "<block type='block_statement'></block>" +
+        "<sep></sep>" +
     "</xml>"
     guard let toolbox = BKYAssertDoesNotThrow({
       try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
@@ -218,9 +244,25 @@ class ToolboxXMLTest: XCTestCase {
     }
   }
 
+  func testParseXML_BadXML_CategoriesAndUncategorizedBlocks() {
+    do {
+      let xmlString =
+        "<xml>" +
+          "<category><block type='block_output'></block></category>" +
+          "<block type='block_output'></block>" +
+        "</xml>"
+      _ = try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+      XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
+    } catch let error as BlocklyError {
+      XCTAssertEqual(BlocklyError.Code.xmlParsing.rawValue, error.code)
+    } catch let error as NSError {
+      XCTFail("Caught unexpected error: \(error)")
+    }
+  }
+
   func testParseXML_UnknownBlock() {
     do {
-      let xmlString = "<xml><category><block id='unknownblock'></block></category></xml>"
+      let xmlString = "<xml><category><block type='unknownblock'></block></category></xml>"
       _ = try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {

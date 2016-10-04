@@ -59,6 +59,12 @@ extension Toolbox {
         "An AEXMLError occurred parsing the root node. Expected \"<xml>\": \(error)")
     }
 
+    if toolboxNode["category"].count > 0 && toolboxNode["block"].count > 0 {
+      throw BlocklyError(.xmlParsing,
+        "Toolbox XML cannot contain both '<category>' and '<block>' as top-level nodes. " +
+        "Only one is allowed.\nXML:\n\(xml)")
+    }
+
     let toolbox = Toolbox()
 
     for categoryNode in (toolboxNode["category"].all ?? []) {
@@ -90,29 +96,11 @@ extension Toolbox {
       let category = toolbox.addCategory(name: name, color: color ?? UIColor.clear, icon: icon)
 
       for subNode in categoryNode.children {
-        switch subNode.name {
-        case "block":
-          let blockTree = try Block.blockTree(fromXml: subNode, factory: factory)
-          try category.addBlockTree(blockTree.rootBlock)
-        case "category":
-          throw BlocklyError(.xmlParsing, "Subcategories are not supported.")
-        case "shadow":
-          throw BlocklyError(.xmlParsing, "Shadow blocks may not be top level toolbox blocks.")
-        case "sep":
-          if let gapString = subNode.attributes["gap"],
-            let gap = NumberFormatter().number(from: gapString)
-          {
-            category.addGap(CGFloat(gap))
-          } else {
-            category.addGap()
-          }
-        default:
-          bky_print("Unknown element: \(xml.name)")
-        }
+        try parseChildNode(subNode, forCategory: category, factory: factory)
       }
     }
 
-    // Allow non-categorized blocks. These will appear in their own category at the very end.
+    // Parse uncategorized blocks
     if let uncategorizedBlocks = toolboxNode["block"].all,
       uncategorizedBlocks.count > 0
     {
@@ -121,13 +109,38 @@ extension Toolbox {
       let color = ColorHelper.makeColor(hue: (160.0 / 360.0))
       let category = toolbox.addCategory(name: categoryName, color: color, icon: nil)
 
-      for blockNode in uncategorizedBlocks {
-        let blockTree = try Block.blockTree(fromXml: blockNode, factory: factory)
-        try category.addBlockTree(blockTree.rootBlock)
+      for blockNode in toolboxNode.children {
+        try parseChildNode(blockNode, forCategory: category, factory: factory)
       }
     }
 
     return toolbox
+  }
+
+  // MARK: - Private
+
+  private class func parseChildNode(_ childNode: AEXMLElement,
+    forCategory category: Toolbox.Category, factory: BlockFactory) throws
+  {
+    switch childNode.name {
+    case "block":
+      let blockTree = try Block.blockTree(fromXml: childNode, factory: factory)
+      try category.addBlockTree(blockTree.rootBlock)
+    case "category":
+      throw BlocklyError(.xmlParsing, "Subcategories are not supported.")
+    case "shadow":
+      throw BlocklyError(.xmlParsing, "Shadow blocks may not be top level toolbox blocks.")
+    case "sep":
+      if let gapString = childNode.attributes["gap"],
+        let gap = NumberFormatter().number(from: gapString)
+      {
+        category.addGap(CGFloat(gap))
+      } else {
+        category.addGap()
+      }
+    default:
+      bky_print("Unknown element: \(childNode.name)")
+    }
   }
 }
 
