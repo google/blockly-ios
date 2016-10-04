@@ -32,11 +32,11 @@ class CodeGeneratorServiceTest: XCTestCase {
     _codeGeneratorService = CodeGeneratorService(
       jsCoreDependencies: [
         /// The JS file containing the Blockly engine
-        (file: "blockly_web/blockly_compressed.js", bundle: testBundle),
+        BundledFile(path: "blockly_web/blockly_compressed.js", bundle: testBundle),
         /// The JS file containing all Blockly default blocks
-        (file: "blockly_web/blocks_compressed.js", bundle: testBundle),
+        BundledFile(path: "blockly_web/blocks_compressed.js", bundle: testBundle),
         /// The JS file containing a list of internationalized messages
-        (file: "blockly_web/msg/js/en.js", bundle: testBundle),
+        BundledFile(path: "blockly_web/msg/js/en.js", bundle: testBundle),
       ])
 
     // Create the block factory
@@ -75,9 +75,10 @@ class CodeGeneratorServiceTest: XCTestCase {
     // Execute request
     let testBundle = Bundle(for: type(of: self))
     guard let request = BKYAssertDoesNotThrow({
-        try CodeGeneratorService.Request(workspace: workspace,
+        try CodeGeneratorServiceRequest(workspace: workspace,
           jsGeneratorObject: "Blockly.Python",
-          jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+          jsBlockGenerators: [
+            BundledFile(path: "blockly_web/python_compressed.js", bundle: testBundle)],
           jsonBlockDefinitions: [])
       }) else
     {
@@ -136,9 +137,10 @@ class CodeGeneratorServiceTest: XCTestCase {
 
       // Execute request
       guard let request = BKYAssertDoesNotThrow({
-        try CodeGeneratorService.Request(workspace: workspace,
+        try CodeGeneratorServiceRequest(workspace: workspace,
           jsGeneratorObject: "Blockly.Python",
-          jsBlockGenerators: [(file: "blockly_web/python_compressed.js", bundle: testBundle)],
+          jsBlockGenerators: [
+            BundledFile(path: "blockly_web/python_compressed.js", bundle: testBundle)],
           jsonBlockDefinitions: [])
       }) else {
         XCTFail("Could not build code generation request")
@@ -199,14 +201,15 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     // Execute request
     guard let request = BKYAssertDoesNotThrow({
-      try CodeGeneratorService.Request(
+      try CodeGeneratorServiceRequest(
         workspace: workspace,
         jsGeneratorObject: "Blockly.JavaScript",
         jsBlockGenerators: [
-          (file: "blockly_web/javascript_compressed.js", bundle: testBundle),
-          (file: "code_generator_generators.js", bundle: testBundle),
+          BundledFile(path: "blockly_web/javascript_compressed.js", bundle: testBundle),
+          BundledFile(path: "code_generator_generators.js", bundle: testBundle),
         ],
-        jsonBlockDefinitions: [(file: "code_generator_blocks.json", bundle: testBundle)])
+        jsonBlockDefinitions: [
+          BundledFile(path: "code_generator_blocks.json", bundle: testBundle)])
     }) else
     {
       XCTFail("Could not build code generation request")

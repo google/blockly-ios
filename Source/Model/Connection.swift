@@ -87,7 +87,7 @@ public final class Connection : NSObject {
     internal static let ReasonMustDisconnect = CheckResult(value: .reasonMustDisconnect)
     internal static let ReasonTargetNull = CheckResult(value: .reasonTargetNull)
     internal static let ReasonShadowNull = CheckResult(value: .reasonShadowNull)
-    internal static let ReasonChecksFailed = CheckResult(value: .reasonChecksFailed)
+    internal static let ReasonTypeChecksFailed = CheckResult(value: .reasonTypeChecksFailed)
     internal static let ReasonCannotSetShadowForTarget =
       CheckResult(value: .reasonCannotSetShadowForTarget)
     internal static let ReasonInferiorBlockShadowMismatch =
@@ -97,7 +97,7 @@ public final class Connection : NSObject {
     @objc
     public enum BKYConnectionCheckResultValue: Int {
       case canConnect = 1, reasonSelfConnection, reasonWrongType, reasonMustDisconnect,
-      reasonTargetNull, reasonShadowNull, reasonChecksFailed, reasonCannotSetShadowForTarget,
+      reasonTargetNull, reasonShadowNull, reasonTypeChecksFailed, reasonCannotSetShadowForTarget,
       reasonInferiorBlockShadowMismatch
 
       func errorMessage() -> String? {
@@ -110,8 +110,8 @@ public final class Connection : NSObject {
           return "Must disconnect from current block before connecting to a new one."
         case .reasonTargetNull, .reasonShadowNull:
           return "Cannot connect to a null connection"
-        case .reasonChecksFailed:
-          return "Cannot connect, checks do not match."
+        case .reasonTypeChecksFailed:
+          return "Cannot connect, `typeChecks` do not match."
         case .reasonCannotSetShadowForTarget:
           return "Cannot set `self.targetConnection` when the source or target block is a shadow."
         case .reasonInferiorBlockShadowMismatch:
@@ -379,7 +379,7 @@ public final class Connection : NSObject {
         checkResult.formUnion(.ReasonCannotSetShadowForTarget)
       }
       if !typeChecksMatchWithConnection(aTarget) {
-        checkResult.formUnion(.ReasonChecksFailed)
+        checkResult.formUnion(.ReasonTypeChecksFailed)
       }
     } else {
       checkResult.formUnion(.ReasonTargetNull)
@@ -423,7 +423,7 @@ public final class Connection : NSObject {
         checkResult.formUnion(.ReasonInferiorBlockShadowMismatch)
       }
       if !typeChecksMatchWithConnection(aShadow) {
-        checkResult.formUnion(.ReasonChecksFailed)
+        checkResult.formUnion(.ReasonTypeChecksFailed)
       }
     } else {
       checkResult.formUnion(.ReasonShadowNull)
