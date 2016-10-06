@@ -176,8 +176,8 @@ open class WorkspaceLayout: Layout {
 
   - Parameter blockGroupLayout: The given block group layout
   */
-  open func bringBlockGroupLayoutToFront(_ layout: BlockGroupLayout?) {
-    guard let blockGroupLayout = layout else {
+  open func bringBlockGroupLayoutToFront(_ blockGroupLayout: BlockGroupLayout?) {
+    guard let blockGroupLayout = blockGroupLayout else {
       return
     }
 

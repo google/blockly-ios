@@ -158,7 +158,7 @@ open class WorkspaceView: LayoutView {
   /**
    Removes a given `BlockGroupView` from the workspace's scrollview and recycles it.
 
-   - Parameter blockView: The given `BlockGroupView`
+   - Parameter blockGroupView: The given `BlockGroupView`
    */
   open func removeBlockGroupView(_ blockGroupView: BlockGroupView) {
     blockGroupViews.remove(blockGroupView)

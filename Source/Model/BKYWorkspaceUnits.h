@@ -31,9 +31,9 @@ typedef struct BKYWorkspacePoint BKYWorkspacePoint;
 /**
  Creates a point in the Workspace coordinate system, given `(x, y)` coordinates.
 
- @param x: X-coordinate in the Workspace coordinate system
- @param y: Y-coordinate in the Workspace coordinate system
- @returns: A `BKYWorkspacePoint`.
+ @param x X-coordinate in the Workspace coordinate system
+ @param y Y-coordinate in the Workspace coordinate system
+ @returns A `BKYWorkspacePoint`.
  */
 BKYWorkspacePoint BKYWorkspacePointMake(CGFloat x, CGFloat y);
 
@@ -58,9 +58,9 @@ typedef struct BKYWorkspaceSize BKYWorkspaceSize;
 /**
  Creates a size in the Workspace coordinate system, given width and height values.
 
- @param width: Width value in the Workspace coordinate system
- @param height: Height value in the Workspace coordinate system
- @returns: A `BKYWorkspaceSize`.
+ @param width Width value in the Workspace coordinate system
+ @param height Height value in the Workspace coordinate system
+ @returns A `BKYWorkspaceSize`.
  */
 BKYWorkspaceSize BKYWorkspaceSizeMake(CGFloat width, CGFloat height);
 
@@ -81,11 +81,11 @@ typedef UIEdgeInsets BKYWorkspaceEdgeInsets;
 ///**
 // Creates edge insets in the Workspace coordinate system, given values for each edge.
 //
-// @param top: Top edge inset in the Workspace coordinate system
-// @param left: Left edge inset in the Workspace coordinate system
-// @param bottom: Bottom edge inset in the Workspace coordinate system
-// @param right: Right value in the Workspace coordinate system
-// @returns: A `BKYWorkspaceEdgeInsets`.
+// @param top Top edge inset in the Workspace coordinate system
+// @param left Left edge inset in the Workspace coordinate system
+// @param bottom Bottom edge inset in the Workspace coordinate system
+// @param right Right value in the Workspace coordinate system
+// @returns A `BKYWorkspaceEdgeInsets`.
 // */
 BKYWorkspaceEdgeInsets BKYWorkspaceEdgeInsetsMake(
   CGFloat top, CGFloat left, CGFloat bottom, CGFloat right);

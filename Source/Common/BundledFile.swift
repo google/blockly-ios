@@ -48,7 +48,7 @@ public class BundledFile: NSObject {
   /**
    Initializes a bundled file. This initializer will always use the default bundle.
 
-   - Parameter file: The path to a local file.
+   - Parameter path: The path to a local file.
    */
   public convenience init(path: String) {
     self.init(path: path, bundle: Bundle.main)
