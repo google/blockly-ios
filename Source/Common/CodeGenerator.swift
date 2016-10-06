@@ -76,9 +76,9 @@ public final class CodeGenerator: NSObject {
   /// The name of the JS object that generates code (e.g. 'Blockly.Python')
   public let jsGeneratorObject: String
   /// List of block generator JS files (e.g. ['python_compressed.js'])
-  public let jsBlockGenerators: [BundledFile]
+  public let jsBlockGeneratorFiles: [BundledFile]
   /// List of JSON files containing block definitions
-  public let jsonBlockDefinitions: [BundledFile]
+  public let jsonBlockDefinitionFiles: [BundledFile]
   /// The current state of the code generator
   public fileprivate(set) var state: State = .initialized
 
@@ -121,13 +121,13 @@ public final class CodeGenerator: NSObject {
    to `.Unusable` and it should be discarded.
    */
   internal init(jsCoreDependencies: [BundledFile], jsGeneratorObject: String,
-    jsBlockGenerators: [BundledFile], jsonBlockDefinitions: [BundledFile],
+    jsBlockGeneratorFiles: [BundledFile], jsonBlockDefinitionFiles: [BundledFile],
     onLoadCompletion: LoadCompletionClosure?, onLoadFailure: LoadFailureClosure?)
   {
     self.jsCoreDependencies = jsCoreDependencies
     self.jsGeneratorObject = jsGeneratorObject
-    self.jsBlockGenerators = jsBlockGenerators
-    self.jsonBlockDefinitions = jsonBlockDefinitions
+    self.jsBlockGeneratorFiles = jsBlockGeneratorFiles
+    self.jsonBlockDefinitionFiles = jsonBlockDefinitionFiles
     self.onLoadCompletion = onLoadCompletion
     self.onLoadFailure = onLoadFailure
 
@@ -300,12 +300,12 @@ extension CodeGenerator: WKNavigationDelegate {
       }
 
       // Load block generators
-      for bundledFile in jsBlockGenerators {
+      for bundledFile in jsBlockGeneratorFiles {
         jsScripts.append(try contents(ofBundledFile: bundledFile))
       }
 
       // Finally, import all the block definitions
-      for bundledFile in jsonBlockDefinitions {
+      for bundledFile in jsonBlockDefinitionFiles {
         let fileContents = try contents(ofBundledFile: bundledFile)
         let fileContentsParameter = fileContents.bky_escapedJavaScriptParameter()
         let js = "CodeGeneratorBridge.importBlockDefinitions(\"\(fileContentsParameter)\")"

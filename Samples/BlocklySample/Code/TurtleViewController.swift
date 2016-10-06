@@ -42,8 +42,59 @@ class TurtleViewController: UIViewController {
   var _webView: WKWebView!
   /// The block editor
   var _workbenchViewController: WorkbenchViewController!
+
   /// Code generator service
-  var _codeGeneratorService: CodeGeneratorService!
+  lazy var _codeGeneratorService: CodeGeneratorService = {
+    // Create the code generator service
+    let codeGeneratorService = CodeGeneratorService(
+      jsCoreDependencies: [
+        // The JS file containing the Blockly engine
+        "Turtle/blockly_web/blockly_compressed.js",
+        // The JS file containing a list of internationalized messages
+        "Turtle/blockly_web/msg/js/en.js"
+      ])
+    return codeGeneratorService
+  }()
+
+  /// Builder for creating code generator service requests
+  lazy var _codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder = {
+    let builder = CodeGeneratorServiceRequestBuilder(
+      // This is the name of the JS object that will generate JavaScript code
+      jsGeneratorObject: "Blockly.JavaScript")
+    builder.addJSBlockGeneratorFiles([
+      // Use JavaScript code generators for the default blocks
+      "Turtle/blockly_web/javascript_compressed.js",
+      // Use JavaScript code generators for our custom turtle blocks
+      "Turtle/generators.js"])
+    // Load the block definitions for all default blocks
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+    // Load the block definitions for our custom turtle blocks
+    builder.addJSONBlockDefinitionFiles(["Turtle/turtle_blocks.json"])
+
+    // Note: A single set of request listeners like this is sufficient for most cases, but
+    // dynamic completion and error listeners may be created for each call if needed.
+    builder.onCompletion = self.codeGenerationCompletedWithCode
+    builder.onError = self.codeGenerationFailedWithError
+
+    return builder
+  }()
+
+  /// Factory that produces block instances
+  lazy var _blockFactory: BlockFactory = {
+    let blockFactory = BlockFactory()
+
+    // Load default blocks into the block factory
+    blockFactory.load(fromDefaultFiles: [.AllDefault])
+
+    // Load custom turtle blocks into the block factory
+    do {
+      try blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
+    } catch let error as NSError {
+      print("An error occurred loading the turtle blocks: \(error)")
+    }
+
+    return blockFactory
+  }()
 
   /// Flag indicating if highlighting a block should be enabled
   var _allowBlockHighlighting: Bool = false
@@ -51,9 +102,6 @@ class TurtleViewController: UIViewController {
   var _allowScrollingToBlockView: Bool = false
   /// The UUID of the last block that was highlighted
   var _lastHighlightedBlockUUID: String?
-
-  /// Factory that produces block instances from a parsed json file
-  let _blockFactory = BlockFactory()
 
   /// Date formatter for timestamping events
   let _dateFormatter = DateFormatter()
@@ -63,33 +111,10 @@ class TurtleViewController: UIViewController {
   init() {
     // Load from xib file
     super.init(nibName: "TurtleViewController", bundle: nil)
-    commonInit()
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  private func commonInit() {
-    // Load blocks into the block factory
-    do {
-      _blockFactory.load(fromDefaultFiles: [.ColorDefault, .MathDefault, .LoopDefault])
-      try _blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
-    } catch let error as NSError {
-      print("An error occurred loading the test blocks: \(error)")
-    }
-
-    // Create the code generator service
-    _codeGeneratorService = CodeGeneratorService(
-      jsCoreDependencies: [
-        // The JS file containing the Blockly engine
-        BundledFile(path: "Turtle/blockly_web/blockly_compressed.js"),
-        // The JS file containing all Blockly default blocks
-        BundledFile(path: "Turtle/blockly_web/blocks_compressed.js"),
-        // The JS file containing a list of internationalized messages
-        BundledFile(path: "Turtle/blockly_web/msg/js/en.js")
-      ])
   }
 
   deinit {
@@ -196,22 +221,8 @@ class TurtleViewController: UIViewController {
         self.codeText.text = ""
         addTimestampedText("Generating code...")
 
-        // Request code generation.
-        let request = try CodeGeneratorServiceRequest(workspace: workspace,
-          jsGeneratorObject: "Blockly.JavaScript",
-          jsBlockGenerators: [
-            BundledFile(path: "Turtle/blockly_web/javascript_compressed.js"),
-            BundledFile(path: "Turtle/generators.js")
-          ],
-          jsonBlockDefinitions: [
-            BundledFile(path: "Turtle/turtle_blocks.json")
-          ])
-
-        // Note: A single set of request listeners like this is sufficient for most cases, but
-        // dynamic completion and error listeners may be created for each call if needed.
-        request.onCompletion = self.codeGenerationCompletedWithCode
-        request.onError = self.codeGenerationFailedWithError
-
+        // Request code generation for the workspace
+        let request = try _codeGeneratorServiceRequestBuilder.makeRequest(forWorkspace: workspace)
         _codeGeneratorService.generateCode(forRequest: request)
       }
     } catch let error as NSError {
