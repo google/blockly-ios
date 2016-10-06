@@ -180,9 +180,9 @@ public final class Dragger: NSObject {
   nil, the connection manager's `mainGroup` is used.
   */
   public func clearGestureDataForBlockLayout(
-    _ layout: BlockLayout, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
+    _ layout: BlockLayout, moveConnectionsToGroup connectionGroup: ConnectionManager.Group? = nil)
   {
-    clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: group)
+    clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: connectionGroup)
   }
 
   // MARK: - Private
@@ -196,7 +196,7 @@ public final class Dragger: NSObject {
    nil, the connection manager's `mainGroup` is used.
    */
   fileprivate func clearGestureData(
-    forUUID uuid: String, moveConnectionsToGroup group: ConnectionManager.Group? = nil)
+    forUUID uuid: String, moveConnectionsToGroup connectionGroup: ConnectionManager.Group? = nil)
   {
     guard let gestureData = _dragGestureData[uuid] else {
       return
@@ -204,7 +204,7 @@ public final class Dragger: NSObject {
 
     // Move connections to a different group in the connection manager
     workspaceLayoutCoordinator?.connectionManager?
-      .mergeGroup(gestureData.connectionGroup, intoGroup: group)
+      .mergeGroup(gestureData.connectionGroup, intoGroup: connectionGroup)
 
     removeHighlightedConnection(forDrag: gestureData)
     _dragGestureData[uuid] = nil

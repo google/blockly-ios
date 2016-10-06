@@ -195,8 +195,6 @@ public final class WorkspaceBezierPath: NSObject {
   curve. Otherwise, `addQuadCurveToPoint(...)` is a more suitable method to use.
 
   - Parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
-  - Parameter controlPoint: The control point of the curve, specified in the Workspace coordinate
-  system.
   - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be absolute points.
   */

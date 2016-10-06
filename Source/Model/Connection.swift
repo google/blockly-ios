@@ -25,7 +25,7 @@ public protocol ConnectionHighlightDelegate {
 
   - Parameter connection: The connection whose `highlighted` value has changed.
   */
-  func didChangeHighlight(forConnection: Connection)
+  func didChangeHighlight(forConnection connection: Connection)
 }
 
 /**

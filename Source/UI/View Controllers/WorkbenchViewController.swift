@@ -232,7 +232,7 @@ open class WorkbenchViewController: UIViewController {
    - Parameter style: The `Style` to use for this laying out items in this view controller.
    - Parameter engine: Value used for `self.layoutEngine`.
    - Parameter layoutBuilder: Value used for `self.layoutBuilder`.
-   - Parameter layoutBuilder: Value used for `self.viewFactory`.
+   - Parameter viewFactory: Value used for `self.viewFactory`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
               viewFactory: ViewFactory)
