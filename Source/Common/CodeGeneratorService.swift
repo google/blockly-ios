@@ -14,7 +14,12 @@
 */
 
 import Foundation
-import AEXML
+
+/// Specifies the location of a local resource, with `path` representing a relative path inside a
+/// resource `bundle`.
+public typealias BundledFile = (path: String, bundle: Bundle)
+
+// MARK: - CodeGeneratorService Class
 
 /**
  Service for generating code from a workspace.
@@ -24,7 +29,6 @@ import AEXML
  */
 @objc(BKYCodeGeneratorService)
 public final class CodeGeneratorService: NSObject {
-
   // MARK: - Properties
 
   /// List of core Blockly JS dependencies
@@ -39,15 +43,28 @@ public final class CodeGeneratorService: NSObject {
   /**
    Creates a code generator service.
 
-   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies. These core dependencies
-   will be used when an internal `CodeGenerator` instance is created. This list must contain the
-   following files:
+   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to the main
+   resource bundle. These core dependencies will be used when an internal `CodeGenerator`
+   instance is created. This list must contain the following files:
      - Blockly engine (eg. 'blockly_compressed.js')
-     - Blockly default blocks (eg. 'blocks_compressed.js')
      - A default list of messages (eg. 'msg/js/en.js')
    */
-  public init(jsCoreDependencies: [BundledFile]) {
-    self.jsCoreDependencies = jsCoreDependencies
+  public convenience init(jsCoreDependencies: [String]) {
+    self.init(jsCoreDependencies: jsCoreDependencies, bundle: Bundle.main)
+  }
+
+  /**
+   Creates a code generator service.
+
+   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to a given
+   resource `bundle`. These core dependencies will be used when an internal `CodeGenerator`
+   instance is created. This list must contain the following files:
+     - Blockly engine (eg. 'blockly_compressed.js')
+     - A default list of messages (eg. 'msg/js/en.js')
+   - Parameter bundle: The resource bundle containing `jsCoreDependencies`.
+   */
+  public init(jsCoreDependencies: [String], bundle: Bundle) {
+    self.jsCoreDependencies = jsCoreDependencies.map { (path: $0, bundle: bundle) }
     super.init()
 
     // Only allow one request to execute at a time
@@ -89,10 +106,10 @@ public final class CodeGeneratorService: NSObject {
 
   // MARK: - Private
 
-  open func executeRequest(_ request: CodeGeneratorServiceRequest) {
+  fileprivate func executeRequest(_ request: CodeGeneratorServiceRequest) {
     if let codeGenerator = self.codeGenerator ,
-      (compareLists(codeGenerator.jsonBlockDefinitions, request.jsonBlockDefinitions) &&
-      compareLists(codeGenerator.jsBlockGenerators, request.jsBlockGenerators) &&
+      (compareLists(codeGenerator.jsonBlockDefinitionFiles, request.jsonBlockDefinitionFiles) &&
+      compareLists(codeGenerator.jsBlockGeneratorFiles, request.jsBlockGeneratorFiles) &&
       codeGenerator.jsGeneratorObject == request.jsGeneratorObject)
     {
       // No JS/JSON files have changed since the last request. Use the existing code generator.
@@ -105,10 +122,10 @@ public final class CodeGeneratorService: NSObject {
         self.codeGenerator = CodeGenerator(
           jsCoreDependencies: self.jsCoreDependencies,
           jsGeneratorObject: request.jsGeneratorObject,
-          jsBlockGenerators: request.jsBlockGenerators,
-          jsonBlockDefinitions: request.jsonBlockDefinitions,
+          jsBlockGeneratorFiles: request.jsBlockGeneratorFiles,
+          jsonBlockDefinitionFiles: request.jsonBlockDefinitionFiles,
           onLoadCompletion: {
-            self.codeGenerator!.generateCodeForWorkspaceXML(request.workspaceXML,
+            self.codeGenerator?.generateCodeForWorkspaceXML(request.workspaceXML,
               completion: request.completeRequest(withCode:),
               error: request.completeRequest(withError:))
           }, onLoadFailure: { (error) -> Void in
@@ -137,81 +154,58 @@ public final class CodeGeneratorService: NSObject {
   }
 }
 
+// MARK: - CodeGeneratorServiceRequest Class
+
 /**
  Request object for generating code for a workspace.
+
+ - Note: To create a `CodeGeneratorServiceRequest`, use `CodeGeneratorServiceRequestBuilder`.
  */
 @objc(BKYCodeGeneratorServiceRequest)
-open class CodeGeneratorServiceRequest: Operation {
+public class CodeGeneratorServiceRequest: Operation {
   // MARK: - Typealiases
   public typealias CompletionClosure = (_ code: String) -> Void
   public typealias ErrorClosure = (_ error: String) -> Void
 
   // MARK: - Properties
   /// The workspace XML to use when generating code
-  open let workspaceXML: String
+  public let workspaceXML: String
   /// The name of the JS object that generates code (e.g. 'Blockly.Python')
-  open let jsGeneratorObject: String
+  public let jsGeneratorObject: String
   /// List of block generator JS files (e.g. ['python_compressed.js'])
-  open let jsBlockGenerators: [BundledFile]
+  public let jsBlockGeneratorFiles: [BundledFile]
   /// List of JSON files containing block definitions
-  open let jsonBlockDefinitions: [BundledFile]
+  public let jsonBlockDefinitionFiles: [BundledFile]
   /// Callback that is executed when code generation completes successfully. This is always
   /// executed on the main thread.
-  open var onCompletion: CompletionClosure?
+  public var onCompletion: CompletionClosure?
   /// Callback that is executed when code generation fails. This is always executed on the main
   /// thread.
-  open var onError: ErrorClosure?
+  public var onError: ErrorClosure?
   /// The code generator service used for executing this request.
-  public weak var codeGeneratorService: CodeGeneratorService?
+  fileprivate weak var codeGeneratorService: CodeGeneratorService?
 
   // MARK: - Initializers
 
-  /// TODO(#221) - Remove BundledFile.
-
   /**
-   Initializer for the code generator service.
-
-   - Parameter workspaceXML: The XML to use for generating code.
-   - Parameter jsGeneratorObject: The name of the JS object that generates code.
-   (e.g. 'Blockly.Python')
-   - Parameter jsBlockGenerators: The list of JS files containing block generators.
-   - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
+   Use `CodeGeneratorServiceRequestBuilder` to create a request.
    */
-  public init(workspaceXML: String,
-              jsGeneratorObject: String,
-              jsBlockGenerators: [BundledFile],
-              jsonBlockDefinitions: [BundledFile])
-  {
+  internal init(workspaceXML: String, jsGeneratorObject: String,
+                jsBlockGeneratorFiles: [BundledFile], jsonBlockDefinitionFiles: [BundledFile],
+                onCompletion: CompletionClosure?, onError: ErrorClosure?) {
     self.workspaceXML = workspaceXML
     self.jsGeneratorObject = jsGeneratorObject
-    self.jsBlockGenerators = jsBlockGenerators
-    self.jsonBlockDefinitions = jsonBlockDefinitions
-  }
-
-  /**
-   Initializer for the code generator service.
-
-   - Parameter workspace: The workspace to use for generating code.
-   - Parameter jsGeneratorObject: The name of the JS object that generates code.
-   (e.g. 'Blockly.Python')
-   - Parameter jsBlockGenerators: The list of JS files containing block generators.
-   - Parameter jsonBlockDefinitions: The list of JSON files containing block definitions.
-   */
-  public convenience init(workspace: Workspace,
-                          jsGeneratorObject: String,
-                          jsBlockGenerators: [BundledFile],
-                          jsonBlockDefinitions: [BundledFile]) throws
-  {
-    self.init(workspaceXML: try workspace.toXML(),
-              jsGeneratorObject: jsGeneratorObject, jsBlockGenerators: jsBlockGenerators,
-              jsonBlockDefinitions: jsonBlockDefinitions)
+    self.jsBlockGeneratorFiles = jsBlockGeneratorFiles
+    self.jsonBlockDefinitionFiles = jsonBlockDefinitionFiles
+    self.onCompletion = onCompletion
+    self.onError = onError
   }
 
   // MARK: - Super
 
   fileprivate var _executing: Bool = false
   /// `true` if the generator is executing, `false` otherwise.
-  open override var isExecuting: Bool {
+  public override var isExecuting: Bool {
     get { return _executing }
     set {
       if _executing == newValue {
@@ -225,7 +219,7 @@ open class CodeGeneratorServiceRequest: Operation {
 
   fileprivate var _finished: Bool = false
   /// `true` if the generator has finished running, `false` otherwise.
-  open override var isFinished: Bool {
+  public override var isFinished: Bool {
     get { return _finished }
     set {
       if _finished == newValue {
@@ -238,7 +232,7 @@ open class CodeGeneratorServiceRequest: Operation {
   }
 
   /// Starts the code generator service.
-  open override func start() {
+  public override func start() {
     if self.isCancelled {
       finishOperation()
       return
@@ -252,7 +246,7 @@ open class CodeGeneratorServiceRequest: Operation {
   }
 
   /// Cancels the code generator service.
-  open override func cancel() {
+  public override func cancel() {
     self.onCompletion = nil
     self.onError = nil
     super.cancel()
@@ -285,3 +279,4 @@ open class CodeGeneratorServiceRequest: Operation {
     self.isFinished = true
   }
 }
+

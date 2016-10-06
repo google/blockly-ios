@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		300CABD11D5CF816000E43B2 /* ConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */; };
 		300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */; };
-		309798881D9DC54A0079C598 /* BundledFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309798871D9DC54A0079C598 /* BundledFile.swift */; };
 		30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
@@ -149,6 +148,7 @@
 		FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */; };
 		FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */; };
 		FAC1D2971BFA7E2E0019CE45 /* Input+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */; };
+		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
 		FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -201,7 +201,6 @@
 /* Begin PBXFileReference section */
 		300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionValidator.swift; sourceTree = "<group>"; };
 		300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultConnectionValidator.swift; sourceTree = "<group>"; };
-		309798871D9DC54A0079C598 /* BundledFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundledFile.swift; sourceTree = "<group>"; };
 		30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
@@ -345,6 +344,7 @@
 		FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownLayout.swift; sourceTree = "<group>"; };
 		FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariableLayout.swift; sourceTree = "<group>"; };
 		FAC1D2961BFA7E2E0019CE45 /* Input+Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+Builder.swift"; sourceTree = "<group>"; };
+		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
 		FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinator.swift; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -711,11 +711,11 @@
 			children = (
 				FAA86FF41C64272C000C7C61 /* Assertions.swift */,
 				FAA86FF51C64272C000C7C61 /* BlocklyError.swift */,
-				309798871D9DC54A0079C598 /* BundledFile.swift */,
 				FAA86FF61C64272C000C7C61 /* CGPoint+Operators.swift */,
 				FAA86FF71C64272C000C7C61 /* CGSize+Operators.swift */,
 				FAE2A6191C753F310085D36B /* CodeGenerator.swift */,
 				FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */,
+				FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */,
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
@@ -957,6 +957,7 @@
 				FAE2A5D91C73FBFD0085D36B /* Block+XML.swift in Sources */,
 				FA2DFCB91B72DD030072A278 /* FieldColor.swift in Sources */,
 				FA4D54981C69983B00F95084 /* FieldImageView.swift in Sources */,
+				FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */,
 				FA16317A1CE54F89008DDBC8 /* FieldVariableView.swift in Sources */,
 				FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
@@ -1042,7 +1043,6 @@
 				FAD652661CB85CAF00F73F11 /* DefaultBlockView+Render.swift in Sources */,
 				FAD652511CB7266100F73F11 /* InputLayout.swift in Sources */,
 				FA4E83EB1CACF00A009FB0CD /* LayoutEngine.swift in Sources */,
-				309798881D9DC54A0079C598 /* BundledFile.swift in Sources */,
 				FA5CC18D1CE2AE81005C550D /* WeakSet.swift in Sources */,
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
 				FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */,
