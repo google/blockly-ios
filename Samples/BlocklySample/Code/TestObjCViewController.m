@@ -20,6 +20,7 @@
 @interface TestObjCViewController ()
 
 @property(nonatomic) BKYCodeGeneratorService *codeGeneratorService;
+@property(nonatomic) BKYCodeGeneratorServiceRequestBuilder *requestBuilder;
 @property(nonatomic) BKYWorkspace *workspace;
 
 @end
@@ -70,10 +71,25 @@
   [viewController loadWorkspace:_workspace error:nil];
   [viewController loadToolbox:toolbox error:nil];
 
-  _codeGeneratorService = [[BKYCodeGeneratorService alloc] initWithJsCoreDependencies:@[
-    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blockly_compressed.js"],
-    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/blocks_compressed.js"],
-    [BKYBundledFile fileWithPath:@"Turtle/blockly_web/msg/js/en.js"]]];
+  _codeGeneratorService =
+    [[BKYCodeGeneratorService alloc] initWithJsCoreDependencies: @[
+      @"Turtle/blockly_web/blockly_compressed.js",
+      @"Turtle/blockly_web/msg/js/en.js"]];
+
+  self.requestBuilder =
+    [[BKYCodeGeneratorServiceRequestBuilder alloc] initWithJSGeneratorObject:@"Blockly.JavaScript"];
+  [_requestBuilder addJSBlockGeneratorFiles:@[@"Turtle/blockly_web/javascript_compressed.js",
+                                              @"Turtle/generators.js"]];
+  [_requestBuilder addJSONBlockDefinitionFilesFromDefaultFiles:BKYBlockJSONFileAllDefault];
+  [_requestBuilder addJSONBlockDefinitionFiles:@[@"Turtle/turtle_blocks.json"]];
+  _requestBuilder.onCompletion = ^(NSString *code) {
+    NSLog(@"Successfully generated code:");
+    NSLog(@"%@", code);
+  };
+  _requestBuilder.onError = ^(NSString *error) {
+    NSLog(@"Failed to generate code.");
+    NSLog(@"ERROR: %@", error);
+  };
 
   BKYBlock *block = [blockFactory makeBlockWithName:@"math_number" error:nil];
   [_workspace addBlockTree:block error:nil];
@@ -87,25 +103,14 @@
 }
 
 - (void)generateCode:(UIButton *)button {
-  BKYCodeGeneratorServiceRequest *request =
-    [[BKYCodeGeneratorServiceRequest alloc]
-      initWithWorkspace:_workspace
-      jsGeneratorObject:@"Blockly.JavaScript"
-      jsBlockGenerators:
-        @[[BKYBundledFile fileWithPath:@"Turtle/blockly_web/javascript_compressed.js"],
-          [BKYBundledFile fileWithPath:@"Turtle/generators.js"]]
-      jsonBlockDefinitions:
-        @[[BKYBundledFile fileWithPath:@"Turtle/turtle_blocks.json"]]
-      error:nil];
-  request.onCompletion = ^(NSString *code) {
-    NSLog(@"Successfully generated code:");
-    NSLog(@"%@", code);
-  };
-  request.onError = ^(NSString *error) {
-    NSLog(@"Failed to generate code.");
-    NSLog(@"ERROR: %@", error);
-  };
 
+  NSError *error = nil;
+  BKYCodeGeneratorServiceRequest *request =
+    [_requestBuilder makeRequestForWorkspace:self.workspace error:&error];
+  if (error) {
+    NSLog(@"Error: %@", error.localizedDescription);
+    return;
+  }
   [_codeGeneratorService generateCodeForRequest:request];
 }
 
