@@ -161,7 +161,7 @@ extension FieldAngleView: FieldLayoutMeasurer {
     }
 
     let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
-    let maxWidth = layout.config.float(for: LayoutConfig.FieldTextFieldMaximumWidth)
+    let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     // Use a size that can accomodate 3 digits and °.
     let measureText = "000°"

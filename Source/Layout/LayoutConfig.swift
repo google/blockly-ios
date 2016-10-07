@@ -78,8 +78,8 @@ open class LayoutConfig: NSObject {
   /// should be used for each one
   public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
 
-  /// [`CGFloat`] For fields that use a `UITextField`, this is the maximum width that should be
-  /// used for each one, specified as a UIView coordinate system unit.
+  /// [`Unit`] For fields that use a `UITextField`, this is the maximum width that should be
+  /// used for each one.
   public static let FieldTextFieldMaximumWidth = LayoutConfig.newPropertyKey()
 
   /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
@@ -132,7 +132,7 @@ open class LayoutConfig: NSObject {
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
 
     setEdgeInsets(EdgeInsets(4, 8, 4, 8), for: LayoutConfig.FieldTextFieldInsetPadding)
-    setFloat(300, for: LayoutConfig.FieldTextFieldMaximumWidth)
+    setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
   }
@@ -340,7 +340,7 @@ open class LayoutConfig: NSObject {
    Maps a `CGFloat` value to a specific `PropertyKey`.
 
    - Parameter float: The `CGFloat` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldMaximumWidth`)
+   - Parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockShadowBrightnessMultiplier`)
    - Returns: The `float` that was set.
    */
   @discardableResult
@@ -369,12 +369,14 @@ open class LayoutConfig: NSObject {
    - Parameter engine: The `LayoutEngine` used to update all config values
    */
   open func updateViewValues(fromEngine engine: LayoutEngine) {
-    for (_, var unit) in _units {
+    for (key, var unit) in _units {
       unit.viewUnit = engine.viewUnitFromWorkspaceUnit(unit.workspaceUnit)
+      _units[key] = unit
     }
 
-    for (_, var size) in _sizes {
+    for (key, var size) in _sizes {
       size.viewSize = engine.viewSizeFromWorkspaceSize(size.workspaceSize)
+      _sizes[key] = size
     }
   }
 }
