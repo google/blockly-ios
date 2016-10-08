@@ -170,7 +170,7 @@ extension FieldNumberView: FieldLayoutMeasurer {
     }
 
     let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
-    let maxWidth = layout.config.float(for: LayoutConfig.FieldTextFieldMaximumWidth)
+    let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldNumberLayout.currentTextValue + " "
     // TODO:(#27) Use a standardized font size that can be configurable for the project
     let font = UIFont.systemFont(ofSize: 14 * scale)

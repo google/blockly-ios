@@ -115,7 +115,7 @@
   self.navigationItem.title = @"Objective-C Turtle Demo";
 
   _workbenchViewController =
-  [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleDefaultStyle];
+    [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleAlternate];
   _workbenchViewController.delegate = self;
 
   // Create workspace
@@ -280,18 +280,18 @@
     NSString *blockID = dictionary[@"blockID"];
     if (blockID != nil) {
       if (_allowBlockHighlighting) {
-        [_workbenchViewController highlightBlock:blockID];
+        [_workbenchViewController highlightBlockWithBlockUUID:blockID];
         _lastHighlightedBlockUUID = blockID;
       }
       if (_allowScrollingToBlockView) {
-        [_workbenchViewController scrollBlockIntoView:blockID animated:true];
+        [_workbenchViewController scrollBlockIntoViewWithBlockUUID:blockID animated:true];
         _lastHighlightedBlockUUID = blockID;
       }
     }
   } else if ([method isEqualToString:@"unhighlightLastBlock"]) {
     NSString *blockID = _lastHighlightedBlockUUID;
     if (blockID != nil) {
-      [_workbenchViewController unhighlightBlock:blockID];
+      [_workbenchViewController unhighlightBlockWithBlockUUID:blockID];
       _lastHighlightedBlockUUID = blockID;
     }
   } else {

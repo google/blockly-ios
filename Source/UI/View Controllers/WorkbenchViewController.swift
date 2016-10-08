@@ -117,7 +117,7 @@ open class WorkbenchViewController: UIViewController {
   }
 
   /// The trash can view.
-  open fileprivate(set) var trashCanView: TrashCanView?
+  open fileprivate(set) var trashCanView: TrashCanView!
 
   /// The toolbox category view controller.
   open fileprivate(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
@@ -160,7 +160,7 @@ open class WorkbenchViewController: UIViewController {
   /// The underlying toolbox layout
   fileprivate var _toolboxLayout: ToolboxLayout?
 
-  /// Flag for enabling trash can functionality
+  /// Displays (`true`) or hides (`false`) a trash can. By default, this value is set to `true`.
   open var enableTrashCan: Bool = true {
     didSet {
       setTrashCanViewVisible(enableTrashCan)
@@ -170,6 +170,12 @@ open class WorkbenchViewController: UIViewController {
         removeUIStateValue(.trashCanOpen, animated: false)
       }
     }
+  }
+
+  /// Enables or disables pinch zooming of the workspace. Defaults to `true`.
+  open var allowZoom: Bool {
+    get { return workspaceViewController.workspaceView.allowZoom }
+    set { workspaceViewController.workspaceView.allowZoom = newValue }
   }
 
   /**
@@ -193,10 +199,6 @@ open class WorkbenchViewController: UIViewController {
   fileprivate var _trashCanViewController: TrashCanViewController!
   /// Flag indicating if the `self._trashCanViewController` is being shown
   fileprivate var _trashCanVisible: Bool = false
-  /// Flag indicating if block highlighting is allowed
-  fileprivate var _enableBlockHighlighting = true
-  /// Flag indicating if blocks should be automatically scrolled into view when they are highlighted
-  fileprivate var _enableScrollBlockIntoView = true
 
   // MARK: - Initializers
 
@@ -245,6 +247,22 @@ open class WorkbenchViewController: UIViewController {
   }
 
   fileprivate func commonInit() {
+    // Create main workspace view
+    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.workspaceView.allowZoom = true
+    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
+      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
+    let tapGesture =
+      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
+    addChildViewController(workspaceViewController)
+
+    // Create trash can button
+    let trashCanView = TrashCanView(imageNamed: "trash_can")
+    trashCanView.button
+      .addTarget(self, action: #selector(didTapTrashCan(_:)), for: .touchUpInside)
+    self.trashCanView = trashCanView
+
     // Set up trash can folder view controller
     _trashCanViewController = TrashCanViewController(
       engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection,
@@ -257,6 +275,10 @@ open class WorkbenchViewController: UIViewController {
       orientation: style.toolboxOrientation)
     _toolboxCategoryListViewController.delegate = self
     addChildViewController(_toolboxCategoryListViewController)
+
+    // Create toolbox views
+    toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
+    addChildViewController(toolboxCategoryViewController)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -280,26 +302,6 @@ open class WorkbenchViewController: UIViewController {
     self.view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     self.view.autoresizesSubviews = true
     self.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-
-    // Create toolbox views
-    toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
-    addChildViewController(toolboxCategoryViewController)
-
-    // Create main workspace view
-    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
-    workspaceViewController.workspaceView.allowZoom = true
-    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
-      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
-    let tapGesture =
-      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
-    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
-    addChildViewController(workspaceViewController)
-
-    // Create trash can button
-    let trashCanView = TrashCanView(imageNamed: "trash_can")
-    trashCanView.button
-      .addTarget(self, action: #selector(didTapTrashCan(_:)), for: .touchUpInside)
-    self.trashCanView = trashCanView
 
     // Set up auto-layout constraints
     let trashCanPadding = CGFloat(25)
@@ -905,7 +907,7 @@ extension WorkbenchViewController {
 
    - Parameter blockUUID: The UUID of the block to highlight
    */
-  public func highlightBlock(_ blockUUID: String) {
+  public func highlightBlock(blockUUID: String) {
     guard let workspace = self.workspace,
       let block = workspace.allBlocks[blockUUID] else {
         return
@@ -919,7 +921,7 @@ extension WorkbenchViewController {
 
    - Paramater blockUUID: The UUID of the block to unhighlight.
    */
-  public func unhighlightBlock(_ blockUUID: String) {
+  public func unhighlightBlock(blockUUID: String) {
     guard let workspace = self.workspace,
       let block = workspace.allBlocks[blockUUID] else {
       return
@@ -969,7 +971,7 @@ extension WorkbenchViewController {
 // MARK: - Scrolling
 
 extension WorkbenchViewController {
-  public func scrollBlockIntoView(_ blockUUID: String, animated: Bool) {
+  public func scrollBlockIntoView(blockUUID: String, animated: Bool) {
     guard let block = workspace?.allBlocks[blockUUID] else {
         return
     }

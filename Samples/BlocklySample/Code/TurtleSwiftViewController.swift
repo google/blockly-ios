@@ -318,16 +318,16 @@ extension TurtleSwiftViewController: WKScriptMessageHandler {
       case "highlightBlock":
         if let blockID = dictionary["blockID"] as? String {
           if _allowBlockHighlighting {
-            _workbenchViewController.highlightBlock(blockID)
+            _workbenchViewController.highlightBlock(blockUUID: blockID)
             _lastHighlightedBlockUUID = blockID
           }
           if _allowScrollingToBlockView {
-            _workbenchViewController.scrollBlockIntoView(blockID, animated: true)
+            _workbenchViewController.scrollBlockIntoView(blockUUID: blockID, animated: true)
           }
         }
       case "unhighlightLastBlock":
         if let blockID = _lastHighlightedBlockUUID {
-          _workbenchViewController.unhighlightBlock(blockID)
+          _workbenchViewController.unhighlightBlock(blockUUID: blockID)
           _lastHighlightedBlockUUID = blockID
         }
       default:
