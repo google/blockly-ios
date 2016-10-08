@@ -43,7 +43,7 @@ open class Toolbox: NSObject {
   /**
    Adds a category to the toolbox.
 
-   - Parameter categoryName: The name of the new category.
+   - Parameter name: The name of the new category.
    - Parameter color: The color of the new category.
    - Returns: The new category.
    */
@@ -54,7 +54,7 @@ open class Toolbox: NSObject {
   /**
   Adds a category to the toolbox.
 
-  - Parameter categoryName: The name of the new category.
+  - Parameter name: The name of the new category.
   - Parameter color: The color of the new category.
   - Parameter icon: The `UIImage` icon for the new category.
   - Returns: The new category.

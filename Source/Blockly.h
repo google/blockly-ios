@@ -25,4 +25,5 @@ FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
 #import <Blockly/BKYBlockJSONFile.h>
 #import <Blockly/BKYEdgeInsets.h>
 #import <Blockly/BKYLayoutConfigStructs.h>
+#import <Blockly/BKYWorkbenchViewController.h>
 #import <Blockly/BKYWorkspaceUnits.h>

@@ -18,12 +18,35 @@ import UIKit
 /**
  Delegate for events that occur on `WorkbenchViewController`.
  */
+@objc(BKYWorkbenchViewControllerDelegate)
 public protocol WorkbenchViewControllerDelegate: class {
   /**
    Event that is called when a `WorkbenchViewController` updates its `state`.
    */
   func workbenchViewController(_ workbenchViewController: WorkbenchViewController,
                                didUpdateState state: WorkbenchViewController.UIState)
+}
+
+/**
+ Adding Swift convenience functions to `BKYWorkbenchViewControllerUIState`.
+ */
+extension BKYWorkbenchViewControllerUIState {
+  /**
+   Initializes the workbench view controller UI state with a `WorkbenchViewController.UIStateValue`.
+
+   - Parameter value: The `enum` value of the state.
+   */
+  public init(value: BKYWorkbenchViewControllerUIStateValue) {
+    self.init(rawValue: 1 << UInt(value.rawValue))
+  }
+
+  /**
+   Checks if the state intersects with another. Returns `true` if they share any common options,
+   `false` otherwise.
+   */
+  public func intersectsWith(_ other: BKYWorkbenchViewControllerUIState) -> Bool {
+    return intersection(other).rawValue != 0
+  }
 }
 
 /**
@@ -74,43 +97,9 @@ open class WorkbenchViewController: UIViewController {
   /// Defines the style of the workbench
   public typealias Style = BKYWorkbenchViewControllerStyle
 
-  // MARK: - UIState Struct
-
-  /// Defines possible UI states that the view controller may be in
-  public struct UIState : OptionSet {
-    public static let defaultState = UIState(value: .defaultState)
-    public static let trashCanOpen = UIState(value: .trashCanOpen)
-    public static let trashCanHighlighted = UIState(value: .trashCanHighlighted)
-    public static let categoryOpen = UIState(value: .categoryOpen)
-    public static let editingTextField = UIState(value: .editingTextField)
-    public static let draggingBlock = UIState(value: .draggingBlock)
-    public static let presentingPopover = UIState(value: .presentingPopover)
-    public static let didPanWorkspace = UIState(value: .didPanWorkspace)
-    public static let didTapWorkspace = UIState(value: .didTapWorkspace)
-
-    public enum Value: Int {
-      case defaultState = 1,
-        trashCanOpen,
-        trashCanHighlighted,
-        categoryOpen,
-        editingTextField,
-        draggingBlock,
-        presentingPopover,
-        didPanWorkspace,
-        didTapWorkspace
-    }
-    public let rawValue : Int
-    public init(rawValue: Int) {
-      self.rawValue = rawValue
-    }
-    public init(value: Value) {
-      self.init(rawValue: 1 << value.rawValue)
-    }
-
-    public func intersectsWith(_ other: UIState) -> Bool {
-      return intersection(other).rawValue != 0
-    }
-  }
+  /// Defines the UI state of the workbench
+  public typealias UIState = BKYWorkbenchViewControllerUIState
+  public typealias UIStateValue = BKYWorkbenchViewControllerUIStateValue
 
   // MARK: - Properties
 
@@ -234,7 +223,7 @@ open class WorkbenchViewController: UIViewController {
    - Parameter style: The `Style` to use for this laying out items in this view controller.
    - Parameter engine: Value used for `self.layoutEngine`.
    - Parameter layoutBuilder: Value used for `self.layoutBuilder`.
-   - Parameter layoutBuilder: Value used for `self.viewFactory`.
+   - Parameter viewFactory: Value used for `self.viewFactory`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
               viewFactory: ViewFactory)
@@ -571,7 +560,7 @@ extension WorkbenchViewController {
    - Parameter state: The state to append to `self.state`.
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
-  fileprivate func addUIStateValue(_ stateValue: UIState.Value, animated: Bool = true) {
+  fileprivate func addUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
     var state = UIState(value: stateValue)
     let newState: UIState
 
@@ -612,7 +601,7 @@ extension WorkbenchViewController {
    - Parameter state: The state to remove from `self.state`.
    - Parameter animated: True if changes in UI state should be animated. False, if not.
    */
-  fileprivate func removeUIStateValue(_ stateValue: UIState.Value, animated: Bool = true) {
+  fileprivate func removeUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
     // When subtracting a state value, there is no need to check for compatibility.
     // Simply set the new state, minus the given state value.
     let newState = self.state.subtracting(UIState(value: stateValue))

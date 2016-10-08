@@ -285,14 +285,14 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `Double` value to a specific `PropertyKey`.
 
-   - Parameter double: The `Double` value
+   - Parameter doubleValue: The `Double` value
    - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
    - Returns: The `Double` that was set.
    */
   @discardableResult
-  public func setDouble(_ double: Double, for key: PropertyKey) -> Double {
-    _doubles[key] = double
-    return double
+  public func setDouble(_ doubleValue: Double, for key: PropertyKey) -> Double {
+    _doubles[key] = doubleValue
+    return doubleValue
   }
 
   /**
@@ -311,7 +311,7 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `EdgeInsets` value to a specific `PropertyKey`.
 
-   - Parameter edgeInset: The `EdgeInsets` value
+   - Parameter edgeInsets: The `EdgeInsets` value
    - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
    - Returns: The `edgeInset` that was set.
    */
@@ -339,14 +339,14 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `CGFloat` value to a specific `PropertyKey`.
 
-   - Parameter float: The `CGFloat` value
+   - Parameter floatValue: The `CGFloat` value
    - Parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockShadowBrightnessMultiplier`)
-   - Returns: The `float` that was set.
+   - Returns: The `CGFloat` that was set.
    */
   @discardableResult
-  public func setFloat(_ float: CGFloat, for key: PropertyKey) -> CGFloat {
-    _floats[key] = float
-    return float
+  public func setFloat(_ floatValue: CGFloat, for key: PropertyKey) -> CGFloat {
+    _floats[key] = floatValue
+    return floatValue
   }
 
   /**

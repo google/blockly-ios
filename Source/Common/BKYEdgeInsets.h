@@ -33,10 +33,10 @@ typedef struct BKYEdgeInsets BKYEdgeInsets;
 /**
  Creates edge insets, with given values for each edge.
 
- @param top: Top edge inset
- @param leading: Leading edge inset
- @param bottom: Bottom edge inset
- @param trailing: Trailing edge inset
+ @param top Top edge inset
+ @param leading Leading edge inset
+ @param bottom Bottom edge inset
+ @param trailing Trailing edge inset
  @returns: A `BKYEdgeInsets`.
  */
 BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);

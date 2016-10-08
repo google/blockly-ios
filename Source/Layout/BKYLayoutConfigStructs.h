@@ -34,7 +34,7 @@ typedef struct BKYLayoutConfigUnit BKYLayoutConfigUnit;
 /**
  Creates a `BKYLayoutConfigUnit`, initialized with a given `workspaceUnit`.
 
- @param workspaceUnit: The value to use for `workspaceUnit`.
+ @param workspaceUnit The value to use for `workspaceUnit`.
  @note `viewUnit` is automatically initialized to the correct value based on the given
  `workspaceUnit`.
  */
@@ -58,7 +58,7 @@ typedef struct BKYLayoutConfigSize BKYLayoutConfigSize;
 /**
  Creates a `BKYLayoutConfigSize`, initialized with a given `workspaceSize`.
 
- @param workspaceSize: The value to use for `workspaceSize`.
+ @param workspaceSize The value to use for `workspaceSize`.
  @note `viewSize` is automatically initialized to the correct value based on the given
  `workspaceSize`.
  */

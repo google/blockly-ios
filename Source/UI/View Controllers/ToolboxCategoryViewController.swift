@@ -67,9 +67,8 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
   }
 
   /**
-   Hides the contents of a given category and automatically resizes the view's size to `(0, 0)`.
+   Hides any open category and automatically resizes the view's size to `(0, 0)`.
 
-   - Parameter category: The `Category` to hide.
    - Parameter animated: Flag indicating if resizing the view's size should be animated.
    */
   public func hideCategory(animated: Bool) {

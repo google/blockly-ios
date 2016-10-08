@@ -94,7 +94,8 @@ public class BlockFactory : NSObject {
    Creates and returns a new `Block` with the given name.
 
    - Parameter name: The name of the block to build.
-   - Parameter shadow: `true` if the resulting block should be a shadow block, `false` otherwise.
+   - Parameter shadow: Specifies whether the resulting block should be a shadow block (`true`) or a
+   regular block (`false`).
    - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
    - Throws:
