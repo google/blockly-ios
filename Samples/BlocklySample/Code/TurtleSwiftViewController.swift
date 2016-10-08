@@ -20,7 +20,7 @@ import WebKit
 /**
  Demo app for using blocks to move a cute little turtle.
  */
-class TurtleViewController: UIViewController {
+class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface {
   // MARK: - Static Properties
   /// The callback name to access this object from the JS code.
   /// See "turtle/turtle.js" for an example of its usage.
@@ -30,8 +30,6 @@ class TurtleViewController: UIViewController {
 
   /// The view for holding `self.webView`
   @IBOutlet var webViewContainer: UIView!
-  /// The button for executing the block code
-  @IBOutlet var playButton: UIButton!
   /// Text to show generated code
   @IBOutlet var codeText: UILabel!
   /// The view for holding `self.workbenchViewController.view`
@@ -40,7 +38,7 @@ class TurtleViewController: UIViewController {
   /// The web view that runs the turtle code (this is not an outlet because WKWebView isn't
   /// supported by Interface Builder)
   var _webView: WKWebView!
-  /// The block editor
+  /// The workbench for the blocks.
   var _workbenchViewController: WorkbenchViewController!
 
   /// Code generator service
@@ -96,11 +94,11 @@ class TurtleViewController: UIViewController {
     return blockFactory
   }()
 
-  /// Flag indicating if highlighting a block should be enabled
+  /// Flag indicating if highlighting a block is enabled.
   var _allowBlockHighlighting: Bool = false
-  /// Flag indicating if scrolling a block into view should be enabled
+  /// Flag indicating if scrolling a block into view is enabled.
   var _allowScrollingToBlockView: Bool = false
-  /// The UUID of the last block that was highlighted
+  /// The UUID of the last block that was highlighted.
   var _lastHighlightedBlockUUID: String?
 
   /// Date formatter for timestamping events
@@ -132,7 +130,7 @@ class TurtleViewController: UIViewController {
 
     // Don't allow the navigation controller bar cover this view controller
     self.edgesForExtendedLayout = UIRectEdge()
-    self.navigationItem.title = "Turtle Demo"
+    self.navigationItem.title = "Swift Turtle Demo"
 
     // Load the block editor
     _workbenchViewController = WorkbenchViewController(style: .alternate)
@@ -150,7 +148,7 @@ class TurtleViewController: UIViewController {
 
     // Load the toolbox
     do {
-      let toolboxPath = "Turtle/level_1/toolbox.xml"
+      let toolboxPath = "Turtle/toolbox.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
         let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
@@ -171,7 +169,7 @@ class TurtleViewController: UIViewController {
     // Programmatically create WKWebView, configuring it with a hook so the JS code can callback
     // into the iOS code
     let userContentController = WKUserContentController()
-    userContentController.add(self, name: TurtleViewController.JS_CALLBACK_NAME)
+    userContentController.add(self, name: TurtleSwiftViewController.JS_CALLBACK_NAME)
 
     let configuration = WKWebViewConfiguration()
     configuration.userContentController = userContentController
@@ -209,7 +207,7 @@ class TurtleViewController: UIViewController {
 
   // MARK: - Private
 
-  @IBAction fileprivate dynamic func didPressPlayButton(_ button: UIButton) {
+  @IBAction internal dynamic func didPressPlay(_ button: UIButton) {
     do {
       if let workspace = _workbenchViewController.workspace {
         // Cancel pending requests
@@ -306,7 +304,7 @@ class TurtleViewController: UIViewController {
 /**
  Handler responsible for relaying messages back from `self.webView`.
  */
-extension TurtleViewController: WKScriptMessageHandler {
+extension TurtleSwiftViewController: WKScriptMessageHandler {
   @objc func userContentController(_ userContentController: WKUserContentController,
                                    didReceive message: WKScriptMessage)
   {
@@ -340,7 +338,7 @@ extension TurtleViewController: WKScriptMessageHandler {
 
 // MARK: - WorkbenchViewControllerDelegate implementation
 
-extension TurtleViewController: WorkbenchViewControllerDelegate {
+extension TurtleSwiftViewController: WorkbenchViewControllerDelegate {
   func workbenchViewController(_ workbenchViewController: WorkbenchViewController,
                                didUpdateState state: WorkbenchViewController.UIState)
   {
