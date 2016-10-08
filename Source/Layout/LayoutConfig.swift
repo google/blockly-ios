@@ -124,7 +124,7 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
     setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
-    setSize(Size(WorkspaceSize(width: 44, height: 44)), for: LayoutConfig.FieldColorButtonSize)
+    setSize(Size(44, 44), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
 
     // Use the default system colors by setting these config values to nil
@@ -222,7 +222,7 @@ open class LayoutConfig: NSObject {
    - Returns: The mapped `Size` value.
    */
   @inline(__always)
-  public func size(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero)) -> Size {
+  public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
     return _sizes[key] ?? setSize(defaultValue, for: key)
   }
 
@@ -235,7 +235,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `viewSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero))
+  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
     -> CGSize
   {
     return size(for: key).viewSize
@@ -250,7 +250,7 @@ open class LayoutConfig: NSObject {
    - Returns: The `workspaceSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(WorkspaceSize.zero))
+  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
     -> WorkspaceSize
   {
     return size(for: key).workspaceSize

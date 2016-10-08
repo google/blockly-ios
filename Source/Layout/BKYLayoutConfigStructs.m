@@ -26,9 +26,9 @@ BKYLayoutConfigUnit BKYLayoutConfigUnitMake(CGFloat workspaceUnit) {
 
 // MARK: - BKYLayoutConfigSize
 
-BKYLayoutConfigSize BKYLayoutConfigSizeMake(BKYWorkspaceSize workspaceSize) {
+BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat workspaceHeight) {
   BKYLayoutConfigSize size;
-  size.workspaceSize = workspaceSize;
-  size.viewSize = CGSizeMake(workspaceSize.width, workspaceSize.height);
+  size.workspaceSize = BKYWorkspaceSizeMake(workspaceWidth, workspaceHeight);
+  size.viewSize = CGSizeMake(workspaceWidth, workspaceHeight);
   return size;
 }

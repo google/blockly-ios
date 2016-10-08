@@ -56,10 +56,12 @@ struct BKYLayoutConfigSize {
 typedef struct BKYLayoutConfigSize BKYLayoutConfigSize;
 
 /**
- Creates a `BKYLayoutConfigSize`, initialized with a given `workspaceSize`.
+ Creates a `BKYLayoutConfigSize`, initialized with a given workspace width/height to generate
+ `workspaceSize`.
 
- @param workspaceSize The value to use for `workspaceSize`.
- @note `viewSize` is automatically initialized to the correct value based on the given
+ @param workspaceWidth The width value to use for `workspaceSize`
+ @param workspaceHeight The height value to use for `workspaceSize`
+ @note `viewSize` is automatically initialized to the correct value based on the generated
  `workspaceSize`.
  */
-BKYLayoutConfigSize BKYLayoutConfigSizeMake(BKYWorkspaceSize workspaceSize);
+BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat workspaceHeight);
