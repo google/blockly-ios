@@ -106,9 +106,10 @@ public final class TrashCanView: UIView {
   /**
    Sets the highlighted state for the trash can view.
 
-   - Parameter highlighted: `true` when the trash can is highlighted, `false` when it is not.
-   - Parameter animated: `true` to animate the highlight, `false` to perform the highlight
-     immediately.
+   - Parameter highlighted: Specifies whether the trash can should be highlighted. `true` if it
+   should, `false` if not.
+   - Parameter animated: Specifies whether the change should be animated (`true`) or
+   if it should be performed immediately (`false`).
    */
   public func setHighlighted(_ highlighted: Bool, animated: Bool) {
     if _highlighted == highlighted {

@@ -27,7 +27,6 @@ extension DefaultBlockView {
    - Parameter path: The Bezier path to add to.
    - Parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
    should be drawn right-to-left.
-   - Parameter config: The `LayoutConfig` to use to draw this path
    - Parameter notchWidth: The width of the notch, specified as a Workspace coordinate system unit.
    - Parameter notchHeight: The height of the notch, specified as a Workspace coordinate system
    unit.
