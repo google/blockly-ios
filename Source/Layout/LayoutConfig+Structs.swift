@@ -55,12 +55,13 @@ extension LayoutConfig.Size {
   /**
    Creates a size for use inside a `LayoutConfig`.
 
-   - Parameter workspaceSize: The value to use for `self.workspaceSize`.
-   - Note: `self.viewSize` is automatically initialized to the correct value based on the given
+   - Parameter workspaceWidth: The width value to use for `self.workspaceSize`.
+   - Parameter workspaceHeight: The height value to use for `self.workspaceSize`.
+   - Note: `self.viewSize` is automatically initialized to the correct value based on the generated
    `workspaceSize`.
    */
-  public init(_ workspaceSize: WorkspaceSize) {
-    self.workspaceSize = workspaceSize
+  public init(_ workspaceWidth: CGFloat, _ workspaceHeight: CGFloat) {
+    self.workspaceSize = WorkspaceSize(width: workspaceWidth, height: workspaceHeight)
     // Always set viewSize to workspaceSize initially. It will get scaled to the correct value
     // eventually by its owning `LayoutConfig`.
     self.viewSize = CGSize(width: workspaceSize.width, height: workspaceSize.height)

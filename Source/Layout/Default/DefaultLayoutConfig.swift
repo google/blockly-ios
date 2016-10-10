@@ -42,12 +42,6 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// [`Unit`] Height of vertical tab
   public static let NotchHeight = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] Height of jagged teeth at the end of collapsed blocks
-  public static let BlockJaggedTeethHeight = LayoutConfig.newPropertyKey()
-
-  /// [`Unit`] Width of jagged teeth at the end of collapsed blocks
-  public static let BlockJaggedTeethWidth = LayoutConfig.newPropertyKey()
-
   /// [`Unit`] Vertical space to use for each of the top, middle, and bottom sections of the
   /// C-shaped statement input
   public static let StatementSectionHeight = LayoutConfig.newPropertyKey()
@@ -105,12 +99,9 @@ open class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(8), for: DefaultLayoutConfig.PuzzleTabWidth)
     setUnit(Unit(30), for: DefaultLayoutConfig.NotchWidth)
     setUnit(Unit(4), for: DefaultLayoutConfig.NotchHeight)
-    setUnit(Unit(20), for: DefaultLayoutConfig.BlockJaggedTeethHeight)
-    setUnit(Unit(15), for: DefaultLayoutConfig.BlockJaggedTeethWidth)
     setUnit(Unit(10), for: DefaultLayoutConfig.StatementSectionHeight)
     setUnit(Unit(10), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
-    setSize(Size(WorkspaceSize(width: 10, height: 25)),
-            for: DefaultLayoutConfig.MinimumInlineConnectorSize)
+    setSize(Size(10, 25), for: DefaultLayoutConfig.MinimumInlineConnectorSize)
 
     setColor(UIColor.darkGray, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
     setColor(UIColor.blue, for: DefaultLayoutConfig.BlockStrokeHighlightColor)
