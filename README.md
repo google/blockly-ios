@@ -1,55 +1,46 @@
-Blockly supports iOS 8.0+ and requires XCode 7.3+ to compile.
+# Blockly for iOS
 
-## Installation
+[Blockly][1] is a library for building drag-and-drop visual editors for
+JavaScript, Lua, and other programming languages.
 
-### Carthage
+Blockly for iOS is a developer preview of Blockly's editor library that is:
 
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds
-your dependencies and provides you with binary frameworks.
+- Built for native iOS performance and easier integration in iOS apps
+- Written in Swift, with backwards compatibility for Objective-C projects
 
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+![Blockly Turtle demo running on an iPad.](http://google.github.io/blockly-ios/screenshot.png
+    "Blockly Turtle demo running on an iPad.")
 
-```bash
-$ brew update
-$ brew install carthage
-```
+# Requirements
 
-To integrate Blockly into your Xcode project using Carthage, specify it in your `Cartfile`:
+Supports devices running **iOS 8.0 or above**.
 
-```ogdl
-github "google/blockly-ios"
-```
+# Features
 
-Run `carthage update` to build the framework. Once complete, you should see it under
-`Carthage/Build/iOS/Blockly.framework`.
+Blockly for iOS includes:
 
-Finally, in your Xcode project, navigate to "General > Linked Frameworks and Libraries" under your
-project's target, and add `Blockly.framework`.
+- Almost all features available in Blockly for [Web][2] and [Android][3].
+- Multi-touch support (currently only on iOS)
+- Block animations (currently only on iOS)
 
-### CocoaPods
+Our goal is to reach feature parity across all three platforms.
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it
-with the following command:
+# Get Started
 
-```bash
-$ gem install cocoapods
-```
+[Get started][4] building your own iOS app using Blockly.
 
-> CocoaPods 0.39.0+ is required to build Blockly.
+# License
 
-To integrate Blockly into your Xcode project using CocoaPods, specify it in your `Podfile`:
+Google is proud to offer Blockly for iOS for free and open source
+under the [Apache License, version 2.0][5].
 
-```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-use_frameworks!
+# Contributing
 
-target 'MyAppName' do
-  pod 'Blockly', :git => 'https://github.com/google/blockly-ios.git'
-end
-```
+Want to contribute? Great! First, read [our guidelines for contributors][6].
 
-Then, run the following command:
-
-```bash
-$ pod install
-```
+[1]: https://developer.google.com/blockly/ "Blockly documentation"
+[2]: https://github.com/google/blockly "Blockly for Web repo on GitHub"
+[3]: https://github.com/google/blockly-android "Blockly for Android repo on GitHub"
+[4]: https://developer.google.com/blockly/guides/get-started/ios "Blockly for iOS developer tutorial"
+[5]: https://github.com/google/blockly-ios/blob/master/LICENSE "Apache open source license, version 2.0"
+[6]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
