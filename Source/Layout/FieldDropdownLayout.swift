@@ -48,9 +48,9 @@ open class FieldDropdownLayout: FieldLayout {
   /**
    Initializes the dropdown field layout.
 
-   - Parameter fieldDropdown: The `FieldDropdown` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldDropdown: The `FieldDropdown` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(
     fieldDropdown: FieldDropdown, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type)
@@ -75,7 +75,7 @@ open class FieldDropdownLayout: FieldLayout {
    Updates `self.fieldDropdown.selectedIndex` from the given value. If the value was changed, the
    layout tree is updated to reflect the change.
 
-   - Parameter selectedIndex: The value used to update `self.fieldDropdown.selectedIndex`.
+   - parameter selectedIndex: The value used to update `self.fieldDropdown.selectedIndex`.
    */
   open func updateSelectedIndex(_ selectedIndex: Int) {
     // Setting to a new index automatically fires a listener to update the layout

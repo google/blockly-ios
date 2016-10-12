@@ -74,7 +74,7 @@ public final class BlockBuilder: NSObject {
   /**
    Initializes the block builder. Requires a name for the block to be built.
 
-   - Parameter name: The name of the block to be built.
+   - parameter name: The name of the block to be built.
    */
   public init(name: String) {
     super.init()
@@ -87,7 +87,7 @@ public final class BlockBuilder: NSObject {
    a single instance of a block will be copied in to the builder. Any associated layouts are not
    copied into the builder.
 
-   - Parameter block: The block to be copied.
+   - parameter block: The block to be copied.
   */
   public init(block: Block) {
     name = block.name
@@ -118,10 +118,10 @@ public final class BlockBuilder: NSObject {
   /**
    Creates a new block given the current state of the builder, assigned with a new UUID.
 
-   - Parameter shadow: Specifies if the resulting block should be a shadow block.
-   - Throws:
+   - parameter shadow: Specifies if the resulting block should be a shadow block.
+   - throws:
    `BlocklyError`: Occurs if the block is missing any required pieces.
-   - Returns: A new block.
+   - returns: A new block.
    */
   @objc(makeBlockAsShadow:error:)
   public func makeBlock(shadow: Bool) throws -> Block {
@@ -131,13 +131,13 @@ public final class BlockBuilder: NSObject {
   /**
    Creates a new block given the current state of the builder.
 
-   - Parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
+   - parameter shadow: [Optional] Specifies if the resulting block should be a shadow block.
    The default value is `false`.
-   - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
+   - parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
-   - Throws:
+   - throws:
    `BlocklyError`: Occurs if the block is missing any required pieces.
-   - Returns: A new block.
+   - returns: A new block.
    */
   @objc(makeBlockAsShadow:uuid:error:)
   public func makeBlock(shadow: Bool = false, uuid: String? = nil) throws -> Block {
@@ -174,10 +174,10 @@ public final class BlockBuilder: NSObject {
   /**
    Specifies an output connection on the builder, and optionally the type checks to go with it.
 
-   - Parameter enabled: Specifies the resulting block should have an output connection.
-   - Parameter typeChecks: [Optional] Specifies the type checks for the given output connection.
+   - parameter enabled: Specifies the resulting block should have an output connection.
+   - parameter typeChecks: [Optional] Specifies the type checks for the given output connection.
      Defaults to `nil`.
-   - Throws:
+   - throws:
    `BlocklyError`: Occurs if the builder already has a next or previous connection.
    */
   public func setOutputConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
@@ -191,10 +191,10 @@ public final class BlockBuilder: NSObject {
   /**
    Specifies an next connection on the builder, and optionally the type checks to go with it.
 
-   - Parameter enabled: Specifies the resulting block should have a next connection.
-   - Parameter typeChecks: [Optional] Specifies the type checks for the given next connection.
+   - parameter enabled: Specifies the resulting block should have a next connection.
+   - parameter typeChecks: [Optional] Specifies the type checks for the given next connection.
      Defaults to `nil`.
-   - Throws:
+   - throws:
    `BlocklyError`: Occurs if the builder already has an output connection.
    */
   public func setNextConnection(enabled: Bool, typeChecks: [String]? = nil) throws {
@@ -208,10 +208,10 @@ public final class BlockBuilder: NSObject {
   /**
    Specifies a previous connection on the builder, and optionally the type checks to go with it.
 
-   - Parameter enabled: Specifies the resulting block should have a previous connection.
-   - Parameter typeChecks: [Optional] Specifies the type checks for the given previous connection.
+   - parameter enabled: Specifies the resulting block should have a previous connection.
+   - parameter typeChecks: [Optional] Specifies the type checks for the given previous connection.
      Defaults to `nil`.
-   - Throws:
+   - throws:
    `BlocklyError`: Occurs if the builder already has an output connection.
    */
   public func setPreviousConnection(enabled: Bool, typeChecks: [String]? = nil) throws {

@@ -36,8 +36,8 @@ public final class FieldAngle: Field {
   /**
    Initializes the angle field.
 
-   - Parameter name: The name of this field.
-   - Parameter angle: The initial angle for this field.
+   - parameter name: The name of this field.
+   - parameter angle: The initial angle for this field.
    */
   public init(name: String, angle: Int) {
     self.angle = FieldAngle.normalizeAngle(angle)

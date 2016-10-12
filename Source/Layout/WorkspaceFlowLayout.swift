@@ -62,9 +62,9 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
   /**
    Initializer for workspace flow layout.
 
-   - Parameter workspace: The `WorkspaceFlow` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
-   - Parameter layoutDirection: The direction (horizontal or vertical) for this layout.
+   - parameter workspace: The `WorkspaceFlow` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter layoutDirection: The direction (horizontal or vertical) for this layout.
    */
   public init(workspace: WorkspaceFlow, engine: LayoutEngine, layoutDirection: LayoutDirection)
   {

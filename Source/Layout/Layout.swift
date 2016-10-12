@@ -22,8 +22,8 @@ public protocol LayoutDelegate: class {
   /**
   Event that is called when a layout has changed.
 
-  - Parameter layout: The `Layout` that changed.
-  - Parameter flags: Set of flags indicating which parts of the layout that need to be updated from
+  - parameter layout: The `Layout` that changed.
+  - parameter flags: Set of flags indicating which parts of the layout that need to be updated from
   the UI side.
   */
   func layoutDidChange(_ layout: Layout, withFlags flags: LayoutFlag, animated: Bool)
@@ -37,9 +37,9 @@ public protocol LayoutHierarchyListener {
   /**
    Event that is called when a layout has adopted a child layout.
 
-   - Parameter layout: The parent `Layout`.
-   - Parameter childLayout: The child `Layout`.
-   - Parameter oldParentLayout: The previous value of `childLayout.parentLayout` prior to being
+   - parameter layout: The parent `Layout`.
+   - parameter childLayout: The child `Layout`.
+   - parameter oldParentLayout: The previous value of `childLayout.parentLayout` prior to being
    adopted by `layout`
    */
   func layout(_ layout: Layout,
@@ -48,8 +48,8 @@ public protocol LayoutHierarchyListener {
   /**
    Event that is called when a layout has removed a child layout.
 
-   - Parameter layout: The parent `Layout`.
-   - Parameter childLayout: The child `Layout`.
+   - parameter layout: The parent `Layout`.
+   - parameter childLayout: The child `Layout`.
    */
   func layout(_ layout: Layout, didRemoveChildLayout childLayout: Layout)
 }
@@ -146,7 +146,7 @@ open class Layout: NSObject {
   /**
    Initializes an empty Layout.
 
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
    */
   public init(engine: LayoutEngine) {
     self.uuid = UUID().uuidString
@@ -160,10 +160,10 @@ open class Layout: NSObject {
   This method repositions its children and recalculates its `contentSize` based on the positions
   of its children.
 
-  - Parameter includeChildren: A flag indicating whether `performLayout(:)` should be called on any
+  - parameter includeChildren: A flag indicating whether `performLayout(:)` should be called on any
   child layouts, prior to repositioning them. It is the responsibility of subclass implementations
   to honor this flag.
-  - Note: This method needs to be implemented by a subclass of `Layout`.
+  - note: This method needs to be implemented by a subclass of `Layout`.
   */
   open func performLayout(includeChildren: Bool) {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
@@ -202,7 +202,7 @@ open class Layout: NSObject {
   /**
   Sends a layout change event to `self.delegate` with a given set of flags.
 
-  - Parameter flags: `LayoutFlag` options to send with the change event
+  - parameter flags: `LayoutFlag` options to send with the change event
   */
   public final func sendChangeEvent(withFlags flags: LayoutFlag) {
     // Send change event
@@ -213,8 +213,8 @@ open class Layout: NSObject {
    Returns an array of `Layout` instances for the tree headed by this `Layout` instance, in no
    particular order.
 
-   - Parameter type: [Optional] Filters `Layout` instances by a specific type.
-   - Returns: An array of all `Layout` instances.
+   - parameter type: [Optional] Filters `Layout` instances by a specific type.
+   - returns: An array of all `Layout` instances.
    */
   public final func flattenedLayoutTree<T>(ofType type: T.Type? = nil) -> [T] where T: Layout {
     var allLayouts = [T]()
@@ -240,7 +240,7 @@ open class Layout: NSObject {
    `Layout` parents. The `relativePosition` of `layout` is also recalculated relative to its new
    parent (based on where it was before) and `layout.refreshViewPositionsForTree()` is executed.
 
-   - Parameter layout: The child `Layout` to adopt
+   - parameter layout: The child `Layout` to adopt
    */
   internal func adoptChildLayout(_ layout: Layout) {
     if layout.parentLayout == self {
@@ -273,7 +273,7 @@ open class Layout: NSObject {
    For a given `Layout`, removes it from `self.childLayouts` and sets its `parentLayout` property to
    `nil`.
 
-   - Parameter layout: The child `Layout` to remove
+   - parameter layout: The child `Layout` to remove
    */
   internal func removeChildLayout(_ layout: Layout) {
     if !childLayouts.contains(layout) {
@@ -292,7 +292,7 @@ open class Layout: NSObject {
   For every `Layout` in its tree hierarchy (including itself), updates `self.absolutePosition`
   and `self.viewFrame` based on the current state of this object.
 
-  - Parameter includeFields: If true, recursively update view frames for field layouts. If false,
+  - parameter includeFields: If true, recursively update view frames for field layouts. If false,
   skip them.
   */
   internal final func refreshViewPositionsForTree(includeFields: Bool = true) {
@@ -310,16 +310,16 @@ open class Layout: NSObject {
   For every `Layout` in its tree hierarchy (including itself), updates `self.absolutePosition`
   and `self.viewFrame` based on the current state of this object.
 
-  - Parameter parentAbsolutePosition: The absolute position of its parent layout (specified as a
+  - parameter parentAbsolutePosition: The absolute position of its parent layout (specified as a
   Workspace coordinate system point)
-  - Parameter parentContentSize: The content size of its parent layout (specified as a Workspace
+  - parameter parentContentSize: The content size of its parent layout (specified as a Workspace
   coordinate system size)
-  - Parameter contentOffset: An offset that should be applied to this view frame (specified as a
+  - parameter contentOffset: An offset that should be applied to this view frame (specified as a
   Workspace coordinate system point)
-  - Parameter rtl: Flag for if the layout should be positioned in RTL mode.
-  - Parameter includeFields: If true, recursively update view positions for field layouts. If false,
+  - parameter rtl: Flag for if the layout should be positioned in RTL mode.
+  - parameter includeFields: If true, recursively update view positions for field layouts. If false,
   skip them.
-  - Note: All parent parameters are defined in the method signature so we can eliminate direct
+  - note: All parent parameters are defined in the method signature so we can eliminate direct
   references to `self.parentLayout` inside this method. This results in better performance.
   */
   fileprivate final func refreshViewPositionsForTree(
@@ -393,9 +393,9 @@ extension Layout {
   /**
    Executes a given code block, where layout changes made inside this code block are animated.
 
-   - Note: If there is an inner call to `Layout.doNotAnimate(:)` inside the given code block,
+   - note: If there is an inner call to `Layout.doNotAnimate(:)` inside the given code block,
    that call will not animate its layout changes.
-   - Parameter code: The code block to execute, with layout animations enabled.
+   - parameter code: The code block to execute, with layout animations enabled.
    */
   public static func animate(code: () throws -> Void) rethrows {
     _animationStack.append(true)
@@ -406,9 +406,9 @@ extension Layout {
   /**
    Executes a given code block, where layout changes made inside this code block are not animated.
 
-   - Note: If there is an inner call to `Layout.animate(:)` inside the given code block, that
+   - note: If there is an inner call to `Layout.animate(:)` inside the given code block, that
    call will animate its layout changes.
-   - Parameter code: The code block to execute, with layout animations disabled.
+   - parameter code: The code block to execute, with layout animations disabled.
    */
   public static func doNotAnimate(code: () throws -> Void) rethrows {
     _animationStack.append(false)
@@ -453,9 +453,9 @@ public struct LayoutFlag: OptionSet {
   /**
   Initializer for the `Layout` class looking to define a common layout flag.
 
-  - Parameter highestOrderBitIndex: The bit index to use when defining this layout flag, starting
+  - parameter highestOrderBitIndex: The bit index to use when defining this layout flag, starting
   from the highest order bit.
-  - Note: An assertion is made in this method that `highestOrderBitIndex < 14`.
+  - note: An assertion is made in this method that `highestOrderBitIndex < 14`.
   */
   fileprivate init(highestOrderBitIndex: UInt64) {
     // Event flags defined in `Layout` should start at the highest order bit (which is why this
@@ -471,9 +471,9 @@ public struct LayoutFlag: OptionSet {
   /**
    Initializer for `Layout` subclasses looking to define a custom layout flag.
 
-   - Parameter lowestOrderBitIndex: The bit index to use when defining this layout flag, starting
+   - parameter lowestOrderBitIndex: The bit index to use when defining this layout flag, starting
    from the lowest order bit.
-   - Note: An assertion is made in this method that `lowestOrderBitIndex < 50`.
+   - note: An assertion is made in this method that `lowestOrderBitIndex < 50`.
   */
 
   public init(_ lowestOrderBitIndex: UInt64) {
@@ -495,14 +495,14 @@ public struct LayoutFlag: OptionSet {
   /**
   Return if a flag has been set for this value.
 
-  - Returns: The equivalent of `self != LayoutFlag.None`.
+  - returns: The equivalent of `self != LayoutFlag.None`.
   */
   public func hasFlagSet() -> Bool {
     return self != LayoutFlag.None
   }
 
   /**
-  - Returns: True if `self` shares at least one common flag with `other`.
+  - returns: True if `self` shares at least one common flag with `other`.
   */
   public func intersectsWith(_ other: LayoutFlag) -> Bool {
     return intersection(other).hasFlagSet()

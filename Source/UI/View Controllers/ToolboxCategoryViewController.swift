@@ -59,8 +59,8 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
    Shows the contents of a given category and automatically resizes view's size to
    completely fit the size of the contents.
 
-   - Parameter category: The `Category` to show.
-   - Parameter animated: Flag indicating if resizing the view's size should be animated.
+   - parameter category: The `Category` to show.
+   - parameter animated: Flag indicating if resizing the view's size should be animated.
    */
   public func showCategory(_ category: Toolbox.Category, animated: Bool) {
     setCategory(category, animated: animated)
@@ -69,7 +69,7 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
   /**
    Hides any open category and automatically resizes the view's size to `(0, 0)`.
 
-   - Parameter animated: Flag indicating if resizing the view's size should be animated.
+   - parameter animated: Flag indicating if resizing the view's size should be animated.
    */
   public func hideCategory(animated: Bool) {
     setCategory(nil, animated: animated)

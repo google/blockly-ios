@@ -17,13 +17,13 @@
  Helper method for creating a `UIEdgeInsets` value, based on the `UIUserInterfaceLayoutDirection`
  of the system.
 
- - Parameter top: The top edge inset
- - Parameter leading: The leading edge inset. In LTR, this becomes the `left` value. In RTL, this
+ - parameter top: The top edge inset
+ - parameter leading: The leading edge inset. In LTR, this becomes the `left` value. In RTL, this
  becomes the `right` value.
- - Parameter bottom: The bottom edge inset
- - Parameter trailing: The leading edge inset. In LTR, this becomes the `right` value. In RTL, this
+ - parameter bottom: The bottom edge inset
+ - parameter trailing: The leading edge inset. In LTR, this becomes the `right` value. In RTL, this
  becomes the `left` value.
- - Returns: The `UIEdgeInsets` value
+ - returns: The `UIEdgeInsets` value
  */
 internal func bky_UIEdgeInsetsMake(
   _ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) -> UIEdgeInsets {

@@ -18,9 +18,9 @@ import Foundation
 /**
  Convenience method for getting a `Range` object from a `NSRange` belonging to a given `String`.
 
- - Parameter nsRange: The `NSRange` belonging to the `string`
- - Parameter string: The `String`
- - Returns: The corresponding `Range` for `string`, or nil if `nsRange` specified an invalid range.
+ - parameter nsRange: The `NSRange` belonging to the `string`
+ - parameter string: The `String`
+ - returns: The corresponding `Range` for `string`, or nil if `nsRange` specified an invalid range.
  */
 func bky_rangeFromNSRange(_ nsRange: NSRange, forString string: String) -> Range<String.Index>? {
   // Get the start/end indices within `string` based on `nsRange`

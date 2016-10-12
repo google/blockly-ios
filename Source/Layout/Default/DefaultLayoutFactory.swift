@@ -108,8 +108,8 @@ open class DefaultLayoutFactory: NSObject {
    Registers the `FieldLayoutCreator` to use for a given field type, when a new `FieldLayout`
    instance is requested via `layoutForField(:, engine:)`.
 
-   - Parameter fieldType: The `Field.Type` that the creator should be mapped to.
-   - Parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
+   - parameter fieldType: The `Field.Type` that the creator should be mapped to.
+   - parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
    */
   open func registerLayoutCreator(forFieldType fieldType: Field.Type,
     layoutCreator: @escaping FieldLayoutCreator)
@@ -120,7 +120,7 @@ open class DefaultLayoutFactory: NSObject {
   /**
    Unregisters the `FieldLayoutCreator` for a given field type.
 
-   - Parameter fieldType: The `Field.Type`
+   - parameter fieldType: The `Field.Type`
    */
   open func unregisterLayoutCreator(forFieldType fieldType: Field.Type) {
     _fieldLayoutCreators.removeValue(forKey: fieldType.hash())

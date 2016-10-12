@@ -79,8 +79,8 @@ public final class DefaultBlockLayout: BlockLayout {
   /**
    Initializes the default block layout.
 
-   - Parameter block: The `Block` model corresponding to the layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter block: The `Block` model corresponding to the layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
    */
   public override init(block: Block, engine: LayoutEngine) {
     _outputConnection = block.outputConnection

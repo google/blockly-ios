@@ -109,7 +109,7 @@ public final class DropdownView: UIView {
   /**
    Initializer with an optional drop down arrow image.
 
-   - Parameter dropDownArrowImage: [Optional] If specified, this image is used to populate
+   - parameter dropDownArrowImage: [Optional] If specified, this image is used to populate
    `self.dropDownArrowImage`. If nil, `DropDownView.defaultDropDownArrowImage()` is used instead.
    */
   public init(dropDownArrowImage: UIImage? = nil) {
@@ -136,13 +136,13 @@ public final class DropdownView: UIView {
    Calculates the required size of a theoretical `DropDownView` instance (`dropDownView`) based on
    if properties were set that instance.
 
-   - Parameter text: Corresponds to setting `dropDownView.text`.
-   - Parameter dropDownArrowImage: Corresponds to setting `dropDownView.dropDownArrowImage`.
-   - Parameter textFont: Corresponds to setting `dropDownView.labelFont`.
-   - Parameter borderWidth: Corresponds to setting `dropDownView.borderWidth`.
-   - Parameter horizontalSpacing: Corresponds to setting `dropDownView.horizontalSpacing`.
-   - Parameter verticalSpacing: Corresponds to setting `dropDownView.verticalSpacing`.
-   - Returns: The required size of the theoretical instance `dropDownView`
+   - parameter text: Corresponds to setting `dropDownView.text`.
+   - parameter dropDownArrowImage: Corresponds to setting `dropDownView.dropDownArrowImage`.
+   - parameter textFont: Corresponds to setting `dropDownView.labelFont`.
+   - parameter borderWidth: Corresponds to setting `dropDownView.borderWidth`.
+   - parameter horizontalSpacing: Corresponds to setting `dropDownView.horizontalSpacing`.
+   - parameter verticalSpacing: Corresponds to setting `dropDownView.verticalSpacing`.
+   - returns: The required size of the theoretical instance `dropDownView`
    */
   public static func measureSize(
     text: String, dropDownArrowImage: UIImage?, textFont: UIFont, borderWidth: CGFloat,
@@ -163,7 +163,7 @@ public final class DropdownView: UIView {
   /**
    Returns the default drop down arrow image for the dropdown view.
 
-   - Returns: The `UIImage` containing the default drop down arrow.
+   - returns: The `UIImage` containing the default drop down arrow.
    */
   public static func defaultDropDownArrowImage() -> UIImage? {
     return ImageLoader.loadImage(named: "arrow_dropdown", forClass: DropdownView.self)

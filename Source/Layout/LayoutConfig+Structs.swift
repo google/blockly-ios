@@ -29,8 +29,8 @@ extension LayoutConfig.Unit {
   /**
    Creates a unit for use inside a `LayoutConfig`.
 
-   - Parameter workspaceUnit: The value to use for `self.workspaceUnit`.
-   - Note: `self.viewUnit` is automatically initialized to the correct value based on the given
+   - parameter workspaceUnit: The value to use for `self.workspaceUnit`.
+   - note: `self.viewUnit` is automatically initialized to the correct value based on the given
    `workspaceUnit`.
    */
   public init(_ workspaceUnit: CGFloat) {
@@ -55,9 +55,9 @@ extension LayoutConfig.Size {
   /**
    Creates a size for use inside a `LayoutConfig`.
 
-   - Parameter workspaceWidth: The width value to use for `self.workspaceSize`.
-   - Parameter workspaceHeight: The height value to use for `self.workspaceSize`.
-   - Note: `self.viewSize` is automatically initialized to the correct value based on the generated
+   - parameter workspaceWidth: The width value to use for `self.workspaceSize`.
+   - parameter workspaceHeight: The height value to use for `self.workspaceSize`.
+   - note: `self.viewSize` is automatically initialized to the correct value based on the generated
    `workspaceSize`.
    */
   public init(_ workspaceWidth: CGFloat, _ workspaceHeight: CGFloat) {

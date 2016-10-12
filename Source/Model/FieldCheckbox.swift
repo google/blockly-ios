@@ -32,8 +32,8 @@ public final class FieldCheckbox: Field {
   /**
    Initializes the checkbox field.
 
-   - Parameter name: The name of this field.
-   - Parameter checked: The initial value of the checkbox. `true` if it is checked, `false` if it
+   - parameter name: The name of this field.
+   - parameter checked: The initial value of the checkbox. `true` if it is checked, `false` if it
      is not.
    */
   public init(name: String, checked: Bool) {

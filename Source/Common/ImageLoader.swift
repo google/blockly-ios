@@ -25,11 +25,11 @@ public final class ImageLoader: NSObject {
    the image inside the associated bundle for the given class (typically, this will be the
    framework's default bundle).
 
-   - Parameter imageName: The name of the image in a bundle's asset catalog.
-   - Parameter anyClass: The class that is requesting the image.
-   - Returns: The image, either from the main application bundle or the default bundle for the
+   - parameter imageName: The name of the image in a bundle's asset catalog.
+   - parameter anyClass: The class that is requesting the image.
+   - returns: The image, either from the main application bundle or the default bundle for the
    given class.
-   - Note: Images are loaded via UIImage(imageNamed:), which means they are cached in the system
+   - note: Images are loaded via UIImage(imageNamed:), which means they are cached in the system
    by default after they are loaded.
    */
   public class func loadImage(named imageName: String, forClass anyClass: AnyClass) -> UIImage? {

@@ -50,9 +50,9 @@ public final class FieldDropdown: Field {
   /**
    Initializes the dropdown field.
 
-   - Parameter name: The name of this field.
-   - Parameter options: An array of tuples, containing `dislpayName` and `value` pairs.
-   - Parameter selectedIndex: The currently selected index for the dropdown.
+   - parameter name: The name of this field.
+   - parameter options: An array of tuples, containing `dislpayName` and `value` pairs.
+   - parameter selectedIndex: The currently selected index for the dropdown.
    */
   public init(name: String, options: [(displayName: String, value: String)], selectedIndex: Int) {
     self.options = options
@@ -64,11 +64,11 @@ public final class FieldDropdown: Field {
   /**
    Initializes the dropdown field.
 
-   - Parameter name: The name of this field.
-   - Parameter displayNames: An array of display names to populate the dropdown.
-   - Parameter values: An array of values to populate the dropdown.
-   - Parameter selectedIndex: The currently selected index for the dropdown.
-   - Throws:
+   - parameter name: The name of this field.
+   - parameter displayNames: An array of display names to populate the dropdown.
+   - parameter values: An array of values to populate the dropdown.
+   - parameter selectedIndex: The currently selected index for the dropdown.
+   - throws:
    `BlocklyError`: Occurs if the size of the provided arrays do not match.
    */
   public convenience init(

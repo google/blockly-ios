@@ -22,7 +22,7 @@ extension UIColor {
   /**
    Returns a tuple representing the hue, saturation, brightness, and alpha values of this color.
 
-   - Returns: A tuple of the form `(hue: CGFloat, saturation: CGFloat, brightness: CGFloat,
+   - returns: A tuple of the form `(hue: CGFloat, saturation: CGFloat, brightness: CGFloat,
    alpha: CGFloat)` where `hue`, `saturation`, `brightness`, and `alpha` are all values from [0.0, 1.0].
    */
   public func bky_hsba() -> (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)
@@ -36,7 +36,7 @@ extension UIColor {
   /**
    Returns a tuple representing the red, green, blue, and alpha values of this color.
 
-   - Returns: A tuple of the form `(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)`
+   - returns: A tuple of the form `(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)`
    where `red`, `green`, `blue`, and `alpha` are all values from [0.0, 1.0].
    */
   public func bky_rgba() -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {

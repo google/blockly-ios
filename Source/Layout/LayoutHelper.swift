@@ -24,9 +24,9 @@ internal class LayoutHelper: NSObject {
   /**
   Ensure the given layout will fit within a given size, increasing the size if necessary.
 
-  - Parameter layout: The layout to accomodate
-  - Parameter size: The initial workspace size
-  - Returns: A workspace size that now accommodates the layout.
+  - parameter layout: The layout to accomodate
+  - parameter size: The initial workspace size
+  - returns: A workspace size that now accommodates the layout.
   */
   internal static func sizeThatFitsLayout
     (_ layout: Layout, fromInitialSize size: WorkspaceSize) -> WorkspaceSize {

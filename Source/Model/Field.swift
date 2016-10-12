@@ -23,7 +23,7 @@ public protocol FieldDelegate: class {
   /**
    Event that is fired when one of a field's properties has changed.
 
-   - Parameter field: The field that changed.
+   - parameter field: The field that changed.
    */
   func didUpdateField(_ field: Field)
 }
@@ -72,8 +72,8 @@ open class Field: NSObject {
   /**
   Returns a copy of this field.
 
-  - Returns: A copy of this field.
-  - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
+  - returns: A copy of this field.
+  - note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
   a `Field` subclass does not implement this method.
   */
   open func copyField() -> Field {
@@ -84,11 +84,11 @@ open class Field: NSObject {
   /**
    Sets the native value of this field from a serialized text value.
 
-   - Parameter text: The serialized text value
-   - Throws:
+   - parameter text: The serialized text value
+   - throws:
    `BlocklyError`: Thrown if the serialized text value could not be converted into the field's
    native value.
-   - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
+   - note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
    a `Field` subclass does not implement this method.
    */
   open func setValueFromSerializedText(_ text: String) throws {
@@ -98,10 +98,10 @@ open class Field: NSObject {
   /**
    Converts the native value of this field to a serialized text value.
 
-   - Returns: The serialized text value. If the field cannot be serialized, nil is returned instead.
-   - Throws:
+   - returns: The serialized text value. If the field cannot be serialized, nil is returned instead.
+   - throws:
    `BlocklyError`: Thrown if the field's native value could not be serialized into a text value.
-   - Note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
+   - note: This method needs to be implemented by a subclass of `Field`. Results are undefined if
    a `Field` subclass does not implement this method.
    */
   open func serializedText() throws -> String? {
@@ -130,9 +130,9 @@ open class Field: NSObject {
    }
    ```
 
-   - Parameter editableProperty: The instance property that had been set
-   - Parameter oldValue: The old value of the instance property
-   - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   - parameter editableProperty: The instance property that had been set
+   - parameter oldValue: The old value of the instance property
+   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
   open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
@@ -167,9 +167,9 @@ open class Field: NSObject {
    }
    ```
 
-   - Parameter editableProperty: The instance property that had been set
-   - Parameter oldValue: The old value of the instance property
-   - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   - parameter editableProperty: The instance property that had been set
+   - parameter oldValue: The old value of the instance property
+   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
   open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T?, _ oldValue: T?)

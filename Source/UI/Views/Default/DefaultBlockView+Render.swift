@@ -24,11 +24,11 @@ extension DefaultBlockView {
    Draws: --
             \_/
    ```
-   - Parameter path: The Bezier path to add to.
-   - Parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
+   - parameter path: The Bezier path to add to.
+   - parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
    should be drawn right-to-left.
-   - Parameter notchWidth: The width of the notch, specified as a Workspace coordinate system unit.
-   - Parameter notchHeight: The height of the notch, specified as a Workspace coordinate system
+   - parameter notchWidth: The width of the notch, specified as a Workspace coordinate system unit.
+   - parameter notchHeight: The height of the notch, specified as a Workspace coordinate system
    unit.
    */
   public final func addNotch(toPath path: WorkspaceBezierPath, drawLeftToRight: Bool,
@@ -57,7 +57,7 @@ extension DefaultBlockView {
            /
            \
   ```
-  - Parameter path: The Bezier path to add to.
+  - parameter path: The Bezier path to add to.
   */
   public final func addJaggedTeeth(toPath path: WorkspaceBezierPath) {
     path.addLineTo(x: 8, y: 0, relative: true)
@@ -77,12 +77,12 @@ extension DefaultBlockView {
         \/|
           |
    ```
-   - Parameter path: The Bezier path to add to.
-   - Parameter drawTopToBottom: True if the path should be drawn from top-to-bottom. False if it
+   - parameter path: The Bezier path to add to.
+   - parameter drawTopToBottom: True if the path should be drawn from top-to-bottom. False if it
    should be drawn bottom-to-top.
-   - Parameter puzzleTabWidth: The width of the puzzle tab, specified as a Workspace coordinate
+   - parameter puzzleTabWidth: The width of the puzzle tab, specified as a Workspace coordinate
    system unit.
-   - Parameter puzzleTabHeight: The height of the puzzle tab, specified as a Workspace coordinate
+   - parameter puzzleTabHeight: The height of the puzzle tab, specified as a Workspace coordinate
    system unit.
    */
   public final func addPuzzleTab(toPath path: WorkspaceBezierPath, drawTopToBottom: Bool,
@@ -117,8 +117,8 @@ extension DefaultBlockView {
   /**
    Moves the path to start drawing the top-left corner
 
-   - Parameter path: The Bezier path.
-   - Parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
+   - parameter path: The Bezier path.
+   - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
     system unit.
    */
   public final func movePathToTopLeftCornerStart(
@@ -134,7 +134,7 @@ extension DefaultBlockView {
            /
           |
    ```
-   - Parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
+   - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
    system unit.
    */
   public final func addTopLeftCorner(toPath path: WorkspaceBezierPath, blockCornerRadius: CGFloat)

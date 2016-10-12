@@ -46,11 +46,11 @@ public final class FieldImage: Field {
   /**
    Initializes the image field.
 
-   - Parameter name: The name of this field.
-   - Parameter imageLocation: The location of the image in this field. Specifies the location of a
+   - parameter name: The name of this field.
+   - parameter imageLocation: The location of the image in this field. Specifies the location of a
      local image resource, either as an image asset name or a location relative to the main resource
      bundle of the app. As a fallback, this can specify the location of a URL web image to fetch.
-   - Parameter altText: The alt text for this field.
+   - parameter altText: The alt text for this field.
    */
   public init(
     name: String, imageLocation: String, size: WorkspaceSize, altText: String) {

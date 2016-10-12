@@ -30,7 +30,7 @@ public protocol ZIndexedView {
  subview list by their `zIndex` property. This causes each view to be rendered and hit-tested inside
  `ZIndexedGroupView` based on their `zIndex`.
 
- - Note: All views should be added via `upsertView(:)`. Using any other insertion method
+ - note: All views should be added via `upsertView(:)`. Using any other insertion method
  on this class may have adverse effects. Adding any view other than one that conforms to
  `ZIndexedView` will result in an app crash.
  */
@@ -46,8 +46,8 @@ public final class ZIndexedGroupView: UIView {
   /**
    Allows for hit testing while sub views are outside the bounds of a groupView.
 
-   - Parameter point: The location to be tested, in local space.
-   - Parameter event: The event requesting the hit test.
+   - parameter point: The location to be tested, in local space.
+   - parameter event: The event requesting the hit test.
    */
   public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     for target in subviews.lazy.reversed() {
@@ -71,7 +71,7 @@ public final class ZIndexedGroupView: UIView {
    Inserts or updates a `UIView` in this group, where it is sorted amongst other subviews based on
    its `zIndex`.
 
-   - Parameter view: A `UIView` that conforms to `ZIndexedView`
+   - parameter view: A `UIView` that conforms to `ZIndexedView`
    */
   public func upsertView<T>(_ view: T) where T: UIView, T:ZIndexedView {
     let zIndex = view.zIndex
@@ -133,8 +133,8 @@ public final class ZIndexedGroupView: UIView {
   /**
    Upserts a view into the group.
 
-   - Parameter view: The `UIView` to upsert
-   - Parameter index: The index to upsert `view` at. If the value is < 0, `view` is
+   - parameter view: The `UIView` to upsert
+   - parameter index: The index to upsert `view` at. If the value is < 0, `view` is
    automatically upserted to the end of `self.subviews`.
    */
   private func upsertView<T>(_ view: T, atIndex index: Int) where T: UIView, T:ZIndexedView {

@@ -56,9 +56,9 @@ open class InputLayout: Layout {
   /**
    Initializes the input layout.
 
-   - Parameter input: The `Input` model for this layout.
-   - Parameter engine: The `LayoutEngine` that will build this layout.
-   - Parameter factory: The `LayoutFactory` to build the blockGroupLayout.
+   - parameter input: The `Input` model for this layout.
+   - parameter engine: The `LayoutEngine` that will build this layout.
+   - parameter factory: The `LayoutFactory` to build the blockGroupLayout.
    */
   public init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
     self.input = input
@@ -76,7 +76,7 @@ open class InputLayout: Layout {
   /**
   Appends a fieldLayout to `self.fieldLayouts` and sets its `parentLayout` to this instance.
 
-  - Parameter fieldLayout: The `FieldLayout` to append.
+  - parameter fieldLayout: The `FieldLayout` to append.
   */
   open func appendFieldLayout(_ fieldLayout: FieldLayout) {
     fieldLayouts.append(fieldLayout)
@@ -86,8 +86,8 @@ open class InputLayout: Layout {
   /**
   Removes `self.fieldLayouts[index]`, sets its `parentLayout` to nil, and returns it.
 
-  - Parameter index: The index to remove from `self.fieldLayouts`.
-  - Returns: The `FieldLayout` that was removed.
+  - parameter index: The index to remove from `self.fieldLayouts`.
+  - returns: The `FieldLayout` that was removed.
   */
   @discardableResult
   open func removeFieldLayout(atIndex index: Int) -> FieldLayout {
@@ -100,7 +100,7 @@ open class InputLayout: Layout {
   Removes all elements from `self.fieldLayouts`, sets their `parentLayout` to nil, and resets
   `self.blockGroupLayout`.
 
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func reset(updateLayout: Bool) {
     while fieldLayouts.count > 0 {

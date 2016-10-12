@@ -32,8 +32,8 @@ public class BlockFactory : NSObject {
   /**
    Loads blocks from a list of default files defined by the Blockly library.
 
-   - Parameter defaultFiles: The list of default block definition files that should be loaded.
-   - Note: This method will overwrite any existing block definitions that contain the same name.
+   - parameter defaultFiles: The list of default block definition files that should be loaded.
+   - note: This method will overwrite any existing block definitions that contain the same name.
    */
   public func load(fromDefaultFiles defaultFiles: BlockJSONFile) {
     let bundle = Bundle(for: type(of: self))
@@ -49,11 +49,11 @@ public class BlockFactory : NSObject {
   /**
    Loads blocks from a list of JSON files.
 
-   - Note: This method will overwrite any existing block definitions that contain the same name.
-   - Parameter jsonPaths: List of paths to files containing blocks in JSON.
-   - Parameter bundle: The bundle containing the JSON paths. If `nil` is specified,
+   - note: This method will overwrite any existing block definitions that contain the same name.
+   - parameter jsonPaths: List of paths to files containing blocks in JSON.
+   - parameter bundle: The bundle containing the JSON paths. If `nil` is specified,
    `NSBundle.mainBundle()` is used by default.
-   - Throws:
+   - throws:
    `BlocklyError`: Thrown if a JSON file could not be found or read, or if the JSON contains
    invalid block definition(s).
    */
@@ -80,11 +80,11 @@ public class BlockFactory : NSObject {
   /**
    Creates and returns a new `Block` with the given name.
 
-   - Parameter name: The name of the block to build.
-   - Throws:
+   - parameter name: The name of the block to build.
+   - throws:
    `BlocklyError`: Occurs if the block builder for the given name could not be found or if the
    block builder is missing any required pieces.
-   - Returns: A new `Block`.
+   - returns: A new `Block`.
    */
   public func makeBlock(name: String) throws -> Block {
     return try makeBlock(name: name, shadow: false, uuid: nil)
@@ -93,15 +93,15 @@ public class BlockFactory : NSObject {
   /**
    Creates and returns a new `Block` with the given name.
 
-   - Parameter name: The name of the block to build.
-   - Parameter shadow: Specifies whether the resulting block should be a shadow block (`true`) or a
+   - parameter name: The name of the block to build.
+   - parameter shadow: Specifies whether the resulting block should be a shadow block (`true`) or a
    regular block (`false`).
-   - Parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
+   - parameter uuid: [Optional] The uuid to assign the block. If nil, a new uuid is automatically
    assigned to the block.
-   - Throws:
+   - throws:
    `BlocklyError`: Occurs if the block builder for the given name could not be found or if the
    block builder is missing any required pieces.
-   - Returns: A new `Block`.
+   - returns: A new `Block`.
    */
   public func makeBlock(name: String, shadow: Bool, uuid: String? = nil) throws -> Block {
     guard let blockBuilder = _blockBuilders[name] else {
@@ -117,11 +117,11 @@ public class BlockFactory : NSObject {
    Creates a new instance of a block with the given name, adds it to a specific workspace, and
    returns it.
 
-   - Parameter name: The name of the block to obtain.
-   - Parameter workspace: The workspace that should own the new block.
-   - Throws:
+   - parameter name: The name of the block to obtain.
+   - parameter workspace: The workspace that should own the new block.
+   - throws:
    `BlocklyError`: Occurs if the block builder is missing any required pieces.
-   - Returns: A new block if the name is known, nil otherwise.
+   - returns: A new block if the name is known, nil otherwise.
    */
   internal func addBlock(name: String, toWorkspace workspace: Workspace) throws -> Block? {
     guard let block = try? makeBlock(name: name) else {

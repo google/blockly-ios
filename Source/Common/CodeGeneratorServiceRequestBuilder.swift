@@ -42,7 +42,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Create a builder for making `CodeGeneratorServiceRequest` instances.
 
-   - Parameter jsGeneratorObject: The name of the JS object that should be used for each request
+   - parameter jsGeneratorObject: The name of the JS object that should be used for each request
    code (e.g. 'Blockly.Python').
    */
   @objc(initWithJSGeneratorObject:)
@@ -55,7 +55,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Adds to the list of JS block generator files that should be used for each request.
 
-   - Parameter files: Paths to JS block generator files, relative to the main resource bundle.
+   - parameter files: Paths to JS block generator files, relative to the main resource bundle.
    */
   public func addJSBlockGeneratorFiles(_ files: [String]) {
     addJSBlockGeneratorFiles(files, bundle: Bundle.main)
@@ -64,8 +64,8 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Adds to the list of JS block generator files that should be used for each request.
 
-   - Parameter files: Paths to JS block generator files, relative to the given resource `bundle`.
-   - Parameter bundle: The resource bundle containing `jsBlockGenerators`.
+   - parameter files: Paths to JS block generator files, relative to the given resource `bundle`.
+   - parameter bundle: The resource bundle containing `jsBlockGenerators`.
    */
   public func addJSBlockGeneratorFiles(_ files: [String], bundle: Bundle) {
     let generators = files.map({ (path: $0, bundle: bundle) })
@@ -75,7 +75,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Adds to the list of JSON block definition files that should be used for each request.
 
-   - Parameter defaultFiles: A list of default block definition files.
+   - parameter defaultFiles: A list of default block definition files.
    */
   public func addJSONBlockDefinitionFiles(fromDefaultFiles defaultFiles: BlockJSONFile) {
     addJSONBlockDefinitionFiles(defaultFiles.fileLocations, bundle: Bundle(for: type(of: self)))
@@ -84,7 +84,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Adds to the list of JSON block definition files that should be used for each request.
 
-   - Parameter files: Paths to JSON block definition files, relative to the main resource bundle.
+   - parameter files: Paths to JSON block definition files, relative to the main resource bundle.
    */
   public func addJSONBlockDefinitionFiles(_ files: [String]) {
     addJSONBlockDefinitionFiles(files, bundle: Bundle.main)
@@ -93,9 +93,9 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   /**
    Adds to the list of JSON block definition files that should be used for each request.
 
-   - Parameter files: Paths to JSON block definition files, relative to the given
+   - parameter files: Paths to JSON block definition files, relative to the given
    resource `bundle`.
-   - Parameter bundle: The resource bundle containing `jsonBlockDefinitions`.
+   - parameter bundle: The resource bundle containing `jsonBlockDefinitions`.
    */
   public func addJSONBlockDefinitionFiles(_ files: [String], bundle: Bundle) {
     let definitions = files.map({ (path: $0, bundle: bundle) })
@@ -106,8 +106,8 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
    Based on the current state of the builder and given workspace XML, create a
    code generator service request.
 
-   - Parameter workspaceXML: The workspace XML to use for the request.
-   - Returns: A `CodeGeneratorServiceRequest`.
+   - parameter workspaceXML: The workspace XML to use for the request.
+   - returns: A `CodeGeneratorServiceRequest`.
    */
   public func makeRequest(forWorkspaceXML workspaceXML: String) -> CodeGeneratorServiceRequest {
     return CodeGeneratorServiceRequest(
@@ -121,8 +121,8 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
    Based on the current state of the builder and a given workspace, create a
    code generator service reqeust.
 
-   - Parameter workspace: The `Workspace` to use for the request.
-   - Returns: A `CodeGeneratorServiceRequest`.
+   - parameter workspace: The `Workspace` to use for the request.
+   - returns: A `CodeGeneratorServiceRequest`.
    */
   public func makeRequest(forWorkspace workspace: Workspace) throws -> CodeGeneratorServiceRequest {
     return makeRequest(forWorkspaceXML: try workspace.toXML())

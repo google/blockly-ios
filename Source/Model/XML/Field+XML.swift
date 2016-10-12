@@ -24,9 +24,9 @@ extension Field {
   /**
    Creates an XML element for this field.
 
-   - Returns: An XML element representing this field. For those fields that cannot be represented by
+   - returns: An XML element representing this field. For those fields that cannot be represented by
    XML, nil is returned instead.
-   - Throws:
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing this field.
    */
   internal func toXMLElement() throws -> AEXMLElement? {

@@ -23,8 +23,8 @@ public protocol DropdownOptionsViewControllerDelegate: class {
   /**
    Event that is called when the user has selected an option for the drop-down field.
 
-   - Parameter viewController: The view controller where this event occurred.
-   - Parameter optionIndex: The selected option index.
+   - parameter viewController: The view controller where this event occurred.
+   - parameter optionIndex: The selected option index.
    */
   func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)

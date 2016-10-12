@@ -23,7 +23,7 @@ extension String {
    Escapes the current string so it can be used as a JavaScript parameter when calling a JS method
    using UIWebView/WKWebView's `evaluateJavaScript(...)`.
 
-   - Returns: The escaped JavaScript string.
+   - returns: The escaped JavaScript string.
    */
   public func bky_escapedJavaScriptParameter() -> String {
     // Note: `\b` and `\f` aren't included here because they aren't special String characters in

@@ -23,16 +23,16 @@ public protocol WorkspaceListener: class {
   /**
    Event that is called when a block has been added to a workspace.
 
-   - Parameter workspace: The workspace that added a block.
-   - Parameter block: The block that was added.
+   - parameter workspace: The workspace that added a block.
+   - parameter block: The block that was added.
   */
   func workspace(_ workspace: Workspace, didAddBlock block: Block)
 
   /**
    Event that is called when a block will be removed from a workspace.
 
-   - Parameter workspace: The workspace that will remove a block.
-   - Parameter block: The block that will be removed.
+   - parameter workspace: The workspace that will remove a block.
+   - parameter block: The block that will be removed.
    */
   func workspace(_ workspace: Workspace, willRemoveBlock block: Block)
 }
@@ -108,7 +108,7 @@ open class Workspace : NSObject {
   /**
    Creates a Workspace, specifying a maximum capacity.
 
-   - Parameter maxBlocks: The maximum number of blocks allowed in this workspace.
+   - parameter maxBlocks: The maximum number of blocks allowed in this workspace.
    */
   public init(maxBlocks: Int) {
     self.maxBlocks = maxBlocks
@@ -127,8 +127,8 @@ open class Workspace : NSObject {
   /**
    Adds a block and all of its connected blocks to the workspace.
 
-   - Parameter rootBlock: The root block to add.
-   - Throws:
+   - parameter rootBlock: The root block to add.
+   - throws:
    `BlocklyError`: Thrown if one of the blocks uses a uuid that is already being used by another
    block in the workspace or if adding the new set of blocks would exceed the maximum amount
    allowed.
@@ -180,8 +180,8 @@ open class Workspace : NSObject {
   /**
    Removes a given block and all of its connected child blocks from the workspace.
 
-   - Parameter rootBlock: The root block to remove.
-   - Throws:
+   - parameter rootBlock: The root block to remove.
+   - throws:
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
   open func removeBlockTree(_ rootBlock: Block) throws {
@@ -213,10 +213,10 @@ open class Workspace : NSObject {
   /**
    Deep copies a block and adds all of the copied blocks into the workspace.
 
-   - Parameter rootBlock: The root block to copy
-   - Parameter editable: Sets whether each block is `editable` or not
-   - Returns: The root block that was copied
-   - Throws:
+   - parameter rootBlock: The root block to copy
+   - parameter editable: Sets whether each block is `editable` or not
+   - returns: The root block that was copied
+   - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
   @discardableResult
@@ -248,10 +248,10 @@ open class Workspace : NSObject {
    For each top-level block tree in the workspace, deactivates those that contain blocks exceeding
    a given threshold and activates those that don't exceed the given threshold.
 
-   - Note: This method should only be called for toolbox categories or trash cans. It is not
+   - note: This method should only be called for toolbox categories or trash cans. It is not
    intended to be used for the main editing workspace.
 
-   - Parameter threshold: The maximum number of blocks that a block tree may contain before it is
+   - parameter threshold: The maximum number of blocks that a block tree may contain before it is
    disabled.
    */
   open func deactivateBlockTrees(forGroupsGreaterThan threshold: Int) {
@@ -272,8 +272,8 @@ open class Workspace : NSObject {
    For all `FieldVariable` instances under a given `Block`, set their `nameManager` property to a
    given `NameManager`.
 
-   - Parameter nameManager: The `NameManager` to set
-   - Parameter block: The `Block`
+   - parameter nameManager: The `NameManager` to set
+   - parameter block: The `Block`
    */
   private func addNameManager(_ nameManager: NameManager?, toBlock block: Block) {
     block.inputs.flatMap({ $0.fields }).forEach {
@@ -286,7 +286,7 @@ open class Workspace : NSObject {
   /**
    Sets the `nameManager` for all `FieldVariable` instances under the given `Block` to `nil`.
 
-   - Parameter block: The `Block`
+   - parameter block: The `Block`
    */
   private func removeNameManagerFromBlock(_ block: Block) {
     block.inputs.flatMap({ $0.fields }).forEach {

@@ -42,8 +42,8 @@ public final class InputBuilder: NSObject {
   /**
    Initializes an input builder with a type and string.
 
-   - Parameter type: The type of the `Input`.
-   - Parameter name: The name of the `Input`.
+   - parameter type: The type of the `Input`.
+   - parameter name: The name of the `Input`.
    */
   public init(type: Input.InputType, name: String) {
     self.type = type
@@ -55,7 +55,7 @@ public final class InputBuilder: NSObject {
    a single instance of a input will be copied in to the builder. Any associated layouts are not
    copied into the builder.
 
-   - Parameter input: The `Input` to copy.
+   - parameter input: The `Input` to copy.
   */
   public init(input: Input) {
     self.type = input.type
@@ -73,7 +73,7 @@ public final class InputBuilder: NSObject {
   /**
   Creates a new `Input` given the current state of the builder.
 
-  - Returns: A new input
+  - returns: A new input
   */
   public func build() -> Input {
     let input = Input(type: self.type, name: self.name, fields: fields.map{ $0.copyField() })
@@ -90,7 +90,7 @@ public final class InputBuilder: NSObject {
   /**
   Appends a copy of a field to `fields`.
 
-  - Parameter field: The `Field` to copy and append.
+  - parameter field: The `Field` to copy and append.
   */
   public func appendField(_ field: Field) {
     appendFields([field])
@@ -99,7 +99,7 @@ public final class InputBuilder: NSObject {
   /**
   Appends a copies of fields to `fields`.
 
-  - Parameter fields: The list of `Field`'s to copy and append.
+  - parameter fields: The list of `Field`'s to copy and append.
   */
   public func appendFields(_ fields: [Field]) {
     self.fields.append(contentsOf: fields.map({ $0.copyField()}))

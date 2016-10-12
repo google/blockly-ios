@@ -39,9 +39,9 @@ public final class TrashCanView: UIView {
   /**
    Creates the trash can button with an image.
 
-   - Parameter imageName: Loads an image using
+   - parameter imageName: Loads an image using
    `ImageLoader.loadImage(named: imageName, forClass: self.dynamicType)`.
-   - Parameter size: [Optional] The size of the trash can button. If `nil`, the image's size is
+   - parameter size: [Optional] The size of the trash can button. If `nil`, the image's size is
    used as a default.
    */
   public required init(imageNamed imageName: String, size: CGSize? = nil) {
@@ -92,10 +92,10 @@ public final class TrashCanView: UIView {
   /**
    Sets the amount of padding that should be added around the trash can button.
 
-   - Parameter top: The padding to add to the top edge of the button
-   - Parameter leading: The padding to add to the leading edge of the button
-   - Parameter bottom: The padding to add to the bottom edge of the button
-   - Parameter trailing: The padding to add to the trailing edge of the button
+   - parameter top: The padding to add to the top edge of the button
+   - parameter leading: The padding to add to the leading edge of the button
+   - parameter bottom: The padding to add to the bottom edge of the button
+   - parameter trailing: The padding to add to the trailing edge of the button
    */
   public func setButtonPadding(
     top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat) {
@@ -106,9 +106,9 @@ public final class TrashCanView: UIView {
   /**
    Sets the highlighted state for the trash can view.
 
-   - Parameter highlighted: Specifies whether the trash can should be highlighted. `true` if it
+   - parameter highlighted: Specifies whether the trash can should be highlighted. `true` if it
    should, `false` if not.
-   - Parameter animated: Specifies whether the change should be animated (`true`) or
+   - parameter animated: Specifies whether the change should be animated (`true`) or
    if it should be performed immediately (`false`).
    */
   public func setHighlighted(_ highlighted: Bool, animated: Bool) {

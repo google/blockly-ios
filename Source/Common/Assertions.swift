@@ -20,8 +20,8 @@ In builds with a DEBUG symbol defined, this method calls: `assert(condition, mes
 
 In non-DEBUG builds, this method does nothing.
 
-- Parameter condition: The condition to pass to `assert(condition, message)`
-- Parameter message: The message to pass to `assert(condition, message)`
+- parameter condition: The condition to pass to `assert(condition, message)`
+- parameter message: The message to pass to `assert(condition, message)`
 */
 internal func bky_assert(_ condition: Bool, message: String) {
   #if DEBUG
@@ -34,7 +34,7 @@ In builds with a DEBUG symbol defined, this method calls: `assertionFailure(mess
 
 In non-DEBUG builds, this method does nothing.
 
-- Parameter message: The message to pass to `assertionFailure(message)`.
+- parameter message: The message to pass to `assertionFailure(message)`.
 */
 internal func bky_assertionFailure(_ message: String) {
   #if DEBUG

@@ -23,8 +23,8 @@ public final class JSONHelper: NSObject {
   /**
   Convenience method for retrieving a JSON object from a String.
 
-  - Parameter string: The JSON string
-  - Returns: Either a Dictionary<String, Any> or Array<Any>
+  - parameter string: The JSON string
+  - returns: Either a Dictionary<String, Any> or Array<Any>
   */
   public static func makeJSONObject(string: String) throws -> Any {
     guard
@@ -41,8 +41,8 @@ public final class JSONHelper: NSObject {
   /**
   Convenience method for retrieving a JSON dictionary from a String.
 
-  - Parameter string: A valid JSON string dictionary
-  - Returns: The JSON dictionary
+  - parameter string: A valid JSON string dictionary
+  - returns: The JSON dictionary
   */
   public static func makeJSONDictionary(string: String) throws
     -> Dictionary<String, Any>
@@ -58,8 +58,8 @@ public final class JSONHelper: NSObject {
   /**
   Convenience method for retrieving a JSON array from a String.
 
-  - Parameter string: A valid JSON string array
-  - Returns: The JSON array
+  - parameter string: A valid JSON string array
+  - returns: The JSON array
   */
   public static func makeJSONArray(string: String) throws -> [Any] {
     // Parse jsonString into json array

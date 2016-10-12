@@ -63,8 +63,8 @@ open class WorkspaceFlow: Workspace {
   /**
    Adds a gap between the last block that was added and the next block that will be added.
 
-   - Parameter gap: The gap space, expressed as a Workspace coordinate system unit
-   - Note: Trailing gaps are truncated and ignored on layout.
+   - parameter gap: The gap space, expressed as a Workspace coordinate system unit
+   - note: Trailing gaps are truncated and ignored on layout.
    */
   open func addGap(_ gap: CGFloat = 24) {
     items.append(Item(gap: gap))

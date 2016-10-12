@@ -39,11 +39,11 @@ extension Block {
   /**
   Creates a new `Block.Builder` from a JSON dictionary.
 
-  - Parameter json: The JSON dictionary.
-  - Throws:
+  - parameter json: The JSON dictionary.
+  - throws:
   `BlocklyError`: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
   malformed data, or contradictory data).
-  - Returns: A new block builder.
+  - returns: A new block builder.
   */
   public class func makeBuilder(json: [String: Any]) throws -> Block.Builder
   {
@@ -130,17 +130,17 @@ extension Block {
   /**
   Interpolate a message description into an `Input.Builder` array.
 
-  - Parameter message: Text contains interpolation tokens (%1, %2, ...) that match with fields or
+  - parameter message: Text contains interpolation tokens (%1, %2, ...) that match with fields or
   inputs defined in the arguments array. Each interpolation token should only appear once.
-  - Parameter arguments: Array of arguments to be interpolated. It should match the same number of
+  - parameter arguments: Array of arguments to be interpolated. It should match the same number of
   interpolation tokens in "message".
-  - Parameter lastDummyAlignment: If a dummy input is added at the end, how should it be aligned?
-  - Throws:
+  - parameter lastDummyAlignment: If a dummy input is added at the end, how should it be aligned?
+  - throws:
   `BlocklyError`: Thrown if the number of arguments doesn't match the number of interpolation tokens
   provided in the message, if any interpolation token was used more than once, if not all argument
   values were referenced by the interpolation tokens, or if an argument could not be parsed into an
   `Input` or `Field`.
-  - Returns: An `Input.Builder` array
+  - returns: An `Input.Builder` array
   */
   internal class func interpolate(message: String, arguments: Array<[String: Any]>,
     lastDummyAlignment: Input.Alignment) throws -> [Input.Builder]
@@ -234,8 +234,8 @@ extension Block {
 
   `["Here is an example: ", 1, "\nAnd another example: ", 2]`
 
-  - Parameter message: The message to tokenize
-  - Returns: An array of tokens consisting of either `String` or `Int`
+  - parameter message: The message to tokenize
+  - returns: An array of tokens consisting of either `String` or `Int`
   */
   internal class func tokenized(message: String) -> [Any] {
     enum State {

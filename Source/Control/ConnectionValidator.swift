@@ -23,9 +23,9 @@ public protocol ConnectionValidator {
   /**
    Check if the two connections can be dragged to connect to each other.
 
-   - Parameter moving: The connection being dragged.
-   - Parameter candidate: A nearby connection to check. Must not be mid-drag.
-   - Returns: True if the connection is allowed, false otherwise.
+   - parameter moving: The connection being dragged.
+   - parameter candidate: A nearby connection to check. Must not be mid-drag.
+   - returns: True if the connection is allowed, false otherwise.
    */
   func canConnect(_ moving: Connection, toConnection candidate: Connection) -> Bool
 }

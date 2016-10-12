@@ -48,8 +48,8 @@ public final class FieldDate: Field {
   /**
    Initializes the date field.
 
-   - Parameter name: The name of this field.
-   - Parameter date: The initial `Date` to set for this field.
+   - parameter name: The name of this field.
+   - parameter date: The initial `Date` to set for this field.
    */
   public init(name: String, date: Date) {
     self.date = FieldDate.normalizeDate(date)
@@ -59,8 +59,8 @@ public final class FieldDate: Field {
   /**
   Initializes for the date field.
 
-  - Parameter name: The name of this field.
-  - Parameter stringDate: String of the format "yyyy-MM-dd". If the string couldn't be parsed into a
+  - parameter name: The name of this field.
+  - parameter stringDate: String of the format "yyyy-MM-dd". If the string couldn't be parsed into a
   valid date, the current date is used instead.
   */
   public convenience init(name: String, stringDate: String) {
@@ -93,7 +93,7 @@ public final class FieldDate: Field {
   /**
   Sets self.date based on a date string.
 
-  - Parameter stringDate: String of the format "yyyy-MM-dd". If the string could not be parsed into
+  - parameter stringDate: String of the format "yyyy-MM-dd". If the string could not be parsed into
   a valid date, self.date is not changed.
   */
   public func setDateFromString(_ stringDate: String) {

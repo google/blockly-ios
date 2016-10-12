@@ -25,9 +25,9 @@ public protocol ViewBuilderDelegate {
   /**
    Event that is called when the `ViewBuilder` has added child view to a parent view.
 
-   - Parameter viewBuilder: The `ViewBuilder`
-   - Parameter childView: The child `UIView`
-   - Parameter parentView: The parent `UIView`
+   - parameter viewBuilder: The `ViewBuilder`
+   - parameter childView: The child `UIView`
+   - parameter parentView: The parent `UIView`
    */
   func viewBuilder(
     _ viewBuilder: ViewBuilder, didAddChild childView: UIView, toParent parentView: UIView)
@@ -35,9 +35,9 @@ public protocol ViewBuilderDelegate {
   /**
    Event that is called when the `ViewBuilder` has removed a child view from a parent view.
 
-   - Parameter viewBuilder: The `ViewBuilder`
-   - Parameter childView: The child `UIView`
-   - Parameter parentView: The parent `UIView`
+   - parameter viewBuilder: The `ViewBuilder`
+   - parameter childView: The child `UIView`
+   - parameter parentView: The parent `UIView`
    */
   func viewBuilder(
     _ viewBuilder: ViewBuilder, didRemoveChild childView: UIView, fromParent parentView: UIView)
@@ -63,7 +63,7 @@ open class ViewBuilder: NSObject {
   /**
    Initializer for the view builder.
 
-   - Parameter viewFactory: The `ViewFactory` to construct views built by the builder.
+   - parameter viewFactory: The `ViewFactory` to construct views built by the builder.
    */
   public init(viewFactory: ViewFactory) {
     self.viewFactory = viewFactory
@@ -75,7 +75,7 @@ open class ViewBuilder: NSObject {
    Builds the entire view tree for `workspaceView` based on its current layout
    (ie. `workspaceView.workspaceLayout`).
 
-   - Throws:
+   - throws:
    `BlocklyError`: Thrown if the view tree could not be created for this workspace.
    */
   open func buildViewTree(forWorkspaceView workspaceView: WorkspaceView) throws {
@@ -106,8 +106,8 @@ open class ViewBuilder: NSObject {
    For any layout node where an associated view could not be created, its entire branch is skipped
    and no listener is attached to any part of that branch.
 
-   - Parameter layout: The root of the `Layout` tree
-   - Parameter parentView: The parent view on which to add the newly created view tree.
+   - parameter layout: The root of the `Layout` tree
+   - parameter parentView: The parent view on which to add the newly created view tree.
    */
   fileprivate func addViewTree(forLayout layout: Layout, toParent parentView: UIView) {
     let view: LayoutView

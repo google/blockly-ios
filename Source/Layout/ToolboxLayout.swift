@@ -19,7 +19,7 @@ import Foundation
  Class responsible for maintaining associated `WorkspaceFlowLayout` instances for each
  `Toolbox.Category` inside of a `Toolbox`.
 
- - Note: The `Toolbox` itself does not have an associated `Layout` instance.
+ - note: The `Toolbox` itself does not have an associated `Layout` instance.
  */
 @objc(BKYToolboxLayout)
 open class ToolboxLayout: NSObject {
@@ -45,12 +45,12 @@ open class ToolboxLayout: NSObject {
   /**
    Creates a new `ToolboxLayout`.
   
-   - Parameter toolbox: The `Toolbox` to associate with this object.
-   - Parameter engine: The layout engine to use when creating new `WorkspaceFlowLayout` instances
+   - parameter toolbox: The `Toolbox` to associate with this object.
+   - parameter engine: The layout engine to use when creating new `WorkspaceFlowLayout` instances
    for each category in `toolbox`
-   - Parameter layoutDirection: The layout direction to use when creating new
+   - parameter layoutDirection: The layout direction to use when creating new
    `WorkspaceFlowLayout` instances for each category in `toolbox`
-   - Parameter layoutBuilder: The layout builder to use when creating new `WorkspaceFlowLayout`
+   - parameter layoutBuilder: The layout builder to use when creating new `WorkspaceFlowLayout`
    instances for each category in `toolbox`
    */
   public init(toolbox: Toolbox, engine: LayoutEngine,

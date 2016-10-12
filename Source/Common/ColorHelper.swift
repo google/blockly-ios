@@ -23,9 +23,9 @@ public class ColorHelper: NSObject {
   /**
    Parses a RGB string and returns its corresponding color.
 
-   - Parameter rgb: Supported formats are: (RRGGBB, #RRGGBB).
-   - Parameter alpha: The alpha to set on the color. Defaults to 1.0, if none specified.
-   - Returns: A parsed RGB color, or nil if the string could not be parsed.
+   - parameter rgb: Supported formats are: (RRGGBB, #RRGGBB).
+   - parameter alpha: The alpha to set on the color. Defaults to 1.0, if none specified.
+   - returns: A parsed RGB color, or nil if the string could not be parsed.
    */
   public static func makeColor(rgb: String, alpha: Float = 1.0) -> UIColor? {
     var rgbUpper = rgb.uppercased()
@@ -58,8 +58,8 @@ public class ColorHelper: NSObject {
    Returns a `UIColor` based on a given hue, with defaults set for saturation (0.45),
    brightness (0.65), and alpha (1.0).
 
-   - Parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
-   - Returns: A `UIColor`
+   - parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
+   - returns: A `UIColor`
    */
   public static func makeColor(hue: CGFloat) -> UIColor {
     return makeColor(hue: hue, saturation: 0.45, brightness: 0.65, alpha: 1.0)
@@ -68,11 +68,11 @@ public class ColorHelper: NSObject {
   /**
    Returns a `UIColor` based on hue, saturation, brightness, and alpha values.
 
-   - Parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
-   - Parameter saturation: The saturation, which should be a value between 0.0 and 1.0.
-   - Parameter brightness: The brightness, which should be a value between 0.0 and 1.0.
-   - Parameter alpha: The alpha.
-   - Returns: A `UIColor`
+   - parameter hue: The hue in degrees, which is clamped to a value between 0 and 360.
+   - parameter saturation: The saturation, which should be a value between 0.0 and 1.0.
+   - parameter brightness: The brightness, which should be a value between 0.0 and 1.0.
+   - parameter alpha: The alpha.
+   - returns: A `UIColor`
    */
   public static func makeColor(
     hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) -> UIColor

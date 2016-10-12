@@ -67,13 +67,13 @@ open class LayoutEngine: NSObject {
   /**
    Creates a `LayoutEngine` instance.
 
-   - Parameter config: Optional parameter for setting `self.config`. If no value is specified,
+   - parameter config: Optional parameter for setting `self.config`. If no value is specified,
    a `LayoutConfig` is created automatically.
-   - Parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
+   - parameter rtl: Optional parameter for setting `self.rtl`. If no value is specified, `self.rtl`
    is automatically set using the system's layout direction.
-   - Parameter minScale: The minimum scale for the engine, relative to Workspace coordinate system.
+   - parameter minScale: The minimum scale for the engine, relative to Workspace coordinate system.
    Defaults to 0.5.
-   - Parameter maxScale: The maximum scale for the engine, relative to Workspace coordinate system.
+   - parameter maxScale: The maximum scale for the engine, relative to Workspace coordinate system.
    Degaults to 2.0.
    */
   public init(config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil, minimumScale: CGFloat = 0.5,
@@ -95,9 +95,9 @@ open class LayoutEngine: NSObject {
   Using the current `scale` value, this method scales a point from the UIView coordinate system to
   the Workspace coordinate system.
 
-  - Parameter point: A point from the UIView coordinate system.
-  - Returns: A point in the Workspace coordinate system.
-  - Note: This does not translate a UIView point directly into a Workspace point, it only scales the
+  - parameter point: A point from the UIView coordinate system.
+  - returns: A point in the Workspace coordinate system.
+  - note: This does not translate a UIView point directly into a Workspace point, it only scales the
   magnitude of a UIView point into the Workspace coordinate system. For example, in RTL, more
   calculation would need to be done to get the UIView point's translated Workspace point.
   */
@@ -116,8 +116,8 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a size from the UIView coordinate system
    to the Workspace coordinate system.
 
-   - Parameter size: A size from the UIView coordinate system.
-   - Returns: A size in the Workspace coordinate system.
+   - parameter size: A size from the UIView coordinate system.
+   - returns: A size in the Workspace coordinate system.
    */
   @inline(__always)
   public final func workspaceSizeFromViewSize(_ size: CGSize) -> WorkspaceSize {
@@ -133,8 +133,8 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a unit value from the UIView coordinate
    system to the Workspace coordinate system.
 
-   - Parameter unit: A unit value from the UIView coordinate system.
-   - Returns: A unit value in the Workspace coordinate system.
+   - parameter unit: A unit value from the UIView coordinate system.
+   - returns: A unit value in the Workspace coordinate system.
    */
   @inline(__always)
   public final func workspaceUnitFromViewUnit(_ unit: CGFloat) -> CGFloat {
@@ -151,8 +151,8 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a unit value from the Workspace coordinate
    system to the UIView coordinate system.
 
-   - Parameter unit: A unit value from the Workspace coordinate system.
-   - Returns: A unit value in the UIView coordinate system.
+   - parameter unit: A unit value from the Workspace coordinate system.
+   - returns: A unit value in the UIView coordinate system.
    */
   @inline(__always)
   public final func viewUnitFromWorkspaceUnit(_ unit: CGFloat) -> CGFloat {
@@ -169,8 +169,8 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a left-to-right point from the Workspace
    coordinate system to the UIView coordinate system.
 
-   - Parameter point: A point from the Workspace coordinate system.
-   - Returns: A point in the UIView coordinate system.
+   - parameter point: A point from the Workspace coordinate system.
+   - returns: A point in the UIView coordinate system.
    */
   @inline(__always)
   public final func viewPointFromWorkspacePoint(_ point: WorkspacePoint) -> CGPoint {
@@ -185,9 +185,9 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a (x, y) point from the Workspace coordinate
    system to the UIView coordinate system.
 
-   - Parameter x: The x-coordinate of the point
-   - Parameter y: The y-coordinate of the point
-   - Returns: A point in the UIView coordinate system.
+   - parameter x: The x-coordinate of the point
+   - parameter y: The y-coordinate of the point
+   - returns: A point in the UIView coordinate system.
    */
   @inline(__always)
   public final func viewPointFromWorkspacePoint(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
@@ -202,8 +202,8 @@ open class LayoutEngine: NSObject {
    Using the current `scale` value, this method scales a size from the Workspace coordinate
    system to the UIView coordinate system.
 
-   - Parameter size: A size from the Workspace coordinate system.
-   - Returns: A size in the UIView coordinate system.
+   - parameter size: A size from the Workspace coordinate system.
+   - returns: A size in the UIView coordinate system.
    */
   @inline(__always)
   public final func viewSizeFromWorkspaceSize(_ size: WorkspaceSize) -> CGSize {

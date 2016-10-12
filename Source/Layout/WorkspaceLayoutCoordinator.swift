@@ -40,9 +40,9 @@ open class WorkspaceLayoutCoordinator: NSObject {
   /**
    Initializes the workspace layout coordinator.
 
-   - Parameter workspaceLayout: The `WorkspaceLayout` that should be managed by this coordinator
-   - Parameter layoutBuilder: Builder for constructing layouts under `workspaceLayout`
-   - Parameter connectionManager: Manager for tracking all connection positions under
+   - parameter workspaceLayout: The `WorkspaceLayout` that should be managed by this coordinator
+   - parameter layoutBuilder: Builder for constructing layouts under `workspaceLayout`
+   - parameter connectionManager: Manager for tracking all connection positions under
    `workspaceLayout`. If this value is `nil`, connection positions will not be tracked.
    */
   public init(
@@ -84,7 +84,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Adds a block tree (a block and its children) to the workspace handled by the workspace layout
    coordinator. The layout heirarchy is automatically updated to reflect this change.
 
-   - Parameter rootBlock: The parent `Block` to add.
+   - parameter rootBlock: The parent `Block` to add.
    - throws:
      `BlocklyError`: If the block to be added would put the workspace into an illegal state.
    */
@@ -96,8 +96,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Disconnects a given block from its previous/output connections, and removes it and all of its
    connected blocks from the workspace.
 
-   - Parameter rootBlock: The root block to remove.
-   - Throws:
+   - parameter rootBlock: The root block to remove.
+   - throws:
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
   open func removeBlockTree(_ rootBlock: Block) throws {
@@ -115,10 +115,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
   /**
    Deep copies a block and adds all of the copied blocks into the workspace.
 
-   - Parameter rootBlock: The root block to copy
-   - Parameter editable: Sets whether each block is `editable` or not
-   - Returns: The root block that was copied
-   - Throws:
+   - parameter rootBlock: The root block to copy
+   - parameter editable: Sets whether each block is `editable` or not
+   - returns: The root block that was copied
+   - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
   open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
@@ -129,7 +129,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Connects a pair of connections, disconnecting and possibly reattaching any existing connections,
    depending on the operation.
 
-   - Parameter connectionPair: The pair to connect
+   - parameter connectionPair: The pair to connect
    */
   open func connectPair(_ connectionPair: ConnectionManager.ConnectionPair) {
     let moving = connectionPair.moving
@@ -155,7 +155,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Disconnects a specified connection. The layout heirarchy is automatically updated to reflect this
    change.
 
-   - Parameter connection: The connection to be disconnected.
+   - parameter connection: The connection to be disconnected.
    */
   open func disconnect(_ connection: Connection) {
     let oldTarget = connection.targetConnection
@@ -172,8 +172,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Connects a pair of connections.  The layout heirarchy is automatically updated to reflect this
    change.
 
-   - Parameter connection1: The first `Connection` to be connected.
-   - Parameter connection2: The `Connction` to connect to.
+   - parameter connection1: The first `Connection` to be connected.
+   - parameter connection2: The `Connction` to connect to.
    */
   open func connect(_ connection1: Connection, _ connection2: Connection) throws {
     let oldTarget1 = connection1.targetConnection
@@ -223,9 +223,9 @@ open class WorkspaceLayoutCoordinator: NSObject {
    connection, this method attempts to reattach it to the end of the inferior connection's block
    chain. If unsuccessful, the disconnected block is bumped away.
 
-   - Parameter superior: A connection of type `.NextStatement`
-   - Parameter inferior: A connection of type `.PreviousStatement`
-   - Throws:
+   - parameter superior: A connection of type `.NextStatement`
+   - parameter inferior: A connection of type `.PreviousStatement`
+   - throws:
    `BlocklyError`: Thrown if the previous/next statements could not be connected together or if
    the previously disconnected block could not be re-connected to the end of the block chain.
    */
@@ -286,10 +286,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Adds shadow blocks for a given connection to the layout tree. If the shadow blocks already exist
    or if no shadow blocks are connected to the given connection, nothing happens.
 
-   - Note: This method only updates the layout tree if the given connection is of type
+   - note: This method only updates the layout tree if the given connection is of type
    `.NextStatement` or `.InputValue`. Otherwise, this method does nothing.
 
-   - Parameter connection: The connection that should have its shadow blocks added to the layout
+   - parameter connection: The connection that should have its shadow blocks added to the layout
    tree
    */
   fileprivate func addShadowBlockLayoutTree(forConnection connection: Connection?) throws {
@@ -341,7 +341,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
   /**
    Removes a shadow block layout tree from its parent layout, starting from a given shadow block.
 
-   - Parameter shadowBlock: The shadow block
+   - parameter shadowBlock: The shadow block
    */
   fileprivate func removeShadowBlockLayoutTree(forShadowBlock shadowBlock: Block?) throws {
     guard let shadowBlockLayout = shadowBlock?.layout,
@@ -373,11 +373,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Whenever a connection has been changed for a block in the workspace, this method is called to
    ensure that the layout tree is properly kept in sync to reflect this change.
 
-   - Note: This method only updates the layout tree if the given connection is of type
+   - note: This method only updates the layout tree if the given connection is of type
    `.PreviousStatement` or `.OutputValue`. Otherwise, this method does nothing.
 
-   - Parameter connection: The connection that changed
-   - Parameter oldTarget: The previous value of `connection.targetConnection`
+   - parameter connection: The connection that changed
+   - parameter oldTarget: The previous value of `connection.targetConnection`
    */
   fileprivate func updateLayoutTree(forConnection connection: Connection, oldTarget: Connection?)
     throws
@@ -479,7 +479,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Tracks connections for a given block layout under `self.connectionManager`.
    If `self.connectionManager is nil, nothing happens.
 
-   - Parameter blockLayout: The `BlockLayout` whose connections should be tracked.
+   - parameter blockLayout: The `BlockLayout` whose connections should be tracked.
    */
   fileprivate func trackConnections(forBlockLayout blockLayout: BlockLayout) {
     guard let connectionManager = self.connectionManager
@@ -499,7 +499,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Untracks connections for a given block layout under `self.connectionManager`.
    If `self.connectionManager is nil, nothing happens.
 
-   - Parameter blockLayout: The `BlockLayout` whose connections should be untracked.
+   - parameter blockLayout: The `BlockLayout` whose connections should be untracked.
    */
   fileprivate func untrackConnections(forBlockLayout blockLayout: BlockLayout) {
     guard let connectionManager = self.connectionManager else {

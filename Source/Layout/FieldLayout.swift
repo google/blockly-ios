@@ -23,9 +23,9 @@ public protocol FieldLayoutMeasurer {
   /**
   Measures and returns the amount of space needed to render a `FieldLayout`, in a `UIView`.
 
-  - Parameter layout: The layout to measure
-  - Parameter scale: The current scale of the layout's `workspaceLayout`.
-  - Returns: The amount of space needed, in UIView coordinates.
+  - parameter layout: The layout to measure
+  - parameter scale: The current scale of the layout's `workspaceLayout`.
+  - returns: The amount of space needed, in UIView coordinates.
   */
   static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize
 }
@@ -53,9 +53,9 @@ open class FieldLayout: Layout {
   /**
    Initializes the field layout.
 
-   - Parameter field: The `Field` model object to create a layout for.
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this field.
+   - parameter field: The `Field` model object to create a layout for.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this field.
    */
   public init(field: Field, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.field = field

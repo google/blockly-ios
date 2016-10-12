@@ -23,11 +23,11 @@ public protocol LayoutFactory: class {
   /**
    Builds and returns a `BlockLayout` for a given block and layout engine.
 
-   - Parameter block: The given `Block`
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Returns: A new `BlockLayout` instance or nil, if either `workspace.layout` is nil or no
+   - parameter block: The given `Block`
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - returns: A new `BlockLayout` instance or nil, if either `workspace.layout` is nil or no
    suitable layout could be found for the block.
-   - Throws:
+   - throws:
    `BlocklyError`: Thrown if no suitable `BlockLayout` could be found for the `block`.
    */
   func makeBlockLayout(block: Block, engine: LayoutEngine) throws -> BlockLayout
@@ -35,9 +35,9 @@ public protocol LayoutFactory: class {
   /**
    Builds and returns a `BlockGroupLayout` for a given layout engine.
 
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Returns: A new `BlockGroupLayout` instance.
-   - Throws:
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - returns: A new `BlockGroupLayout` instance.
+   - throws:
    `BlocklyError`: Thrown if no suitable `BlockGroupLayout` could be found.
    */
   func makeBlockGroupLayout(engine: LayoutEngine) throws -> BlockGroupLayout
@@ -45,10 +45,10 @@ public protocol LayoutFactory: class {
   /**
    Builds and returns an `InputLayout` for a given input and layout engine.
 
-   - Parameter input: The given `Input`
-   - Parameter engine: The `LayoutEngine` to associate with the new layout
-   - Returns: A new `InputLayout` instance.
-   - Throws:
+   - parameter input: The given `Input`
+   - parameter engine: The `LayoutEngine` to associate with the new layout
+   - returns: A new `InputLayout` instance.
+   - throws:
    `BlocklyError`: Thrown if no suitable `InputLayout` could be found for the `input`.
    */
   func makeInputLayout(input: Input, engine: LayoutEngine) throws -> InputLayout
@@ -58,10 +58,10 @@ public protocol LayoutFactory: class {
    `FieldLayoutCreator` that was registered via
    `registerLayoutCreatorForFieldType(:, layoutCreator:)`.
 
-    - Parameter field: The given `Field`
-    - Parameter engine: The `LayoutEngine` to associate with the new layout
-    - Returns: A new `FieldLayout` instance.
-    - Throws:
+    - parameter field: The given `Field`
+    - parameter engine: The `LayoutEngine` to associate with the new layout
+    - returns: A new `FieldLayout` instance.
+    - throws:
     `BlocklyError`: Thrown if no suitable `FieldLayout` could be found for the `field`.
    */
   func makeFieldLayout(field: Field, engine: LayoutEngine) throws -> FieldLayout

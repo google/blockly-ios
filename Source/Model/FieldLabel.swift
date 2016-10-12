@@ -32,8 +32,8 @@ public final class FieldLabel: Field {
   /**
    Initializes the label field.
 
-   - Parameter name: The name of this field.
-   - Parameter text: The initial text of this field.
+   - parameter name: The name of this field.
+   - parameter text: The initial text of this field.
    */
   public init(name: String, text: String) {
     self.text = text

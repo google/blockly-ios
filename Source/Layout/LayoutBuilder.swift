@@ -30,7 +30,7 @@ open class LayoutBuilder: NSObject {
   /**
    Initializes the layout builder.
 
-   - Parameter layoutFactory: The `LayoutFactory` for layout creation.
+   - parameter layoutFactory: The `LayoutFactory` for layout creation.
    */
   public init(layoutFactory: LayoutFactory) {
     self.layoutFactory = layoutFactory
@@ -42,9 +42,9 @@ open class LayoutBuilder: NSObject {
   Builds the entire layout tree for `self.workspaceLayout` based on the current model
   (ie. `self.workspaceLayout.workspace`).
 
-  - Throws:
+  - throws:
   `BlocklyError`: Thrown if the layout tree could not be created for this workspace.
-  - Note: To increase performance during initialization, this should only be called after the entire
+  - note: To increase performance during initialization, this should only be called after the entire
   workspace model has been constructed.
   */
   open func buildLayoutTree(forWorkspaceLayout workspaceLayout: WorkspaceLayout) throws {
@@ -62,9 +62,9 @@ open class LayoutBuilder: NSObject {
   /**
   Builds the layout tree for a top-level block.
 
-  - Parameter block: The top-level block
-  - Returns: A block group layout for the block, or nil if the block was not a top-level block.
-  - Throws:
+  - parameter block: The top-level block
+  - returns: A block group layout for the block, or nil if the block was not a top-level block.
+  - throws:
   `BlocklyError`: Thrown if the block is not part of the workspace this builder is associated with,
   or if the layout tree could not be created for this block.
   */
@@ -99,8 +99,8 @@ open class LayoutBuilder: NSObject {
   /**
   Builds an entire `BlockGroupLayout` tree from a given top-level block.
 
-  - Parameter blockGroupLayout: The block group layout to build
-  - Parameter block: The top-level block to use as the first child of `blockGroupLayout`.
+  - parameter blockGroupLayout: The block group layout to build
+  - parameter block: The top-level block to use as the first child of `blockGroupLayout`.
   */
   open func buildLayoutTree(forBlockGroupLayout blockGroupLayout: BlockGroupLayout, block: Block)
     throws
@@ -124,10 +124,10 @@ open class LayoutBuilder: NSObject {
   Builds a `BlockLayout` tree for a given block and assigns it to the block's `delegate` property.
   This includes all connected blocks.
 
-  - Parameter block: The block
-  - Parameter engine: The `LayoutEngine` to associate with the returned `BlockLayout`.
-  - Returns: The associated layout for the block.
-  - Throws:
+  - parameter block: The block
+  - parameter engine: The `LayoutEngine` to associate with the returned `BlockLayout`.
+  - returns: The associated layout for the block.
+  - throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the block's inputs.
   */
   open func buildLayoutTree(forBlock block: Block, engine: LayoutEngine) throws -> BlockLayout
@@ -147,10 +147,10 @@ open class LayoutBuilder: NSObject {
   /**
   Builds an `InputLayout` tree for a given input and assigns it to the input's `delegate` property.
 
-  - Parameter input: The input
-  - Parameter engine: The `LayoutEngine` to associate with the returned `InputLayout`.
-  - Returns: The associated layout for the input.
-  - Throws:
+  - parameter input: The input
+  - parameter engine: The `LayoutEngine` to associate with the returned `InputLayout`.
+  - returns: The associated layout for the input.
+  - throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
   open func buildLayoutTree(forInput input: Input, engine: LayoutEngine) throws -> InputLayout {
@@ -178,10 +178,10 @@ open class LayoutBuilder: NSObject {
   /**
    Builds the layout for a given field and assigns it to the field's `delegate` property.
 
-   - Parameter field: The field
-   - Parameter engine: The `LayoutEngine` to associate with the returned `FieldLayout`.
-   - Returns: The associated layout for the field.
-   - Throws:
+   - parameter field: The field
+   - parameter engine: The `LayoutEngine` to associate with the returned `FieldLayout`.
+   - returns: The associated layout for the field.
+   - throws:
    `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
    */
   open func buildLayout(forField field: Field, engine: LayoutEngine) throws -> FieldLayout {

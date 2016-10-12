@@ -26,7 +26,7 @@ import WebKit
  code via JavaScript. For more information on how this works, see:
  https://developers.google.com/blockly/installation/code-generators
 
- - Note:
+ - note:
  - This object must be instantiated on the main thread, as it internally instantiates a
  `WKWebView` object (which has to be done on the main thread).
  - This object is not thread-safe.
@@ -104,18 +104,18 @@ public final class CodeGenerator: NSObject {
   /**
    Creates a code generator, loading all specified JavaScript and JSON resources asynchronously.
 
-   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies. This
+   - parameter jsCoreDependencies: Paths to core Blockly JS dependencies. This
    list must contain the following files:
      - Blockly engine (eg. 'blockly_compressed.js')
      - A default list of messages (eg. 'msg/js/en.js')
-   - Parameter jsGeneratorObject: Name of the JS object that generates code
+   - parameter jsGeneratorObject: Name of the JS object that generates code
    (e.g. 'Blockly.Python' for generating Python code)
-   - Parameter jsBlockGenerators: Paths to JS generator files (e.g. 'python_compressed.js' for
+   - parameter jsBlockGenerators: Paths to JS generator files (e.g. 'python_compressed.js' for
    generating Python code)
-   - Parameter jsonBlockDefinitions: Paths to JSON files containing block definitions
-   - Parameter onLoadCompletion: Callback that is executed when all JavaScript and JSON resources
+   - parameter jsonBlockDefinitions: Paths to JSON files containing block definitions
+   - parameter onLoadCompletion: Callback that is executed when all JavaScript and JSON resources
    have been successfully loaded (which indicates that this code generator is ready for use).
-   - Parameter onLoadFailure: Callback that is executed when there was a failure loading all
+   - parameter onLoadFailure: Callback that is executed when there was a failure loading all
    JavaScript and JSON resources. If this callback is executed, this code generator's state is set
    to `.Unusable` and it should be discarded.
    */
@@ -160,10 +160,10 @@ public final class CodeGenerator: NSObject {
   /**
    Generates code for workspace XML.
 
-   - Note: Only one request may be made at a time. If another request is still pending, this method
+   - note: Only one request may be made at a time. If another request is still pending, this method
    will immediately execute the `error` block.
 
-   - Parameter workspaceXML: The workspace XML
+   - parameter workspaceXML: The workspace XML
    */
   internal func generateCodeForWorkspaceXML(
     _ workspaceXML: String, completion: @escaping CompletionClosure, error: @escaping ErrorClosure)
@@ -214,9 +214,9 @@ public final class CodeGenerator: NSObject {
   /**
    Returns the `String` contents from a given file.
 
-   - Parameter bundledFile: The path to the file.
-   - Returns: The contents of the file.
-   - Throws:
+   - parameter bundledFile: The path to the file.
+   - returns: The contents of the file.
+   - throws:
    `BlocklyError`: Thrown if there was an error loading the file.
    */
   fileprivate func contents(ofBundledFile bundledFile: BundledFile) throws -> String {
@@ -343,7 +343,7 @@ extension CodeGenerator {
   /**
    Class for handling messages between the CodeGenerator's `webView` and iOS.
 
-   - Note: Because `WKUserContentController` keeps a strong reference to its message handlers, it is
+   - note: Because `WKUserContentController` keeps a strong reference to its message handlers, it is
    easier to separate message handling out of `CodeGenerator` and into its own class. This way,
    `CodeGenerator` can handle the task of breaking the strong reference cycle between
    `WKUserContentController` and `ScriptMessageHandler`, instead of relying on users of

@@ -22,8 +22,8 @@ extension UIView {
   /**
   Adds `views` as subviews to this view.
 
-  - Parameter views: The array of `UIView` objects to add.
-  - Parameter translatesAutoresizingMaskIntoConstraints: For every subview that is added, its
+  - parameter views: The array of `UIView` objects to add.
+  - parameter translatesAutoresizingMaskIntoConstraints: For every subview that is added, its
   `translatesAutoresizingMaskIntoConstraints` property is set to this value. Defaults to false.
   */
   internal func bky_addSubviews(
@@ -38,7 +38,7 @@ extension UIView {
   /**
    Adds all layout constraints inside of `constraints` to the view.
 
-   - Parameter constraints: Array of objects of type `NSLayoutConstraint` or `[NSLayoutConstraint]`.
+   - parameter constraints: Array of objects of type `NSLayoutConstraint` or `[NSLayoutConstraint]`.
    */
   internal func bky_addConstraints(_ constraints: [AnyObject]) {
     for object in constraints {
@@ -63,11 +63,11 @@ extension UIView {
     metrics: metrics,
     views: views)
 
-   - Parameter visualFormatConstraints: Array of `String`s that follow Apple's Auto-Layout Visual
+   - parameter visualFormatConstraints: Array of `String`s that follow Apple's Auto-Layout Visual
    Format language.
-   - Parameter metrics: Value that is passed to the `metrics| parameter of
+   - parameter metrics: Value that is passed to the `metrics| parameter of
    NSLayoutConstraint.constraintsWithVisualFormat(_options:metrics:views:).
-   - Parameter views: Value that is passed to the `views` parameter of
+   - parameter views: Value that is passed to the `views` parameter of
    NSLayoutConstraint.constraintsWithVisualFormat(_options:metrics:views:).
    */
   internal func bky_addVisualFormatConstraints(
@@ -86,10 +86,10 @@ extension UIView {
    Adds a `NSLayoutAttribute.Width` constraint to this view, where this view's width must equal
    a constant value.
 
-   - Parameter width: The width of the view
-   - Parameter priority: The priority to use for the constraint. Defaults to
+   - parameter width: The width of the view
+   - parameter priority: The priority to use for the constraint. Defaults to
    `UILayoutPriorityRequired`.
-   - Returns: The constraint that was added.
+   - returns: The constraint that was added.
    */
   @discardableResult
   internal func bky_addWidthConstraint(
@@ -107,10 +107,10 @@ extension UIView {
    Adds a `NSLayoutAttribute.Height` constraint to this view, where this view's height must equal
    a constant value.
 
-   - Parameter height: The height of the view
-   - Parameter priority: The priority to use for the constraint. Defaults to
+   - parameter height: The height of the view
+   - parameter priority: The priority to use for the constraint. Defaults to
    `UILayoutPriorityRequired`.
-   - Returns: The constraint that was added.
+   - returns: The constraint that was added.
    */
   @discardableResult
   internal func bky_addHeightConstraint(
@@ -127,22 +127,22 @@ extension UIView {
   /**
    Convenience method for updating constraint values related to this view.
 
-   - Parameter animated: Flag indicating whether the update of constraints should be animated. If
+   - parameter animated: Flag indicating whether the update of constraints should be animated. If
    set to `true`, this method calls
    `UIView.animateWithDuration(:delay:options:animations:completion:)`.
-   - Parameter duration: [Optional] If `animated` is set to `true`, this is the value that is passed
+   - parameter duration: [Optional] If `animated` is set to `true`, this is the value that is passed
    to `UIView.animateWithDuration(...)` for its `duration` value. By default, this value is set to
    `0.3`.
-   - Parameter delay: [Optional] If `animated` is set to `true`, this is the value that is passed
+   - parameter delay: [Optional] If `animated` is set to `true`, this is the value that is passed
    to `UIView.animateWithDuration(...)` for its `delay` value. By default, this value is set to
    `0.0`.
-   - Parameter options: [Optional] If `animated` is set to `true`, this is the value that is passed
+   - parameter options: [Optional] If `animated` is set to `true`, this is the value that is passed
    to `UIView.animateWithDuration(...)` for its `options` value. By default, this value is set to
    `.CurveEaseInOut`.
-   - Parameter update: A closure containing the changes to commit to the view (which is
+   - parameter update: A closure containing the changes to commit to the view (which is
    where your constraints should be updated). If `animated` is set to `true`, this is the value
    that is passed to `UIView.animateWithDuration(...)` for its `animations` value.
-   - Parameter completion: A closure that is executed when the `updateConstraints` closure ends.
+   - parameter completion: A closure that is executed when the `updateConstraints` closure ends.
    If `animated` is set to `true`, this is the value that is passed to
    `UIView.animateWithDuration(...)` for its `completion` value. By default, this value is set to
    `nil`.

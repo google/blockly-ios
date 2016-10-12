@@ -267,12 +267,12 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   /**
    Create a block, with an optional input child block, and add them to a toolbox category.
 
-   - Parameter blockName: The name of the block to create from the block factory.
-   - Parameter inputBlockName: (Optional) If specified, the name of a block to create from the
+   - parameter blockName: The name of the block to create from the block factory.
+   - parameter inputBlockName: (Optional) If specified, the name of a block to create from the
    block factory, which is automatically connected to the first input of the block created via
    `blockName`.
-   - Parameter category: The toolbox category to add these blocks to.
-   - Returns: The root block that was added to the category.
+   - parameter category: The toolbox category to add these blocks to.
+   - returns: The root block that was added to the category.
    */
   fileprivate func addBlock(_ blockName: String,
     inputBlockName: String? = nil, toCategory category: Toolbox.Category) throws -> Block

@@ -57,10 +57,10 @@ extension Field {
   /**
   Creates a new `Field` from a JSON dictionary.
 
-  - Parameter json: JSON dictionary
-  - Throws:
+  - parameter json: JSON dictionary
+  - throws:
   `BlocklyError`: Occurs if malformed JSON data was passed in.
-  - Returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
+  - returns: A `Field` instance based on the JSON dictionary, or `nil` if there wasn't sufficient
   data in the dictionary.
   */
   internal static func makeField(json: [String: Any]) throws -> Field? {
@@ -218,8 +218,8 @@ extension Field {
     /**
     Registers a JSON creation handler for a given field key.
 
-    - Parameter type: The key for a field type.
-    - Parameter creationHandler: The `CreationHandler` to use for this field key.
+    - parameter type: The key for a field type.
+    - parameter creationHandler: The `CreationHandler` to use for this field key.
     */
     public func registerType(_ type: String, creationHandler: @escaping CreationHandler) {
       _registry[type] = creationHandler
@@ -228,7 +228,7 @@ extension Field {
     /**
     Unregisters a JSON creation handler for a given field key.
 
-    - Parameter type: The key for a field type.
+    - parameter type: The key for a field type.
     */
     public func unregisterType(_ type: String) {
       _registry[type] = nil

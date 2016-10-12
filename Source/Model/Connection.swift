@@ -23,7 +23,7 @@ public protocol ConnectionHighlightDelegate {
   /**
   Event that is called when the highlighted value has changed for a given connection.
 
-  - Parameter connection: The connection whose `highlighted` value has changed.
+  - parameter connection: The connection whose `highlighted` value has changed.
   */
   func didChangeHighlight(forConnection connection: Connection)
 }
@@ -36,14 +36,14 @@ public protocol ConnectionPositionDelegate {
   /**
   Event that is called immediately before the connection's `position` will change.
 
-  - Parameter connection: The connection whose `position` value will change.
+  - parameter connection: The connection whose `position` value will change.
   */
   func willChangePosition(forConnection connection: Connection)
 
   /**
   Event that is called immediately after the connection's `position` has changed.
 
-  - Parameter connection: The connection whose `position` value has changed.
+  - parameter connection: The connection whose `position` value has changed.
   */
   func didChangePosition(forConnection connection: Connection)
 }
@@ -133,7 +133,7 @@ public final class Connection : NSObject {
     /**
      Initializes the value with an integer.
 
-     - Parameter rawValue: The integer to seed the `CheckResult` with.
+     - parameter rawValue: The integer to seed the `CheckResult` with.
      */
     public init(rawValue: Int) {
       self.rawValue = rawValue
@@ -142,7 +142,7 @@ public final class Connection : NSObject {
     /**
      Initializes the value with a `Value`.
 
-     - Parameter value: The `Value` to seed the `CheckResult` with.
+     - parameter value: The `Value` to seed the `CheckResult` with.
      */
     public init(value: Value) {
       self.init(rawValue: 1 << value.rawValue)
@@ -151,8 +151,8 @@ public final class Connection : NSObject {
     /**
      Checks whether the `CheckResult` intersects with another `CheckResult`.
 
-     - Parameter other: The other `CheckResult` to check.
-     - Return: `true` if they intersect, `false` otherwise.
+     - parameter other: The other `CheckResult` to check.
+     - returns: `true` if they intersect, `false` otherwise.
      */
     public func intersectsWith(_ other: CheckResult) -> Bool {
       return intersection(other).rawValue != 0
@@ -258,8 +258,8 @@ public final class Connection : NSObject {
   /**
    Creates a `Connection`.
 
-   - Parameter type: The `BKYConnectionType` of this connection.
-   - Parameter sourceInput: [Optional] The source input for the `Connection`. Defaults to `nil`.
+   - parameter type: The `BKYConnectionType` of this connection.
+   - parameter sourceInput: [Optional] The source input for the `Connection`. Defaults to `nil`.
    */
   public init(type: BKYConnectionType, sourceInput: Input? = nil) {
     self.uuid = UUID().uuidString
@@ -270,8 +270,8 @@ public final class Connection : NSObject {
   /**
   Sets `self.targetConnection` to a given connection, and vice-versa.
 
-  - Parameter connection: The other connection
-  - Throws:
+  - parameter connection: The other connection
+  - throws:
   `BlocklyError`: Thrown if the connection could not be made, with error code `.ConnectionInvalid`
   */
   public func connectTo(_ connection: Connection?) throws {
@@ -296,8 +296,8 @@ public final class Connection : NSObject {
   /**
    Sets `self.shadowConnection` to a given connection, and vice-versa.
 
-   - Parameter connection: The other connection
-   - Throws:
+   - parameter connection: The other connection
+   - throws:
    `BlocklyError`: Thrown if the connection could not be made, with error code `.ConnectionInvalid`
    */
   public func connectShadowTo(_ connection: Connection?) throws {
@@ -350,8 +350,8 @@ public final class Connection : NSObject {
   /**
   Check if this can be connected to the target connection.
 
-  - Parameter target: The connection to check.
-  - Returns: True if the target can be connected, false otherwise.
+  - parameter target: The connection to check.
+  - returns: True if the target can be connected, false otherwise.
   */
   public func canConnectTo(_ target: Connection) -> Bool {
     return canConnectWithReasonTo(target) == .CanConnect
@@ -361,8 +361,8 @@ public final class Connection : NSObject {
   Check if a given connection can be connected to the target connection, with a specific set of
   reasons.
 
-  - Parameter target: The `Connection` to check compatibility with.
-  - Returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
+  - parameter target: The `Connection` to check compatibility with.
+  - returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
   a set of all error codes are returned.
   */
   public func canConnectWithReasonTo(_ target: Connection?) -> CheckResult {
@@ -403,8 +403,8 @@ public final class Connection : NSObject {
    Check if a given connection can be connected to the shadow connection, with a specific set of
    reasons.
 
-   - Parameter shadow: The `Connection` to check compatibility with.
-   - Returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
+   - parameter shadow: The `Connection` to check compatibility with.
+   - returns: If the connection is legal, `[CheckResult.Value.CanConnect]` is returned. Otherwise,
    a set of all error codes are returned.
    */
   public func canConnectShadowWithReasonTo(_ shadow: Connection?) -> CheckResult {
@@ -443,8 +443,8 @@ public final class Connection : NSObject {
   /**
   Returns the distance between this connection and another connection.
 
-  - Parameter other: The other `Connection` to measure the distance to.
-  - Returns: The distance between connections.
+  - parameter other: The other `Connection` to measure the distance to.
+  - returns: The distance between connections.
   */
   public func distanceFromConnection(_ other: Connection) -> CGFloat {
     let xDiff = position.x - other.position.x
@@ -456,7 +456,7 @@ public final class Connection : NSObject {
   Adds a highlight to this connection for a block. If there were no previous highlights for this
   connection, the `highlighted` value is changed to `true` and its listeners are notified.
   
-  - Parameter block: The given block
+  - parameter block: The given block
   */
   public func addHighlightForBlock(_ block: Block) {
     if !_highlights.contains(block.uuid) {
@@ -472,7 +472,7 @@ public final class Connection : NSObject {
   Removes the highlight from this connection for a block. If there are no highlights after this
   one is removed, the `highlighted` value is changed to `false` and its listeners are notified.
   
-  - Parameter block: The given block
+  - parameter block: The given block
   */
   public func removeHighlightForBlock(_ block: Block) {
     if _highlights.contains(block.uuid) {
@@ -487,8 +487,8 @@ public final class Connection : NSObject {
   /**
   Move the connection to a specific position.
 
-  - Parameter position: The position to move to.
-  - Parameter offset: An additional offset, usually the position of the parent view in the workspace
+  - parameter position: The position to move to.
+  - parameter offset: An additional offset, usually the position of the parent view in the workspace
   view.
   */
   public func moveToPosition(
@@ -513,8 +513,8 @@ public final class Connection : NSObject {
   Returns if this connection is compatible with another connection with respect to the value type
   system.
 
-  - Parameter target: Connection to compare against.
-  - Returns: True if either connection's `typeChecks` value is nil, or if both connections share
+  - parameter target: Connection to compare against.
+  - returns: True if either connection's `typeChecks` value is nil, or if both connections share
   a common `typeChecks` value. False, otherwise.
   */
   internal func typeChecksMatchWithConnection(_ target: Connection) -> Bool {

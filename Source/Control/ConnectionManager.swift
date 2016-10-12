@@ -44,7 +44,7 @@ public final class ConnectionManager: NSObject {
   /**
    Initializes the connection manager with a `ConnectionValidator`
 
-   - Parameter connectionValidator: The `ConnectionValidator` for block-level validation.
+   - parameter connectionValidator: The `ConnectionValidator` for block-level validation.
    */
   public init(connectionValidator: ConnectionValidator = DefaultConnectionValidator()) {
     self.connectionValidator = connectionValidator
@@ -58,10 +58,10 @@ public final class ConnectionManager: NSObject {
   /**
   Adds a new `ConnectionManager.Group` to the manager for a given block.
 
-  - Parameter block: If this value is specified, all connections underneath this block's tree are
+  - parameter block: If this value is specified, all connections underneath this block's tree are
   automatically moved to the newly created connection group. This value is also assigned as the
   `ownerBlock` of the connection group.
-  - Returns: The newly created connection group
+  - returns: The newly created connection group
   */
   public func startGroup(forBlock block: Block?) -> ConnectionManager.Group {
     let newGroup = ConnectionManager.Group(ownerBlock: block)
@@ -82,8 +82,8 @@ public final class ConnectionManager: NSObject {
   Moves all connections from one group to another group. The first group is automatically
   deleted after this operation is completed (unless both groups are the same).
 
-  - Parameter fromGroup: The group containing the connections to move
-  - Parameter intoGroup: The receiving group. If this value is nil, the `mainGroup` is used by
+  - parameter fromGroup: The group containing the connections to move
+  - parameter intoGroup: The receiving group. If this value is nil, the `mainGroup` is used by
   default.
   */
   public func mergeGroup(_ fromGroup: ConnectionManager.Group, intoGroup: ConnectionManager.Group?)
@@ -114,9 +114,9 @@ public final class ConnectionManager: NSObject {
   Adds this connection to the manager, listens for changes in its position, and assigns it to a
   group.
 
-  - Parameter connection: The connection to add. If the connection was already being tracked,
+  - parameter connection: The connection to add. If the connection was already being tracked,
   it is simply assigned to `group`.
-  - Parameter group: The group to assign this connection to. If none is specified, the connection
+  - parameter group: The group to assign this connection to. If none is specified, the connection
   is assigned to `mainGroup`.
   */
   public func trackConnection(
@@ -139,7 +139,7 @@ public final class ConnectionManager: NSObject {
   /**
   Removes this connection from the manager and stops listening for changes to its position.
 
-  - Parameter connection: The connection to remove.
+  - parameter connection: The connection to remove.
   */
   public func untrackConnection(_ connection: Connection) {
     _groupsByConnection[connection.uuid]?.untrackConnection(connection)
@@ -150,10 +150,10 @@ public final class ConnectionManager: NSObject {
   Iterate over all direct connections on a given group's `ownerBlock` and find the one that is
   closest to a valid connection on another block.
 
-  - Parameter group: The group whose `ownerBlock`'s direct connections to search
-  - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
+  - parameter group: The group whose `ownerBlock`'s direct connections to search
+  - parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
   coordinate system unit
-  - Returns: A connection pair where the `pair.moving` connection is one on the given block and the
+  - returns: A connection pair where the `pair.moving` connection is one on the given block and the
   `pair.target` connection is the closest compatible connection. Nil is returned if no suitable
   connection pair could be found.
   */
@@ -186,10 +186,10 @@ public final class ConnectionManager: NSObject {
   Finds all compatible connections (including shadow connections) within the given radius, that are
   not currently being dragged. This function is used for bumping so type checking does not apply.
 
-  - Parameter connection: The base connection for the search.
-  - Parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
+  - parameter connection: The base connection for the search.
+  - parameter maxRadius: How far out to search for compatible connections, specified as a Workspace
   coordinate system unit
-  - Returns: A list of all nearby compatible connections.
+  - returns: A list of all nearby compatible connections.
   */
   public func stationaryNeighbors(forConnection connection: Connection, maxRadius: CGFloat)
     -> [Connection]
@@ -203,8 +203,8 @@ public final class ConnectionManager: NSObject {
   /**
   Deletes a `ConnectionManager.Group` from the manager.
 
-  - Parameter group: The group to delete
-  - Throws:
+  - parameter group: The group to delete
+  - throws:
   `BlocklyError`: Thrown with .ConnectionManagerError if (`group` == `mainGroup`) or if `group` is
   not empty.
   */
@@ -221,10 +221,10 @@ public final class ConnectionManager: NSObject {
   /**
   Find the closest compatible connection to this connection.
 
-  - Parameter connection: The base connection for the search.
-  - Parameter maxRadius: How far out to search for compatible connections.
-  - Parameter ignoreGroup: Optional group to ignore when looking for compatible connections.
-  - Returns: The closest compatible connection and the connection group it was found in.
+  - parameter connection: The base connection for the search.
+  - parameter maxRadius: How far out to search for compatible connections.
+  - parameter ignoreGroup: Optional group to ignore when looking for compatible connections.
+  - returns: The closest compatible connection and the connection group it was found in.
   */
   internal func closestConnection(
     _ connection: Connection, maxRadius: CGFloat, ignoreGroup: ConnectionManager.Group?)
@@ -299,7 +299,7 @@ extension ConnectionManager {
     /**
     Adds this connection to the group and listens for changes in its position.
 
-    - Parameter connection: The connection to add.
+    - parameter connection: The connection to add.
     */
     internal func trackConnection(_ connection: Connection) {
       addConnection(connection)
@@ -309,7 +309,7 @@ extension ConnectionManager {
     /**
     Removes this connection from the group and stops listening for changes to its position.
 
-    - Parameter connection: The connection to remove.
+    - parameter connection: The connection to remove.
     */
     internal func untrackConnection(_ connection: Connection) {
       removeConnection(connection)
@@ -322,9 +322,9 @@ extension ConnectionManager {
     Find all compatible connections (including shadow connections) within the given radius. 
     This function is used for bumping so type checking does not apply.
 
-    - Parameter connection: The base connection for the search.
-    - Parameter maxRadius: How far out to search for compatible connections.
-    - Returns: A list of all nearby compatible connections.
+    - parameter connection: The base connection for the search.
+    - parameter maxRadius: How far out to search for compatible connections.
+    - returns: A list of all nearby compatible connections.
     */
     internal func neighbors(forConnection connection: Connection, maxRadius: CGFloat)
       -> [Connection] {
@@ -335,10 +335,10 @@ extension ConnectionManager {
     /**
     Find the closest compatible connection to this connection.
 
-    - Parameter connection: The base connection for the search.
-    - Parameter maxRadius: How far out to search for compatible connections.
-    - Parameter validator: The ConnectionValidator to evaluate connectability.
-    - Returns: The closest compatible connection.
+    - parameter connection: The base connection for the search.
+    - parameter maxRadius: How far out to search for compatible connections.
+    - parameter validator: The ConnectionValidator to evaluate connectability.
+    - returns: The closest compatible connection.
     */
     internal func closestConnection(_ connection: Connection, maxRadius: CGFloat, validator:
                                     ConnectionValidator) -> Connection? {
@@ -358,7 +358,7 @@ extension ConnectionManager {
     /**
     Moves connections that are being tracked by this group to another group.
 
-    - Parameter group: The new group
+    - parameter group: The new group
     */
     internal func transferConnections(toGroup group: Group) {
       for i in 0 ..< _matchingLists.count {
@@ -381,7 +381,7 @@ extension ConnectionManager {
     /**
     Figure out which list the connection belongs to and insert it.
 
-    - Parameter connection: The connection to add.
+    - parameter connection: The connection to add.
     */
     fileprivate func addConnection(_ connection: Connection) {
       _matchingLists[connection.type.rawValue].addConnection(connection)
@@ -390,7 +390,7 @@ extension ConnectionManager {
     /**
     Remove a connection from the list that handles connections of its type.
 
-    - Parameter connection: The connection to remove.
+    - parameter connection: The connection to remove.
     */
     fileprivate func removeConnection(_ connection: Connection) {
       _matchingLists[connection.type.rawValue].removeConnection(connection)
@@ -448,7 +448,7 @@ extension ConnectionManager {
     /**
     Insert the given connection into this list.
 
-    - Parameter connection: The connection to insert.
+    - parameter connection: The connection to insert.
     */
     internal func addConnection(_ connection: Connection) {
       _connections.insert(connection, at: findPosition(forConnection: connection))
@@ -479,8 +479,8 @@ extension ConnectionManager {
     Starts by doing a binary search to find the approximate location, then linearly searches
     nearby for the exact connection.
 
-    - Parameter connection: The connection to find.
-    - Returns: The index of the connection, or nil if the connection was not found.
+    - parameter connection: The connection to find.
+    - returns: The index of the connection, or nil if the connection was not found.
     */
     internal func findConnection(_ connection: Connection) -> Int? {
       if _connections.isEmpty {
@@ -520,8 +520,8 @@ extension ConnectionManager {
     Finds a candidate position for inserting this connection into the given list.
     This will be in the correct y order but makes no guarantees about ordering in the x axis.
 
-    - Parameter connection: The connection to insert.
-    - Returns: The candidate index.
+    - parameter connection: The connection to insert.
+    - returns: The candidate index.
     */
     internal func findPosition(forConnection connection: Connection) -> Int {
       if _connections.isEmpty {

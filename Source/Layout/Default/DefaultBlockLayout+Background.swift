@@ -51,7 +51,7 @@ extension DefaultBlockLayout {
     /**
     Updates all render properties from a given block layout.
 
-    - Parameter layout: The block layout.
+    - parameter layout: The block layout.
     */
     public func updateRenderProperties(fromBlockLayout layout: DefaultBlockLayout) {
       self.maleOutputConnector = (layout.block.outputConnection != nil)
@@ -80,7 +80,7 @@ extension DefaultBlockLayout {
     /**
     Append a new row to `rows`.
     
-    - Parameter row: The row to append.
+    - parameter row: The row to append.
     */
     public func appendRow(_ row: BackgroundRow) {
       rows.append(row)
@@ -147,7 +147,7 @@ extension DefaultBlockLayout {
     Updates all render properties using the current state of `inputLayouts` and a given minimal row
     width.
 
-    - Parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
+    - parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
     used for inline rows.
     */
     public func updateRenderProperties(withMinimalRowWidth minimalRowWidth: CGFloat) {

@@ -23,11 +23,11 @@ extension String {
    Computes the size of the bounding box that would be needed to render the current string,
    constrained to a maximum width.
 
-   - Parameter attributes: A dictionary of text attributes to be applied to the string. These are
+   - parameter attributes: A dictionary of text attributes to be applied to the string. These are
    the same attributes that can be applied to an NSAttributedString object, but in the case of NSString
    objects, the attributes apply to the entire string, rather than ranges within the string.
-   - Parameter width: The maximum width the string can occupy when rendered.
-   - Returns: The size required to render the string.
+   - parameter width: The maximum width the string can occupy when rendered.
+   - returns: The size required to render the string.
    */
   public func bky_multiLineSizeWithAttributes(
     _ attributes: [String : Any]?, constrainedToWidth width: CGFloat) -> CGSize
@@ -45,9 +45,9 @@ extension String {
    Computes the size of the bounding box that would be needed to render the current string using a
    given font, constrained to a maximum width.
 
-   - Parameter font: The font used to render the string.
-   - Parameter width: The maximum width the string can occupy when rendered.
-   - Returns: The size required to render the string.
+   - parameter font: The font used to render the string.
+   - parameter width: The maximum width the string can occupy when rendered.
+   - returns: The size required to render the string.
   */
   public func bky_multiLineSize(forFont font: UIFont, constrainedToWidth width: CGFloat) -> CGSize
   {
@@ -59,8 +59,8 @@ extension String {
    Computes the size of the bounding box that would be needed to render the current string using a
    given font, on a single-line.
 
-   - Parameter font: The font used to render the string.
-   - Returns: The size required to render the string.
+   - parameter font: The font used to render the string.
+   - returns: The size required to render the string.
    */
   public func bky_singleLineSize(forFont font: UIFont) -> CGSize {
     let attributes = [NSFontAttributeName: font]

@@ -24,9 +24,9 @@ extension Workspace {
   /**
    Loads blocks from an XML string into the workspace.
 
-   - Parameter xmlString: The string that contains all the block data.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Throws:
+   - parameter xmlString: The string that contains all the block data.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - throws:
      `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
      malformed data, or contradictory data).
   */
@@ -38,9 +38,9 @@ extension Workspace {
   /**
    Loads blocks from an XML object into the workspace.
 
-   - Parameter xml: The object that contains all the block data.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Throws:
+   - parameter xml: The object that contains all the block data.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - throws:
      `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
      malformed data, or contradictory data).
    */
@@ -62,8 +62,8 @@ extension Workspace {
   /**
    Returns an XML string representing the current state of this workspace.
 
-   - Returns: The XML string.
-   - Throws:
+   - returns: The XML string.
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing any of the blocks in the workspace.
    */
   @objc(toXMLWithError:)
@@ -76,8 +76,8 @@ extension Workspace {
   /**
    Creates and returns an XML document representing the current state of this workspace.
 
-   - Returns: An XML document.
-   - Throws:
+   - returns: An XML document.
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing any of the blocks in the workspace.
    */
   internal func toXMLDocument() throws -> AEXMLDocument {

@@ -32,8 +32,8 @@ public final class FieldColor: Field {
   /**
    Initializes the color field.
 
-   - Parameter name: The name of this field.
-   - Parameter color: The initial `UIColor` to set for this field.
+   - parameter name: The name of this field.
+   - parameter color: The initial `UIColor` to set for this field.
    */
   public init(name: String, color: UIColor) {
     self.color = color

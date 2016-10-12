@@ -72,8 +72,8 @@ open class BlockGroupLayout: Layout {
   /**
   Appends all blockLayouts to `self.blockLayouts` and sets their `parentLayout` to this instance.
 
-  - Parameter blockLayouts: The list of `BlockLayout` instances to append.
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter blockLayouts: The list of `BlockLayout` instances to append.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func appendBlockLayouts(_ blockLayouts: [BlockLayout], updateLayout: Bool = true) {
     for blockLayout in blockLayouts {
@@ -89,8 +89,8 @@ open class BlockGroupLayout: Layout {
   /**
   Removes `self.blockLayouts[index]`, sets its `parentLayout` to nil, and returns it.
 
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
-  - Returns: The `BlockLayout` that was removed.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - returns: The `BlockLayout` that was removed.
   */
   @discardableResult
   open func removeBlockLayout(atIndex index: Int, updateLayout: Bool = true) -> BlockLayout {
@@ -111,8 +111,8 @@ open class BlockGroupLayout: Layout {
    parent. Additionally, any children that followed this `blockLayout` in its old parent are also
    removed and appended to `self.blockLayouts`.
 
-   - Parameter blockLayout: The `BlockLayout` to adopt
-   - Parameter updateLayouts: If true, all parent layouts of this layout and of `blockLayout`'s
+   - parameter blockLayout: The `BlockLayout` to adopt
+   - parameter updateLayouts: If true, all parent layouts of this layout and of `blockLayout`'s
    previous parent will be updated.
    */
   open func claimWithFollowers(blockLayout: BlockLayout, updateLayouts: Bool = true) {
@@ -149,9 +149,9 @@ open class BlockGroupLayout: Layout {
   Removes a given block layout and all subsequent layouts from `blockLayouts`, and returns them in
   an array.
 
-  - Parameter blockLayout: The given block layout to find and remove.
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
-  - Returns: The list of block layouts that were removed, starting from the given block layout. If
+  - parameter blockLayout: The given block layout to find and remove.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
   open func removeAllBlockLayouts(startingFrom blockLayout: BlockLayout, updateLayout: Bool = true)
@@ -178,7 +178,7 @@ open class BlockGroupLayout: Layout {
   /**
    Removes all elements from `self.blockLayouts` and sets their `parentLayout` to nil.
 
-   - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+   - parameter updateLayout: If true, all parent layouts of this layout will be updated.
    */
   open func reset(updateLayout: Bool = true) {
     while blockLayouts.count > 0 {
@@ -194,9 +194,9 @@ open class BlockGroupLayout: Layout {
    If this instance's `parentLayout` is an instance of `WorkspaceLayout`, this method changes
    `relativePosition` to the position. If not, this method does nothing.
 
-   - Parameter position: The relative position within its parent's Workspace layout, specified
+   - parameter position: The relative position within its parent's Workspace layout, specified
    as a Workspace coordinate system point.
-   - Parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
+   - parameter updateCanvasSize: If true, recalculates the Workspace layout's canvas size based on
    the current positions of its block groups.
    */
   open func move(toWorkspacePosition position: WorkspacePoint, updateCanvasSize: Bool = true) {

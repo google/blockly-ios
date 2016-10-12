@@ -20,8 +20,8 @@ In builds with a DEBUG symbol defined, prints a value's description to the conso
 
 In non-DEBUG builds, this method does nothing.
 
-- Parameter value: The value to print to the console.
-- Parameter function: String to precede the value. By default, this is populated with the function
+- parameter value: The value to print to the console.
+- parameter function: String to precede the value. By default, this is populated with the function
 name that is executing this method.
 */
 internal func bky_print<T>(_ value: T, function: String = #function) {
@@ -35,8 +35,8 @@ In builds with a DEBUG symbol defined, prints a value's debug description to the
 
 In non-DEBUG builds, this method does nothing.
 
-- Parameter value: The value to print to the console.
-- Parameter function: String to precede the value. By default, this is populated with the function
+- parameter value: The value to print to the console.
+- parameter function: String to precede the value. By default, this is populated with the function
 name that is executing this method.
 */
 internal func bky_debugPrint<T>(_ value: T, function: String = #function) {
