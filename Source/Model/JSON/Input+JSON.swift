@@ -21,8 +21,8 @@ extension Input {
   /**
   Creates a new `Input.Builder` from a JSON dictionary.
 
-  - Parameter json: JSON dictionary
-  - Returns: An `Input.Builder` instance based on the JSON dictionary, or `nil` if there was
+  - parameter json: JSON dictionary
+  - returns: An `Input.Builder` instance based on the JSON dictionary, or `nil` if there was
   insufficient data in the dictionary.
   */
   internal static func makeBuilder(json: [String: Any]) -> Input.Builder? {

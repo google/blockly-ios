@@ -19,7 +19,7 @@ import XCTest
 /**
 Tests for BlockLayout.
  
-- Note: Tests for appendInputLayout, removeInputLayoutAtIndex, and reset were omitted, since they
+- note: Tests for appendInputLayout, removeInputLayoutAtIndex, and reset were omitted, since they
 are functionally tested by `LayoutBuilderTest`.
 */
 class BlockLayoutTest: XCTestCase {

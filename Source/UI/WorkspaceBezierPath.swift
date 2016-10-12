@@ -49,7 +49,7 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Designated initializer.
 
-  - Parameter engine: The `LayoutEngine` used to calculate scaling between a Workspace and the
+  - parameter engine: The `LayoutEngine` used to calculate scaling between a Workspace and the
   UIView
   */
   public required init(engine: LayoutEngine) {
@@ -62,9 +62,9 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends a straight line to the receiver’s path.
 
-  - Parameter point: The destination point of the line segment, specified in the Workspace
+  - parameter point: The destination point of the line segment, specified in the Workspace
   coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   public func addLine(to point: WorkspacePoint, relative: Bool) {
@@ -77,11 +77,11 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends a straight line to the receiver’s path.
 
-  - Parameter x: The destination x-point of the line segment, specified in the Workspace
+  - parameter x: The destination x-point of the line segment, specified in the Workspace
   coordinate system.
-  - Parameter y: The destination y-point of the line segment, specified in the Workspace
+  - parameter y: The destination y-point of the line segment, specified in the Workspace
   coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   public func addLineTo(x: CGFloat, y: CGFloat, relative: Bool) {
@@ -91,13 +91,13 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends an arc to the receiver’s path.
 
-  - Parameter center: Specifies the center point of the circle (in the Workspace coordinate system)
+  - parameter center: Specifies the center point of the circle (in the Workspace coordinate system)
   used to define the arc.
-  - Parameter radius: Specifies the radius of the circle used to define the arc.
-  - Parameter startAngle: Specifies the starting angle of the arc (measured in radians).
-  - Parameter endAngle: Specifies the end angle of the arc (measured in radians).
-  - Parameter clockwise: The direction in which to draw the arc.
-  - Parameter relative: True if the specified center point should be relative to the `currentPoint`.
+  - parameter radius: Specifies the radius of the circle used to define the arc.
+  - parameter startAngle: Specifies the starting angle of the arc (measured in radians).
+  - parameter endAngle: Specifies the end angle of the arc (measured in radians).
+  - parameter clockwise: The direction in which to draw the arc.
+  - parameter relative: True if the specified center point should be relative to the `currentPoint`.
   False if it should be an absolute point.
   */
   public func addArc(withCenter center: WorkspacePoint, radius: CGFloat, startAngle: CGFloat,
@@ -118,12 +118,12 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends a cubic Bézier curve to the receiver’s path.
 
-  - Parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
-  - Parameter controlPoint1: The first control point to use when computing the curve, specified in
+  - parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
+  - parameter controlPoint1: The first control point to use when computing the curve, specified in
   the Workspace coordinate system.
-  - Parameter controlPoint2: The second control point to use when computing the curve, specified in
+  - parameter controlPoint2: The second control point to use when computing the curve, specified in
   the Workspace coordinate system.
-  - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
+  - parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be are absolute points.
   */
   public func addCurve(to endPoint: WorkspacePoint, controlPoint1: WorkspacePoint,
@@ -142,10 +142,10 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends a quadratic Bézier curve to the receiver’s path.
 
-  - Parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
-  - Parameter controlPoint: The control point of the curve, specified in the Workspace coordinate
+  - parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
+  - parameter controlPoint: The control point of the curve, specified in the Workspace coordinate
   system.
-  - Parameter relative: True if the specified points should be relative to the `currentPoint`.
+  - parameter relative: True if the specified points should be relative to the `currentPoint`.
   False if they should be absolute points.
   */
   public func addQuadCurve(to endPoint: WorkspacePoint,
@@ -167,10 +167,10 @@ public final class WorkspaceBezierPath: NSObject {
   Note: This method should only be called directly after appending a cubic or quadratic Bézier
   curve. Otherwise, `addCurveToPoint(...)` is a more suitable method to use.
 
-  - Parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
-  - Parameter controlPoint2: The second control point to use when computing the curve, specified in
+  - parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
+  - parameter controlPoint2: The second control point to use when computing the curve, specified in
   the Workspace coordinate system (the first control point is determined automatically).
-  - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
+  - parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be absolute points.
   */
   public func addSmoothCurve(to endPoint: WorkspacePoint,
@@ -194,8 +194,8 @@ public final class WorkspaceBezierPath: NSObject {
   Note: This method should only be called directly after appending a cubic or quadratic Bézier
   curve. Otherwise, `addQuadCurveToPoint(...)` is a more suitable method to use.
 
-  - Parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
-  - Parameter relative: True if all specified points should be relative to the `currentPoint`. False
+  - parameter endPoint: The end point of the curve, specified in the Workspace coordinate system.
+  - parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be absolute points.
   */
   public func addSmoothQuadCurve(to endPoint: WorkspacePoint, relative: Bool) {
@@ -211,7 +211,7 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Appends the contents of the specified path object to the receiver’s path.
 
-  - Parameter bezierPath: The path to add to the receiver.
+  - parameter bezierPath: The path to add to the receiver.
   */
   public func append(_ bezierPath: WorkspaceBezierPath) {
     viewBezierPath.append(bezierPath.viewBezierPath)
@@ -234,8 +234,8 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Moves the receiver’s current point to the specified location.
 
-  - Parameter point: A point in the Workspace coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter point: A point in the Workspace coordinate system.
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   public func move(to point: WorkspacePoint, relative: Bool) {
@@ -248,11 +248,11 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Moves the receiver’s current point to the specified location.
 
-  - Parameter x: The destination x-point of the line segment, specified in the Workspace
+  - parameter x: The destination x-point of the line segment, specified in the Workspace
   coordinate system.
-  - Parameter y: The destination y-point of the line segment, specified in the Workspace
+  - parameter y: The destination y-point of the line segment, specified in the Workspace
   coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   public func moveTo(x: CGFloat, y: CGFloat, relative: Bool) {
@@ -274,8 +274,8 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Converts a Workspace point to a UIView point, using the current workspace layout.
 
-  - Parameter point: A point specified in the Workspace coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter point: A point specified in the Workspace coordinate system.
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   private func viewPointFromWorkspacePoint(_ point: WorkspacePoint, relative: Bool) -> CGPoint {
@@ -287,8 +287,8 @@ public final class WorkspaceBezierPath: NSObject {
   /**
   Sets the current workspace point from the given point.
 
-  - Parameter point: A point specified in the Workspace coordinate system.
-  - Parameter relative: True if the specified point should be relative to the `currentPoint`. False
+  - parameter point: A point specified in the Workspace coordinate system.
+  - parameter relative: True if the specified point should be relative to the `currentPoint`. False
   if it should be an absolute point.
   */
   private func setCurrentWorkspacePoint(_ point: WorkspacePoint, relative: Bool) {

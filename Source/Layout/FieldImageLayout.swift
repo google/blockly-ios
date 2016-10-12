@@ -36,9 +36,9 @@ open class FieldImageLayout: FieldLayout {
   /**
    Initializes the image field layout.
 
-   - Parameter fieldImage: The `FieldImage` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldImage: The `FieldImage` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(fieldImage: FieldImage, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldImage = fieldImage
@@ -61,7 +61,7 @@ open class FieldImageLayout: FieldLayout {
    Asynchronously loads this layout's image in the background and executes a callback on the main
    thread with the loaded image.
 
-   - Parameter completion: The callback method that will be executed on completion of this method.
+   - parameter completion: The callback method that will be executed on completion of this method.
    The `image` parameter of the callback method contains the `UIImage` that was loaded. If it is
    `nil`, the image could not be loaded.
    */

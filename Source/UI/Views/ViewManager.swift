@@ -35,8 +35,8 @@ public final class ViewManager: NSObject {
   /**
    Caches a `LayoutView` instance to a specific `Layout`.
 
-   - Parameter layoutView: The `LayoutView` to cache
-   - Parameter layout: The `Layout` associated with the view
+   - parameter layoutView: The `LayoutView` to cache
+   - parameter layout: The `Layout` associated with the view
    */
   public func cacheView(_ layoutView: LayoutView, forLayout layout: Layout) {
     _views[layout.uuid] = layoutView
@@ -45,7 +45,7 @@ public final class ViewManager: NSObject {
   /**
    Uncaches the `LayoutView` associated with a given block layout.
 
-   - Parameter layout: The given layout
+   - parameter layout: The given layout
    */
   public func uncacheView(forLayout layout: Layout) {
     _views[layout.uuid] = nil
@@ -55,8 +55,8 @@ public final class ViewManager: NSObject {
    Returns the `BlockView` that has been cached for a given `BlockLayout`. If the view could not
    be found in the cache, nil is returned.
 
-   - Parameter layout: The `BlockLayout` to look for
-   - Returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
+   - parameter layout: The `BlockLayout` to look for
+   - returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
    */
   public func findBlockView(forLayout layout: BlockLayout) -> BlockView? {
     return (_views[layout.uuid] as? BlockView) ?? nil
@@ -66,8 +66,8 @@ public final class ViewManager: NSObject {
    Returns the `FieldView` that has been cached for a given `FieldLayout`. If the view could not
    be found in the cache, nil is returned.
 
-   - Parameter layout: The `FieldLayout` to look for
-   - Returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
+   - parameter layout: The `FieldLayout` to look for
+   - returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
    */
   public func findFieldView(forLayout layout: FieldLayout) -> FieldView? {
     return (_views[layout.uuid] as? FieldView) ?? nil
@@ -77,8 +77,8 @@ public final class ViewManager: NSObject {
    Returns the `LayoutView` that has been cached for a given `Layout`. If the view could not
    be found in the cache, nil is returned.
 
-   - Parameter layout: The `Layout` to look for
-   - Returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
+   - parameter layout: The `Layout` to look for
+   - returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
    */
   public func findView(forLayout layout: Layout) -> LayoutView? {
     return _views[layout.uuid]

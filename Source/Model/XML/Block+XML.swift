@@ -24,10 +24,10 @@ extension Block {
   /**
    Creates a new block and subblocks from an XML object.
 
-   - Parameter xml: The element that contains this block's data.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Returns: A `BlockTree` tuple of all blocks that were created.
-   - Throws:
+   - parameter xml: The element that contains this block's data.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - returns: A `BlockTree` tuple of all blocks that were created.
+   - throws:
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
@@ -90,11 +90,11 @@ extension Block {
   /**
    Creates a set of blocks from xml and connects them to one of the block's inputs.
 
-   - Parameter block: The block to connect to.
-   - Parameter xml: The XML that describes the input and blocks to attach.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Returns: An array of all `Block` instances that were created.
-   - Throws:
+   - parameter block: The block to connect to.
+   - parameter xml: The XML that describes the input and blocks to attach.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - returns: An array of all `Block` instances that were created.
+   - throws:
      `BlocklyError`: Occurs if the block doesn't have that input or the xml is invalid.
   */
   private class func setInputOnBlock(
@@ -141,11 +141,11 @@ extension Block {
   /**
    Creates a set of blocks from xml and connects them to this block's next connection.
 
-   - Parameter block: The block to connect to.
-   - Parameter xml: The XML that describes the blocks to attach.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Returns: An array of all `Block` instances that were created.
-   - Throws:
+   - parameter block: The block to connect to.
+   - parameter xml: The XML that describes the blocks to attach.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - returns: An array of all `Block` instances that were created.
+   - throws:
    `BlocklyError`: Occurs if the block doesn't have a next connection or the xml is invalid.
    */
   private class func setNextBlockOnBlock(
@@ -184,10 +184,10 @@ extension Block {
   /**
    Sets a field on a block as specified by the xml.
 
-   - Parameter block: The block to update.
-   - Parameter xml: The xml that describes the field to update.
-   - Note: A missing or unknown field name/value isn't an error, it's just ignored.
-   - Throws:
+   - parameter block: The block to update.
+   - parameter xml: The xml that describes the field to update.
+   - note: A missing or unknown field name/value isn't an error, it's just ignored.
+   - throws:
    `BlocklyError`: Thrown if there was a problem setting the field value from serialized text.
    */
   private class func setField(onBlock block: Block, fromXML xml: AEXMLElement) throws {
@@ -221,8 +221,8 @@ extension Block {
   /**
    Returns an XML string representing the current state of this block and all of its descendants.
 
-   - Returns: The XML string.
-   - Throws:
+   - returns: The XML string.
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing this block or any of its descendants.
    */
   @objc(toXMLWithError:)
@@ -236,8 +236,8 @@ extension Block {
    Creates and returns an XML element representing the current state of this block and all of its
    descendants.
 
-   - Returns: An XML element.
-   - Throws:
+   - returns: An XML element.
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing this block or any of its descendants.
    */
   internal func toXMLElement() throws -> AEXMLElement {

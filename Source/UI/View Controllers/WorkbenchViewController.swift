@@ -34,7 +34,7 @@ extension BKYWorkbenchViewControllerUIState {
   /**
    Initializes the workbench view controller UI state with a `WorkbenchViewController.UIStateValue`.
 
-   - Parameter value: The `enum` value of the state.
+   - parameter value: The `enum` value of the state.
    */
   public init(value: BKYWorkbenchViewControllerUIStateValue) {
     self.init(rawValue: 1 << UInt(value.rawValue))
@@ -206,7 +206,7 @@ open class WorkbenchViewController: UIViewController {
    Creates the workbench with defaults for `self.engine`, `self.layoutBuilder`,
    `self.viewFactory`.
 
-   - Parameter style: The `Style` to use for this laying out items in this view controller.
+   - parameter style: The `Style` to use for this laying out items in this view controller.
    */
   public init(style: Style) {
     self.style = style
@@ -220,10 +220,10 @@ open class WorkbenchViewController: UIViewController {
   /**
    Creates the workbench.
 
-   - Parameter style: The `Style` to use for this laying out items in this view controller.
-   - Parameter engine: Value used for `self.layoutEngine`.
-   - Parameter layoutBuilder: Value used for `self.layoutBuilder`.
-   - Parameter viewFactory: Value used for `self.viewFactory`.
+   - parameter style: The `Style` to use for this laying out items in this view controller.
+   - parameter engine: Value used for `self.layoutEngine`.
+   - parameter layoutBuilder: Value used for `self.layoutBuilder`.
+   - parameter viewFactory: Value used for `self.viewFactory`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
               viewFactory: ViewFactory)
@@ -406,10 +406,10 @@ open class WorkbenchViewController: UIViewController {
    (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
    rendered into the view controller.
 
-   - Parameter workspace: The `Workspace` to load
-   - Throws:
+   - parameter workspace: The `Workspace` to load
+   - throws:
    `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
-   - Note: A `ConnectionManager` is automatically created for the `WorkspaceLayoutCoordinator`.
+   - note: A `ConnectionManager` is automatically created for the `WorkspaceLayoutCoordinator`.
    */
   open func loadWorkspace(_ workspace: Workspace) throws {
     try loadWorkspace(workspace, connectionManager: ConnectionManager())
@@ -420,9 +420,9 @@ open class WorkbenchViewController: UIViewController {
    (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
    rendered into the view controller.
 
-   - Parameter workspace: The `Workspace` to load
-   - Parameter connectionManager: A `ConnectionManager` to track connections in the workspace.
-   - Throws:
+   - parameter workspace: The `Workspace` to load
+   - parameter connectionManager: A `ConnectionManager` to track connections in the workspace.
+   - throws:
    `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
    */
   open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager)
@@ -442,8 +442,8 @@ open class WorkbenchViewController: UIViewController {
    Automatically creates a `ToolboxLayout` for a given `Toolbox` (using both the `self.engine`
    and `self.layoutBuilder` instances) and loads it into the view controller.
 
-   - Parameter toolbox: The `Toolbox` to load
-   - Throws:
+   - parameter toolbox: The `Toolbox` to load
+   - throws:
    `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
    */
   open func loadToolbox(_ toolbox: Toolbox) throws {
@@ -503,9 +503,9 @@ open class WorkbenchViewController: UIViewController {
    2) Building its layout tree and setting its workspace position to be relative to where the given
    block view is currently on-screen.
 
-   - Parameter blockView: The block view to copy into this workspace.
-   - Returns: The new block view that was added to this workspace.
-   - Throws:
+   - parameter blockView: The block view to copy into this workspace.
+   - returns: The new block view that was added to this workspace.
+   - throws:
    `BlocklyError`: Thrown if the block view could not be created.
    */
   open func copyBlockView(_ blockView: BlockView) throws -> BlockView
@@ -557,8 +557,8 @@ extension WorkbenchViewController {
    Appends a state to the current state of the UI. This call should be matched a future call to
    removeUIState(state:animated:).
 
-   - Parameter state: The state to append to `self.state`.
-   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   - parameter state: The state to append to `self.state`.
+   - parameter animated: True if changes in UI state should be animated. False, if not.
    */
   fileprivate func addUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
     var state = UIState(value: stateValue)
@@ -598,8 +598,8 @@ extension WorkbenchViewController {
    Removes a state to the current state of the UI. This call should have matched a previous call to
    addUIState(state:animated:).
 
-   - Parameter state: The state to remove from `self.state`.
-   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   - parameter state: The state to remove from `self.state`.
+   - parameter animated: True if changes in UI state should be animated. False, if not.
    */
   fileprivate func removeUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
     // When subtracting a state value, there is no need to check for compatibility.
@@ -611,7 +611,7 @@ extension WorkbenchViewController {
   /**
    Resets the UI back to its default state.
 
-   - Parameter animated: True if changes in UI state should be animated. False, if not.
+   - parameter animated: True if changes in UI state should be animated. False, if not.
    */
   fileprivate func resetUIState(_ animated: Bool = true) {
     addUIStateValue(.defaultState, animated: animated)
@@ -620,9 +620,9 @@ extension WorkbenchViewController {
   /**
    Refreshes the UI based on a given state.
 
-   - Parameter state: The state to set the UI
-   - Parameter animated: True if changes in UI state should be animated. False, if not.
-   - Note: This method should not be called directly. Instead, you should call addUIState(...),
+   - parameter state: The state to set the UI
+   - parameter animated: True if changes in UI state should be animated. False, if not.
+   - note: This method should not be called directly. Instead, you should call addUIState(...),
    removeUIState(...), or resetUIState(...).
    */
   fileprivate func refreshUIState(_ state: UIState, animated: Bool = true) {
@@ -665,7 +665,7 @@ extension WorkbenchViewController {
   /**
    Event that is fired when the trash can is tapped on.
 
-   - Parameter sender: The trash can button that sent the event.
+   - parameter sender: The trash can button that sent the event.
    */
   public func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
@@ -753,7 +753,7 @@ extension WorkbenchViewController {
    Removes all gesture recognizers from a block view that is part of a workspace flyout (ie. trash
    can or toolbox).
 
-   - Parameter blockView: A given block view.
+   - parameter blockView: A given block view.
    */
   fileprivate func removeGestureTrackingForWorkspaceFolderBlockView(_ blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
@@ -762,8 +762,8 @@ extension WorkbenchViewController {
   /**
    Copies the specified block from a flyout (trash/toolbox) to the workspace.
 
-   - Parameter blockView: The `BlockView` to copy
-   - Return: The new `BlockView`
+   - parameter blockView: The `BlockView` to copy
+   - returns: The new `BlockView`
    */
   public func copyBlockToWorkspace(_ blockView: BlockView) -> BlockView? {
     // The block the user is dragging out of the toolbox/trash may be a child of a large nested
@@ -795,7 +795,7 @@ extension WorkbenchViewController {
   /**
    Removes a `BlockView` from the trash, when moving it back to the workspace.
 
-   - Parameter blockView: The `BlockView` to remove.
+   - parameter blockView: The `BlockView` to remove.
    */
   public func removeBlockFromTrash(_ blockView: BlockView) {
     guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
@@ -824,7 +824,7 @@ extension WorkbenchViewController {
   /**
    Adds pan and tap gesture recognizers to a block view.
 
-   - Parameter blockView: A given block view.
+   - parameter blockView: A given block view.
    */
   fileprivate func addGestureTracking(forBlockView blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
@@ -837,7 +837,7 @@ extension WorkbenchViewController {
   /**
    Removes all gesture recognizers and any on-going gesture data from a block view.
 
-   - Parameter blockView: A given block view.
+   - parameter blockView: A given block view.
    */
   fileprivate func removeGestureTracking(forBlockView blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
@@ -905,7 +905,7 @@ extension WorkbenchViewController {
   /**
    Highlights a block in the workspace.
 
-   - Parameter blockUUID: The UUID of the block to highlight
+   - parameter blockUUID: The UUID of the block to highlight
    */
   public func highlightBlock(blockUUID: String) {
     guard let workspace = self.workspace,
@@ -944,8 +944,8 @@ extension WorkbenchViewController {
   /**
    Sets the `highlighted` property for the layouts of a given list of blocks.
 
-   - Parameter highlight: The value to set for `highlighted`
-   - Parameter blocks: The list of `Block` instances
+   - parameter highlight: The value to set for `highlighted`
+   - parameter blocks: The list of `Block` instances
    */
   fileprivate func setHighlight(_ highlight: Bool, forBlocks blocks: [Block]) {
     guard let workspaceLayout = workspaceView.workspaceLayout else {

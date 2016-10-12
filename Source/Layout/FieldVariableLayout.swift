@@ -44,9 +44,9 @@ open class FieldVariableLayout: FieldLayout {
   /**
    Initializes the label field layout.
 
-   - Parameter fieldVariable: The `FieldVariable` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldVariable: The `FieldVariable` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(
     fieldVariable: FieldVariable, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type)
@@ -71,7 +71,7 @@ open class FieldVariableLayout: FieldLayout {
    Changes `self.fieldVariable.variable` to use the given value. If the value was changed, the
    layout tree is updated to reflect the change.
 
-   - Parameter variable: The value used to update `self.fieldVariable.variable`.
+   - parameter variable: The value used to update `self.fieldVariable.variable`.
    */
   open func changeToVariable(_ variable: String) {
     // Setting to a new variable automatically fires a listener to update the layout

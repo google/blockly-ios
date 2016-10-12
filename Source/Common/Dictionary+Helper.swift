@@ -21,8 +21,8 @@ extension Dictionary where Value: Equatable {
   /**
   Returns a list of keys in the dictionary that match the given value.
 
-  - Parameter value: The value to find.
-  - Returns: The list of keys for that value.
+  - parameter value: The value to find.
+  - returns: The list of keys for that value.
   */
   public func bky_allKeysForValue(_ value: Value) -> [Key] {
     return self.filter { $1 == value }.map { $0.0 }
@@ -32,8 +32,8 @@ extension Dictionary where Value: Equatable {
   Returns any key in the dictionary that matches the given value. There is no guarantee on what
   key this may be, if there are multiple keys that contain the same value.
 
-  - Parameter value: The value to find.
-  - Returns: Any key mapped for the given value, or `nil` if none is found.
+  - parameter value: The value to find.
+  - returns: Any key mapped for the given value, or `nil` if none is found.
   */
   public func bky_anyKeyForValue(_ value: Value) -> Key? {
     let possibleKeys = bky_allKeysForValue(value)

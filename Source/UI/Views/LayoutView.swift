@@ -53,11 +53,11 @@ open class LayoutView: UIView {
   /**
   Refreshes the view based on the current state of `self.layout`.
 
-  - Parameter flags: Optionally refresh the view for only a given set of flags. By default, this
+  - parameter flags: Optionally refresh the view for only a given set of flags. By default, this
   value is set to include all flags (i.e. `LayoutFlag.All`).
-  - Parameter animated: Flag determining if the refresh should be animated from its previous
+  - parameter animated: Flag determining if the refresh should be animated from its previous
    state.
-  - Note: Subclasses should override this method. The default implementation does nothing.
+  - note: Subclasses should override this method. The default implementation does nothing.
   */
   open func refreshView(forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false) {
     // NOOP. Subclasses should implement this method.
@@ -66,8 +66,8 @@ open class LayoutView: UIView {
   /**
    Runs a code block, allowing it to be run immediately or via a preset animation.
 
-   - Parameter animated: Flag determining if the `code` should be animated.
-   - Parameter code: The code block to run.
+   - parameter animated: Flag determining if the `code` should be animated.
+   - parameter code: The code block to run.
    */
   open func runAnimatableCode(_ animated: Bool, code: @escaping () -> Void) {
     if animated {

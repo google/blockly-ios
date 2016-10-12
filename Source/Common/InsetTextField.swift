@@ -39,8 +39,8 @@ open class InsetTextField: UITextField {
   /**
    Returns the `CGRect` describing the bounds of the inset text, including padding.
 
-   - Parameter bounds: The `CGRect` of the inset text only.
-   - Returns: The `CGRect` including the padding.
+   - parameter bounds: The `CGRect` of the inset text only.
+   - returns: The `CGRect` including the padding.
    */
   open override func textRect(forBounds bounds: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
@@ -49,8 +49,8 @@ open class InsetTextField: UITextField {
   /**
    Returns the `CGRect` describing the bounds of the editing text, including padding.
 
-   - Parameter bounds: The `CGRect` of the editing text only.
-   - Returns: The `CGRect` including the padding.
+   - parameter bounds: The `CGRect` of the editing text only.
+   - returns: The `CGRect` including the padding.
    */
   open override func editingRect(forBounds bounds: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)

@@ -148,7 +148,7 @@ open class WorkspaceView: LayoutView {
   /**
    Adds a `BlockGroupView` to the workspace's scrollview.
 
-   - Parameter blockGroupView: The given `BlockGroupView`
+   - parameter blockGroupView: The given `BlockGroupView`
    */
   open func addBlockGroupView(_ blockGroupView: BlockGroupView) {
     scrollView.containerView.upsertView(blockGroupView)
@@ -158,7 +158,7 @@ open class WorkspaceView: LayoutView {
   /**
    Removes a given `BlockGroupView` from the workspace's scrollview and recycles it.
 
-   - Parameter blockGroupView: The given `BlockGroupView`
+   - parameter blockGroupView: The given `BlockGroupView`
    */
   open func removeBlockGroupView(_ blockGroupView: BlockGroupView) {
     blockGroupViews.remove(blockGroupView)
@@ -169,8 +169,8 @@ open class WorkspaceView: LayoutView {
    Returns the logical Workspace position of a given `BlockView` based on its position relative
    to this `WorkspaceView`.
 
-   - Parameter blockView: The `BlockView`
-   - Returns: The `blockView`'s corresponding Workspace position
+   - parameter blockView: The `BlockView`
+   - returns: The `blockView`'s corresponding Workspace position
    */
   public final func workspacePosition(fromBlockView blockView: UIView) -> WorkspacePoint {
     var blockViewPoint = CGPoint.zero
@@ -187,9 +187,9 @@ open class WorkspaceView: LayoutView {
   /**
    Automatically adjusts the workspace's scroll view to bring a given `Block` into view.
 
-   - Parameter block: The `Block` to bring into view
-   - Parameter animated: Flag determining if this scroll view adjustment should be animated.
-   - Note: See `scrollIntoViewEdgeInsets`.
+   - parameter block: The `Block` to bring into view
+   - parameter animated: Flag determining if this scroll view adjustment should be animated.
+   - note: See `scrollIntoViewEdgeInsets`.
    */
   open func scrollBlockIntoView(_ block: Block, animated: Bool) {
     guard let blockLayout = block.layout,
@@ -237,8 +237,8 @@ open class WorkspaceView: LayoutView {
   Maps a `UIView` point relative to `self.scrollView.containerView` to a logical Workspace
   position.
 
-  - Parameter point: The `UIView` point
-  - Returns: The corresponding `WorkspacePoint`
+  - parameter point: The `UIView` point
+  - returns: The corresponding `WorkspacePoint`
   */
   open func workspacePosition(fromViewPoint point: CGPoint) -> WorkspacePoint {
     guard let workspaceLayout = self.workspaceLayout else {
@@ -487,7 +487,7 @@ open class WorkspaceView: LayoutView {
   Returns true if a given block layout should be rendered within the workspace view.
   Otherwise, false is returned.
 
-  - Parameter blockLayout: A given block layout.
+  - parameter blockLayout: A given block layout.
   */
   fileprivate func shouldRenderBlockLayout(_ blockLayout: BlockLayout) -> Bool {
     // Allow blocks within a 1/2 screen away to be rendered
@@ -618,7 +618,7 @@ extension WorkspaceView {
     /**
      Initializer for the scroll view inside the workspace view.
 
-     - Parameter frame: The frame for the workspace view.
+     - parameter frame: The frame for the workspace view.
      */
     fileprivate override init(frame: CGRect) {
       super.init(frame: frame)

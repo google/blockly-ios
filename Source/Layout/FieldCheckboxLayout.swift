@@ -36,9 +36,9 @@ open class FieldCheckboxLayout: FieldLayout {
   /**
    Initializes the checkbox field layout.
 
-   - Parameter fieldCheckbox: The `FieldCheckbox` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldCheckbox: The `FieldCheckbox` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(
     fieldCheckbox: FieldCheckbox, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type)
@@ -63,7 +63,7 @@ open class FieldCheckboxLayout: FieldLayout {
    Updates `self.fieldCheckbox` from the given value. If the value was changed, the layout tree
    is updated to reflect the change.
 
-   - Parameter checked: The value used to update `self.fieldCheckbox`.
+   - parameter checked: The value used to update `self.fieldCheckbox`.
    */
   open func updateCheckbox(_ checked: Bool) {
     // Setting to a new checkbox value automatically fires a listener to update the layout

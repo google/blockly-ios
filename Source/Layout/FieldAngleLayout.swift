@@ -36,9 +36,9 @@ open class FieldAngleLayout: FieldLayout {
   /**
    Initializes the angle field layout.
 
-   - Parameter fieldAngle: The `FieldAngle` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldAngle: The `FieldAngle` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(fieldAngle: FieldAngle, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldAngle = fieldAngle
@@ -61,7 +61,7 @@ open class FieldAngleLayout: FieldLayout {
    Updates `self.fieldAngle` from the given text value. If the value was changed, the layout tree
    is updated to reflect the change.
 
-   - Parameter text: A valid integer that will be used to update `self.fieldAngle`. If this value
+   - parameter text: A valid integer that will be used to update `self.fieldAngle`. If this value
    is not a valid integer, `self.fieldAngle` is not updated.
    */
   open func updateAngle(fromText text: String) {

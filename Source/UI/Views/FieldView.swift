@@ -23,10 +23,10 @@ public protocol FieldViewDelegate {
   /**
    Event that is called when a field view requests to present a view controller as a popover.
 
-   - Parameter fieldView: The `FieldView` that made the request
-   - Parameter viewController: The `UIViewController` to present
-   - Parameter fromView: The `UIView` where the popover should pop up from
-   - Returns: True if the `viewController` was presented. False otherwise.
+   - parameter fieldView: The `FieldView` that made the request
+   - parameter viewController: The `UIViewController` to present
+   - parameter fromView: The `UIView` where the popover should pop up from
+   - returns: True if the `viewController` was presented. False otherwise.
    */
   @discardableResult
   func fieldView(_ fieldView: FieldView,

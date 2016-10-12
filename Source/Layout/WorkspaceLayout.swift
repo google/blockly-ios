@@ -47,8 +47,8 @@ open class WorkspaceLayout: Layout {
   /**
    Initializer for workspace layout.
 
-   - Parameter workspace: The `Workspace` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter workspace: The `Workspace` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
    */
   public init(workspace: Workspace, engine: LayoutEngine) {
     self.workspace = workspace
@@ -121,8 +121,8 @@ open class WorkspaceLayout: Layout {
   Appends a blockGroupLayout to `self.blockGroupLayouts` and sets its `parentLayout` to this
   instance.
 
-  - Parameter blockGroupLayout: The `BlockGroupLayout` to append.
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter blockGroupLayout: The `BlockGroupLayout` to append.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func appendBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
@@ -139,8 +139,8 @@ open class WorkspaceLayout: Layout {
   Removes a given block group layout from `self.blockGroupLayouts` and sets its `parentLayout` to
   nil.
 
-  - Parameter blockGroupLayout: The given block group layout.
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter blockGroupLayout: The given block group layout.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func removeBlockGroupLayout(_ blockGroupLayout: BlockGroupLayout, updateLayout: Bool = true)
   {
@@ -156,7 +156,7 @@ open class WorkspaceLayout: Layout {
   /**
   Removes all elements from `self.blockGroupLayouts` and sets their `parentLayout` to nil.
 
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func reset(updateLayout: Bool = true) {
     for blockGroupLayout in self.blockGroupLayouts {
@@ -174,7 +174,7 @@ open class WorkspaceLayout: Layout {
   Brings the given block group layout to the front by setting its `zIndex` to the
   highest value in the workspace.
 
-  - Parameter blockGroupLayout: The given block group layout
+  - parameter blockGroupLayout: The given block group layout
   */
   open func bringBlockGroupLayoutToFront(_ blockGroupLayout: BlockGroupLayout?) {
     guard let blockGroupLayout = blockGroupLayout else {

@@ -114,10 +114,10 @@ public final class DefaultInputLayout: InputLayout {
   /**
    Initializes the default input layout.
 
-   - Parameter input: The `Input` model object associated with this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter factory: The `BlockFactory` to use to build blocks.
-   - Throws:
+   - parameter input: The `Input` model object associated with this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - throws:
      `BlocklyError`: Occurs if the `LayoutFactory` cannot build a block.
    */
   public override init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
@@ -308,7 +308,7 @@ public final class DefaultInputLayout: InputLayout {
 
   If the given width is not large enough, then all elements in the layout remain unchanged.
 
-  - Parameter width: A width value, specified in the Workspace coordinate system.
+  - parameter width: A width value, specified in the Workspace coordinate system.
   */
   internal func maximizeField(toWidth width: CGFloat) {
     let minimalFieldWidthRequired = self.minimalFieldWidthRequired
@@ -348,7 +348,7 @@ public final class DefaultInputLayout: InputLayout {
 
    If the given width is not large enough, then all elements in the layout remain unchanged.
 
-   - Parameter width: A width value, specified in the Workspace coordinate system.
+   - parameter width: A width value, specified in the Workspace coordinate system.
    */
   internal func maximizeStatement(toWidth width: CGFloat) {
     if self.input.type == .statement {
@@ -363,7 +363,7 @@ public final class DefaultInputLayout: InputLayout {
 
    For all other inputs, this method does nothing.
 
-   - Parameter width: The width value to extend the right edge, specified in the Workspace
+   - parameter width: The width value to extend the right edge, specified in the Workspace
    coordinate system. If this value is less than or equal to 0, this method does nothing.
    */
   internal func extendStatementRightEdgeBy(_ width: CGFloat) {

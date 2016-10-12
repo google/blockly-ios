@@ -43,9 +43,9 @@ open class Toolbox: NSObject {
   /**
    Adds a category to the toolbox.
 
-   - Parameter name: The name of the new category.
-   - Parameter color: The color of the new category.
-   - Returns: The new category.
+   - parameter name: The name of the new category.
+   - parameter color: The color of the new category.
+   - returns: The new category.
    */
   open func addCategory(name: String, color: UIColor) -> Category {
     return addCategory(name: name, color: color, icon: nil)
@@ -54,10 +54,10 @@ open class Toolbox: NSObject {
   /**
   Adds a category to the toolbox.
 
-  - Parameter name: The name of the new category.
-  - Parameter color: The color of the new category.
-  - Parameter icon: The `UIImage` icon for the new category.
-  - Returns: The new category.
+  - parameter name: The name of the new category.
+  - parameter color: The color of the new category.
+  - parameter icon: The `UIImage` icon for the new category.
+  - returns: The new category.
   */
   open func addCategory(name: String, color: UIColor, icon: UIImage?) -> Category {
     let category = Category(name: name, color: color, icon: icon)

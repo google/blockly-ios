@@ -23,17 +23,17 @@ public protocol NameManagerListener {
   /**
    Event that is fired when a `NameManager` instance has added a new name to its list.
 
-   - Parameter nameManager: The `NameManager`
-   - Parameter name: The name that was added
+   - parameter nameManager: The `NameManager`
+   - parameter name: The name that was added
    */
   @objc optional func nameManager(_ nameManager: NameManager, didAddName name: String)
 
   /**
    Event that is fired when a `NameManager` instance has renamed a name to a different name.
 
-   - Parameter nameManager: The `NameManager`
-   - Parameter oldName: The old name
-   - Parameter newName: The new name
+   - parameter nameManager: The `NameManager`
+   - parameter oldName: The old name
+   - parameter newName: The new name
    */
   @objc optional func nameManager(
     _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
@@ -42,17 +42,17 @@ public protocol NameManagerListener {
    Event that is fired during a request to remove a name from a `NameManager` instance. If any
    listener returns `false` from this event, the request to remove the name is ignored.
 
-   - Parameter nameManager: The `NameManager`
-   - Parameter name: The name to potentially remove
-   - Returns: `true` if the name should be removed, `false` otherwise.
+   - parameter nameManager: The `NameManager`
+   - parameter name: The name to potentially remove
+   - returns: `true` if the name should be removed, `false` otherwise.
    */
   @objc optional func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool
 
   /**
    Event that is fired when a `NameManager` instance has removed a name from its list.
 
-   - Parameter nameManager: The `NameManager`
-   - Parameter name: The name that was removed
+   - parameter nameManager: The `NameManager`
+   - parameter name: The name that was removed
    */
   @objc optional func nameManager(_ nameManager: NameManager, didRemoveName name: String)
 }
@@ -126,7 +126,7 @@ public final class NameManager: NSObject {
    nameManager.addName("FOO") // `nameManager.names` is now `["FOO"]`
    ```
 
-   - Parameter name: The name to add.
+   - parameter name: The name to add.
    */
   public func addName(_ name: String) {
     let nameKey = keyForName(name)
@@ -154,9 +154,9 @@ public final class NameManager: NSObject {
    If `oldName` does not exist, nothing happens and `false` is returned.
    If `oldName` exists, but `newName` is already in the list, the `newName` is applied to all
 
-   - Parameter oldName: The old name
-   - Parameter newName: The new name
-   - Returns: `true` if `oldName` existed in the list and was renamed to `newName`. `false`
+   - parameter oldName: The old name
+   - parameter newName: The new name
+   - returns: `true` if `oldName` existed in the list and was renamed to `newName`. `false`
    otherwise.
    */
   @discardableResult
@@ -190,8 +190,8 @@ public final class NameManager: NSObject {
    NOTE: Any instance within `self.listeners` may cancel this request by implementing
    `nameManager(:, shouldRemoveName:)` and returning `false`.
 
-   - Parameter name: The name to remove.
-   - Returns: `true` if the name was found and removed. `false` otherwise.
+   - parameter name: The name to remove.
+   - returns: `true` if the name was found and removed. `false` otherwise.
    */
   @discardableResult
   public func requestRemovalForName(_ name: String) -> Bool {
@@ -228,8 +228,8 @@ public final class NameManager: NSObject {
   /**
    Returns if a given name has already been added.
 
-   - Parameter name: The `String` to look up.
-   - Returns: `true` if a `name`'s has been added. `false` otherwise.
+   - parameter name: The `String` to look up.
+   - returns: `true` if a `name`'s has been added. `false` otherwise.
    */
   public func containsName(_ name: String) -> Bool{
     return _names[keyForName(name)] != nil
@@ -238,9 +238,9 @@ public final class NameManager: NSObject {
   /**
    Returns whether two names are considered equal, according to the `NameManager`.
 
-   - Parameter name1: The first name to compare
-   - Parameter name2: The second name to compare
-   - Returns: `true` if they are equal, `false` otherwise.
+   - parameter name1: The first name to compare
+   - parameter name2: The second name to compare
+   - returns: `true` if they are equal, `false` otherwise.
    */
   public func namesAreEqual(_ name1: String, _ name2: String) -> Bool {
     return keyForName(name1) == keyForName(name2)
@@ -264,9 +264,9 @@ public final class NameManager: NSObject {
    manager.generateUniqueName("Bar10", addToList: true) // Returns "Bar12"
    ```
 
-   - Parameter name: The name upon which to base the unique name.
-   - Parameter addToList: Whether to add the generated name to the used names list.
-   - Returns: A unique name.
+   - parameter name: The name upon which to base the unique name.
+   - parameter addToList: Whether to add the generated name to the used names list.
+   - returns: A unique name.
    */
   public func generateUniqueName(_ name: String, addToList: Bool) -> String {
     var uniqueName = name

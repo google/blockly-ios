@@ -46,8 +46,8 @@ public final class FieldVariable: Field {
   /**
    Initializes the variable field.
 
-   - Parameter name: The name of this field.
-   - Parameter variable: The initial variable name to set for this field.
+   - parameter name: The name of this field.
+   - parameter variable: The initial variable name to set for this field.
    */
   public init(name: String, variable: String) {
     self.variable = variable
@@ -78,7 +78,7 @@ public final class FieldVariable: Field {
   /**
    Sets `self.variable` to a new variable and calls `self.nameManager?.addName(variable)`.
 
-   - Parameter variable: The new variable name
+   - parameter variable: The new variable name
    */
   public func addNewVariable(_ variable: String) {
     self.variable = variable
@@ -88,7 +88,7 @@ public final class FieldVariable: Field {
   /**
    Sets `self.variable` to a new variable and calls `self.nameManager?.renameName(variable)`.
 
-   - Parameter variable: The new variable name
+   - parameter variable: The new variable name
    */
   public func renameVariable(_ variable: String) {
     let oldName = self.variable

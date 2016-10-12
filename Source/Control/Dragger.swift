@@ -43,8 +43,8 @@ public final class Dragger: NSObject {
   Disconnect the given block layout from any superior connections and start dragging it (and any of
   its connected block layouts) in the workspace.
 
-  - Parameter layout: The given block layout
-  - Parameter touchPosition: The initial touch position, specified in the Workspace coordinate
+  - parameter layout: The given block layout
+  - parameter touchPosition: The initial touch position, specified in the Workspace coordinate
   system
   */
   public func startDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
@@ -96,8 +96,8 @@ public final class Dragger: NSObject {
   /**
   Continue dragging a block layout (and any of its connected block layouts) in the workspace.
 
-  - Parameter layout: The given block layout
-  - Parameter touchPosition: The current touch position, specified in the Workspace coordinate
+  - parameter layout: The given block layout
+  - parameter touchPosition: The current touch position, specified in the Workspace coordinate
   system
   */
   public func continueDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
@@ -130,7 +130,7 @@ public final class Dragger: NSObject {
   /**
   Finish dragging a block layout (and any of its connected block layouts) in the workspace.
 
-  - Parameter layout: The given block layout
+  - parameter layout: The given block layout
   */
   public func finishDraggingBlockLayout(_ layout: BlockLayout) {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator else {
@@ -175,8 +175,8 @@ public final class Dragger: NSObject {
   Clears the drag data for a block layout, removes any highlights, and moves connections that were
   being tracked by the drag to a new group.
 
-  - Parameter layout: The given block layout
-  - Parameter connectionGroup: The new connection group to move the connections to. If this is
+  - parameter layout: The given block layout
+  - parameter connectionGroup: The new connection group to move the connections to. If this is
   nil, the connection manager's `mainGroup` is used.
   */
   public func clearGestureDataForBlockLayout(
@@ -191,8 +191,8 @@ public final class Dragger: NSObject {
    Clears the drag data for a block layout's UUID, removes any highlights, and moves connections
    that were being tracked by the drag to a new group.
 
-   - Parameter uuid: The given block layout's UUID
-   - Parameter connectionGroup: The new connection group to move the connections to. If this is
+   - parameter uuid: The given block layout's UUID
+   - parameter connectionGroup: The new connection group to move the connections to. If this is
    nil, the connection manager's `mainGroup` is used.
    */
   fileprivate func clearGestureData(
@@ -213,7 +213,7 @@ public final class Dragger: NSObject {
   /**
   Updates the highlighted connection for a dragged block.
 
-  - Parameter drag: The `DragGestureData` that is being tracked for the block.
+  - parameter drag: The `DragGestureData` that is being tracked for the block.
   */
   fileprivate func updateHighlightedConnection(forDrag drag: DragGestureData) {
     let connectionPair = findBestConnection(forDrag: drag)
@@ -234,7 +234,7 @@ public final class Dragger: NSObject {
   /**
   Removes the highlighted connection for a drag.
 
-  - Parameter drag: The drag.
+  - parameter drag: The drag.
   */
   fileprivate func removeHighlightedConnection(forDrag drag: DragGestureData) {
     if let blockLayout = drag.blockLayout {

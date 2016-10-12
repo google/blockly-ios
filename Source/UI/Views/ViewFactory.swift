@@ -59,9 +59,9 @@ open class ViewFactory: NSObject {
   /**
    Returns a recycled or new `LayoutView` instance assigned to the given layout.
 
-   - Parameter layout: The given `Layout`
-   - Returns: A `LayoutView` with the given layout assigned to it
-   - Throws:
+   - parameter layout: The given `Layout`
+   - returns: A `LayoutView` with the given layout assigned to it
+   - throws:
    `BlocklyError`: Thrown if no `LayoutView` could be retrieved for the given layout.
    */
   open func makeView(layout: Layout) throws -> LayoutView {
@@ -81,8 +81,8 @@ open class ViewFactory: NSObject {
    Registers the type of `LayoutView` instances that should be created when requesting a specific
    `Layout` type.
 
-   - Parameter layoutType: The `Layout.Type` key
-   - Parameter viewType: A view type that is a subclass of `LayoutView` that conforms to
+   - parameter layoutType: The `Layout.Type` key
+   - parameter viewType: A view type that is a subclass of `LayoutView` that conforms to
    `Recyclable`
    */
   open func registerLayoutType(_ layoutType: Layout.Type, withViewType viewType: LayoutView.Type) {
@@ -93,10 +93,10 @@ open class ViewFactory: NSObject {
    If a recycled view is available for re-use, that view is returned.
    If not, a new view of the given type is instantiated.
 
-   - Parameter type: The type of `Recyclable` object to retrieve.
-   - Note: Views obtained through this method should be recycled through `recycleView(:)` or
+   - parameter type: The type of `Recyclable` object to retrieve.
+   - note: Views obtained through this method should be recycled through `recycleView(:)` or
    `recycleViewTree(:)`.
-   - Returns: A view of the given type, if it is a `UIView`. Otherwise, nil is returned.
+   - returns: A view of the given type, if it is a `UIView`. Otherwise, nil is returned.
    */
   open func recyclableViewForType(_ type: Recyclable.Type) -> UIView? {
     return _objectPool.recyclableObjectForType(type) as? UIView
@@ -106,7 +106,7 @@ open class ViewFactory: NSObject {
    If the view conforms to the protocol `Recyclable`, calls `recycle()` on the view and stores it
    for re-use later. Otherwise, nothing happens.
 
-   - Parameter view: The view to recycle.
+   - parameter view: The view to recycle.
    */
   open func recycleView(_ view: UIView) {
     if let recyclableView = view as? Recyclable {
@@ -118,7 +118,7 @@ open class ViewFactory: NSObject {
    For every `UIView` in a view hierarchy rooted by a given `UIView`, recycles those that conform
    to the protocol `Recyclable` and stores them for re-use later.
 
-   - Parameter rootView: The root view to begin the recycling process.
+   - parameter rootView: The root view to begin the recycling process.
    */
   open func recycleViewTree(_ rootView: UIView) {
     let subviews = rootView.subviews

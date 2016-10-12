@@ -98,7 +98,7 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
   /**
    Initializes the toolbox category list view controller.
 
-   - Parameter orientation: The `Orientation` for the view.
+   - parameter orientation: The `Orientation` for the view.
    */
   public required init(orientation: Orientation) {
     self.orientation = orientation

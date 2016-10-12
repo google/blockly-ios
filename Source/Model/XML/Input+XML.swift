@@ -24,8 +24,8 @@ extension Input {
   /**
    Creates XML elements for this input and all of its descendants.
 
-   - Returns: A list of XML elements.
-   - Throws:
+   - returns: A list of XML elements.
+   - throws:
    `BlocklyError`: Thrown if there was an error serializing this input or any of its descendants.
    */
   internal func toXMLElement() throws -> [AEXMLElement] {

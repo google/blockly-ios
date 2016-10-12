@@ -39,7 +39,7 @@ open class BezierPathLayer: CAShapeLayer {
   /**
    Initializes the path with a layer.
 
-   - Parameter layer: The layer from which custom fields should be copied.
+   - parameter layer: The layer from which custom fields should be copied.
    */
   public override init(layer: Any) {
     super.init(layer: layer)
@@ -60,8 +60,8 @@ open class BezierPathLayer: CAShapeLayer {
   /**
    Draws `self.path` using a given bezier path.
 
-   - Parameter bezierPath: The `UIBezierPath` to draw.
-   - Parameter animated: Flag determining if the draw should be animated or not.
+   - parameter bezierPath: The `UIBezierPath` to draw.
+   - parameter animated: Flag determining if the draw should be animated or not.
    */
   open func setBezierPath(_ bezierPath: UIBezierPath?, animated: Bool) {
     if self.bezierPath == bezierPath {

@@ -129,8 +129,8 @@ open class BlockLayout: Layout {
   /**
    Initializes the block layout.
 
-   - Parameter block: The given `Block` for this block layout.
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter block: The given `Block` for this block layout.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
    */
   public init(block: Block, engine: LayoutEngine) {
     self.block = block
@@ -146,7 +146,7 @@ open class BlockLayout: Layout {
   /**
   Appends an inputLayout to `self.inputLayouts` and sets its `parentLayout` to this instance.
 
-  - Parameter inputLayout: The `InputLayout` to append.
+  - parameter inputLayout: The `InputLayout` to append.
   */
   open func appendInputLayout(_ inputLayout: InputLayout) {
     inputLayouts.append(inputLayout)
@@ -156,8 +156,8 @@ open class BlockLayout: Layout {
   /**
   Removes `self.inputLayouts[index]`, sets its `parentLayout` to nil, and returns it.
 
-  - Parameter index: The index to remove from `inputLayouts`.
-  - Returns: The `BlockLayout` that was removed.
+  - parameter index: The index to remove from `inputLayouts`.
+  - returns: The `BlockLayout` that was removed.
   */
   @discardableResult
   open func removeInputLayout(atIndex index: Int) -> InputLayout {
@@ -169,7 +169,7 @@ open class BlockLayout: Layout {
   /**
   Removes all elements from `self.inputLayouts` and sets their `parentLayout` to nil.
 
-  - Parameter updateLayout: If true, all parent layouts of this layout will be updated.
+  - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
   open func reset(updateLayout: Bool = true) {
     while inputLayouts.count > 0 {
@@ -187,8 +187,8 @@ open class BlockLayout: Layout {
   For a given input layout, returns the input layout located one cell before it within
   `inputLayouts`.
 
-  - Parameter layout: A given input layout
-  - Returns: If the given input layout is found at `inputLayouts[i]` where `i > 0`,
+  - parameter layout: A given input layout
+  - returns: If the given input layout is found at `inputLayouts[i]` where `i > 0`,
   `inputLayouts[i - 1]` is returned. Otherwise, nil is returned.
   */
   internal func inputLayout(before layout: InputLayout) -> InputLayout? {
@@ -204,8 +204,8 @@ open class BlockLayout: Layout {
   For a given input layout, returns the input layout located one cell after it within
   `inputLayouts`.
 
-  - Parameter layout: A given input layout
-  - Returns: If the given input layout is found at `inputLayouts[i]` where
+  - parameter layout: A given input layout
+  - returns: If the given input layout is found at `inputLayouts[i]` where
   `i < inputLayouts.count - 1`, `inputLayouts[i + 1]` is returned. Otherwise, nil is returned.
   */
   internal func inputLayout(after layout: InputLayout) -> InputLayout? {

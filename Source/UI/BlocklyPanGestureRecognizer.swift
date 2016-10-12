@@ -93,7 +93,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /**
    Initializer for the BlocklyPanGestureRecognizer
 
-   - Parameter targetDelegate: The object that listens to the gesture recognizer callbacks
+   - parameter targetDelegate: The object that listens to the gesture recognizer callbacks
    */
   public init(targetDelegate: BlocklyPanGestureDelegate)
   {
@@ -286,8 +286,8 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /**
    Calculates the delta of the first touch in a given view.
 
-   - Parameter view: The view to calculate the location of the touch position.
-   - Return: The difference between the current position and the previous position.
+   - parameter view: The view to calculate the location of the touch position.
+   - returns: The difference between the current position and the previous position.
    */
   open func firstTouchDelta(inView view: UIView?) -> CGPoint {
     if _touches.count > 0 {
@@ -304,8 +304,8 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    Updates the block at the given index, when the `BlockView` has changed (typically when it is
    copied to a new workspace.)
 
-   - Parameter block: The old `BlockView` to be tracked.
-   - Parameter newBlock: The new `BlockView` to be tracked.
+   - parameter block: The old `BlockView` to be tracked.
+   - parameter newBlock: The new `BlockView` to be tracked.
    */
   open func replaceBlock(_ block: BlockView, with newBlock: BlockView) {
     guard let touchIndex = _blocks.index(of: block) else {
@@ -318,7 +318,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /**
    Checks if any touch handled by the gesture recognizer is inside a given view.
 
-   - Parameter view: The `UIView` to be checked against.
+   - parameter view: The `UIView` to be checked against.
    */
   open func isTouchingView(_ view: UIView) -> Bool {
     for touch in _touches {
@@ -336,8 +336,8 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /**
    Utility function for finding the first ancestor that is a `BlockView`.
 
-   - Parameter view: The view to find an ancestor of
-   - Return: The first ancestor of the `UIView` that is a `BlockView`
+   - parameter view: The view to find an ancestor of
+   - returns: The first ancestor of the `UIView` that is a `BlockView`
    */
   private func owningBlockView(_ view: UIView?) -> BlockView? {
     var currentView = view

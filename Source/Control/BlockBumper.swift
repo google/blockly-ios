@@ -42,8 +42,8 @@ open class BlockBumper: NSObject {
   /**
   Bumps the block layout belonging to a given connection away from another connection.
 
-  - Parameter impingingConnection: The connection of the block being bumped away.
-  - Parameter stationaryConnection: The connection that is being used as the source location for
+  - parameter impingingConnection: The connection of the block being bumped away.
+  - parameter stationaryConnection: The connection that is being used as the source location for
   the bump.
   */
   open func bumpBlockLayoutOfConnection(
@@ -67,7 +67,7 @@ open class BlockBumper: NSObject {
    Move all neighbors of the given block layout and its sub-blocks so that they don't appear to be
    connected to the given block layout.
 
-   - Parameter blockLayout: The `BlockLayout` to bump others away from.
+   - parameter blockLayout: The `BlockLayout` to bump others away from.
    */
   open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout) {
     // Move this block before trying to bump others
@@ -98,7 +98,7 @@ open class BlockBumper: NSObject {
   /**
    Bumps a block layout belonging to a given connection away from its first neighbor.
 
-   - Parameter connection: The connection of the block that is being bumped away.
+   - parameter connection: The connection of the block that is being bumped away.
    */
   private func bumpAwayFromNeighborsBlockLayout(ofConnection connection: Connection) {
     guard
@@ -124,7 +124,7 @@ open class BlockBumper: NSObject {
   /**
    Finds all connections near a given connection and bumps their blocks away.
 
-   - Parameter connection: The connection that is at the center of the current bump operation
+   - parameter connection: The connection that is at the center of the current bump operation
    */
   private func bumpAllBlocks(nearConnection connection: Connection) {
     guard

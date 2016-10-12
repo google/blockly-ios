@@ -29,7 +29,7 @@ public protocol Recyclable: class {
    Reset the object to a fresh state, releasing and recycling any resources associated with this
    object.
 
-   - Note: This should not be called directly by clients. To recycle the object, it should be done
+   - note: This should not be called directly by clients. To recycle the object, it should be done
    via `objectPool.recycleObject(object)`.
    */
   func prepareForReuse()
@@ -55,9 +55,9 @@ public final class ObjectPool: NSObject {
 
   If not, a new object of the given `Recyclable.Type` is instantiated.
 
-  - Parameter type: The type of `Recyclable` object to retrieve.
-  - Note: Objects obtained through this method should be recycled through `recycleObject(:)`.
-  - Returns: An object of the given type.
+  - parameter type: The type of `Recyclable` object to retrieve.
+  - note: Objects obtained through this method should be recycled through `recycleObject(:)`.
+  - returns: An object of the given type.
   */
   public func objectForType<T: Recyclable>(_ type: T.Type) -> T {
     // Force cast Recyclable back into the concrete "T" type
@@ -69,11 +69,11 @@ public final class ObjectPool: NSObject {
 
    If not, a new object of the given `Recyclable.Type` is instantiated.
 
-   - Parameter type: The type of `Recyclable` object to retrieve.
-   - Note: Objects obtained through this method should be recycled through `recycleObject(:)`.
+   - parameter type: The type of `Recyclable` object to retrieve.
+   - note: Objects obtained through this method should be recycled through `recycleObject(:)`.
    - Warning: This method should only be called by Objective-C code. Swift code should use
    `objectForType(type:)` instead.
-   - Returns: An object of the given type.
+   - returns: An object of the given type.
    */
   public func recyclableObjectForType(_ type: Recyclable.Type) -> Recyclable {
     let className = String(describing: type) as NSString
@@ -91,8 +91,8 @@ public final class ObjectPool: NSObject {
   /**
    Calls `prepareForReuse()` on the object and stores it for re-use later.
 
-   - Parameter object: The object to recycle.
-   - Note: Objects recycled through this method should be obtained through `objectForType(:)` or
+   - parameter object: The object to recycle.
+   - note: Objects recycled through this method should be obtained through `objectForType(:)` or
    `recyclableObjectForType(:)`.
    */
   public func recycleObject(_ object: Recyclable) {

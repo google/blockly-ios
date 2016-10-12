@@ -43,7 +43,7 @@ public final class CodeGeneratorService: NSObject {
   /**
    Creates a code generator service.
 
-   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to the main
+   - parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to the main
    resource bundle. These core dependencies will be used when an internal `CodeGenerator`
    instance is created. This list must contain the following files:
      - Blockly engine (eg. 'blockly_compressed.js')
@@ -56,12 +56,12 @@ public final class CodeGeneratorService: NSObject {
   /**
    Creates a code generator service.
 
-   - Parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to a given
+   - parameter jsCoreDependencies: Paths to core Blockly JS dependencies, relative to a given
    resource `bundle`. These core dependencies will be used when an internal `CodeGenerator`
    instance is created. This list must contain the following files:
      - Blockly engine (eg. 'blockly_compressed.js')
      - A default list of messages (eg. 'msg/js/en.js')
-   - Parameter bundle: The resource bundle containing `jsCoreDependencies`.
+   - parameter bundle: The resource bundle containing `jsCoreDependencies`.
    */
   public init(jsCoreDependencies: [String], bundle: Bundle) {
     self.jsCoreDependencies = jsCoreDependencies.map { (path: $0, bundle: bundle) }
@@ -81,7 +81,7 @@ public final class CodeGeneratorService: NSObject {
    If the request completes successfully, the request's `onCompletion` block is executed.
    If the request fails, the request's `onError` block is executed.
 
-   - Parameter request: The request
+   - parameter request: The request
    */
   public func generateCode(forRequest request: CodeGeneratorServiceRequest) {
     request.codeGeneratorService = self
@@ -91,7 +91,7 @@ public final class CodeGeneratorService: NSObject {
   /**
    Cancels code generation for a given request.
 
-   - Parameter request: The `CodeGeneratorServiceRequest` to cancel.
+   - parameter request: The `CodeGeneratorServiceRequest` to cancel.
    */
   public func cancelRequest(_ request: CodeGeneratorServiceRequest) {
     request.cancel()
@@ -159,7 +159,7 @@ public final class CodeGeneratorService: NSObject {
 /**
  Request object for generating code for a workspace.
 
- - Note: To create a `CodeGeneratorServiceRequest`, use `CodeGeneratorServiceRequestBuilder`.
+ - note: To create a `CodeGeneratorServiceRequest`, use `CodeGeneratorServiceRequestBuilder`.
  */
 @objc(BKYCodeGeneratorServiceRequest)
 public class CodeGeneratorServiceRequest: Operation {

@@ -21,11 +21,11 @@ extension XCTestCase {
   /**
    Assertion for testing that an expression throws an error of a given type.
 
-   - Parameter message: [Optional] The message to display if the assertion fails.
-   - Parameter file: [Optional] The file where the expression is being called.
-   - Parameter line: [Optional] The line in the `file` where the expression is being called.
-   - Parameter errorType: Asserts that the error thrown is of this type.
-   - Parameter expression: The throwable expression
+   - parameter message: [Optional] The message to display if the assertion fails.
+   - parameter file: [Optional] The file where the expression is being called.
+   - parameter line: [Optional] The line in the `file` where the expression is being called.
+   - parameter errorType: Asserts that the error thrown is of this type.
+   - parameter expression: The throwable expression
    */
   func BKYAssertThrow<T: NSError>(
     _ message: String? = nil, file: String = #file, line: UInt = #line, errorType: T.Type,
@@ -53,11 +53,11 @@ extension XCTestCase {
    If the assertion passes, the result of the evaluated expression is returned.
    If not, `nil` is returned.
 
-   - Parameter message: [Optional] The message to display if the assertion fails.
-   - Parameter file: [Optional] The file where the expression is being called.
-   - Parameter line: [Optional] The line in the `file` where the expression is being called.
-   - Parameter expression: The throwable expression
-   - Returns: The return value of the expression or `nil` if the expression could not be evaluated.
+   - parameter message: [Optional] The message to display if the assertion fails.
+   - parameter file: [Optional] The file where the expression is being called.
+   - parameter line: [Optional] The line in the `file` where the expression is being called.
+   - parameter expression: The throwable expression
+   - returns: The return value of the expression or `nil` if the expression could not be evaluated.
    */
   func BKYAssertDoesNotThrow<T>(
     _ message: String? = nil, _ file: String = #file, _ line: UInt = #line,
@@ -85,12 +85,12 @@ extension XCTestCase {
    }
    ```
 
-   - Parameter expression: The throwable expression
-   - Parameter message: [Optional] The message to display if the assertion fails.
-   - Parameter file: [Optional] The file where the expression is being called.
-   - Parameter line: [Optional] The line in the `file` where the expression is being called.
-   - Returns: The return value of the expression or `nil` if the expression could not be evaluated.
-   - Note: This version of `BKYAssertDoesNotThrow` was created primarily for use in
+   - parameter expression: The throwable expression
+   - parameter message: [Optional] The message to display if the assertion fails.
+   - parameter file: [Optional] The file where the expression is being called.
+   - parameter line: [Optional] The line in the `file` where the expression is being called.
+   - returns: The return value of the expression or `nil` if the expression could not be evaluated.
+   - note: This version of `BKYAssertDoesNotThrow` was created primarily for use in
    `if let` or `guard let` assignments. It is functionally equivalent to the other version of
    `BKYAssertDoesNotThrow`.
    */

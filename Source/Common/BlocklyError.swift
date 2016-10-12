@@ -70,8 +70,8 @@ public final class BlocklyError: NSError {
   /**
    Initializes the error.
 
-   - Parameter code: The error `Code` that describes the error.
-   - Parameter description: The `String` description for this error.
+   - parameter code: The error `Code` that describes the error.
+   - parameter description: The `String` description for this error.
    */
   public init(_ code: Code, _ description: String) {
     super.init(
@@ -83,7 +83,7 @@ public final class BlocklyError: NSError {
   /**
    The coder initializer for the error.
 
-   - Parameter aDecoder: The `NSCoder` that describes the error.
+   - parameter aDecoder: The `NSCoder` that describes the error.
    */
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -92,9 +92,9 @@ public final class BlocklyError: NSError {
   /**
    Initializes the error, with an XML element.
 
-   - Parameter code: The error `Code` that describes the error.
-   - Parameter description: The `String` description for this error.
-   - Parameter xml: The `AEXMLElement` with additional information about the error.
+   - parameter code: The error `Code` that describes the error.
+   - parameter description: The `String` description for this error.
+   - parameter xml: The `AEXMLElement` with additional information about the error.
    */
   internal convenience init(_ code: Code, _ description: String, _ xml: AEXMLElement) {
     self.init(code, "\(description)\nXML:\n\(xml)")

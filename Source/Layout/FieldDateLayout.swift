@@ -39,9 +39,9 @@ open class FieldDateLayout: FieldLayout {
   /**
    Initializes the date field layout.
 
-   - Parameter fieldDate: The `FieldDate` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldDate: The `FieldDate` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(fieldDate: FieldDate, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type,
               dateFormatter: DateFormatter? = nil)
@@ -76,7 +76,7 @@ open class FieldDateLayout: FieldLayout {
    Updates `self.fieldDate` from the given value. If the value was changed, the layout tree
    is updated to reflect the change.
 
-   - Parameter date: The value used to update `self.fieldDate`.
+   - parameter date: The value used to update `self.fieldDate`.
    */
   open func updateDate(_ date: Date) {
     // Setting to a new date automatically fires a listener to update the layout

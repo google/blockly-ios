@@ -151,9 +151,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `Unit` value to a specific `PropertyKey`.
 
-   - Parameter unit: The `Unit` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - Returns: The `unit` that was set.
+   - parameter unit: The `Unit` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - returns: The `unit` that was set.
    */
   @discardableResult
   public func setUnit(_ unit: Unit, for key: PropertyKey) -> Unit {
@@ -164,10 +164,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `Unit` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - Parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
    assigned to `key` and used instead.
-   - Returns: The mapped `Unit` value.
+   - returns: The mapped `Unit` value.
    */
   @inline(__always)
   public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> Unit {
@@ -177,10 +177,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `viewUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - Parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
    assigned to `key` and used instead.
-   - Returns: The `viewUnit` of the mapped `Unit` value.
+   - returns: The `viewUnit` of the mapped `Unit` value.
    */
   @inline(__always)
   public func viewUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
@@ -190,10 +190,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `workspaceUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - Parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
    assigned to `key` and used instead.
-   - Returns: The `workspaceUnit` of the mapped `Unit` value.
+   - returns: The `workspaceUnit` of the mapped `Unit` value.
    */
   @inline(__always)
   public func workspaceUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
@@ -203,9 +203,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `Size` value to a specific `PropertyKey`.
 
-   - Parameter size: The `Size` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - Returns: The `size` that was set.
+   - parameter size: The `Size` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - returns: The `size` that was set.
    */
   @discardableResult
   public func setSize(_ size: Size, for key: PropertyKey) -> Size {
@@ -216,10 +216,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The mapped `Size` value.
+   - returns: The mapped `Size` value.
    */
   @inline(__always)
   public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
@@ -229,10 +229,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `viewSize` of the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `viewSize` of the mapped `Size` value.
+   - returns: The `viewSize` of the mapped `Size` value.
    */
   @inline(__always)
   public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
@@ -244,10 +244,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `workspaceSize` of the `Size` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - Parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `workspaceSize` of the mapped `Size` value.
+   - returns: The `workspaceSize` of the mapped `Size` value.
    */
   @inline(__always)
   public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
@@ -259,9 +259,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `UIColor` value to a specific `PropertyKey`.
 
-   - Parameter color: The `UIColor` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
-   - Returns: The `color` that was set.
+   - parameter color: The `UIColor` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
+   - returns: The `color` that was set.
    */
   @discardableResult
   public func setColor(_ color: UIColor?, for key: PropertyKey) -> UIColor? {
@@ -272,10 +272,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `UIColor` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
-   - Parameter defaultValue: [Optional] If no `UIColor` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
+   - parameter defaultValue: [Optional] If no `UIColor` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `key`'s value
+   - returns: The `key`'s value
    */
   @inline(__always)
   public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
@@ -285,9 +285,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `Double` value to a specific `PropertyKey`.
 
-   - Parameter doubleValue: The `Double` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
-   - Returns: The `Double` that was set.
+   - parameter doubleValue: The `Double` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
+   - returns: The `Double` that was set.
    */
   @discardableResult
   public func setDouble(_ doubleValue: Double, for key: PropertyKey) -> Double {
@@ -298,10 +298,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `Double` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
-   - Parameter defaultValue: [Optional] If no `Double` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.ViewAnimationDuration`)
+   - parameter defaultValue: [Optional] If no `Double` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `key`'s value
+   - returns: The `key`'s value
    */
   @inline(__always)
   public func double(for key: PropertyKey, defaultValue: Double = 0) -> Double {
@@ -311,9 +311,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `EdgeInsets` value to a specific `PropertyKey`.
 
-   - Parameter edgeInsets: The `EdgeInsets` value
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - Returns: The `edgeInset` that was set.
+   - parameter edgeInsets: The `EdgeInsets` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - returns: The `edgeInset` that was set.
    */
   @discardableResult
   public func setEdgeInsets(_ edgeInsets: EdgeInsets, for key: PropertyKey) -> EdgeInsets {
@@ -324,10 +324,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `EdgeInsets` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - Parameter defaultValue: [Optional] If no `EdgeInsets` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - parameter defaultValue: [Optional] If no `EdgeInsets` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `key`'s value
+   - returns: The `key`'s value
    */
   @inline(__always)
   public func edgeInsets(for key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
@@ -339,9 +339,9 @@ open class LayoutConfig: NSObject {
   /**
    Maps a `CGFloat` value to a specific `PropertyKey`.
 
-   - Parameter floatValue: The `CGFloat` value
-   - Parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockShadowBrightnessMultiplier`)
-   - Returns: The `CGFloat` that was set.
+   - parameter floatValue: The `CGFloat` value
+   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockShadowBrightnessMultiplier`)
+   - returns: The `CGFloat` that was set.
    */
   @discardableResult
   public func setFloat(_ floatValue: CGFloat, for key: PropertyKey) -> CGFloat {
@@ -352,10 +352,10 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `CGFloat` value that is mapped to a specific `PropertyKey`.
 
-   - Parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldMaximumWidth`)
-   - Parameter defaultValue: [Optional] If no `CGFloat` was found for `key`, this value is
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldMaximumWidth`)
+   - parameter defaultValue: [Optional] If no `CGFloat` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - Returns: The `key`'s value
+   - returns: The `key`'s value
    */
   @inline(__always)
   public func float(for key: PropertyKey, defaultValue: CGFloat = 0) -> CGFloat {
@@ -366,7 +366,7 @@ open class LayoutConfig: NSObject {
    Updates the UIView coordinate system values for all config values that have been stored
    in this instance, by using a given `LayoutEngine`.
 
-   - Parameter engine: The `LayoutEngine` used to update all config values
+   - parameter engine: The `LayoutEngine` used to update all config values
    */
   open func updateViewValues(fromEngine engine: LayoutEngine) {
     for (key, var unit) in _units {

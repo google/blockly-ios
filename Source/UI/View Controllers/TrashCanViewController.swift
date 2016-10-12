@@ -109,8 +109,8 @@ public final class TrashCanViewController: WorkspaceViewController {
   /**
    Sets the height of the workspace view.
 
-   - Parameter height: The new height
-   - Parameter animated: Flag determining if the new height should be animated.
+   - parameter height: The new height
+   - parameter animated: Flag determining if the new height should be animated.
    */
   public func setWorkspaceViewHeight(_ height: CGFloat, animated: Bool) {
     if _viewHeightConstraint == nil {
@@ -134,8 +134,8 @@ public final class TrashCanViewController: WorkspaceViewController {
   /**
    Sets the width of the workspace view.
 
-   - Parameter width: The new width
-   - Parameter animated: Flag determining if the new width should be animated.
+   - parameter width: The new width
+   - parameter animated: Flag determining if the new width should be animated.
    */
   public func setWorkspaceViewWidth(_ width: CGFloat, animated: Bool) {
     if _viewWidthConstraint == nil {

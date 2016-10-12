@@ -62,10 +62,10 @@ public final class DefaultBlockView: BlockView {
    `point`. Unlike the default implementation, default block view will only return itself if the
    `point` lies within the bezier curve of the block.
 
-   - Parameter point: A point specified in the receiver’s local coordinate system (bounds).
-   - Parameter event: The event that warranted a call to this method. If you are calling this method
+   - parameter point: A point specified in the receiver’s local coordinate system (bounds).
+   - parameter event: The event that warranted a call to this method. If you are calling this method
      from outside your event-handling code, you may specify nil.
-   - Returns: The view object that is the farthest descendent the current view and contains `point`.
+   - returns: The view object that is the farthest descendent the current view and contains `point`.
   */
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     let hitTestView = super.hitTest(point, with: event)

@@ -109,8 +109,8 @@ public final class FieldNumber: Field {
   /**
    Initializes the number field.
 
-   - Parameter name: The name of this field.
-   - Parameter value: The initial value of this field.
+   - parameter name: The name of this field.
+   - parameter value: The initial value of this field.
    */
   public init(name: String, value: Double) {
     self.value = value
@@ -144,8 +144,8 @@ public final class FieldNumber: Field {
   /**
    Sets `self.value` from the given text, using the current default locale.
 
-   - Parameter text: The localized text value.
-   - Returns: `true` if the value was set successfully using the localized text, or `false`
+   - parameter text: The localized text value.
+   - returns: `true` if the value was set successfully using the localized text, or `false`
    otherwise.
    */
   @discardableResult
@@ -162,12 +162,12 @@ public final class FieldNumber: Field {
    Sets `self.minimumValue`, `self.maximumValue`, and `self.precision` based on given values,
    forcing `self.value` to conform to these constraints.
 
-   - Parameter minimum: The value to set for `self.minimumValue`.
-   - Parameter maximum: The value to set for `self.maximumValue`. If non-`nil` values are
+   - parameter minimum: The value to set for `self.minimumValue`.
+   - parameter maximum: The value to set for `self.maximumValue`. If non-`nil` values are
    specified for both `minimum` and `maximum`, ensure `maximum >= minimum`.
-   - Parameter precision: The value to set for `self.precision`. If a non-`nil` value is specified,
+   - parameter precision: The value to set for `self.precision`. If a non-`nil` value is specified,
    it must be positive.
-   - Throws:
+   - throws:
    `BlocklyError`: Thrown if invalid parameter values are passed for constraints. 
    */
   public func setConstraints(minimum: Double?, maximum: Double?, precision: Double?) throws
@@ -308,10 +308,10 @@ public final class FieldNumber: Field {
   /**
    Parses given text into a `Double` value, using a given `NSNumberFormatter`.
 
-   - Parameter text: The text to parse
-   - Parameter numberFormatter: The number formatter to parse the text
-   - Returns: The parsed value
-   - Throws:
+   - parameter text: The text to parse
+   - parameter numberFormatter: The number formatter to parse the text
+   - returns: The parsed value
+   - throws:
    `BlocklyError`: Thrown if the text value could not be parsed into a valid `Double`.
    */
   fileprivate func valueFromText(_ text: String, numberFormatter: NumberFormatter) throws

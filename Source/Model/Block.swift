@@ -23,7 +23,7 @@ public protocol BlockDelegate: class {
   /**
    Event that is fired when one of a block's properties has changed.
 
-   - Parameter block: The `Block` that changed.
+   - parameter block: The `Block` that changed.
    */
   func didUpdate(block: Block)
 }
@@ -72,7 +72,7 @@ public final class Block : NSObject {
     return nextConnection?.shadowBlock
   }
   /// The `.PreviousStatement` connection for this block
-  /// - Note: A block may only have one non-nil `self.outputConnection` or `self.previousConnection`
+  /// - note: A block may only have one non-nil `self.outputConnection` or `self.previousConnection`
   public let previousConnection: Connection?
   /// Convenience property for accessing `self.previousConnection?.targetBlock`
   public var previousBlock: Block? {
@@ -246,7 +246,7 @@ public final class Block : NSObject {
   follows the input to the next block or returns the input value connection if it's the last block.
   Nil is returned if any block in the chain has no or multiple input values.
   
-  - Returns: The last input connection in the chain, or nil if none could be found.
+  - returns: The last input connection in the chain, or nil if none could be found.
   */
   public func lastInputValueConnectionInChain() -> Connection? {
     var currentBlock = self
@@ -268,7 +268,7 @@ public final class Block : NSObject {
    Follows all input and next connections starting from this block and returns all blocks connected
    to this block, including this block.
 
-   - Returns: A list of all blocks connected to this block, including this block.
+   - returns: A list of all blocks connected to this block, including this block.
    */
   public func allBlocksForTree() -> [Block] {
     var blocks = [self]
@@ -299,8 +299,8 @@ public final class Block : NSObject {
   /**
    Finds the first input with a given name.
 
-   - Parameter name: The input name
-   - Returns: The first input with that name or nil.
+   - parameter name: The input name
+   - returns: The first input with that name or nil.
    */
   public func firstInput(withName name: String) -> Input? {
     if name == "" {
@@ -317,8 +317,8 @@ public final class Block : NSObject {
   /**
    Finds the first field with a given name.
 
-   - Parameter name: The field name
-   - Returns: The first field with that name or nil.
+   - parameter name: The field name
+   - returns: The first field with that name or nil.
    */
   public func firstField(withName name: String) -> Field? {
     if name == "" {
@@ -337,8 +337,8 @@ public final class Block : NSObject {
   /**
    Copies this block and all of the blocks connected to it through its input or next connections.
 
-   - Returns: A `BlockTree` tuple of the copied block tree.
-   - Throws:
+   - returns: A `BlockTree` tuple of the copied block tree.
+   - throws:
    `BlocklyError`: Thrown if copied blocks could not be connected to each other.
    */
   public func deepCopy() throws -> BlockTree {
@@ -414,7 +414,7 @@ public final class Block : NSObject {
   // MARK: - Internal - For testing only
 
   /**
-  - Returns: The only value input on the block, or null if there are zero or more than one.
+  - returns: The only value input on the block, or null if there are zero or more than one.
   */
   internal func onlyValueInput() -> Input? {
     var valueInput: Input?
@@ -451,9 +451,9 @@ public final class Block : NSObject {
    }
    ```
 
-   - Parameter editableProperty: The instance property that had been set
-   - Parameter oldValue: The old value of the instance property
-   - Returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   - parameter editableProperty: The instance property that had been set
+   - parameter oldValue: The old value of the instance property
+   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
   public func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
@@ -483,9 +483,9 @@ public final class Block : NSObject {
    }
    ```
 
-   - Parameter property: The instance property that had been set
-   - Parameter oldValue: The old value of the instance property
-   - Returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
+   - parameter property: The instance property that had been set
+   - parameter oldValue: The old value of the instance property
+   - returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
   public func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {

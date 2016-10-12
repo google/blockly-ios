@@ -27,8 +27,8 @@ public protocol WorkspaceViewControllerDelegate {
   /**
    Called when a new `BlockView` is added to a `WorkspaceViewController`.
 
-   - Parameter workspaceViewController: The `WorkspaceViewController` where the block was added.
-   - Parameter blockView: The `BlockView` that was added to the workspace.
+   - parameter workspaceViewController: The `WorkspaceViewController` where the block was added.
+   - parameter blockView: The `BlockView` that was added to the workspace.
    */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
@@ -36,8 +36,8 @@ public protocol WorkspaceViewControllerDelegate {
   /**
    Called when a new `BlockView` is removed from a `WorkspaceViewController`.
 
-   - Parameter workspaceViewController: The `WorkspaceViewController` where the block was removed.
-   - Parameter blockView: The `BlockView` that was removed from the workspace.
+   - parameter workspaceViewController: The `WorkspaceViewController` where the block was removed.
+   - parameter blockView: The `BlockView` that was removed from the workspace.
    */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
@@ -51,8 +51,8 @@ public protocol WorkspaceViewControllerDelegate {
   /**
    Called when the `WorkspaceViewController` is about to present a view controller.
 
-   - Parameter workspaceViewController: The `WorkspaceViewController` presenting a view controller.
-   - Parameter willPresentViewController: The `UIViewController` about to be presented.
+   - parameter workspaceViewController: The `WorkspaceViewController` presenting a view controller.
+   - parameter willPresentViewController: The `UIViewController` about to be presented.
    */
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
@@ -60,7 +60,7 @@ public protocol WorkspaceViewControllerDelegate {
   /**
    Called when the `WorkspaceViewController` was dismissed.
 
-   - Parameter workspaceViewController: The `WorkspaceViewController` that was dismissed.
+   - parameter workspaceViewController: The `WorkspaceViewController` that was dismissed.
    */
   func workspaceViewControllerDismissedViewController(
     _ workspaceViewController: WorkspaceViewController)
@@ -103,7 +103,7 @@ open class WorkspaceViewController: UIViewController {
   /**
    Initializer.
 
-   - Parameter viewFactory: The `ViewFactory` that should be used when creating the
+   - parameter viewFactory: The `ViewFactory` that should be used when creating the
    view hierarchy for a workspace.
    */
   public init(viewFactory: ViewFactory) {
@@ -133,7 +133,7 @@ open class WorkspaceViewController: UIViewController {
    Loads the workspace associated with a workspace layout coordinator, automatically creating all
    views required to render the workspace.
 
-   - Parameter workspaceLayoutCoordinator: A `WorkspaceLayoutCoordinator`.
+   - parameter workspaceLayoutCoordinator: A `WorkspaceLayoutCoordinator`.
    */
   open func loadWorkspaceLayoutCoordinator(
     _ workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?) throws

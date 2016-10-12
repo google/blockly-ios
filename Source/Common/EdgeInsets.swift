@@ -16,7 +16,7 @@
 /**
  Defines inset distances for views/layouts, that allows for both LTR and RTL layouts.
 
- - Note: To determine whether the current device is in LTR or RTL, this class uses
+ - note: To determine whether the current device is in LTR or RTL, this class uses
  `UIApplication.shared.userInterfaceLayoutDirection`.
  */
 public typealias EdgeInsets = BKYEdgeInsets
@@ -48,11 +48,11 @@ extension EdgeInsets {
   /**
    Creates edge insets, with given values for each edge.
 
-   - Parameter top: Top edge inset
-   - Parameter leading: Leading edge inset
-   - Parameter bottom: Bottom edge inset
-   - Parameter trailing: Trailing edge inset
-   - Returns: A `BKYEdgeInsets`.
+   - parameter top: Top edge inset
+   - parameter leading: Leading edge inset
+   - parameter bottom: Bottom edge inset
+   - parameter trailing: Trailing edge inset
+   - returns: A `BKYEdgeInsets`.
    */
   public init(_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) {
     self.top = top

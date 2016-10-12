@@ -36,9 +36,9 @@ open class FieldColorLayout: FieldLayout {
   /**
    Initializes the color field layout.
 
-   - Parameter fieldColor: The `FieldColor` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with the new layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldColor: The `FieldColor` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with the new layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(fieldColor: FieldColor, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldColor = fieldColor
@@ -61,7 +61,7 @@ open class FieldColorLayout: FieldLayout {
    Updates `self.fieldColor` from the given value. If the value was changed, the layout tree
    is updated to reflect the change.
 
-   - Parameter color: The value used to update `self.fieldColor`.
+   - parameter color: The value used to update `self.fieldColor`.
    */
   open func updateColor(_ color: UIColor) {
     // Setting to a new color automatically fires a listener to update the layout

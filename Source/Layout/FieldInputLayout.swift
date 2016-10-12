@@ -36,9 +36,9 @@ open class FieldInputLayout: FieldLayout {
   /**
    Initializes the input field layout.
 
-   - Parameter fieldInput: The `FieldInput` model for this layout.
-   - Parameter engine: The `LayoutEngine` to associate with this layout.
-   - Parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
+   - parameter fieldInput: The `FieldInput` model for this layout.
+   - parameter engine: The `LayoutEngine` to associate with this layout.
+   - parameter measurer: The `FieldLayoutMeasurer.Type` to measure this layout.
    */
   public init(fieldInput: FieldInput, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldInput = fieldInput
@@ -62,7 +62,7 @@ open class FieldInputLayout: FieldLayout {
    Updates `self.fieldInput` from the given value. If the value was changed, the layout tree
    is updated to reflect the change.
 
-   - Parameter text: The value used to update `self.fieldInput`.
+   - parameter text: The value used to update `self.fieldInput`.
    */
   open func updateText(_ text: String) {
     // Setting to new text automatically fires a listener to update the layout
