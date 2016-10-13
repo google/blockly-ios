@@ -80,7 +80,12 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 @property(nonatomic) BKYWorkspace *workspace;
 /// Factory that produces block instances from a parsed json file.
 @property(nonatomic) BKYBlockFactory *blockFactory;
+/// The play/cancel button
+@property(nonatomic) UIButton *playButton;
 
+
+/// Flag indicating whether the code is currently running.
+@property (nonatomic) Boolean currentlyRunning;
 /// Flag indicating whether highlighting a block is enabled.
 @property (nonatomic) Boolean allowBlockHighlighting;
 /// Flag indicating whether scrolling a block into view is enabled.
@@ -251,31 +256,38 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 }
 
 - (IBAction)didPressPlayButton:(UIButton *)sender {
-  // Cancel pending requests
-  [_codeGeneratorService cancelAllRequests];
+  if (self.currentlyRunning) {
+    [_webView evaluateJavaScript:@"Turtle.cancel()" completionHandler:nil];
+  } else {
+    // Cancel pending requests
+    [_codeGeneratorService cancelAllRequests];
 
-  // Reset the turtle
-  [self resetTurtleCode];
+    // Reset the turtle
+    [self resetTurtleCode];
 
-  self.codeText.text = @"";
-  [self addTimestampedText:@"Generating code..."];
+    self.codeText.text = @"";
+    [self addTimestampedText:@"Generating code..."];
 
-  // Request code generation for the workspace
-  NSError *error;
-  BKYCodeGeneratorServiceRequest *request =
-    [_requestBuilder makeRequestForWorkspace:self.workspace error:&error];
-  __weak __typeof(self) weakSelf = self;
-  request.onCompletion = ^(NSString *code) {
-    [weakSelf codeGenerationCompletionWithCode:code];
-  };
-  request.onError =  ^(NSString *error) {
-    [weakSelf codeGenerationFailedWithError:error];
-  };
+    // Request code generation for the workspace
+    NSError *error;
+    BKYCodeGeneratorServiceRequest *request =
+      [_requestBuilder makeRequestForWorkspace:self.workspace error:&error];
+    __weak __typeof(self) weakSelf = self;
+    request.onCompletion = ^(NSString *code) {
+      [weakSelf codeGenerationCompletionWithCode:code];
+    };
+    request.onError =  ^(NSString *error) {
+      [weakSelf codeGenerationFailedWithError:error];
+    };
 
-  if ([self handleError:error]) {
-    return;
+    if ([self handleError:error]) {
+      return;
+    }
+    [_codeGeneratorService generateCodeForRequest:request];
+
+    [self.playButton setImage:[UIImage imageNamed:@"cancel_button"] forState:UIControlStateNormal];
+    self.currentlyRunning = true;
   }
-  [_codeGeneratorService generateCodeForRequest:request];
 }
 
 - (void)codeGenerationCompletionWithCode:(NSString *)code {
@@ -288,6 +300,13 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 - (void)codeGenerationFailedWithError:(NSString *)error {
   [self addTimestampedText:
     [NSString stringWithFormat:@"An error occurred:\n\n====ERROR====\n\n%@", error]];
+
+  [self resetPlayButton];
+}
+
+- (void)resetPlayButton {
+  self.currentlyRunning = NO;
+  [self.playButton setImage:[UIImage imageNamed:@"play_button"] forState:UIControlStateNormal];
 }
 
 - (void)runCode:(NSString *)code {
@@ -354,6 +373,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
       [_workbenchViewController unhighlightBlockWithBlockUUID:blockID];
       _lastHighlightedBlockUUID = blockID;
     }
+  } else if ([method isEqualToString:@"finishExecution"]) {
+    [self resetPlayButton];
   } else {
     NSLog(@"Unrecognized method");
   }

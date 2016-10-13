@@ -32,6 +32,8 @@ Turtle.WIDTH = 400;
  */
 Turtle.pid = 0;
 
+Turtle.cancelled = false;
+
 /**
  * Should the turtle be drawn?
  */
@@ -84,6 +86,8 @@ Turtle.reset = function() {
 
   // Reset the log
   Turtle.log = []
+
+  Turtle.cancelled = false
 };
 
 /**
@@ -168,8 +172,9 @@ Turtle.animate = function() {
   Turtle.pid = 0;
 
   var tuple = Turtle.log.shift();
-  if (!tuple) {
+  if (!tuple || Turtle.cancelled) {
     Turtle._unhighlightLastBlock()
+    Turtle._finishExecution()
     return;
   }
   var command = tuple.shift();
@@ -180,6 +185,10 @@ Turtle.animate = function() {
   var stepSpeed = 1000 * Math.pow(1 - 2, 2);
   Turtle.pid = window.setTimeout(Turtle.animate, stepSpeed);
 };
+
+Turtle.cancel = function() {
+  Turtle.cancelled = true;
+}
 
 /**
  * Execute one step.
@@ -310,4 +319,10 @@ Turtle._unhighlightLastBlock = function() {
   // Send callback message to iOS to unhighlight the last highlighted block
   window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
     { method: "unhighlightLastBlock" });
+}
+
+Turtle._finishExecution = function() {
+  // Send callback message to iOS to finish execution
+  window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
+    { method: "finishExecution" });
 }
