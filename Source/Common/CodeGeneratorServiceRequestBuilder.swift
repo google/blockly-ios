@@ -30,12 +30,6 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
   open private(set) var jsBlockGeneratorFiles = [BundledFile]()
   /// List of JSON files containing block definitions that should be used for each request
   open private(set) var jsonBlockDefinitionFiles = [BundledFile]()
-  /// Callback that is executed when code generation completes successfully. This is always
-  /// executed on the main thread.
-  open var onCompletion: CodeGeneratorServiceRequest.CompletionClosure?
-  /// Callback that is executed when code generation fails. This is always executed on the main
-  /// thread.
-  open var onError: CodeGeneratorServiceRequest.ErrorClosure?
 
   // MARK: - Initializers
 
@@ -114,7 +108,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
       workspaceXML: workspaceXML, jsGeneratorObject: jsGeneratorObject,
       jsBlockGeneratorFiles: jsBlockGeneratorFiles,
       jsonBlockDefinitionFiles: jsonBlockDefinitionFiles,
-      onCompletion: onCompletion, onError: onError)
+      onCompletion: nil, onError: nil)
   }
 
   /**

@@ -252,7 +252,6 @@ open class WorkbenchViewController: UIViewController {
     let tapGesture =
       UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
     workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
-    addChildViewController(workspaceViewController)
 
     // Create trash can button
     let trashCanView = TrashCanView(imageNamed: "trash_can")
@@ -265,17 +264,14 @@ open class WorkbenchViewController: UIViewController {
       engine: engine, layoutBuilder: layoutBuilder, layoutDirection: style.trashLayoutDirection,
       viewFactory: viewFactory)
     _trashCanViewController.delegate = self
-    addChildViewController(_trashCanViewController)
 
     // Set up toolbox category list view controller
     _toolboxCategoryListViewController = ToolboxCategoryListViewController(
       orientation: style.toolboxOrientation)
     _toolboxCategoryListViewController.delegate = self
-    addChildViewController(_toolboxCategoryListViewController)
 
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
-    addChildViewController(toolboxCategoryViewController)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -299,6 +295,12 @@ open class WorkbenchViewController: UIViewController {
     self.view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
     self.view.autoresizesSubviews = true
     self.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+    // Add child view controllers
+    addChildViewController(workspaceViewController)
+    addChildViewController(_trashCanViewController)
+    addChildViewController(_toolboxCategoryListViewController)
+    addChildViewController(toolboxCategoryViewController)
 
     // Set up auto-layout constraints
     let trashCanPadding = CGFloat(25)
@@ -376,6 +378,12 @@ open class WorkbenchViewController: UIViewController {
     let trashGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     trashGesture.delegate = self
     _trashCanViewController.view.addGestureRecognizer(trashGesture)
+
+    // Signify to view controllers that they've been moved to this parent
+    workspaceViewController.didMove(toParentViewController: self)
+    _trashCanViewController.didMove(toParentViewController: self)
+    _toolboxCategoryListViewController.didMove(toParentViewController: self)
+    toolboxCategoryViewController.didMove(toParentViewController: self)
 
     // Create a default workspace, if one doesn't already exist
     if workspace == nil {
@@ -765,16 +773,13 @@ extension WorkbenchViewController {
   public func copyBlockToWorkspace(_ blockView: BlockView) -> BlockView? {
     // The block the user is dragging out of the toolbox/trash may be a child of a large nested
     // block. We want to do a deep copy on the root block (not just the current block).
-    guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0]
+    guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0],
+      // TODO:(#45) This should be copying the root block layout, not the root block view.
+      let rootBlockView = ViewManager.sharedInstance.findBlockView(forLayout: rootBlockLayout)
       else
     {
       return nil
     }
-
-    // TODO:(#45) This should be copying the root block layout, not the root block view.
-    let rootBlockView: BlockView! =
-      ViewManager.sharedInstance.findBlockView(forLayout: rootBlockLayout)
-
 
     // Copy the block view into the workspace view
     let newBlockView: BlockView

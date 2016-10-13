@@ -27,8 +27,8 @@ public final class ViewManager: NSObject {
 
   // MARK: - Properties
 
-  /// Dictionary mapping instances of `LayoutView` keyed by their `layout.uuid`
-  private var _views = [String: LayoutView]()
+  /// Dictionary that indexes weak `LayoutView` references based on their `layout.uuid`
+  private var _views: NSMapTable<NSString, LayoutView> = NSMapTable.strongToWeakObjects()
 
   // MARK: - Public
 
@@ -39,7 +39,7 @@ public final class ViewManager: NSObject {
    - parameter layout: The `Layout` associated with the view
    */
   public func cacheView(_ layoutView: LayoutView, forLayout layout: Layout) {
-    _views[layout.uuid] = layoutView
+    _views.setObject(layoutView, forKey: layout.uuid as NSString?)
   }
 
   /**
@@ -48,7 +48,7 @@ public final class ViewManager: NSObject {
    - parameter layout: The given layout
    */
   public func uncacheView(forLayout layout: Layout) {
-    _views[layout.uuid] = nil
+    _views.removeObject(forKey: layout.uuid as NSString?)
   }
 
   /**
@@ -59,7 +59,7 @@ public final class ViewManager: NSObject {
    - returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
    */
   public func findBlockView(forLayout layout: BlockLayout) -> BlockView? {
-    return (_views[layout.uuid] as? BlockView) ?? nil
+    return (findView(forLayout: layout) as? BlockView) ?? nil
   }
 
   /**
@@ -70,7 +70,7 @@ public final class ViewManager: NSObject {
    - returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
    */
   public func findFieldView(forLayout layout: FieldLayout) -> FieldView? {
-    return (_views[layout.uuid] as? FieldView) ?? nil
+    return (findView(forLayout: layout) as? FieldView) ?? nil
   }
 
   /**
@@ -80,7 +80,8 @@ public final class ViewManager: NSObject {
    - parameter layout: The `Layout` to look for
    - returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
    */
+  @inline(__always)
   public func findView(forLayout layout: Layout) -> LayoutView? {
-    return _views[layout.uuid]
+    return _views.object(forKey: layout.uuid as NSString?)
   }
 }

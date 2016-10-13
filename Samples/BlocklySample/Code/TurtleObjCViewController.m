@@ -18,6 +18,48 @@
 #import <Blockly/Blockly.h>
 #import <Blockly/Blockly-Swift.h>
 
+
+// MARK: - ScriptMessageHandler Class
+
+/**
+ Because WKUserContentController makes a strong retain cycle to its delegate, we create an
+ intermediary object here to act as a delegate so we can more easily break a potential retain cycle
+ between WKUserContentController and TurtleObjCViewController.
+ */
+@interface ScriptMessageHandler : NSObject <WKScriptMessageHandler>
+
+@property(nonatomic, weak) id<WKScriptMessageHandler> delegate;
+
+- (id)initWithDelegate:(id<WKScriptMessageHandler>)delegate;
+
+@end
+
+
+@implementation ScriptMessageHandler
+
+- (id)initWithDelegate:(id<WKScriptMessageHandler>)delegate {
+  self = [super init];
+  if (self) {
+    self.delegate = delegate;
+  }
+  return self;
+}
+
+- (void)userContentController:(WKUserContentController *)userContentController
+      didReceiveScriptMessage:(WKScriptMessage *)message
+{
+  // Call "real" delegate (which is TurtleObjCViewController)
+  [self.delegate userContentController:userContentController didReceiveScriptMessage:message];
+}
+
+@end
+
+// MARK: - TurtleObjCViewController Class
+
+/// The callback name to access this object from the JS code.
+/// See "turtle/turtle.js" for an example of its usage.
+NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewControllerCallback";
+
 /**
  Demo app for using blocks to move a cute little turtle, in Objective-C.
  */
@@ -77,19 +119,13 @@
     @"Turtle/blockly_web/blocks_compressed.js",
     @"Turtle/blockly_web/msg/js/en.js"]];
 
+  // Create the builder for creating code generator service requests
   self.requestBuilder =
-  [[BKYCodeGeneratorServiceRequestBuilder alloc] initWithJSGeneratorObject:@"Blockly.JavaScript"];
+    [[BKYCodeGeneratorServiceRequestBuilder alloc] initWithJSGeneratorObject:@"Blockly.JavaScript"];
   [_requestBuilder addJSBlockGeneratorFiles:@[@"Turtle/blockly_web/javascript_compressed.js",
                                               @"Turtle/generators.js"]];
   [_requestBuilder addJSONBlockDefinitionFilesFromDefaultFiles:BKYBlockJSONFileAllDefault];
   [_requestBuilder addJSONBlockDefinitionFiles:@[@"Turtle/turtle_blocks.json"]];
-  __weak TurtleObjCViewController *weakSelf = self;
-  _requestBuilder.onCompletion = ^(NSString *code) {
-    [weakSelf codeGenerationCompletionWithCode:code];
-  };
-  _requestBuilder.onError =  ^(NSString *error) {
-    [weakSelf codeGenerationFailedWithError:error];
-  };
 
   _dateFormatter = [[NSDateFormatter alloc] init];
   _dateFormatter.dateFormat = @"HH:mm:ss.SSS";
@@ -100,6 +136,8 @@
 - (void)dealloc {
   // If the turtle code is currently executing, reset it before deallocating.
   [_webView stopLoading];
+  [_webView.configuration.userContentController
+    removeScriptMessageHandlerForName:TurtleObjCViewController_JSCallbackName];
   [self resetTurtleCode];
   [_codeGeneratorService cancelAllRequests];
 }
@@ -111,14 +149,17 @@
 
   NSError *error;
 
+  // Don't allow the navigation controller bar cover this view controller
   self.edgesForExtendedLayout = UIRectEdgeNone;
   self.navigationItem.title = @"Objective-C Turtle Demo";
 
+  // Load the block editor
   _workbenchViewController =
     [[BKYWorkbenchViewController alloc] initWithStyle:BKYWorkbenchViewControllerStyleAlternate];
   _workbenchViewController.delegate = self;
+  _workbenchViewController.toolboxDrawerStaysOpen = YES;
 
-  // Create workspace
+  // Create a workspace
   _workspace = [[BKYWorkspace alloc] init];
 
   [_workbenchViewController loadWorkspace:_workspace error:&error];
@@ -152,16 +193,20 @@
     return;
   }
 
+  [self addChildViewController:_workbenchViewController];
   self.editorView.autoresizesSubviews = true;
   _workbenchViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight |
                                                    UIViewAutoresizingFlexibleWidth;
   _workbenchViewController.view.frame = self.editorView.bounds;
   [self.editorView addSubview:_workbenchViewController.view];
-  [self addChildViewController:_workbenchViewController];
+  [_workbenchViewController didMoveToParentViewController:self];
 
-  // Programmatically create WKWebView and configure it with a JS callback.
+  // Programmatically create WKWebView and configure it with a hook so the JS code can callback
+  // into the iOS code.
+  ScriptMessageHandler *handler = [[ScriptMessageHandler alloc] initWithDelegate: self];
   WKUserContentController *userContentController = [[WKUserContentController alloc] init];
-  [userContentController addScriptMessageHandler:self name:@"TurtleViewControllerCallback"];
+  [userContentController addScriptMessageHandler:handler
+                                            name:TurtleObjCViewController_JSCallbackName];
 
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
   configuration.userContentController = userContentController;
@@ -177,6 +222,7 @@
   NSURL *url = [[NSBundle mainBundle] URLForResource:@"Turtle/turtle" withExtension:@"html"];
   [_webView loadRequest:[NSURLRequest requestWithURL:url]];
 
+  // Make things a bit prettier
   _webView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
   _webView.layer.borderWidth = 1;
   self.codeText.superview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
@@ -205,16 +251,27 @@
 }
 
 - (IBAction)didPressPlayButton:(UIButton *)sender {
+  // Cancel pending requests
   [_codeGeneratorService cancelAllRequests];
 
+  // Reset the turtle
   [self resetTurtleCode];
 
   self.codeText.text = @"";
   [self addTimestampedText:@"Generating code..."];
 
+  // Request code generation for the workspace
   NSError *error;
   BKYCodeGeneratorServiceRequest *request =
     [_requestBuilder makeRequestForWorkspace:self.workspace error:&error];
+  __weak __typeof(self) weakSelf = self;
+  request.onCompletion = ^(NSString *code) {
+    [weakSelf codeGenerationCompletionWithCode:code];
+  };
+  request.onError =  ^(NSString *error) {
+    [weakSelf codeGenerationFailedWithError:error];
+  };
+
   if ([self handleError:error]) {
     return;
   }
@@ -234,9 +291,12 @@
 }
 
 - (void)runCode:(NSString *)code {
+  // Allow block highlighting and scrolling a block into view (it can only be disabled by explicit
+  // user interaction)
   _allowBlockHighlighting = YES;
   _allowScrollingToBlockView = YES;
 
+  // Run the generated code in the web view by calling `Turtle.execute(<code>)`
   NSString *escapedString = [self escapedJSString:code];
   __weak TurtleObjCViewController *weakSelf = self;
   void (^onCompletion)(id, NSError *error) =
