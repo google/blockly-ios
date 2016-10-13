@@ -32,7 +32,7 @@ public final class InputBuilder: NSObject {
   public var name: String
   /// Specifies whether this `Input` is visible. Defaults to `true`.
   public var visible: Bool = true
-  /// Specifies the alignment for the `Input`. Defaults to `BKYInputAlignment.Left`.
+  /// Specifies the alignment for the `Input`. Defaults to `Input.Alignment.Left`.
   public var alignment: Input.Alignment = Input.Alignment.left
   /// A list of `Field` objects for the `Input`. Defaults to `[]`.
   public fileprivate(set) var fields: [Field] = []

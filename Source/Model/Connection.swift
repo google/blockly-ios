@@ -57,15 +57,15 @@ public final class Connection : NSObject {
 
   // NOTE: If OPPOSITE_TYPES is updated, also update ConnectionManager's matchingLists and
   // oppositeLists arrays.
-  /// Specifies which `BKYConnectionType` a `BKYConnectionType` is compatible with.
-  public static let OPPOSITE_TYPES: [BKYConnectionType] =
+  /// Specifies which `ConnectionType` a `ConnectionType` is compatible with.
+  public static let OPPOSITE_TYPES: [ConnectionType] =
   [.nextStatement, .previousStatement, .outputValue, .inputValue]
 
   // MARK: - Enum - ConnectionType
 
   /// Represents all possible types of connections.
-  @objc
-  public enum BKYConnectionType: Int {
+  @objc(BKYConnectionType)
+  public enum ConnectionType: Int {
     /// Specifies the connection is a previous connection.
     case previousStatement = 0,
       /// Specifies the connection is a next connection.
@@ -75,7 +75,6 @@ public final class Connection : NSObject {
       /// Specifies the connection is an output connection.
       outputValue
   }
-  public typealias ConnectionType = BKYConnectionType
 
   // MARK: - Enum - CheckResultType
 
@@ -94,8 +93,8 @@ public final class Connection : NSObject {
       CheckResult(value: .reasonInferiorBlockShadowMismatch)
 
     /// Specific reasons why two connections are able or unable connect
-    @objc
-    public enum BKYConnectionCheckResultValue: Int {
+    @objc(BKYConnectionCheckResultValue)
+    public enum Value: Int {
       case canConnect = 1, reasonSelfConnection, reasonWrongType, reasonMustDisconnect,
       reasonTargetNull, reasonShadowNull, reasonTypeChecksFailed, reasonCannotSetShadowForTarget,
       reasonInferiorBlockShadowMismatch
@@ -123,9 +122,6 @@ public final class Connection : NSObject {
         }
       }
     }
-
-    /// Specific reasons why two connections are able or unable connect
-    public typealias Value = BKYConnectionCheckResultValue
 
     ///  The underlying raw value for the `CheckResult`.
     public let rawValue : Int
@@ -181,7 +177,7 @@ public final class Connection : NSObject {
   /// A globally unique identifier
   public let uuid: String
   /// The connection type
-  public let type: BKYConnectionType
+  public let type: ConnectionType
   /// The block that holds this connection
   public weak var sourceBlock: Block!
   /// If this connection belongs to a value or statement input, this is its source
@@ -258,10 +254,10 @@ public final class Connection : NSObject {
   /**
    Creates a `Connection`.
 
-   - parameter type: The `BKYConnectionType` of this connection.
+   - parameter type: The `ConnectionType` of this connection.
    - parameter sourceInput: [Optional] The source input for the `Connection`. Defaults to `nil`.
    */
-  public init(type: BKYConnectionType, sourceInput: Input? = nil) {
+  public init(type: Connection.ConnectionType, sourceInput: Input? = nil) {
     self.uuid = UUID().uuidString
     self.type = type
     self.sourceInput = sourceInput

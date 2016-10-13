@@ -65,8 +65,8 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /**
    The states of the individual touches in the `BlocklyPanGestureRecognizer`
    */
-  @objc
-  public enum BKYBlocklyPanGestureRecognizerTouchState: Int {
+  @objc(BKYBlocklyPanGestureRecognizerTouchState)
+  public enum TouchState: Int {
     /// Specifies an individual touch has just begun on a `BlockView`
     case began = 0,
       /// Specifies an individual touch has just changed on a `BlockView`
@@ -74,7 +74,6 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
       /// Specifies an individual touch has just ended on a `BlockView`
       ended
   }
-  public typealias TouchState = BKYBlocklyPanGestureRecognizerTouchState
 
   /// TODO:(#176) - Replace maximumTouches
 

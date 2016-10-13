@@ -25,16 +25,13 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
   // MARK: -  LayoutDirection Enum
 
   /// Defines how consecutive block trees should be laid out relative to each other
-  @objc
-  public enum BKYWorkspaceFlowLayoutDirection: Int {
+  @objc(BKYWorkspaceFlowLayoutDirection)
+  public enum LayoutDirection: Int {
     /// Consecutive block trees will be laid out horizontally.
     case horizontal,
       /// Consecutive block trees will be laid out vertically.
       vertical
   }
-
-  /// Defines how consecutive block trees should be laid out relative to each other
-  public typealias LayoutDirection = BKYWorkspaceFlowLayoutDirection
 
   // MARK: - Properties
 
