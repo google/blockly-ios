@@ -70,8 +70,7 @@ open class FieldVariableView: FieldView {
           fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
         dropDownView.borderCornerRadius =
           fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
-        // TODO:(#27) Standardize this font
-        dropDownView.textFont = UIFont.systemFont(ofSize: 14 * fieldVariableLayout.engine.scale)
+        dropDownView.textFont = fieldVariableLayout.config.font(for: LayoutConfig.GlobalFont)
       }
     }
   }
@@ -109,8 +108,7 @@ extension FieldVariableView: FieldLayoutMeasurer {
     let xSpacing = layout.config.viewUnit(for: LayoutConfig.InlineXPadding)
     let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
     let measureText = fieldVariableLayout.variable
-    // TODO:(#27) Standardize this font
-    let font = UIFont.systemFont(ofSize: 14 * scale)
+    let font = layout.config.font(for: LayoutConfig.GlobalFont)
 
     return DropdownView.measureSize(
       text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
@@ -129,8 +127,11 @@ extension FieldVariableView: DropdownViewDelegate {
 
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
-    // TODO:(#27) Standardize this font
-    viewController.textLabelFont = UIFont.systemFont(ofSize: 18)
+
+    if let fontCreator = fieldVariableLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
+      // Use a scaled font, but don't let the scale go less than 1.0
+      viewController.textLabelFont = fontCreator(max(fieldVariableLayout.engine.scale, 1.0))
+    }
 
     // Populate options
     let options = fieldVariableLayout.variables
