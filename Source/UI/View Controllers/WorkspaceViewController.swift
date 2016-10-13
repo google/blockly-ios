@@ -42,11 +42,11 @@ public protocol WorkspaceViewControllerDelegate {
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
 
-  /// TODO:(#135) The following two methods only exist right now so that the state can be updated in
-  /// `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
-  /// that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
-  /// can change state behaviour. Once state handling has been refactored, these two methods can be
-  /// deleted.
+  // TODO:(#135) The following two methods only exist right now so that the state can be updated in
+  // `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
+  // that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
+  // can change state behaviour. Once state handling has been refactored, these two methods can be
+  // deleted.
 
   /**
    Called when the `WorkspaceViewController` is about to present a view controller.
