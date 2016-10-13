@@ -75,7 +75,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
       ended
   }
 
-  /// TODO:(#176) - Replace maximumTouches
+  // TODO:(#176) Replace maximumTouches
 
   /// Maximum number of touches handled by the recognizer
   open var maximumTouches = Int.max

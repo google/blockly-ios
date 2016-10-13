@@ -199,7 +199,7 @@ public final class DefaultBlockLayout: BlockLayout {
       _nextConnectionRelativePosition =
         WorkspacePoint(x: notchXOffset, y: blockBottomEdge + notchHeight)
 
-      /// TODO:(#41) Make the size.height a property of self.background
+      // TODO:(#41) Make the size.height a property of self.background
       /// Create room to draw the notch height at the bottom
       size.height += notchHeight
     }
