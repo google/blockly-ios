@@ -30,12 +30,12 @@ class ObjectPoolTest: XCTestCase {
 
     // Check they were recycled
     for _ in 0 ..< cokeCans.count {
-      let recycledCan = pool.objectForType(CokeCan.self)
+      let recycledCan = pool.object(forType: CokeCan.self)
       XCTAssertTrue(recycledCan.recycled)
     }
 
     // Get a new one, which should not have been recycled
-    let freshOne = pool.objectForType(CokeCan.self)
+    let freshOne = pool.object(forType: CokeCan.self)
     XCTAssertFalse(freshOne.recycled)
   }
 
@@ -51,7 +51,7 @@ class ObjectPoolTest: XCTestCase {
       }
 
       for _ in 0 ..< count {
-        _ = pool.recyclableObjectForType(CokeCan.self)
+        _ = pool.object(forType: CokeCan.self)
       }
     }
   }

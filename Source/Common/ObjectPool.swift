@@ -21,11 +21,6 @@ import Foundation
 @objc(BKYRecyclable)
 public protocol Recyclable: class {
   /**
-   Instantiates a new instance of the recyclable class.
-   */
-  init()
-
-  /**
    Reset the object to a fresh state, releasing and recycling any resources associated with this
    object.
 
@@ -53,33 +48,19 @@ public final class ObjectPool: NSObject {
   /**
   If a recycled object is available for re-use, that object is returned.
 
-  If not, a new object of the given `Recyclable.Type` is instantiated.
+  If not, a new object of the given type is instantiated.
 
-  - parameter type: The type of `Recyclable` object to retrieve.
+
+  - parameter type: The `Type` of object to retrieve.
   - note: Objects obtained through this method should be recycled through `recycleObject(:)`.
-  - returns: An object of the given type.
+  - returns: An object of the given `type`.
   */
-  public func objectForType<T: Recyclable>(_ type: T.Type) -> T {
-    // Force cast Recyclable back into the concrete "T" type
-    return recyclableObjectForType(type) as! T
-  }
-
-  /**
-   If a recycled object is available for re-use, that object is returned.
-
-   If not, a new object of the given `Recyclable.Type` is instantiated.
-
-   - parameter type: The type of `Recyclable` object to retrieve.
-   - note: Objects obtained through this method should be recycled through `recycleObject(:)`.
-   - Warning: This method should only be called by Objective-C code. Swift code should use
-   `objectForType(type:)` instead.
-   - returns: An object of the given type.
-   */
-  public func recyclableObjectForType(_ type: Recyclable.Type) -> Recyclable {
+  public func object<T>(forType type: T.Type) -> T where T: NSObject {
     let className = String(describing: type) as NSString
 
-    if let list = _recycledObjects.object(forKey: className), list.count > 0 {
-      let recycledObject = list.lastObject as! Recyclable
+    if let list = _recycledObjects.object(forKey: className), list.count > 0,
+      let recycledObject = list.lastObject as? T
+    {
       list.removeLastObject()
       return recycledObject
     }

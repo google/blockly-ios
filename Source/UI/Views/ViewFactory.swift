@@ -28,7 +28,7 @@ open class ViewFactory: NSObject {
 
   /// Dictionary that maps `Layout` subclasses (using their class' `hash()` value) to their
   /// `LayoutView` type
-  private var _viewMapping = [Int: Recyclable.Type]()
+  private var _viewMapping = [Int: LayoutView.Type]()
 
   /**
    Initializes the view factory, and registers the default `Layout`/`View` relationships
@@ -67,11 +67,10 @@ open class ViewFactory: NSObject {
   open func makeView(layout: Layout) throws -> LayoutView {
     // Get a fresh view and populate it with the layout
     let layoutType = type(of: layout)
-    if let viewType = _viewMapping[layoutType.hash()],
-      let view = recyclableViewForType(viewType) as? LayoutView
-    {
-      view.layout = layout
-      return view
+    if let viewType = _viewMapping[layoutType.hash()] {
+      let layoutView = view(forType: viewType)
+      layoutView.layout = layout
+      return layoutView
     } else {
       throw BlocklyError(.viewNotFound, "Could not retrieve view for \(layoutType)")
     }
@@ -93,13 +92,13 @@ open class ViewFactory: NSObject {
    If a recycled view is available for re-use, that view is returned.
    If not, a new view of the given type is instantiated.
 
-   - parameter type: The type of `Recyclable` object to retrieve.
+   - parameter type: The type of `UIView` object to retrieve.
    - note: Views obtained through this method should be recycled through `recycleView(:)` or
    `recycleViewTree(:)`.
-   - returns: A view of the given type, if it is a `UIView`. Otherwise, nil is returned.
+   - returns: An object of the given `type`.
    */
-  open func recyclableViewForType(_ type: Recyclable.Type) -> UIView? {
-    return _objectPool.recyclableObjectForType(type) as? UIView
+  open func view<T>(forType type: T.Type) -> T where T: UIView {
+    return _objectPool.object(forType: type)
   }
 
   /**

@@ -69,11 +69,6 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     // Load the block definitions for our custom turtle blocks
     builder.addJSONBlockDefinitionFiles(["Turtle/turtle_blocks.json"])
 
-    // Note: A single set of request listeners like this is sufficient for most cases, but
-    // dynamic completion and error listeners may be created for each call if needed.
-    builder.onCompletion = self.codeGenerationCompletedWithCode
-    builder.onError = self.codeGenerationFailedWithError
-
     return builder
   }()
 
@@ -118,7 +113,11 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   deinit {
     // If the Turtle code is currently executing, we need to reset it before deallocating this
     // instance.
-    _webView?.stopLoading()
+    if let webView = _webView {
+      webView.configuration.userContentController.removeScriptMessageHandler(
+        forName: TurtleSwiftViewController.JS_CALLBACK_NAME)
+      webView.stopLoading()
+    }
     resetTurtleCode()
     _codeGeneratorService.cancelAllRequests()
   }
@@ -160,16 +159,18 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       print("An error occurred loading the toolbox: \(error)")
     }
 
-    self.editorView.autoresizesSubviews = true
+    addChildViewController(_workbenchViewController)
+    editorView.autoresizesSubviews = true
     _workbenchViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    _workbenchViewController.view.frame = self.editorView.bounds
-    self.editorView.addSubview(_workbenchViewController.view)
-    self.addChildViewController(_workbenchViewController)
+    _workbenchViewController.view.frame = editorView.bounds
+    editorView.addSubview(_workbenchViewController.view)
+    _workbenchViewController.didMove(toParentViewController: self)
 
-    // Programmatically create WKWebView, configuring it with a hook so the JS code can callback
-    // into the iOS code
+    // Programmatically create WKWebView and configure it with a hook so the JS code can callback
+    // into the iOS code.
     let userContentController = WKUserContentController()
-    userContentController.add(self, name: TurtleSwiftViewController.JS_CALLBACK_NAME)
+    userContentController.add(ScriptMessageHandler(self),
+                              name: TurtleSwiftViewController.JS_CALLBACK_NAME)
 
     let configuration = WKWebViewConfiguration()
     configuration.userContentController = userContentController
@@ -221,6 +222,12 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
         // Request code generation for the workspace
         let request = try _codeGeneratorServiceRequestBuilder.makeRequest(forWorkspace: workspace)
+        request.onCompletion = { code in
+          self.codeGenerationCompleted(code: code)
+        }
+        request.onError = { error in
+          self.codeGenerationFailed(error: error)
+        }
         _codeGeneratorService.generateCode(forRequest: request)
       }
     } catch let error as NSError {
@@ -228,14 +235,14 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     }
   }
 
-  fileprivate func codeGenerationCompletedWithCode(_ code: String) {
-    self.addTimestampedText("Generated code:\n\n====CODE====\n\n\(code)")
+  fileprivate func codeGenerationCompleted(code: String) {
+    addTimestampedText("Generated code:\n\n====CODE====\n\n\(code)")
 
     runCode(code)
   }
 
-  fileprivate func codeGenerationFailedWithError(_ error: String) {
-    self.addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
+  fileprivate func codeGenerationFailed(error: String) {
+    addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
   }
 
   fileprivate func runCode(_ code: String) {
@@ -250,7 +257,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       "Turtle.execute(\"\(codeParam)\")",
       completionHandler: { _, error -> Void in
         if error != nil {
-          self.codeGenerationFailedWithError("\(error)")
+          self.codeGenerationFailed(error: "\(error)")
         }
       })
   }
@@ -263,39 +270,26 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     self.codeText.text = (self.codeText.text ?? "") +
       "[\(_dateFormatter.string(from: Date()))] \(text)\n"
   }
+}
 
-  /**
-   Create a block, with an optional input child block, and add them to a toolbox category.
+/**
+ Because WKUserContentController makes a strong retain cycle to its delegate, we create an
+ intermediary object here to act as a delegate so we can more easily break a potential retain cycle
+ between WKUserContentController and TurtleSwiftViewController.
+ */
+class ScriptMessageHandler : NSObject, WKScriptMessageHandler {
+  weak var delegate : WKScriptMessageHandler?
 
-   - parameter blockName: The name of the block to create from the block factory.
-   - parameter inputBlockName: (Optional) If specified, the name of a block to create from the
-   block factory, which is automatically connected to the first input of the block created via
-   `blockName`.
-   - parameter category: The toolbox category to add these blocks to.
-   - returns: The root block that was added to the category.
-   */
-  fileprivate func addBlock(_ blockName: String,
-    inputBlockName: String? = nil, toCategory category: Toolbox.Category) throws -> Block
+  init(_ delegate: WKScriptMessageHandler) {
+    self.delegate = delegate
+    super.init()
+  }
+
+  func userContentController(_ userContentController: WKUserContentController,
+                             didReceive message: WKScriptMessage)
   {
-    let block = try _blockFactory.makeBlock(name: blockName)
-
-    // Connect an input block (if it was specified).
-    // Note: We keep a reference to the input block in this scope, so it isn't deallocated before
-    // the block tree is added to the category
-    let childBlock: Block?
-
-    if let anInputBlockName = inputBlockName,
-      let inputBlock = try? _blockFactory.makeBlock(name: anInputBlockName),
-      block.inputs.count > 0
-    {
-      childBlock = inputBlock
-      try block.inputs[0].connection?.connectTo(childBlock?.inferiorConnection)
-    }
-
-    // Add the block tree to the category
-    try category.addBlockTree(block)
-
-    return block
+    // Call "real" delegate (which is TurtleSwiftViewController)
+    self.delegate?.userContentController(userContentController, didReceive: message)
   }
 }
 
