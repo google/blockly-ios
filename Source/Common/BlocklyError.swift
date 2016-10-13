@@ -30,8 +30,8 @@ public final class BlocklyError: NSError {
 
   // MARK: - Enum - Code
   /// Signifies the type of error to be thrown by `BlockError`.
-  @objc
-  public enum BKYBlocklyErrorCode: Int {
+  @objc(BKYBlocklyErrorCode)
+  public enum Code: Int {
     /// This block is illegally defined.
     case invalidBlockDefinition = 100,
     /// The workspace exceeds the given capacity, in number of blocks.
@@ -63,7 +63,6 @@ public final class BlocklyError: NSError {
     /// Thrown when an operation is called in an illegal manner.
     illegalOperation = 702
   }
-  public typealias Code = BKYBlocklyErrorCode
 
   // MARK: - Initializers
 

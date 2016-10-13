@@ -45,8 +45,8 @@ public final class CodeGenerator: NSObject {
   // MARK: - Enum - State
 
   /// Possible states for the code generator
-  @objc
-  public enum BKYCodeGeneratorState: Int {
+  @objc(BKYCodeGeneratorState)
+  public enum State: Int {
     /// Signifies the `CodeGenerator` has been initialized.
     case initialized = 0,
       /// Signifies the `CodeGenerator` is currently loading.
@@ -58,9 +58,6 @@ public final class CodeGenerator: NSObject {
       /// Signifies the `CodeGenerator` is currently generating code.
       generatingCode
   }
-
-  /// Possible states for the code generator
-  public typealias State = BKYCodeGeneratorState
 
   // MARK: - Static Properties
   /// Internal JS file that is used to communicate between the iOS code and JS code

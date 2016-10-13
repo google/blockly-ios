@@ -31,8 +31,8 @@ public final class Input : NSObject {
   // MARK: - Enum - InputType
 
   /** Represents types of inputs. */
-  @objc
-  public enum BKYInputType: Int {
+  @objc(BKYInputType)
+  public enum InputType: Int {
     /// Specifies the input is a value input.
     case value = 0,
       /// Specifies the input is a statement input.
@@ -42,7 +42,7 @@ public final class Input : NSObject {
 
     /// The string describing the type of this input.
     public var stringValue : String {
-      return BKYInputType.stringMapping[self]!
+      return InputType.stringMapping[self]!
     }
 
     fileprivate static let stringMapping = [
@@ -52,19 +52,18 @@ public final class Input : NSObject {
     ]
 
     internal init?(string: String) {
-      guard let value = BKYInputType.stringMapping.bky_anyKeyForValue(string) else {
+      guard let value = InputType.stringMapping.bky_anyKeyForValue(string) else {
         return nil
       }
       self = value
     }
   }
-  public typealias InputType = BKYInputType
 
   // MARK: - Enum - InputAlignment
 
   /** Represents valid alignments of a connection's fields. */
-  @objc
-  public enum BKYInputAlignment: Int {
+  @objc(BKYInputAlignment)
+  public enum Alignment: Int {
     /// Specifies the input is left-aligned
     case left = -1,
       /// Specifies the input is center-aligned
@@ -74,7 +73,7 @@ public final class Input : NSObject {
 
     /// The string describing the alignment of this input.
     public var stringValue : String {
-      return BKYInputAlignment.stringMapping[self]!
+      return Alignment.stringMapping[self]!
     }
 
     fileprivate static let stringMapping = [
@@ -84,18 +83,17 @@ public final class Input : NSObject {
     ]
 
     internal init?(string: String) {
-      guard let value = BKYInputAlignment.stringMapping.bky_anyKeyForValue(string) else {
+      guard let value = Alignment.stringMapping.bky_anyKeyForValue(string) else {
         return nil
       }
       self = value
     }
   }
-  public typealias Alignment = BKYInputAlignment
 
   // MARK: - Properties
 
   /// The type (value, statement, dummy) of the input.
-  public let type: BKYInputType
+  public let type: InputType
   /// The name of the input.
   public let name: String
   /// A list of `Field` objects for the input.
@@ -119,7 +117,7 @@ public final class Input : NSObject {
   /// `true` if the input is visible, `false` otherwise. Defaults to `true`.
   public var visible: Bool = true
   /// The alignment of the input
-  public var alignment: BKYInputAlignment = BKYInputAlignment.left
+  public var alignment: Alignment = Alignment.left
 
   /// A delegate for listening to events on this input
   public weak var delegate: InputDelegate?

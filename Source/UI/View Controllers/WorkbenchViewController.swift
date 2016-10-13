@@ -49,10 +49,10 @@ extension BKYWorkbenchViewControllerUIState {
   }
 }
 
+// TODO:(#61) Refactor parts of `WorkbenchViewController` into `WorkspaceViewController`.
+
 /**
  View controller for editing a workspace.
-
- TODO:(#61) Refactor parts of this code into `WorkspaceViewController`.
  */
 @objc(BKYWorkbenchViewController)
 open class WorkbenchViewController: UIViewController {
@@ -60,8 +60,8 @@ open class WorkbenchViewController: UIViewController {
   // MARK: - Style Enum
 
   /// Defines the style of the workbench
-  @objc
-  public enum BKYWorkbenchViewControllerStyle: Int {
+  @objc(BKYWorkbenchViewControllerStyle)
+  public enum Style: Int {
     /// Style where the toolbox is positioned vertically, the trash can is located in the
     /// bottom-right corner, and the trash folder flies out from the bottom
     case defaultStyle,
@@ -93,9 +93,6 @@ open class WorkbenchViewController: UIViewController {
       }
     }
   }
-
-  /// Defines the style of the workbench
-  public typealias Style = BKYWorkbenchViewControllerStyle
 
   /// Defines the UI state of the workbench
   public typealias UIState = BKYWorkbenchViewControllerUIState
