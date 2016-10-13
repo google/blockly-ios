@@ -11,6 +11,8 @@
 		30F63ED61DA596880071926B /* SimpleWorkbench in Resources */ = {isa = PBXBuildFile; fileRef = 30F63ED51DA596880071926B /* SimpleWorkbench */; };
 		FA1ED8911D9B43C600A5B19A /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; };
 		FA1ED8921D9B43C600A5B19A /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA4DBED61DB04B26002E493E /* AllFieldsWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4DBED51DB04B26002E493E /* AllFieldsWorkbenchViewController.swift */; };
+		FA4DBED81DB04BF4002E493E /* AllFieldsDemo in Resources */ = {isa = PBXBuildFile; fileRef = FA4DBED71DB04BF4002E493E /* AllFieldsDemo */; };
 		FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA548C381B6312AE008BC59C /* LaunchScreen.xib */; };
 		FA5F28B11C756B73008384BE /* TurtleSwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F28B01C756B73008384BE /* TurtleSwiftViewController.swift */; };
 		FA5F2BC41C7692D0008384BE /* DemoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */; };
@@ -123,6 +125,8 @@
 		3035DCFE1DA45C940087B9CC /* TurtleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TurtleViewController.xib; sourceTree = "<group>"; };
 		30F63ED51DA596880071926B /* SimpleWorkbench */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SimpleWorkbench; sourceTree = "<group>"; };
 		FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
+		FA4DBED51DB04B26002E493E /* AllFieldsWorkbenchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllFieldsWorkbenchViewController.swift; sourceTree = "<group>"; };
+		FA4DBED71DB04BF4002E493E /* AllFieldsDemo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AllFieldsDemo; sourceTree = "<group>"; };
 		FA548C2A1B6312AE008BC59C /* BlocklySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C2E1B6312AE008BC59C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA548C391B6312AE008BC59C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 		FAE2A62D1C756A750085D36B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FA4DBED71DB04BF4002E493E /* AllFieldsDemo */,
 				30F63ED51DA596880071926B /* SimpleWorkbench */,
 				FAE2A6411C756A8D0085D36B /* Turtle */,
 				FAE2A6301C756A750085D36B /* Images.xcassets */,
@@ -244,6 +249,7 @@
 		FAE2A6431C756AA20085D36B /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				FA4DBED51DB04B26002E493E /* AllFieldsWorkbenchViewController.swift */,
 				FAE2A6441C756AA20085D36B /* AppDelegate.swift */,
 				FAE2A6451C756AA20085D36B /* BlocklySample-Bridging-Header.h */,
 				FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */,
@@ -399,6 +405,7 @@
 			files = (
 				FAE2A63A1C756A750085D36B /* Images.xcassets in Resources */,
 				FAE2A6421C756A8D0085D36B /* Turtle in Resources */,
+				FA4DBED81DB04BF4002E493E /* AllFieldsDemo in Resources */,
 				3035DCFF1DA45C940087B9CC /* TurtleViewController.xib in Resources */,
 				30F63ED61DA596880071926B /* SimpleWorkbench in Resources */,
 				FA548C3A1B6312AE008BC59C /* LaunchScreen.xib in Resources */,
@@ -415,6 +422,7 @@
 				FAE2A6491C756AA20085D36B /* SimpleWorkbenchViewController.swift in Sources */,
 				FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */,
 				FAC357E51D9244A2003FB436 /* TurtleObjCViewController.m in Sources */,
+				FA4DBED61DB04B26002E493E /* AllFieldsWorkbenchViewController.swift in Sources */,
 				FA5F28B11C756B73008384BE /* TurtleSwiftViewController.swift in Sources */,
 				FA5F2BC41C7692D0008384BE /* DemoPickerViewController.swift in Sources */,
 			);
