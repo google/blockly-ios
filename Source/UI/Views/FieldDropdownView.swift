@@ -71,8 +71,7 @@ open class FieldDropdownView: FieldView {
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
         dropDownView.borderCornerRadius =
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
-        // TODO:(#27) Standardize this font
-        dropDownView.textFont = UIFont.systemFont(ofSize: 14 * fieldDropdownLayout.engine.scale)
+        dropDownView.textFont = fieldDropdownLayout.config.font(for: LayoutConfig.GlobalFont)
       }
     }
   }
@@ -110,8 +109,7 @@ extension FieldDropdownView: FieldLayoutMeasurer {
     let xSpacing = layout.config.viewUnit(for: LayoutConfig.InlineXPadding)
     let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
     let measureText = (fieldDropdownLayout.selectedOption?.displayName ?? "")
-    // TODO:(#27) Standardize this font
-    let font = UIFont.systemFont(ofSize: 14 * scale)
+    let font = layout.config.font(for: LayoutConfig.GlobalFont)
 
     return DropdownView.measureSize(
       text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
@@ -132,8 +130,12 @@ extension FieldDropdownView: DropdownViewDelegate {
     viewController.delegate = self
     viewController.options = fieldDropdownLayout.options
     viewController.selectedIndex = fieldDropdownLayout.selectedIndex
-    // TODO:(#27) Standardize this font
-    viewController.textLabelFont = UIFont.systemFont(ofSize: 18)
+
+    if let fontCreator = fieldDropdownLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
+      // Use a scaled font, but don't let the scale go less than 1.0
+      viewController.textLabelFont = fontCreator(max(fieldDropdownLayout.engine.scale, 1.0))
+    }
+
     delegate?.fieldView(self,
                         requestedToPresentPopoverViewController: viewController, fromView: self)
   }

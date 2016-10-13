@@ -61,7 +61,12 @@ open class DropdownOptionsViewController: UITableViewController {
   /// Delegate for events that occur on this controller
   open weak var delegate: DropdownOptionsViewControllerDelegate?
   /// The font to render each cell
-  open var textLabelFont = UIFont.systemFont(ofSize: 18)
+  open var textLabelFont = UIFont.systemFont(ofSize: 18) {
+    didSet {
+      // Recalculate the preferred content size
+      calculatePreferredContentSize()
+    }
+  }
   /// The maximum size to use when displaying this view controller as a popover
   open var maximumPopoverSize = CGSize(width: 248, height: 248)
   /// Identifier for reusing cells for this table

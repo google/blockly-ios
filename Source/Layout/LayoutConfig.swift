@@ -27,6 +27,24 @@ open class LayoutConfig: NSObject {
   /// the underlying type directly.
   public typealias PropertyKey = Int
 
+  /// A closure for creating a `UIFont` from a given scale.
+  public typealias FontCreator = (_ scale: CGFloat) -> UIFont
+
+  // MARK: - ScaledFont Class
+
+  /**
+   Helper class keeping a `FontCreator` and a copy of the currently scaled font.
+   */
+  private class ScaledFont {
+    let creator: FontCreator
+    var font: UIFont
+
+    init(creator: @escaping FontCreator, currentScale: CGFloat) {
+      self.creator = creator
+      self.font = creator(currentScale)
+    }
+  }
+
   // MARK: - Static Properties
 
   /// Total number of `PropertyKey` values that have been created via `newPropertyKey()`.
@@ -82,10 +100,16 @@ open class LayoutConfig: NSObject {
   /// used for each one.
   public static let FieldTextFieldMaximumWidth = LayoutConfig.newPropertyKey()
 
+  /// [`Font`] The default font to use for all text inside Blockly.
+  public static let GlobalFont = LayoutConfig.newPropertyKey()
+
   /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
   public static let ViewAnimationDuration = LayoutConfig.newPropertyKey()
 
   // MARK: - Properties
+
+  // The current scale of all values inside the config
+  private var _scale: CGFloat = 1.0;
 
   // NOTE: Separate dictionaries were created for each type of value as casting specific values
   // from a Dictionary<PropertyKey, Any> is a big performance hit.
@@ -107,6 +131,9 @@ open class LayoutConfig: NSObject {
 
   /// Dictionary mapping property keys to `Double` values
   private var _doubles = Dictionary<PropertyKey, Double>()
+
+  /// Dictionary mapping property keys to `ScaledFont` values
+  private var _fonts = Dictionary<PropertyKey, ScaledFont>()
 
   // MARK: - Initializers
 
@@ -135,6 +162,10 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
+
+    setFontCreator({ scale in
+      return UIFont.systemFont(ofSize: 14 * scale)
+    }, for: LayoutConfig.GlobalFont)
   }
 
   // MARK: - Public
@@ -363,12 +394,49 @@ open class LayoutConfig: NSObject {
   }
 
   /**
+   Maps a closure for creating a `UIFont`, to a specific `PropertyKey`.
+
+   - parameter fontCreator: A closure for creating a `UIFont`, based on a given `scale` value.
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.GlobalFont`)
+   */
+  public func setFontCreator(_ fontCreator: @escaping FontCreator, for key: PropertyKey) {
+    _fonts[key] = ScaledFont(creator: fontCreator, currentScale: _scale)
+  }
+
+  /**
+   Returns the closure for creating a `UIFont` that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.GlobalFont`)
+   - returns: If the `key` was found, its associated `FontCreator` value. Otherwise, `nil` is
+   returned.
+   */
+  @inline(__always)
+  public func fontCreator(for key: PropertyKey) -> FontCreator? {
+    return _fonts[key]?.creator
+  }
+
+  /**
+   Based on the closure for creating a `UIFont` associated to a specific `PropertyKey`, returns
+   a scaled `UIFont`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.GlobalFont`)
+   - returns: The scaled `UIFont` using the closure associated with the `key`, or a default `UIFont`
+   if the key could not be located.
+   */
+  @inline(__always)
+  public func font(for key: PropertyKey) -> UIFont {
+    return _fonts[key]?.font ?? UIFont.systemFont(ofSize: 14 * _scale)
+  }
+
+  /**
    Updates the UIView coordinate system values for all config values that have been stored
    in this instance, by using a given `LayoutEngine`.
 
    - parameter engine: The `LayoutEngine` used to update all config values
    */
   open func updateViewValues(fromEngine engine: LayoutEngine) {
+    _scale = engine.scale
+
     for (key, var unit) in _units {
       unit.viewUnit = engine.viewUnitFromWorkspaceUnit(unit.workspaceUnit)
       _units[key] = unit
@@ -377,6 +445,10 @@ open class LayoutConfig: NSObject {
     for (key, var size) in _sizes {
       size.viewSize = engine.viewSizeFromWorkspaceSize(size.workspaceSize)
       _sizes[key] = size
+    }
+
+    for (_, scaledFont) in _fonts {
+      scaledFont.font = scaledFont.creator(_scale)
     }
   }
 }

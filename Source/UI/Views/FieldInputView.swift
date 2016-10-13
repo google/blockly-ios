@@ -74,8 +74,7 @@ open class FieldInputView: FieldView {
           textField.text = text
         }
 
-        // TODO:(#27) Standardize this font
-        textField.font = UIFont.systemFont(ofSize: 14 * fieldInputLayout.engine.scale)
+        textField.font = fieldInputLayout.config.font(for: LayoutConfig.GlobalFont)
         textField.insetPadding =
           fieldInputLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
@@ -117,9 +116,8 @@ extension FieldInputView: FieldLayoutMeasurer {
 
     let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
-    // TODO:(#27) Use a standardized font size that can be configurable for the project
     let measureText = fieldInputLayout.text + " "
-    let font = UIFont.systemFont(ofSize: 14 * scale)
+    let font = fieldInputLayout.config.font(for: LayoutConfig.GlobalFont)
     var measureSize = measureText.bky_singleLineSize(forFont: font)
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =
