@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
-
-//! Project version number for Blockly.
-FOUNDATION_EXPORT double BlocklyVersionNumber;
-
-//! Project version string for Blockly.
-FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
+//#import <UIKit/UIKit.h>
+//
+////! Project version number for Blockly.
+//FOUNDATION_EXPORT double BlocklyVersionNumber;
+//
+////! Project version string for Blockly.
+//FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
 
 // Public headers for Blockly
-#import <Blockly/BKYBlockJSONFile.h>
-#import <Blockly/BKYEdgeInsets.h>
-#import <Blockly/BKYLayoutConfigStructs.h>
-#import <Blockly/BKYWorkbenchViewController.h>
-#import <Blockly/BKYWorkspaceUnits.h>
+#import "BKYBlockJSONFile.h"
+#import "BKYEdgeInsets.h"
+#import "BKYLayoutConfigStructs.h"
+#import "BKYWorkbenchViewController.h"
+#import "BKYWorkspaceUnits.h"

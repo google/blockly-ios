@@ -9,17 +9,19 @@
 /* Begin PBXBuildFile section */
 		300CABD11D5CF816000E43B2 /* ConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */; };
 		300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */; };
+		3064BAC01DAF3EC8006425A2 /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABA1DAF3EC8006425A2 /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3064BAC11DAF3EC8006425A2 /* BKYEdgeInsets.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABB1DAF3EC8006425A2 /* BKYEdgeInsets.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3064BAC21DAF3EC8006425A2 /* BKYLayoutConfigStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABC1DAF3EC8006425A2 /* BKYLayoutConfigStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3064BAC31DAF3EC8006425A2 /* BKYWorkbenchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABD1DAF3EC8006425A2 /* BKYWorkbenchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3064BAC41DAF3EC8006425A2 /* BKYWorkspaceUnits.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABE1DAF3EC8006425A2 /* BKYWorkspaceUnits.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3064BAC51DAF3EC8006425A2 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BABF1DAF3EC8006425A2 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */; };
-		30F63F031DA7028E0071926B /* BKYWorkbenchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 30F63F021DA6D09F0071926B /* BKYWorkbenchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
-		FA10391F1D934139005FDF1D /* BKYWorkspaceUnits.h in Headers */ = {isa = PBXBuildFile; fileRef = FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA1039241D935D9E005FDF1D /* BKYWorkspaceUnits.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
-		FA10392B1D9371FE005FDF1D /* BKYEdgeInsets.h in Headers */ = {isa = PBXBuildFile; fileRef = FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA10392C1D9371FE005FDF1D /* BKYEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */; };
-		FA1039301D93A7EC005FDF1D /* BKYLayoutConfigStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
@@ -79,7 +81,6 @@
 		FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4EE3D41BFE9342000C621F /* all_test_blocks.json */; };
 		FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
-		FA548C611B63144A008BC59C /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = FA548C5F1B63144A008BC59C /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
 		FA548C8B1B66E861008BC59C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C871B66E861008BC59C /* Connection.swift */; };
 		FA548C8C1B66E861008BC59C /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C881B66E861008BC59C /* Input.swift */; };
@@ -105,7 +106,6 @@
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
-		FA77D3F21D9B88820014CBC4 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84250F1D3451510092CDDC /* ViewBuilder.swift */; };
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
@@ -202,18 +202,20 @@
 /* Begin PBXFileReference section */
 		300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionValidator.swift; sourceTree = "<group>"; };
 		300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultConnectionValidator.swift; sourceTree = "<group>"; };
+		3064BABA1DAF3EC8006425A2 /* Blockly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blockly.h; path = Headers/Blockly.h; sourceTree = "<group>"; };
+		3064BABB1DAF3EC8006425A2 /* BKYEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYEdgeInsets.h; path = Headers/BKYEdgeInsets.h; sourceTree = "<group>"; };
+		3064BABC1DAF3EC8006425A2 /* BKYLayoutConfigStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYLayoutConfigStructs.h; path = Headers/BKYLayoutConfigStructs.h; sourceTree = "<group>"; };
+		3064BABD1DAF3EC8006425A2 /* BKYWorkbenchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYWorkbenchViewController.h; path = Headers/BKYWorkbenchViewController.h; sourceTree = "<group>"; };
+		3064BABE1DAF3EC8006425A2 /* BKYWorkspaceUnits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYWorkspaceUnits.h; path = Headers/BKYWorkspaceUnits.h; sourceTree = "<group>"; };
+		3064BABF1DAF3EC8006425A2 /* BKYBlockJSONFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYBlockJSONFile.h; path = Headers/BKYBlockJSONFile.h; sourceTree = "<group>"; };
 		30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyPanGestureRecognizer.swift; sourceTree = "<group>"; };
-		30F63F021DA6D09F0071926B /* BKYWorkbenchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BKYWorkbenchViewController.h; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
-		FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYWorkspaceUnits.h; sourceTree = "<group>"; };
 		FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYWorkspaceUnits.m; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
-		FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYEdgeInsets.h; sourceTree = "<group>"; };
 		FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYEdgeInsets.m; sourceTree = "<group>"; };
-		FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYLayoutConfigStructs.h; sourceTree = "<group>"; };
 		FA10392F1D93A7EC005FDF1D /* BKYLayoutConfigStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKYLayoutConfigStructs.m; sourceTree = "<group>"; };
 		FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutConfig+Structs.swift"; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
@@ -276,7 +278,6 @@
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA548C5F1B63144A008BC59C /* Blockly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blockly.h; sourceTree = "<group>"; };
 		FA548C601B63144A008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA548C861B66E861008BC59C /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		FA548C871B66E861008BC59C /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
@@ -303,7 +304,6 @@
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
-		FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKYBlockJSONFile.h; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA84250F1D3451510092CDDC /* ViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBuilder.swift; sourceTree = "<group>"; };
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
@@ -406,6 +406,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3064BAB21DAF3DC1006425A2 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				3064BABA1DAF3EC8006425A2 /* Blockly.h */,
+				3064BABF1DAF3EC8006425A2 /* BKYBlockJSONFile.h */,
+				3064BABB1DAF3EC8006425A2 /* BKYEdgeInsets.h */,
+				3064BABC1DAF3EC8006425A2 /* BKYLayoutConfigStructs.h */,
+				3064BABD1DAF3EC8006425A2 /* BKYWorkbenchViewController.h */,
+				3064BABE1DAF3EC8006425A2 /* BKYWorkspaceUnits.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
 		FA2726741B83C54900777B49 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -429,7 +442,6 @@
 				FA4E83EA1CACF00A009FB0CD /* LayoutEngine.swift */,
 				FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */,
 				FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */,
-				FA10392E1D93A7EC005FDF1D /* BKYLayoutConfigStructs.h */,
 				FA10392F1D93A7EC005FDF1D /* BKYLayoutConfigStructs.m */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */,
@@ -459,7 +471,6 @@
 		FA2DFC0C1B7177760072A278 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				FA77D3F01D9B87DF0014CBC4 /* BKYBlockJSONFile.h */,
 				FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */,
 				FA2DFCB21B72D7A30072A278 /* Block+JSON.swift */,
 				FA2DFC0E1B7177760072A278 /* Input+JSON.swift */,
@@ -648,12 +659,12 @@
 		FA548C5E1B63144A008BC59C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3064BAB21DAF3DC1006425A2 /* Headers */,
 				FAA86FF21C64272C000C7C61 /* Common */,
 				FA548C851B66E861008BC59C /* Model */,
 				FA2726741B83C54900777B49 /* Layout */,
 				FAE5576C1BE0219C0019D0D4 /* Control */,
 				FA4BB4B31B7575FE000980E9 /* UI */,
-				FA548C5F1B63144A008BC59C /* Blockly.h */,
 				FA548C601B63144A008BC59C /* Info.plist */,
 			);
 			path = Source;
@@ -685,7 +696,6 @@
 				FA548C891B66E861008BC59C /* Workspace.swift */,
 				FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */,
 				FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */,
-				FA10391E1D934139005FDF1D /* BKYWorkspaceUnits.h */,
 				FA1039231D935D9E005FDF1D /* BKYWorkspaceUnits.m */,
 			);
 			path = Model;
@@ -722,7 +732,6 @@
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
 				FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */,
-				FA1039291D9371FE005FDF1D /* BKYEdgeInsets.h */,
 				FA10392A1D9371FE005FDF1D /* BKYEdgeInsets.m */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
@@ -753,7 +762,6 @@
 				FAA870161C642805000C7C61 /* TrashCanViewController.swift */,
 				FAA870171C642805000C7C61 /* WorkbenchViewController.swift */,
 				FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */,
-				30F63F021DA6D09F0071926B /* BKYWorkbenchViewController.h */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -810,12 +818,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA77D3F21D9B88820014CBC4 /* BKYBlockJSONFile.h in Headers */,
-				FA10392B1D9371FE005FDF1D /* BKYEdgeInsets.h in Headers */,
-				FA10391F1D934139005FDF1D /* BKYWorkspaceUnits.h in Headers */,
-				30F63F031DA7028E0071926B /* BKYWorkbenchViewController.h in Headers */,
-				FA1039301D93A7EC005FDF1D /* BKYLayoutConfigStructs.h in Headers */,
-				FA548C611B63144A008BC59C /* Blockly.h in Headers */,
+				3064BAC01DAF3EC8006425A2 /* Blockly.h in Headers */,
+				3064BAC51DAF3EC8006425A2 /* BKYBlockJSONFile.h in Headers */,
+				3064BAC11DAF3EC8006425A2 /* BKYEdgeInsets.h in Headers */,
+				3064BAC21DAF3EC8006425A2 /* BKYLayoutConfigStructs.h in Headers */,
+				3064BAC31DAF3EC8006425A2 /* BKYWorkbenchViewController.h in Headers */,
+				3064BAC41DAF3EC8006425A2 /* BKYWorkspaceUnits.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
