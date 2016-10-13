@@ -14,9 +14,10 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <WebKit/WebKit.h>
 
-@interface TurtleObjCViewController: UIViewController
+/// The common protocol for both turtle view controllers. Any outlets required by
+/// `TurtleViewController.xib` should be declared here.
+@protocol TurtleViewControllerInterface
 
 /// The parent view for `self.webView`.
 @property (weak, nonatomic) IBOutlet UIView *webViewContainer;
@@ -26,5 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView *editorView;
 /// The play/cancel button
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+
+- (IBAction)didPressPlayButton:(UIButton *)sender;
 
 @end

@@ -34,6 +34,8 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   @IBOutlet var codeText: UILabel!
   /// The view for holding `self.workbenchViewController.view`
   @IBOutlet var editorView: UIView!
+  /// The play/cancel button
+  @IBOutlet weak var playButton: UIButton!
 
   /// The web view that runs the turtle code (this is not an outlet because WKWebView isn't
   /// supported by Interface Builder)
@@ -89,6 +91,8 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     return blockFactory
   }()
 
+  /// Flag indicating whether the code is currently running.
+  var _currentlyRunning: Bool = false
   /// Flag indicating if highlighting a block is enabled.
   var _allowBlockHighlighting: Bool = false
   /// Flag indicating if scrolling a block into view is enabled.
@@ -210,25 +214,34 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   @IBAction internal dynamic func didPressPlay(_ button: UIButton) {
     do {
-      if let workspace = _workbenchViewController.workspace {
-        // Cancel pending requests
-        _codeGeneratorService.cancelAllRequests()
+      if _currentlyRunning {
+        _webView.evaluateJavaScript("Turtle.cancel()", completionHandler: nil)
+        self.resetPlayButton()
+      } else {
+        if let workspace = _workbenchViewController.workspace {
+          // Cancel pending requests
+          _codeGeneratorService.cancelAllRequests()
 
-        // Reset the turtle
-        resetTurtleCode()
+          // Reset the turtle
+          resetTurtleCode()
 
-        self.codeText.text = ""
-        addTimestampedText("Generating code...")
+          self.codeText.text = ""
+          addTimestampedText("Generating code...")
 
-        // Request code generation for the workspace
-        let request = try _codeGeneratorServiceRequestBuilder.makeRequest(forWorkspace: workspace)
-        request.onCompletion = { code in
-          self.codeGenerationCompleted(code: code)
+          // Request code generation for the workspace
+          let request = try _codeGeneratorServiceRequestBuilder.makeRequest(forWorkspace: workspace)
+          request.onCompletion = { code in
+            self.codeGenerationCompleted(code: code)
+          }
+          request.onError = { error in
+            self.codeGenerationFailed(error: error)
+          }
+
+          _codeGeneratorService.generateCode(forRequest: request)
+
+          playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
+          _currentlyRunning = true
         }
-        request.onError = { error in
-          self.codeGenerationFailed(error: error)
-        }
-        _codeGeneratorService.generateCode(forRequest: request)
       }
     } catch let error as NSError {
       print("An error occurred generating code for the workspace: \(error)")
@@ -243,6 +256,13 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   fileprivate func codeGenerationFailed(error: String) {
     addTimestampedText("An error occurred:\n\n====ERROR====\n\n\(error)")
+
+    resetPlayButton()
+  }
+
+  fileprivate func resetPlayButton() {
+    _currentlyRunning = false
+    playButton.setImage(UIImage(named: "play_button"), for: .normal)
   }
 
   fileprivate func runCode(_ code: String) {
@@ -324,6 +344,8 @@ extension TurtleSwiftViewController: WKScriptMessageHandler {
           _workbenchViewController.unhighlightBlock(blockUUID: blockID)
           _lastHighlightedBlockUUID = blockID
         }
+      case "finishExecution":
+        self.resetPlayButton()
       default:
         print("Unrecognized method")
     }
