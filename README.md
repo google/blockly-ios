@@ -28,20 +28,25 @@ all three platforms to support cross-platform development.
 
 # Get Started
 
-[Get started][4] building your own iOS app using Blockly.
+To get started using Blockly for iOS, follow [this guide][4].
+
+# API Reference
+
+For complete API documentation, visit our [API Reference Page][5].
 
 # License
 
 Google is proud to offer Blockly for iOS for free and open source
-under the [Apache License, version 2.0][5].
+under the [Apache License, version 2.0][6].
 
 # Contributing
 
-Want to contribute? Great! First, read [our guidelines for contributors][6].
+Want to contribute? Great! First, read [our guidelines for contributors][7].
 
 [1]: https://developer.google.com/blockly/ "Blockly documentation"
 [2]: https://github.com/google/blockly "Blockly for Web repo on GitHub"
 [3]: https://github.com/google/blockly-android "Blockly for Android repo on GitHub"
 [4]: https://developer.google.com/blockly/guides/get-started/ios "Blockly for iOS developer tutorial"
-[5]: https://github.com/google/blockly-ios/blob/master/LICENSE "Apache open source license, version 2.0"
-[6]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
+[5]: https://developer.google.com/blockly/reference/ios "Blockly for iOS API Reference Documentation"
+[6]: https://github.com/google/blockly-ios/blob/master/LICENSE "Apache open source license, version 2.0"
+[7]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
