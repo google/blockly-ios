@@ -239,8 +239,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
           _codeGeneratorService.generateCode(forRequest: request)
 
-          playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
-          _currentlyRunning = true
+          playButton.isEnabled = false
         }
       }
     } catch let error as NSError {
@@ -262,6 +261,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   fileprivate func resetPlayButton() {
     _currentlyRunning = false
+    playButton.isEnabled = true
     playButton.setImage(UIImage(named: "play_button"), for: .normal)
   }
 
@@ -270,6 +270,10 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     // user interaction)
     _allowBlockHighlighting = true
     _allowScrollingToBlockView = true
+
+    playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
+    playButton.isEnabled = true
+    _currentlyRunning = true
 
     // Run the generated code in the web view by calling `Turtle.execute(<code>)`
     let codeParam = code.bky_escapedJavaScriptParameter()

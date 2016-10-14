@@ -283,8 +283,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     }
     [_codeGeneratorService generateCodeForRequest:request];
 
-    [self.playButton setImage:[UIImage imageNamed:@"cancel_button"] forState:UIControlStateNormal];
-    self.currentlyRunning = true;
+    self.playButton.enabled = NO;
   }
 }
 
@@ -304,6 +303,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 
 - (void)resetPlayButton {
   self.currentlyRunning = NO;
+  self.playButton.enabled = YES;
   [self.playButton setImage:[UIImage imageNamed:@"play_button"] forState:UIControlStateNormal];
 }
 
@@ -312,6 +312,11 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   // user interaction)
   _allowBlockHighlighting = YES;
   _allowScrollingToBlockView = YES;
+
+  // Re-enable the play button, and set the icon to "cancel."
+  self.currentlyRunning = true;
+  self.playButton.enabled = YES;
+  [self.playButton setImage:[UIImage imageNamed:@"cancel_button"] forState:UIControlStateNormal];
 
   // Run the generated code in the web view by calling `Turtle.execute(<code>)`
   NSString *escapedString = [self escapedJSString:code];
