@@ -120,6 +120,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		302352761DB04B0100450D09 /* TurtleViewControllerInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TurtleViewControllerInterface.h; sourceTree = "<group>"; };
 		3035DCFE1DA45C940087B9CC /* TurtleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TurtleViewController.xib; sourceTree = "<group>"; };
 		30F63ED51DA596880071926B /* SimpleWorkbench */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SimpleWorkbench; sourceTree = "<group>"; };
 		FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
@@ -253,6 +254,7 @@
 				FAC357E41D9244A2003FB436 /* TurtleObjCViewController.m */,
 				3035DCFE1DA45C940087B9CC /* TurtleViewController.xib */,
 				FA5F28B01C756B73008384BE /* TurtleSwiftViewController.swift */,
+				302352761DB04B0100450D09 /* TurtleViewControllerInterface.h */,
 			);
 			path = Code;
 			sourceTree = "<group>";
