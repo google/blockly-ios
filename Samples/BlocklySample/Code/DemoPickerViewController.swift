@@ -20,7 +20,8 @@ import UIKit
  */
 class DemoPickerViewController: UITableViewController {
   private let DEMO_VIEW_CONTROLLERS = [
-    "Simple Workbench Demo",
+    "Workbench with Default Blocks",
+    "Workbench with All Field Types",
     "Swift Turtle Demo",
     "Objective-C Turtle Demo",
   ]
@@ -54,8 +55,10 @@ class DemoPickerViewController: UITableViewController {
     case 0:
       viewController = SimpleWorkbenchViewController()
     case 1:
-      viewController = TurtleSwiftViewController()
+      viewController = AllFieldsWorkbenchViewController()
     case 2:
+      viewController = TurtleSwiftViewController()
+    case 3:
       viewController = TurtleObjCViewController()
     default:
       break

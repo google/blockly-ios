@@ -1,0 +1,203 @@
+[
+  {
+    "type": "field_angle_block",
+    "message0": "field_angle: %1",
+    "args0": [
+      {
+        "type": "field_angle",
+        "name": "angle",
+        "angle": 180
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_checkbox_block",
+    "message0": "field_checkbox: %1",
+    "args0": [
+      {
+        "type": "field_checkbox",
+        "name": "checkbox",
+        "checked": false
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_colour_block",
+    "message0": "field_colour: %1",
+    "args0": [
+      {
+        "type": "field_colour",
+        "name": "colour",
+        "colour": "#008000"
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_date_block",
+    "message0": "field_date: %1",
+    "args0": [
+      {
+        "type": "field_date",
+        "name": "date",
+        "date": "1997-08-29"
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_dropdown_block",
+    "message0": "field_dropdown: %1",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "Dropdown",
+        "options": [
+          [
+            "Blockly",
+            "Blockly"
+          ],
+          [
+            "Google",
+            "Google"
+          ]
+        ]
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_input_block",
+    "message0": "field_input: %1",
+    "args0": [
+      {
+        "type": "field_input",
+        "name": "Input",
+        "text": ""
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_image_local_block",
+    "message0": "field_image (from local image): %1",
+    "args0": [
+      {
+        "type": "field_image",
+        "name": "local_camera_image",
+        "text": "",
+        "src": "camera",
+        "width": 36,
+        "height": 36
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_image_web_block",
+    "message0": "field_image (from web URL): %1",
+    "args0": [
+      {
+        "type": "field_image",
+        "name": "web_star_image",
+        "text": "",
+        "src": "https://www.gstatic.com/codesite/ph/images/star_on.gif",
+        "width": 15,
+        "height": 15
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_label_block",
+    "message0": "field_label: %1",
+    "args0": [
+      {
+        "type": "field_label",
+        "name": "TEXT",
+        "text": "<FIELD LABEL TEXT HERE>"
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_number_nonconstrained_block",
+    "message0": "field_number (unconstrained `Double`): %1",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "number"
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_number_integer_block",
+    "message0": "field_number (integer): %1",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "number",
+        "precision": 1,
+        "min": 0
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_number_currency_block",
+    "message0": "field_number (currency): %1",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "currency",
+        "precision": 0.01
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_number_constrained_block",
+    "message0": "field_number (constrained to [-50.0, 50.0]): %1",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "constrained_decimal",
+        "precision": 0.1,
+        "min": -50,
+        "max": 50
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00"
+  },
+  {
+    "type": "field_variable_block",
+    "message0": "field_variable: %1",
+    "args0": [
+      {
+        "type": "field_variable",
+        "name": "VAR",
+        "variable": "variable1"
+      }
+    ],
+    "output": null,
+    "colour": "#ffff00",
+    "tooltip": "Returns the value of this variable.",
+    "helpUrl": "https://github.com/google/blockly/wiki/Variables#get"
+  }
+]

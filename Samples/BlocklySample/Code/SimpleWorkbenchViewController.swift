@@ -19,7 +19,7 @@ import Blockly
 class SimpleWorkbenchViewController: WorkbenchViewController {
   // MARK: - Super
 
-  /// Factory that produces block instances from a parsed json file
+  /// Factory that produces block instances
   let _blockFactory = BlockFactory()
 
   // MARK: - Initializers
@@ -47,7 +47,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
     // Don't allow the navigation controller bar cover this view controller
     self.edgesForExtendedLayout = UIRectEdge()
-    self.navigationItem.title = "Simple Workbench Demo"
+    self.navigationItem.title = "Workbench with Default Blocks"
 
     // Load data
     loadWorkspace()
