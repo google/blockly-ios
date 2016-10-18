@@ -105,7 +105,7 @@ public final class ConnectionManager: NSObject {
     // Delete the group that was merged
     do {
       try deleteGroup(fromGroup)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not delete connection group: \(error)")
     }
   }

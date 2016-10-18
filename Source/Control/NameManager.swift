@@ -107,7 +107,7 @@ public final class NameManager: NSObject {
     let pattern = NameManager.REGULAR_EXPRESSION_PATTERN
     do {
       _regex = try NSRegularExpression(pattern: pattern, options: [])
-    } catch let error as NSError {
+    } catch let error {
       fatalError("Could not initialize regular expression [`\(pattern)`]: \(error)")
     }
     super.init()

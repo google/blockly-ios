@@ -84,7 +84,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     // Load custom turtle blocks into the block factory
     do {
       try blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
-    } catch let error as NSError {
+    } catch let error {
       print("An error occurred loading the turtle blocks: \(error)")
     }
 
@@ -145,7 +145,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       let workspace = Workspace()
 
       try _workbenchViewController.loadWorkspace(workspace)
-    } catch let error as NSError {
+    } catch let error {
       print("Couldn't load the workspace: \(error)")
     }
 
@@ -159,7 +159,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")
       }
-    } catch let error as NSError {
+    } catch let error {
       print("An error occurred loading the toolbox: \(error)")
     }
 
@@ -243,7 +243,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
           _currentlyRunning = true
         }
       }
-    } catch let error as NSError {
+    } catch let error {
       print("An error occurred generating code for the workspace: \(error)")
     }
   }

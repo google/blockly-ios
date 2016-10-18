@@ -146,7 +146,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
       case .previousStatement:
         try connectStatementConnections(superior: target, inferior: moving)
       }
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not connect pair together: \(error)")
     }
   }
@@ -261,7 +261,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
   {
     do {
       try updateLayoutTree(forConnection: connection, oldTarget: oldTarget)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not update layout tree for connection: \(error)")
     }
   }
@@ -277,7 +277,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         // There's no shadow block for the connection. Remove the shadow block layout tree.
         try removeShadowBlockLayoutTree(forShadowBlock: oldShadow?.sourceBlock)
       }
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not update shadow block layout tree for connection: \(error)")
     }
   }
@@ -541,7 +541,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
         // Schedule change event for an added block layout
         workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
       }
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
     }
   }

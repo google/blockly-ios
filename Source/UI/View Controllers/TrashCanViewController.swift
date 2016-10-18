@@ -60,7 +60,7 @@ public final class TrashCanViewController: WorkspaceViewController {
       let workspaceLayoutCoordinator = try WorkspaceLayoutCoordinator(
         workspaceLayout: workspaceLayout, layoutBuilder: layoutBuilder, connectionManager: nil)
       try loadWorkspaceLayoutCoordinator(workspaceLayoutCoordinator)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }
   }

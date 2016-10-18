@@ -95,7 +95,7 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
       {
         try loadWorkspaceLayoutCoordinator(layoutCoordinator)
       }
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not load category: \(error)")
       return
     }

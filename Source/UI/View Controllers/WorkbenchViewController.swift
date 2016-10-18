@@ -391,7 +391,7 @@ open class WorkbenchViewController: UIViewController {
     if workspace == nil {
       do {
         try loadWorkspace(Workspace())
-      } catch let error as NSError {
+      } catch let error {
         bky_print("Could not create a default workspace: \(error)")
       }
     }
@@ -468,7 +468,7 @@ open class WorkbenchViewController: UIViewController {
   open func refreshView() {
     do {
       try workspaceViewController?.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not load workspace layout: \(error)")
     }
 
@@ -788,7 +788,7 @@ extension WorkbenchViewController {
     do {
       newBlockView = try copyBlockView(rootBlockView)
       updateWorkspaceCapacity()
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
       return nil
     }
@@ -814,7 +814,7 @@ extension WorkbenchViewController {
       do {
         // Remove this block view from the trash can
         try _trashCanViewController.workspace?.removeBlockTree(rootBlockLayout.block)
-      } catch let error as NSError {
+      } catch let error {
         bky_assertionFailure("Could not remove block from trash can: \(error)")
         return
       }
@@ -1054,7 +1054,7 @@ extension WorkbenchViewController: BlocklyPanGestureDelegate {
           try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
           try _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
           updateWorkspaceCapacity()
-        } catch let error as NSError {
+        } catch let error {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }
       } else {
