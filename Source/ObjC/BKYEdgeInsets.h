@@ -27,7 +27,7 @@ struct BKYEdgeInsets {
   CGFloat bottom;
   /// The inset distance for the trailing edge.
   CGFloat trailing;
-};
+} CF_SWIFT_NAME(EdgeInsets);
 typedef struct BKYEdgeInsets BKYEdgeInsets;
 
 /**
@@ -39,9 +39,27 @@ typedef struct BKYEdgeInsets BKYEdgeInsets;
  @param trailing Trailing edge inset
  @returns: A `BKYEdgeInsets`.
  */
-BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
+BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing)
+  CF_SWIFT_NAME(EdgeInsets.init(top:leading:bottom:trailing:));
 
 /**
  Creates edge insets, with each inset value set to zero.
  */
-extern BKYEdgeInsets const BKYEdgeInsetsZero;
+extern BKYEdgeInsets const BKYEdgeInsetsZero
+  CF_SWIFT_NAME(EdgeInsets.zero);
+
+/**
+ The inset distance for the left edge.
+ In LTR layouts, this value is equal to `self.leading`.
+ In RTL layouts, this value is equal to `self.trailing`.
+ */
+CGFloat BKYEdgeInsetsGetLeft(BKYEdgeInsets edgeInsets)
+  CF_SWIFT_NAME(getter:EdgeInsets.left(self:));
+
+/**
+ The inset distance for the right edge.
+ In LTR layouts, this value is equal to `self.trailing`.
+ In RTL layouts, this value is equal to `self.leading`.
+ */
+CGFloat BKYEdgeInsetsGetRight(BKYEdgeInsets edgeInsets)
+  CF_SWIFT_NAME(getter:EdgeInsets.right(self:));

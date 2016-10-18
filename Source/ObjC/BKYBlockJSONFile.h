@@ -18,7 +18,7 @@
 /**
  Options for specifying files that contain different types of JSON block definitions.
  */
-typedef NS_OPTIONS(NSInteger, BlockJSONFile) {
+typedef NS_OPTIONS(NSInteger, BKYBlockJSONFile) {
   // Option for specifying the file containing JSON definitions for default color blocks.
   BKYBlockJSONFileColorDefault CF_SWIFT_NAME(ColorDefault) = 1 << 0,
   // Option for specifying the file containing JSON definitions for default list blocks.
@@ -42,4 +42,4 @@ typedef NS_OPTIONS(NSInteger, BlockJSONFile) {
     BKYBlockJSONFileMathDefault |
     BKYBlockJSONFileTextDefault |
     BKYBlockJSONFileVariableDefault
-};
+} CF_SWIFT_NAME(BlockJSONFile);

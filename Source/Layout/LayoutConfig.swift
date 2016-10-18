@@ -30,6 +30,14 @@ open class LayoutConfig: NSObject {
   /// A closure for creating a `UIFont` from a given scale.
   public typealias FontCreator = (_ scale: CGFloat) -> UIFont
 
+  /// Struct for representing a unit value in both the Workspace coordinate system and UIView
+  /// coordinate system.
+  public typealias Unit = LayoutConfigUnit
+
+  /// Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
+  /// system and UIView coordinate system.
+  public typealias Size = LayoutConfigSize
+
   // MARK: - ScaledFont Class
 
   /**
@@ -158,7 +166,8 @@ open class LayoutConfig: NSObject {
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
 
-    setEdgeInsets(EdgeInsets(4, 8, 4, 8), for: LayoutConfig.FieldTextFieldInsetPadding)
+    setEdgeInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
+                  for: LayoutConfig.FieldTextFieldInsetPadding)
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)

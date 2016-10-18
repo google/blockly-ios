@@ -30,13 +30,13 @@ public protocol WorkbenchViewControllerDelegate: class {
 /**
  Adding Swift convenience functions to `BKYWorkbenchViewControllerUIState`.
  */
-extension BKYWorkbenchViewControllerUIState {
+extension WorkbenchViewControllerUIState {
   /**
    Initializes the workbench view controller UI state with a `WorkbenchViewController.UIStateValue`.
 
    - parameter value: The `enum` value of the state.
    */
-  public init(value: BKYWorkbenchViewControllerUIStateValue) {
+  public init(value: WorkbenchViewControllerUIStateValue) {
     self.init(rawValue: 1 << UInt(value.rawValue))
   }
 
@@ -44,7 +44,7 @@ extension BKYWorkbenchViewControllerUIState {
    Checks if the state intersects with another. Returns `true` if they share any common options,
    `false` otherwise.
    */
-  public func intersectsWith(_ other: BKYWorkbenchViewControllerUIState) -> Bool {
+  public func intersectsWith(_ other: WorkbenchViewControllerUIState) -> Bool {
     return intersection(other).rawValue != 0
   }
 }
@@ -94,9 +94,11 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
-  /// Defines the UI state of the workbench
-  public typealias UIState = BKYWorkbenchViewControllerUIState
-  public typealias UIStateValue = BKYWorkbenchViewControllerUIStateValue
+  /// Details the bitflags for `WorkbenchViewController`'s state.
+  public typealias UIState = WorkbenchViewControllerUIState
+
+  /// Specifies the bitflags for individual state values of `WorkbenchViewController`.
+  public typealias UIStateValue = WorkbenchViewControllerUIStateValue
 
   // MARK: - Properties
 
