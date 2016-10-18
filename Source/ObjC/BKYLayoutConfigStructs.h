@@ -28,7 +28,7 @@ struct BKYLayoutConfigUnit {
   /// The unit value specified in the UIView coordinate system. This value is automatically derived
   /// from `workspaceUnit` and should not be modified directly.
   CGFloat viewUnit;
-};
+} CF_SWIFT_NAME(LayoutConfigUnit);
 typedef struct BKYLayoutConfigUnit BKYLayoutConfigUnit;
 
 /**
@@ -38,7 +38,8 @@ typedef struct BKYLayoutConfigUnit BKYLayoutConfigUnit;
  @note `viewUnit` is automatically initialized to the correct value based on the given
  `workspaceUnit`.
  */
-BKYLayoutConfigUnit BKYLayoutConfigUnitMake(CGFloat workspaceUnit);
+BKYLayoutConfigUnit BKYLayoutConfigUnitMake(CGFloat workspaceUnit)
+  CF_SWIFT_NAME(LayoutConfigUnit.init(_:));
 
 // MARK: - BKYLayoutConfigSize
 
@@ -52,7 +53,7 @@ struct BKYLayoutConfigSize {
   /// The size value specified in the UIView coordinate system. This value is automatically derived
   /// from `workspaceUnit` and should not be modified directly.
   CGSize viewSize;
-};
+} CF_SWIFT_NAME(LayoutConfigSize);
 typedef struct BKYLayoutConfigSize BKYLayoutConfigSize;
 
 /**
@@ -64,4 +65,5 @@ typedef struct BKYLayoutConfigSize BKYLayoutConfigSize;
  @note `viewSize` is automatically initialized to the correct value based on the generated
  `workspaceSize`.
  */
-BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat workspaceHeight);
+BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat workspaceHeight)
+  CF_SWIFT_NAME(LayoutConfigSize.init(_:_:));

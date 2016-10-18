@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, BKYWorkbenchViewControllerUIStateValue) {
   BKYWorkbenchViewControllerUIStateValueDidPanWorkspace,
   /// Specifies the user tapped the workspace.
   BKYWorkbenchViewControllerUIStateValueDidTapWorkspace,
-};
+} CF_SWIFT_NAME(WorkbenchViewControllerUIStateValue);
 
 /// Details the bitflags for `WorkbenchViewController`'s state.
 typedef NS_OPTIONS(NSUInteger, BKYWorkbenchViewControllerUIState) {
@@ -64,4 +64,4 @@ typedef NS_OPTIONS(NSUInteger, BKYWorkbenchViewControllerUIState) {
   /// Specifies the user tapped the workspace.
   BKYWorkbenchViewControllerUIStateDidTapWorkspace CF_SWIFT_NAME(didTapWorkspace) =
     1 << BKYWorkbenchViewControllerUIStateValueDidTapWorkspace,
-};
+} CF_SWIFT_NAME(WorkbenchViewControllerUIState);

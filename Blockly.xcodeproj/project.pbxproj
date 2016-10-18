@@ -23,7 +23,6 @@
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
-		FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
 		FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631631CE44285008DDBC8 /* DropdownView.swift */; };
@@ -56,7 +55,6 @@
 		FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */; };
 		FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */; };
 		FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */; };
-		FA3FD1781CFFAA8E005B6D0F /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
 		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */; };
@@ -217,7 +215,6 @@
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
-		FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutConfig+Structs.swift"; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
 		FA1631631CE44285008DDBC8 /* DropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownView.swift; sourceTree = "<group>"; };
@@ -250,7 +247,6 @@
 		FA3FD1391CF3C678005B6D0F /* LayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutTest.swift; sourceTree = "<group>"; };
 		FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceTest.swift; sourceTree = "<group>"; };
 		FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLConstants.swift; sourceTree = "<group>"; };
-		FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
 		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorView.swift; sourceTree = "<group>"; };
@@ -444,7 +440,6 @@
 				FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */,
 				FA4E83EA1CACF00A009FB0CD /* LayoutEngine.swift */,
 				FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */,
-				FA1039331D93A816005FDF1D /* LayoutConfig+Structs.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */,
 				FA4E840A1CAE4AAE009FB0CD /* ToolboxLayout.swift */,
@@ -732,7 +727,6 @@
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
-				FA3FD1771CFFAA8E005B6D0F /* EdgeInsets.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -978,13 +972,11 @@
 				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
 				FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
-				FA1039341D93A816005FDF1D /* LayoutConfig+Structs.swift in Sources */,
 				FA2DFCB51B72DCF10072A278 /* FieldAngle.swift in Sources */,
 				FAA8700C1C64272C000C7C61 /* UIColor+Helper.swift in Sources */,
 				FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */,
 				FAFAEE631CDAE4DB00698179 /* FieldNumberLayout.swift in Sources */,
 				FAFD37AB1C9CEC6900C77049 /* TrashCanView.swift in Sources */,
-				FA3FD1781CFFAA8E005B6D0F /* EdgeInsets.swift in Sources */,
 				FA2726841B83F99300777B49 /* FieldLayout.swift in Sources */,
 				FAA8700D1C64272C000C7C61 /* UIView+AutoLayout.swift in Sources */,
 				FA57C3921CCADADB00952BFB /* ColorHelper.swift in Sources */,

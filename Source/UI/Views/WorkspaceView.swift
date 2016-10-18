@@ -53,13 +53,13 @@ open class WorkspaceView: LayoutView {
 
   /// The amount of padding to apply to the edges of the workspace canvas, by percentage of view
   /// frame size
-  open var canvasPaddingScale = EdgeInsets(0.5, 0.5, 0.5, 0.5)
+  open var canvasPaddingScale = EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5)
 
   /**
   The amount of padding that should be added to the edges when automatically scrolling a
   `Block` into view.
   */
-  open var scrollIntoViewEdgeInsets = EdgeInsets(20, 20, 100, 20)
+  open var scrollIntoViewEdgeInsets = EdgeInsets(top: 20, leading: 20, bottom: 100, trailing: 20)
 
   /// Enables/disables the zooming of a workspace. Defaults to false.
   open var allowZoom = false
@@ -266,7 +266,7 @@ open class WorkspaceView: LayoutView {
   // MARK: - Private
 
   fileprivate func canvasPadding() -> EdgeInsets {
-    var scaled = EdgeInsets(0, 0, 0, 0)
+    var scaled = EdgeInsets.zero
 
     let viewRect = bounds.size
     scaled.top = viewRect.height * canvasPaddingScale.top
@@ -295,7 +295,7 @@ open class WorkspaceView: LayoutView {
     let canvasPadding = self.canvasPadding()
 
     // Calculate the extra padding to add around the content
-    var contentPadding = EdgeInsets(0, 0, 0, 0)
+    var contentPadding = EdgeInsets.zero
     if allowCanvasPadding {
       // Content padding must be at least two full screen sizes in all directions or else
       // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are

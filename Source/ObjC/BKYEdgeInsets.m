@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#import <UIKit/UIKit.h>
 #import "BKYEdgeInsets.h"
 
 BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
@@ -25,3 +26,13 @@ BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CG
 }
 
 BKYEdgeInsets const BKYEdgeInsetsZero = { .top = 0, .leading = 0, .bottom = 0, .trailing = 0 };
+
+CGFloat BKYEdgeInsetsGetLeft(BKYEdgeInsets edgeInsets) {
+  return [UIApplication sharedApplication].userInterfaceLayoutDirection ==
+    UIUserInterfaceLayoutDirectionRightToLeft ? edgeInsets.trailing : edgeInsets.leading;
+}
+
+CGFloat BKYEdgeInsetsGetRight(BKYEdgeInsets edgeInsets) {
+  return [UIApplication sharedApplication].userInterfaceLayoutDirection ==
+    UIUserInterfaceLayoutDirectionRightToLeft ? edgeInsets.leading : edgeInsets.trailing;
+}

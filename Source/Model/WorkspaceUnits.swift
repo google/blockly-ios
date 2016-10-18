@@ -17,15 +17,6 @@ import Foundation
 
 // MARK: - WorkspacePoint
 
-/**
- Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
- */
-public typealias WorkspacePoint = BKYWorkspacePoint
-
-extension WorkspacePoint {
-  public static var zero: WorkspacePoint { return WorkspacePoint(x: 0, y: 0) }
-}
-
 extension WorkspacePoint: Equatable {
   public static func == (point1: WorkspacePoint, point2: WorkspacePoint) -> Bool {
     return point1.x == point2.x && point1.y == point2.y
@@ -47,15 +38,6 @@ public func - (point1: WorkspacePoint, point2: WorkspacePoint) -> WorkspacePoint
 }
 
 // MARK: - WorkspaceSize
-
-/**
- Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
- */
-public typealias WorkspaceSize = BKYWorkspaceSize
-
-extension WorkspaceSize {
-  public static var zero: WorkspaceSize { return WorkspaceSize(width: 0, height: 0) }
-}
 
 extension WorkspaceSize: Equatable {
   public static func == (size1: WorkspaceSize, size2: WorkspaceSize) -> Bool {

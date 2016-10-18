@@ -18,14 +18,14 @@
 // MARK: - BKYWorkspacePoint
 
 /**
- Point in the Workspace coordinate system.
+ Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
  */
 struct BKYWorkspacePoint {
   /// The x-coordinate
   CGFloat x;
   /// The y-coordinate
   CGFloat y;
-};
+} CF_SWIFT_NAME(WorkspacePoint);
 typedef struct BKYWorkspacePoint BKYWorkspacePoint;
 
 /**
@@ -35,24 +35,26 @@ typedef struct BKYWorkspacePoint BKYWorkspacePoint;
  @param y Y-coordinate in the Workspace coordinate system
  @returns A `BKYWorkspacePoint`.
  */
-BKYWorkspacePoint BKYWorkspacePointMake(CGFloat x, CGFloat y);
+BKYWorkspacePoint BKYWorkspacePointMake(CGFloat x, CGFloat y)
+  CF_SWIFT_NAME(WorkspacePoint.init(x:y:));
 
 /**
  A point in the Workspace coordinate system, where x and y coordinates are set to zero.
  */
-extern BKYWorkspacePoint const BKYWorkspacePointZero;
+extern BKYWorkspacePoint const BKYWorkspacePointZero
+  CF_SWIFT_NAME(WorkspacePoint.zero);
 
 // MARK: - BKYWorkspaceSize
 
 /**
- Size in the Workspace coordinate system.
+ Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
  */
 struct BKYWorkspaceSize {
   /// The width value
   CGFloat width;
   /// The height value
   CGFloat height;
-};
+} CF_SWIFT_NAME(WorkspaceSize);
 typedef struct BKYWorkspaceSize BKYWorkspaceSize;
 
 /**
@@ -62,12 +64,14 @@ typedef struct BKYWorkspaceSize BKYWorkspaceSize;
  @param height Height value in the Workspace coordinate system
  @returns A `BKYWorkspaceSize`.
  */
-BKYWorkspaceSize BKYWorkspaceSizeMake(CGFloat width, CGFloat height);
+BKYWorkspaceSize BKYWorkspaceSizeMake(CGFloat width, CGFloat height)
+  CF_SWIFT_NAME(WorkspaceSize.init(width:height:));
 
 /**
  A size in the Workspace coordinate system, where width and height values are set to zero.
  */
-extern BKYWorkspaceSize const BKYWorkspaceSizeZero;
+extern BKYWorkspaceSize const BKYWorkspaceSizeZero
+  CF_SWIFT_NAME(WorkspaceSize.zero);
 
 // MARK: - BKYWorkspaceEdgeInsets
 
