@@ -40,7 +40,7 @@ public class BlockFactory : NSObject {
 
     do {
       try load(fromJSONPaths: defaultFiles.fileLocations, bundle: bundle)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not load default block definition files in library bundle: " +
         "\(defaultFiles.fileLocations).\nError: \(error)")
     }

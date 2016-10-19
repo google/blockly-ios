@@ -106,7 +106,7 @@ class WorkspaceLayoutTest: XCTestCase {
       } else {
         XCTFail("Couldn't locate connections")
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 

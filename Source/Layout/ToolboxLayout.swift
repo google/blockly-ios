@@ -77,7 +77,7 @@ open class ToolboxLayout: NSObject {
       let coordinator = try WorkspaceLayoutCoordinator(
         workspaceLayout: layout, layoutBuilder: layoutBuilder, connectionManager: nil)
       categoryLayoutCoordinators.append(coordinator)
-    } catch let error as NSError {
+    } catch let error {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")
     }
   }

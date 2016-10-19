@@ -165,7 +165,7 @@ class ConnectionManagerTest: XCTestCase {
 
     do {
       try manager.deleteGroup(connectionGroup)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Could not delete group: \(error)")
     }
   }

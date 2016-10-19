@@ -31,7 +31,7 @@ class BlockJSONTest: XCTestCase {
       let json = try JSONHelper.makeJSONDictionary(string: jsonString)
       block = try Block.makeBuilder(json: json).makeBlock()
       try! workspace.addBlockTree(block)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
