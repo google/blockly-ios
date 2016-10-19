@@ -38,7 +38,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldAngle")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -59,7 +59,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldColor")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -80,7 +80,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldColor")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -109,7 +109,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldDate")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -138,7 +138,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldDropdown")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -172,7 +172,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldImage")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -200,7 +200,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldInput")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -225,7 +225,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldLabel")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -253,7 +253,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldNumber")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }
@@ -281,7 +281,7 @@ class FieldJSONTest: XCTestCase {
         XCTFail("Could not parse json into a FieldVariable")
         return
       }
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error.localizedDescription)")
       return
     }

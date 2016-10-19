@@ -68,7 +68,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
       let workspace = Workspace()
 
       try loadWorkspace(workspace)
-    } catch let error as NSError {
+    } catch let error {
       print("Couldn't build layout tree for workspace: \(error)")
     }
   }

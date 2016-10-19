@@ -111,7 +111,7 @@ class BlockBuilderTest: XCTestCase {
         displayNames: ["option1", "option2", "option3"],
         values: ["OPTION1", "OPTION2", "OPTION3"],
         selectedIndex: 0))
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error)")
     }
     fields.append(FieldVariable(name: "variable", variable: "item"))
@@ -134,7 +134,7 @@ class BlockBuilderTest: XCTestCase {
     do {
       try bob.setPreviousConnection(enabled: true)
       try bob.setNextConnection(enabled: true, typeChecks: ["Boolean", "Number", "Array"])
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Error: \(error)")
     }
     bob.color = ColorHelper.makeColor(hue: 20)

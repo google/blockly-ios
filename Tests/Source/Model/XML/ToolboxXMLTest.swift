@@ -239,7 +239,7 @@ class ToolboxXMLTest: XCTestCase {
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
       XCTAssertEqual(BlocklyError.Code.xmlParsing.rawValue, error.code)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Caught unexpected error: \(error)")
     }
   }
@@ -255,7 +255,7 @@ class ToolboxXMLTest: XCTestCase {
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
       XCTAssertEqual(BlocklyError.Code.xmlParsing.rawValue, error.code)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Caught unexpected error: \(error)")
     }
   }
@@ -267,7 +267,7 @@ class ToolboxXMLTest: XCTestCase {
       XCTFail("Toolbox was parsed successfully from bad XML: '\(xmlString)'")
     } catch let error as BlocklyError {
       XCTAssertEqual(BlocklyError.Code.xmlUnknownBlock.rawValue, error.code)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Caught unexpected error: \(error)")
     }
   }

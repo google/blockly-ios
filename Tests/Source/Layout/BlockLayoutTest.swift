@@ -54,7 +54,7 @@ class BlockLayoutTest: XCTestCase {
     // Build layout tree
     do {
       try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't build layout tree: \(error)")
     }
 
@@ -82,7 +82,7 @@ class BlockLayoutTest: XCTestCase {
     // Build layout tree
     do {
       try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't build layout tree: \(error)")
     }
 
@@ -117,7 +117,7 @@ class BlockLayoutTest: XCTestCase {
     // Build layout tree
     do {
       try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't build layout tree: \(error)")
     }
 
@@ -145,7 +145,7 @@ class BlockLayoutTest: XCTestCase {
     // Build layout tree
     do {
       try _layoutBuilder.buildLayoutTree(forWorkspaceLayout: _workspaceLayout)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't build layout tree: \(error)")
     }
 

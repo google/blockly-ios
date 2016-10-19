@@ -69,7 +69,7 @@ class BlockTest: XCTestCase {
 
       try blockStatementNoNext.previousConnection?.connectTo(
         blockStatementStatementInput.nextConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 
@@ -104,7 +104,7 @@ class BlockTest: XCTestCase {
 
     do {
       try block1.nextConnection?.connectTo(block2.previousConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
     XCTAssertEqual(block2, block1.lastBlockInChain())
@@ -140,7 +140,7 @@ class BlockTest: XCTestCase {
         blockStatementNoNext.previousConnection)
       try blockStatementStatementInput.nextConnection?.connectTo(
         blockStatementMultipleInputValueInput.previousConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 
@@ -221,7 +221,7 @@ class BlockTest: XCTestCase {
       statementStatementInputCount += statementMultipleInputValueInputCount
       XCTAssertEqual(
         statementStatementInputCount, blockStatementStatementInput.allConnectionsForTree().count)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
   }
@@ -254,7 +254,7 @@ class BlockTest: XCTestCase {
         blockStatementNoNext.previousConnection)
       try blockStatementStatementInput.nextConnection?.connectTo(
         blockStatementMultipleInputValueInput.previousConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 
@@ -262,7 +262,7 @@ class BlockTest: XCTestCase {
       let copyResult = try blockStatementStatementInput.deepCopy()
       XCTAssertEqual(5, copyResult.allBlocks.count)
       assertSimilarBlockTrees(copyResult.rootBlock, blockStatementStatementInput)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't deep copy block: \(error)")
     }
   }
@@ -378,7 +378,7 @@ class BlockTest: XCTestCase {
       XCTAssertNotNil(block1.inputs[0].connection)
       XCTAssertNotNil(block2.outputConnection)
       try block1.inputs[0].connection?.connectTo(block2.outputConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 
@@ -418,7 +418,7 @@ class BlockTest: XCTestCase {
       XCTAssertNotNil(block2.inputs[0].connection)
       XCTAssertNotNil(block3.outputConnection)
       try block2.inputs[0].connection?.connectTo(block3.outputConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 
@@ -446,7 +446,7 @@ class BlockTest: XCTestCase {
       XCTAssertNotNil(block2.inputs[0].connection)
       XCTAssertNotNil(block3.outputConnection)
       try block2.inputs[0].connection?.connectTo(block3.outputConnection)
-    } catch let error as NSError {
+    } catch let error {
       XCTFail("Couldn't connect blocks together: \(error)")
     }
 

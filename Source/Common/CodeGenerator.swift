@@ -223,7 +223,7 @@ public final class CodeGenerator: NSObject {
       do {
         let string = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
         return string
-      } catch let error as NSError {
+      } catch let error {
         throw BlocklyError(.fileNotReadable, "File could not be read ('\(file)'):\n\(error)")
       }
     } else {
@@ -322,7 +322,7 @@ extension CodeGenerator: WKNavigationDelegate {
           self.loadCompleted()
         }
       })
-    } catch let error as NSError {
+    } catch let error {
       self.loadFailed("Could not load resource files: \(error)")
     }
   }

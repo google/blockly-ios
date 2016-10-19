@@ -66,7 +66,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let workspace = Workspace()
 
       try loadWorkspace(workspace)
-    } catch let error as NSError {
+    } catch let error {
       print("Couldn't build layout tree for workspace: \(error)")
     }
   }
@@ -82,7 +82,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")
       }
-    } catch let error as NSError {
+    } catch let error {
       print("An error occurred loading the toolbox: \(error)")
     }
   }
