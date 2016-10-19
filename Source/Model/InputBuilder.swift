@@ -20,8 +20,6 @@ Builder for creating `Input` instances.
 */
 @objc(BKYInputBuilder)
 public final class InputBuilder: NSObject {
-  // MARK: - Static Properties
-
   // MARK: - Properties
 
   /// The type (value, statement, dummy) of the `Input`.
@@ -104,9 +102,4 @@ public final class InputBuilder: NSObject {
   public func appendFields(_ fields: [Field]) {
     self.fields.append(contentsOf: fields.map({ $0.copyField()}))
   }
-}
-
-extension Input {
-  /// Builder for creating `Input` instances
-  public typealias Builder = InputBuilder
 }

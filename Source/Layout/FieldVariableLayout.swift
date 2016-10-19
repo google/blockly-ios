@@ -21,6 +21,9 @@ import Foundation
 @objc(BKYFieldVariableLayout)
 open class FieldVariableLayout: FieldLayout {
 
+  // MARK: - Tuples
+
+  /// Represents a selectable variable, with a display name and underlying value.
   public typealias Option = (displayName: String, value: String)
 
   // MARK: - Properties

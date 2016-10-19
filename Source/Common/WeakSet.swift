@@ -65,9 +65,9 @@ public struct WeakSet<Element: AnyObject> {
   }
 }
 
-// MARK: - SequenceType Implementation
-
 extension WeakSet : Sequence {
+  // MARK: - Sequence - Implementation
+
   public typealias Iterator = AnyIterator<Element>
 
   public func makeIterator() -> Iterator {

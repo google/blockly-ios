@@ -118,9 +118,9 @@ class ConnectionManagerTest: XCTestCase {
 
   func testConnectionManagerIsConnectionAllowedNext() {
     let one = createConnection(0, 0, .nextStatement,
-      sourceInput: Input.Builder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").build())
     let two = createConnection(0, 0, .nextStatement,
-      sourceInput: Input.Builder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").build())
     manager.trackConnection(one)
     manager.trackConnection(two)
 
@@ -372,7 +372,7 @@ class ConnectionManagerTest: XCTestCase {
     list.addConnection(previousConnection)
 
     let shadowBlock = BKYAssertDoesNotThrow {
-      try Block.Builder(name: "test").makeBlock(shadow: true)
+      try BlockBuilder(name: "test").makeBlock(shadow: true)
     }
     XCTAssertNotNil(shadowBlock)
 
@@ -513,7 +513,7 @@ class ConnectionManagerTest: XCTestCase {
     _ x: CGFloat, _ y: CGFloat, _ type: Connection.ConnectionType, sourceInput: Input? = nil)
     -> Connection
   {
-    let block = try! Block.Builder(name: "test").makeBlock()
+    let block = try! BlockBuilder(name: "test").makeBlock()
     try! workspace.addBlockTree(block)
 
     let conn = Connection(type: type, sourceInput: sourceInput)

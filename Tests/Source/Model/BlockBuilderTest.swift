@@ -32,7 +32,7 @@ class BlockBuilderTest: XCTestCase {
     let block3 = buildFrankenBlock(workspace)
     try! block.previousConnection?.connectTo(block3.nextConnection)
 
-    let blockCopy = try! Block.Builder(block: block).makeBlock()
+    let blockCopy = try! BlockBuilder(block: block).makeBlock()
     try! workspace.addBlockTree(blockCopy)
     validate(frankenblock: blockCopy)
 
@@ -94,9 +94,9 @@ class BlockBuilderTest: XCTestCase {
   }
 
   internal func buildFrankenBlock(_ workspace: Workspace) -> Block {
-    let bob = Block.Builder(name: "frankenblock")
+    let bob = BlockBuilder(name: "frankenblock")
 
-    var inputBuilder = Input.Builder(type: Input.InputType.value, name: "value_input")
+    var inputBuilder = InputBuilder(type: Input.InputType.value, name: "value_input")
     var fields = [
       FieldInput(name: "text_input", text: "something"),
       FieldCheckbox(name: "checkbox", checked: true)
@@ -105,7 +105,7 @@ class BlockBuilderTest: XCTestCase {
     bob.inputBuilders.append(inputBuilder)
     fields = []
 
-    inputBuilder = Input.Builder(type: Input.InputType.statement, name:"statement_input")
+    inputBuilder = InputBuilder(type: Input.InputType.statement, name:"statement_input")
     do {
       fields.append(try FieldDropdown(name: "dropdown",
         displayNames: ["option1", "option2", "option3"],
@@ -119,7 +119,7 @@ class BlockBuilderTest: XCTestCase {
     bob.inputBuilders.append(inputBuilder)
     fields = []
 
-    inputBuilder = Input.Builder(type: Input.InputType.dummy, name: "dummy_input")
+    inputBuilder = InputBuilder(type: Input.InputType.dummy, name: "dummy_input")
     fields = [
       FieldAngle(name: "angle", angle: 90),
       FieldColor(name: "color", color: UIColor.magenta),

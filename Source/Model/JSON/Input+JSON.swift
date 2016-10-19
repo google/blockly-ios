@@ -19,19 +19,19 @@ extension Input {
   // MARK: - Internal
 
   /**
-  Creates a new `Input.Builder` from a JSON dictionary.
+  Creates a new `InputBuilder` from a JSON dictionary.
 
   - parameter json: JSON dictionary
-  - returns: An `Input.Builder` instance based on the JSON dictionary, or `nil` if there was
+  - returns: An `InputBuilder` instance based on the JSON dictionary, or `nil` if there was
   insufficient data in the dictionary.
   */
-  internal static func makeBuilder(json: [String: Any]) -> Input.Builder? {
+  internal static func makeBuilder(json: [String: Any]) -> InputBuilder? {
     guard let type = Input.InputType(string: ((json["type"] as? String) ?? "")) else {
       return nil
     }
 
     let name = (json["name"] as? String) ?? "NAME"
-    let inputBuilder = Input.Builder(type: type, name: name)
+    let inputBuilder = InputBuilder(type: type, name: name)
 
     // Set alignment
     if let alignmentString = json["align"] as? String,

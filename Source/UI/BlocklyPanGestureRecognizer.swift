@@ -32,7 +32,8 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 /**
  The delegate protocol for `BlocklyPanGestureRecognizer`.
  */
-public protocol BlocklyPanGestureDelegate: class {
+@objc(BKYBlocklyPanGestureRecognizerDelegate)
+public protocol BlocklyPanGestureRecognizerDelegate: class {
   /**
    The callback that's called when the `BlocklyPanGestureRecognizer` detects a valid block pan.
    Note: This function returns a `BlockView`, in case this function changes the view that's passed
@@ -54,6 +55,22 @@ public protocol BlocklyPanGestureDelegate: class {
  */
 @objc(BKYBlocklyPanGestureRecognizer)
 open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
+  // MARK: - Constants
+
+  /**
+   The states of the individual touches in the `BlocklyPanGestureRecognizer`
+   */
+  @objc(BKYBlocklyPanGestureRecognizerTouchState)
+  public enum TouchState: Int {
+    case
+      /// Specifies an individual touch has just begun on a `BlockView`
+      began = 0,
+      /// Specifies an individual touch has just changed on a `BlockView`
+      changed,
+      /// Specifies an individual touch has just ended on a `BlockView`
+      ended
+  }
+
   // MARK: - Properties
 
   /// An ordered list of touches being handled by the recognizer.
@@ -61,19 +78,6 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
   /// An ordered list of blocks being dragged by the recognizer.
   private var _blocks = [BlockView]()
-
-  /**
-   The states of the individual touches in the `BlocklyPanGestureRecognizer`
-   */
-  @objc(BKYBlocklyPanGestureRecognizerTouchState)
-  public enum TouchState: Int {
-    /// Specifies an individual touch has just begun on a `BlockView`
-    case began = 0,
-      /// Specifies an individual touch has just changed on a `BlockView`
-      changed,
-      /// Specifies an individual touch has just ended on a `BlockView`
-      ended
-  }
 
   // TODO:(#176) Replace maximumTouches
 
@@ -85,7 +89,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   open var minimumPanDistance: Float = 2.0
 
   /// The delegate this gestureRecognizer operates on (`WorkbenchViewController` by default).
-  open weak var targetDelegate: BlocklyPanGestureDelegate?
+  open weak var targetDelegate: BlocklyPanGestureRecognizerDelegate?
 
   // MARK: - Initializer
 
@@ -94,7 +98,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
    - parameter targetDelegate: The object that listens to the gesture recognizer callbacks
    */
-  public init(targetDelegate: BlocklyPanGestureDelegate)
+  public init(targetDelegate: BlocklyPanGestureRecognizerDelegate?)
   {
     self.targetDelegate = targetDelegate
     super.init(target: nil, action: nil)

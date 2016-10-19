@@ -61,13 +61,14 @@ public final class Connection : NSObject {
   public static let OPPOSITE_TYPES: [ConnectionType] =
   [.nextStatement, .previousStatement, .outputValue, .inputValue]
 
-  // MARK: - Enum - ConnectionType
+  // MARK: - Constants
 
   /// Represents all possible types of connections.
   @objc(BKYConnectionType)
   public enum ConnectionType: Int {
-    /// Specifies the connection is a previous connection.
-    case previousStatement = 0,
+    case
+      /// Specifies the connection is a previous connection.
+      previousStatement = 0,
       /// Specifies the connection is a next connection.
       nextStatement,
       /// Specifies the connection is an input connection.
@@ -76,20 +77,18 @@ public final class Connection : NSObject {
       outputValue
   }
 
-  // MARK: - Enum - CheckResultType
-
   /// Represents a combination of result codes when trying to connect two connections
   public struct CheckResult: OptionSet {
-    internal static let CanConnect = CheckResult(value: .canConnect)
-    internal static let ReasonSelfConnection = CheckResult(value: .reasonSelfConnection)
-    internal static let ReasonWrongType = CheckResult(value: .reasonWrongType)
-    internal static let ReasonMustDisconnect = CheckResult(value: .reasonMustDisconnect)
-    internal static let ReasonTargetNull = CheckResult(value: .reasonTargetNull)
-    internal static let ReasonShadowNull = CheckResult(value: .reasonShadowNull)
-    internal static let ReasonTypeChecksFailed = CheckResult(value: .reasonTypeChecksFailed)
-    internal static let ReasonCannotSetShadowForTarget =
+    public static let CanConnect = CheckResult(value: .canConnect)
+    public static let ReasonSelfConnection = CheckResult(value: .reasonSelfConnection)
+    public static let ReasonWrongType = CheckResult(value: .reasonWrongType)
+    public static let ReasonMustDisconnect = CheckResult(value: .reasonMustDisconnect)
+    public static let ReasonTargetNull = CheckResult(value: .reasonTargetNull)
+    public static let ReasonShadowNull = CheckResult(value: .reasonShadowNull)
+    public static let ReasonTypeChecksFailed = CheckResult(value: .reasonTypeChecksFailed)
+    public static let ReasonCannotSetShadowForTarget =
       CheckResult(value: .reasonCannotSetShadowForTarget)
-    internal static let ReasonInferiorBlockShadowMismatch =
+    public static let ReasonInferiorBlockShadowMismatch =
       CheckResult(value: .reasonInferiorBlockShadowMismatch)
 
     /// Specific reasons why two connections are able or unable connect
@@ -126,20 +125,10 @@ public final class Connection : NSObject {
     ///  The underlying raw value for the `CheckResult`.
     public let rawValue : Int
 
-    /**
-     Initializes the value with an integer.
-
-     - parameter rawValue: The integer to seed the `CheckResult` with.
-     */
     public init(rawValue: Int) {
       self.rawValue = rawValue
     }
 
-    /**
-     Initializes the value with a `Value`.
-
-     - parameter value: The `Value` to seed the `CheckResult` with.
-     */
     public init(value: Value) {
       self.init(rawValue: 1 << value.rawValue)
     }
