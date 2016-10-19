@@ -310,7 +310,7 @@ class BlockTest: XCTestCase {
   }
 
   func testDeepCopy_DoesNotCopyUUID() {
-    let original = BKYAssertDoesNotThrow { try Block.Builder(name: "test").makeBlock() }
+    let original = BKYAssertDoesNotThrow { try BlockBuilder(name: "test").makeBlock() }
     let copy = BKYAssertDoesNotThrow { try original?.deepCopy() }
 
     XCTAssertNotNil(original)
@@ -319,9 +319,9 @@ class BlockTest: XCTestCase {
   }
 
   func testEditable() {
-    let inputBuilder = Input.Builder(type: .dummy, name: "dummy")
+    let inputBuilder = InputBuilder(type: .dummy, name: "dummy")
     inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
-    let blockBuilder = Block.Builder(name: "test")
+    let blockBuilder = BlockBuilder(name: "test")
     blockBuilder.editable = true
     blockBuilder.inputBuilders = [inputBuilder]
 
@@ -345,9 +345,9 @@ class BlockTest: XCTestCase {
   }
 
   func testEditable_LoadAsReadOnly() {
-    let inputBuilder = Input.Builder(type: .dummy, name: "dummy")
+    let inputBuilder = InputBuilder(type: .dummy, name: "dummy")
     inputBuilder.appendField(FieldLabel(name: "label", text: "label"))
-    let blockBuilder = Block.Builder(name: "test")
+    let blockBuilder = BlockBuilder(name: "test")
     blockBuilder.editable = false
     blockBuilder.inputBuilders = [inputBuilder]
 

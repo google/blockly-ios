@@ -22,7 +22,7 @@ import Foundation
  */
 @objc(BKYDefaultLayoutFactory)
 open class DefaultLayoutFactory: NSObject {
-  /// MARK: - Type Aliases
+  // MARK: - Closures
 
   /// Closure for returning a `FieldLayout` from a given `Field` and `LayoutEngine`
   public typealias FieldLayoutCreator =
