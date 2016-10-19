@@ -36,14 +36,3 @@ BKYWorkspaceSize BKYWorkspaceSizeMake(CGFloat width, CGFloat height) {
 }
 
 BKYWorkspaceSize const BKYWorkspaceSizeZero = { .width = 0, .height = 0 };
-
-// MARK: - BKYWorkspaceEdgeInsets
-
-BKYWorkspaceEdgeInsets BKYWorkspaceEdgeInsetsMake(
-  CGFloat top, CGFloat left, CGFloat bottom, CGFloat right)
-{
-  return UIEdgeInsetsMake(top, left, bottom, right);
-}
-
-BKYWorkspaceEdgeInsets const BKYWorkspaceEdgeInsetsZero =
-  { .top = 0, .left = 0, .bottom = 0, .right = 0 };
