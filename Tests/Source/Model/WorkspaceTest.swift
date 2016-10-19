@@ -32,7 +32,7 @@ class WorkspaceTest: XCTestCase {
 
   func testAddBlockTree_TopLevelShadowBlockFailure() {
     guard let shadowBlock =
-      BKYAssertDoesNotThrow({ try Block.Builder(name: "shadow").makeBlock(shadow: true) }) else
+      BKYAssertDoesNotThrow({ try BlockBuilder(name: "shadow").makeBlock(shadow: true) }) else
     {
       XCTFail("Could not create block")
       return
@@ -44,7 +44,7 @@ class WorkspaceTest: XCTestCase {
   }
 
   func testDeactivateBlockTrees() {
-    let builder = Block.Builder(name: "block")
+    let builder = BlockBuilder(name: "block")
     BKYAssertDoesNotThrow { try builder.setPreviousConnection(enabled: true) }
     BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 
@@ -93,8 +93,8 @@ class WorkspaceTest: XCTestCase {
   }
 
   func testReadOnly() {
-    guard let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").makeBlock() }),
-      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").makeBlock() }) else
+    guard let block1 = BKYAssertDoesNotThrow({ try BlockBuilder(name: "block1").makeBlock() }),
+      let block2 = BKYAssertDoesNotThrow({ try BlockBuilder(name: "block2").makeBlock() }) else
     {
       XCTFail("Could not create blocks")
       return
@@ -140,8 +140,8 @@ class WorkspaceTest: XCTestCase {
 
   func testMaxBlocks_One() {
     guard
-      let block1 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block1").makeBlock() }),
-      let block2 = BKYAssertDoesNotThrow({ try Block.Builder(name: "block2").makeBlock() }) else
+      let block1 = BKYAssertDoesNotThrow({ try BlockBuilder(name: "block1").makeBlock() }),
+      let block2 = BKYAssertDoesNotThrow({ try BlockBuilder(name: "block2").makeBlock() }) else
     {
       XCTFail("Could not build blocks")
       return
@@ -164,7 +164,7 @@ class WorkspaceTest: XCTestCase {
   }
 
   func testMaxBlocks_Tree() {
-    let builder = Block.Builder(name: "block")
+    let builder = BlockBuilder(name: "block")
     BKYAssertDoesNotThrow { try builder.setPreviousConnection(enabled: true) }
     BKYAssertDoesNotThrow { try builder.setNextConnection(enabled: true) }
 

@@ -25,7 +25,7 @@ import Foundation
 @objc(BKYBlockFactory)
 public class BlockFactory : NSObject {
 
-  internal var _blockBuilders = Dictionary<String, Block.Builder>()
+  internal var _blockBuilders = Dictionary<String, BlockBuilder>()
 
   // MARK: - Public
 

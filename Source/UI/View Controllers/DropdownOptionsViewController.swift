@@ -36,7 +36,7 @@ public protocol DropdownOptionsViewControllerDelegate: class {
 @objc(BKYDropdownOptionsViewController)
 open class DropdownOptionsViewController: UITableViewController {
 
-  // MARK: - Type Alias - Option
+  // MARK: - Tuples
 
   /// Represents a dropdown option, with a display name and value
   public typealias Option = (displayName: String, value: String)

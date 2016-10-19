@@ -37,7 +37,7 @@ extension Block {
   // MARK: - Public
 
   /**
-  Creates a new `Block.Builder` from a JSON dictionary.
+  Creates a new `BlockBuilder` from a JSON dictionary.
 
   - parameter json: The JSON dictionary.
   - throws:
@@ -45,7 +45,7 @@ extension Block {
   malformed data, or contradictory data).
   - returns: A new block builder.
   */
-  public class func makeBuilder(json: [String: Any]) throws -> Block.Builder
+  public class func makeBuilder(json: [String: Any]) throws -> BlockBuilder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.invalidBlockDefinition,
@@ -54,7 +54,7 @@ extension Block {
 
     // Build the block
     let blockName = (json[PARAMETER_TYPE] as? String) ?? ""
-    let builder = Block.Builder(name: blockName)
+    let builder = BlockBuilder(name: blockName)
 
     if let colorHue = json[PARAMETER_COLOR] as? CGFloat {
       builder.color = ColorHelper.makeColor(hue: colorHue)
@@ -128,7 +128,7 @@ extension Block {
   // MARK: - Internal
 
   /**
-  Interpolate a message description into an `Input.Builder` array.
+  Interpolate a message description into an `InputBuilder` array.
 
   - parameter message: Text contains interpolation tokens (%1, %2, ...) that match with fields or
   inputs defined in the arguments array. Each interpolation token should only appear once.
@@ -140,15 +140,15 @@ extension Block {
   provided in the message, if any interpolation token was used more than once, if not all argument
   values were referenced by the interpolation tokens, or if an argument could not be parsed into an
   `Input` or `Field`.
-  - returns: An `Input.Builder` array
+  - returns: An `InputBuilder` array
   */
   internal class func interpolate(message: String, arguments: Array<[String: Any]>,
-    lastDummyAlignment: Input.Alignment) throws -> [Input.Builder]
+    lastDummyAlignment: Input.Alignment) throws -> [InputBuilder]
   {
     let tokens = Block.tokenized(message: message)
     var processedIndices = [Bool](repeating: false, count: arguments.count)
     var tempFieldList = [Field]()
-    var allInputBuilders = Array<Input.Builder>()
+    var allInputBuilders = Array<InputBuilder>()
 
     for token in tokens {
       switch (token) {
@@ -214,7 +214,7 @@ extension Block {
 
     // If there were leftover fields we need to add a dummy input to hold them.
     if (!tempFieldList.isEmpty) {
-      let inputBuilder = Input.Builder(type: .dummy, name: "")
+      let inputBuilder = InputBuilder(type: .dummy, name: "")
       inputBuilder.appendFields(tempFieldList)
       tempFieldList = []
       allInputBuilders.append(inputBuilder)

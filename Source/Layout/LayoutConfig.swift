@@ -20,39 +20,6 @@ import Foundation
  */
 @objc(BKYLayoutConfig)
 open class LayoutConfig: NSObject {
-  // MARK: - Type Alias
-
-  /// Type alias defining the property key.
-  /// To create a new one, call `LayoutConfig.newPropertyKey()`, rather than instantiating
-  /// the underlying type directly.
-  public typealias PropertyKey = Int
-
-  /// A closure for creating a `UIFont` from a given scale.
-  public typealias FontCreator = (_ scale: CGFloat) -> UIFont
-
-  /// Struct for representing a unit value in both the Workspace coordinate system and UIView
-  /// coordinate system.
-  public typealias Unit = LayoutConfigUnit
-
-  /// Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
-  /// system and UIView coordinate system.
-  public typealias Size = LayoutConfigSize
-
-  // MARK: - ScaledFont Class
-
-  /**
-   Helper class keeping a `FontCreator` and a copy of the currently scaled font.
-   */
-  private class ScaledFont {
-    let creator: FontCreator
-    var font: UIFont
-
-    init(creator: @escaping FontCreator, currentScale: CGFloat) {
-      self.creator = creator
-      self.font = creator(currentScale)
-    }
-  }
-
   // MARK: - Static Properties
 
   /// Total number of `PropertyKey` values that have been created via `newPropertyKey()`.
@@ -113,6 +80,26 @@ open class LayoutConfig: NSObject {
 
   /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
   public static let ViewAnimationDuration = LayoutConfig.newPropertyKey()
+
+  // MARK: - Closures
+
+  /// A closure for creating a `UIFont` from a given scale.
+  public typealias FontCreator = (_ scale: CGFloat) -> UIFont
+
+  // MARK: - Aliases
+
+  /// Type alias defining the property key.
+  /// To create a new one, call `LayoutConfig.newPropertyKey()`, rather than instantiating
+  /// the underlying type directly.
+  public typealias PropertyKey = Int
+
+  /// Struct for representing a unit value in both the Workspace coordinate system and UIView
+  /// coordinate system.
+  public typealias Unit = LayoutConfigUnit
+
+  /// Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
+  /// system and UIView coordinate system.
+  public typealias Size = LayoutConfigSize
 
   // MARK: - Properties
 
@@ -458,6 +445,23 @@ open class LayoutConfig: NSObject {
 
     for (_, scaledFont) in _fonts {
       scaledFont.font = scaledFont.creator(_scale)
+    }
+  }
+}
+
+extension LayoutConfig {
+  // MARK: - ScaledFont Class
+
+  /**
+   Helper class for storing a `FontCreator` and a copy of its currently scaled font.
+   */
+  fileprivate class ScaledFont {
+    let creator: FontCreator
+    var font: UIFont
+
+    init(creator: @escaping FontCreator, currentScale: CGFloat) {
+      self.creator = creator
+      self.font = creator(currentScale)
     }
   }
 }

@@ -29,11 +29,13 @@ public protocol BlockDelegate: class {
 }
 
 /**
-Class that represents a single block.
-*/
+ Class that represents a single block.
+ 
+ - note: To create a block programmatically, use a `BlockBuilder`.
+ */
 @objc(BKYBlock)
 public final class Block : NSObject {
-  // MARK: - Aliases
+  // MARK: - Tuples
 
   /**
    A tuple representing a tree of connected blocks where:
@@ -152,9 +154,6 @@ public final class Block : NSObject {
 
   // MARK: - Initializers
 
-  /**
-  To create a Block, use Block.Builder instead.
-  */
   internal init(
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
     position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
@@ -342,7 +341,7 @@ public final class Block : NSObject {
    `BlocklyError`: Thrown if copied blocks could not be connected to each other.
    */
   public func deepCopy() throws -> BlockTree {
-    let newBlock = try Block.Builder(block: self).makeBlock(shadow: shadow)
+    let newBlock = try BlockBuilder(block: self).makeBlock(shadow: shadow)
     var copiedBlocks = [Block]()
     copiedBlocks.append(newBlock)
 

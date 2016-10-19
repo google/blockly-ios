@@ -24,17 +24,18 @@ public protocol InputDelegate: class {
 
 /**
  Class representing an input (value, statement, or dummy). To create an `Input` object, use
- `Input.Builder`
+ `InputBuilder`
 */
 @objc(BKYInput)
 public final class Input : NSObject {
-  // MARK: - Enum - InputType
+  // MARK: - Constants
 
   /** Represents types of inputs. */
   @objc(BKYInputType)
   public enum InputType: Int {
-    /// Specifies the input is a value input.
-    case value = 0,
+    case
+      /// Specifies the input is a value input.
+      value = 0,
       /// Specifies the input is a statement input.
       statement,
       /// Specifies the input is a dummy input.
@@ -59,13 +60,12 @@ public final class Input : NSObject {
     }
   }
 
-  // MARK: - Enum - InputAlignment
-
   /** Represents valid alignments of a connection's fields. */
   @objc(BKYInputAlignment)
   public enum Alignment: Int {
-    /// Specifies the input is left-aligned
-    case left = -1,
+    case
+      /// Specifies the input is left-aligned
+      left = -1,
       /// Specifies the input is center-aligned
       center = 0,
       /// Specifies the input is right-aligned
@@ -130,8 +130,8 @@ public final class Input : NSObject {
   // MARK: - Initializers
 
   /**
-  To create an Input, use Input.Builder instead.
-  */
+   To create an input, use `InputBuilder` instead.
+   */
   internal init(type: InputType, name: String, fields: [Field]) {
     self.name = name
     self.type = type

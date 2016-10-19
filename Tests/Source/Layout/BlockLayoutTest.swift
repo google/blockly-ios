@@ -47,7 +47,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutBeforeLayoutEmpty() {
     // Create block with no input's
-    let builder = Block.Builder(name: "test")
+    let builder = BlockBuilder(name: "test")
     let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -60,7 +60,7 @@ class BlockLayoutTest: XCTestCase {
 
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = Input.Builder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
@@ -71,11 +71,11 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutBeforeLayoutMultipleValues() {
     // Create block with many inputs
-    let builder = Block.Builder(name: "test")
-    builder.inputBuilders.append(Input.Builder(type: .value, name: "input1"))
-    builder.inputBuilders.append(Input.Builder(type: .dummy, name: "input2"))
-    builder.inputBuilders.append(Input.Builder(type: .statement, name: "input3"))
-    builder.inputBuilders.append(Input.Builder(type: .value, name: "input4"))
+    let builder = BlockBuilder(name: "test")
+    builder.inputBuilders.append(InputBuilder(type: .value, name: "input1"))
+    builder.inputBuilders.append(InputBuilder(type: .dummy, name: "input2"))
+    builder.inputBuilders.append(InputBuilder(type: .statement, name: "input3"))
+    builder.inputBuilders.append(InputBuilder(type: .value, name: "input4"))
     let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -99,7 +99,7 @@ class BlockLayoutTest: XCTestCase {
       }
 
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = Input.Builder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
@@ -110,7 +110,7 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutAfterLayoutEmpty() {
     // Create block with no inputs
-    let builder = Block.Builder(name: "test")
+    let builder = BlockBuilder(name: "test")
     let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -123,7 +123,7 @@ class BlockLayoutTest: XCTestCase {
 
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = Input.Builder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))
@@ -134,11 +134,11 @@ class BlockLayoutTest: XCTestCase {
 
   func testInputLayoutAfterLayoutMultipleValues()  {
     // Create block with many inputs
-    let builder = Block.Builder(name: "test")
-    builder.inputBuilders.append(Input.Builder(type: .value, name: "input1"))
-    builder.inputBuilders.append(Input.Builder(type: .dummy, name: "input2"))
-    builder.inputBuilders.append(Input.Builder(type: .statement, name: "input3"))
-    builder.inputBuilders.append(Input.Builder(type: .value, name: "input4"))
+    let builder = BlockBuilder(name: "test")
+    builder.inputBuilders.append(InputBuilder(type: .value, name: "input1"))
+    builder.inputBuilders.append(InputBuilder(type: .dummy, name: "input2"))
+    builder.inputBuilders.append(InputBuilder(type: .statement, name: "input3"))
+    builder.inputBuilders.append(InputBuilder(type: .value, name: "input4"))
     let block = try! builder.makeBlock()
     try! _workspaceLayout.workspace.addBlockTree(block)
 
@@ -162,7 +162,7 @@ class BlockLayoutTest: XCTestCase {
       }
 
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = Input.Builder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))

@@ -36,19 +36,22 @@ import WebKit
 @objc(BKYCodeGenerator)
 public final class CodeGenerator: NSObject {
 
-  // MARK: - Typealiases
-  public typealias LoadCompletionClosure = (Void) -> Void
-  public typealias LoadFailureClosure = (_ error: String) -> Void
-  public typealias CompletionClosure = (_ code: String) -> Void
-  public typealias ErrorClosure = (_ error: String) -> Void
+  // MARK: - Static Properties
 
-  // MARK: - Enum - State
+  /// Internal JS file that is used to communicate between the iOS code and JS code
+  fileprivate static let CODE_GENERATOR_BRIDGE_JS = "CodeGenerator/code_generator_bridge.js"
+  /// The name used to reference this iOS object when executing callbacks from the JS code.
+  /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
+  fileprivate static let JS_CALLBACK_NAME = "CodeGenerator"
+
+  // MARK: - Constants
 
   /// Possible states for the code generator
   @objc(BKYCodeGeneratorState)
   public enum State: Int {
-    /// Signifies the `CodeGenerator` has been initialized.
-    case initialized = 0,
+    case
+      /// Signifies the `CodeGenerator` has been initialized.
+      initialized = 0,
       /// Signifies the `CodeGenerator` is currently loading.
       loading,
       /// Signifies the `CodeGenerator` is not loading or generating, and ready to be used.
@@ -59,12 +62,12 @@ public final class CodeGenerator: NSObject {
       generatingCode
   }
 
-  // MARK: - Static Properties
-  /// Internal JS file that is used to communicate between the iOS code and JS code
-  fileprivate static let CODE_GENERATOR_BRIDGE_JS = "CodeGenerator/code_generator_bridge.js"
-  /// The name used to reference this iOS object when executing callbacks from the JS code.
-  /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
-  fileprivate static let JS_CALLBACK_NAME = "CodeGenerator"
+  // MARK: - Closures
+
+  public typealias LoadCompletionClosure = (Void) -> Void
+  public typealias LoadFailureClosure = (_ error: String) -> Void
+  public typealias CompletionClosure = (_ code: String) -> Void
+  public typealias ErrorClosure = (_ error: String) -> Void
 
   // MARK: - Properties
 

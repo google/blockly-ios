@@ -43,13 +43,14 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 @objc(BKYToolboxCategoryListViewController)
 public final class ToolboxCategoryListViewController: UICollectionViewController {
 
-  // MARK: - Orientation Enum
+  // MARK: - Constants
 
   /// Possible view orientations for the toolbox category list
   @objc(BKYToolboxCategoryListViewControllerOrientation)
   public enum Orientation: Int {
-    /// Specifies the toolbox is horizontally-oriented.
-    case horizontal = 0,
+    case
+      /// Specifies the toolbox is horizontally-oriented.
+      horizontal = 0,
       /// Specifies the toolbox is vertically-oriented.
       vertical
   }

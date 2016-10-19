@@ -21,6 +21,8 @@ Controller for `Connection` instances, where connections can be separated into g
 */
 @objc(BKYConnectionManager)
 public final class ConnectionManager: NSObject {
+  // MARK: - Aliases
+
   public typealias ConnectionPair =
     (moving: Connection, target: Connection, fromConnectionManagerGroup: ConnectionManager.Group)
 

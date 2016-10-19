@@ -45,7 +45,7 @@ public final class BlockBuilder: NSObject {
   /// Specifies the previous connection type checks. Defaults to `nil`.
   public private(set) var previousConnectionTypeChecks: [String]?
   /// The builders for inputs on the block. Defaults to `[]`.
-  public var inputBuilders: [Input.Builder] = []
+  public var inputBuilders: [InputBuilder] = []
   /// Sepcifies the inputs are inline. Defaults to `false`.
   public var inputsInline: Bool = false
   /// The absolute position of the block, in the Workspace coordinate system.
@@ -110,7 +110,7 @@ public final class BlockBuilder: NSObject {
     previousConnectionEnabled = block.previousConnection != nil ? true : false
     previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
-    inputBuilders.append(contentsOf: block.inputs.map({ Input.Builder(input: $0) }))
+    inputBuilders.append(contentsOf: block.inputs.map({ InputBuilder(input: $0) }))
   }
 
   // MARK: - Public
@@ -221,9 +221,4 @@ public final class BlockBuilder: NSObject {
     self.previousConnectionEnabled = enabled
     self.previousConnectionTypeChecks = typeChecks
   }
-}
-
-extension Block {
-  /// Builder for creating `Block` instances
-  public typealias Builder = BlockBuilder
 }
