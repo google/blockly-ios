@@ -28,40 +28,42 @@ public final class BlocklyError: NSError {
 
   // TODO:(#59) Clean up error codes to follow some sort of convention.
 
-  // MARK: - Enum - Code
+  // MARK: - Constants
+
   /// Signifies the type of error to be thrown by `BlockError`.
   @objc(BKYBlocklyErrorCode)
   public enum Code: Int {
-    /// This block is illegally defined.
-    case invalidBlockDefinition = 100,
-    /// The workspace exceeds the given capacity, in number of blocks.
-    workspaceExceedsCapacity = 150,
-    /// The layout for a given model was not available to the factory.
-    layoutNotFound = 200,
-    /// The generic error for `ConnectionManager`.
-    connectionManagerError = 210,
-    /// Thrown when a `Connection` tries to connect to something that is invalid.
-    connectionInvalid = 211,
-    /// Thrown when a view can't be found.
-    viewNotFound = 300,
-    /// Thrown when json can't be correctly parsed.
-    jsonParsing = 400,
-    /// Thrown when json parsing results in an invalid typecast.
-    jsonInvalidTypecast = 401,
-    /// Thrown when xml can't be correctly parsed.
-    xmlParsing = 500,
-    /// Thrown when xml specifies a block that's unknown to the system.
-    xmlUnknownBlock = 501,
-    /// Thrown when a file can't be found.
-    fileNotFound = 600,
-    /// Thrown when a file can't be read.
-    fileNotReadable = 601,
-    /// Thrown when a property would render Blockly in an illegal state.
-    illegalState = 700,
-    /// Thrown when a property is set to something illegal.
-    illegalArgument = 701,
-    /// Thrown when an operation is called in an illegal manner.
-    illegalOperation = 702
+    case
+      /// This block is illegally defined.
+      invalidBlockDefinition = 100,
+      /// The workspace exceeds the given capacity, in number of blocks.
+      workspaceExceedsCapacity = 150,
+      /// The layout for a given model was not available to the factory.
+      layoutNotFound = 200,
+      /// The generic error for `ConnectionManager`.
+      connectionManagerError = 210,
+      /// Thrown when a `Connection` tries to connect to something that is invalid.
+      connectionInvalid = 211,
+      /// Thrown when a view can't be found.
+      viewNotFound = 300,
+      /// Thrown when json can't be correctly parsed.
+      jsonParsing = 400,
+      /// Thrown when json parsing results in an invalid typecast.
+      jsonInvalidTypecast = 401,
+      /// Thrown when xml can't be correctly parsed.
+      xmlParsing = 500,
+      /// Thrown when xml specifies a block that's unknown to the system.
+      xmlUnknownBlock = 501,
+      /// Thrown when a file can't be found.
+      fileNotFound = 600,
+      /// Thrown when a file can't be read.
+      fileNotReadable = 601,
+      /// Thrown when a property would render Blockly in an illegal state.
+      illegalState = 700,
+      /// Thrown when a property is set to something illegal.
+      illegalArgument = 701,
+      /// Thrown when an operation is called in an illegal manner.
+      illegalOperation = 702
   }
 
   // MARK: - Initializers
@@ -72,20 +74,11 @@ public final class BlocklyError: NSError {
    - parameter code: The error `Code` that describes the error.
    - parameter description: The `String` description for this error.
    */
-  public init(_ code: Code, _ description: String) {
+  internal init(_ code: Code, _ description: String) {
     super.init(
       domain: BlocklyError.Domain,
       code: code.rawValue,
       userInfo: [NSLocalizedDescriptionKey : description])
-  }
-
-  /**
-   The coder initializer for the error.
-
-   - parameter aDecoder: The `NSCoder` that describes the error.
-   */
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
   }
 
   /**
@@ -97,5 +90,9 @@ public final class BlocklyError: NSError {
    */
   internal convenience init(_ code: Code, _ description: String, _ xml: AEXMLElement) {
     self.init(code, "\(description)\nXML:\n\(xml)")
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
   }
 }

@@ -29,11 +29,13 @@ public protocol BlockDelegate: class {
 }
 
 /**
-Class that represents a single block.
-*/
+ Class that represents a single block.
+ 
+ - note: To create a block programmatically, use a `Block.Builder`.
+ */
 @objc(BKYBlock)
 public final class Block : NSObject {
-  // MARK: - Aliases
+  // MARK: - Tuples
 
   /**
    A tuple representing a tree of connected blocks where:
@@ -41,6 +43,11 @@ public final class Block : NSObject {
    - `allBlocks` is a list of all connected blocks (including `rootBlock`).
    */
   public typealias BlockTree = (rootBlock: Block, allBlocks: [Block])
+
+  // MARK: - Aliases
+
+  /// Builder for creating `Block` instances
+  public typealias Builder = BlockBuilder
 
   // MARK: - Properties
 
@@ -152,9 +159,6 @@ public final class Block : NSObject {
 
   // MARK: - Initializers
 
-  /**
-  To create a Block, use Block.Builder instead.
-  */
   internal init(
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
     position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,

@@ -21,15 +21,13 @@ import Foundation
 @objc(BKYFieldDropdownLayout)
 open class FieldDropdownLayout: FieldLayout {
 
-  public typealias Option = FieldDropdown.Option
-
   // MARK: - Properties
 
   /// The `FieldDropdown` that backs this layout
   open let fieldDropdown: FieldDropdown
 
   /// The list of options that should be presented when rendering this layout
-  open var options: [Option] {
+  open var options: [FieldDropdown.Option] {
     return fieldDropdown.options
   }
 
@@ -39,7 +37,7 @@ open class FieldDropdownLayout: FieldLayout {
   }
 
   /// The option tuple of the currently selected index
-  open var selectedOption: Option? {
+  open var selectedOption: FieldDropdown.Option? {
     return fieldDropdown.selectedOption
   }
 

@@ -222,8 +222,3 @@ public final class BlockBuilder: NSObject {
     self.previousConnectionTypeChecks = typeChecks
   }
 }
-
-extension Block {
-  /// Builder for creating `Block` instances
-  public typealias Builder = BlockBuilder
-}

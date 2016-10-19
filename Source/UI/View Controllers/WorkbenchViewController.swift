@@ -57,17 +57,18 @@ extension WorkbenchViewControllerUIState {
 @objc(BKYWorkbenchViewController)
 open class WorkbenchViewController: UIViewController {
 
-  // MARK: - Style Enum
+  // MARK: - Constants
 
-  /// Defines the style of the workbench
+  /// The style of the workbench
   @objc(BKYWorkbenchViewControllerStyle)
   public enum Style: Int {
-    /// Style where the toolbox is positioned vertically, the trash can is located in the
-    /// bottom-right corner, and the trash folder flies out from the bottom
-    case defaultStyle,
-    /// Style where the toolbox is positioned horizontally on the bottom, the trash can is
-    /// located in the top-right corner, and the trash folder flies out from the trailing edge of
-    /// the screen
+    case
+      /// Style where the toolbox is positioned vertically, the trash can is located in the
+      /// bottom-right corner, and the trash folder flies out from the bottom
+      defaultStyle,
+      /// Style where the toolbox is positioned horizontally on the bottom, the trash can is
+      /// located in the top-right corner, and the trash folder flies out from the trailing edge of
+      /// the screen
       alternate
 
     /// The `WorkspaceFlowLayout.LayoutDirection` to use for the trash folder
@@ -93,6 +94,8 @@ open class WorkbenchViewController: UIViewController {
       }
     }
   }
+
+  // MARK: - Aliases
 
   /// Details the bitflags for `WorkbenchViewController`'s state.
   public typealias UIState = WorkbenchViewControllerUIState
@@ -984,9 +987,9 @@ extension WorkbenchViewController {
   }
 }
 
-// MARK: - BlocklyPanGestureDelegate
+// MARK: - BlocklyPanGestureRecognizerDelegate
 
-extension WorkbenchViewController: BlocklyPanGestureDelegate {
+extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
   /**
    Pan gesture event handler for a block view inside `self.workspaceView`.
    */

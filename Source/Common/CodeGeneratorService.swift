@@ -15,17 +15,13 @@
 
 import Foundation
 
-/// Specifies the location of a local resource, with `path` representing a relative path inside a
-/// resource `bundle`.
-public typealias BundledFile = (path: String, bundle: Bundle)
-
 // MARK: - CodeGeneratorService Class
 
 /**
  Service for generating code from a workspace.
 
- Internally, this object uses instances of `CodeGenerator` to execute requests. Please see
- `CodeGenerator` for more information.
+ For details on how to use this class, see:
+ https://developers.google.com/blockly/guides/configure/ios/code-generators
  */
 @objc(BKYCodeGeneratorService)
 public final class CodeGeneratorService: NSObject {
@@ -163,11 +159,13 @@ public final class CodeGeneratorService: NSObject {
  */
 @objc(BKYCodeGeneratorServiceRequest)
 public class CodeGeneratorServiceRequest: Operation {
-  // MARK: - Typealiases
+  // MARK: - Closures
+
   public typealias CompletionClosure = (_ code: String) -> Void
   public typealias ErrorClosure = (_ error: String) -> Void
 
   // MARK: - Properties
+
   /// The workspace XML to use when generating code
   public let workspaceXML: String
   /// The name of the JS object that generates code (e.g. 'Blockly.Python')
@@ -279,4 +277,3 @@ public class CodeGeneratorServiceRequest: Operation {
     self.isFinished = true
   }
 }
-

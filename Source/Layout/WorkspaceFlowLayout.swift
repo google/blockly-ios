@@ -22,13 +22,14 @@ import Foundation
 @objc(BKYWorkspaceFlowLayout)
 public final class WorkspaceFlowLayout: WorkspaceLayout {
 
-  // MARK: -  LayoutDirection Enum
+  // MARK: -  Constants
 
   /// Defines how consecutive block trees should be laid out relative to each other
   @objc(BKYWorkspaceFlowLayoutDirection)
   public enum LayoutDirection: Int {
-    /// Consecutive block trees will be laid out horizontally.
-    case horizontal,
+    case
+      /// Consecutive block trees will be laid out horizontally.
+      horizontal,
       /// Consecutive block trees will be laid out vertically.
       vertical
   }
