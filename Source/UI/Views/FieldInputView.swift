@@ -33,8 +33,15 @@ open class FieldInputView: FieldView {
     textField.delegate = self
     textField.borderStyle = .roundedRect
     textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    textField.keyboardType = .default
+    textField.adjustsFontSizeToFitWidth = false
     textField
       .addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+
+    // There is an iPhone 7/7+ simulator (and possibly device) bug where the user can't edit the
+    // text field. Setting an empty input accessory view seems to fix this problem.
+    textField.inputAccessoryView = UIView(frame: CGRect.zero)
+
     return textField
   }()
 
