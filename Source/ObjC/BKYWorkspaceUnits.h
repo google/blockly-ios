@@ -72,29 +72,3 @@ BKYWorkspaceSize BKYWorkspaceSizeMake(CGFloat width, CGFloat height)
  */
 extern BKYWorkspaceSize const BKYWorkspaceSizeZero
   CF_SWIFT_NAME(WorkspaceSize.zero);
-
-// MARK: - BKYWorkspaceEdgeInsets
-
-// TODO:(#195) Refactor BKYWorkspaceEdgeInsets into BKYEdgeInsets.
-
-/**
- Edge insets in the Workspace coordinate system.
- */
-typedef UIEdgeInsets BKYWorkspaceEdgeInsets;
-
-/**
- Creates edge insets in the Workspace coordinate system, given values for each edge.
-
- @param top Top edge inset in the Workspace coordinate system
- @param left Left edge inset in the Workspace coordinate system
- @param bottom Bottom edge inset in the Workspace coordinate system
- @param right Right value in the Workspace coordinate system
- @returns A `BKYWorkspaceEdgeInsets`.
- */
-BKYWorkspaceEdgeInsets BKYWorkspaceEdgeInsetsMake(
-  CGFloat top, CGFloat left, CGFloat bottom, CGFloat right);
-
-/**
- Edge insets in the Workspace coordinate system, where each inset value is set to zero.
- */
-extern BKYWorkspaceEdgeInsets const BKYWorkspaceEdgeInsetsZero;

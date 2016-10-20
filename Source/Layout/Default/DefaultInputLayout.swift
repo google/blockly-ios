@@ -149,7 +149,7 @@ public final class DefaultInputLayout: InputLayout {
       fieldLayout.relativePosition.y = 0
 
       // Add inline x/y padding for each field
-      fieldLayout.edgeInsets.left =
+      fieldLayout.edgeInsets.leading =
         self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
       fieldLayout.edgeInsets.top =
         self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
@@ -170,7 +170,7 @@ public final class DefaultInputLayout: InputLayout {
         }
 
         if addRightEdgeInset {
-          fieldLayout.edgeInsets.right =
+          fieldLayout.edgeInsets.trailing =
             self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
         }
       }
