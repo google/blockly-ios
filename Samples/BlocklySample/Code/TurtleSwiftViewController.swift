@@ -44,7 +44,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   var _workbenchViewController: WorkbenchViewController!
 
   /// Code generator service
-  lazy var _codeGeneratorService: CodeGeneratorService = {
+  var _codeGeneratorService: CodeGeneratorService = {
     // Create the code generator service
     let codeGeneratorService = CodeGeneratorService(
       jsCoreDependencies: [
@@ -57,7 +57,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   }()
 
   /// Builder for creating code generator service requests
-  lazy var _codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder = {
+  var _codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder = {
     let builder = CodeGeneratorServiceRequestBuilder(
       // This is the name of the JS object that will generate JavaScript code
       jsGeneratorObject: "Blockly.JavaScript")
@@ -99,6 +99,8 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   var _allowScrollingToBlockView: Bool = false
   /// The UUID of the last block that was highlighted.
   var _lastHighlightedBlockUUID: String?
+  /// The UUID of the current code generation request.
+  var _currentRequestUUID: String? = ""
 
   /// Date formatter for timestamping events
   let _dateFormatter = DateFormatter()
@@ -198,6 +200,9 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     codeText.superview?.layer.borderColor = UIColor.lightGray.cgColor
     codeText.superview?.layer.borderWidth = 1
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
+
+    _codeGeneratorService.setCodeGeneratorServiceRequestBuilder(_codeGeneratorServiceRequestBuilder,
+                                                                shouldCache: true)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -215,7 +220,16 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   @IBAction internal dynamic func didPressPlay(_ button: UIButton) {
     do {
       if _currentlyRunning {
-        _webView.evaluateJavaScript("Turtle.cancel()", completionHandler: nil)
+        if (_currentRequestUUID != "") {
+          guard let uuid = _currentRequestUUID else {
+            print("Error: The current request UUID is nil.")
+            return
+          }
+
+          _codeGeneratorService.cancelRequest(uuid: uuid)
+        } else {
+          _webView.evaluateJavaScript("Turtle.cancel()", completionHandler: nil)
+        }
         self.resetPlayButton()
       } else {
         if let workspace = _workbenchViewController.workspace {
@@ -229,15 +243,14 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
           addTimestampedText("Generating code...")
 
           // Request code generation for the workspace
-          let request = try _codeGeneratorServiceRequestBuilder.makeRequest(forWorkspace: workspace)
-          request.onCompletion = { code in
+          let onCompletion = { code in
             self.codeGenerationCompleted(code: code)
           }
-          request.onError = { error in
+          let onError = { error in
             self.codeGenerationFailed(error: error)
           }
-
-          _codeGeneratorService.generateCode(forRequest: request)
+          _currentRequestUUID = try _codeGeneratorService.generateCode(forWorkspace: workspace,
+            onCompletion: onCompletion, onError: onError)
 
           playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
           _currentlyRunning = true
@@ -251,6 +264,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   fileprivate func codeGenerationCompleted(code: String) {
     addTimestampedText("Generated code:\n\n====CODE====\n\n\(code)")
 
+    _currentRequestUUID = ""
     runCode(code)
   }
 
@@ -263,6 +277,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   fileprivate func resetPlayButton() {
     _currentlyRunning = false
     playButton.setImage(UIImage(named: "play_button"), for: .normal)
+    _currentRequestUUID = ""
   }
 
   fileprivate func runCode(_ code: String) {
