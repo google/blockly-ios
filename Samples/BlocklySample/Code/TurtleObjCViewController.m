@@ -89,6 +89,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 @property (nonatomic) Boolean allowScrollingToBlockView;
 /// The UUID of the last block that was highlighted.
 @property (nonatomic) NSString *lastHighlightedBlockUUID;
+/// The UUID of the current code generation request.
+@property (nonatomic) NSString *currentRequestUUID;
 
 /// Date formatter for timestamping events.
 @property (nonatomic) NSDateFormatter *dateFormatter;
@@ -229,6 +231,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   _webView.layer.borderWidth = 1;
   self.codeText.superview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
   self.codeText.superview.layer.borderWidth = 1;
+
+  [_codeGeneratorService setCodeGeneratorServiceRequestBuilder:_requestBuilder shouldCache:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -254,12 +258,17 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 
 - (IBAction)didPressPlayButton:(UIButton *)sender {
   if (self.currentlyRunning) {
-    [_webView evaluateJavaScript:@"Turtle.cancel()" completionHandler:nil];
-    [self resetPlayButton];
+    if (_currentRequestUUID == nil) {
+      NSLog(@"Error: The current request UUID is nil.");
+      return;
+    }
+    if (![_currentRequestUUID isEqualToString:@""]) {
+      [_codeGeneratorService cancelRequestWithUuid:_currentRequestUUID];
+    } else {
+      [_webView evaluateJavaScript:@"Turtle.cancel()" completionHandler:nil];
+    }
+    [self resetRequests];
   } else {
-    // Cancel pending requests
-    [_codeGeneratorService cancelAllRequests];
-
     // Reset the turtle
     [self resetTurtleCode];
 
@@ -268,23 +277,23 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 
     // Request code generation for the workspace
     NSError *error;
-    BKYCodeGeneratorServiceRequest *request =
-      [_requestBuilder makeRequestForWorkspace:self.workspace error:&error];
     __weak __typeof(self) weakSelf = self;
-    request.onCompletion = ^(NSString *code) {
+    void (^onCompletion)(NSString *code) = ^(NSString *code) {
       [weakSelf codeGenerationCompletionWithCode:code];
     };
-    request.onError =  ^(NSString *error) {
+    void (^onError)(NSString *error) =  ^(NSString *error) {
       [weakSelf codeGenerationFailedWithError:error];
     };
-
+    _currentRequestUUID = [_codeGeneratorService generateCodeForWorkspace:self.workspace
+                                                                    error:&error
+                                                             onCompletion:onCompletion
+                                                                  onError:onError];
     if ([self handleError:error]) {
       return;
     }
-    [_codeGeneratorService generateCodeForRequest:request];
 
     [self.playButton setImage:[UIImage imageNamed:@"cancel_button"] forState:UIControlStateNormal];
-    self.currentlyRunning = true;
+    self.currentlyRunning = YES;
   }
 }
 
@@ -292,6 +301,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   [self addTimestampedText:
     [NSString stringWithFormat:@"Generated code:\n\n====CODE====\n\n%@", code]];
 
+  _currentRequestUUID = @"";
   [self runCode: code];
 }
 
@@ -299,12 +309,13 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   [self addTimestampedText:
     [NSString stringWithFormat:@"An error occurred:\n\n====ERROR====\n\n%@", error]];
 
-  [self resetPlayButton];
+  [self resetRequests];
 }
 
-- (void)resetPlayButton {
+- (void)resetRequests {
   self.currentlyRunning = NO;
   [self.playButton setImage:[UIImage imageNamed:@"play_button"] forState:UIControlStateNormal];
+  _currentRequestUUID = @"";
 }
 
 - (void)runCode:(NSString *)code {
@@ -372,7 +383,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
       _lastHighlightedBlockUUID = blockID;
     }
   } else if ([method isEqualToString:@"finishExecution"]) {
-    [self resetPlayButton];
+    [self resetRequests];
   } else {
     NSLog(@"Unrecognized method");
   }
