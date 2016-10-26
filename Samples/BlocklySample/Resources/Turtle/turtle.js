@@ -150,6 +150,8 @@ Turtle.execute = function(code) {
   // Reset the turtle
   Turtle.reset();
   Turtle.ticks = 1000000;
+  /// TODO:(#268) Replace Turtle with a version that uses JS Interpreter
+  window.LoopTrap = 1000;
 
   try {
     eval(code);

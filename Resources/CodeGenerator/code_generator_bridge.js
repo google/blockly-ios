@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-CodeGeneratorBridge = {}
+CodeGeneratorBridge = {};
 
 CodeGeneratorBridge.initFactory = function(elem) {
   return function() {
     this.jsonInit(elem);
   };
-}
+};
 
 CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
   if (!!definitions) {
@@ -31,7 +31,7 @@ CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
       };
     }
   }
-}
+};
 
 CodeGeneratorBridge.generateCodeForWorkspace = function(workspaceXML, generator) {
   try {
@@ -50,10 +50,10 @@ CodeGeneratorBridge.generateCodeForWorkspace = function(workspaceXML, generator)
 
     // Send success message to iOS
     window.webkit.messageHandlers.CodeGenerator.postMessage(
-      {method: "generateCodeForWorkspace", code: code});
+        {method: "generateCodeForWorkspace", code: code});
   } catch (error) {
     // Send failure message to iOS
     window.webkit.messageHandlers.CodeGenerator.postMessage(
-      {method: "generateCodeForWorkspace", error: error});
+        {method: "generateCodeForWorkspace", error: error});
   }
-}
+};

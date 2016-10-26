@@ -107,7 +107,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   // MARK: - Initializers
 
-  init() {
+  public init() {
     // Load from xib file
     super.init(nibName: "TurtleViewController", bundle: nil)
   }
@@ -299,8 +299,17 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   }
 
   fileprivate func addTimestampedText(_ text: String) {
+    // TODO:(#268) Replace Turtle with a version that uses JS Interpreter
+    var trimmedText = ""
+    let lines = text.components(separatedBy: "\n")
+    for line in lines {
+      if (!line.contains("window.LoopTrap")) {
+        // Trim out the loop trap lines that are automatically-generated.
+        trimmedText = trimmedText.appending(line + "\n")
+      }
+    }
     self.codeText.text = (self.codeText.text ?? "") +
-      "[\(_dateFormatter.string(from: Date()))] \(text)\n"
+      "[\(_dateFormatter.string(from: Date()))] \(trimmedText)\n"
   }
 }
 

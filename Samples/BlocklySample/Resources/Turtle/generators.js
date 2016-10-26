@@ -19,6 +19,9 @@
  */
 'use strict';
 
+/// TODO:(#268) Replace Turtle with a version that uses JS Interpreter
+Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--window.LoopTrap == 0) throw "Infinite loop.";\n';
+
 // Extensions to Blockly's language and JavaScript generator.
 Blockly.JavaScript['turtle_move_internal'] = function(block) {
   // Generate JavaScript for moving forward or backwards.
