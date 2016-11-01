@@ -34,7 +34,10 @@ open class FieldVariableLayout: FieldLayout {
   /// The list of all variable options that should be presented when rendering this layout
   open var variables: [Option] {
     let sortedVariableNames = fieldVariable.nameManager?.names.sorted() ?? [fieldVariable.variable]
-    return sortedVariableNames.map { (displayName: $0, value: $0) }
+    var variableMap = sortedVariableNames.map { (displayName: $0, value: $0) }
+    variableMap.append( (displayName: "Rename Variable", value: "rename") )
+    variableMap.append( (displayName: "Remove Variable", value: "remove") )
+    return variableMap
   }
 
   /// The currently selected variable

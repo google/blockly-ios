@@ -149,8 +149,30 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
                                             didSelectOptionIndex optionIndex: Int)
   {
-    // Change to a new variable
-    fieldVariableLayout?.changeToVariable(viewController.options[optionIndex].value)
+    let value = viewController.options[optionIndex].value
+    if (value == "rename") {
+      let viewController = VariableNameViewController()
+      viewController.delegate = self
+      delegate?.fieldView(self,
+                          requestedToPresentPopoverViewController: viewController, fromView: self)
+    } else if (value == "remove") {
+      fieldVariableLayout?.fieldVariable.nameManager?.requestRemovalForName((fieldVariableLayout?.variable)!)
+    } else {
+      // Change to a new variable
+      fieldVariableLayout?.changeToVariable(value)
+    }
     viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension FieldVariableView: VariableNameViewControllerDelegate {
+  public func variableNameViewController(_ viewController: VariableNameViewController,
+                                         didChangeName name: String?) {
+    guard let newName = name else {
+      return
+    }
+
+    fieldVariableLayout?.fieldVariable.nameManager?.renameName(
+      (fieldVariableLayout?.variable)!, to: newName)
   }
 }

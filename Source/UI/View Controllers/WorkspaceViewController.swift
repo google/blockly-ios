@@ -145,6 +145,10 @@ open class WorkspaceViewController: UIViewController {
     workspaceLayout?.updateLayoutDownTree()
     try _viewBuilder.buildViewTree(forWorkspaceView: workspaceView)
     workspaceView.refreshView()
+
+    if let nameManager = workspace?.variableNameManager {
+      workspaceLayoutCoordinator?.nameManager = nameManager
+    }
   }
 }
 
