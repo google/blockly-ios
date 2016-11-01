@@ -28,17 +28,19 @@ public final class FieldVariable: Field {
   }
 
   /// Optional name manager that this field is scoped to.
-  public weak var nameManager: NameManager? {
-    didSet {
-      // Remove this field as a listener from its previous nameManager and then request
-      // to remove the name it was using
-      oldValue?.listeners.remove(self) // Remove
-      oldValue?.requestRemovalForName(variable)
+  private weak var nameManager: NameManager?
 
-      // Add name to new nameManager
-      nameManager?.listeners.add(self)
-      nameManager?.addName(variable)
-    }
+  public func setNameManager(newNameManager: NameManager?) {
+    // Remove this field as a listener from its previous nameManager and then request
+    // to remove the name it was using
+    nameManager?.listeners.remove(self) // Remove
+    nameManager?.requestRemovalForName(variable)
+
+    self.nameManager = newNameManager
+
+    // Add name to new nameManager
+    newNameManager?.listeners.add(self)
+    newNameManager?.addName(variable)
   }
 
   // MARK: - Initializers
@@ -76,6 +78,15 @@ public final class FieldVariable: Field {
   // MARK: - Public
 
   /**
+   Gets the list of variables from the `NameManager`, as a sorted list.
+
+   - returns: The names of all variables registered to the `NameManager`, alphabetically sorted.
+   */
+  public func getSortedVariableNames() -> [String]? {
+    return nameManager?.names.sorted()
+  }
+
+  /**
    Sets `self.variable` to a new variable and calls `self.nameManager?.addName(variable)`.
 
    - parameter variable: The new variable name
@@ -97,15 +108,21 @@ public final class FieldVariable: Field {
   }
 
   /**
-   Sets `self.variable` to a new variable and calls `self.nameManager?.requestRemovalForName(:)`
-   with the previous value of `self.variable`.
+   Creates a variable, and sets `self.variable` to it.
    */
   public func changeToVariable(_ variable: String) {
     let oldValue = self.variable
     if oldValue != variable {
+      nameManager?.addName(variable)
       self.variable = variable
-      nameManager?.requestRemovalForName(oldValue)
     }
+  }
+
+  /**
+   Removes the variable contained in this variable field.
+   */
+  public func removeVariable() {
+    nameManager?.requestRemovalForName(variable)
   }
 }
 
@@ -113,8 +130,7 @@ public final class FieldVariable: Field {
 
 extension FieldVariable: NameManagerListener {
   public func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
-    // Only approve this removal if this instance isn't using that variable
-    return !nameManager.namesAreEqual(variable, name)
+    return true
   }
 
   public func nameManager(

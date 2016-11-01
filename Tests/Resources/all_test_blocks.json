@@ -245,5 +245,18 @@
   "args0": [],
   "tooltip": "",
   "helpUrl": "http://www.example.com/"
-  }
+ },
+ {
+ "type": "field_variable_block",
+ "message0": "field_variable: %1",
+ "args0": [
+           {
+           "type": "field_variable",
+           "name": "VAR",
+           "variable": "variable1"
+           }
+           ],
+ "tooltip": "Returns the value of this variable.",
+ "helpUrl": "http://www.example.com/"
+ }
 ]

@@ -33,8 +33,9 @@ open class FieldVariableLayout: FieldLayout {
 
   /// The list of all variable options that should be presented when rendering this layout
   open var variables: [Option] {
-    let sortedVariableNames = fieldVariable.nameManager?.names.sorted() ?? [fieldVariable.variable]
-    return sortedVariableNames.map { (displayName: $0, value: $0) }
+    let sortedVariableNames = fieldVariable.getSortedVariableNames() ?? [fieldVariable.variable]
+    let variableMap = sortedVariableNames.map { (displayName: $0, value: $0) }
+    return variableMap
   }
 
   /// The currently selected variable
@@ -79,5 +80,21 @@ open class FieldVariableLayout: FieldLayout {
   open func changeToVariable(_ variable: String) {
     // Setting to a new variable automatically fires a listener to update the layout
     fieldVariable.changeToVariable(variable)
+  }
+
+  /**
+   Renames the variable on this layout to a new value.
+
+   - parameter newName: The new value for the variable on this layout.
+   */
+  open func renameVariable(to newName: String) {
+    fieldVariable.renameVariable(newName)
+  }
+
+  /**
+   Removes the variable that's currently stored on this layout.
+   */
+  open func removeVariable() {
+    fieldVariable.removeVariable()
   }
 }
