@@ -18,6 +18,7 @@
 		3064BAD51DAFFC58006425A2 /* BKYLayoutConfigStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 3064BACC1DAFFC57006425A2 /* BKYLayoutConfigStructs.m */; };
 		3064BAD61DAFFC58006425A2 /* BKYWorkspaceUnits.m in Sources */ = {isa = PBXBuildFile; fileRef = 3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */; };
 		3064BAD71DAFFC58006425A2 /* BKYEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 3064BACE1DAFFC57006425A2 /* BKYEdgeInsets.m */; };
+		307641C61DC29107000486AE /* VariableNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307641C51DC29107000486AE /* VariableNameViewController.swift */; };
 		30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
@@ -210,6 +211,7 @@
 		3064BACC1DAFFC57006425A2 /* BKYLayoutConfigStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKYLayoutConfigStructs.m; path = ObjC/BKYLayoutConfigStructs.m; sourceTree = "<group>"; };
 		3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKYWorkspaceUnits.m; path = ObjC/BKYWorkspaceUnits.m; sourceTree = "<group>"; };
 		3064BACE1DAFFC57006425A2 /* BKYEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKYEdgeInsets.m; path = ObjC/BKYEdgeInsets.m; sourceTree = "<group>"; };
+		307641C51DC29107000486AE /* VariableNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableNameViewController.swift; sourceTree = "<group>"; };
 		30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
@@ -752,6 +754,7 @@
 		FAA870131C642805000C7C61 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				307641C51DC29107000486AE /* VariableNameViewController.swift */,
 				FAA870151C642805000C7C61 /* DropdownOptionsViewController.swift */,
 				FAA870141C642805000C7C61 /* FieldColorPickerViewController.swift */,
 				FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */,
@@ -1042,6 +1045,7 @@
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
 				FAD652421CB7210C00F73F11 /* DefaultInputLayout.swift in Sources */,
 				FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */,
+				307641C61DC29107000486AE /* VariableNameViewController.swift in Sources */,
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
 				FA4E840B1CAE4AAE009FB0CD /* ToolboxLayout.swift in Sources */,
 				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
