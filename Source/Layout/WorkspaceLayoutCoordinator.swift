@@ -35,6 +35,9 @@ open class WorkspaceLayoutCoordinator: NSObject {
   /// Object responsible for bumping blocks away from each other
   open let blockBumper = BlockBumper()
 
+  /// Optional name manager that this field is scoped to.
+  public let nameManager: NameManager?
+
   // MARK: - Initializers / De-initializers
 
   /**
@@ -50,6 +53,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     connectionManager: ConnectionManager?) throws
   {
     self.workspaceLayout = workspaceLayout
+    self.nameManager = workspaceLayout.workspace.variableNameManager
     self.layoutBuilder = layoutBuilder
     self.connectionManager = connectionManager
 
@@ -60,6 +64,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Listen for changes in the workspace, so this object can update the layout hierarchy
     // appropriately
     workspaceLayout.workspace.listeners.add(self)
+
+    // Also listen for changes in variable names, so this object can delete blocks with variables
+    // when they're removed.
+    nameManager?.listeners.add(self)
 
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
@@ -110,6 +118,48 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     try workspaceLayout.workspace.removeBlockTree(rootBlock)
+  }
+
+  /**
+   Disconnects a single block from all connections, and removes it. This function will also
+   reconnect next blocks to the previous block.
+
+   - parameter block: The block to remove.
+   - throws:
+   `BlocklyError`: Thrown if the block could not be removed from the workspace, or if the
+     connections can't be reconnected.
+   */
+  open func removeSingleBlock(_ block: Block) throws {
+    // Disconnect the previous connection.
+    var oldSuperior: Connection? = nil
+    if let previousConnection = block.previousConnection {
+      oldSuperior = previousConnection.targetConnection
+      disconnect(previousConnection)
+    }
+
+    // Disconnect the next connection. If both next and previous were connected, reconnect the
+    // next block with the old previous block.
+    if let nextConnection = block.nextConnection {
+      let oldInferior = nextConnection.targetConnection
+      disconnect(nextConnection)
+      if let inferior = oldInferior,
+        let superior = oldSuperior,
+        inferior.canConnectTo(superior) {
+        try connectStatementConnections(superior: superior, inferior: inferior)
+      }
+    }
+
+    // Disconnect any other non-shadow connections.
+    for connection in block.directConnections {
+      if connection != block.previousConnection &&
+        connection != block.nextConnection &&
+        !connection.shadowConnected
+      {
+        disconnect(connection)
+      }
+    }
+
+    try workspaceLayout.workspace.removeBlockTree(block)
   }
 
   /**
@@ -561,6 +611,23 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
       workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
 
       workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+    }
+  }
+}
+
+// MARK: - NameManagerListener Implementation
+
+extension WorkspaceLayoutCoordinator: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    let blocks = workspaceLayout.workspace.getAllVariableBlocks(forName: name)
+
+    // Remove each block with matching variable fields.
+    for block in blocks {
+      do {
+        try removeSingleBlock(block)
+      } catch let error {
+        bky_assertionFailure("Couldn't remove block: \(error)")
+      }
     }
   }
 }

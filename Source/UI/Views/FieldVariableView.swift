@@ -134,7 +134,9 @@ extension FieldVariableView: DropdownViewDelegate {
     }
 
     // Populate options
-    let options = fieldVariableLayout.variables
+    var options = fieldVariableLayout.variables
+    options.append((displayName: "Rename Variable", value: "rename"))
+    options.append((displayName: "Remove Variable", value: "remove"))
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
@@ -149,8 +151,34 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
                                             didSelectOptionIndex optionIndex: Int)
   {
-    // Change to a new variable
-    fieldVariableLayout?.changeToVariable(viewController.options[optionIndex].value)
+    guard let fieldVariableLayout = self.fieldVariableLayout else {
+      return
+    }
+
+    let options = fieldVariableLayout.variables
+    let value = viewController.options[optionIndex].value
+    if (optionIndex == options.count) {
+      let viewController = VariableNameViewController()
+      viewController.delegate = self
+      delegate?.fieldView(self,
+                          requestedToPresentPopoverViewController: viewController, fromView: self)
+    } else if (optionIndex == options.count + 1) {
+      fieldVariableLayout.removeVariable()
+    } else {
+      // Change to a new variable
+      fieldVariableLayout.changeToVariable(value)
+    }
     viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension FieldVariableView: VariableNameViewControllerDelegate {
+  public func variableNameViewController(_ viewController: VariableNameViewController,
+                                         didChangeName name: String?) {
+    guard let newName = name else {
+      return
+    }
+
+    fieldVariableLayout?.renameVariable(to: newName)
   }
 }

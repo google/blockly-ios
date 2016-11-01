@@ -97,14 +97,13 @@ public final class FieldVariable: Field {
   }
 
   /**
-   Sets `self.variable` to a new variable and calls `self.nameManager?.requestRemovalForName(:)`
-   with the previous value of `self.variable`.
+   Creates a variable, and sets `self.variable` to it.
    */
   public func changeToVariable(_ variable: String) {
     let oldValue = self.variable
     if oldValue != variable {
+      nameManager?.addName(variable)
       self.variable = variable
-      nameManager?.requestRemovalForName(oldValue)
     }
   }
 }
@@ -113,8 +112,7 @@ public final class FieldVariable: Field {
 
 extension FieldVariable: NameManagerListener {
   public func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
-    // Only approve this removal if this instance isn't using that variable
-    return !nameManager.namesAreEqual(variable, name)
+    return true
   }
 
   public func nameManager(
