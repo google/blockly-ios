@@ -25,6 +25,10 @@ import Foundation
  */
 @objc(BKYCodeGeneratorService)
 public final class CodeGeneratorService: NSObject {
+  // MARK: - Typealiases
+  public typealias CompletionClosure = (_ code: String) -> Void
+  public typealias ErrorClosure = (_ error: String) -> Void
+
   // MARK: - Properties
 
   /// List of core Blockly JS dependencies
@@ -33,6 +37,10 @@ public final class CodeGeneratorService: NSObject {
   fileprivate var codeGenerator: CodeGenerator?
   /// Operation queue of all pending code generation requests
   fileprivate let requestQueue = OperationQueue()
+
+  /// The code generator service request builder. This must be set before requesting code
+  /// generation.
+  private var codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder? = nil;
 
   // MARK: - Initializers
 
@@ -72,16 +80,67 @@ public final class CodeGeneratorService: NSObject {
   }
 
   /**
-   Sends a request to generate code.
+   Sets the code generator service request builder to be used for code generation.
 
-   If the request completes successfully, the request's `onCompletion` block is executed.
-   If the request fails, the request's `onError` block is executed.
-
-   - parameter request: The request
+   - parameter builder: The `CodeGeneratorServiceRequestBuilder` that specifies generators.
+   - parameter shouldCache: `true` if the Blockly files should be preloaded, `false` if not.
    */
-  public func generateCode(forRequest request: CodeGeneratorServiceRequest) {
+  public func setCodeGeneratorServiceRequestBuilder(_ builder: CodeGeneratorServiceRequestBuilder,
+    shouldCache: Bool)
+  {
+    self.codeGeneratorServiceRequestBuilder = builder
+
+    if (shouldCache) {
+      let request = builder.makeRequest(forWorkspaceXML: "")
+      self.codeGenerator = CodeGenerator(
+        jsCoreDependencies: self.jsCoreDependencies,
+        jsGeneratorObject: request.jsGeneratorObject,
+        jsBlockGeneratorFiles: request.jsBlockGeneratorFiles,
+        jsonBlockDefinitionFiles: request.jsonBlockDefinitionFiles,
+        onLoadCompletion: nil,
+        onLoadFailure: nil)
+    }
+  }
+
+  /**
+   Begins code generation for a workspace. The `CodeGeneratorServiceRequestBuilder` must be set
+   before calling this function.
+
+   - parameter workspace: The workspace to generate code for.
+   - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
+   - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   */
+  public func generateCode(forWorkspace workspace: Workspace,
+                           onCompletion: CompletionClosure? = nil,
+                           onError: ErrorClosure? = nil) throws -> String {
+    return try generateCode(forWorkspaceXML: workspace.toXML(),
+                            onCompletion: onCompletion,
+                            onError: onError)
+  }
+
+  /**
+   Begins code generation for a workspace. The `CodeGeneratorServiceRequestBuilder` must be set
+   before calling this function.
+
+   - parameter xml: The workspace XML to generate code for.
+   - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
+   - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   */
+  public func generateCode(forWorkspaceXML xml: String,
+                           onCompletion: CompletionClosure? = nil,
+                           onError: ErrorClosure? = nil) -> String {
+    guard let builder = self.codeGeneratorServiceRequestBuilder else {
+      print("Error: The code generator service request builder has not been set.")
+      return ""
+    }
+
+    let request = builder.makeRequest(forWorkspaceXML: xml)
+    request.uuid = UUID().uuidString
+    request.onCompletion = onCompletion
+    request.onError = onError
     request.codeGeneratorService = self
     requestQueue.addOperation(request)
+    return request.uuid
   }
 
   /**
@@ -89,8 +148,17 @@ public final class CodeGeneratorService: NSObject {
 
    - parameter request: The `CodeGeneratorServiceRequest` to cancel.
    */
-  public func cancelRequest(_ request: CodeGeneratorServiceRequest) {
-    request.cancel()
+  public func cancelRequest(uuid: String) {
+    for operation in requestQueue.operations {
+      guard let request = operation as? CodeGeneratorServiceRequest else {
+        continue
+      }
+
+      if request.uuid == uuid {
+        request.cancel()
+        return
+      }
+    }
   }
 
   /**
@@ -157,29 +225,24 @@ public final class CodeGeneratorService: NSObject {
 
  - note: To create a `CodeGeneratorServiceRequest`, use `CodeGeneratorServiceRequestBuilder`.
  */
-@objc(BKYCodeGeneratorServiceRequest)
-public class CodeGeneratorServiceRequest: Operation {
-  // MARK: - Closures
-
-  public typealias CompletionClosure = (_ code: String) -> Void
-  public typealias ErrorClosure = (_ error: String) -> Void
-
+internal class CodeGeneratorServiceRequest: Operation {
   // MARK: - Properties
-
+  /// The uuid for this request.
+  internal var uuid: String = ""
   /// The workspace XML to use when generating code
-  public let workspaceXML: String
+  internal let workspaceXML: String
   /// The name of the JS object that generates code (e.g. 'Blockly.Python')
-  public let jsGeneratorObject: String
+  internal let jsGeneratorObject: String
   /// List of block generator JS files (e.g. ['python_compressed.js'])
-  public let jsBlockGeneratorFiles: [BundledFile]
+  internal let jsBlockGeneratorFiles: [BundledFile]
   /// List of JSON files containing block definitions
-  public let jsonBlockDefinitionFiles: [BundledFile]
+  internal let jsonBlockDefinitionFiles: [BundledFile]
   /// Callback that is executed when code generation completes successfully. This is always
   /// executed on the main thread.
-  public var onCompletion: CompletionClosure?
+  internal var onCompletion: CodeGeneratorService.CompletionClosure?
   /// Callback that is executed when code generation fails. This is always executed on the main
   /// thread.
-  public var onError: ErrorClosure?
+  internal var onError: CodeGeneratorService.ErrorClosure?
   /// The code generator service used for executing this request.
   fileprivate weak var codeGeneratorService: CodeGeneratorService?
 
@@ -190,7 +253,8 @@ public class CodeGeneratorServiceRequest: Operation {
    */
   internal init(workspaceXML: String, jsGeneratorObject: String,
                 jsBlockGeneratorFiles: [BundledFile], jsonBlockDefinitionFiles: [BundledFile],
-                onCompletion: CompletionClosure?, onError: ErrorClosure?) {
+                onCompletion: CodeGeneratorService.CompletionClosure?,
+                onError: CodeGeneratorService.ErrorClosure?) {
     self.workspaceXML = workspaceXML
     self.jsGeneratorObject = jsGeneratorObject
     self.jsBlockGeneratorFiles = jsBlockGeneratorFiles
@@ -203,7 +267,7 @@ public class CodeGeneratorServiceRequest: Operation {
 
   fileprivate var _executing: Bool = false
   /// `true` if the generator is executing, `false` otherwise.
-  public override var isExecuting: Bool {
+  internal override var isExecuting: Bool {
     get { return _executing }
     set {
       if _executing == newValue {
@@ -217,7 +281,7 @@ public class CodeGeneratorServiceRequest: Operation {
 
   fileprivate var _finished: Bool = false
   /// `true` if the generator has finished running, `false` otherwise.
-  public override var isFinished: Bool {
+  internal override var isFinished: Bool {
     get { return _finished }
     set {
       if _finished == newValue {
@@ -230,7 +294,7 @@ public class CodeGeneratorServiceRequest: Operation {
   }
 
   /// Starts the code generator service.
-  public override func start() {
+  internal override func start() {
     if self.isCancelled {
       finishOperation()
       return
@@ -244,7 +308,7 @@ public class CodeGeneratorServiceRequest: Operation {
   }
 
   /// Cancels the code generator service.
-  public override func cancel() {
+  internal override func cancel() {
     self.onCompletion = nil
     self.onError = nil
     super.cancel()

@@ -103,7 +103,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
    - parameter workspaceXML: The workspace XML to use for the request.
    - returns: A `CodeGeneratorServiceRequest`.
    */
-  public func makeRequest(forWorkspaceXML workspaceXML: String) -> CodeGeneratorServiceRequest {
+  internal func makeRequest(forWorkspaceXML workspaceXML: String) -> CodeGeneratorServiceRequest {
     return CodeGeneratorServiceRequest(
       workspaceXML: workspaceXML, jsGeneratorObject: jsGeneratorObject,
       jsBlockGeneratorFiles: jsBlockGeneratorFiles,
@@ -118,7 +118,7 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
    - parameter workspace: The `Workspace` to use for the request.
    - returns: A `CodeGeneratorServiceRequest`.
    */
-  public func makeRequest(forWorkspace workspace: Workspace) throws -> CodeGeneratorServiceRequest {
+  internal func makeRequest(forWorkspace workspace: Workspace) throws -> CodeGeneratorServiceRequest {
     return makeRequest(forWorkspaceXML: try workspace.toXML())
   }
 }

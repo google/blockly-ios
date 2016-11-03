@@ -333,7 +333,7 @@ open class Layout: NSObject {
 
     // Update the layout's absolute position in the workspace
     self.absolutePosition = WorkspacePoint(
-      x: parentAbsolutePosition.x + relativePosition.x + edgeInsets.left,
+      x: parentAbsolutePosition.x + relativePosition.x + edgeInsets.leading,
       y: parentAbsolutePosition.y + relativePosition.y + edgeInsets.top)
 
     // Update the view frame, if needed
@@ -345,10 +345,10 @@ open class Layout: NSObject {
         // In RTL, the x position is calculated relative to the top-right corner of its parent
         viewFrameOrigin.x = self.engine.viewUnitFromWorkspaceUnit(
           parentContentSize.width -
-          (relativePosition.x + edgeInsets.left + contentSize.width + contentOffset.x))
+          (relativePosition.x + edgeInsets.leading + contentSize.width + contentOffset.x))
       } else {
         viewFrameOrigin.x = self.engine.viewUnitFromWorkspaceUnit(
-          relativePosition.x + edgeInsets.left + contentOffset.x)
+          relativePosition.x + edgeInsets.leading + contentOffset.x)
       }
       viewFrameOrigin.y = self.engine.viewUnitFromWorkspaceUnit(
         relativePosition.y + edgeInsets.top + contentOffset.y)
@@ -376,7 +376,7 @@ open class Layout: NSObject {
   Updates the `totalSize` value based on the current state of `contentSize` and `edgeInsets`.
   */
   fileprivate func updateTotalSize() {
-    totalSize.width = contentSize.width + edgeInsets.left + edgeInsets.right
+    totalSize.width = contentSize.width + edgeInsets.leading + edgeInsets.trailing
     totalSize.height = contentSize.height + edgeInsets.top + edgeInsets.bottom
   }
 }

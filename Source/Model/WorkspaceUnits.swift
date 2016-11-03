@@ -51,4 +51,4 @@ extension WorkspaceSize: Equatable {
  Edge insets in the Workspace coordinate system (which is separate from the UIView coordinate
  system).
  */
-public typealias WorkspaceEdgeInsets = BKYWorkspaceEdgeInsets
+public typealias WorkspaceEdgeInsets = EdgeInsets

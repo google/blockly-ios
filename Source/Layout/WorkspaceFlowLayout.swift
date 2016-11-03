@@ -111,9 +111,8 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
         // Account for aligning block groups with output tabs
         let outputTabSpacer = largestLeadingEdgeXOffset - blockGroupLayout.largestLeadingEdgeXOffset
 
-        blockGroupLayout.edgeInsets =
-          WorkspaceEdgeInsets(top: 0, left: outputTabSpacer,
-                              bottom: ySeparatorSpace, right: xSeparatorSpace)
+        blockGroupLayout.edgeInsets = EdgeInsets(top: 0, leading: outputTabSpacer,
+                                                 bottom: ySeparatorSpace, trailing: xSeparatorSpace)
 
         if self.maximumLineBlockSize > 0 &&
           yPosition + blockGroupLayout.totalSize.height > self.maximumLineBlockSize
@@ -129,7 +128,7 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
         yPosition += blockGroupLayout.totalSize.height
       } else if self.layoutDirection == .horizontal {
         blockGroupLayout.edgeInsets =
-          WorkspaceEdgeInsets(top: 0, left: 0, bottom: ySeparatorSpace, right: xSeparatorSpace)
+          EdgeInsets(top: 0, leading: 0, bottom: ySeparatorSpace, trailing: xSeparatorSpace)
 
         if self.maximumLineBlockSize > 0 &&
           xPosition + blockGroupLayout.totalSize.width > self.maximumLineBlockSize
