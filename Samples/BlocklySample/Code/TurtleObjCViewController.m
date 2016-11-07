@@ -232,7 +232,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   self.codeText.superview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
   self.codeText.superview.layer.borderWidth = 1;
 
-  [_codeGeneratorService setCodeGeneratorServiceRequestBuilder:_requestBuilder shouldCache:YES];
+  [_codeGeneratorService setRequestBuilder:_requestBuilder shouldCache:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
