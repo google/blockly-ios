@@ -40,7 +40,7 @@ public final class CodeGeneratorService: NSObject {
 
   /// The code generator service request builder. This must be set before requesting code
   /// generation.
-  private var codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder? = nil;
+  public private(set) var requestBuilder: CodeGeneratorServiceRequestBuilder? = nil
 
   // MARK: - Initializers
 
@@ -85,30 +85,25 @@ public final class CodeGeneratorService: NSObject {
    - parameter builder: The `CodeGeneratorServiceRequestBuilder` that specifies generators.
    - parameter shouldCache: `true` if the Blockly files should be preloaded, `false` if not.
    */
-  public func setCodeGeneratorServiceRequestBuilder(_ builder: CodeGeneratorServiceRequestBuilder,
+  public func setRequestBuilder(_ builder: CodeGeneratorServiceRequestBuilder,
     shouldCache: Bool)
   {
-    self.codeGeneratorServiceRequestBuilder = builder
+    self.requestBuilder = builder
 
     if (shouldCache) {
-      let request = builder.makeRequest(forWorkspaceXML: "")
-      self.codeGenerator = CodeGenerator(
-        jsCoreDependencies: self.jsCoreDependencies,
-        jsGeneratorObject: request.jsGeneratorObject,
-        jsBlockGeneratorFiles: request.jsBlockGeneratorFiles,
-        jsonBlockDefinitionFiles: request.jsonBlockDefinitionFiles,
-        onLoadCompletion: nil,
-        onLoadFailure: nil)
+      let _ = try? generateCode(forWorkspaceXML: "")
     }
   }
 
   /**
-   Begins code generation for a workspace. The `CodeGeneratorServiceRequestBuilder` must be set
-   before calling this function.
+   Begins code generation for a workspace.
 
+   - note: `self.requestBuilder` must be set before calling this method.
    - parameter workspace: The workspace to generate code for.
    - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
    - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   - throws:
+   `BlocklyError`: Occurs if `self.requestBuilder` has not been set prior to calling this method.
    */
   public func generateCode(forWorkspace workspace: Workspace,
                            onCompletion: CompletionClosure? = nil,
@@ -119,19 +114,22 @@ public final class CodeGeneratorService: NSObject {
   }
 
   /**
-   Begins code generation for a workspace. The `CodeGeneratorServiceRequestBuilder` must be set
-   before calling this function.
+   Begins code generation for a workspace.
 
+   - note: `self.requestBuilder` must be set before calling this method.
    - parameter xml: The workspace XML to generate code for.
    - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
    - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   - throws:
+   `BlocklyError`: Occurs if `self.requestBuilder` has not been set prior to calling this method.
    */
   public func generateCode(forWorkspaceXML xml: String,
                            onCompletion: CompletionClosure? = nil,
-                           onError: ErrorClosure? = nil) -> String {
-    guard let builder = self.codeGeneratorServiceRequestBuilder else {
-      print("Error: The code generator service request builder has not been set.")
-      return ""
+                           onError: ErrorClosure? = nil) throws -> String {
+    guard let builder = self.requestBuilder else {
+      throw BlocklyError(.illegalState,
+        "`self.requestBuilder` has not been set. " +
+        "`setRequestBuilder(:)` must be called before requesting code generation.")
     }
 
     let request = builder.makeRequest(forWorkspaceXML: xml)
