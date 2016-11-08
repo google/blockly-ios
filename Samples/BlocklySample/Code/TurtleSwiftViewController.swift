@@ -67,7 +67,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       // Use JavaScript code generators for our custom turtle blocks
       "Turtle/generators.js"])
     // Load the block definitions for all default blocks
-    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     // Load the block definitions for our custom turtle blocks
     builder.addJSONBlockDefinitionFiles(["Turtle/turtle_blocks.json"])
 
@@ -79,7 +79,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     let blockFactory = BlockFactory()
 
     // Load default blocks into the block factory
-    blockFactory.load(fromDefaultFiles: [.AllDefault])
+    blockFactory.load(fromDefaultFiles: .allDefault)
 
     // Load custom turtle blocks into the block factory
     do {

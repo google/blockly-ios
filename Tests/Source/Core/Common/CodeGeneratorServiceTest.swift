@@ -44,7 +44,7 @@ class CodeGeneratorServiceTest: XCTestCase {
   // MARK: - Tests
 
   func testPythonCodeGeneration() {
-    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+    _blockFactory.load(fromDefaultFiles: [.loopDefault, .mathDefault])
 
     // Build workspace with simple repeat loop
     let workspace = Workspace()
@@ -135,7 +135,7 @@ class CodeGeneratorServiceTest: XCTestCase {
       // Execute request
       let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.Python")
       builder.addJSBlockGeneratorFiles(["blockly_web/python_compressed.js"], bundle: testBundle)
-      builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+      builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
       guard let request = BKYAssertDoesNotThrow({
         try builder.makeRequest(forWorkspace: workspace)
       }) else {
@@ -200,7 +200,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     builder.addJSBlockGeneratorFiles(["blockly_web/javascript_compressed.js",
                                   "code_generator_generators.js"],
                                  bundle: testBundle)
-    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     builder.addJSONBlockDefinitionFiles(["code_generator_blocks.json"], bundle: testBundle)
     guard let request = BKYAssertDoesNotThrow({
       try builder.makeRequest(forWorkspace: workspace)
