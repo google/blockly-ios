@@ -70,28 +70,26 @@ class CodeGeneratorServiceTest: XCTestCase {
     // Set up timeout expectation
     let expectation = self.expectation(description: "Code Generation")
 
-    // Execute request
+    // Set builder
     let testBundle = Bundle(for: type(of: self))
     let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.Python")
     builder.addJSBlockGeneratorFiles(["blockly_web/python_compressed.js"], bundle: testBundle)
-    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
-    guard let request = BKYAssertDoesNotThrow({
-        try builder.makeRequest(forWorkspace: workspace)
-    }) else
-    {
-      XCTFail("Could not build code generation request")
-      return
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
+    _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
+
+    // Execute request
+    let _ = BKYAssertDoesNotThrow {
+      try _codeGeneratorService.generateCode(
+        forWorkspace: workspace,
+        onCompletion: { code in
+          XCTAssertEqual("for count in range(10):  pass",
+                         code.replacingOccurrences(of: "\n", with: ""))
+          expectation.fulfill()
+        }, onError: { error in
+          XCTFail("Error occurred during code generation: \(error)")
+          expectation.fulfill()
+      })
     }
-    request.onCompletion = { code in
-      XCTAssertEqual("for count in range(10):  pass",
-                     code.replacingOccurrences(of: "\n", with: ""))
-      expectation.fulfill()
-    }
-    request.onError = { error in
-      XCTFail("Error occurred during code generation: \(error)")
-      expectation.fulfill()
-    }
-    _codeGeneratorService.generateCode(forRequest: request)
 
     // Wait 10s for code generation to finish
     waitForExpectations(timeout: 10.0, handler: { error in
@@ -102,7 +100,7 @@ class CodeGeneratorServiceTest: XCTestCase {
   }
 
   func testPythonCodeGenerationWithManyRequests() {
-    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+    _blockFactory.load(fromDefaultFiles: [.loopDefault, .mathDefault])
 
     // Build workspace with simple repeat loop
     let workspace = Workspace()
@@ -132,26 +130,25 @@ class CodeGeneratorServiceTest: XCTestCase {
       // Set up timeout expectation
       let expectation = self.expectation(description: "Code Generation")
 
-      // Execute request
+      // Set builder
       let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.Python")
       builder.addJSBlockGeneratorFiles(["blockly_web/python_compressed.js"], bundle: testBundle)
       builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
-      guard let request = BKYAssertDoesNotThrow({
-        try builder.makeRequest(forWorkspace: workspace)
-      }) else {
-        XCTFail("Could not build code generation request")
-        return
+      _codeGeneratorService.setRequestBuilder(builder, shouldCache: true)
+
+      // Execute request
+      let _ = BKYAssertDoesNotThrow {
+        try _codeGeneratorService.generateCode(
+          forWorkspace: workspace,
+          onCompletion: { code in
+            XCTAssertEqual("for count in range(10):  pass",
+                           code.replacingOccurrences(of: "\n", with: ""))
+            expectation.fulfill()
+          }, onError: { error in
+            XCTFail("Error occurred during code generation: \(error)")
+            expectation.fulfill()
+          })
       }
-      request.onCompletion = { code in
-        XCTAssertEqual("for count in range(10):  pass",
-          code.replacingOccurrences(of: "\n", with: ""))
-        expectation.fulfill()
-      }
-      request.onError = { error in
-        XCTFail("Error occurred during code generation: \(error)")
-        expectation.fulfill()
-      }
-      _codeGeneratorService.generateCode(forRequest: request)
     }
 
     // Wait 100s for code generation to finish
@@ -195,28 +192,27 @@ class CodeGeneratorServiceTest: XCTestCase {
     // Set up timeout expectation
     let expectation = self.expectation(description: "Code Generation")
 
-    // Execute request
+    // Set builder
     let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.JavaScript")
     builder.addJSBlockGeneratorFiles(["blockly_web/javascript_compressed.js",
                                   "code_generator_generators.js"],
                                  bundle: testBundle)
     builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     builder.addJSONBlockDefinitionFiles(["code_generator_blocks.json"], bundle: testBundle)
-    guard let request = BKYAssertDoesNotThrow({
-      try builder.makeRequest(forWorkspace: workspace)
-    }) else {
-      XCTFail("Could not build code generation request")
-      return
+    _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
+
+    // Execute request
+    let _ = BKYAssertDoesNotThrow {
+      try _codeGeneratorService.generateCode(
+        forWorkspace: workspace,
+        onCompletion: { code in
+          XCTAssertEqual("#abcdef", code)
+          expectation.fulfill()
+        }, onError: { error in
+          XCTFail("Error occurred during code generation: \(error)")
+          expectation.fulfill()
+        })
     }
-    request.onCompletion = { code in
-      XCTAssertEqual("#abcdef", code)
-      expectation.fulfill()
-    }
-    request.onError = { error in
-      XCTFail("Error occurred during code generation: \(error)")
-      expectation.fulfill()
-    }
-    _codeGeneratorService.generateCode(forRequest: request)
 
     // Wait 10s for code generation to finish
     waitForExpectations(timeout: 10.0, handler: { error in

@@ -201,8 +201,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     codeText.superview?.layer.borderWidth = 1
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
 
-    _codeGeneratorService.setCodeGeneratorServiceRequestBuilder(_codeGeneratorServiceRequestBuilder,
-                                                                shouldCache: true)
+    _codeGeneratorService.setRequestBuilder(_codeGeneratorServiceRequestBuilder, shouldCache: true)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
