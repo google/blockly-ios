@@ -37,7 +37,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   private func commonInit() {
     // Load blocks into the block factory
-    _blockFactory.load(fromDefaultFiles: .AllDefault)
+    _blockFactory.load(fromDefaultFiles: .allDefault)
   }
 
   // MARK: - Super

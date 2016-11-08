@@ -44,7 +44,7 @@ class CodeGeneratorServiceTest: XCTestCase {
   // MARK: - Tests
 
   func testPythonCodeGeneration() {
-    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+    _blockFactory.load(fromDefaultFiles: [.loopDefault, .mathDefault])
 
     // Build workspace with simple repeat loop
     let workspace = Workspace()
@@ -74,7 +74,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     let testBundle = Bundle(for: type(of: self))
     let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.Python")
     builder.addJSBlockGeneratorFiles(["blockly_web/python_compressed.js"], bundle: testBundle)
-    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
 
     // Execute request
@@ -100,7 +100,7 @@ class CodeGeneratorServiceTest: XCTestCase {
   }
 
   func testPythonCodeGenerationWithManyRequests() {
-    _blockFactory.load(fromDefaultFiles: [.LoopDefault, .MathDefault])
+    _blockFactory.load(fromDefaultFiles: [.loopDefault, .mathDefault])
 
     // Build workspace with simple repeat loop
     let workspace = Workspace()
@@ -133,7 +133,7 @@ class CodeGeneratorServiceTest: XCTestCase {
       // Set builder
       let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.Python")
       builder.addJSBlockGeneratorFiles(["blockly_web/python_compressed.js"], bundle: testBundle)
-      builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+      builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
       _codeGeneratorService.setRequestBuilder(builder, shouldCache: true)
 
       // Execute request
@@ -197,7 +197,7 @@ class CodeGeneratorServiceTest: XCTestCase {
     builder.addJSBlockGeneratorFiles(["blockly_web/javascript_compressed.js",
                                   "code_generator_generators.js"],
                                  bundle: testBundle)
-    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .AllDefault)
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     builder.addJSONBlockDefinitionFiles(["code_generator_blocks.json"], bundle: testBundle)
     _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
 

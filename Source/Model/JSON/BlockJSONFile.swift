@@ -20,25 +20,25 @@ extension BlockJSONFile {
   public var fileLocations: [String] {
     var fileLocations = [String]()
 
-    if contains(.ColorDefault) {
+    if contains(.colorDefault) {
       fileLocations.append("Default/colour_blocks.json")
     }
-    if contains(.ListDefault) {
+    if contains(.listDefault) {
       fileLocations.append("Default/list_blocks.json")
     }
-    if contains(.LogicDefault) {
+    if contains(.logicDefault) {
       fileLocations.append("Default/logic_blocks.json")
     }
-    if contains(.LoopDefault) {
+    if contains(.loopDefault) {
       fileLocations.append("Default/loop_blocks.json")
     }
-    if contains(.MathDefault) {
+    if contains(.mathDefault) {
       fileLocations.append("Default/math_blocks.json")
     }
-    if contains(.TextDefault) {
+    if contains(.textDefault) {
       fileLocations.append("Default/text_blocks.json")
     }
-    if contains(.VariableDefault) {
+    if contains(.variableDefault) {
       fileLocations.append("Default/variable_blocks.json")
     }
 
