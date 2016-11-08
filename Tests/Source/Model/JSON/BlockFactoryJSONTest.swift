@@ -29,7 +29,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "colour_picker")
     }
-    _blockFactory.load(fromDefaultFiles: .ColorDefault)
+    _blockFactory.load(fromDefaultFiles: .colorDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "colour_picker") }
     XCTAssertNotNil(block)
@@ -39,7 +39,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "lists_create_empty")
     }
-    _blockFactory.load(fromDefaultFiles: .ListDefault)
+    _blockFactory.load(fromDefaultFiles: .listDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "lists_create_empty") }
     XCTAssertNotNil(block)
@@ -49,7 +49,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "controls_if")
     }
-    _blockFactory.load(fromDefaultFiles: .LogicDefault)
+    _blockFactory.load(fromDefaultFiles: .logicDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "controls_if") }
     XCTAssertNotNil(block)
@@ -59,7 +59,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "controls_repeat_ext")
     }
-    _blockFactory.load(fromDefaultFiles: .LoopDefault)
+    _blockFactory.load(fromDefaultFiles: .loopDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "controls_repeat_ext") }
     XCTAssertNotNil(block)
@@ -69,7 +69,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "math_number")
     }
-    _blockFactory.load(fromDefaultFiles: .MathDefault)
+    _blockFactory.load(fromDefaultFiles: .mathDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "math_number") }
     XCTAssertNotNil(block)
@@ -79,7 +79,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "text")
     }
-    _blockFactory.load(fromDefaultFiles: .TextDefault)
+    _blockFactory.load(fromDefaultFiles: .textDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "text") }
     XCTAssertNotNil(block)
@@ -89,7 +89,7 @@ class BlockFactoryJSONTest: XCTestCase {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "variables_get")
     }
-    _blockFactory.load(fromDefaultFiles: .VariableDefault)
+    _blockFactory.load(fromDefaultFiles: .variableDefault)
 
     let block = BKYAssertDoesNotThrow { try _blockFactory.makeBlock(name: "variables_get") }
     XCTAssertNotNil(block)
