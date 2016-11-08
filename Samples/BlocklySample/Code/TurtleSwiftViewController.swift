@@ -248,8 +248,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
           _currentRequestUUID = try _codeGeneratorService.generateCode(forWorkspace: workspace,
             onCompletion: onCompletion, onError: onError)
 
-          playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
-          _currentlyRunning = true
+          playButton.isEnabled = false
         }
       }
     } catch let error {
@@ -272,8 +271,10 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   fileprivate func resetRequests() {
     _currentlyRunning = false
-    playButton.setImage(UIImage(named: "play_button"), for: .normal)
     _currentRequestUUID = ""
+    playButton.isEnabled = true
+    playButton.setImage(UIImage(named: "play_button"), for: .normal)
+    playButton.setTitle("Run Code", for: .normal)
   }
 
   fileprivate func runCode(_ code: String) {
@@ -281,6 +282,11 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     // user interaction)
     _allowBlockHighlighting = true
     _allowScrollingToBlockView = true
+
+    playButton.setImage(UIImage(named: "cancel_button"), for: .normal)
+    playButton.setTitle("Stop Turtle", for: .normal)
+    playButton.isEnabled = true
+    _currentlyRunning = true
 
     // Run the generated code in the web view by calling `Turtle.execute(<code>)`
     let codeParam = code.bky_escapedJavaScriptParameter()
