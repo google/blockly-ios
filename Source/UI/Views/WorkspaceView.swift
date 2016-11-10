@@ -200,7 +200,7 @@ open class WorkspaceView: LayoutView {
 
     var scrollViewRect =
       CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y,
-                 width: scrollView.bounds.width, height: scrollView.bounds.height)
+             width: scrollView.bounds.width, height: scrollView.bounds.height)
 
     // Force the blockView to be inset within the scroll view rectangle
     scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
@@ -391,7 +391,7 @@ open class WorkspaceView: LayoutView {
       return
     }
     if !ignoreRestrictions &&
-      (scrollView.isDragging || scrollView.isDecelerating)
+      (scrollView.isDragging || scrollView.isDecelerating || scrollView.isTracking)
     {
       return
     }
@@ -514,10 +514,6 @@ open class WorkspaceView: LayoutView {
 // MARK: - UIScrollViewDelegate Implementation
 
 extension WorkspaceView: UIScrollViewDelegate {
-  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    removeExcessScrollSpace()
-  }
-
   public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     removeExcessScrollSpace()
   }
@@ -575,7 +571,7 @@ extension WorkspaceView: UIScrollViewDelegate {
     // excess padding after a zoom
     workspaceLayout.engine.scale *= scale
     workspaceLayout.updateLayoutDownTree()
-    removeExcessScrollSpace(ignoreRestrictions:true)
+    removeExcessScrollSpace(ignoreRestrictions: true)
 
     scrollView.showsVerticalScrollIndicator = _scrollViewShowedVerticalScrollIndicator
     scrollView.showsHorizontalScrollIndicator = _scrollViewShowedHorizontalScrollIndicator
