@@ -111,6 +111,21 @@ public final class DefaultBlockLayout: BlockLayout {
     self.background.updateRenderProperties(fromBlockLayout: self)
     self.background.removeAllRows()
 
+    // Account for sizing if a start hat needs to be rendered
+    if background.startHat {
+      let blockHatSize = config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
+      currentLineHeight += blockHatSize.height
+      minimalFieldWidthRequired = max(minimalFieldWidthRequired, blockHatSize.width)
+      minimalStatementWidthRequired = max(minimalStatementWidthRequired, blockHatSize.width)
+    }
+
+    // Account for minimum width of rendering previous/next notches
+    if block.previousConnection != nil ||  block.nextConnection != nil {
+      let notchWidth = config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
+      minimalFieldWidthRequired = max(minimalFieldWidthRequired, notchWidth)
+      minimalStatementWidthRequired = max(minimalStatementWidthRequired, notchWidth)
+    }
+
     // Update relative position/size of inputs
     for inputLayout in (inputLayouts as! [DefaultInputLayout]) {
       if backgroundRow == nil || // First row
@@ -180,10 +195,30 @@ public final class DefaultBlockLayout: BlockLayout {
       backgroundRow.updateRenderProperties(withMinimalRowWidth: minimalWidthRequired)
     }
 
+    // Edge case: If there were no input layouts for the block, add an empty background row
+    // (so an empty block is rendered).
+    if inputLayouts.isEmpty {
+      let emptyRow = BackgroundRow()
+      emptyRow.rightEdge =
+        max(config.workspaceUnit(for: LayoutConfig.InlineXPadding) * 2, minimalWidthRequired)
+      emptyRow.topPadding = config.workspaceUnit(for: LayoutConfig.InlineYPadding)
+      emptyRow.middleHeight = config.workspaceUnit(for: LayoutConfig.FieldMinimumHeight)
+      emptyRow.bottomPadding = config.workspaceUnit(for: LayoutConfig.InlineYPadding)
+      background.appendRow(emptyRow)
+    }
+
+    // Calculate size required for this block layout (based on input layouts and background)
     var size = WorkspaceSize.zero
     for inputLayout in inputLayouts {
       size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
     }
+
+    let maxBackgroundX =
+      background.leadingEdgeXOffset + (background.rows.map({ $0.rightEdge }).max() ?? 0)
+    let maxBackgroundY =
+      background.leadingEdgeYOffset + background.rows.map({ $0.rowHeight }).reduce(0, +)
+    size.width = max(size.width, maxBackgroundX)
+    size.height = max(size.height, maxBackgroundY)
 
     // Update connection relative positions
     let notchXOffset = outputPuzzleTabXOffset +

@@ -29,19 +29,26 @@ extension DefaultBlockLayout {
     /// Flag if the bottom-left corner should be rounded
     public fileprivate(set) var squareBottomLeftCorner: Bool = false
 
-    /// Flag if a female previous statement connector should be rendered at the top of the block
-    public fileprivate(set) var femalePreviousStatementConnector: Bool = false
+    /// Flag if a previous statement connector should be rendered at the top of the block
+    public fileprivate(set) var previousStatementConnector: Bool = false
 
-    /// Flag if a male next statement connector should be rendered at the bottom of the block
-    public fileprivate(set) var maleNextStatementConnector: Bool = false
+    /// Flag if a next statement connector should be rendered at the bottom of the block
+    public fileprivate(set) var nextStatementConnector: Bool = false
 
-    /// Flag if a male output connector should be rendered on the left side of the block
-    public fileprivate(set) var maleOutputConnector: Bool = false
+    /// Flag if a output connector should be rendered on the left side of the block
+    public fileprivate(set) var outputConnector: Bool = false
+
+    /// Flag if the block should render a hat
+    public fileprivate(set) var startHat: Bool = false
 
     /// The position of the block's leading X edge offset, specified as a Workspace coordinate
     /// system unit, relative to its entire bounding box.
     /// (e.g. In LTR, this is the X offset of the block's left edge.)
-    public var leadingEdgeXOffset: CGFloat = 0
+    public fileprivate(set) var leadingEdgeXOffset: CGFloat = 0
+
+    /// The position of the block's top Y edge offset, specified as a Workspace coordinate
+    /// system unit.
+    public fileprivate(set) var leadingEdgeYOffset: CGFloat = 0
 
     /// The rows for this block
     public fileprivate(set) var rows = [BackgroundRow]()
@@ -54,11 +61,15 @@ extension DefaultBlockLayout {
     - parameter layout: The block layout.
     */
     public func updateRenderProperties(fromBlockLayout layout: DefaultBlockLayout) {
-      self.maleOutputConnector = (layout.block.outputConnection != nil)
-      self.leadingEdgeXOffset = maleOutputConnector ?
+      self.outputConnector = (layout.block.outputConnection != nil)
+      self.previousStatementConnector = (layout.block.previousConnection != nil)
+      self.nextStatementConnector = (layout.block.nextConnection != nil)
+      self.startHat = !previousStatementConnector && !outputConnector &&
+        layout.config.bool(for: DefaultLayoutConfig.BlockStartHat)
+      self.leadingEdgeXOffset = outputConnector ?
         layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) : 0
-      self.femalePreviousStatementConnector = (layout.block.previousConnection != nil)
-      self.maleNextStatementConnector = (layout.block.nextConnection != nil)
+      self.leadingEdgeYOffset = startHat ?
+        layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize).height : 0
 
       if layout.block.outputConnection != nil {
         self.squareTopLeftCorner = true
@@ -101,8 +112,8 @@ extension DefaultBlockLayout {
   public final class BackgroundRow: NSObject {
     // MARK: - Properties
 
-    /// Flag if a female output connector should be rendered on the right side of the row
-    public var femaleOutputConnector: Bool = false
+    /// Flag if a output connector should be rendered on the right side of the row
+    public var outputConnector: Bool = false
 
     /// Flag if this row represents a "C" shaped statement block.
     public var isStatement: Bool = false
@@ -169,7 +180,7 @@ extension DefaultBlockLayout {
         self.statementConnectorWidth = lastInputLayout.statementConnectorWidth
       } else if !lastInputLayout.input.sourceBlock.inputsInline {
         self.rightEdge = lastInputLayout.rightEdge
-        self.femaleOutputConnector = (lastInputLayout.input.connection != nil)
+        self.outputConnector = (lastInputLayout.input.connection != nil)
         self.middleHeight = lastInputLayout.totalSize.height
       } else {
         // The right edge for inline dummy/value inputs is the total width of all combined
@@ -196,7 +207,7 @@ extension DefaultBlockLayout {
     Resets all render properties to their default values.
     */
     fileprivate func resetRenderProperties() {
-      self.femaleOutputConnector = false
+      self.outputConnector = false
       self.isStatement = false
       self.rightEdge = 0
       self.topPadding = 0

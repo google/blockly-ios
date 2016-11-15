@@ -20,9 +20,11 @@ extension DefaultBlockView {
 
   /**
    Adds the path for drawing a next/previous notch.
+
+   Draws:
    ```
-   Draws: --
-            \_/
+   --
+     \_/
    ```
    - parameter path: The Bezier path to add to.
    - parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
@@ -49,13 +51,15 @@ extension DefaultBlockView {
 
   /**
   Adds the path for drawing jagged teeth at the end of collapsed blocks.
+
+  Draws:
   ```
-  Draws: --
-           |
-            \
-            /
-           /
-           \
+  --
+    |
+     \
+     /
+    /
+    \
   ```
   - parameter path: The Bezier path to add to.
   */
@@ -69,8 +73,9 @@ extension DefaultBlockView {
 
   /**
    Adds the path for drawing a horizontal puzzle tab.
-   ```
+
    Draws:
+   ```
           |
         /\|
        |
@@ -129,11 +134,14 @@ extension DefaultBlockView {
 
   /**
    Adds the path for drawing the rounded top-left corner.
+
+   Draws:
    ```
-   Draws:   --
-           /
-          |
+     --
+    /
+   |
    ```
+   - parameter path: The Bezier path.
    - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
    system unit.
    */
@@ -142,5 +150,24 @@ extension DefaultBlockView {
     path.addArc(withCenter: WorkspacePoint(x: blockCornerRadius, y: 0),
       radius: blockCornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),
       clockwise: true, relative: true)
+  }
+
+  /**
+   Adds the path for drawing a hat.
+
+   Draws:
+   ```
+    ---
+   /   \
+   ```
+   - parameter path: The Bezier path.
+   - parameter hatSize: The size of the hat, specified as a Workspace coordinate system size.
+   */
+  public final func addHat(toPath path: WorkspaceBezierPath, hatSize: WorkspaceSize)
+  {
+    path.addCurve(to: WorkspacePoint(x: hatSize.width, y: 0),
+                  controlPoint1: WorkspacePoint(x: hatSize.width * 0.3, y: -hatSize.height),
+                  controlPoint2: WorkspacePoint(x: hatSize.width * 0.7, y: -hatSize.height),
+                  relative: true)
   }
 }

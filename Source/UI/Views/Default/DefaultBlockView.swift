@@ -241,22 +241,29 @@ public final class DefaultBlockView: BlockView {
     let background = layout.background
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset = background.leadingEdgeXOffset // Note: this is the right edge in RTL
+    let topEdgeOffset = background.leadingEdgeYOffset
     let notchWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
     let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
+    let startHatSize = layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
 
-    path.moveTo(x: xLeftEdgeOffset, y: 0, relative: false)
+    path.moveTo(x: xLeftEdgeOffset, y: topEdgeOffset, relative: false)
 
     for i in 0 ..< background.rows.count {
       let row = background.rows[i]
 
       // DRAW THE TOP EDGES
 
-      if i == 0 && background.femalePreviousStatementConnector {
-        // Draw previous statement connector
-        addNotch(
-          toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
+      if i == 0 {
+        if background.previousStatementConnector {
+          // Draw previous statement connector
+          addNotch(
+            toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
+        } else if background.startHat {
+          // Draw hat for the block
+          addHat(toPath: path, hatSize: startHatSize)
+        }
       }
 
       path.addLineTo(
@@ -283,7 +290,8 @@ public final class DefaultBlockView: BlockView {
           toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineTo(
-          x: xLeftEdgeOffset + row.statementIndent, y: path.currentWorkspacePoint.y, relative: false)
+          x: xLeftEdgeOffset + row.statementIndent, y: path.currentWorkspacePoint.y,
+          relative: false)
 
         // Inner-left side of "C"
         path.addLineTo(x: 0, y: row.middleHeight, relative: true)
@@ -297,8 +305,8 @@ public final class DefaultBlockView: BlockView {
           // If there is another row after this, the inner-floor of the "C" is drawn by the
           // right edge of the next row.
         }
-      } else if row.femaleOutputConnector {
-        // Draw female output connector and then the rest of the middle height
+      } else if row.outputConnector {
+        // Draw output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y
         addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
@@ -321,18 +329,19 @@ public final class DefaultBlockView: BlockView {
 
     // DRAW THE BOTTOM EDGES
 
-    if background.maleNextStatementConnector {
+    if background.nextStatementConnector {
       path.addLineTo(
         x: xLeftEdgeOffset + notchWidth, y: path.currentWorkspacePoint.y, relative: false)
-      addNotch(toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
+      addNotch(
+        toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
     path.addLineTo(x: xLeftEdgeOffset, y: path.currentWorkspacePoint.y, relative: false)
 
     // DRAW THE LEFT EDGES
 
-    if background.maleOutputConnector {
-      // Add male connector
+    if background.outputConnector {
+      // Add output connector
       path.addLineTo(x: 0, y: puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
 
       addPuzzleTab(toPath: path, drawTopToBottom: false,
@@ -438,8 +447,8 @@ public final class DefaultBlockView: BlockView {
   fileprivate func shadowColor(forColor color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
     hsba.saturation *= config.float(for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
-    hsba.brightness =
-      max(hsba.brightness * config.float(for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
+    hsba.brightness = max(
+      hsba.brightness * config.float(for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
     return UIColor(
       hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)
   }
