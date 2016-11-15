@@ -164,150 +164,18 @@ open class LayoutConfig: NSObject {
     }, for: LayoutConfig.GlobalFont)
   }
 
-  // MARK: - Public
+  // MARK: - Create Property Keys
 
   /**
-  Creates a new `PropertyKey`.
-  */
+   Creates a new `PropertyKey`.
+   */
   public static func newPropertyKey() -> PropertyKey {
     let key = NUMBER_OF_PROPERTY_KEYS
     NUMBER_OF_PROPERTY_KEYS += 1
     return key
   }
 
-  /**
-   Maps a `Unit` value to a specific `PropertyKey`.
-
-   - parameter unit: The `Unit` value
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - returns: The `unit` that was set.
-   */
-  @discardableResult
-  public func setUnit(_ unit: Unit, for key: PropertyKey) -> Unit {
-    _units[key] = unit
-    return unit
-  }
-
-  /**
-   Returns the `Unit` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
-   assigned to `key` and used instead.
-   - returns: The mapped `Unit` value.
-   */
-  @inline(__always)
-  public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> Unit {
-    return _units[key] ?? setUnit(defaultValue, for: key)
-  }
-
-  /**
-   Returns the `viewUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
-   assigned to `key` and used instead.
-   - returns: The `viewUnit` of the mapped `Unit` value.
-   */
-  @inline(__always)
-  public func viewUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
-    return unit(for: key, defaultValue: defaultValue).viewUnit
-  }
-
-  /**
-   Returns the `workspaceUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
-   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
-   assigned to `key` and used instead.
-   - returns: The `workspaceUnit` of the mapped `Unit` value.
-   */
-  @inline(__always)
-  public func workspaceUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
-    return unit(for: key, defaultValue: defaultValue).workspaceUnit
-  }
-
-  /**
-   Maps a `Size` value to a specific `PropertyKey`.
-
-   - parameter size: The `Size` value
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - returns: The `size` that was set.
-   */
-  @discardableResult
-  public func setSize(_ size: Size, for key: PropertyKey) -> Size {
-    _sizes[key] = size
-    return size
-  }
-
-  /**
-   Returns the `Size` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
-   automatically assigned to `key` and used instead.
-   - returns: The mapped `Size` value.
-   */
-  @inline(__always)
-  public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
-    return _sizes[key] ?? setSize(defaultValue, for: key)
-  }
-
-  /**
-   Returns the `viewSize` of the `Size` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
-   automatically assigned to `key` and used instead.
-   - returns: The `viewSize` of the mapped `Size` value.
-   */
-  @inline(__always)
-  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
-    -> CGSize
-  {
-    return size(for: key).viewSize
-  }
-
-  /**
-   Returns the `workspaceSize` of the `Size` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
-   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
-   automatically assigned to `key` and used instead.
-   - returns: The `workspaceSize` of the mapped `Size` value.
-   */
-  @inline(__always)
-  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
-    -> WorkspaceSize
-  {
-    return size(for: key).workspaceSize
-  }
-
-  /**
-   Maps a `UIColor` value to a specific `PropertyKey`.
-
-   - parameter color: The `UIColor` value
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
-   - returns: The `color` that was set.
-   */
-  @discardableResult
-  public func setColor(_ color: UIColor?, for key: PropertyKey) -> UIColor? {
-    _colors[key] = color
-    return color
-  }
-
-  /**
-   Returns the `UIColor` value that is mapped to a specific `PropertyKey`.
-
-   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
-   - parameter defaultValue: [Optional] If no `UIColor` was found for `key`, this value is
-   automatically assigned to `key` and used instead.
-   - returns: The `key`'s value
-   */
-  @inline(__always)
-  public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
-    return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
-  }
+  // MARK: - Configure Values
 
   /**
    Maps a `Double` value to a specific `PropertyKey`.
@@ -334,7 +202,33 @@ open class LayoutConfig: NSObject {
   public func double(for key: PropertyKey, defaultValue: Double = 0) -> Double {
     return _doubles[key] ?? setDouble(defaultValue, for: key)
   }
+  
+  /**
+   Maps a `UIColor` value to a specific `PropertyKey`.
 
+   - parameter color: The `UIColor` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
+   - returns: The `color` that was set.
+   */
+  @discardableResult
+  public func setColor(_ color: UIColor?, for key: PropertyKey) -> UIColor? {
+    _colors[key] = color
+    return color
+  }
+
+  /**
+   Returns the `UIColor` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldCheckboxSwitchOnTintColor`)
+   - parameter defaultValue: [Optional] If no `UIColor` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value
+   */
+  @inline(__always)
+  public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
+    return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
+  }
+  
   /**
    Maps a `EdgeInsets` value to a specific `PropertyKey`.
 
@@ -423,6 +317,116 @@ open class LayoutConfig: NSObject {
   public func font(for key: PropertyKey) -> UIFont {
     return _fonts[key]?.font ?? UIFont.systemFont(ofSize: 14 * _scale)
   }
+
+  /**
+   Maps a `Size` value to a specific `PropertyKey`.
+
+   - parameter size: The `Size` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - returns: The `size` that was set.
+   */
+  @discardableResult
+  public func setSize(_ size: Size, for key: PropertyKey) -> Size {
+    _sizes[key] = size
+    return size
+  }
+
+  /**
+   Returns the `Size` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The mapped `Size` value.
+   */
+  @inline(__always)
+  public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
+    return _sizes[key] ?? setSize(defaultValue, for: key)
+  }
+
+  /**
+   Returns the `viewSize` of the `Size` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `viewSize` of the mapped `Size` value.
+   */
+  @inline(__always)
+  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+    -> CGSize
+  {
+    return size(for: key).viewSize
+  }
+
+  /**
+   Returns the `workspaceSize` of the `Size` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldColorButtonSize`)
+   - parameter defaultValue: [Optional] If no `Size` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `workspaceSize` of the mapped `Size` value.
+   */
+  @inline(__always)
+  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+    -> WorkspaceSize
+  {
+    return size(for: key).workspaceSize
+  }
+  
+  /**
+   Maps a `Unit` value to a specific `PropertyKey`.
+
+   - parameter unit: The `Unit` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - returns: The `unit` that was set.
+   */
+  @discardableResult
+  public func setUnit(_ unit: Unit, for key: PropertyKey) -> Unit {
+    _units[key] = unit
+    return unit
+  }
+
+  /**
+   Returns the `Unit` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   assigned to `key` and used instead.
+   - returns: The mapped `Unit` value.
+   */
+  @inline(__always)
+  public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> Unit {
+    return _units[key] ?? setUnit(defaultValue, for: key)
+  }
+
+  /**
+   Returns the `viewUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   assigned to `key` and used instead.
+   - returns: The `viewUnit` of the mapped `Unit` value.
+   */
+  @inline(__always)
+  public func viewUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
+    return unit(for: key, defaultValue: defaultValue).viewUnit
+  }
+
+  /**
+   Returns the `workspaceUnit` of the `Unit` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.InlineXPadding`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is automatically
+   assigned to `key` and used instead.
+   - returns: The `workspaceUnit` of the mapped `Unit` value.
+   */
+  @inline(__always)
+  public func workspaceUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
+    return unit(for: key, defaultValue: defaultValue).workspaceUnit
+  }
+
+  // MARK: - Update Values
 
   /**
    Updates the UIView coordinate system values for all config values that have been stored
