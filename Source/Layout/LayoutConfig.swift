@@ -109,14 +109,14 @@ open class LayoutConfig: NSObject {
   // NOTE: Separate dictionaries were created for each type of value as casting specific values
   // from a Dictionary<PropertyKey, Any> is a big performance hit.
 
-  /// Dictionary mapping property keys to `Unit` values
-  private var _units = Dictionary<PropertyKey, Unit>()
-
-  /// Dictionary mapping property keys to `Size` values
-  private var _sizes = Dictionary<PropertyKey, Size>()
+  /// Dictionary mapping property keys to `Bool` values
+  private var _bools = Dictionary<PropertyKey, Bool>()
 
   /// Dictionary mapping property keys to `UIColor` values
   private var _colors = Dictionary<PropertyKey, UIColor>()
+
+  /// Dictionary mapping property keys to `Double` values
+  private var _doubles = Dictionary<PropertyKey, Double>()
 
   /// Dictionary mapping property keys to `EdgeInsets` values
   private var _edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
@@ -124,11 +124,14 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `CGFloat` values
   private var _floats = Dictionary<PropertyKey, CGFloat>()
 
-  /// Dictionary mapping property keys to `Double` values
-  private var _doubles = Dictionary<PropertyKey, Double>()
-
   /// Dictionary mapping property keys to `ScaledFont` values
   private var _fonts = Dictionary<PropertyKey, ScaledFont>()
+
+  /// Dictionary mapping property keys to `Size` values
+  private var _sizes = Dictionary<PropertyKey, Size>()
+
+  /// Dictionary mapping property keys to `Unit` values
+  private var _units = Dictionary<PropertyKey, Unit>()
 
   // MARK: - Initializers
 
@@ -178,6 +181,32 @@ open class LayoutConfig: NSObject {
   // MARK: - Configure Values
 
   /**
+   Maps a `Bool` value to a specific `PropertyKey`.
+
+   - parameter boolValue: The `Bool` value
+   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockStartHat`)
+   - returns: The `Bool` that was set.
+   */
+  @discardableResult
+  public func setBool(_ boolValue: Bool, for key: PropertyKey) -> Bool {
+    _bools[key] = boolValue
+    return boolValue
+  }
+
+  /**
+   Returns the `Bool` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockStartHat`)
+   - parameter defaultValue: [Optional] If no `Bool` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value
+   */
+  @inline(__always)
+  public func bool(for key: PropertyKey, defaultValue: Bool = false) -> Bool {
+    return _bools[key] ?? setBool(defaultValue, for: key)
+  }
+
+  /**
    Maps a `Double` value to a specific `PropertyKey`.
 
    - parameter doubleValue: The `Double` value
@@ -202,7 +231,7 @@ open class LayoutConfig: NSObject {
   public func double(for key: PropertyKey, defaultValue: Double = 0) -> Double {
     return _doubles[key] ?? setDouble(defaultValue, for: key)
   }
-  
+
   /**
    Maps a `UIColor` value to a specific `PropertyKey`.
 
@@ -228,7 +257,7 @@ open class LayoutConfig: NSObject {
   public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
     return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
   }
-  
+
   /**
    Maps a `EdgeInsets` value to a specific `PropertyKey`.
 
@@ -373,7 +402,7 @@ open class LayoutConfig: NSObject {
   {
     return size(for: key).workspaceSize
   }
-  
+
   /**
    Maps a `Unit` value to a specific `PropertyKey`.
 

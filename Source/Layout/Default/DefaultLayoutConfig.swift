@@ -82,6 +82,13 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// colors
   public static let BlockShadowBrightnessMultiplier = LayoutConfig.newPropertyKey()
 
+  /// [`Bool`] Flag indicating if blocks with no output or previous connection should be
+  /// rendered with a "hat".
+  public static let BlockStartHat = LayoutConfig.newPropertyKey()
+
+  /// [`Size`] The size to use when rendering a "start hat".
+  public static let BlockStartHatSize = LayoutConfig.newPropertyKey()
+
   /// [`Size`] Minimum size of the inline connector
   public static let MinimumInlineConnectorSize = LayoutConfig.newPropertyKey()
 
@@ -115,5 +122,8 @@ open class DefaultLayoutConfig: LayoutConfig {
     setFloat(0.5, for: DefaultLayoutConfig.BlockDisabledAlpha)
     setFloat(0.4, for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
     setFloat(1.2, for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier)
+
+    setBool(false, for: DefaultLayoutConfig.BlockStartHat)
+    setSize(Size(100, 15), for: DefaultLayoutConfig.BlockStartHatSize)
   }
 }
