@@ -266,6 +266,28 @@ open class Workspace : NSObject {
     }
   }
 
+  /**
+   Finds all blocks that have a field using a specific variable name.
+
+   - param name: The name to search
+   */
+  public func allVariableBlocks(forName name: String) -> [Block] {
+    var variableBlocks: [Block] = []
+    for (_, block) in allBlocks {
+      for input in block.inputs {
+        for field in input.fields {
+          if let varField = field as? FieldVariable,
+            varField.variable == name
+          {
+            variableBlocks.append(block)
+          }
+        }
+      }
+    }
+
+    return variableBlocks
+  }
+
   // MARK: - Private
 
   /**
