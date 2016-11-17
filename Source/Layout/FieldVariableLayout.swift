@@ -80,4 +80,20 @@ open class FieldVariableLayout: FieldLayout {
     // Setting to a new variable automatically fires a listener to update the layout
     fieldVariable.changeToVariable(variable)
   }
+
+  /**
+   Renames the variable on this layout to a new value.
+
+   - parameter newName: The new value for the variable on this layout.
+   */
+  open func renameVariable(to newName: String) {
+    fieldVariable.renameVariable(newName)
+  }
+
+  /**
+   Removes the variable that's currently stored on this layout.
+   */
+  open func removeVariable() {
+    fieldVariable.removeVariable()
+  }
 }
