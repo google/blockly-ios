@@ -223,13 +223,14 @@ class WorkspaceTest: XCTestCase {
 
   func testGetAllVariables_Some() {
     guard let _ = BKYAssertDoesNotThrow(
-        {try _blockFactory.addBlock(name: "no_connections", toWorkspace: _workspace)}),
+        { try _blockFactory.addBlock(name: "no_connections", toWorkspace: _workspace)} ),
       let block1 = BKYAssertDoesNotThrow(
-        {try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace)}),
+        { try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace)} ),
       let block2 = BKYAssertDoesNotThrow(
-        {try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace) else
+        { try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace)} ) else
     {
-      XCTAssertFail("Could not create blocks")
+      XCTFail("Could not create blocks")
+      return
     }
     let blocks = [block1, block2]
     let variableBlocks = _workspace.allVariableBlocks(forName: "variable1")
