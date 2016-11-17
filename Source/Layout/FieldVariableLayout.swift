@@ -78,6 +78,8 @@ open class FieldVariableLayout: FieldLayout {
    */
   open func changeToVariable(_ variable: String) {
     // Setting to a new variable automatically fires a listener to update the layout
+
+    // TODO:(corydiers) Check name manager for a valid variable name.
     fieldVariable.changeToVariable(variable)
   }
 
