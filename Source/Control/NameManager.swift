@@ -61,15 +61,6 @@ public protocol NameManagerListener {
  Manager for handling variable and procedure names.
 
  Any names added to this manager are done so without case sensitivity.
-
- eg.
- ```
- let nameManager = NameManager()
- nameManager.addName("foo") // `nameManager.names` is now `["foo"]`
- nameManager.addName("bar") // `nameManager.names` is now `["foo", "bar"]`
- nameManager.addName("FOO") // `nameManager.names` is now `["FOO", "bar"]`
- nameManager.renameName("foo", toName: "newName") // `nameManager.names` is now `["newName", "bar"]`
- ```
  */
 @objc(BKYNameManager)
 public final class NameManager: NSObject {
@@ -117,29 +108,17 @@ public final class NameManager: NSObject {
 
   /**
    Adds a given name to the list of names. If the same lowercase version of the name already exists
-   in the list, the name is updated to match this new given name.
-
-   eg.
-   ```
-   let nameManager = NameManager()
-   nameManager.addName("foo") // `nameManager.names` is now `["foo"]`
-   nameManager.addName("FOO") // `nameManager.names` is now `["FOO"]`
-   ```
+   in the list, an error is thrown.
 
    - parameter name: The name to add.
+   - throws:
+   `BlocklyError`: Thrown when trying to add a name that already exists.
    */
-  public func addName(_ name: String) {
+  public func addName(_ name: String) throws {
     let nameKey = keyForName(name)
 
-    if let oldDisplayName = _names[nameKey] {
-      // Name already exists in the list
-      if oldDisplayName != name {
-        // Update the display name for this variable name
-        _names[nameKey] = name
-        listeners.forEach {
-          $0.nameManager?(self, didRenameName: oldDisplayName, toName: name)
-        }
-      }
+    if _names[nameKey] != nil {
+      throw BlocklyError(.illegalOperation, "Cannot add a name that already exists.")
     } else {
       _names[nameKey] = name
       listeners.forEach {
@@ -153,6 +132,7 @@ public final class NameManager: NSObject {
 
    If `oldName` does not exist, nothing happens and `false` is returned.
    If `oldName` exists, but `newName` is already in the list, the `newName` is applied to all
+   members with `oldName`.
 
    - parameter oldName: The old name
    - parameter newName: The new name
@@ -194,7 +174,7 @@ public final class NameManager: NSObject {
    - returns: `true` if the name was found and removed. `false` otherwise.
    */
   @discardableResult
-  public func requestRemovalForName(_ name: String) -> Bool {
+  public func removeName(_ name: String) -> Bool {
     let nameKey = keyForName(name)
 
     if let displayName = _names[nameKey] {
@@ -302,7 +282,12 @@ public final class NameManager: NSObject {
     }
 
     if addToList {
-      addName(uniqueName)
+      do {
+        try addName(uniqueName)
+      } catch let error {
+        // Note: AddName throws when a name is not unique, so this should never happen.
+        bky_assertionFailure("Failed generating a new variable name: \(error.localizedDescription)")
+      }
     }
 
     return uniqueName

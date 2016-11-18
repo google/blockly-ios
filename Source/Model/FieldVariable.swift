@@ -33,11 +33,21 @@ public final class FieldVariable: Field {
       // Remove this field as a listener from its previous nameManager and then request
       // to remove the name it was using
       oldValue?.listeners.remove(self) // Remove
-      oldValue?.requestRemovalForName(variable)
 
       // Add name to new nameManager
-      nameManager?.listeners.add(self)
-      nameManager?.addName(variable)
+      if let newManager = nameManager {
+        newManager.listeners.add(self)
+        if !newManager.containsName(variable) {
+          do {
+            try newManager.addName(variable)
+          } catch {
+            bky_assertionFailure("Couldn't add variable: \(error)")
+          }
+        } else {
+          // Updates the new name manager so all variables use the same case.
+          newManager.renameName(variable, to: variable)
+        }
+      }
     }
   }
 
@@ -76,16 +86,6 @@ public final class FieldVariable: Field {
   // MARK: - Public
 
   /**
-   Sets `self.variable` to a new variable and calls `self.nameManager?.addName(variable)`.
-
-   - parameter variable: The new variable name
-   */
-  public func addNewVariable(_ variable: String) {
-    self.variable = variable
-    nameManager?.addName(variable)
-  }
-
-  /**
    Sets `self.variable` to a new variable and calls `self.nameManager?.renameName(variable)`.
 
    - parameter variable: The new variable name
@@ -102,7 +102,6 @@ public final class FieldVariable: Field {
   public func changeToVariable(_ variable: String) {
     let oldValue = self.variable
     if oldValue != variable {
-      nameManager?.addName(variable)
       self.variable = variable
     }
   }
@@ -111,7 +110,7 @@ public final class FieldVariable: Field {
    Removes the variable contained in this variable field.
    */
   public func removeVariable() {
-    nameManager?.requestRemovalForName(variable)
+    nameManager?.removeName(variable)
   }
 }
 

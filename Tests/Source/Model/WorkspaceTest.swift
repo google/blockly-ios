@@ -236,7 +236,9 @@ class WorkspaceTest: XCTestCase {
     let variableBlocks = _workspace.allVariableBlocks(forName: "variable1")
 
     XCTAssertEqual(2, variableBlocks.count)
-    XCTAssertEqual(blocks, variableBlocks)
+    for block in blocks {
+      XCTAssertTrue(variableBlocks.contains(block))
+    }
 
     let nonMatchingVariableBlocks = _workspace.allVariableBlocks(forName: "notVariable1")
 
