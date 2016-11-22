@@ -175,10 +175,13 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
 extension FieldVariableView: VariableNameViewControllerDelegate {
   public func variableNameViewController(_ viewController: VariableNameViewController,
                                          didChangeName name: String?) {
-    guard let newName = name else {
+    guard let newName = name,
+      let layout = fieldVariableLayout,
+      layout.isValidName(newName) else
+    {
       return
     }
 
-    fieldVariableLayout?.renameVariable(to: newName)
+    layout.renameVariable(to: newName)
   }
 }
