@@ -23,32 +23,8 @@ public final class FieldVariable: Field {
   // MARK: - Properties
 
   /// The variable in this field
-  public fileprivate(set) var variable: String {
+  public internal(set) var variable: String {
     didSet { didSetEditableProperty(&variable, oldValue) }
-  }
-
-  /// Optional name manager that this field is scoped to.
-  public weak var nameManager: NameManager? {
-    didSet {
-      // Remove this field as a listener from its previous nameManager and then request
-      // to remove the name it was using
-      oldValue?.listeners.remove(self) // Remove
-
-      // Add name to new nameManager
-      if let newManager = nameManager {
-        newManager.listeners.add(self)
-        if !newManager.containsName(variable) {
-          do {
-            try newManager.addName(variable)
-          } catch {
-            bky_assertionFailure("Couldn't add variable: \(error)")
-          }
-        } else {
-          // Updates the new name manager so all variables use the same case.
-          newManager.renameName(variable, to: variable)
-        }
-      }
-    }
   }
 
   // MARK: - Initializers
@@ -81,52 +57,5 @@ public final class FieldVariable: Field {
 
   public override func serializedText() throws -> String? {
     return self.variable
-  }
-
-  // MARK: - Public
-
-  /**
-   Sets `self.variable` to a new variable and calls `self.nameManager?.renameName(variable)`.
-
-   - parameter variable: The new variable name
-   */
-  public func renameVariable(_ variable: String) {
-    let oldName = self.variable
-    self.variable = variable
-    nameManager?.renameName(oldName, to: variable)
-  }
-
-  /**
-   Creates a variable, and sets `self.variable` to it.
-   */
-  public func changeToVariable(_ variable: String) {
-    let oldValue = self.variable
-    if oldValue != variable {
-      self.variable = variable
-    }
-  }
-
-  /**
-   Removes the variable contained in this variable field.
-   */
-  public func removeVariable() {
-    nameManager?.removeName(variable)
-  }
-}
-
-// MARK: - NameManagerListener Implementation
-
-extension FieldVariable: NameManagerListener {
-  public func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
-    return true
-  }
-
-  public func nameManager(
-    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
-  {
-    if nameManager.namesAreEqual(oldName, variable) {
-      // This variable was renamed, update it
-      variable = newName
-    }
   }
 }

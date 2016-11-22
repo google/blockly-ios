@@ -80,21 +80,6 @@ open class Workspace : NSObject {
   /// The layout associated with this workspace
   public weak var layout: WorkspaceLayout?
 
-  /// Manager responsible for keeping track of all variable names under this workspace
-  public var variableNameManager: NameManager? = NameManager() {
-    didSet {
-      if variableNameManager == oldValue {
-        return
-      }
-      if oldValue != nil {
-        allBlocks.values.forEach { removeNameManagerFromBlock($0) }
-      }
-      if let newManager = variableNameManager {
-        allBlocks.values.forEach { addNameManager(newManager, toBlock: $0) }
-      }
-    }
-  }
-
   // MARK: - Initializers
 
   /**
@@ -167,7 +152,6 @@ open class Workspace : NSObject {
     for block in newBlocks {
       block.editable = block.editable && !readOnly
       allBlocks[block.uuid] = block
-      addNameManager(variableNameManager, toBlock: block)
     }
 
     // Notify delegate for each block addition, now that all of them have been added to the
@@ -205,7 +189,6 @@ open class Workspace : NSObject {
 
     // Remove blocks
     for block in blocksToRemove {
-      removeNameManagerFromBlock(block)
       allBlocks[block.uuid] = nil
     }
   }
@@ -286,35 +269,5 @@ open class Workspace : NSObject {
     }
 
     return variableBlocks
-  }
-
-  // MARK: - Private
-
-  /**
-   For all `FieldVariable` instances under a given `Block`, set their `nameManager` property to a
-   given `NameManager`.
-
-   - parameter nameManager: The `NameManager` to set
-   - parameter block: The `Block`
-   */
-  private func addNameManager(_ nameManager: NameManager?, toBlock block: Block) {
-    block.inputs.flatMap({ $0.fields }).forEach {
-      if let fieldVariable = $0 as? FieldVariable {
-        fieldVariable.nameManager = nameManager
-      }
-    }
-  }
-
-  /**
-   Sets the `nameManager` for all `FieldVariable` instances under the given `Block` to `nil`.
-
-   - parameter block: The `Block`
-   */
-  private func removeNameManagerFromBlock(_ block: Block) {
-    block.inputs.flatMap({ $0.fields }).forEach {
-      if let fieldVariable = $0 as? FieldVariable {
-        fieldVariable.nameManager = nil
-      }
-    }
   }
 }

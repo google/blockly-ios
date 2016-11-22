@@ -33,13 +33,37 @@ open class FieldVariableLayout: FieldLayout {
 
   /// The list of all variable options that should be presented when rendering this layout
   open var variables: [Option] {
-    let sortedVariableNames = fieldVariable.nameManager?.names.sorted() ?? [fieldVariable.variable]
+    let sortedVariableNames = nameManager?.names.sorted() ?? [fieldVariable.variable]
     return sortedVariableNames.map { (displayName: $0, value: $0) }
   }
 
   /// The currently selected variable
   open var variable: String {
     return fieldVariable.variable
+  }
+
+  /// Optional name manager that this field is scoped to.
+  public weak var nameManager: NameManager? {
+    didSet {
+      // Remove this field as a listener from its previous nameManager and then request
+      // to remove the name it was using
+      oldValue?.listeners.remove(self) // Remove
+
+      // Add name to new nameManager
+      if let newManager = nameManager {
+        newManager.listeners.add(self)
+        if !newManager.containsName(variable) {
+          do {
+            try newManager.addName(variable)
+          } catch {
+            bky_assertionFailure("Couldn't add variable: \(error)")
+          }
+        } else {
+          // Updates the new name manager so all variables use the same case.
+          newManager.renameName(variable, to: variable)
+        }
+      }
+    }
   }
 
   // MARK: - Initializers
@@ -79,23 +103,49 @@ open class FieldVariableLayout: FieldLayout {
   open func changeToVariable(_ variable: String) {
     // Setting to a new variable automatically fires a listener to update the layout
 
-    // TODO:(corydiers) Check name manager for a valid variable name.
-    fieldVariable.changeToVariable(variable)
+    let oldValue = self.variable
+    if oldValue != variable {
+      if let nameManager = self.nameManager,
+        !nameManager.containsName(variable) {
+        return
+      }
+
+      fieldVariable.variable = variable
+    }
   }
 
   /**
-   Renames the variable on this layout to a new value.
+   Renames the variable on this layout to a new value, and tells the `NameManager` of the change.
 
    - parameter newName: The new value for the variable on this layout.
    */
   open func renameVariable(to newName: String) {
-    fieldVariable.renameVariable(newName)
+    let oldName = self.variable
+    fieldVariable.variable = newName
+    nameManager?.renameName(oldName, to: newName)
   }
 
   /**
    Removes the variable that's currently stored on this layout.
    */
   open func removeVariable() {
-    fieldVariable.removeVariable()
+    nameManager?.removeName(self.variable)
+  }
+}
+
+// MARK: - NameManagerListener Implementation
+
+extension FieldVariableLayout: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, shouldRemoveName name: String) -> Bool {
+    return true
+  }
+
+  public func nameManager(
+    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+  {
+    if nameManager.namesAreEqual(oldName, variable) {
+      // This variable was renamed, update it
+      fieldVariable.variable = newName
+    }
   }
 }
