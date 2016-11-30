@@ -35,6 +35,26 @@ open class WorkspaceLayoutCoordinator: NSObject {
   /// Object responsible for bumping blocks away from each other
   open let blockBumper = BlockBumper()
 
+  /// Manager responsible for keeping track of all variable names under this workspace
+  public var variableNameManager: NameManager? = NameManager() {
+    didSet {
+      if variableNameManager == oldValue {
+        return
+      }
+
+      oldValue?.listeners.remove(self)
+
+      workspaceLayout.blockGroupLayouts.forEach {
+        $0.blockLayouts.forEach { removeNameManagerFromBlockLayout($0) }
+      }
+      workspaceLayout.blockGroupLayouts.forEach {
+        $0.blockLayouts.forEach { addNameManager(variableNameManager, toBlockLayout: $0) }
+      }
+
+      variableNameManager?.listeners.add(self)
+    }
+  }
+
   // MARK: - Initializers / De-initializers
 
   /**
@@ -61,12 +81,6 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // appropriately
     workspaceLayout.workspace.listeners.add(self)
 
-    if let nameManager = workspaceLayout.workspace.variableNameManager {
-      // Also listen for changes in variable names, so this object can delete blocks with variables
-      // when they're removed.
-      nameManager.listeners.add(self)
-    }
-
     // Build the layout tree, based on the existing state of the workspace. This creates a set of
     // layout objects for all of its blocks/inputs/fields
     try layoutBuilder.buildLayoutTree(forWorkspaceLayout: workspaceLayout)
@@ -78,13 +92,13 @@ open class WorkspaceLayoutCoordinator: NSObject {
     for blockLayout in workspaceLayout.allVisibleBlockLayoutsInWorkspace() {
       trackConnections(forBlockLayout: blockLayout)
     }
+
+    variableNameManager?.listeners.add(self)
   }
 
   deinit {
     workspaceLayout.workspace.listeners.remove(self)
-    if let nameManager = workspaceLayout.workspace.variableNameManager {
-      nameManager.listeners.remove(self)
-    }
+    variableNameManager?.listeners.remove(self)
   }
 
   // MARK: - Public
@@ -562,6 +576,40 @@ open class WorkspaceLayoutCoordinator: NSObject {
       connectionManager.untrackConnection(connection)
     }
   }
+
+  /**
+   For all `FieldVariableLayout` instances under a given `BlockLayout`, set their `nameManager`
+   property to a given `NameManager`.
+
+   - parameter nameManager: The `NameManager` to set
+   - parameter blockLayout: The `BlockLayout`
+   */
+  fileprivate func addNameManager(_ nameManager: NameManager?,
+                                  toBlockLayout blockLayout: BlockLayout) {
+    blockLayout.inputLayouts.forEach {
+      $0.fieldLayouts.forEach {
+        if let fieldVariableLayout = $0 as? FieldVariableLayout {
+          fieldVariableLayout.nameManager = nameManager
+        }
+      }
+    }
+  }
+
+  /**
+   Sets the `nameManager` for all `FieldVariableLayout` instances under the given `BlockLayout` to
+   `nil`.
+
+   - parameter blockLayout: The `BlockLayout`
+   */
+  fileprivate func removeNameManagerFromBlockLayout(_ blockLayout: BlockLayout) {
+    blockLayout.inputLayouts.forEach {
+      $0.fieldLayouts.forEach {
+        if let fieldVariableLayout = $0 as? FieldVariableLayout {
+          fieldVariableLayout.nameManager = nil
+        }
+      }
+    }
+  }
 }
 
 // MARK: - WorkspaceListener implementation
@@ -584,6 +632,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
         // Track connections of all new block layouts that were added
         for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
           trackConnections(forBlockLayout: blockLayout)
+          addNameManager(variableNameManager, toBlockLayout: blockLayout)
         }
 
         // Update the content size
@@ -598,6 +647,10 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
   }
 
   public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
+    if let layout = block.layout {
+      removeNameManagerFromBlockLayout(layout)
+    }
+
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return

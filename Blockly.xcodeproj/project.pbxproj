@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		300CABD11D5CF816000E43B2 /* ConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */; };
 		300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */; };
+		3059336F1DEE70930064B9F2 /* FieldVariableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3059336D1DEE6FF00064B9F2 /* FieldVariableTest.swift */; };
 		3064BACF1DAFFC57006425A2 /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC61DAFFC57006425A2 /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD01DAFFC58006425A2 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC71DAFFC57006425A2 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD11DAFFC58006425A2 /* BKYEdgeInsets.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC81DAFFC57006425A2 /* BKYEdgeInsets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -202,6 +203,7 @@
 /* Begin PBXFileReference section */
 		300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionValidator.swift; sourceTree = "<group>"; };
 		300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultConnectionValidator.swift; sourceTree = "<group>"; };
+		3059336D1DEE6FF00064B9F2 /* FieldVariableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariableTest.swift; sourceTree = "<group>"; };
 		3064BAC61DAFFC57006425A2 /* Blockly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blockly.h; path = ObjC/Blockly.h; sourceTree = "<group>"; };
 		3064BAC71DAFFC57006425A2 /* BKYBlockJSONFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYBlockJSONFile.h; path = ObjC/BKYBlockJSONFile.h; sourceTree = "<group>"; };
 		3064BAC81DAFFC57006425A2 /* BKYEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYEdgeInsets.h; path = ObjC/BKYEdgeInsets.h; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 				FA4BB4AB1B75470A000980E9 /* FieldAngleTest.swift */,
 				FA4BB4AF1B754A71000980E9 /* FieldDateTest.swift */,
 				FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */,
+				3059336D1DEE6FF00064B9F2 /* FieldVariableTest.swift */,
 				FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */,
 			);
 			path = Model;
@@ -1087,6 +1090,7 @@
 				FA4BB4101B744A8E000980E9 /* TestConstants.swift in Sources */,
 				FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */,
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
+				3059336F1DEE70930064B9F2 /* FieldVariableTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
 				FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */,
 				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */,

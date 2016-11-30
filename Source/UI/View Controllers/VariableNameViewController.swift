@@ -100,6 +100,7 @@ open class VariableNameViewController: UIViewController, UITextFieldDelegate {
   // MARK: - Private
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
+    // TODO:(corydiers) Sanitize input - no empty strings.
     self.delegate?.variableNameViewController(self, didChangeName: textField.text)
   }
 }
