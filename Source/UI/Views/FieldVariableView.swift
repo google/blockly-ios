@@ -136,7 +136,8 @@ extension FieldVariableView: DropdownViewDelegate {
     // Populate options
     var options = fieldVariableLayout.variables
     options.append((displayName: "Rename Variable", value: "rename"))
-    options.append((displayName: "Remove Variable", value: "remove"))
+    options.append((displayName: "Delete the \"\(fieldVariableLayout.variable)\" variable",
+      value: "remove"))
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
@@ -157,33 +158,62 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
 
     let options = fieldVariableLayout.variables
     let value = viewController.options[optionIndex].value
+    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     if (optionIndex == options.count) {
-      let viewController = VariableNameViewController()
-      viewController.delegate = self
-      delegate?.fieldView(self,
-                          requestedToPresentPopoverViewController: viewController, fromView: self)
+      // Pop up a dialog to rename the variable.
+      renameVariable(fieldVariableLayout: fieldVariableLayout)
     } else if (optionIndex == options.count + 1) {
-      fieldVariableLayout.removeVariable()
+      // Pop up a dialog to remove the variable.
+      removeVariable(fieldVariableLayout: fieldVariableLayout)
     } else {
       // Change to a new variable
       fieldVariableLayout.changeToExistingVariable(value)
     }
-    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
   }
-}
 
-// MARK: - VariableNameViewControllerDelegate Implementation
-
-extension FieldVariableView: VariableNameViewControllerDelegate {
-  public func variableNameViewController(_ viewController: VariableNameViewController,
-                                         didChangeName name: String?) {
-    guard let newName = name,
-      let layout = fieldVariableLayout,
-      layout.isValidName(newName) else
-    {
-      return
+  private func renameVariable(fieldVariableLayout: FieldVariableLayout, error: String = "") {
+    let renameView =
+      UIAlertController(title: "Rename '\(fieldVariableLayout.variable)' variables to:",
+        message: error, preferredStyle: .alert)
+    renameView.addTextField { textField in
+      textField.placeholder = "Variable name"
+      textField.text = fieldVariableLayout.variable
+      textField.clearButtonMode = .whileEditing
+      textField.becomeFirstResponder()
     }
+    renameView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    renameView.addAction(UIAlertAction(title: "Rename", style: .default) { _ in
+      guard let textField = renameView.textFields?[0],
+        let newName = textField.text,
+        fieldVariableLayout.isValidName(newName) else
+      {
+        self.renameVariable(fieldVariableLayout: fieldVariableLayout,
+                            error: "(Error) You can't use an empty variable name.")
+        return
+      }
 
-    layout.renameVariable(to: newName)
+      fieldVariableLayout.renameVariable(to: newName)
+    })
+
+    delegate?.fieldView(self, requestedToPresentViewController: renameView)
+  }
+
+  private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
+    let variableCount = fieldVariableLayout.numberOfVariableReferences()
+    if variableCount == 1 {
+      // If this is the only instance of this variable, remove it.
+      fieldVariableLayout.removeVariable()
+    } else {
+      // Otherwise, verify the user intended to remove all instances of this variable.
+      let removeView = UIAlertController(title:
+        "Delete \(variableCount) uses of the \"\(fieldVariableLayout.variable)\" variable?",
+        message: "", preferredStyle: .alert)
+      removeView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+      removeView.addAction(UIAlertAction(title: "Remove", style: .default) { _ in
+        fieldVariableLayout.removeVariable()
+      })
+
+      delegate?.fieldView(self, requestedToPresentViewController: removeView)
+    }
   }
 }
