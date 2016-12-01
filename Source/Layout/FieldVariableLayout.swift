@@ -65,6 +65,8 @@ open class FieldVariableLayout: FieldLayout {
     }
   }
 
+  internal weak var layoutCoordinator: WorkspaceLayoutCoordinator?
+
   // MARK: - Initializers
 
   /**
@@ -147,6 +149,21 @@ open class FieldVariableLayout: FieldLayout {
    */
   public func isValidName(_ name: String) -> Bool {
     return FieldVariable.isValidName(name)
+  }
+
+  /**
+   Returns the total number of variables matching the variable set on this layout.
+
+   - returns: The count of variable fields.
+   */
+  public func numberOfMatchingVariables() -> Int {
+    guard let layoutCoordinator = layoutCoordinator else {
+      // If there is no layoutCoordinator set on the layout, this is the only matching variable.
+      return 1
+    }
+
+    let workspace = layoutCoordinator.workspaceLayout.workspace
+    return workspace.allVariableBlocks(forName: variable).count
   }
 }
 

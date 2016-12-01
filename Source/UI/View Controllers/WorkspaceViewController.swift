@@ -214,6 +214,11 @@ extension WorkspaceViewController: FieldViewDelegate {
 
     return true
   }
+
+  public func fieldView(_ fieldView: FieldView, requestedToPresentViewController viewController: UIViewController)
+  {
+    present(viewController, animated: true, completion: nil)
+  }
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate implementation
