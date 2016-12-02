@@ -73,7 +73,7 @@ public final class InputBuilder: NSObject {
 
   - returns: A new input
   */
-  public func build() -> Input {
+  public func makeInput() -> Input {
     let input = Input(type: self.type, name: self.name, fields: fields.map{ $0.copyField() })
     input.visible = visible
     input.alignment = alignment
