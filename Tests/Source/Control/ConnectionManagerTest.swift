@@ -118,9 +118,9 @@ class ConnectionManagerTest: XCTestCase {
 
   func testConnectionManagerIsConnectionAllowedNext() {
     let one = createConnection(0, 0, .nextStatement,
-      sourceInput: InputBuilder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").makeInput())
     let two = createConnection(0, 0, .nextStatement,
-      sourceInput: InputBuilder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").makeInput())
     manager.trackConnection(one)
     manager.trackConnection(two)
 

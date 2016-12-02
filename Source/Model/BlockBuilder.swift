@@ -159,7 +159,7 @@ public final class BlockBuilder: NSObject {
       previousConnection = Connection(type: .previousStatement)
       previousConnection!.typeChecks = previousConnectionTypeChecks
     }
-    let inputs = inputBuilders.map({ $0.build() })
+    let inputs = inputBuilders.map({ $0.makeInput() })
 
     let block = Block(
       uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,

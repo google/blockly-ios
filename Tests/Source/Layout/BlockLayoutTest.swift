@@ -60,7 +60,7 @@ class BlockLayoutTest: XCTestCase {
 
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").makeInput()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
@@ -99,7 +99,7 @@ class BlockLayoutTest: XCTestCase {
       }
 
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").makeInput()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(before: dummyInputLayout))
@@ -123,7 +123,7 @@ class BlockLayoutTest: XCTestCase {
 
     if let blockLayout = block.layout {
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").makeInput()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))
@@ -162,7 +162,7 @@ class BlockLayoutTest: XCTestCase {
       }
 
       // Test for an input layout that doesn't exist in blockLayout
-      let dummyInput = InputBuilder(type: .dummy, name: "test").build()
+      let dummyInput = InputBuilder(type: .dummy, name: "test").makeInput()
       let dummyInputLayout =
         try! _layoutFactory.makeInputLayout(input: dummyInput, engine: _workspaceLayout.engine)
       XCTAssertNil(blockLayout.inputLayout(after: dummyInputLayout))
