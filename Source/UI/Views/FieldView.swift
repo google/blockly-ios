@@ -21,6 +21,15 @@ import Foundation
 @objc(BKYFieldViewDelegate)
 public protocol FieldViewDelegate {
   /**
+   Event is called when a field view requests to present a view controller.
+
+   - parameter fieldView: The `FieldView` that made the request
+   - parameter viewController: The `UIViewController` to present
+   */
+  func fieldView(_ fieldView: FieldView,
+                 requestedToPresentViewController viewController: UIViewController)
+
+  /**
    Event that is called when a field view requests to present a view controller as a popover.
 
    - parameter fieldView: The `FieldView` that made the request
@@ -31,7 +40,7 @@ public protocol FieldViewDelegate {
   @discardableResult
   func fieldView(_ fieldView: FieldView,
                  requestedToPresentPopoverViewController viewController: UIViewController,
-                                                         fromView: UIView) -> Bool
+                 fromView: UIView) -> Bool
 }
 
 /**

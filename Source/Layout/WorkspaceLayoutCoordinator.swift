@@ -635,6 +635,12 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
           addNameManager(variableNameManager, toBlockLayout: blockLayout)
         }
 
+        for variableLayout in
+          blockGroupLayout.flattenedLayoutTree(ofType: FieldVariableLayout.self)
+        {
+          variableLayout.layoutCoordinator = self
+        }
+
         // Update the content size
         workspaceLayout.updateCanvasSize()
 
@@ -660,6 +666,11 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
       // Untrack connections for all block layouts that will be removed
       for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
         untrackConnections(forBlockLayout: blockLayout)
+        removeNameManagerFromBlockLayout(blockLayout)
+      }
+
+      for variableLayout in blockGroupLayout.flattenedLayoutTree(ofType: FieldVariableLayout.self) {
+        variableLayout.layoutCoordinator = nil
       }
 
       workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
