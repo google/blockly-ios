@@ -41,6 +41,18 @@ open class BlockLayout: Layout {
   /// The corresponding layout objects for `self.block.inputs[]`
   open fileprivate(set) var inputLayouts = [InputLayout]()
 
+  /// The corresponding layout object for `self.block.mutator`
+  open var mutatorLayout: MutatorLayout? = nil {
+    didSet {
+      if let oldLayout = oldValue {
+        removeChildLayout(oldLayout)
+      }
+      if let newLayout = mutatorLayout {
+        adoptChildLayout(newLayout)
+      }
+    }
+  }
+
   /// A list of all `FieldLayout` objects belonging under this `BlockLayout`.
   open var fieldLayouts: [FieldLayout] {
     var fieldLayouts = [FieldLayout]()
@@ -167,7 +179,7 @@ open class BlockLayout: Layout {
   }
 
   /**
-  Removes all elements from `self.inputLayouts` and sets their `parentLayout` to nil.
+  Clears `self.inputLayouts` and `self.mutatorLayout`, and sets their `parentLayout` to nil.
 
   - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
@@ -175,6 +187,8 @@ open class BlockLayout: Layout {
     while inputLayouts.count > 0 {
       removeInputLayout(atIndex: 0)
     }
+
+    mutatorLayout = nil
 
     if updateLayout {
       updateLayoutUpTree()

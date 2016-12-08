@@ -63,6 +63,12 @@ extension Block {
       block.position = WorkspacePoint(x: CGFloat(x), y: CGFloat(y))
     }
 
+    if let mutator = block.mutator {
+      // Update the mutator and immediately apply it
+      mutator.update(fromXML: xml)
+      mutator.mutateBlock()
+    }
+
     for child in xml.children {
       switch child.name.lowercased() {
       case XMLConstants.TAG_INPUT_VALUE, XMLConstants.TAG_INPUT_STATEMENT:
@@ -78,7 +84,11 @@ extension Block {
           block.comment = commentText
         }
       default:
-        bky_print("Unknown node name: \(child.name)")
+        if block.mutator != nil {
+          // Log unknown nodes (if there's a mutator, those unknown nodes may have been handled
+          // already so we will not log them).
+          bky_print("Unknown node name: \(child.name)")
+        }
       }
     }
 
@@ -249,6 +259,10 @@ extension Block {
     if topLevel {
       blockXML.attributes[XMLConstants.ATTRIBUTE_POSITION_X] = String(Int(floor(position.x)))
       blockXML.attributes[XMLConstants.ATTRIBUTE_POSITION_Y] = String(Int(floor(position.y)))
+    }
+
+    if let mutator = mutator {
+      blockXML.addChild(mutator.toXMLElement())
     }
 
     for input in inputs {

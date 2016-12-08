@@ -22,7 +22,7 @@
 		307641C61DC29107000486AE /* VariableNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307641C51DC29107000486AE /* VariableNameViewController.swift */; };
 		30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */; };
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
-		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */; };
+		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
@@ -149,6 +149,8 @@
 		FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */; };
 		FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */; };
 		FAC1D2971BFA7E2E0019CE45 /* InputBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1D2961BFA7E2E0019CE45 /* InputBuilder.swift */; };
+		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
+		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
 		FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
@@ -174,6 +176,7 @@
 		FAF500501D5042F4009E4B24 /* String+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5004F1D5042F4009E4B24 /* String+Util.swift */; };
 		FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */; };
 		FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF62A6B1DB6FCB100137B54 /* BundledFile.swift */; };
+		FAFA71661DF64CF4008247FD /* DummyMutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA71651DF64CF4008247FD /* DummyMutator.swift */; };
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 		FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE231CD81F4D00698179 /* FieldNumber.swift */; };
 		FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */; };
@@ -217,7 +220,7 @@
 		30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockFactory.swift; sourceTree = "<group>"; };
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
-		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryJSONTest.swift; path = JSON/BlockFactoryJSONTest.swift; sourceTree = "<group>"; };
+		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryTest.swift; path = JSON/BlockFactoryTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
@@ -347,6 +350,8 @@
 		FAC035061D516EE10017C1C8 /* FieldDropdownLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownLayout.swift; sourceTree = "<group>"; };
 		FAC035101D5170B20017C1C8 /* FieldVariableLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldVariableLayout.swift; sourceTree = "<group>"; };
 		FAC1D2961BFA7E2E0019CE45 /* InputBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputBuilder.swift; sourceTree = "<group>"; };
+		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
+		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
 		FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinator.swift; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
@@ -372,6 +377,7 @@
 		FAF5004F1D5042F4009E4B24 /* String+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Util.swift"; sourceTree = "<group>"; };
 		FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxLayout.swift; sourceTree = "<group>"; };
 		FAF62A6B1DB6FCB100137B54 /* BundledFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundledFile.swift; sourceTree = "<group>"; };
+		FAFA71651DF64CF4008247FD /* DummyMutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyMutator.swift; sourceTree = "<group>"; };
 		FAFAEE231CD81F4D00698179 /* FieldNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumber.swift; sourceTree = "<group>"; };
 		FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberTest.swift; sourceTree = "<group>"; };
 		FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Helper.swift"; sourceTree = "<group>"; };
@@ -448,6 +454,7 @@
 				FA271CE91B8E6D430015CE38 /* LayoutConfig.swift */,
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */,
+				FAC549611DEFC12200484B02 /* MutatorLayout.swift */,
 				FA4E840A1CAE4AAE009FB0CD /* ToolboxLayout.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
 				FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */,
@@ -507,10 +514,11 @@
 		FA4BB4061B744A8E000980E9 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				FA3786A51C00093B009D18DF /* Control */,
 				FA4BB4AD1B75483D000980E9 /* Core */,
 				FA4BB4071B744A8E000980E9 /* Model */,
 				FA3786A21BFFDD69009D18DF /* Layout */,
-				FA3786A51C00093B009D18DF /* Control */,
+				FAFA71641DF64CD5008247FD /* TestObjects */,
 				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 				FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */,
 			);
@@ -523,7 +531,7 @@
 				FA4BB4081B744A8E000980E9 /* JSON */,
 				FA4D549D1C6AAE1000F95084 /* XML */,
 				F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */,
-				F98FF7E41BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift */,
+				F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */,
 				FA4EE3D21BFE9016000C621F /* BlockTest.swift */,
 				FA4D54D41C6BF04000F95084 /* BlockTestStrings.swift */,
 				FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */,
@@ -696,6 +704,7 @@
 				FA2DFCC21B72DD400072A278 /* FieldVariable.swift */,
 				FA548C881B66E861008BC59C /* Input.swift */,
 				FAC1D2961BFA7E2E0019CE45 /* InputBuilder.swift */,
+				FAC5495F1DEFBC4100484B02 /* Mutator.swift */,
 				FA9D2FBA1C11176700D0E528 /* Toolbox.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
 				FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */,
@@ -812,6 +821,14 @@
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
 			);
 			path = Control;
+			sourceTree = "<group>";
+		};
+		FAFA71641DF64CD5008247FD /* TestObjects */ = {
+			isa = PBXGroup;
+			children = (
+				FAFA71651DF64CF4008247FD /* DummyMutator.swift */,
+			);
+			path = TestObjects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1060,11 +1077,13 @@
 				FAA870051C64272C000C7C61 /* CGSize+Operators.swift in Sources */,
 				FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */,
 				FAA870071C64272C000C7C61 /* ImageLoader.swift in Sources */,
+				FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */,
 				3064BAD71DAFFC58006425A2 /* BKYEdgeInsets.m in Sources */,
 				FAABDD631CA20BA400F9E7D4 /* BlockBumper.swift in Sources */,
 				FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */,
 				FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */,
 				FAA870021C64272C000C7C61 /* Assertions.swift in Sources */,
+				FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
 				FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */,
 				FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */,
@@ -1104,10 +1123,11 @@
 				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
 				FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
-				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryJSONTest.swift in Sources */,
+				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryTest.swift in Sources */,
 				FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */,
 				FAE2A5EE1C741D2A0085D36B /* FieldXMLTest.swift in Sources */,
 				FA4BB4B21B754D87000980E9 /* ColorHelperTest.swift in Sources */,
+				FAFA71661DF64CF4008247FD /* DummyMutator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

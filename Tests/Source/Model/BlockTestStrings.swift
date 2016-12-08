@@ -157,6 +157,8 @@ class BlockTestStrings {
   static let FRANKENBLOCK_DEFAULT_VALUES =
   FRANKENBLOCK_DEFAULT_VALUES_START + FRANKENBLOCK_DEFAULT_VALUES_END
 
+  static let DUMMY_MUTATOR_VALUE = "<mutation id=\"dummy_mutator_xml_id\" />"
+
   class func assembleBlock(_ interior: String) -> String {
     return assembleComplexBlock(tag: "block", type: "frankenblock", id: "1",
                          position: WorkspacePoint(x: 37, y: 13), interior: interior)

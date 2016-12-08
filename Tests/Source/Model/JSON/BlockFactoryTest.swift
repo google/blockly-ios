@@ -14,9 +14,10 @@
 */
 
 @testable import Blockly
+import AEXML
 import XCTest
 
-class BlockFactoryJSONTest: XCTestCase {
+class BlockFactoryTest: XCTestCase {
 
   var _blockFactory: BlockFactory!
 
@@ -120,5 +121,25 @@ class BlockFactoryJSONTest: XCTestCase {
     XCTAssertNotNil(secondBlockCopy)
     XCTAssertTrue(firstBlockCopy !== secondBlockCopy,
                   "BlockFactory returned the same block instance twice")
+  }
+
+  func testSetMutatorsValid() {
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["block_factory_json_test.json"],
+                             bundle: Bundle(for: type(of: self)))
+    }
+
+    BKYAssertDoesNotThrow { try _blockFactory.setBlockMutators(["block_id_1": DummyMutator()]) }
+  }
+
+  func testSetMutatorsInvalid() {
+    BKYAssertDoesNotThrow {
+      try _blockFactory.load(fromJSONPaths: ["block_factory_json_test.json"],
+                             bundle: Bundle(for: type(of: self)))
+    }
+
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      try _blockFactory.setBlockMutators(["non_existent_block": DummyMutator()])
+    }
   }
 }

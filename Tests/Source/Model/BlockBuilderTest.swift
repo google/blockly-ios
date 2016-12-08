@@ -20,20 +20,33 @@ class BlockBuilderTest: XCTestCase {
 
   func testMakeBlock() {
     let workspace = Workspace()
-    let block = buildFrankenBlock(workspace)
+    guard let block = BKYAssertDoesNotThrow({ try buildFrankenBlock(workspace) }) else {
+      XCTFail("Could not build block")
+      return
+    }
     validate(frankenblock: block)
   }
 
   func testMakeBlockFromBlock() {
     let workspace = Workspace()
-    let block = buildFrankenBlock(workspace)
-    let block2 = buildFrankenBlock(workspace)
-    try! block.nextConnection?.connectTo(block2.previousConnection)
-    let block3 = buildFrankenBlock(workspace)
-    try! block.previousConnection?.connectTo(block3.nextConnection)
+    guard
+      let block = BKYAssertDoesNotThrow({ try buildFrankenBlock(workspace) }),
+      let block2 = BKYAssertDoesNotThrow({ try buildFrankenBlock(workspace) }),
+      let block3 = BKYAssertDoesNotThrow({ try buildFrankenBlock(workspace) }) else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+    BKYAssertDoesNotThrow { try block.nextConnection?.connectTo(block2.previousConnection) }
+    BKYAssertDoesNotThrow { try block.previousConnection?.connectTo(block3.nextConnection) }
 
-    let blockCopy = try! BlockBuilder(block: block).makeBlock()
-    try! workspace.addBlockTree(blockCopy)
+    guard let blockCopy = BKYAssertDoesNotThrow({ try BlockBuilder(block: block).makeBlock() })
+      else
+    {
+      XCTFail("Could not copy block")
+      return
+    }
+    BKYAssertDoesNotThrow { try workspace.addBlockTree(blockCopy) }
     validate(frankenblock: blockCopy)
 
     // Validate that the block was deep copied
@@ -46,6 +59,10 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNil(blockCopy.previousConnection?.targetConnection)
     // TODO:(roboerik) validate output and input connections
 
+    // Validate mutators are actually different instances amongst new blocks
+    XCTAssertTrue(block.mutator !== block2.mutator)
+    XCTAssertTrue(block.mutator !== block3.mutator)
+    XCTAssertTrue(block.mutator !== blockCopy.mutator)
   }
 
   internal func validate(frankenblock block: Block) {
@@ -91,9 +108,16 @@ class BlockBuilderTest: XCTestCase {
     XCTAssertNotNil(input.fields[0] as? FieldAngle)
     XCTAssertNotNil(input.fields[1] as? FieldColor)
     XCTAssertNotNil(input.fields[2] as? FieldImage)
+
+    if let mutator = block.mutator {
+      XCTAssertEqual(block, mutator.block)
+      XCTAssertTrue(mutator is DummyMutator)
+    } else {
+      XCTFail("Mutator has not been set")
+    }
   }
 
-  internal func buildFrankenBlock(_ workspace: Workspace) -> Block {
+  internal func buildFrankenBlock(_ workspace: Workspace) throws -> Block {
     let bob = BlockBuilder(name: "frankenblock")
 
     var inputBuilder = InputBuilder(type: Input.InputType.value, name: "value_input")
@@ -131,6 +155,9 @@ class BlockBuilderTest: XCTestCase {
     bob.inputBuilders.append(inputBuilder)
     fields = []
 
+    // Add mutator
+    bob.mutator = DummyMutator()
+
     do {
       try bob.setPreviousConnection(enabled: true)
       try bob.setNextConnection(enabled: true, typeChecks: ["Boolean", "Number", "Array"])
@@ -141,8 +168,8 @@ class BlockBuilderTest: XCTestCase {
     bob.helpURL = "http://www.example.com"
     bob.tooltip = "a tooltip"
 
-    let block = try! bob.makeBlock()
-    try! workspace.addBlockTree(block)
+    let block = try bob.makeBlock()
+    try workspace.addBlockTree(block)
     return block
   }
 }

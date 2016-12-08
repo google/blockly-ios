@@ -44,4 +44,10 @@ extension BlockJSONFile {
 
     return fileLocations
   }
+
+  /// Dictionary mapping block names to mutators, for all blocks specified under
+  /// `self.fileLocations`
+  public var blockMutators: [String: Mutator] {
+    return [String: Mutator]()
+  }
 }

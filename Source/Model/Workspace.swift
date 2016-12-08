@@ -151,6 +151,7 @@ open class Workspace : NSObject {
     // All checks passed. Add the new blocks to the workspace.
     for block in newBlocks {
       block.editable = block.editable && !readOnly
+      block.mutationListeners.add(self)
       allBlocks[block.uuid] = block
     }
 
@@ -189,6 +190,7 @@ open class Workspace : NSObject {
 
     // Remove blocks
     for block in blocksToRemove {
+      block.mutationListeners.remove(self)
       allBlocks[block.uuid] = nil
     }
   }
@@ -269,5 +271,24 @@ open class Workspace : NSObject {
     }
 
     return variableBlocks
+  }
+}
+
+// MARK: - BlockMutationListener Implementation
+
+extension Workspace: BlockMutationListener {
+  public func block(
+    _ block: Block, didRemoveInput input: Input, disconnectedShadowBlock: Block?)
+  {
+    if let shadowBlock = disconnectedShadowBlock,
+      shadowBlock.topLevel
+    {
+      // Remove the shadow block tree from the workspace, since it cannot exist at the top-level
+      do {
+        try removeBlockTree(shadowBlock)
+      } catch let error {
+        bky_assertionFailure("Could not remove shadow block tree from workspace: \(error)")
+      }
+    }
   }
 }
