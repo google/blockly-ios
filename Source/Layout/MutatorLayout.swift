@@ -44,7 +44,7 @@ open class MutatorLayout: Layout {
    calling `mutator.mutateBlock()`.
 
    This is where pre-/post- mutation work should be handled.
- 
+
    - note: This method needs to be implemented by a subclass of `MutatorLayout`.
    */
   open func performMutation() {

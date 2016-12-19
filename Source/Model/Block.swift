@@ -29,23 +29,8 @@ public protocol BlockDelegate: class {
 }
 
 /**
- Protocol for any mutation events that occur on a `Block` instance.
- */
-@objc(BKYBlockMutationListener)
-public protocol BlockMutationListener: class {
-  /**
-   Event that is fired when a block removes an input.
-
-   - parameter block: The `Block` that removed an input.
-   - parameter input: The `Input` that was removed.
-   - parameter shadowBlock: A shadow `Block` that may have been disconnected from the input.
-   */
-  func block(_ block: Block, didRemoveInput input: Input, disconnectedShadowBlock: Block?)
-}
-
-/**
  Class that represents a single block.
- 
+
  - note: To create a block programmatically, use a `BlockBuilder`.
  */
 @objc(BKYBlock)
@@ -108,6 +93,7 @@ public final class Block : NSObject {
     didSet {
       updateInputs()
       updateDirectConnections()
+      delegate?.didUpdate(block: self)
     }
   }
   /// The color of the block
@@ -164,9 +150,6 @@ public final class Block : NSObject {
 
   /// A delegate for listening to events on this block
   public weak var delegate: BlockDelegate?
-
-  /// Set of objects listening for mutation events
-  public var mutationListeners = WeakSet<BlockMutationListener>()
 
   /// Convenience property for accessing `self.delegate` as a BlockLayout
   public var layout: BlockLayout? {
@@ -501,7 +484,7 @@ public final class Block : NSObject {
     }
     return valueInput
   }
-  
+
   // MARK: - Inputs
 
   /**
@@ -524,33 +507,24 @@ public final class Block : NSObject {
   }
 
   /**
-   Remove an input from the block and automatically disconnect all blocks that were connected to it.
-   If the input doesn't exist, nothing happens.
+   Remove an input from the block and automatically disconnect both shadow and non-shadow blocks
+   that may have been connected to it. If the input doesn't exist, nothing happens.
 
    - parameter input: The `Input` to remove.
-   - note: If this block is attached to a `Workspace`, any shadow block tree previously connected to
-   the input is deleted.
+   - note: It is the responsibility of the caller to clean-up any shadow blocks that may have been
+   disconnected as a result of calling this method.
    */
   public func removeInput(_ input: Input) {
     if let index = inputs.index(of: input) {
       // Automatically disconnect any blocks connected to this one
-      var disconnectedShadowBlock: Block?
       if let connection = input.connection {
         connection.disconnect()
-
-        disconnectedShadowBlock = connection.shadowBlock
         connection.disconnectShadow()
       }
 
       // Remove input
       input.sourceBlock = nil
       inputs.remove(at: index)
-
-      // Fire an event that an input was removed. This can be listened to by the workspace so it
-      // can clean up orphaned shadow blocks.
-      mutationListeners.forEach {
-        $0.block(self, didRemoveInput: input, disconnectedShadowBlock: disconnectedShadowBlock)
-      }
     }
   }
 

@@ -32,7 +32,7 @@ public protocol Mutator : class {
 
   /**
    Mutates `self.block` based on this mutator's internal state.
- 
+
    This mutation is not additive, so any previously applied mutation should not be reflected on
    `self.block`.
    */
