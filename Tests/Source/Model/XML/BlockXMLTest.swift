@@ -287,6 +287,18 @@ class BlockXMLTest: XCTestCase {
     XCTAssertNil(parseBlockFromXML(xml, factory))
   }
 
+  func testParseXML_BlockWithMutator() {
+    // Add DummyMutator to "frankenblock" factory builder
+    BKYAssertDoesNotThrow { try factory.setBlockMutators(["frankenblock": DummyMutator()]) }
+
+    // Parse block with mutation xml
+    let xml = BlockTestStrings.assembleBlock(BlockTestStrings.DUMMY_MUTATOR_VALUE)
+    let block = parseBlockFromXML(xml, factory)
+
+    XCTAssertNotNil(block?.rootBlock)
+    XCTAssertEqual("dummy_mutator_xml_id", (block?.rootBlock.mutator as? DummyMutator)?.id)
+  }
+
   // MARK: - XML Serialization Tests
 
   func testSerializeXML_SimpleBlockWithPosition() {
@@ -296,7 +308,7 @@ class BlockXMLTest: XCTestCase {
     block?.position = WorkspacePoint(x: 999, y: -111)
 
     // This is the xml we expect from `block`:
-    // <block type=\"empty_block\" id=\"364\" x=\"37\" y=\"13\" />
+    // <block type=\"empty_block\" id=\"block_uuid\" x=\"37\" y=\"13\" />
     let xml = try! block?.toXMLElement()
     XCTAssertEqual("block", xml?.name)
     XCTAssertEqual(4, xml?.attributes.count)
@@ -313,7 +325,7 @@ class BlockXMLTest: XCTestCase {
     }
 
     // This is the xml we expect from `block`:
-    // <block type=\"empty_block\" id=\"364\" x=\"0\" y=\"0\" />
+    // <block type=\"empty_block\" id=\"uuid\" x=\"0\" y=\"0\" />
     let xml = try! block?.toXMLElement()
     XCTAssertEqual("block", xml?.name)
     XCTAssertEqual(4, xml?.attributes.count)
@@ -1162,6 +1174,46 @@ class BlockXMLTest: XCTestCase {
           }
         }
       }
+    }
+  }
+
+  func testSerializeXML_BlockWithMutator() {
+    // Add DummyMutator to "empty_block" factory builder
+    BKYAssertDoesNotThrow { try factory.setBlockMutators(["empty_block": DummyMutator()]) }
+
+    guard let block = BKYAssertDoesNotThrow({
+      try factory.makeBlock(name: "empty_block", shadow: false, uuid: "block_uuid")
+    }) else {
+      XCTFail("Could not create block")
+      return
+    }
+
+    (block.mutator as? DummyMutator)?.id = "a_dummy_mutator_id"
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" id=\"block_uuid\" x=\"0\" y=\"0\" >
+    //   <mutation id=\"a_dummy_mutator_id\" />
+    // </block>
+    guard let xml = BKYAssertDoesNotThrow({ try block.toXMLElement() }) else {
+      XCTFail("Could not serialize block into XML")
+      return
+    }
+
+    XCTAssertEqual("block", xml.name)
+    XCTAssertEqual(4, xml.attributes.count)
+    XCTAssertEqual("block_uuid", xml.attributes["id"])
+    XCTAssertEqual("0", xml.attributes["x"])
+    XCTAssertEqual("0", xml.attributes["y"])
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual(1, xml.children.count)
+
+    // Test: <mutation id=\"dummy_mutator_xml_id\" />
+    if xml.children.count > 0 {
+      let mutationXML = xml.children[0]
+      XCTAssertEqual("mutation", mutationXML.name)
+      XCTAssertEqual(1, mutationXML.attributes.count)
+      XCTAssertEqual("a_dummy_mutator_id", mutationXML.attributes["id"])
+      XCTAssertEqual(0, mutationXML.children.count)
     }
   }
 

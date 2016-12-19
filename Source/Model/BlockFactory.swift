@@ -30,7 +30,8 @@ public class BlockFactory : NSObject {
   // MARK: - Public
 
   /**
-   Loads blocks from a list of default files defined by the Blockly library.
+   Loads blocks from a list of default files defined by the Blockly library. All default mutators
+   for those loaded blocks are automatically associated with them as well.
 
    - parameter defaultFiles: The list of default block definition files that should be loaded.
    - note: This method will overwrite any existing block definitions that contain the same name.
@@ -42,6 +43,13 @@ public class BlockFactory : NSObject {
       try load(fromJSONPaths: defaultFiles.fileLocations, bundle: bundle)
     } catch let error {
       bky_assertionFailure("Could not load default block definition files in library bundle: " +
+        "\(defaultFiles.fileLocations).\nError: \(error)")
+    }
+
+    do {
+      try setBlockMutators(defaultFiles.blockMutators)
+    } catch let error {
+      bky_assertionFailure("Could not load mutators of block definition files in library bundle: " +
         "\(defaultFiles.fileLocations).\nError: \(error)")
     }
   }
@@ -74,6 +82,32 @@ public class BlockFactory : NSObject {
         // Save the block
         _blockBuilders[blockBuilder.name] = blockBuilder
       }
+    }
+  }
+
+  /**
+   Sets mutators for any loaded block builders, using a dictionary mapping block names to mutators.
+
+   - parameter blockMutators: Dictionary mapping block names to `Mutator` instances.
+   - throws:
+   `BlocklyError`: Thrown if a block builder could not be found for a given block name.
+   */
+  public func setBlockMutators(_ blockMutators: [String: Mutator]) throws {
+    var errors = [String]()
+
+    for mapping in blockMutators {
+      let blockName = mapping.key
+      let mutator = mapping.value
+
+      if let blockBuilder = _blockBuilders[blockName] {
+        blockBuilder.mutator = mutator
+      } else {
+        errors.append("\(#function): Could not locate block named '\(blockName)'.")
+      }
+    }
+
+    if !errors.isEmpty {
+      throw BlocklyError(.illegalArgument, errors.joined(separator: "\n"))
     }
   }
 

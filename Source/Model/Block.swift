@@ -30,7 +30,7 @@ public protocol BlockDelegate: class {
 
 /**
  Class that represents a single block.
- 
+
  - note: To create a block programmatically, use a `BlockBuilder`.
  */
 @objc(BKYBlock)
@@ -89,9 +89,17 @@ public final class Block : NSObject {
   /// List of connections directly attached to this block
   public fileprivate(set) var directConnections = [Connection]()
   /// List of inputs attached to this block
-  public let inputs: [Input]
+  public private(set) var inputs: [Input] {
+    didSet {
+      updateInputs()
+      updateDirectConnections()
+      delegate?.didUpdate(block: self)
+    }
+  }
   /// The color of the block
   public let color: UIColor
+  /// An optional mutator for this block
+  public let mutator: Mutator?
   /// Tooltip text of the block
   public var tooltip: String {
     didSet { didSetEditableProperty(&tooltip, oldValue) }
@@ -128,11 +136,7 @@ public final class Block : NSObject {
         return
       }
 
-      for input in self.inputs {
-        for field in input.fields {
-          field.editable = editable
-        }
-      }
+      updateInputs()
     }
   }
 
@@ -158,7 +162,7 @@ public final class Block : NSObject {
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
     position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
     deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?)
+    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?)
   {
     self.uuid = uuid ?? UUID().uuidString
     self.name = name
@@ -177,34 +181,22 @@ public final class Block : NSObject {
     self.movable = movable
     self.disabled = disabled
     self.editable = editable
+    self.mutator = mutator
 
     super.init()
 
-    // Finish updating model hierarchy for inputs and connections
-    for input in inputs {
-      input.sourceBlock = self
-
-      if let connection = input.connection {
-        directConnections.append(connection)
-      }
-
-      for field in input.fields {
-        field.editable = editable
-      }
-    }
+    // Set the source block for properties
+    self.mutator?.block = self
     self.outputConnection?.sourceBlock = self
     self.previousConnection?.sourceBlock = self
     self.nextConnection?.sourceBlock = self
 
-    if let connection = previousConnection {
-      directConnections.append(connection)
-    }
-    if let connection = outputConnection {
-      directConnections.append(connection)
-    }
-    if let connection = nextConnection {
-      directConnections.append(connection)
-    }
+    // Finish updating model hierarchy for inputs and connections
+    updateInputs()
+    updateDirectConnections()
+
+    // Immediately apply the mutation
+    self.mutator?.mutateBlock()
   }
 
   // MARK: - Public
@@ -410,27 +402,6 @@ public final class Block : NSObject {
     return BlockTree(rootBlock: newBlock, allBlocks: copiedBlocks)
   }
 
-  // MARK: - Internal - For testing only
-
-  /**
-  - returns: The only value input on the block, or null if there are zero or more than one.
-  */
-  internal func onlyValueInput() -> Input? {
-    var valueInput: Input?
-    for input in self.inputs {
-      if input.type == .value {
-        if valueInput != nil {
-          // Found more than one value input
-          return nil
-        }
-        valueInput = input
-      }
-    }
-    return valueInput
-  }
-
-  // MARK: - Private
-
   /**
    A convenience method that should be called inside the `didSet { ... }` block of editable instance
    properties.
@@ -493,5 +464,104 @@ public final class Block : NSObject {
     }
     delegate?.didUpdate(block: self)
     return true
+  }
+
+  // MARK: - Internal - For testing only
+
+  /**
+   - returns: The only value input on the block, or null if there are zero or more than one.
+   */
+  internal func onlyValueInput() -> Input? {
+    var valueInput: Input?
+    for input in self.inputs {
+      if input.type == .value {
+        if valueInput != nil {
+          // Found more than one value input
+          return nil
+        }
+        valueInput = input
+      }
+    }
+    return valueInput
+  }
+
+  // MARK: - Inputs
+
+  /**
+   Append an input to the end of `self.inputs`.
+
+   - parameter input: The `Input` to append.
+   */
+  public func appendInput(_ input: Input) {
+    inputs.append(input)
+  }
+
+  /**
+   Insert an input at the specified position.
+
+   - parameter input: The `Input` to insert.
+   - parameter index: The position to insert the input into `self.inputs`.
+   */
+  public func insertInput(_ input: Input, at index: Int) {
+    inputs.insert(input, at: index)
+  }
+
+  /**
+   Remove an input from the block and automatically disconnect both shadow and non-shadow blocks
+   that may have been connected to it. If the input doesn't exist, nothing happens.
+
+   - parameter input: The `Input` to remove.
+   - note: It is the responsibility of the caller to clean-up any shadow blocks that may have been
+   disconnected as a result of calling this method.
+   */
+  public func removeInput(_ input: Input) {
+    if let index = inputs.index(of: input) {
+      // Automatically disconnect any blocks connected to this one
+      if let connection = input.connection {
+        connection.disconnect()
+        connection.disconnectShadow()
+      }
+
+      // Remove input
+      input.sourceBlock = nil
+      inputs.remove(at: index)
+    }
+  }
+
+  /**
+   Updates `self.inputs` to reflect the current internal state of this block.
+   */
+  private func updateInputs() {
+    for input in self.inputs {
+      input.sourceBlock = self
+
+      for field in input.fields {
+        field.editable = editable
+      }
+    }
+  }
+
+  // MARK: - Connections
+
+  /**
+   Updates `self.directConnections` to reflect the current internal state of this block.
+   */
+  private func updateDirectConnections() {
+    directConnections.removeAll()
+
+    for input in inputs {
+      if let connection = input.connection {
+        directConnections.append(connection)
+      }
+    }
+    if let connection = previousConnection {
+      directConnections.append(connection)
+    }
+    if let connection = outputConnection {
+      directConnections.append(connection)
+    }
+    if let connection = nextConnection {
+      directConnections.append(connection)
+    }
   }
 }

@@ -28,11 +28,17 @@ open class DefaultLayoutFactory: NSObject {
   public typealias FieldLayoutCreator =
     (_ field: Field, _ engine: LayoutEngine) throws -> FieldLayout
 
+  /// Closure for returning a `MutatorLayout` from a given `Mutator` and `LayoutEngine`
+  public typealias MutatorLayoutCreator =
+    (_ mutator: Mutator, _ engine: LayoutEngine) throws -> MutatorLayout
+
   // MARK: - Properties
 
-  /// Dictionary that maps `Field` subclasses (using their class' `hash()` value) to their
-  /// `FieldLayoutCreator`
-  fileprivate var _fieldLayoutCreators = [Int: FieldLayoutCreator]()
+  /// Dictionary that maps `Field` subclasses types to their `FieldLayoutCreator`
+  fileprivate var _fieldLayoutCreators = [ObjectIdentifier: FieldLayoutCreator]()
+
+  /// Dictionary that maps `Mutator` implmentation types to their `MutatorLayoutCreator`
+  fileprivate var _mutatorLayoutCreators = [ObjectIdentifier: MutatorLayoutCreator]()
 
   // MARK: - Initializers
 
@@ -102,11 +108,11 @@ open class DefaultLayoutFactory: NSObject {
     }
   }
 
-  // MARK: - Open
+  // MARK: - Field Layout Creators
 
   /**
    Registers the `FieldLayoutCreator` to use for a given field type, when a new `FieldLayout`
-   instance is requested via `layoutForField(:, engine:)`.
+   instance is requested via `makeFieldLayout(field:engine:)`.
 
    - parameter fieldType: The `Field.Type` that the creator should be mapped to.
    - parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
@@ -114,7 +120,7 @@ open class DefaultLayoutFactory: NSObject {
   open func registerLayoutCreator(forFieldType fieldType: Field.Type,
     layoutCreator: @escaping FieldLayoutCreator)
   {
-    _fieldLayoutCreators[fieldType.hash()] = layoutCreator
+    _fieldLayoutCreators[ObjectIdentifier(fieldType)] = layoutCreator
   }
 
   /**
@@ -123,7 +129,31 @@ open class DefaultLayoutFactory: NSObject {
    - parameter fieldType: The `Field.Type`
    */
   open func unregisterLayoutCreator(forFieldType fieldType: Field.Type) {
-    _fieldLayoutCreators.removeValue(forKey: fieldType.hash())
+    _fieldLayoutCreators.removeValue(forKey: ObjectIdentifier(fieldType))
+  }
+
+  // MARK: - Mutator Layout Creators
+
+  /**
+   Registers the `MutatorLayoutCreator` to use for a given mutator type, when a new `MutatorLayout`
+   instance is requested via `makeMutatorLayout(mutator:engine:)`.
+
+   - parameter mutatorType: The `Mutator.Type` that the creator should be mapped to.
+   - parameter layoutCreator: The `MutatorLayoutCreator` that will be used for `mutatorType`.
+   */
+  open func registerLayoutCreator(
+    forMutatorType mutatorType: Mutator.Type, layoutCreator: @escaping MutatorLayoutCreator)
+  {
+    _mutatorLayoutCreators[ObjectIdentifier(mutatorType)] = layoutCreator
+  }
+
+  /**
+   Unregisters the `MutatorLayoutCreator` for a given mutator type.
+
+   - parameter mutatorType: The `Mutator.Type`
+   */
+  open func unregisterLayoutCreator(forMutatorType mutatorType: Mutator.Type) {
+    _mutatorLayoutCreators.removeValue(forKey: ObjectIdentifier(mutatorType))
   }
 }
 
@@ -145,11 +175,20 @@ extension DefaultLayoutFactory: LayoutFactory {
   }
 
   open func makeFieldLayout(field: Field, engine: LayoutEngine) throws -> FieldLayout {
-    let fieldTypeHash = type(of: field).hash()
-    if let closure = _fieldLayoutCreators[fieldTypeHash] {
+    let fieldTypeObjectID = ObjectIdentifier(type(of: field))
+    if let closure = _fieldLayoutCreators[fieldTypeObjectID] {
       return try closure(field, engine)
     }
 
-    throw BlocklyError(.layoutNotFound, "Could not find layout for \(type(of: field))")
+    throw BlocklyError(.layoutNotFound, "Could not find `FieldLayout` for \(type(of: field))")
+  }
+
+  open func makeMutatorLayout(mutator: Mutator, engine: LayoutEngine) throws -> MutatorLayout {
+    let mutatorTypeObjectID = ObjectIdentifier(type(of: mutator))
+    if let closure = _mutatorLayoutCreators[mutatorTypeObjectID] {
+      return try closure(mutator, engine)
+    }
+
+    throw BlocklyError(.layoutNotFound, "Could not find `MutatorLayout` for \(type(of: mutator))")
   }
 }
