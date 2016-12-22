@@ -167,7 +167,8 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
   }
 
   public override func collectionView(_ collectionView: UICollectionView,
-    cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+  {
       let cell = collectionView.dequeueReusableCell(
         withReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier,
         for: indexPath) as! ToolboxCategoryListViewCell

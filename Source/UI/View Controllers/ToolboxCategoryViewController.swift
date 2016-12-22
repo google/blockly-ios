@@ -32,18 +32,84 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
   public var toolboxLayout: ToolboxLayout?
   /// The current category being displayed
   public fileprivate(set) var category: Toolbox.Category?
-  /// Width constraint for this view
+  /// The workspace view controller that contains the toolbox blocks.
+  public var workspaceViewController: WorkspaceViewController
+  /// The main workspace name manager, to add variable names and track changes.
+  public var workspaceNameManager: NameManager?
+  /// The view containing the "Add variable" button.
+  public var addButtonView: UIView
+
+  /// Width constraint for this view.
   private var _widthConstraint: NSLayoutConstraint!
-  /// Height constraint for this view
+  /// Height constraint for this view.
   private var _heightConstraint: NSLayoutConstraint!
+  /// Constraint of the button's height or width, depending on orientation.
+  private var _buttonConstraint: NSLayoutConstraint!
+  /// The orientation of the toolbox.
+  private let orientation: ToolboxCategoryListViewController.Orientation
 
   // MARK: - Super
+
+  public init(viewFactory: ViewFactory,
+    orientation: ToolboxCategoryListViewController.Orientation)
+  {
+    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    self.orientation = orientation
+    addButtonView = UIView()
+
+    super.init(viewFactory: viewFactory)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    workspaceViewController = WorkspaceViewController(viewFactory: ViewFactory())
+    orientation = .horizontal
+    addButtonView = UIView()
+
+    super.init(coder: aDecoder)
+  }
 
   open override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
-    workspaceView.allowCanvasPadding = false
+    workspaceViewController.workspaceView.allowCanvasPadding = false
+    workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(workspaceViewController.workspaceView)
+
+    addButtonView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(addButtonView)
+
+    let button = UIButton()
+    button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    addButtonView.addSubview(button)
+
+    let views: [String: UIView] = [
+      "workspaceView": workspaceViewController.workspaceView,
+      "addButtonView": addButtonView
+      ]
+
+    let constraints: [String]
+    switch (orientation) {
+    case .horizontal:
+      constraints = [
+        "H:|[addButtonView][workspaceView]|",
+        "V:|[workspaceView]|",
+        "V:|[addButtonView]|",
+      ]
+
+      _buttonConstraint = addButtonView.bky_addWidthConstraint(0, priority: UILayoutPriorityRequired)
+    case .vertical:
+      constraints = [
+        "V:|[addButtonView][workspaceView]|",
+        "H:|[workspaceView]|",
+        "H:|[addButtonView]|",
+      ]
+
+      _buttonConstraint = addButtonView.bky_addHeightConstraint(0, priority: UILayoutPriorityRequired)
+    }
+
+    view.bky_addVisualFormatConstraints(constraints, metrics: [:], views: views)
 
     // Add low priority size constraints. This allows this view to automatically resize itself
     // if no other higher priority size constraints have been set elsewhere.
@@ -51,6 +117,28 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
     _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
 
     view.setNeedsUpdateConstraints()
+    workspaceViewController.workspaceView.setNeedsUpdateConstraints()
+  }
+
+  public func didTapButton(_: UIButton) {
+    let addView =
+      UIAlertController(title: "New variable name:",
+        message: "", preferredStyle: .alert)
+    addView.addTextField { (textField: UITextField!) in
+
+    }
+    addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    addView.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+      guard let textField = addView.textFields?[0],
+        let newName = textField.text else
+      {
+        return
+      }
+
+      try! self.workspaceNameManager?.addName(newName)
+    })
+
+    workspaceViewController.present(addView, animated: true, completion: nil)
   }
 
   // MARK: - Public
@@ -86,14 +174,14 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
 
     do {
       // Clear the layout so all current blocks are removed
-      try loadWorkspaceLayoutCoordinator(nil)
+      try workspaceViewController.loadWorkspaceLayoutCoordinator(nil)
 
       // Set the new layout
       if let layoutCoordinator =
         toolboxLayout?.categoryLayoutCoordinators
           .filter({ $0.workspaceLayout.workspace == category }).first
       {
-        try loadWorkspaceLayoutCoordinator(layoutCoordinator)
+        try workspaceViewController.loadWorkspaceLayoutCoordinator(layoutCoordinator)
       }
     } catch let error {
       bky_assertionFailure("Could not load category: \(error)")
@@ -103,13 +191,27 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
     // Update the size of the toolbox, if needed
     let newWidth = category?.layout?.viewFrame.size.width ?? 0
     let newHeight = category?.layout?.viewFrame.size.height ?? 0
-    if _widthConstraint.constant == newWidth && _heightConstraint.constant == newHeight {
-      return
-    }
 
     view.bky_updateConstraints(animated: animated, update: {
       self._widthConstraint.constant = newWidth
       self._heightConstraint.constant = newHeight
     })
+
+    // TODO(corydiers):- Add customization(and default) here.
+    var buttonSize = 0
+    if let category = category,
+      category.isVariable
+    {
+      switch (orientation) {
+      case .horizontal:
+        buttonSize = 100
+        break
+      case .vertical:
+        buttonSize = 100
+        break
+      }
+    }
+
+    self._buttonConstraint?.constant = CGFloat(buttonSize)
   }
 }

@@ -127,8 +127,8 @@ open class WorkbenchViewController: UIViewController {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
       // the workspace)
-      oldValue?.delegate = nil
-      toolboxCategoryViewController?.delegate = self
+      oldValue?.workspaceViewController.delegate = nil
+      toolboxCategoryViewController.workspaceViewController.delegate = self
     }
   }
 
@@ -276,7 +276,8 @@ open class WorkbenchViewController: UIViewController {
     _toolboxCategoryListViewController.delegate = self
 
     // Create toolbox views
-    toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory)
+    toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory,
+      orientation: style.toolboxOrientation)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -378,6 +379,7 @@ open class WorkbenchViewController: UIViewController {
 
     let toolboxGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     toolboxGesture.delegate = self
+    toolboxCategoryViewController.workspaceNameManager = _workspaceLayoutCoordinator?.variableNameManager
     toolboxCategoryViewController.view.addGestureRecognizer(toolboxGesture)
 
     let trashGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
@@ -1116,7 +1118,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool
   {
     let scrollView = workspaceViewController.workspaceView.scrollView
-    let toolboxScrollView = toolboxCategoryViewController.workspaceView.scrollView
+    let toolboxScrollView = toolboxCategoryViewController.workspaceViewController.workspaceView.scrollView
 
     // Force the scrollView pan and zoom gestures to fail unless this one fails
     if otherGestureRecognizer == scrollView.panGestureRecognizer ||

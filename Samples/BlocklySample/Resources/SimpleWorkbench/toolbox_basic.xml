@@ -163,7 +163,7 @@
         <block type="lists_getSublist"></block>
         <block type="lists_sort"></block>
     </category>
-    <category name="Variables" colour="350">
+    <category name="Variables" colour="350" custom="VARIABLE">
       <block type="variables_get"></block>
       <block type="variables_set">
         <value name="VALUE">
