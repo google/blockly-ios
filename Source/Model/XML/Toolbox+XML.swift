@@ -88,11 +88,17 @@ extension Toolbox {
         icon = ImageLoader.loadImage(named: iconString, forClass: Toolbox.self)
       }
 
+      var isVariable: Bool = false
       if let custom = categoryNode.attributes["custom"] {
-        bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
+        if custom == "VARIABLE" {
+          isVariable = true
+        } else {
+          bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
+        }
       }
 
       let category = toolbox.addCategory(name: name, color: color ?? UIColor.clear, icon: icon)
+      category.isVariable = isVariable
 
       for subNode in categoryNode.children {
         try parseChildNode(subNode, forCategory: category, factory: factory)

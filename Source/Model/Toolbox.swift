@@ -86,6 +86,8 @@ extension Toolbox {
     open var color: UIColor
     /// An icon used to represent the category
     open var icon: UIImage?
+    /// Determines whether the category is a "variable" category
+    open var isVariable: Bool = false
 
     // MARK: - Initializers
 
