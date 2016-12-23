@@ -100,7 +100,11 @@ public final class DefaultInputLayout: InputLayout {
       (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
     let puzzleTabWidth = (!isInline && input.type == .value) ?
       (self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)) : 0
-    return fieldWidth + puzzleTabWidth
+    // Special case where field padding is added for statements in case no fields were added
+    let statementPaddingWidth = (input.type == .statement && fieldLayouts.isEmpty) ?
+      config.workspaceUnit(for: LayoutConfig.InlineXPadding) : 0
+
+    return fieldWidth + puzzleTabWidth + statementPaddingWidth
   }
 
   /// The minimal amount of width required to render the child statements of the input, specified as
@@ -157,18 +161,18 @@ public final class DefaultInputLayout: InputLayout {
         self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
       if i == fieldLayouts.count - 1 {
-        // Add right padding to the last field
-        var addRightEdgeInset = true
+        // Add right padding to the last field if it's at the end of the row
+        var addRightEdgeInset = false
 
-        // Special case: Don't add right padding to the last field of an inline dummy input if it's
-        // immediately followed by another dummy/value input.
-        if self.input.type == .dummy {
+        if !addRightEdgeInset && (!input.sourceBlock.inputsInline || input.type == .statement) {
+          addRightEdgeInset = true
+        }
+        if !addRightEdgeInset && input.type == .dummy {
           let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
-          if nextInputLayout?.input.type == .value || nextInputLayout?.input.type == .dummy {
-            addRightEdgeInset = false
+          if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
+            addRightEdgeInset = true
           }
         }
-
         if addRightEdgeInset {
           fieldLayout.edgeInsets.trailing =
             self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
@@ -200,13 +204,22 @@ public final class DefaultInputLayout: InputLayout {
       let widthRequired: CGFloat
       var inlineConnectorMaximumYPoint: CGFloat = 0
       if self.isInline {
+        targetBlockGroupLayout.edgeInsets.leading =
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
         targetBlockGroupLayout.edgeInsets.top =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
         targetBlockGroupLayout.edgeInsets.bottom =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
+        // Add trailing padding if this is the end of the row
+        let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
+        if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
+          targetBlockGroupLayout.edgeInsets.trailing =
+            config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+        }
+
         self.inlineConnectorPosition = WorkspacePoint(
-          x: targetBlockGroupLayout.relativePosition.x,
+          x: targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.edgeInsets.leading,
           y: targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
 
         let minimumInlineConnectorSize =
@@ -219,7 +232,7 @@ public final class DefaultInputLayout: InputLayout {
         self.inlineConnectorSize = WorkspaceSize(width: inlineConnectorWidth,
                                                  height: inlineConnectorHeight)
         self.rightEdge = inlineConnectorPosition.x + inlineConnectorSize.width +
-          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+          targetBlockGroupLayout.edgeInsets.trailing
 
         inlineConnectorMaximumYPoint = inlineConnectorPosition.y + inlineConnectorSize.height +
           targetBlockGroupLayout.edgeInsets.bottom
@@ -311,7 +324,6 @@ public final class DefaultInputLayout: InputLayout {
   - parameter width: A width value, specified in the Workspace coordinate system.
   */
   internal func maximizeField(toWidth width: CGFloat) {
-    let minimalFieldWidthRequired = self.minimalFieldWidthRequired
     if width <= minimalFieldWidthRequired {
       return
     }
