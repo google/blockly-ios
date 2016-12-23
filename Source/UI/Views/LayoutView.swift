@@ -76,7 +76,7 @@ open class LayoutView: UIView {
         UIView.animate(
           withDuration: duration,
           delay: 0,
-          options: [.beginFromCurrentState, .allowUserInteraction],
+          options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut],
           animations: code,
           completion: nil)
 

@@ -116,22 +116,28 @@ public final class DefaultBlockLayout: BlockLayout {
       let blockHatSize = config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
       currentLineHeight += blockHatSize.height
       minimalFieldWidthRequired = max(minimalFieldWidthRequired, blockHatSize.width)
-      minimalStatementWidthRequired = max(minimalStatementWidthRequired, blockHatSize.width)
     }
 
     // Account for minimum width of rendering previous/next notches
     if block.previousConnection != nil ||  block.nextConnection != nil {
       let notchWidth = config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
       minimalFieldWidthRequired = max(minimalFieldWidthRequired, notchWidth)
-      minimalStatementWidthRequired = max(minimalStatementWidthRequired, notchWidth)
+    }
+
+    var layouts: [Layout] = inputLayouts
+    if let mutatorLayout = self.mutatorLayout {
+      layouts.insert(mutatorLayout, at: 0)
     }
 
     // Update relative position/size of inputs
-    for inputLayout in (inputLayouts as! [DefaultInputLayout]) {
+    for layout in layouts {
+      let inputLayout = layout as? InputLayout
+
       if backgroundRow == nil || // First row
-        !block.inputsInline || // External inputs
-        previousInputLayout?.input.type == .statement || // Previous input was a statement
-        inputLayout.input.type == .statement // Current input is a statement
+        (previousInputLayout != nil &&
+          (!block.inputsInline || // External inputs
+          previousInputLayout?.input.type == .statement)) || // Previous input was a statement
+        inputLayout?.input.type == .statement // Current input is a statement
       {
         // Start a new row
         backgroundRow = BackgroundRow()
@@ -144,25 +150,37 @@ public final class DefaultBlockLayout: BlockLayout {
       }
 
       // Append this input layout to the current row
-      backgroundRow.inputLayouts.append(inputLayout)
+      backgroundRow.layouts.append(layout)
 
       // Since input layouts are dependent on each other, always re-perform their layouts
-      inputLayout.performLayout(includeChildren: includeChildren)
-      inputLayout.relativePosition.x = xOffset
-      inputLayout.relativePosition.y = yOffset
+      layout.performLayout(includeChildren: includeChildren)
+      layout.relativePosition.x = xOffset
+      layout.relativePosition.y = yOffset
 
-      // Update the maximum field width used
-      if inputLayout.input.type == .statement {
-        minimalStatementWidthRequired =
-          max(minimalStatementWidthRequired, inputLayout.minimalStatementWidthRequired)
-      } else if !block.inputsInline {
+      // Update minimum field/statement widths, based on this layout
+      let xOffsetRelativeToLeadingEdge = layout.relativePosition.x - outputPuzzleTabXOffset
+      if let defaultInputLayout = inputLayout as? DefaultInputLayout {
+        // Update the maximum field width used
+        if defaultInputLayout.input.type == .statement {
+          minimalStatementWidthRequired =
+            max(minimalStatementWidthRequired,
+                xOffsetRelativeToLeadingEdge + defaultInputLayout.minimalStatementWidthRequired)
+        } else if !block.inputsInline {
+          minimalFieldWidthRequired =
+            max(minimalFieldWidthRequired,
+                xOffsetRelativeToLeadingEdge + defaultInputLayout.minimalFieldWidthRequired)
+        }
+      } else if let mutatorLayout = layout as? MutatorLayout,
+        !block.inputsInline
+      {
         minimalFieldWidthRequired =
-          max(minimalFieldWidthRequired, inputLayout.minimalFieldWidthRequired)
+          max(minimalFieldWidthRequired,
+              xOffsetRelativeToLeadingEdge + mutatorLayout.totalSize.width)
       }
 
       // Update position coordinates for this row
-      xOffset += inputLayout.totalSize.width
-      currentLineHeight = max(currentLineHeight, inputLayout.totalSize.height)
+      xOffset += layout.totalSize.width
+      currentLineHeight = max(currentLineHeight, layout.totalSize.height)
       previousInputLayout = inputLayout
     }
 
@@ -170,34 +188,40 @@ public final class DefaultBlockLayout: BlockLayout {
     // background row based on a new maximum width, and calculate the size needed for this entire
     // BlockLayout.
     let minimalWidthRequired = max(minimalFieldWidthRequired, minimalStatementWidthRequired)
-    for backgroundRow in self.background.rows {
-      if backgroundRow.inputLayouts.isEmpty {
+    for backgroundRow in background.rows {
+      if backgroundRow.layouts.isEmpty {
         continue
       }
 
-      let lastInputLayout = backgroundRow.inputLayouts.last! as! DefaultInputLayout
-      if lastInputLayout.input.type == .statement {
-        // Maximize the statement width
-        lastInputLayout.maximizeStatement(toWidth: minimalStatementWidthRequired)
+      if let lastInputLayout = backgroundRow.layouts.last as? DefaultInputLayout {
+        let xOffsetRelativeToLeftEdge =
+          lastInputLayout.relativePosition.x - outputPuzzleTabXOffset
 
-        if !block.inputsInline {
-          // Extend the right edge of the statement (ie. the top and bottom parts of the "C" shape)
-          // so that it equals largest width used for this block.
-          lastInputLayout.extendStatementRightEdgeBy(
-            max(minimalWidthRequired - lastInputLayout.rightEdge, 0))
+        if lastInputLayout.input.type == .statement {
+          // Maximize the statement width
+          lastInputLayout.maximizeStatement(toWidth: minimalStatementWidthRequired)
+
+          if !block.inputsInline {
+            // Extend the right edge of the statement (ie. the top and bottom parts of the
+            // "C" shape) so that it equals largest width used for this block.
+            let trailingEdge = xOffsetRelativeToLeftEdge + lastInputLayout.rightEdge
+            lastInputLayout.extendStatementRightEdgeBy(max(minimalWidthRequired - trailingEdge, 0))
+          }
+        } else if !block.inputsInline {
+          // Maximize the amount of space for the last field
+          let newFieldWidth = minimalWidthRequired - xOffsetRelativeToLeftEdge
+          lastInputLayout.maximizeField(toWidth: newFieldWidth)
         }
-      } else if !block.inputsInline {
-        // Maximize the amount of space for fields
-        lastInputLayout.maximizeField(toWidth: minimalWidthRequired)
       }
 
       // Update the background row based on the new max width
-      backgroundRow.updateRenderProperties(withMinimalRowWidth: minimalWidthRequired)
+      backgroundRow.updateRenderProperties(minimalRowWidth: minimalWidthRequired,
+                                           leadingEdgeOffset: outputPuzzleTabXOffset)
     }
 
     // Edge case: If there were no input layouts for the block, add an empty background row
     // (so an empty block is rendered).
-    if inputLayouts.isEmpty {
+    if background.rows.isEmpty {
       let emptyRow = BackgroundRow()
       emptyRow.rightEdge =
         max(config.workspaceUnit(for: LayoutConfig.InlineXPadding) * 2, minimalWidthRequired)
@@ -206,19 +230,6 @@ public final class DefaultBlockLayout: BlockLayout {
       emptyRow.bottomPadding = config.workspaceUnit(for: LayoutConfig.InlineYPadding)
       background.appendRow(emptyRow)
     }
-
-    // Calculate size required for this block layout (based on input layouts and background)
-    var size = WorkspaceSize.zero
-    for inputLayout in inputLayouts {
-      size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
-    }
-
-    let maxBackgroundX =
-      background.leadingEdgeXOffset + (background.rows.map({ $0.rightEdge }).max() ?? 0)
-    let maxBackgroundY =
-      background.leadingEdgeYOffset + background.rows.map({ $0.rowHeight }).reduce(0, +)
-    size.width = max(size.width, maxBackgroundX)
-    size.height = max(size.height, maxBackgroundY)
 
     // Update connection relative positions
     let notchXOffset = outputPuzzleTabXOffset +
@@ -233,10 +244,6 @@ public final class DefaultBlockLayout: BlockLayout {
       let blockBottomEdge = background.rows.reduce(0, { $0 + $1.rowHeight})
       _nextConnectionRelativePosition =
         WorkspacePoint(x: notchXOffset, y: blockBottomEdge + notchHeight)
-
-      // TODO:(#41) Make the size.height a property of self.background
-      /// Create room to draw the notch height at the bottom
-      size.height += notchHeight
     }
 
     if block.outputConnection != nil {
@@ -245,9 +252,40 @@ public final class DefaultBlockLayout: BlockLayout {
     }
 
     // Update the size required for this block
-    self.contentSize = size
+    self.contentSize = requiredContentSize()
 
     // Force this block to be redisplayed
     sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
+  }
+
+  // MARK: - Private
+
+  private func requiredContentSize() -> WorkspaceSize {
+    // Calculate size required for this block layout based on child layouts and background size
+    var size = WorkspaceSize.zero
+
+    for inputLayout in inputLayouts {
+      size = LayoutHelper.sizeThatFitsLayout(inputLayout, fromInitialSize: size)
+    }
+
+    if let mutatorLayout = self.mutatorLayout {
+      size = LayoutHelper.sizeThatFitsLayout(mutatorLayout, fromInitialSize: size)
+    }
+
+    let maxBackgroundX =
+      background.leadingEdgeXOffset + (background.rows.map({ $0.rightEdge }).max() ?? 0)
+    let maxBackgroundY =
+      background.leadingEdgeYOffset + background.rows.map({ $0.rowHeight }).reduce(0, +)
+    size.width = max(size.width, maxBackgroundX)
+    size.height = max(size.height, maxBackgroundY)
+
+    if block.nextConnection != nil {
+      // TODO:(#41) Make the size.height a property of self.background
+      /// Create room to draw the notch height at the bottom
+      let notchHeight = config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
+      size.height += notchHeight
+    }
+
+    return size
   }
 }

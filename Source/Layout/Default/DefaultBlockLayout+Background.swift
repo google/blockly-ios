@@ -141,8 +141,8 @@ extension DefaultBlockLayout {
     /// expressed as a Workspace coordinate system unit.
     public var statementConnectorWidth: CGFloat = 0
 
-    /// The corresponding input layouts used to render this row
-    public var inputLayouts = [InputLayout]()
+    /// The corresponding layouts used to render this row
+    public var layouts = [Layout]()
 
     /// Inline connector locations
     public var inlineConnectors = [InlineConnector]()
@@ -152,7 +152,7 @@ extension DefaultBlockLayout {
       return topPadding + middleHeight + bottomPadding
     }
 
-    // MARK: - Public
+    // MARK: - Internal
 
     /**
     Updates all render properties using the current state of `inputLayouts` and a given minimal row
@@ -160,45 +160,55 @@ extension DefaultBlockLayout {
 
     - parameter minimalRowWidth: The minimal width that this row should be. NOTE: This value is only
     used for inline rows.
+    - parameter leadingEdgeOffset: The leading edge offset relative to the block background.
+     NOTE: This value is only used for rows containing statement/non-inline value inputs.
     */
-    public func updateRenderProperties(withMinimalRowWidth minimalRowWidth: CGFloat) {
-      if inputLayouts.isEmpty {
+    internal func updateRenderProperties(minimalRowWidth: CGFloat, leadingEdgeOffset: CGFloat) {
+      if layouts.isEmpty {
         return
       }
 
       resetRenderProperties()
 
-      let lastInputLayout = inputLayouts.last! as! DefaultInputLayout
+      if let lastInputLayout = layouts.last as? DefaultInputLayout {
+        if lastInputLayout.input.type == .statement {
+          self.isStatement = true
+          self.rightEdge =
+            lastInputLayout.relativePosition.x - leadingEdgeOffset + lastInputLayout.rightEdge
+          self.topPadding = lastInputLayout.statementRowTopPadding
+          self.middleHeight = lastInputLayout.statementMiddleHeight
+          self.bottomPadding = lastInputLayout.statementRowBottomPadding
+          self.statementIndent = lastInputLayout.statementIndent
+          self.statementConnectorWidth = lastInputLayout.statementConnectorWidth
 
-      if lastInputLayout.input.type == .statement {
-        self.isStatement = true
-        self.rightEdge = lastInputLayout.rightEdge
-        self.topPadding = lastInputLayout.statementRowTopPadding
-        self.middleHeight = lastInputLayout.statementMiddleHeight
-        self.bottomPadding = lastInputLayout.statementRowBottomPadding
-        self.statementIndent = lastInputLayout.statementIndent
-        self.statementConnectorWidth = lastInputLayout.statementConnectorWidth
-      } else if !lastInputLayout.input.sourceBlock.inputsInline {
-        self.rightEdge = lastInputLayout.rightEdge
-        self.outputConnector = (lastInputLayout.input.connection != nil)
-        self.middleHeight = lastInputLayout.totalSize.height
-      } else {
-        // The right edge for inline dummy/value inputs is the total width of all combined
-        var rightEdge: CGFloat = 0
-        for inputLayout in (inputLayouts as! [DefaultInputLayout]) {
-          rightEdge += inputLayout.totalSize.width
+          return
+        } else if !lastInputLayout.input.sourceBlock.inputsInline {
+          self.rightEdge =
+            lastInputLayout.relativePosition.x - leadingEdgeOffset + lastInputLayout.rightEdge
+          self.outputConnector = (lastInputLayout.input.connection != nil)
+          self.middleHeight = layouts.map { $0.totalSize.height }.max()!
 
-          // Add inline connector locations
-          if inputLayout.input.type == .value {
-            let inlineConnector = InlineConnector(
-              inputLayout.relativePosition + inputLayout.inlineConnectorPosition,
-              inputLayout.inlineConnectorSize)
-            self.inlineConnectors.append(inlineConnector)
-          }
+          return
         }
-        self.rightEdge = max(minimalRowWidth, rightEdge, lastInputLayout.rightEdge)
-        self.middleHeight = inputLayouts.map { $0.totalSize.height }.max()!
       }
+
+      // The right edge for inline dummy/value inputs is the total width of all combined
+      var rightEdge: CGFloat = 0
+      for layout in layouts {
+        rightEdge += layout.totalSize.width
+
+        // Add inline connector locations
+        if let inputLayout = layout as? DefaultInputLayout,
+          inputLayout.input.type == .value
+        {
+          let inlineConnector = InlineConnector(
+            inputLayout.relativePosition + inputLayout.inlineConnectorPosition,
+            inputLayout.inlineConnectorSize)
+          self.inlineConnectors.append(inlineConnector)
+        }
+      }
+      self.rightEdge = max(minimalRowWidth, rightEdge)
+      self.middleHeight = layouts.map { $0.totalSize.height }.max()!
     }
 
     // MARK: - Private
