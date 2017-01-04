@@ -19,7 +19,7 @@ import Foundation
  A view for displaying the blocks inside of a `Toolbox.Category`.
  */
 @objc(BKYToolboxCategoryViewController)
-public final class ToolboxCategoryViewController: WorkspaceViewController {
+public final class ToolboxCategoryViewController: UIViewController {
 
   // MARK: - Static Properties
 
@@ -32,18 +32,100 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
   public var toolboxLayout: ToolboxLayout?
   /// The current category being displayed
   public fileprivate(set) var category: Toolbox.Category?
-  /// Width constraint for this view
+  /// The workspace view controller that contains the toolbox blocks.
+  public var workspaceViewController: WorkspaceViewController
+  /// The main workspace name manager, to add variable names and track changes.
+  public var workspaceNameManager: NameManager?
+  /// The view containing any UI elements for the header - currently, the "Add variable" button.
+  public var headerView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  /// Currently unused - any buttons that go in the footer
+  public var footerView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  /// Width constraint for this view.
   private var _widthConstraint: NSLayoutConstraint!
-  /// Height constraint for this view
+  /// Height constraint for this view.
   private var _heightConstraint: NSLayoutConstraint!
+  /// Constraint of the button's height or width, depending on orientation.
+  private var _headerConstraint: NSLayoutConstraint!
+  /// The orientation of the toolbox.
+  private let orientation: ToolboxCategoryListViewController.Orientation
+  /// The button for adding variables to the name manager.
+  private lazy var addVariableButton: UIButton = {
+    let button = UIButton()
+    button.setTitle("+ Add variable", for: UIControlState.normal)
+    button.setTitleColor(.white, for: .normal)
+    button.setTitleColor(.gray, for: .highlighted)
+    button.backgroundColor = .darkGray
+    button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    return button
+  }()
 
   // MARK: - Super
+
+  public init(viewFactory: ViewFactory,
+    orientation: ToolboxCategoryListViewController.Orientation)
+  {
+    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    self.orientation = orientation
+
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("Called unsupported initializer")
+  }
 
   open override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
-    workspaceView.allowCanvasPadding = false
+    workspaceViewController.workspaceView.allowCanvasPadding = false
+    workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
+    headerView.addSubview(addVariableButton)
+
+    let views: [String: UIView] = [
+      "workspaceView": workspaceViewController.workspaceView,
+      "headerView": headerView,
+      "footerView": footerView
+      ]
+
+    let constraints: [String]
+    switch (orientation) {
+    case .horizontal:
+      constraints = [
+        "H:|[headerView][workspaceView][footerView]|",
+        "V:|[workspaceView]|",
+        "V:|[headerView]|",
+        "V:|[footerView]|"
+      ]
+
+      footerView.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
+      _headerConstraint = headerView.bky_addWidthConstraint(0,
+        priority: UILayoutPriorityRequired)
+    case .vertical:
+      constraints = [
+        "V:|[headerView][workspaceView][footerView]|",
+        "H:|[workspaceView]|",
+        "H:|[headerView]|",
+        "H:|[footerView]|"
+      ]
+
+      footerView.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
+      _headerConstraint = headerView.bky_addHeightConstraint(0,
+        priority: UILayoutPriorityRequired)
+    }
+
+    view.bky_addSubviews(Array(views.values))
+    view.bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
 
     // Add low priority size constraints. This allows this view to automatically resize itself
     // if no other higher priority size constraints have been set elsewhere.
@@ -51,6 +133,30 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
     _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
 
     view.setNeedsUpdateConstraints()
+    workspaceViewController.workspaceView.setNeedsUpdateConstraints()
+  }
+
+  public func didTapButton(_: UIButton) {
+    let addView = UIAlertController(title: "New variable name:", message: "",
+      preferredStyle: .alert)
+    addView.addTextField(configurationHandler: nil)
+    addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    addView.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+      guard let textField = addView.textFields?[0],
+        let newName = textField.text else
+      {
+        return
+      }
+
+      do {
+        try self.workspaceNameManager?.addName(newName)
+      } catch {
+        bky_assertionFailure(
+          "Tried to create an invalid variable without proper error handling: \(error)")
+      }
+    })
+
+    workspaceViewController.present(addView, animated: true, completion: nil)
   }
 
   // MARK: - Public
@@ -86,14 +192,14 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
 
     do {
       // Clear the layout so all current blocks are removed
-      try loadWorkspaceLayoutCoordinator(nil)
+      try workspaceViewController.loadWorkspaceLayoutCoordinator(nil)
 
       // Set the new layout
       if let layoutCoordinator =
         toolboxLayout?.categoryLayoutCoordinators
           .filter({ $0.workspaceLayout.workspace == category }).first
       {
-        try loadWorkspaceLayoutCoordinator(layoutCoordinator)
+        try workspaceViewController.loadWorkspaceLayoutCoordinator(layoutCoordinator)
       }
     } catch let error {
       bky_assertionFailure("Could not load category: \(error)")
@@ -101,11 +207,28 @@ public final class ToolboxCategoryViewController: WorkspaceViewController {
     }
 
     // Update the size of the toolbox, if needed
-    let newWidth = category?.layout?.viewFrame.size.width ?? 0
-    let newHeight = category?.layout?.viewFrame.size.height ?? 0
-    if _widthConstraint.constant == newWidth && _heightConstraint.constant == newHeight {
-      return
+    var newWidth = category?.layout?.viewFrame.size.width ?? 0
+    var newHeight = category?.layout?.viewFrame.size.height ?? 0
+
+    // TODO(corydiers):- Add customization(and default) here.
+    var buttonSize: CGFloat = 0
+    if let category = category,
+      category.isVariable
+    {
+      addVariableButton.isHidden = false
+      switch (orientation) {
+      case .horizontal:
+        buttonSize = 136
+        newWidth += buttonSize
+      case .vertical:
+        buttonSize = 56
+        newHeight += buttonSize
+      }
+    } else {
+      addVariableButton.isHidden = true
     }
+
+    _headerConstraint?.constant = CGFloat(buttonSize)
 
     view.bky_updateConstraints(animated: animated, update: {
       self._widthConstraint.constant = newWidth
