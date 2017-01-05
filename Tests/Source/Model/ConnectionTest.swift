@@ -250,6 +250,15 @@ class ConnectionTest: XCTestCase {
                    input.canConnectWithReasonTo(shadowOutput))
   }
 
+  func testCanConnectWithReasonTo_InvalidSourceBlockIsNull() {
+    next.sourceBlock = nil
+    XCTAssertEqual(Connection.CheckResult.ReasonSourceBlockNull,
+                   next.canConnectWithReasonTo(previous))
+    output.sourceBlock = nil
+    XCTAssertEqual(Connection.CheckResult.ReasonSourceBlockNull,
+                   output.canConnectWithReasonTo(input))
+  }
+
   func testCanConnectShadowWithReasonTo_Valid() {
     XCTAssertEqual(Connection.CheckResult.CanConnect,
                    input.canConnectShadowWithReasonTo(shadowOutput))
@@ -323,6 +332,15 @@ class ConnectionTest: XCTestCase {
                    output.canConnectShadowWithReasonTo(shadowInput))
     XCTAssertEqual(Connection.CheckResult.ReasonInferiorBlockShadowMismatch,
                    shadowInput.canConnectShadowWithReasonTo(output))
+  }
+
+  func testCanConnectShadowWithReasonTo_InvalidSourceBlockIsNull() {
+    next.sourceBlock = nil
+    XCTAssertEqual(Connection.CheckResult.ReasonSourceBlockNull,
+                   next.canConnectShadowWithReasonTo(shadowPrevious))
+    shadowOutput.sourceBlock = nil
+    XCTAssertEqual(Connection.CheckResult.ReasonSourceBlockNull,
+                   input.canConnectShadowWithReasonTo(shadowOutput))
   }
 
   func testDistanceFromConnection() {
