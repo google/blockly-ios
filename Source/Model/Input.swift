@@ -99,7 +99,7 @@ public final class Input : NSObject {
   /// A list of `Field` objects for the input.
   public let fields: [Field]
   /// The `Block` that owns this input.
-  public weak var sourceBlock: Block! {
+  public internal(set) weak var sourceBlock: Block? {
     didSet {
       self.connection?.sourceBlock = sourceBlock
     }

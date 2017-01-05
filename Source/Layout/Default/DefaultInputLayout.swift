@@ -160,23 +160,10 @@ public final class DefaultInputLayout: InputLayout {
       fieldLayout.edgeInsets.bottom =
         self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
-      if i == fieldLayouts.count - 1 {
+      if i == fieldLayouts.count - 1 && isLastInputOfBlockRow() {
         // Add right padding to the last field if it's at the end of the row
-        var addRightEdgeInset = false
-
-        if !addRightEdgeInset && (!input.sourceBlock.inputsInline || input.type == .statement) {
-          addRightEdgeInset = true
-        }
-        if !addRightEdgeInset && input.type == .dummy {
-          let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
-          if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
-            addRightEdgeInset = true
-          }
-        }
-        if addRightEdgeInset {
-          fieldLayout.edgeInsets.trailing =
-            self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
-        }
+        fieldLayout.edgeInsets.trailing =
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
       }
 
       fieldXOffset += fieldLayout.totalSize.width
@@ -389,6 +376,25 @@ public final class DefaultInputLayout: InputLayout {
   }
 
   // MARK: - Private
+
+  fileprivate func isLastInputOfBlockRow() -> Bool {
+    if let block = input.sourceBlock, !block.inputsInline {
+      // This is the last input for the row since inputs are not inline
+      return true
+    }
+    if input.type == .statement {
+      // Statements are always the last input for their row
+      return true
+    }
+    if input.type == .dummy {
+      let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
+      if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
+        // This is the last dummy input or the next input is a statement, so we're at the end
+        return true
+      }
+    }
+    return false
+  }
 
   /**
   Resets all render specific properties back to their default values.

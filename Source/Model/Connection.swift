@@ -90,13 +90,14 @@ public final class Connection : NSObject {
       CheckResult(value: .reasonCannotSetShadowForTarget)
     public static let ReasonInferiorBlockShadowMismatch =
       CheckResult(value: .reasonInferiorBlockShadowMismatch)
+    public static let ReasonSourceBlockNull = CheckResult(value: .reasonSourceBlockNull)
 
     /// Specific reasons why two connections are able or unable connect
     @objc(BKYConnectionCheckResultValue)
     public enum Value: Int {
       case canConnect = 1, reasonSelfConnection, reasonWrongType, reasonMustDisconnect,
       reasonTargetNull, reasonShadowNull, reasonTypeChecksFailed, reasonCannotSetShadowForTarget,
-      reasonInferiorBlockShadowMismatch
+      reasonInferiorBlockShadowMismatch, reasonSourceBlockNull
 
       func errorMessage() -> String? {
         switch (self) {
@@ -115,6 +116,8 @@ public final class Connection : NSObject {
         case .reasonInferiorBlockShadowMismatch:
           return "Cannot connect a non-shadow block to a shadow block when the non-shadow block " +
            "connection is of type `.OutputValue` or `.PreviousStatement`."
+        case .reasonSourceBlockNull:
+          return "One of the connections does not reference a source block"
         case .canConnect:
           // Connection can be made, no error message
           return nil
@@ -168,9 +171,9 @@ public final class Connection : NSObject {
   /// The connection type
   public let type: ConnectionType
   /// The block that holds this connection
-  public weak var sourceBlock: Block!
+  public internal(set) weak var sourceBlock: Block?
   /// If this connection belongs to a value or statement input, this is its source
-  public fileprivate(set) weak var sourceInput: Input?
+  public internal(set) weak var sourceInput: Input?
   /**
   The position of this connection in the workspace.
   NOTE: While this value *should* be stored in a Layout subclass, it's more efficient to simply
@@ -354,14 +357,19 @@ public final class Connection : NSObject {
     var checkResult = CheckResult(rawValue: 0)
 
     if let aTarget = target {
-      if aTarget.sourceBlock == sourceBlock {
-        checkResult.formUnion(.ReasonSelfConnection)
+      if let targetSourceBlock = aTarget.sourceBlock {
+        if targetSourceBlock == sourceBlock {
+          checkResult.formUnion(.ReasonSelfConnection)
+        }
+        if targetSourceBlock.shadow {
+          checkResult.formUnion(.ReasonCannotSetShadowForTarget)
+        }
+      } else {
+        checkResult.formUnion(.ReasonSourceBlockNull)
       }
+
       if aTarget.type != Connection.OPPOSITE_TYPES[type.rawValue] {
         checkResult.formUnion(.ReasonWrongType)
-      }
-      if aTarget.sourceBlock.shadow {
-        checkResult.formUnion(.ReasonCannotSetShadowForTarget)
       }
       if !typeChecksMatchWithConnection(aTarget) {
         checkResult.formUnion(.ReasonTypeChecksFailed)
@@ -369,11 +377,17 @@ public final class Connection : NSObject {
     } else {
       checkResult.formUnion(.ReasonTargetNull)
     }
+
     if targetConnection != nil {
       checkResult.formUnion(.ReasonMustDisconnect)
     }
-    if sourceBlock.shadow {
-      checkResult.formUnion(.ReasonCannotSetShadowForTarget)
+
+    if let sourceBlock = self.sourceBlock {
+      if sourceBlock.shadow {
+        checkResult.formUnion(.ReasonCannotSetShadowForTarget)
+      }
+    } else {
+      checkResult.formUnion(.ReasonSourceBlockNull)
     }
 
     if checkResult.rawValue == 0 {
@@ -395,17 +409,28 @@ public final class Connection : NSObject {
   public func canConnectShadowWithReasonTo(_ shadow: Connection?) -> CheckResult {
     var checkResult = CheckResult(rawValue: 0)
 
+    if sourceBlock == nil {
+      checkResult.formUnion(.ReasonSourceBlockNull)
+    }
+
     if let aShadow = shadow {
-      if sourceBlock == aShadow.sourceBlock {
-        checkResult.formUnion(.ReasonSelfConnection)
+      if aShadow.sourceBlock == nil {
+        checkResult.formUnion(.ReasonSourceBlockNull)
+      }
+      if let sourceBlock = self.sourceBlock,
+        let shadowSourceBlock = aShadow.sourceBlock
+      {
+        if sourceBlock == shadowSourceBlock {
+          checkResult.formUnion(.ReasonSelfConnection)
+        }
+        let isInferiorBlock = (type == .outputValue || type == .previousStatement)
+        let inferiorBlock = isInferiorBlock ? sourceBlock : shadowSourceBlock
+        if !inferiorBlock.shadow {
+          checkResult.formUnion(.ReasonInferiorBlockShadowMismatch)
+        }
       }
       if aShadow.type != Connection.OPPOSITE_TYPES[type.rawValue] {
         checkResult.formUnion(.ReasonWrongType)
-      }
-      let isInferiorBlock = (type == .outputValue || type == .previousStatement)
-      let inferiorBlock = isInferiorBlock ? sourceBlock : aShadow.sourceBlock
-      if !(inferiorBlock?.shadow)! {
-        checkResult.formUnion(.ReasonInferiorBlockShadowMismatch)
       }
       if !typeChecksMatchWithConnection(aShadow) {
         checkResult.formUnion(.ReasonTypeChecksFailed)
