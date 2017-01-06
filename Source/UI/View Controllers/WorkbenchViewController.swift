@@ -127,10 +127,8 @@ open class WorkbenchViewController: UIViewController {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
       // the workspace)
-      oldValue?.workspaceViewController.delegate = nil
-      toolboxCategoryViewController.workspaceViewController.delegate = self
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
+      oldValue?.delegate = nil
+      toolboxCategoryViewController.delegate = self
     }
   }
 
@@ -151,12 +149,15 @@ open class WorkbenchViewController: UIViewController {
   open var toolbox: Toolbox? {
     return _toolboxLayout?.toolbox
   }
+
+  /// The `NameManager` that controls the variables in this workbench's scope.
+  private let variableNameManager: NameManager = NameManager()
+
   /// The main workspace layout coordinator
   fileprivate var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
     didSet {
       _dragger.workspaceLayoutCoordinator = _workspaceLayoutCoordinator
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
+      _workspaceLayoutCoordinator?.variableNameManager = variableNameManager
     }
   }
   /// The underlying workspace layout
@@ -255,6 +256,7 @@ open class WorkbenchViewController: UIViewController {
   fileprivate func commonInit() {
     // Create main workspace view
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
     workspaceViewController.workspaceView.allowZoom = true
     workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
@@ -281,7 +283,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory,
-      orientation: style.toolboxOrientation)
+      orientation: style.toolboxOrientation, variableNameManager: variableNameManager)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -468,6 +470,15 @@ open class WorkbenchViewController: UIViewController {
     _toolboxLayout = toolboxLayout
 
     refreshView()
+  }
+
+  /**
+   Associates a `BlockFactory` with the workbench, for making variable blocks.
+
+   - parameter blockFactory: The `BlockFactory` to associate with this workbench.
+  */
+  public func setBlockFactory(_ blockFactory: BlockFactory) {
+    _toolboxLayout?.setBlockFactory(blockFactory)
   }
 
   /**
@@ -1121,8 +1132,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool
   {
     let scrollView = workspaceViewController.workspaceView.scrollView
-    let toolboxScrollView =
-      toolboxCategoryViewController.workspaceViewController.workspaceView.scrollView
+    let toolboxScrollView = toolboxCategoryViewController.getScrollView()
 
     // Force the scrollView pan and zoom gestures to fail unless this one fails
     if otherGestureRecognizer == scrollView.panGestureRecognizer ||

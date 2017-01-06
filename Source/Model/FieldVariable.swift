@@ -23,9 +23,7 @@ public final class FieldVariable: Field {
   // MARK: - Properties
 
   /// The variable in this field
-  public private(set) var variable: String {
-    didSet { didSetEditableProperty(&variable, oldValue) }
-  }
+  public private(set) var variable: String
 
   // MARK: - Initializers
 
@@ -84,6 +82,9 @@ public final class FieldVariable: Field {
         " FieldVariable.isValidName(:) to validate name before setting it.")
     }
 
-    variable = name
+    if variable != name {
+      variable = name
+      didSetEditableProperty(&variable, name)
+    }
   }
 }

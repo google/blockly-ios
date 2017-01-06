@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		300CABD11D5CF816000E43B2 /* ConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */; };
 		300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */; };
+		300F9F891E26B01800412411 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
 		3059336F1DEE70930064B9F2 /* FieldVariableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3059336D1DEE6FF00064B9F2 /* FieldVariableTest.swift */; };
 		3064BACF1DAFFC57006425A2 /* Blockly.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC61DAFFC57006425A2 /* Blockly.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD01DAFFC58006425A2 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC71DAFFC57006425A2 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1118,6 +1119,7 @@
 				F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */,
 				FA4D54D51C6BF04000F95084 /* BlockTestStrings.swift in Sources */,
 				FA3FD13A1CF3C678005B6D0F /* LayoutTest.swift in Sources */,
+				300F9F891E26B01800412411 /* Workspace.swift in Sources */,
 				FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */,
 				F98FF7E51BB208EB00A4F8E5 /* BlockFactoryTest.swift in Sources */,
 				FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */,
