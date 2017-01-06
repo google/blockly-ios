@@ -187,5 +187,6 @@ extension FieldVariableLayout: NameManagerListener {
         bky_assertionFailure("Could not rename variable: \(error)")
       }
     }
+    updateLayoutUpTree()
   }
 }

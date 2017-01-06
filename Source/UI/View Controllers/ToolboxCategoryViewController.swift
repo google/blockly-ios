@@ -34,8 +34,6 @@ public final class ToolboxCategoryViewController: UIViewController {
   public fileprivate(set) var category: Toolbox.Category?
   /// The workspace view controller that contains the toolbox blocks.
   public var workspaceViewController: WorkspaceViewController
-  /// The main workspace name manager, to add variable names and track changes.
-  public var workspaceNameManager: NameManager?
   /// The view containing any UI elements for the header - currently, the "Add variable" button.
   public var headerView: UIView = {
     let view = UIView()
@@ -49,6 +47,8 @@ public final class ToolboxCategoryViewController: UIViewController {
     return view
   }()
 
+  /// The main workspace name manager, to add variable names and track changes.
+  private weak var variableNameManager: NameManager?
   /// Width constraint for this view.
   private var _widthConstraint: NSLayoutConstraint!
   /// Height constraint for this view.
@@ -72,12 +72,20 @@ public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Super
 
   public init(viewFactory: ViewFactory,
-    orientation: ToolboxCategoryListViewController.Orientation)
+    orientation: ToolboxCategoryListViewController.Orientation,
+    nameManager: NameManager?)
   {
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
     self.orientation = orientation
+    variableNameManager = nameManager
 
     super.init(nibName: nil, bundle: nil)
+
+    variableNameManager?.listeners.add(self)
+  }
+
+  deinit {
+    variableNameManager?.listeners.remove(self)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -90,6 +98,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
+    workspaceViewController.workspace?.workspaceType = .toolbox
     headerView.addSubview(addVariableButton)
 
     let views: [String: UIView] = [
@@ -149,7 +158,7 @@ public final class ToolboxCategoryViewController: UIViewController {
       }
 
       do {
-        try self.workspaceNameManager?.addName(newName)
+        try self.variableNameManager?.addName(newName)
       } catch {
         bky_assertionFailure(
           "Tried to create an invalid variable without proper error handling: \(error)")
@@ -215,6 +224,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     if let category = category,
       category.isVariable
     {
+      workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
       addVariableButton.isHidden = false
       switch (orientation) {
       case .horizontal:
@@ -224,6 +234,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         buttonSize = 56
         newHeight += buttonSize
       }
+
+      newWidth = max(newWidth, 136)
+      newHeight = max(newHeight, 56)
     } else {
       addVariableButton.isHidden = true
     }
@@ -234,5 +247,108 @@ public final class ToolboxCategoryViewController: UIViewController {
       self._widthConstraint.constant = newWidth
       self._heightConstraint.constant = newHeight
     })
+  }
+
+  fileprivate func getVariableCoordinator() -> WorkspaceLayoutCoordinator? {
+    guard let categories = toolboxLayout?.toolbox.categories else {
+      return nil
+    }
+    for (index, category) in categories.enumerated() {
+      if category.isVariable {
+        return toolboxLayout?.categoryLayoutCoordinators[index]
+      }
+    }
+
+    return nil
+  }
+
+  fileprivate func makeVariableBlock(_ blockName: String, varName: String) throws -> Block? {
+    let block = try getVariableCoordinator()?.blockFactory?.makeBlock(name: blockName)
+    let field = block?.firstField(withName: "VAR") as? FieldVariable
+    try field?.setVariable(varName)
+    return block
+  }
+}
+
+extension ToolboxCategoryViewController: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, didAddName name: String) {
+    guard let config = workspaceViewController.workspaceLayout?.config,
+      let toolbox = toolboxLayout?.toolbox else {
+      return
+    }
+
+    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+
+    guard let index = toolbox.categories.index(where: ({ $0.isVariable })) else {
+      return
+    }
+
+    let category = toolbox.categories[index]
+    do {
+      if category.allBlocks.count == 0 {
+        for blockName in uniqueVariableBlocks {
+          if let block = try makeVariableBlock(blockName, varName: name) {
+            try category.addBlockTree(block)
+          }
+        }
+      }
+
+      for blockName in variableBlocks {
+        if let block = try makeVariableBlock(blockName, varName: name) {
+          try category.addBlockTree(block)
+        }
+      }
+    } catch {
+      bky_assertionFailure("Failed to make a variable block: \(error)")
+      return
+    }
+  }
+
+  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    guard let variableCoordinator = getVariableCoordinator(),
+      let config = toolboxLayout?.engine.config else
+    {
+      return
+    }
+
+    let workspace = variableCoordinator.workspaceLayout.workspace
+    let matchingBlocks = workspace.allVariableBlocks(forName: name)
+    let uniqueVariableBlocks =  config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+    let shouldDeleteSetters = workspace.allBlocks.count ==
+      uniqueVariableBlocks.count + variableBlocks.count
+    var toChangeName: [Block] = []
+
+    // Remove each block with matching variable fields.
+    for block in matchingBlocks {
+      do {
+        if uniqueVariableBlocks.contains(block.name) && !shouldDeleteSetters {
+          toChangeName.append(block)
+          continue
+        }
+
+        try variableCoordinator.removeSingleBlock(block)
+      } catch let error {
+        bky_assertionFailure("Couldn't remove block: \(error)")
+      }
+    }
+
+    // If the unique blocks had their variable deleted, set them to another variable in the manager.
+    guard let newDefault = nameManager.names.first else {
+      return
+    }
+    for block in toChangeName {
+      guard let field = block.firstField(withName: "VAR") as? FieldVariable else {
+        continue
+      }
+
+      do {
+        try field.setVariable(newDefault)
+        block.layout?.updateLayoutDownTree()
+      } catch {
+        bky_assertionFailure("Couldn't set variable on block: \(error)")
+      }
+    }
   }
 }
