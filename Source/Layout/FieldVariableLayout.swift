@@ -120,6 +120,8 @@ open class FieldVariableLayout: FieldLayout {
         bky_assertionFailure("Could not change to variable: \(error)")
       }
     }
+
+    updateLayoutUpTree()
   }
 
   /**
@@ -182,7 +184,7 @@ extension FieldVariableLayout: NameManagerListener {
     if nameManager.namesAreEqual(oldName, variable) {
       // This variable was renamed, update it
       do {
-        try fieldVariable.setVariable(newName)
+        try changeToExistingVariable(newName)
       } catch let error {
         bky_assertionFailure("Could not rename variable: \(error)")
       }

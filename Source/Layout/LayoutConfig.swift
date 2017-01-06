@@ -81,6 +81,12 @@ open class LayoutConfig: NSObject {
   /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
   public static let ViewAnimationDuration = LayoutConfig.newPropertyKey()
 
+  /// [`[String]`] The variable blocks to be created in the toolbox when a variable is created.
+  public static let VariableBlocks = LayoutConfig.newPropertyKey()
+
+  /// [`[String]`] The variable blocks to be created the first time a variable is created.
+  public static let UniqueVariableBlocks = LayoutConfig.newPropertyKey()
+
   // MARK: - Closures
 
   /// A closure for creating a `UIFont` from a given scale.
@@ -133,6 +139,9 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `Unit` values
   private var _units = Dictionary<PropertyKey, Unit>()
 
+  /// Dictionary mapping property keys to `[String]` values
+  private var _stringArrays = Dictionary<PropertyKey, [String]>()
+
   // MARK: - Initializers
 
   public override init() {
@@ -161,6 +170,9 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
+
+    setStringArray(["variables_get"], for: LayoutConfig.VariableBlocks)
+    setStringArray(["variables_set", "math_change"], for: LayoutConfig.UniqueVariableBlocks)
 
     setFontCreator({ scale in
       return UIFont.systemFont(ofSize: 14 * scale)
@@ -453,6 +465,32 @@ open class LayoutConfig: NSObject {
   @inline(__always)
   public func workspaceUnit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> CGFloat {
     return unit(for: key, defaultValue: defaultValue).workspaceUnit
+  }
+
+  /**
+   Maps a `[String]` value to a specific `PropertyKey`.
+
+   - parameter stringArrayValue: The `[String]` value
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.VariableBlocks`)
+   - returns: The `[String]` that was set.
+   */
+  @discardableResult
+  public func setStringArray(_ stringArrayValue: [String], for key: PropertyKey) -> [String] {
+    _stringArrays[key] = stringArrayValue
+    return stringArrayValue
+  }
+
+
+  /**
+   Returns the `[String]` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.VariableBlocks`)
+   - parameter defaultValue: [Optional] If no `[String]` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value
+   */
+  public func stringArray(for key: PropertyKey, defaultValue: [String] = []) -> [String] {
+    return _stringArrays[key] ?? setStringArray(defaultValue, for: key)
   }
 
   // MARK: - Update Values

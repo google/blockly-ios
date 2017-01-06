@@ -158,6 +158,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
         let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
         try _workbenchViewController.loadToolbox(toolbox)
+        _workbenchViewController.setBlockFactory(_blockFactory)
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")
       }
