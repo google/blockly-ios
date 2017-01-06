@@ -182,7 +182,9 @@ extension DefaultBlockLayout {
           self.statementConnectorWidth = lastInputLayout.statementConnectorWidth
 
           return
-        } else if !lastInputLayout.input.sourceBlock.inputsInline {
+        } else if let block = lastInputLayout.input.sourceBlock,
+          !block.inputsInline
+        {
           self.rightEdge =
             lastInputLayout.relativePosition.x - leadingEdgeOffset + lastInputLayout.rightEdge
           self.outputConnector = (lastInputLayout.input.connection != nil)

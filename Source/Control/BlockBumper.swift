@@ -49,7 +49,7 @@ open class BlockBumper: NSObject {
   open func bumpBlockLayoutOfConnection(
     _ impingingConnection: Connection, awayFromConnection stationaryConnection: Connection)
   {
-    guard let blockLayout = impingingConnection.sourceBlock.layout,
+    guard let blockLayout = impingingConnection.sourceBlock?.layout,
       let blockGroupLayout = blockLayout.rootBlockGroupLayout else {
       return
     }
@@ -103,7 +103,7 @@ open class BlockBumper: NSObject {
   private func bumpAwayFromNeighborsBlockLayout(ofConnection connection: Connection) {
     guard
       let connectionManager = workspaceLayoutCoordinator?.connectionManager,
-      let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
+      let rootBlockGroupLayout = connection.sourceBlock?.layout?.rootBlockGroupLayout else
     {
       return
     }
@@ -114,7 +114,7 @@ open class BlockBumper: NSObject {
     for neighbor in neighbors {
       // Bump away from the first neighbor that isn't in the same block group as the target
       // connection's block group
-      if neighbor.sourceBlock.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
+      if neighbor.sourceBlock?.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
         bumpBlockLayoutOfConnection(connection, awayFromConnection: neighbor)
         return
       }
@@ -129,7 +129,7 @@ open class BlockBumper: NSObject {
   private func bumpAllBlocks(nearConnection connection: Connection) {
     guard
       let connectionManager = workspaceLayoutCoordinator?.connectionManager,
-      let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
+      let rootBlockGroupLayout = connection.sourceBlock?.layout?.rootBlockGroupLayout else
     {
       return
     }
@@ -139,7 +139,7 @@ open class BlockBumper: NSObject {
 
     for neighbor in neighbors {
       // Only bump blocks that aren't in the same block group as the target connection's block group
-      if let neighborLayout = neighbor.sourceBlock.layout
+      if let neighborLayout = neighbor.sourceBlock?.layout
        , neighborLayout.rootBlockGroupLayout != rootBlockGroupLayout
       {
         bumpBlockLayoutOfConnection(neighbor, awayFromConnection: connection)

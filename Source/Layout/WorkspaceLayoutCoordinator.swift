@@ -379,7 +379,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Add shadow block layouts to proper block group
     if let blockGroupLayout =
       (aConnection.sourceInput?.layout?.blockGroupLayout ?? // For input values or statements
-        aConnection.sourceBlock.layout?.parentBlockGroupLayout) // For a block's next statement
+        aConnection.sourceBlock?.layout?.parentBlockGroupLayout) // For a block's next statement
     {
       Layout.doNotAnimate {
         blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
@@ -495,7 +495,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         // Move them to target input's block group layout
         targetInputLayout.blockGroupLayout
           .claimWithFollowers(blockLayout: sourceBlockLayout, updateLayouts: true)
-      } else if let targetBlockLayout = targetConnection.sourceBlock.layout {
+      } else if let targetBlockLayout = targetConnection.sourceBlock?.layout {
         // Move them to the target block's group layout
         targetBlockLayout.parentBlockGroupLayout?
           .claimWithFollowers(blockLayout: sourceBlockLayout, updateLayouts: true)
