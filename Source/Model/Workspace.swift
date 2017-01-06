@@ -80,6 +80,19 @@ open class Workspace : NSObject {
   /// The layout associated with this workspace
   public weak var layout: WorkspaceLayout?
 
+  /// Specifies the type of workspace this one is.
+  internal enum WorkspaceType: Int {
+    case
+    // A "normal" workspace, which supports dragging, import/export, code generation, etc.
+    interactive = 0,
+    // A toolbox workspace
+    toolbox,
+    // A trash workspace
+    trash
+  }
+
+  internal var workspaceType: WorkspaceType = .interactive;
+
   // MARK: - Initializers
 
   /**

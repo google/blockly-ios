@@ -685,6 +685,10 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 extension WorkspaceLayoutCoordinator: NameManagerListener {
   public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
     let blocks = workspaceLayout.workspace.allVariableBlocks(forName: name)
+    // Don't do anything to toolbox/trash workspaces.
+    if workspaceLayout.workspace.workspaceType != .interactive {
+      return
+    }
 
     // Remove each block with matching variable fields.
     for block in blocks {

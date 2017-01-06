@@ -119,6 +119,8 @@ extension Toolbox {
       }
     }
 
+    toolbox.factory = factory
+
     return toolbox
   }
 

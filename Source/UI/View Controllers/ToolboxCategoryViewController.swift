@@ -35,7 +35,13 @@ public final class ToolboxCategoryViewController: UIViewController {
   /// The workspace view controller that contains the toolbox blocks.
   public var workspaceViewController: WorkspaceViewController
   /// The main workspace name manager, to add variable names and track changes.
-  public var workspaceNameManager: NameManager?
+  public var workspaceNameManager: NameManager? {
+    didSet {
+      // Remove this toolbox from the old listener, and add it to the new one.
+      oldValue?.listeners.remove(self)
+      workspaceNameManager?.listeners.add(self)
+    }
+  }
   /// The view containing any UI elements for the header - currently, the "Add variable" button.
   public var headerView: UIView = {
     let view = UIView()
@@ -90,6 +96,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
+    workspaceViewController.workspace?.workspaceType = .toolbox
     headerView.addSubview(addVariableButton)
 
     let views: [String: UIView] = [
@@ -215,6 +222,8 @@ public final class ToolboxCategoryViewController: UIViewController {
     if let category = category,
       category.isVariable
     {
+      workspaceViewController.workspaceLayoutCoordinator?.variableNameManager =
+        workspaceNameManager
       addVariableButton.isHidden = false
       switch (orientation) {
       case .horizontal:
@@ -224,6 +233,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         buttonSize = 56
         newHeight += buttonSize
       }
+
+      newWidth = max(newWidth, 136)
+      newHeight = max(newHeight, 56)
     } else {
       addVariableButton.isHidden = true
     }
@@ -234,5 +246,78 @@ public final class ToolboxCategoryViewController: UIViewController {
       self._widthConstraint.constant = newWidth
       self._heightConstraint.constant = newHeight
     })
+  }
+
+  fileprivate func getVariableCoordinator() -> WorkspaceLayoutCoordinator? {
+    let categories = toolboxLayout?.toolbox.categories
+    for (index, category) in (categories?.enumerated())! {
+      if category.isVariable {
+        return toolboxLayout?.categoryLayoutCoordinators[index]
+      }
+    }
+
+    return nil
+  }
+}
+
+extension ToolboxCategoryViewController: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, didAddName name: String) {
+    guard let config = workspaceViewController.workspaceLayout?.config else {
+        return
+    }
+
+    let uniqueVariableBlocks =  config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+
+    self.toolboxLayout?.toolbox.addVariable(name: name,
+                                            uniqueVariableBlocks: uniqueVariableBlocks,
+                                            variableBlocks: variableBlocks)
+  }
+
+  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    guard let variableCoordinator = getVariableCoordinator(),
+      let config = toolboxLayout?.engine.config else
+    {
+      return
+    }
+
+    let workspace = variableCoordinator.workspaceLayout.workspace
+    let matchingBlocks = workspace.allVariableBlocks(forName: name)
+    let uniqueVariableBlocks =  config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+    let shouldDeleteSetters = workspace.allBlocks.count ==
+      uniqueVariableBlocks.count + variableBlocks.count
+    var toChangeName: [Block] = []
+
+    // Remove each block with matching variable fields.
+    for block in matchingBlocks {
+      do {
+        if uniqueVariableBlocks.contains(block.name) && !shouldDeleteSetters {
+          toChangeName.append(block)
+          continue
+        }
+
+        try variableCoordinator.removeSingleBlock(block)
+      } catch let error {
+        bky_assertionFailure("Couldn't remove block: \(error)")
+      }
+    }
+
+    // If the unique blocks had their variable deleted, set them to another variable in the manager.
+    guard let newDefault = nameManager.names.first else {
+      return
+    }
+    for block in toChangeName {
+      guard let field = block.firstField(withName: "VAR") as? FieldVariable else {
+        continue
+      }
+
+      do {
+        try field.setVariable(newDefault)
+        block.layout?.updateLayoutDownTree()
+      } catch {
+        bky_assertionFailure("Couldn't set variable on block: \(error)")
+      }
+    }
   }
 }

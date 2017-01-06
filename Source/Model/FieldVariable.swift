@@ -23,9 +23,7 @@ public final class FieldVariable: Field {
   // MARK: - Properties
 
   /// The variable in this field
-  public private(set) var variable: String {
-    didSet { didSetEditableProperty(&variable, oldValue) }
-  }
+  public private(set) var variable: String
 
   // MARK: - Initializers
 
