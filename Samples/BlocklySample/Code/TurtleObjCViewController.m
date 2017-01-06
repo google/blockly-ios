@@ -191,7 +191,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     return;
   }
 
-  [_workbenchViewController loadToolbox:toolbox error:&error];
+  [_workbenchViewController loadToolbox:toolbox blockFactory:_blockFactory error:&error];
 
   if ([self handleError:error]) {
     return;
