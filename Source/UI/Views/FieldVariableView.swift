@@ -141,8 +141,8 @@ extension FieldVariableView: DropdownViewDelegate {
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
-    delegate?.fieldView(self,
-                        requestedToPresentPopoverViewController: viewController, fromView: self)
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 
@@ -195,7 +195,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       fieldVariableLayout.renameVariable(to: newName)
     })
 
-    delegate?.fieldView(self, requestedToPresentViewController: renameView)
+    popoverDelegate?.layoutView(self, requestedToPresentViewController: renameView)
   }
 
   private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
@@ -213,7 +213,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         fieldVariableLayout.removeVariable()
       })
 
-      delegate?.fieldView(self, requestedToPresentViewController: removeView)
+      popoverDelegate?.layoutView(self, requestedToPresentViewController: removeView)
     }
   }
 }

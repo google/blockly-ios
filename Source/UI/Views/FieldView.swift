@@ -16,43 +16,12 @@
 import Foundation
 
 /**
- Protocol for delegate events that occur on a `FieldView`.
- */
-@objc(BKYFieldViewDelegate)
-public protocol FieldViewDelegate {
-  /**
-   Event is called when a field view requests to present a view controller.
-
-   - parameter fieldView: The `FieldView` that made the request
-   - parameter viewController: The `UIViewController` to present
-   */
-  func fieldView(_ fieldView: FieldView,
-                 requestedToPresentViewController viewController: UIViewController)
-
-  /**
-   Event that is called when a field view requests to present a view controller as a popover.
-
-   - parameter fieldView: The `FieldView` that made the request
-   - parameter viewController: The `UIViewController` to present
-   - parameter fromView: The `UIView` where the popover should pop up from
-   - returns: True if the `viewController` was presented. False otherwise.
-   */
-  @discardableResult
-  func fieldView(_ fieldView: FieldView,
-                 requestedToPresentPopoverViewController viewController: UIViewController,
-                 fromView: UIView) -> Bool
-}
-
-/**
  Abstract view for rendering a `FieldLayout`.
  */
 @objc(BKYFieldView)
 open class FieldView: LayoutView {
 
   // MARK: - Properties
-
-  /// The delegate for events that occur on this instance
-  public weak var delegate: FieldViewDelegate?
 
   /// The layout object to render
   fileprivate var fieldLayout: FieldLayout? {
