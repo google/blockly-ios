@@ -32,7 +32,7 @@ open class MutatorLayout: Layout {
    - parameter engine: The `LayoutEngine` to associate with this layout.
    - parameter mutator: The `Mutator` to associate with this layout.
    */
-  public init(engine: LayoutEngine, mutator: Mutator) {
+  public init(mutator: Mutator, engine: LayoutEngine) {
     self.mutator = mutator
     super.init(engine: engine)
   }
@@ -47,7 +47,7 @@ open class MutatorLayout: Layout {
 
    - note: This method needs to be implemented by a subclass of `MutatorLayout`.
    */
-  open func performMutation() {
+  open func performMutation() throws {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
   }
 }
