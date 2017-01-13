@@ -162,7 +162,7 @@ public final class Block : NSObject {
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
     position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
     deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?)
+    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?) throws
   {
     self.uuid = uuid ?? UUID().uuidString
     self.name = name
@@ -196,7 +196,7 @@ public final class Block : NSObject {
     updateDirectConnections()
 
     // Immediately apply the mutation
-    self.mutator?.mutateBlock()
+    try self.mutator?.mutateBlock()
   }
 
   // MARK: - Public
@@ -507,19 +507,23 @@ public final class Block : NSObject {
   }
 
   /**
-   Remove an input from the block and automatically disconnect both shadow and non-shadow blocks
-   that may have been connected to it. If the input doesn't exist, nothing happens.
+   Remove an input from the block. If the input doesn't exist, nothing happens.
 
    - parameter input: The `Input` to remove.
-   - note: It is the responsibility of the caller to clean-up any shadow blocks that may have been
-   disconnected as a result of calling this method.
+   - note: The input must be disconnected from any connected shadow and non-shadow blocks prior to
+   calling this method or else an error is thrown.
+   - throws:
+   `BlocklyError`: Thrown if `input` has a shadow or non-shadow block still connected to it.
    */
-  public func removeInput(_ input: Input) {
+  public func removeInput(_ input: Input) throws {
     if let index = inputs.index(of: input) {
       // Automatically disconnect any blocks connected to this one
-      if let connection = input.connection {
-        connection.disconnect()
-        connection.disconnectShadow()
+      if let connection = input.connection,
+        connection.connected || connection.shadowConnected
+      {
+        throw BlocklyError(.illegalState,
+          "Input must disconnect its shadow and non-shadow blocks prior to being removed " +
+          "from its source block.")
       }
 
       // Remove input
