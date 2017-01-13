@@ -54,7 +54,8 @@ open class ToolboxLayout: NSObject {
    instances for each category in `toolbox`
    */
   public init(toolbox: Toolbox, engine: LayoutEngine,
-              layoutDirection: WorkspaceFlowLayout.LayoutDirection, layoutBuilder: LayoutBuilder)
+              layoutDirection: WorkspaceFlowLayout.LayoutDirection, layoutBuilder: LayoutBuilder,
+              blockFactory: BlockFactory? = nil)
   {
     self.toolbox = toolbox
     self.engine = engine
@@ -64,18 +65,20 @@ open class ToolboxLayout: NSObject {
     super.init()
 
     for category in self.toolbox.categories {
-      addLayoutCoordinator(forToolboxCategory: category)
+      addLayoutCoordinator(forToolboxCategory: category, blockFactory: blockFactory)
     }
   }
 
   // MARK: - Private
 
-  private func addLayoutCoordinator(forToolboxCategory category: Toolbox.Category) {
+  private func addLayoutCoordinator(forToolboxCategory category: Toolbox.Category,
+                                    blockFactory: BlockFactory? = nil) {
     do {
       let layout =
         WorkspaceFlowLayout(workspace: category, engine: engine, layoutDirection: layoutDirection)
       let coordinator = try WorkspaceLayoutCoordinator(
         workspaceLayout: layout, layoutBuilder: layoutBuilder, connectionManager: nil)
+      coordinator.blockFactory = blockFactory
       categoryLayoutCoordinators.append(coordinator)
     } catch let error {
       bky_assertionFailure("Could not create WorkspaceFlowLayout: \(error)")

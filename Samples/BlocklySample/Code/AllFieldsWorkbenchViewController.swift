@@ -99,7 +99,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
 
     // Load the toolbox into the workbench
     do {
-      try loadToolbox(toolbox)
+      try loadToolbox(toolbox, blockFactory: _blockFactory)
     } catch let error {
       print("Error loading toolbox into workbench: \(error)")
       return

@@ -70,53 +70,6 @@ open class Toolbox: NSObject {
 
     return category
   }
-
-  /**
-   Adds a new variable, with the appropriate blocks, to the toolbox.
-
-   - parameter name: The name of the variable to be created.
-   - parameter uniqueVariableBlocks: The names of blocks that need to be created the first time any
-     variable is created.
-   - parameter variableBlocks: The names of blocks that need to be created every time a variable is
-     created.
-   */
-  open func addVariable(name: String, uniqueVariableBlocks: [String], variableBlocks: [String]) {
-    do {
-      guard let index = categories.index(where: ({ $0.isVariable })) else {
-        return
-      }
-
-      let category = categories[index]
-      if category.allBlocks.count == 0 {
-        for blockName in uniqueVariableBlocks {
-          try addBlock(blockName: blockName, varName: name, category: category)
-        }
-      }
-
-      for blockName in variableBlocks {
-        try addBlock(blockName: blockName, varName: name, category: category)
-      }
-    } catch {
-      bky_assertionFailure("Failed to make a variable block: \(error)")
-      return
-    }
-  }
-
-  // MARK: - Private
-
-  private func addBlock(blockName: String, varName: String, category: Toolbox.Category) throws {
-    let newBlock = try factory?.makeBlock(name: blockName)
-    let field = newBlock?.allBlocksForTree()[0].firstField(withName: "VAR") as? FieldVariable
-
-    guard let newVariableBlock = newBlock,
-      let fieldVariable = field else
-    {
-      return
-    }
-
-    try fieldVariable.setVariable(varName)
-    try category.addBlockTree(newVariableBlock)
-  }
 }
 
 // MARK: - Toolbox.Category Class

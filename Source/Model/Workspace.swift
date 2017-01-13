@@ -91,7 +91,7 @@ open class Workspace : NSObject {
     trash
   }
 
-  internal var workspaceType: WorkspaceType = .interactive;
+  internal var workspaceType: WorkspaceType = .interactive
 
   // MARK: - Initializers
 

@@ -83,5 +83,6 @@ public final class FieldVariable: Field {
     }
 
     variable = name
+    didSetEditableProperty(&variable, name)
   }
 }

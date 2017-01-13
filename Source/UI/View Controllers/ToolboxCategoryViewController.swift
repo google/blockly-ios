@@ -34,14 +34,6 @@ public final class ToolboxCategoryViewController: UIViewController {
   public fileprivate(set) var category: Toolbox.Category?
   /// The workspace view controller that contains the toolbox blocks.
   public var workspaceViewController: WorkspaceViewController
-  /// The main workspace name manager, to add variable names and track changes.
-  public var workspaceNameManager: NameManager? {
-    didSet {
-      // Remove this toolbox from the old listener, and add it to the new one.
-      oldValue?.listeners.remove(self)
-      workspaceNameManager?.listeners.add(self)
-    }
-  }
   /// The view containing any UI elements for the header - currently, the "Add variable" button.
   public var headerView: UIView = {
     let view = UIView()
@@ -55,6 +47,8 @@ public final class ToolboxCategoryViewController: UIViewController {
     return view
   }()
 
+  /// The main workspace name manager, to add variable names and track changes.
+  private let workspaceNameManager: NameManager?
   /// Width constraint for this view.
   private var _widthConstraint: NSLayoutConstraint!
   /// Height constraint for this view.
@@ -78,10 +72,12 @@ public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Super
 
   public init(viewFactory: ViewFactory,
-    orientation: ToolboxCategoryListViewController.Orientation)
+    orientation: ToolboxCategoryListViewController.Orientation,
+    nameManager: NameManager?)
   {
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
     self.orientation = orientation
+    workspaceNameManager = nameManager
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -222,8 +218,10 @@ public final class ToolboxCategoryViewController: UIViewController {
     if let category = category,
       category.isVariable
     {
-      workspaceViewController.workspaceLayoutCoordinator?.variableNameManager =
-        workspaceNameManager
+      workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = workspaceNameManager
+      let listener = ToolboxNameManagerListener()
+      listener.toolboxCategoryViewController = self
+      workspaceViewController.workspaceLayoutCoordinator?.workspaceNameManagerListener = listener
       addVariableButton.isHidden = false
       switch (orientation) {
       case .horizontal:
@@ -249,8 +247,10 @@ public final class ToolboxCategoryViewController: UIViewController {
   }
 
   fileprivate func getVariableCoordinator() -> WorkspaceLayoutCoordinator? {
-    let categories = toolboxLayout?.toolbox.categories
-    for (index, category) in (categories?.enumerated())! {
+    guard let categories = toolboxLayout?.toolbox.categories else {
+      return nil
+    }
+    for (index, category) in categories.enumerated() {
       if category.isVariable {
         return toolboxLayout?.categoryLayoutCoordinators[index]
       }
@@ -258,25 +258,55 @@ public final class ToolboxCategoryViewController: UIViewController {
 
     return nil
   }
+
+  fileprivate func makeVariableBlock(_ blockName: String, varName: String) throws -> Block? {
+    let block = try getVariableCoordinator()?.blockFactory?.makeBlock(name: blockName)
+    let field = block?.firstField(withName: "VAR") as? FieldVariable
+    try field?.setVariable(varName)
+    return block
+  }
 }
 
-extension ToolboxCategoryViewController: NameManagerListener {
+public class ToolboxNameManagerListener: WorkspaceNameManagerListener {
+  public var toolboxCategoryViewController: ToolboxCategoryViewController?
+
   public func nameManager(_ nameManager: NameManager, didAddName name: String) {
-    guard let config = workspaceViewController.workspaceLayout?.config else {
+    guard let config = toolboxCategoryViewController?.toolboxLayout?.engine.config,
+      let toolbox = toolboxCategoryViewController?.toolboxLayout?.toolbox else {
         return
     }
 
-    let uniqueVariableBlocks =  config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
     let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
 
-    self.toolboxLayout?.toolbox.addVariable(name: name,
-                                            uniqueVariableBlocks: uniqueVariableBlocks,
-                                            variableBlocks: variableBlocks)
+    guard let index = toolbox.categories.index(where: ({ $0.isVariable })) else {
+      return
+    }
+
+    let category = toolbox.categories[index]
+    do {
+      if category.allBlocks.count == 0 {
+        for blockName in uniqueVariableBlocks {
+          if let block = try toolboxCategoryViewController?.makeVariableBlock(blockName, varName: name) {
+            try category.addBlockTree(block)
+          }
+        }
+      }
+
+      for blockName in variableBlocks {
+        if let block = try toolboxCategoryViewController?.makeVariableBlock(blockName, varName: name) {
+          try category.addBlockTree(block)
+        }
+      }
+    } catch {
+      bky_assertionFailure("Failed to make a variable block: \(error)")
+      return
+    }
   }
 
-  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
-    guard let variableCoordinator = getVariableCoordinator(),
-      let config = toolboxLayout?.engine.config else
+  override public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    guard let variableCoordinator = toolboxCategoryViewController?.getVariableCoordinator(),
+      let config = toolboxCategoryViewController?.toolboxLayout?.engine.config else
     {
       return
     }

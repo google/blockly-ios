@@ -129,8 +129,6 @@ open class WorkbenchViewController: UIViewController {
       // the workspace)
       oldValue?.workspaceViewController.delegate = nil
       toolboxCategoryViewController.workspaceViewController.delegate = self
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
     }
   }
 
@@ -151,12 +149,15 @@ open class WorkbenchViewController: UIViewController {
   open var toolbox: Toolbox? {
     return _toolboxLayout?.toolbox
   }
+
+  /// The `NameManager` that controls the variables in this workbench's scope.
+  private let nameManager: NameManager = NameManager()
+
   /// The main workspace layout coordinator
   fileprivate var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
     didSet {
       _dragger.workspaceLayoutCoordinator = _workspaceLayoutCoordinator
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
+      _workspaceLayoutCoordinator?.variableNameManager = nameManager
     }
   }
   /// The underlying workspace layout
@@ -255,6 +256,7 @@ open class WorkbenchViewController: UIViewController {
   fileprivate func commonInit() {
     // Create main workspace view
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = nameManager
     workspaceViewController.workspaceView.allowZoom = true
     workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
@@ -281,7 +283,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory,
-      orientation: style.toolboxOrientation)
+      orientation: style.toolboxOrientation, nameManager: nameManager)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -449,6 +451,7 @@ open class WorkbenchViewController: UIViewController {
       try WorkspaceLayoutCoordinator(workspaceLayout: workspaceLayout,
                                      layoutBuilder: layoutBuilder,
                                      connectionManager: aConnectionManager)
+    _workspaceLayoutCoordinator?.workspaceNameManagerListener = WorkspaceNameManagerListener()
 
     refreshView()
   }
@@ -461,10 +464,10 @@ open class WorkbenchViewController: UIViewController {
    - throws:
    `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
    */
-  open func loadToolbox(_ toolbox: Toolbox) throws {
+  open func loadToolbox(_ toolbox: Toolbox, blockFactory: BlockFactory? = nil) throws {
     let toolboxLayout = ToolboxLayout(
       toolbox: toolbox, engine: engine, layoutDirection: style.toolboxCategoryLayoutDirection,
-      layoutBuilder: layoutBuilder)
+      layoutBuilder: layoutBuilder, blockFactory: blockFactory)
     _toolboxLayout = toolboxLayout
 
     refreshView()

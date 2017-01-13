@@ -36,13 +36,17 @@ open class WorkspaceLayoutCoordinator: NSObject {
   open let blockBumper = BlockBumper()
 
   /// Manager responsible for keeping track of all variable names under this workspace
-  public var variableNameManager: NameManager? = NameManager() {
+  public weak var variableNameManager: NameManager? {
     didSet {
       if variableNameManager == oldValue {
         return
       }
 
-      oldValue?.listeners.remove(self)
+      guard let listener = workspaceNameManagerListener else {
+        return
+      }
+
+      oldValue?.listeners.remove(listener)
 
       workspaceLayout.blockGroupLayouts.forEach {
         $0.blockLayouts.forEach { removeNameManagerFromBlockLayout($0) }
@@ -51,7 +55,22 @@ open class WorkspaceLayoutCoordinator: NSObject {
         $0.blockLayouts.forEach { addNameManager(variableNameManager, toBlockLayout: $0) }
       }
 
-      variableNameManager?.listeners.add(self)
+      variableNameManager?.listeners.add(listener)
+    }
+  }
+
+  public var blockFactory: BlockFactory?
+
+  public var workspaceNameManagerListener: WorkspaceNameManagerListener? {
+    didSet {
+      if let old = oldValue {
+        variableNameManager?.listeners.remove(old)
+      }
+
+      if let new = workspaceNameManagerListener {
+        new.workspaceLayoutCoordinator = self
+        variableNameManager?.listeners.add(new)
+      }
     }
   }
 
@@ -93,12 +112,16 @@ open class WorkspaceLayoutCoordinator: NSObject {
       trackConnections(forBlockLayout: blockLayout)
     }
 
-    variableNameManager?.listeners.add(self)
+    if let listener = workspaceNameManagerListener {
+      variableNameManager?.listeners.add(listener)
+    }
   }
 
   deinit {
     workspaceLayout.workspace.listeners.remove(self)
-    variableNameManager?.listeners.remove(self)
+    if let listener = workspaceNameManagerListener {
+      variableNameManager?.listeners.remove(listener)
+    }
   }
 
   // MARK: - Public
@@ -682,18 +705,25 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 
 // MARK: - NameManagerListener Implementation
 
-extension WorkspaceLayoutCoordinator: NameManagerListener {
+public class WorkspaceNameManagerListener: NameManagerListener {
+  fileprivate var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?
+
   public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
-    let blocks = workspaceLayout.workspace.allVariableBlocks(forName: name)
+    guard let workspaceLayoutCoordinator = workspaceLayoutCoordinator else {
+      return
+    }
+
+    let workspace = workspaceLayoutCoordinator.workspaceLayout.workspace
+    let blocks = workspace.allVariableBlocks(forName: name)
     // Don't do anything to toolbox/trash workspaces.
-    if workspaceLayout.workspace.workspaceType != .interactive {
+    if workspace.workspaceType != .interactive {
       return
     }
 
     // Remove each block with matching variable fields.
     for block in blocks {
       do {
-        try removeSingleBlock(block)
+        try workspaceLayoutCoordinator.removeSingleBlock(block)
       } catch let error {
         bky_assertionFailure("Couldn't remove block: \(error)")
       }
