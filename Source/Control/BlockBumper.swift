@@ -71,10 +71,14 @@ open class BlockBumper: NSObject {
    */
   open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout) {
     // Move this block before trying to bump others
-    if let previousConnection = blockLayout.block.previousConnection {
+    if let previousConnection = blockLayout.block.previousConnection,
+      !previousConnection.connected && !previousConnection.shadowConnected
+    {
       bumpAwayFromNeighborsBlockLayout(ofConnection: previousConnection)
     }
-    if let outputConnection = blockLayout.block.outputConnection {
+    if let outputConnection = blockLayout.block.outputConnection,
+      !outputConnection.connected && !outputConnection.shadowConnected
+    {
       bumpAwayFromNeighborsBlockLayout(ofConnection: outputConnection)
     }
 
