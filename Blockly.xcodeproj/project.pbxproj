@@ -86,6 +86,8 @@
 		FA548C8C1B66E861008BC59C /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C881B66E861008BC59C /* Input.swift */; };
 		FA548C8D1B66E861008BC59C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C891B66E861008BC59C /* Workspace.swift */; };
 		FA548D271B6708F2008BC59C /* BlockBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548D261B6708F2008BC59C /* BlockBuilder.swift */; };
+		FA56E35B1E28454B00A53631 /* MutatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56E35A1E28454B00A53631 /* MutatorHelper.swift */; };
+		FA56E35F1E298E9C00A53631 /* NumberIncrementerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56E35E1E298E9C00A53631 /* NumberIncrementerView.swift */; };
 		FA57C3921CCADADB00952BFB /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57C3911CCADADB00952BFB /* ColorHelper.swift */; };
 		FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57C39C1CCADD2E00952BFB /* ToolboxXMLTest.swift */; };
 		FA57C3A71CCADD8300952BFB /* toolbox_test.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA57C3A61CCADD8300952BFB /* toolbox_test.xml */; };
@@ -111,6 +113,8 @@
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
 		FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84251B1D3459EC0092CDDC /* InputView.swift */; };
 		FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */; };
+		FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */; };
+		FA8BD28D1E0E204C0009F24A /* MutatorIfElseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
 		FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4031C73DE1800FA5A02 /* Input+XML.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
@@ -176,6 +180,7 @@
 		FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */; };
 		FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF62A6B1DB6FCB100137B54 /* BundledFile.swift */; };
 		FAFA71661DF64CF4008247FD /* DummyMutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA71651DF64CF4008247FD /* DummyMutator.swift */; };
+		FAFA81F71E1C513A00BA50E9 /* MutatorIfElseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA81F61E1C513A00BA50E9 /* MutatorIfElseView.swift */; };
 		FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */; };
 		FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE231CD81F4D00698179 /* FieldNumber.swift */; };
 		FAFAEE2E1CD9594500698179 /* FieldNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */; };
@@ -286,6 +291,8 @@
 		FA548C881B66E861008BC59C /* Input.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		FA548C891B66E861008BC59C /* Workspace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		FA548D261B6708F2008BC59C /* BlockBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilder.swift; sourceTree = "<group>"; };
+		FA56E35A1E28454B00A53631 /* MutatorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorHelper.swift; sourceTree = "<group>"; };
+		FA56E35E1E298E9C00A53631 /* NumberIncrementerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberIncrementerView.swift; sourceTree = "<group>"; };
 		FA57C3911CCADADB00952BFB /* ColorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
 		FA57C39C1CCADD2E00952BFB /* ToolboxXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolboxXMLTest.swift; sourceTree = "<group>"; };
 		FA57C3A61CCADD8300952BFB /* toolbox_test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = toolbox_test.xml; sourceTree = "<group>"; };
@@ -311,6 +318,8 @@
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceViewController.swift; sourceTree = "<group>"; };
+		FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElse.swift; sourceTree = "<group>"; };
+		FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElseLayout.swift; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
 		FA99C4031C73DE1800FA5A02 /* Input+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+XML.swift"; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
@@ -376,6 +385,7 @@
 		FAF5005C1D50669E009E4B24 /* FieldCheckboxLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxLayout.swift; sourceTree = "<group>"; };
 		FAF62A6B1DB6FCB100137B54 /* BundledFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundledFile.swift; sourceTree = "<group>"; };
 		FAFA71651DF64CF4008247FD /* DummyMutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyMutator.swift; sourceTree = "<group>"; };
+		FAFA81F61E1C513A00BA50E9 /* MutatorIfElseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElseView.swift; sourceTree = "<group>"; };
 		FAFAEE231CD81F4D00698179 /* FieldNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumber.swift; sourceTree = "<group>"; };
 		FAFAEE2D1CD9594500698179 /* FieldNumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberTest.swift; sourceTree = "<group>"; };
 		FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Helper.swift"; sourceTree = "<group>"; };
@@ -453,6 +463,7 @@
 				FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */,
 				FAA8700F1C64273E000C7C61 /* LayoutHelper.swift */,
 				FAC549611DEFC12200484B02 /* MutatorLayout.swift */,
+				FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */,
 				FA4E840A1CAE4AAE009FB0CD /* ToolboxLayout.swift */,
 				FA2726791B83C54900777B49 /* WorkspaceLayout.swift */,
 				FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */,
@@ -601,6 +612,8 @@
 				FA1631791CE54F89008DDBC8 /* FieldVariableView.swift */,
 				FA84251B1D3459EC0092CDDC /* InputView.swift */,
 				FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */,
+				FAFA81F61E1C513A00BA50E9 /* MutatorIfElseView.swift */,
+				FA56E35E1E298E9C00A53631 /* NumberIncrementerView.swift */,
 				FAFD37AA1C9CEC6900C77049 /* TrashCanView.swift */,
 				FA84250F1D3451510092CDDC /* ViewBuilder.swift */,
 				FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */,
@@ -703,6 +716,7 @@
 				FA548C881B66E861008BC59C /* Input.swift */,
 				FAC1D2961BFA7E2E0019CE45 /* InputBuilder.swift */,
 				FAC5495F1DEFBC4100484B02 /* Mutator.swift */,
+				FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */,
 				FA9D2FBA1C11176700D0E528 /* Toolbox.swift */,
 				FA548C891B66E861008BC59C /* Workspace.swift */,
 				FAB31CA41C51830F0071EBF8 /* WorkspaceFlow.swift */,
@@ -815,6 +829,7 @@
 				300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */,
 				300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */,
 				FAE557781BE02B270019D0D4 /* Dragger.swift */,
+				FA56E35A1E28454B00A53631 /* MutatorHelper.swift */,
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
 			);
 			path = Control;
@@ -960,6 +975,8 @@
 				FA2DFD591B72EBEE0072A278 /* FieldInput.swift in Sources */,
 				FA4BB5701B7C03EA000980E9 /* FieldLabelView.swift in Sources */,
 				FA1631641CE44285008DDBC8 /* DropdownView.swift in Sources */,
+				FAFA81F71E1C513A00BA50E9 /* MutatorIfElseView.swift in Sources */,
+				FA8BD28D1E0E204C0009F24A /* MutatorIfElseLayout.swift in Sources */,
 				FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */,
 				FAF500501D5042F4009E4B24 /* String+Util.swift in Sources */,
 				FA2DFCB31B72D7A30072A278 /* Block+JSON.swift in Sources */,
@@ -970,6 +987,7 @@
 				FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */,
+				FA56E35B1E28454B00A53631 /* MutatorHelper.swift in Sources */,
 				FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */,
 				FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
@@ -989,6 +1007,7 @@
 				FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */,
 				FA16317A1CE54F89008DDBC8 /* FieldVariableView.swift in Sources */,
 				FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */,
+				FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAD652401CB7210C00F73F11 /* DefaultBlockLayout+Background.swift in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
@@ -1025,6 +1044,7 @@
 				FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */,
 				FA4BB5721B7C03EA000980E9 /* WorkspaceView.swift in Sources */,
 				FAA870081C64272C000C7C61 /* JSONHelper.swift in Sources */,
+				FA56E35F1E298E9C00A53631 /* NumberIncrementerView.swift in Sources */,
 				FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */,
 				FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */,
 				FAFAEE711CDC0D2F00698179 /* NameManager.swift in Sources */,

@@ -137,6 +137,10 @@ open class LayoutBuilder: NSObject {
       try (block.layout ?? layoutFactory.makeBlockLayout(block: block, engine: engine))
     block.delegate = blockLayout // Have the layout listen for events on the block
 
+    // As the layout tree is being re-built, hold a reference to the existing child layouts so
+    // they don't get prematurely de-referenced when `blockLayout.reset(...)` is called
+    var previousChildLayouts = blockLayout.childLayouts
+
     // Remove all existing layouts
     blockLayout.reset(updateLayout: false)
 
@@ -151,6 +155,9 @@ open class LayoutBuilder: NSObject {
       let mutatorLayout = try buildLayout(forMutator: mutator, engine: blockLayout.engine)
       blockLayout.mutatorLayout = mutatorLayout
     }
+
+    // Now we can remove the reference to the previous child layouts
+    previousChildLayouts.removeAll()
 
     return blockLayout
   }
@@ -170,6 +177,10 @@ open class LayoutBuilder: NSObject {
       try (input.layout ?? layoutFactory.makeInputLayout(input: input, engine: engine))
     input.delegate = inputLayout // Have the layout listen for events on the input
 
+    // As the layout tree is being re-built, hold a reference to the existing child layouts so
+    // they don't get prematurely de-referenced when `inputLayout.reset(...)` is called
+    var previousChildLayouts = inputLayout.childLayouts
+
     // Remove all existing layouts
     inputLayout.reset(updateLayout: false)
 
@@ -187,6 +198,9 @@ open class LayoutBuilder: NSObject {
       try buildLayoutTree(forBlockGroupLayout: inputLayout.blockGroupLayout,
         block: connectedShadowBlock)
     }
+
+    // Now we can remove the reference to the previous child layouts
+    previousChildLayouts.removeAll()
 
     return inputLayout
   }
