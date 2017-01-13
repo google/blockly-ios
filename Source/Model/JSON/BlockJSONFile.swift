@@ -48,6 +48,12 @@ extension BlockJSONFile {
   /// Dictionary mapping block names to mutators, for all blocks specified under
   /// `self.fileLocations`
   public var blockMutators: [String: Mutator] {
-    return [String: Mutator]()
+    var mutators = [String: Mutator]()
+
+    if contains(.logicDefault) {
+      mutators["controls_if"] = MutatorIfElse()
+    }
+
+    return mutators
   }
 }

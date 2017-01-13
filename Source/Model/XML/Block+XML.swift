@@ -66,7 +66,7 @@ extension Block {
     if let mutator = block.mutator {
       // Update the mutator and immediately apply it
       mutator.update(fromXML: xml)
-      mutator.mutateBlock()
+      try mutator.mutateBlock()
     }
 
     for child in xml.children {

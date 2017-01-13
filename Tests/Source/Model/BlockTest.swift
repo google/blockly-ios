@@ -587,10 +587,20 @@ class BlockTest: XCTestCase {
     XCTAssertTrue(previousConnection.connected)
     XCTAssertEqual(previousConnection, mainBlock.inputs[1].connection?.targetConnection)
 
-    // Remove first input. Check that it was removed and that anything connected to it was
-    // automatically disconnected.
+    // Try to remove first input. This should throw an error since we can't remove inputs with
+    // connected blocks.
     let valueInput = mainBlock.inputs[0]
-    mainBlock.removeInput(valueInput)
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(valueInput) }
+
+    // Disconnect first input's connection and try removing it again. This should still throw an
+    // error, since it's still connected to a shadow block.
+    valueInput.connection?.disconnect()
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(valueInput) }
+
+    // Disconnect input's shadow connection and try removing it again. This should succeed.
+    valueInput.connection?.disconnectShadow()
+    BKYAssertDoesNotThrow { try mainBlock.removeInput(valueInput) }
+
     XCTAssertEqual(1, mainBlock.inputs.count)
     XCTAssertEqual(1, mainBlock.directConnections.count)
     XCTAssertNotEqual(mainBlock.inputs[0], valueInput)
@@ -599,10 +609,15 @@ class BlockTest: XCTestCase {
     XCTAssertNil(valueInput.connectedShadowBlock)
     XCTAssertFalse(shadowOutputConnection.connected)
 
-    // Remove second input. Check that it was removed and that anything connected to it was
-    // automatically disconnected.
+    // Try to remove second input. This should throw an error since we can't remove inputs with
+    // connected blocks.
     let statementInput = mainBlock.inputs[0]
-    mainBlock.removeInput(statementInput)
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(statementInput) }
+
+    // Disconnect second input's connection and try removing it again. This should succeed.
+    statementInput.connection?.disconnect()
+    BKYAssertDoesNotThrow { try mainBlock.removeInput(statementInput) }
+
     XCTAssertEqual(0, mainBlock.inputs.count)
     XCTAssertEqual(0, mainBlock.directConnections.count)
     XCTAssertNil(statementInput.connectedBlock)

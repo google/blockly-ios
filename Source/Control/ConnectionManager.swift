@@ -149,6 +149,18 @@ public final class ConnectionManager: NSObject {
   }
 
   /**
+   Untracks all connections that are not associated with a source block.
+   */
+  public func untrackOrphanedConnections() {
+    for group in _groups {
+      for connection in group.allConnections.filter({ $0.sourceBlock == nil }) {
+        // Untrack this orphaned connection
+        untrackConnection(connection)
+      }
+    }
+  }
+
+  /**
   Iterate over all direct connections on a given group's `ownerBlock` and find the one that is
   closest to a valid connection on another block.
 

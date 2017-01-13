@@ -35,8 +35,10 @@ public protocol Mutator : class {
 
    This mutation is not additive, so any previously applied mutation should not be reflected on
    `self.block`.
+   
+   - throws: Throws an error if the block could not be mutated.
    */
-  func mutateBlock()
+  func mutateBlock() throws
 
   /**
    Returns XML based on this mutator's internal state, which will be included as a direct child

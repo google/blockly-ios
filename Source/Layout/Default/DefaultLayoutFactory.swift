@@ -106,6 +106,11 @@ open class DefaultLayoutFactory: NSObject {
       return FieldVariableLayout(
         fieldVariable: field as! FieldVariable, engine: engine, measurer: FieldVariableView.self)
     }
+
+    registerLayoutCreator(forMutatorType: MutatorIfElse.self) {
+      (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
+      return MutatorIfElseLayout(mutator: mutator as! MutatorIfElse, engine: engine)
+    }
   }
 
   // MARK: - Field Layout Creators
