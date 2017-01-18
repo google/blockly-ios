@@ -244,6 +244,15 @@ extension BlockLayout: ConnectionHighlightDelegate {
 
 extension BlockLayout: BlockDelegate {
   public func didUpdate(block: Block) {
+    // TODO:(#288) Remove highlightDelegate dependency once ConnectionHighlightDelegate
+    // functionality is refactored into this class
+
+    // Update highlight delegates of each connection (since block's directConnections may have
+    // changed due to inputs being added/removed)
+    for connection in block.directConnections {
+      connection.highlightDelegate = self
+    }
+
     // Refresh the block since it's been updated
     sendChangeEvent(withFlags: BlockLayout.Flag_NeedsDisplay)
   }

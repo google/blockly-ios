@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,10 @@ import Foundation
 open class MutatorLayout: Layout {
   /// The target `Mutator` to layout
   public final let mutator: Mutator
+
+  /// A workspace layout coordinator used for executing workspace-level operations related
+  /// to this mutator.
+  open weak var layoutCoordinator: WorkspaceLayoutCoordinator?
 
   // MARK: - Initializers
 

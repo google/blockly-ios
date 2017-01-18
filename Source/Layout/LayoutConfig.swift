@@ -149,7 +149,7 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
     setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
-    setSize(Size(44, 44), for: LayoutConfig.FieldColorButtonSize)
+    setSize(Size(36, 36), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
 
     // Use the default system colors by setting these config values to nil

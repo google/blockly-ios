@@ -68,24 +68,38 @@ open class BlockBumper: NSObject {
    connected to the given block layout.
 
    - parameter blockLayout: The `BlockLayout` to bump others away from.
+   - parameter alwaysBumpOthers: [Optional] When set to `true`, `blockLayout` will always bump other
+   block groups instead of its own. When set to `false`, `blockLayout`'s own block group may be
+   bumped. This value defaults to `false`.
    */
-  open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout) {
-    // Move this block before trying to bump others
+  open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout, alwaysBumpOthers: Bool = false) {
+    // The default behavior is to always bump `blockLayout` away from the neighbors of its
+    // previous/output connections. However, if `alwaysBumpOthers` has been set to `true`, then
+    // those neighbors need to get bumped away instead.
     if let previousConnection = blockLayout.block.previousConnection {
-      bumpAwayFromNeighborsBlockLayout(ofConnection: previousConnection)
+      if alwaysBumpOthers {
+        bumpAllBlocks(nearConnection: previousConnection)
+      } else {
+        bumpAwayFromNeighborsBlockLayout(ofConnection: previousConnection)
+      }
     }
     if let outputConnection = blockLayout.block.outputConnection {
-      bumpAwayFromNeighborsBlockLayout(ofConnection: outputConnection)
+      if alwaysBumpOthers {
+        bumpAllBlocks(nearConnection: outputConnection)
+      } else {
+        bumpAwayFromNeighborsBlockLayout(ofConnection: outputConnection)
+      }
     }
 
     // Bump blocks away from high priority connections on this block
     for directConnection in blockLayout.block.directConnections {
       if directConnection.highPriority {
         if let connectedBlockLayout = directConnection.targetBlock?.layout {
-          bumpNeighbors(ofBlockLayout: connectedBlockLayout)
+          bumpNeighbors(ofBlockLayout: connectedBlockLayout, alwaysBumpOthers: alwaysBumpOthers)
         }
         if let connectedShadowBlockLayout = directConnection.shadowBlock?.layout {
-          bumpNeighbors(ofBlockLayout: connectedShadowBlockLayout)
+          bumpNeighbors(ofBlockLayout: connectedShadowBlockLayout,
+                        alwaysBumpOthers: alwaysBumpOthers)
         }
 
         bumpAllBlocks(nearConnection: directConnection)
