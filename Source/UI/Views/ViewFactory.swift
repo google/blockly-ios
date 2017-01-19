@@ -40,7 +40,6 @@ open class ViewFactory: NSObject {
     registerLayoutType(DefaultBlockLayout.self, withViewType: DefaultBlockView.self)
     registerLayoutType(DefaultBlockGroupLayout.self, withViewType: BlockGroupView.self)
     registerLayoutType(DefaultInputLayout.self, withViewType: InputView.self)
-    registerLayoutType(MutatorIfElseLayout.self, withViewType: MutatorIfElseView.self)
 
     // Register the views for known field layouts
     registerLayoutType(FieldAngleLayout.self, withViewType: FieldAngleView.self)
@@ -53,6 +52,9 @@ open class ViewFactory: NSObject {
     registerLayoutType(FieldLabelLayout.self, withViewType: FieldLabelView.self)
     registerLayoutType(FieldNumberLayout.self, withViewType: FieldNumberView.self)
     registerLayoutType(FieldVariableLayout.self, withViewType: FieldVariableView.self)
+
+    // Register the views for known mutator layouts
+    registerLayoutType(MutatorIfElseLayout.self, withViewType: MutatorIfElseView.self)
   }
 
   // MARK: - Public

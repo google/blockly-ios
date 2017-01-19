@@ -35,6 +35,9 @@ extension BlockJSONFile {
     if contains(.mathDefault) {
       fileLocations.append("Default/math_blocks.json")
     }
+    if contains(.procedureDefault) {
+      fileLocations.append("Default/procedure_blocks.json")
+    }
     if contains(.textDefault) {
       fileLocations.append("Default/text_blocks.json")
     }

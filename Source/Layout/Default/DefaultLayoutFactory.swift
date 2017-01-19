@@ -107,6 +107,8 @@ open class DefaultLayoutFactory: NSObject {
         fieldVariable: field as! FieldVariable, engine: engine, measurer: FieldVariableView.self)
     }
 
+    // Register layout creators for mutators
+
     registerLayoutCreator(forMutatorType: MutatorIfElse.self) {
       (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
       return MutatorIfElseLayout(mutator: mutator as! MutatorIfElse, engine: engine)

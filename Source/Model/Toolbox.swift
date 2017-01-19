@@ -78,6 +78,19 @@ extension Toolbox {
   @objc(BKYToolboxCategory)
   open class Category: WorkspaceFlow {
 
+    // MARK: - Constants
+
+    /** Represents all possible types of toolbox categories. */
+    public enum CategoryType: Int {
+      case
+      /// Specifies a category that is used for generic purposes.
+      generic = 0,
+      /// Specifies a category that is used for "variable" blocks.
+      variable,
+      /// Specifies a category that is used for "procedure" blocks.
+      procedure
+    }
+
     // MARK: - Properties
 
     /// The name of the category
@@ -86,8 +99,8 @@ extension Toolbox {
     open var color: UIColor
     /// An icon used to represent the category
     open var icon: UIImage?
-    /// Determines whether the category is a "variable" category
-    open var isVariable: Bool = false
+    /// The type of the category
+    open var categoryType: CategoryType = .generic
 
     // MARK: - Initializers
 
