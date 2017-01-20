@@ -76,6 +76,18 @@ class BlockFactoryTest: XCTestCase {
     XCTAssertNotNil(block)
   }
 
+  func testLoadBlocksFromProcedureDefault() {
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _blockFactory.makeBlock(name: "procedures_defnoreturn")
+    }
+    _blockFactory.load(fromDefaultFiles: .procedureDefault)
+
+    let block = BKYAssertDoesNotThrow {
+      try _blockFactory.makeBlock(name: "procedures_defnoreturn")
+    }
+    XCTAssertNotNil(block)
+  }
+
   func testLoadBlocksFromTextDefault() {
     BKYAssertThrow(errorType: BlocklyError.self) {
       _ = try _blockFactory.makeBlock(name: "text")

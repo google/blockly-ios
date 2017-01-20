@@ -51,7 +51,7 @@ public class MutatorIfElseLayout : MutatorLayout {
 
   public override func performLayout(includeChildren: Bool) {
     // Inside a block, this mutator is the size of a settings button
-    self.contentSize = WorkspaceSize(width: 32, height: 40)
+    self.contentSize = WorkspaceSize(width: 32, height: 32)
   }
 
   public override func performMutation() throws {

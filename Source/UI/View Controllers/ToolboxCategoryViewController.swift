@@ -213,7 +213,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     // TODO(corydiers):- Add customization(and default) here.
     var buttonSize: CGFloat = 0
     if let category = category,
-      category.isVariable
+      category.categoryType == .variable
     {
       addVariableButton.isHidden = false
       switch (orientation) {

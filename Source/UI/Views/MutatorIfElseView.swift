@@ -33,7 +33,7 @@ open class MutatorIfElseView: LayoutView {
   open fileprivate(set) lazy var popoverButton: UIButton = {
     let button = UIButton(type: .custom)
     button.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    if let image = ImageLoader.loadImage(named: "settings", forClass: MutatorIfElseView.self) {
+    if let image = ImageLoader.loadImage(named: "settings", forClass: type(of: self)) {
       button.setImage(image, for: .normal)
       button.imageView?.contentMode = .scaleAspectFit
       button.contentHorizontalAlignment = .fill
