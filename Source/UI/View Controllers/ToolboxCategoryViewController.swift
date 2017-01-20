@@ -29,13 +29,21 @@ public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Properties
 
   /// The toolbox layout to display
-  public var toolboxLayout: ToolboxLayout?
+  public var toolboxLayout: ToolboxLayout? {
+    didSet {
+      if toolboxLayout != nil,
+        let manager = variableNameManager
+      {
+        // If the name manager is already populated before the layout gets set, we need to add
+        //  variables manually, to "catch up" the workspace.
+        for name in manager.names {
+          addBlocks(forVariable: name)
+        }
+      }
+    }
+  }
   /// The current category being displayed
   public fileprivate(set) var category: Toolbox.Category?
-  /// The workspace view controller that contains the toolbox blocks.
-  public var workspaceViewController: WorkspaceViewController
-  /// The main workspace name manager, to add variable names and track changes.
-  public var workspaceNameManager: NameManager?
   /// The view containing any UI elements for the header - currently, the "Add variable" button.
   public var headerView: UIView = {
     let view = UIView()
@@ -48,7 +56,20 @@ public final class ToolboxCategoryViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+  /// Accessor for the workspace view controller delegate, so touch functionality can be set easily
+  public var delegate: WorkspaceViewControllerDelegate? {
+    set { self.workspaceViewController.delegate = delegate }
+    get { return self.workspaceViewController.delegate }
+  }
+  /// The scroll view from the toolbox workspace's view controller.
+  public var workspaceScrollView: UIScrollView {
+    return workspaceViewController.workspaceView.scrollView
+  }
 
+  /// The workspace view controller that contains the toolbox blocks.
+  fileprivate var workspaceViewController: WorkspaceViewController
+  /// The main workspace name manager, to add variable names and track changes.
+  private weak var variableNameManager: NameManager?
   /// Width constraint for this view.
   private var _widthConstraint: NSLayoutConstraint!
   /// Height constraint for this view.
@@ -64,7 +85,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     button.setTitleColor(.white, for: .normal)
     button.setTitleColor(.gray, for: .highlighted)
     button.backgroundColor = .darkGray
-    button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
     button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return button
   }()
@@ -72,12 +93,20 @@ public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Super
 
   public init(viewFactory: ViewFactory,
-    orientation: ToolboxCategoryListViewController.Orientation)
+    orientation: ToolboxCategoryListViewController.Orientation,
+    variableNameManager: NameManager?)
   {
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
     self.orientation = orientation
+    self.variableNameManager = variableNameManager
 
     super.init(nibName: nil, bundle: nil)
+
+    variableNameManager?.listeners.add(self)
+  }
+
+  deinit {
+    variableNameManager?.listeners.remove(self)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -136,29 +165,6 @@ public final class ToolboxCategoryViewController: UIViewController {
     workspaceViewController.workspaceView.setNeedsUpdateConstraints()
   }
 
-  public func didTapButton(_: UIButton) {
-    let addView = UIAlertController(title: "New variable name:", message: "",
-      preferredStyle: .alert)
-    addView.addTextField(configurationHandler: nil)
-    addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    addView.addAction(UIAlertAction(title: "Add", style: .default) { _ in
-      guard let textField = addView.textFields?[0],
-        let newName = textField.text else
-      {
-        return
-      }
-
-      do {
-        try self.workspaceNameManager?.addName(newName)
-      } catch {
-        bky_assertionFailure(
-          "Tried to create an invalid variable without proper error handling: \(error)")
-      }
-    })
-
-    workspaceViewController.present(addView, animated: true, completion: nil)
-  }
-
   // MARK: - Public
 
   /**
@@ -181,6 +187,13 @@ public final class ToolboxCategoryViewController: UIViewController {
     setCategory(nil, animated: animated)
   }
 
+  /**
+   Called when the "Add variable" button is tapped. Shows the add variable alert.
+   */
+  public func didTapAddButton(_: UIButton) {
+    showAddAlert()
+  }
+
   // MARK: - Private
 
   private func setCategory(_ category: Toolbox.Category?, animated: Bool) {
@@ -200,17 +213,24 @@ public final class ToolboxCategoryViewController: UIViewController {
           .filter({ $0.workspaceLayout.workspace == category }).first
       {
         try workspaceViewController.loadWorkspaceLayoutCoordinator(layoutCoordinator)
+        workspaceViewController.workspace?.workspaceType = .toolbox
       }
     } catch let error {
       bky_assertionFailure("Could not load category: \(error)")
       return
     }
 
+    updateSize(animated: animated)
+  }
+
+  fileprivate func updateSize(animated: Bool = true) {
     // Update the size of the toolbox, if needed
     var newWidth = category?.layout?.viewFrame.size.width ?? 0
     var newHeight = category?.layout?.viewFrame.size.height ?? 0
 
-    // TODO(corydiers):- Add customization(and default) here.
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
+
+    // TODO(#291):- Add customization(and default) here.
     var buttonSize: CGFloat = 0
     if let category = category,
       category.categoryType == .variable
@@ -224,6 +244,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         buttonSize = 56
         newHeight += buttonSize
       }
+
+      newWidth = max(newWidth, 136)
+      newHeight = max(newHeight, 56)
     } else {
       addVariableButton.isHidden = true
     }
@@ -234,5 +257,162 @@ public final class ToolboxCategoryViewController: UIViewController {
       self._widthConstraint.constant = newWidth
       self._heightConstraint.constant = newHeight
     })
+  }
+
+  fileprivate func showAddAlert(error: String = "") {
+    let addView = UIAlertController(title: "New variable name:", message: error,
+                                    preferredStyle: .alert)
+    addView.addTextField(configurationHandler: nil)
+    addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    addView.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+      guard let variableNameManager = self.variableNameManager else {
+        return
+      }
+
+      guard let textField = addView.textFields?[0],
+        let newName = textField.text,
+        FieldVariable.isValidName(newName) else
+      {
+        self.showAddAlert(error: "(Error) You can't use an empty variable name.")
+        return
+      }
+
+      if variableNameManager.containsName(newName) {
+        self.showAddAlert(error: "(Error) That variable already exists.")
+        return
+      }
+
+      do {
+        try variableNameManager.addName(newName)
+      } catch {
+        bky_assertionFailure(
+          "Tried to create an invalid variable without proper error handling: \(error)")
+      }
+    })
+
+    workspaceViewController.present(addView, animated: true, completion: nil)
+  }
+
+  fileprivate func firstVariableLayoutCoordinator() -> WorkspaceLayoutCoordinator? {
+    guard let categories = toolboxLayout?.toolbox.categories else {
+      return nil
+    }
+    for (index, category) in categories.enumerated() {
+      if category.isVariable {
+        return toolboxLayout?.categoryLayoutCoordinators[index]
+      }
+    }
+
+    return nil
+  }
+
+  fileprivate func makeVariableBlock(name blockName: String, variable: String) throws -> Block? {
+    guard let blockFactory = firstVariableLayoutCoordinator()?.blockFactory else {
+      throw BlocklyError(.illegalOperation, "Cannot make a variable block when the BlockFactory " +
+        "isn't set on the ToolboxCategoryViewController.")
+    }
+
+    let block = try blockFactory.makeBlock(name: blockName)
+    for input in block.inputs {
+      for field in input.fields {
+        if let fieldVariable = field as? FieldVariable {
+          try fieldVariable.setVariable(variable)
+        }
+      }
+    }
+    return block
+  }
+
+  fileprivate func addBlocks(forVariable variable: String) {
+    guard let variableCoordinator = firstVariableLayoutCoordinator() else {
+      return
+    }
+
+    let config = variableCoordinator.workspaceLayout.config
+    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+
+    /// Find the variable category in the toolbox
+    do {
+      /// If there are no blocks in the category yet, add the unique blocks, so they're added once.
+      if variableCoordinator.workspaceLayout.workspace.allBlocks.isEmpty {
+        for blockName in uniqueVariableBlocks {
+          if let block = try makeVariableBlock(name: blockName, variable: variable) {
+            try variableCoordinator.addBlockTree(block)
+          }
+        }
+      }
+
+      /// Always add the non-unique blocks to the toolbox.
+      for blockName in variableBlocks {
+        let variableBlocks =
+          variableCoordinator.workspaceLayout.workspace.allVariableBlocks(forName: variable)
+        for block in variableBlocks {
+          if block.name == blockName {
+            continue
+          }
+        }
+
+        if let block = try makeVariableBlock(name: blockName, variable: variable) {
+          try variableCoordinator.addBlockTree(block)
+        }
+      }
+    } catch {
+      bky_assertionFailure("Failed to make a variable block: \(error)")
+      return
+    }
+
+    updateSize()
+  }
+}
+
+extension ToolboxCategoryViewController: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, didAddName name: String) {
+    addBlocks(forVariable: name)
+  }
+
+  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    guard let variableCoordinator = firstVariableLayoutCoordinator(),
+      let config = toolboxLayout?.engine.config else
+    {
+      return
+    }
+
+    let workspace = variableCoordinator.workspaceLayout.workspace
+    let matchingBlocks = workspace.allVariableBlocks(forName: name)
+    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let variableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+    let shouldDeleteUniqueBlocks = workspace.allBlocks.count ==
+      uniqueVariableBlocks.count + variableBlocks.count
+    var renameBlocks: [Block] = []
+
+    // Remove each block with matching variable fields.
+    for block in matchingBlocks {
+      do {
+        if uniqueVariableBlocks.contains(block.name) && !shouldDeleteUniqueBlocks {
+          renameBlocks.append(block)
+        } else {
+          try variableCoordinator.removeSingleBlock(block)
+        }
+      } catch let error {
+        bky_assertionFailure("Couldn't remove block: \(error)")
+      }
+    }
+
+    // If the unique blocks had their variable deleted, set them to another variable in the manager.
+    guard let newDefault = nameManager.names.first else {
+      return
+    }
+    for block in renameBlocks {
+      if let blockLayout = block.layout {
+        for input in blockLayout.inputLayouts {
+          for field in input.fieldLayouts {
+            if let fieldVariable = field as? FieldVariableLayout {
+              fieldVariable.changeToExistingVariable(newDefault)
+            }
+          }
+        }
+      }
+    }
   }
 }

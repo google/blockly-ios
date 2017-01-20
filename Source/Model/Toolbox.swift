@@ -52,7 +52,7 @@ open class Toolbox: NSObject {
   }
 
   /**
-  Adds a category to the toolbox.
+   Adds a category to the toolbox.
 
   - parameter name: The name of the new category.
   - parameter color: The color of the new category.
@@ -62,6 +62,7 @@ open class Toolbox: NSObject {
   open func addCategory(name: String, color: UIColor, icon: UIImage?) -> Category {
     let category = Category(name: name, color: color, icon: icon)
     category.readOnly = self.readOnly
+    category.workspaceType = .toolbox
 
     self.categories.append(category)
 

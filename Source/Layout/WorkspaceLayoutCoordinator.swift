@@ -36,7 +36,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
   open let blockBumper = BlockBumper()
 
   /// Manager responsible for keeping track of all variable names under this workspace
-  public var variableNameManager: NameManager? = NameManager() {
+  public weak var variableNameManager: NameManager? {
     didSet {
       if variableNameManager == oldValue {
         return
@@ -54,6 +54,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
       variableNameManager?.listeners.add(self)
     }
   }
+
+  /// The factory for building blocks dynamically. Currently only used for building variable blocks
+  ///  for the toolbox.
+  public var blockFactory: BlockFactory?
 
   // MARK: - Initializers / De-initializers
 
@@ -743,6 +747,10 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 extension WorkspaceLayoutCoordinator: NameManagerListener {
   public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
     let blocks = workspaceLayout.workspace.allVariableBlocks(forName: name)
+    // Don't do anything to toolbox/trash workspaces.
+    if workspaceLayout.workspace.workspaceType != .interactive {
+      return
+    }
 
     // Remove each block with matching variable fields.
     for block in blocks {

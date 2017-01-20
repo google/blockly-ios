@@ -127,10 +127,8 @@ open class WorkbenchViewController: UIViewController {
       // We need to listen for when block views are added/removed from the block list
       // so we can attach pan gesture recognizers to those blocks (for dragging them onto
       // the workspace)
-      oldValue?.workspaceViewController.delegate = nil
-      toolboxCategoryViewController.workspaceViewController.delegate = self
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
+      oldValue?.delegate = nil
+      toolboxCategoryViewController.delegate = self
     }
   }
 
@@ -151,12 +149,15 @@ open class WorkbenchViewController: UIViewController {
   open var toolbox: Toolbox? {
     return _toolboxLayout?.toolbox
   }
+
+  /// The `NameManager` that controls the variables in this workbench's scope.
+  private let variableNameManager: NameManager
+
   /// The main workspace layout coordinator
   fileprivate var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
     didSet {
       _dragger.workspaceLayoutCoordinator = _workspaceLayoutCoordinator
-      toolboxCategoryViewController.workspaceNameManager =
-        _workspaceLayoutCoordinator?.variableNameManager
+      _workspaceLayoutCoordinator?.variableNameManager = variableNameManager
     }
   }
   /// The underlying workspace layout
@@ -219,6 +220,7 @@ open class WorkbenchViewController: UIViewController {
     self.engine = DefaultLayoutEngine()
     self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
     self.viewFactory = ViewFactory()
+    self.variableNameManager = NameManager()
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
@@ -232,12 +234,13 @@ open class WorkbenchViewController: UIViewController {
    - parameter viewFactory: Value used for `self.viewFactory`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
-              viewFactory: ViewFactory)
+              viewFactory: ViewFactory, variableNameManager: NameManager)
   {
     self.style = style
     self.engine = engine
     self.layoutBuilder = layoutBuilder
     self.viewFactory = viewFactory
+    self.variableNameManager = variableNameManager
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
@@ -255,6 +258,7 @@ open class WorkbenchViewController: UIViewController {
   fileprivate func commonInit() {
     // Create main workspace view
     workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
     workspaceViewController.workspaceView.allowZoom = true
     workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
@@ -281,7 +285,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory,
-      orientation: style.toolboxOrientation)
+      orientation: style.toolboxOrientation, variableNameManager: variableNameManager)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -458,14 +462,18 @@ open class WorkbenchViewController: UIViewController {
    and `self.layoutBuilder` instances) and loads it into the view controller.
 
    - parameter toolbox: The `Toolbox` to load
+   - parameter blockFactory: (Optional) The `BlockFactory` to associate with the toolbox.
+   - note: The block factory is only required if the toolbox needs to dynamically create blocks.
+     (e.g. The variable category.)
    - throws:
    `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
    */
-  open func loadToolbox(_ toolbox: Toolbox) throws {
+  open func loadToolbox(_ toolbox: Toolbox, blockFactory: BlockFactory? = nil) throws {
     let toolboxLayout = ToolboxLayout(
       toolbox: toolbox, engine: engine, layoutDirection: style.toolboxCategoryLayoutDirection,
       layoutBuilder: layoutBuilder)
     _toolboxLayout = toolboxLayout
+    _toolboxLayout?.setBlockFactory(blockFactory)
 
     refreshView()
   }
@@ -1121,8 +1129,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool
   {
     let scrollView = workspaceViewController.workspaceView.scrollView
-    let toolboxScrollView =
-      toolboxCategoryViewController.workspaceViewController.workspaceView.scrollView
+    let toolboxScrollView = toolboxCategoryViewController.workspaceScrollView
 
     // Force the scrollView pan and zoom gestures to fail unless this one fails
     if otherGestureRecognizer == scrollView.panGestureRecognizer ||

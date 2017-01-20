@@ -53,6 +53,7 @@ public final class TrashCanViewController: WorkspaceViewController {
     // Create the workspace and layout representing the trash can
     let workspace = WorkspaceFlow()
     workspace.readOnly = true
+    workspace.workspaceType = .trash
 
     do {
       let workspaceLayout =

@@ -181,11 +181,7 @@ extension FieldVariableLayout: NameManagerListener {
   {
     if nameManager.namesAreEqual(oldName, variable) {
       // This variable was renamed, update it
-      do {
-        try fieldVariable.setVariable(newName)
-      } catch let error {
-        bky_assertionFailure("Could not rename variable: \(error)")
-      }
+      changeToExistingVariable(newName)
     }
   }
 }
