@@ -113,6 +113,12 @@ open class DefaultLayoutFactory: NSObject {
       (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
       return MutatorIfElseLayout(mutator: mutator as! MutatorIfElse, engine: engine)
     }
+
+    registerLayoutCreator(forMutatorType: MutatorProcedureDefinition.self) {
+      (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
+      return MutatorProcedureDefinitionLayout(
+        mutator: mutator as! MutatorProcedureDefinition, engine: engine)
+    }
   }
 
   // MARK: - Field Layout Creators
