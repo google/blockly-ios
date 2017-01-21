@@ -298,7 +298,7 @@ public final class ToolboxCategoryViewController: UIViewController {
       return nil
     }
     for (index, category) in categories.enumerated() {
-      if category.isVariable {
+      if category.categoryType == .variable {
         return toolboxLayout?.categoryLayoutCoordinators[index]
       }
     }
