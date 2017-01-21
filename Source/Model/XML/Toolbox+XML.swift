@@ -94,6 +94,21 @@ extension Toolbox {
           category.categoryType = .variable
         } else if custom.uppercased() == "PROCEDURE" {
           category.categoryType = .procedure
+
+          // Immediately add the base blocks
+          let noReturnBlock = try factory.makeBlock(name: "procedures_defnoreturn")
+          (noReturnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          try category.addBlockTree(noReturnBlock)
+
+          let returnBlock = try factory.makeBlock(name: "procedures_defreturn")
+          (returnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          if let mutator = returnBlock.mutator as? MutatorProcedureDefinition {
+            mutator.allowStatements = true
+            try mutator.mutateBlock()
+          }
+          try category.addBlockTree(returnBlock)
+
+          try category.addBlockTree(factory.makeBlock(name: "procedures_ifreturn"))
         } else {
           bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
         }

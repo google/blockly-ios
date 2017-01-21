@@ -127,11 +127,8 @@ extension FieldVariableView: DropdownViewDelegate {
 
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
-
-    if let fontCreator = fieldVariableLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
-      // Use a scaled font, but don't let the scale go less than 1.0
-      viewController.textLabelFont = fontCreator(max(fieldVariableLayout.engine.scale, 1.0))
-    }
+    viewController.textLabelFont =
+      fieldVariableLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
 
     // Populate options
     var options = fieldVariableLayout.variables

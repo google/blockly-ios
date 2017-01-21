@@ -165,4 +165,5 @@
     </category>
     <category name="Variables" colour="350" custom="VARIABLE">
     </category>
+    <category name="Functions" colour="290" custom="PROCEDURE" />
 </xml>
