@@ -228,8 +228,6 @@ public final class ToolboxCategoryViewController: UIViewController {
     var newWidth = category?.layout?.viewFrame.size.width ?? 0
     var newHeight = category?.layout?.viewFrame.size.height ?? 0
 
-    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
-
     // TODO(#291):- Add customization(and default) here.
     var buttonSize: CGFloat = 0
     if let category = category,
@@ -371,6 +369,45 @@ extension ToolboxCategoryViewController: NameManagerListener {
     addBlocks(forVariable: name)
   }
 
+  public func nameManager(
+    _ nameManager: NameManager, didRenameName oldName: String, toName newName: String)
+  {
+    guard let variableCoordinator = firstVariableLayoutCoordinator(),
+      let config = toolboxLayout?.engine.config else {
+      return
+    }
+
+    let workspace = variableCoordinator.workspaceLayout.workspace
+    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
+    let newBlocks = workspace.allVariableBlocks(forName: newName)
+    let oldBlocks = workspace.allVariableBlocks(forName: oldName)
+    // If there are blocks matching the new name, a variable is being renamed to an existing
+    //  variable, and any non-unique blocks matching the old variable must be removed.
+    if newBlocks.count != 0 {
+      for block in oldBlocks {
+        if !uniqueVariableBlocks.contains(block.name) {
+          do {
+            try workspace.removeBlockTree(block)
+          } catch {
+            bky_assertionFailure("Could not remove variable block from the toolbox: \(error)")
+          }
+        }
+      }
+    }
+
+    // Rename each variable to the new name.
+    for block in oldBlocks {
+      guard let layout = block.layout else {
+        continue
+      }
+
+      let fieldVariables = layout.flattenedLayoutTree(ofType: FieldVariableLayout.self)
+      for fieldVariable in fieldVariables {
+        fieldVariable.nameManager(nameManager, didRenameName: oldName, toName: newName)
+      }
+    }
+  }
+
   public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
     guard let variableCoordinator = firstVariableLayoutCoordinator(),
       let config = toolboxLayout?.engine.config else
@@ -395,7 +432,7 @@ extension ToolboxCategoryViewController: NameManagerListener {
           try variableCoordinator.removeSingleBlock(block)
         }
       } catch let error {
-        bky_assertionFailure("Couldn't remove block: \(error)")
+        bky_assertionFailure("Could not remove variable block from the toolbox: \(error)")
       }
     }
 
@@ -403,15 +440,15 @@ extension ToolboxCategoryViewController: NameManagerListener {
     guard let newDefault = nameManager.names.first else {
       return
     }
+
     for block in renameBlocks {
-      if let blockLayout = block.layout {
-        for input in blockLayout.inputLayouts {
-          for field in input.fieldLayouts {
-            if let fieldVariable = field as? FieldVariableLayout {
-              fieldVariable.changeToExistingVariable(newDefault)
-            }
-          }
-        }
+      guard let layout = block.layout else {
+        continue
+      }
+
+      let fieldVariables = layout.flattenedLayoutTree(ofType: FieldVariableLayout.self)
+      for fieldVariable in fieldVariables {
+        fieldVariable.changeToExistingVariable(newDefault)
       }
     }
   }

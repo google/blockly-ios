@@ -141,6 +141,23 @@ class NameManagerTest: XCTestCase {
     XCTAssertFalse(_nameManager.renameName("NON EXISTENT NAME", to: "SOME NAME"))
     XCTAssertFalse(listener.renamedName)
   }
+
+  func testRenameName_emptyString() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    XCTAssertFalse(_nameManager.renameName("", to: "a"))
+    XCTAssertFalse(listener.renamedName)
+  }
+
+  func testRenameName_SameName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    BKYAssertDoesNotThrow({ try _nameManager.addName("a") })
+    XCTAssertFalse(_nameManager.renameName("a", to: "a"))
+    XCTAssertFalse(listener.renamedName)
+  }
 }
 
 /**
