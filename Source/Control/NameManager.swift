@@ -144,7 +144,9 @@ public final class NameManager: NSObject {
     let oldNameKey = keyForName(oldName)
     let newNameKey = keyForName(newName)
 
-    guard let oldNameDisplay = _names[oldNameKey] else {
+    guard let oldNameDisplay = _names[oldNameKey],
+      oldNameKey != newNameKey else
+    {
       return false
     }
 
@@ -155,7 +157,9 @@ public final class NameManager: NSObject {
       $0.nameManager?(self, didRenameName: oldNameDisplay, toName: newName)
     }
 
-    if previousDisplayNameForNewName != nil {
+    if previousDisplayNameForNewName != nil,
+      previousDisplayNameForNewName != newName
+    {
       listeners.forEach {
         $0.nameManager?(self, didRenameName: previousDisplayNameForNewName!, toName: newName)
       }
