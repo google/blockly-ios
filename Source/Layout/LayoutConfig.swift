@@ -75,8 +75,14 @@ open class LayoutConfig: NSObject {
   /// used for each one.
   public static let FieldTextFieldMaximumWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Font`] The default font to use for all text inside Blockly.
+  /// [`Font`] The default font to use for generic text inside Blockly.
   public static let GlobalFont = LayoutConfig.newPropertyKey()
+
+  /// [`Font`] The font to use for title text inside popovers.
+  public static let PopoverTitleFont = LayoutConfig.newPropertyKey()
+
+  /// [`Font`] The font to use for subtitle text inside popovers.
+  public static let PopoverSubtitleFont = LayoutConfig.newPropertyKey()
 
   /// [`Double`] The animation duration to use when running animatable code inside a `LayoutView`.
   public static let ViewAnimationDuration = LayoutConfig.newPropertyKey()
@@ -110,7 +116,10 @@ open class LayoutConfig: NSObject {
   // MARK: - Properties
 
   // The current scale of all values inside the config
-  private var _scale: CGFloat = 1.0;
+  private var _scale: CGFloat = 1.0
+
+  // The current popover scale of fonts inside the config
+  private var _popoverScale: CGFloat = 1.0
 
   // NOTE: Separate dictionaries were created for each type of value as casting specific values
   // from a Dictionary<PropertyKey, Any> is a big performance hit.
@@ -175,8 +184,16 @@ open class LayoutConfig: NSObject {
     setStringArray(["variables_set", "math_change"], for: LayoutConfig.UniqueVariableBlocks)
 
     setFontCreator({ scale in
-      return UIFont.systemFont(ofSize: 14 * scale)
+      return UIFont.systemFont(ofSize: 16 * scale)
     }, for: LayoutConfig.GlobalFont)
+
+    setFontCreator({ scale in
+      return UIFont.systemFont(ofSize: 13 * scale)
+      }, for: LayoutConfig.PopoverTitleFont)
+
+    setFontCreator({ scale in
+      return UIFont.systemFont(ofSize: 13 * scale)
+      }, for: LayoutConfig.PopoverSubtitleFont)
   }
 
   // MARK: - Create Property Keys
@@ -331,7 +348,8 @@ open class LayoutConfig: NSObject {
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.GlobalFont`)
    */
   public func setFontCreator(_ fontCreator: @escaping FontCreator, for key: PropertyKey) {
-    _fonts[key] = ScaledFont(creator: fontCreator, currentScale: _scale)
+    _fonts[key] =
+      ScaledFont(creator: fontCreator, fontScale: _scale, popoverFontScale: _popoverScale)
   }
 
   /**
@@ -356,7 +374,20 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func font(for key: PropertyKey) -> UIFont {
-    return _fonts[key]?.font ?? UIFont.systemFont(ofSize: 14 * _scale)
+    return _fonts[key]?.font ?? UIFont.systemFont(ofSize: 16 * _scale)
+  }
+
+  /**
+   Based on the closure for creating a `UIFont` associated to a specific `PropertyKey`, returns
+   a scaled `UIFont` for use inside a popover.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.GlobalFont`)
+   - returns: The scaled `UIFont` using the closure associated with the `key`, or a default `UIFont`
+   if the key could not be located.
+   */
+  @inline(__always)
+  public func popoverFont(for key: PropertyKey) -> UIFont {
+    return _fonts[key]?.popoverFont ?? UIFont.systemFont(ofSize: 16 * _popoverScale)
   }
 
   /**
@@ -503,6 +534,7 @@ open class LayoutConfig: NSObject {
    */
   open func updateViewValues(fromEngine engine: LayoutEngine) {
     _scale = engine.scale
+    _popoverScale = engine.popoverScale
 
     for (key, var unit) in _units {
       unit.viewUnit = engine.viewUnitFromWorkspaceUnit(unit.workspaceUnit)
@@ -516,6 +548,7 @@ open class LayoutConfig: NSObject {
 
     for (_, scaledFont) in _fonts {
       scaledFont.font = scaledFont.creator(_scale)
+      scaledFont.popoverFont = scaledFont.creator(_popoverScale)
     }
   }
 }
@@ -529,10 +562,12 @@ extension LayoutConfig {
   fileprivate class ScaledFont {
     let creator: FontCreator
     var font: UIFont
+    var popoverFont: UIFont
 
-    init(creator: @escaping FontCreator, currentScale: CGFloat) {
+    init(creator: @escaping FontCreator, fontScale: CGFloat, popoverFontScale: CGFloat) {
       self.creator = creator
-      self.font = creator(currentScale)
+      self.font = creator(fontScale)
+      self.popoverFont = creator(popoverFontScale)
     }
   }
 }

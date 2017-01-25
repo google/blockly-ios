@@ -56,6 +56,10 @@ extension BlockJSONFile {
     if contains(.logicDefault) {
       mutators["controls_if"] = MutatorIfElse()
     }
+    if contains(.procedureDefault) {
+      mutators["procedures_defnoreturn"] = MutatorProcedureDefinition(returnsValue: false)
+      mutators["procedures_defreturn"] = MutatorProcedureDefinition(returnsValue: true)
+    }
 
     return mutators
   }

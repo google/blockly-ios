@@ -55,6 +55,8 @@ open class ViewFactory: NSObject {
 
     // Register the views for known mutator layouts
     registerLayoutType(MutatorIfElseLayout.self, withViewType: MutatorIfElseView.self)
+    registerLayoutType(MutatorProcedureDefinitionLayout.self,
+                       withViewType: MutatorProcedureDefinitionView.self)
   }
 
   // MARK: - Public
