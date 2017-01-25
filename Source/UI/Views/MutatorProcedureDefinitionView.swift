@@ -323,7 +323,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     if proposedDestinationIndexPath.section != SECTION_PARAMETERS ||
       proposedDestinationIndexPath.row >= mutatorLayout.parameters.count
     {
-      return IndexPath(row: 1, section: SECTION_PARAMETERS)
+      return IndexPath(row: max(mutatorLayout.parameters.count - 1, 0), section: SECTION_PARAMETERS)
     }
     return proposedDestinationIndexPath
   }
