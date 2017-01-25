@@ -46,7 +46,19 @@ extension MutatorProcedureCaller: Mutator {
 
     // Update name label
     if let field = block.firstField(withName: "NAME") as? FieldLabel {
-      field.text = procedureName + (!parameters.isEmpty ? " with:" : "")
+      field.text = procedureName
+    }
+
+    // Update "with: " field
+    if let input = block.firstInput(withName: "TOPROW") {
+      let withField = block.firstField(withName: "WITH")
+      if parameters.isEmpty,
+        let field = withField
+      {
+        input.removeField(field)
+      } else if !parameters.isEmpty && withField == nil {
+        input.appendField(FieldLabel(name: "WITH", text: "with:"))
+      }
     }
 
     // Update parameters

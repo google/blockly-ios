@@ -48,12 +48,12 @@
     "message0": "%1 %2",
     "args0": [
       {
-        "type": "input_dummy",
-        "name": "TOPROW"
-      },
-      {
         "type": "field_label",
         "name": "NAME"
+      },
+      {
+        "type": "input_dummy",
+        "name": "TOPROW"
       }
     ],
     "previousStatement": null,
@@ -66,12 +66,12 @@
     "message0": "%1 %2",
     "args0": [
       {
-        "type": "input_dummy",
-        "name": "TOPROW"
-      },
-      {
         "type": "field_label",
         "name": "NAME"
+      },
+      {
+        "type": "input_dummy",
+        "name": "TOPROW"
       }
     ],
     "output": null,
