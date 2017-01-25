@@ -49,7 +49,7 @@
     "args0": [
       {
         "type": "input_dummy",
-        "name": "TOP_ROW"
+        "name": "TOPROW"
       },
       {
         "type": "field_label",
@@ -62,12 +62,12 @@
     "helpUrl": "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29"
   },
   {
-    "type": "procedures_callnoreturn",
+    "type": "procedures_callreturn",
     "message0": "%1 %2",
     "args0": [
       {
         "type": "input_dummy",
-        "name": "TOP_ROW"
+        "name": "TOPROW"
       },
       {
         "type": "field_label",
