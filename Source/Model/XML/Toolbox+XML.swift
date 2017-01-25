@@ -126,7 +126,6 @@ extension Toolbox {
           let callerNoReturnBlock = try factory.makeBlock(name: "procedures_callnoreturn")
           if let mutator = callerNoReturnBlock.mutator as? MutatorProcedureCaller {
             mutator.procedureName = "do something"
-            mutator.parameters = ["some parameter input"]
             try mutator.mutateBlock()
           }
           try category.addBlockTree(callerNoReturnBlock)

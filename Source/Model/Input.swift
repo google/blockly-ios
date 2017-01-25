@@ -97,7 +97,7 @@ public final class Input : NSObject {
   /// The name of the input.
   public let name: String
   /// A list of `Field` objects for the input.
-  public let fields: [Field]
+  public private(set) var fields: [Field]
   /// The `Block` that owns this input.
   public internal(set) weak var sourceBlock: Block? {
     didSet {
@@ -147,6 +147,42 @@ public final class Input : NSObject {
 
     for field in fields {
       field.sourceInput = self
+    }
+  }
+
+  // MARK: - Fields
+
+  /**
+   Append a field to the end of `self.fields`.
+
+   - parameter field: The `Field` to append.
+   */
+  public func appendField(_ field: Field) {
+    fields.append(field)
+    field.sourceInput = self
+  }
+
+  /**
+   Insert a field at the specified position.
+
+   - parameter field: The `Field` to insert.
+   - parameter index: The position to insert the field into `self.fields`.
+   */
+  public func insertField(_ field: Field, at index: Int) {
+    fields.insert(field, at: index)
+    field.sourceInput = self
+  }
+
+  /**
+   Remove a field from the input. If the field doesn't exist, nothing happens.
+
+   - parameter field: The `Field` to remove.
+   */
+  public func removeField(_ field: Field) {
+    if let index = fields.index(of: field) {
+      // Remove field
+      field.sourceInput = nil
+      fields.remove(at: index)
     }
   }
 }
