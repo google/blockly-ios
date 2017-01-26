@@ -40,6 +40,8 @@ public final class CodeGenerator: NSObject {
 
   /// Internal JS file that is used to communicate between the iOS code and JS code
   fileprivate static let CODE_GENERATOR_BRIDGE_JS = "CodeGenerator/code_generator_bridge.js"
+  /// Internal JS file that implements `domToMutation(...)` functions for default blocks
+  fileprivate static let CODE_GENERATOR_MUTATORS_JS = "CodeGenerator/code_generator_mutators.js"
   /// The name used to reference this iOS object when executing callbacks from the JS code.
   /// If this value is changed, it should also be changed in the `CODE_GENERATOR_BRIDGE_JS` file.
   fileprivate static let JS_CALLBACK_NAME = "CodeGenerator"
@@ -291,7 +293,7 @@ extension CodeGenerator: WKNavigationDelegate {
       // Load our special bridge file
       jsScripts.append(try contents(ofBundledFile:
         BundledFile(path: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
-          bundle: Bundle(for: CodeGenerator.self))))
+                    bundle: Bundle(for: type(of: self)))))
 
       // Load JS dependencies
       for bundledFile in jsCoreDependencies {
@@ -302,6 +304,11 @@ extension CodeGenerator: WKNavigationDelegate {
       for bundledFile in jsBlockGeneratorFiles {
         jsScripts.append(try contents(ofBundledFile: bundledFile))
       }
+
+      // Load custom `domToMutation(...)` methods for known mutator blocks
+      jsScripts.append(try contents(ofBundledFile:
+        BundledFile(path: CodeGenerator.CODE_GENERATOR_MUTATORS_JS,
+                    bundle: Bundle(for: type(of: self)))))
 
       // Finally, import all the block definitions
       for bundledFile in jsonBlockDefinitionFiles {
