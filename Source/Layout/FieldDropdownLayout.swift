@@ -55,8 +55,6 @@ open class FieldDropdownLayout: FieldLayout {
   {
     self.fieldDropdown = fieldDropdown
     super.init(field: fieldDropdown, engine: engine, measurer: measurer)
-
-    fieldDropdown.delegate = self
   }
 
   // MARK: - Super

@@ -43,8 +43,6 @@ open class FieldInputLayout: FieldLayout {
   public init(fieldInput: FieldInput, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldInput = fieldInput
     super.init(field: fieldInput, engine: engine, measurer: measurer)
-
-    fieldInput.delegate = self
   }
 
   // MARK: - Super

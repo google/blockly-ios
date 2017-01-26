@@ -43,8 +43,6 @@ open class FieldLabelLayout: FieldLayout {
   public init(fieldLabel: FieldLabel, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldLabel = fieldLabel
     super.init(field: fieldLabel, engine: engine, measurer: measurer)
-
-    fieldLabel.delegate = self
   }
 
   // MARK: - Super

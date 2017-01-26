@@ -84,7 +84,7 @@ public final class FieldVariable: Field {
 
     if variable != name {
       variable = name
-      delegate?.didUpdateField(self)
+      notifyDidUpdateField()
     }
   }
 }

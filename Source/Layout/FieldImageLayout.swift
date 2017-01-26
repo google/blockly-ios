@@ -43,8 +43,6 @@ open class FieldImageLayout: FieldLayout {
   public init(fieldImage: FieldImage, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldImage = fieldImage
     super.init(field: fieldImage, engine: engine, measurer: measurer)
-
-    fieldImage.delegate = self
   }
 
   // MARK: - Super
