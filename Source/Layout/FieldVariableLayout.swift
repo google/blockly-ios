@@ -83,8 +83,6 @@ open class FieldVariableLayout: FieldLayout {
   {
     self.fieldVariable = fieldVariable
     super.init(field: fieldVariable, engine: engine, measurer: measurer)
-
-    fieldVariable.delegate = self
   }
 
   // MARK: - Super

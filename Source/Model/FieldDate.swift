@@ -37,7 +37,7 @@ public final class FieldDate: Field {
       }
 
       if self.date.timeIntervalSince1970 != oldValue.timeIntervalSince1970 {
-        delegate?.didUpdateField(self)
+        notifyDidUpdateField()
       }
     }
   }

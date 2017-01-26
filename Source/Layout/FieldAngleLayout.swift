@@ -43,8 +43,6 @@ open class FieldAngleLayout: FieldLayout {
   public init(fieldAngle: FieldAngle, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldAngle = fieldAngle
     super.init(field: fieldAngle, engine: engine, measurer: measurer)
-
-    fieldAngle.delegate = self
   }
 
   // MARK: - Super

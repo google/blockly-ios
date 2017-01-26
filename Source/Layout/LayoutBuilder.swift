@@ -218,7 +218,7 @@ open class LayoutBuilder: NSObject {
   open func buildLayout(forField field: Field, engine: LayoutEngine) throws -> FieldLayout {
     let fieldLayout =
       try (field.layout ?? layoutFactory.makeFieldLayout(field: field, engine: engine))
-    field.delegate = fieldLayout // Have the layout listen for events on the field
+    field.layout = fieldLayout
     return fieldLayout
   }
 

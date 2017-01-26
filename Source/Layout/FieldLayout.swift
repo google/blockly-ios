@@ -62,7 +62,11 @@ open class FieldLayout: Layout {
     self.measurer = measurer
     super.init(engine: engine)
 
-    self.field.delegate = self
+    field.listeners.add(self)
+  }
+
+  deinit {
+    field.listeners.remove(self)
   }
 
   // MARK: - Super
@@ -81,7 +85,7 @@ open class FieldLayout: Layout {
 
 // MARK: - FieldDelegate implementation
 
-extension FieldLayout: FieldDelegate {
+extension FieldLayout: FieldListener {
   public func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

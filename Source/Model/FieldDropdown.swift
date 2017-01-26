@@ -33,7 +33,7 @@ public final class FieldDropdown: Field {
       if !self.editable {
         self.options = oldValue
       } else {
-        delegate?.didUpdateField(self)
+        notifyDidUpdateField()
       }
     }
   }
