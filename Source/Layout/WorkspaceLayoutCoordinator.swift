@@ -473,8 +473,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
       .flatMap { $0.flattenedLayoutTree(ofType: BlockLayout.self) }
 
     for removedLayout in removedLayouts {
-      // Set the delegate of the block to nil (effectively removing its BlockLayout)
-      removedLayout.block.delegate = nil
+      // Remove the associated block layout
+      removedLayout.block.layout = nil
       // Untrack the layout
       untrackBlockLayout(removedLayout)
     }

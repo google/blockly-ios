@@ -75,7 +75,7 @@ open class FieldInputView: FieldView {
 
     runAnimatableCode(animated) {
       if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-        let text = fieldInputLayout.text
+        let text = fieldInputLayout.currentTextValue
         let textField = self.textField
         if textField.text != text {
           textField.text = text
@@ -97,7 +97,8 @@ open class FieldInputView: FieldView {
   // MARK: - Private
 
   fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
-    self.fieldInputLayout?.updateText(self.textField.text ?? "")
+    // Update the current text value, but don't commit the new text value yet
+    fieldInputLayout?.currentTextValue = self.textField.text ?? ""
   }
 }
 
@@ -108,6 +109,11 @@ extension FieldInputView: UITextFieldDelegate {
     // This will dismiss the keyboard
     textField.resignFirstResponder()
     return true
+  }
+
+  public func textFieldDidEndEditing(_ textField: UITextField) {
+    // Only commit the change after the user has finished editing the field
+    fieldInputLayout?.updateText(self.textField.text ?? "")
   }
 }
 
@@ -123,7 +129,7 @@ extension FieldInputView: FieldLayoutMeasurer {
 
     let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
-    let measureText = fieldInputLayout.text + " "
+    let measureText = fieldInputLayout.currentTextValue + " "
     let font = fieldInputLayout.config.font(for: LayoutConfig.GlobalFont)
     var measureSize = measureText.bky_singleLineSize(forFont: font)
     measureSize.height += textPadding.top + textPadding.bottom

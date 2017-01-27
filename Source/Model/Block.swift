@@ -18,14 +18,14 @@ import Foundation
 /**
 Protocol for events that occur on a `Block` instance.
 */
-@objc(BKYBlockDelegate)
-public protocol BlockDelegate: class {
+@objc(BKYBlockListener)
+public protocol BlockListener: class {
   /**
    Event that is fired when one of a block's properties has changed.
 
    - parameter block: The `Block` that changed.
    */
-  func didUpdate(block: Block)
+  func didUpdateBlock(_ block: Block)
 }
 
 /**
@@ -93,7 +93,7 @@ public final class Block : NSObject {
     didSet {
       updateInputs()
       updateDirectConnections()
-      delegate?.didUpdate(block: self)
+      notifyDidUpdateBlock()
     }
   }
   /// The color of the block
@@ -148,13 +148,11 @@ public final class Block : NSObject {
       outputConnection?.shadowConnection == nil
   }
 
-  /// A delegate for listening to events on this block
-  public weak var delegate: BlockDelegate?
+  /// Listeners for events that occur on this block.
+  public var listeners = WeakSet<BlockListener>()
 
-  /// Convenience property for accessing `self.delegate` as a BlockLayout
-  public var layout: BlockLayout? {
-    return self.delegate as? BlockLayout
-  }
+  /// The layout associated with this block.
+  public weak var layout: BlockLayout?
 
   // MARK: - Initializers
 
@@ -435,7 +433,7 @@ public final class Block : NSObject {
     if editableProperty == oldValue {
       return false
     }
-    delegate?.didUpdate(block: self)
+    notifyDidUpdateBlock()
     return true
   }
 
@@ -462,8 +460,17 @@ public final class Block : NSObject {
     if property == oldValue {
       return false
     }
-    delegate?.didUpdate(block: self)
+    notifyDidUpdateBlock()
     return true
+  }
+
+  // MARK: - Listeners
+
+  /**
+   Sends a notification to `self.listeners` that this block has been updated.
+   */
+  public func notifyDidUpdateBlock() {
+    listeners.forEach { $0.didUpdateBlock(self) }
   }
 
   // MARK: - Internal - For testing only

@@ -114,8 +114,3 @@ open class InputLayout: Layout {
     }
   }
 }
-
-// MARK: - InputDelegate implementation
-
-extension InputLayout: InputDelegate {
-}
