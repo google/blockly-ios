@@ -262,7 +262,7 @@ public final class ToolboxCategoryViewController: UIViewController {
                                     preferredStyle: .alert)
     addView.addTextField(configurationHandler: nil)
     addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    addView.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+    let addAlertAction = UIAlertAction(title: "Add", style: .default) { _ in
       guard let variableNameManager = self.variableNameManager else {
         return
       }
@@ -286,7 +286,14 @@ public final class ToolboxCategoryViewController: UIViewController {
         bky_assertionFailure(
           "Tried to create an invalid variable without proper error handling: \(error)")
       }
-    })
+    }
+    addView.addAction(addAlertAction)
+
+    if #available(iOS 9, *) {
+      // When the user presses the return button on the keyboard, it will automatically execute
+      // this action
+      addView.preferredAction = addAlertAction
+    }
 
     workspaceViewController.present(addView, animated: true, completion: nil)
   }
