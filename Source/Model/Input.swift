@@ -16,13 +16,6 @@
 import Foundation
 
 /**
- Protocol for events that occur on a `Input` instance.
- */
-@objc(BKYInputDelegate)
-public protocol InputDelegate: class {
-}
-
-/**
  Class representing an input (value, statement, or dummy). To create an `Input` object, use
  `InputBuilder`
 */
@@ -119,13 +112,8 @@ public final class Input : NSObject {
   /// The alignment of the input
   public var alignment: Alignment = Alignment.left
 
-  /// A delegate for listening to events on this input
-  public weak var delegate: InputDelegate?
-
-  /// Convenience property for accessing `self.delegate` as an `InputLayout`
-  public var layout: InputLayout? {
-    return self.delegate as? InputLayout
-  }
+  /// The layout associated with this input.
+  public weak var layout: InputLayout?
 
   // MARK: - Initializers
 

@@ -135,7 +135,7 @@ open class LayoutBuilder: NSObject {
   {
     let blockLayout =
       try (block.layout ?? layoutFactory.makeBlockLayout(block: block, engine: engine))
-    block.delegate = blockLayout // Have the layout listen for events on the block
+    block.layout = blockLayout
 
     // As the layout tree is being re-built, hold a reference to the existing child layouts so
     // they don't get prematurely de-referenced when `blockLayout.reset(...)` is called
@@ -175,7 +175,7 @@ open class LayoutBuilder: NSObject {
   open func buildLayoutTree(forInput input: Input, engine: LayoutEngine) throws -> InputLayout {
     let inputLayout =
       try (input.layout ?? layoutFactory.makeInputLayout(input: input, engine: engine))
-    input.delegate = inputLayout // Have the layout listen for events on the input
+    input.layout = inputLayout
 
     // As the layout tree is being re-built, hold a reference to the existing child layouts so
     // they don't get prematurely de-referenced when `inputLayout.reset(...)` is called

@@ -148,9 +148,15 @@ open class BlockLayout: Layout {
     self.block = block
     super.init(engine: engine)
 
+    block.listeners.add(self)
+
     for connection in self.block.directConnections {
       connection.highlightDelegate = self
     }
+  }
+
+  deinit {
+    block.listeners.remove(self)
   }
 
   // MARK: - Open
@@ -242,8 +248,8 @@ extension BlockLayout: ConnectionHighlightDelegate {
 
 // MARK: - BlockDelegate
 
-extension BlockLayout: BlockDelegate {
-  public func didUpdate(block: Block) {
+extension BlockLayout: BlockListener {
+  public func didUpdateBlock(_ block: Block) {
     // TODO:(#288) Remove highlightDelegate dependency once ConnectionHighlightDelegate
     // functionality is refactored into this class
 

@@ -26,9 +26,17 @@ open class FieldInputLayout: FieldLayout {
   /// The `FieldInput` that backs this layout
   open let fieldInput: FieldInput
 
-  /// The value that should be used when rendering this layout
-  open var text: String {
-    return fieldInput.text
+  /// The current text value that should be used when rendering this layout.
+  /// This value is automatically set to `self.fieldInput.text` on initialization and
+  /// whenever `self.fieldInput.text` is updated.
+  /// However, it can be set to any value outside of these calls (e.g. for temporary input
+  /// purposes).
+  open var currentTextValue: String {
+    didSet {
+      if currentTextValue != oldValue {
+        updateLayoutUpTree()
+      }
+    }
   }
 
   // MARK: - Initializers
@@ -42,6 +50,7 @@ open class FieldInputLayout: FieldLayout {
    */
   public init(fieldInput: FieldInput, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldInput = fieldInput
+    self.currentTextValue = fieldInput.text
     super.init(field: fieldInput, engine: engine, measurer: measurer)
   }
 
@@ -50,6 +59,9 @@ open class FieldInputLayout: FieldLayout {
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
 
   open override func didUpdateField(_ field: Field) {
+    // Update current text value to match the field now
+    currentTextValue = fieldInput.text
+
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -65,5 +77,6 @@ open class FieldInputLayout: FieldLayout {
   open func updateText(_ text: String) {
     // Setting to new text automatically fires a listener to update the layout
     fieldInput.text = text
+    currentTextValue = fieldInput.text
   }
 }
