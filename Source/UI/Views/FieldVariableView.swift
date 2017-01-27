@@ -179,7 +179,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       textField.becomeFirstResponder()
     }
     renameView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    renameView.addAction(UIAlertAction(title: "Rename", style: .default) { _ in
+    let renameAlertAction = UIAlertAction(title: "Rename", style: .default) { _ in
       guard let textField = renameView.textFields?[0],
         let newName = textField.text,
         fieldVariableLayout.isValidName(newName) else
@@ -190,7 +190,14 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       }
 
       fieldVariableLayout.renameVariable(to: newName)
-    })
+    }
+    renameView.addAction(renameAlertAction)
+
+    if #available(iOS 9, *) {
+      // When the user presses the return button on the keyboard, it will automatically execute
+      // this action
+      renameView.preferredAction = renameAlertAction
+    }
 
     popoverDelegate?.layoutView(self, requestedToPresentViewController: renameView)
   }
