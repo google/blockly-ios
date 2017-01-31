@@ -233,10 +233,12 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
         // TODO:(#175) Fix blocks jumping from touch to touch when one block is hit by two touches.
 
-        targetDelegate?.blocklyPanGestureRecognizer(self,
-                                                    didTouchBlock: block,
-                                                    touch: touch,
-                                                    touchState: .ended)
+        if state != .possible {
+          targetDelegate?.blocklyPanGestureRecognizer(self,
+                                                      didTouchBlock: block,
+                                                      touch: touch,
+                                                      touchState: .ended)
+        }
       }
     }
 
