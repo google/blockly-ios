@@ -114,6 +114,7 @@
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
+		FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */; };
 		FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84250F1D3451510092CDDC /* ViewBuilder.swift */; };
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
 		FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84251B1D3459EC0092CDDC /* InputView.swift */; };
@@ -324,6 +325,7 @@
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
+		FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureCoordinator.swift; sourceTree = "<group>"; };
 		FA84250F1D3451510092CDDC /* ViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBuilder.swift; sourceTree = "<group>"; };
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
@@ -846,6 +848,7 @@
 				FAE557781BE02B270019D0D4 /* Dragger.swift */,
 				FA56E35A1E28454B00A53631 /* MutatorHelper.swift */,
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
+				FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -1117,6 +1120,7 @@
 				3064BAD71DAFFC58006425A2 /* BKYEdgeInsets.m in Sources */,
 				FAABDD631CA20BA400F9E7D4 /* BlockBumper.swift in Sources */,
 				FAFD37801C9A55F800C77049 /* String+Encoding.swift in Sources */,
+				FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */,
 				FAA8701B1C642805000C7C61 /* WorkbenchViewController.swift in Sources */,
 				FAA870021C64272C000C7C61 /* Assertions.swift in Sources */,
 				FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */,

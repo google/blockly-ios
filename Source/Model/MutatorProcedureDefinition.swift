@@ -62,7 +62,7 @@ extension MutatorProcedureDefinition: Mutator {
 
     // Update parameters label
     if let field = block.firstField(withName: "PARAMS") as? FieldLabel {
-      field.text = (!parameters.isEmpty ? "with: " : "") + parameters.joined(separator: ",")
+      field.text = (!parameters.isEmpty ? "with: " : "") + parameters.joined(separator: ", ")
     }
 
     // Update statement

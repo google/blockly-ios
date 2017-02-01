@@ -109,26 +109,6 @@ extension Toolbox {
           try category.addBlockTree(returnBlock)
 
           try category.addBlockTree(factory.makeBlock(name: "procedures_ifreturn"))
-
-
-          // TODO:(vicng) These caller blocks have been added here temporarily so we can make
-          // sure that the callers mutate themselves properly. They should be removed once the
-          // functionality of procedures has been implemented (where these caller blocks are
-          // created automatically for every procedure in the workspace)
-          let callerReturnBlock = try factory.makeBlock(name: "procedures_callreturn")
-          if let mutator = callerReturnBlock.mutator as? MutatorProcedureCaller {
-            mutator.procedureName = "do something and return it"
-            mutator.parameters = ["input 1", "input 2"]
-            try mutator.mutateBlock()
-          }
-          try category.addBlockTree(callerReturnBlock)
-
-          let callerNoReturnBlock = try factory.makeBlock(name: "procedures_callnoreturn")
-          if let mutator = callerNoReturnBlock.mutator as? MutatorProcedureCaller {
-            mutator.procedureName = "do something"
-            try mutator.mutateBlock()
-          }
-          try category.addBlockTree(callerNoReturnBlock)
         } else {
           bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
         }

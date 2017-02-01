@@ -63,6 +63,13 @@ public struct WeakSet<Element: AnyObject> {
   public mutating func remove(_ object: Element) {
     _mutableObjects.remove(object)
   }
+
+  /**
+   Removes all objects from the set.
+   */
+  public mutating func removeAll() {
+    _mutableObjects.removeAllObjects()
+  }
 }
 
 extension WeakSet : Sequence {

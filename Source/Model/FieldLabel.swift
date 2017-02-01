@@ -24,7 +24,11 @@ public final class FieldLabel: Field {
 
   /// The text label of the field
   public var text: String {
-    didSet { didSetEditableProperty(&text, oldValue) }
+    didSet {
+      if text != oldValue {
+        notifyDidUpdateField()
+      }
+    }
   }
 
   // MARK: - Initializers

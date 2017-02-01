@@ -188,12 +188,17 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
    - parameter rootBlock: The root block to copy
    - parameter editable: Sets whether each block is `editable` or not
+   - parameter position: [Optional] The position of where the copied block should be placed in the
+   workspace. Defaults to `WorkspacePoint.zero`.
    - returns: The root block that was copied
    - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
-  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
-    return try workspaceLayout.workspace.copyBlockTree(rootBlock, editable: editable)
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool,
+                          position: WorkspacePoint = WorkspacePoint.zero) throws -> Block
+  {
+    return try workspaceLayout.workspace.copyBlockTree(
+      rootBlock, editable: editable, position: position)
   }
 
   /**
