@@ -211,12 +211,15 @@ open class Workspace : NSObject {
 
    - parameter rootBlock: The root block to copy
    - parameter editable: Sets whether each block is `editable` or not
+   - parameter position: The position of where the copied block should be placed in the workspace.
    - returns: The root block that was copied
    - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
   @discardableResult
-  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool, position: WorkspacePoint) throws
+    -> Block
+  {
     // Create a copy of the tree
     let copyResult = try rootBlock.deepCopy()
 
@@ -226,6 +229,8 @@ open class Workspace : NSObject {
     for block in copyResult.allBlocks {
       block.editable = editable
     }
+
+    copyResult.rootBlock.position = position
 
     // Add copy of tree to the workspace
     try addBlockTree(copyResult.rootBlock)

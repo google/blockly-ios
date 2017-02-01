@@ -394,6 +394,18 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     return ""
   }
 
+  fileprivate func indexPaths(containingParameter parameter: String) -> [IndexPath] {
+    var indexPaths = [IndexPath]()
+
+    for (i, aParameter) in mutatorLayout.parameters.enumerated() {
+      if aParameter.lowercased() == parameter.lowercased() {
+        indexPaths.append(IndexPath(row: i, section: SECTION_PARAMETERS))
+      }
+    }
+
+    return indexPaths
+  }
+
   // MARK: - Mutation
 
   func performMutation() {
@@ -429,7 +441,11 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
         let newAddRowIndexPath =
           IndexPath(row: mutatorLayout.parameters.count, section: SECTION_PARAMETERS)
         tableView.insertRows(at: [newAddRowIndexPath], with: .automatic)
-        tableView.reloadRows(at: [indexPath, newAddRowIndexPath], with: .automatic)
+
+        // Reload all rows containing this new parameter (the parameter may have already existed,
+        // so other parameters may have been renamed to match its case sensitivity).
+        let reloadRows = indexPaths(containingParameter: text) + [newAddRowIndexPath]
+        tableView.reloadRows(at: reloadRows, with: .automatic)
 
         if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
           configureParametersHeaderView(headerView)
@@ -449,6 +465,15 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
           // Update the parameter
           mutatorLayout.parameters[indexPath.row] = text
           performMutation()
+
+          // Update all rows with this parameter name and the header title (based on whether
+          // there are duplicates now)
+          let reloadRows = indexPaths(containingParameter: text)
+          tableView.reloadRows(at: reloadRows, with: .automatic)
+
+          if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
+            configureParametersHeaderView(headerView)
+          }
         }
       }
     }

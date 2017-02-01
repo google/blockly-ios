@@ -157,13 +157,41 @@ public final class NameManager: NSObject {
       $0.nameManager?(self, didRenameName: oldNameDisplay, toName: newName)
     }
 
-    if previousDisplayNameForNewName != nil && previousDisplayNameForNewName != newName {
+    if previousDisplayNameForNewName != nil &&
+      previousDisplayNameForNewName != newName &&
+      previousDisplayNameForNewName != oldNameDisplay // We've already fired listeners for this case
+    {
       listeners.forEach {
         $0.nameManager?(self, didRenameName: previousDisplayNameForNewName!, toName: newName)
       }
     }
 
     return true
+  }
+
+  /**
+   Rename the display name of an existing name.
+   If the display name does not exist in the list, nothing happens and `false` is returned.
+
+   Here is an example of this behavior:
+
+   ```
+   nameManager.addName("Foo") // Adds "Foo" to the list with the key name
+   nameManager.renameDisplayName("FOO") // Renames "Foo" to "FOO"
+   nameManager.renameDisplayName("bar") // This does nothing since "bar" does not exist in the list
+   ```
+
+   - parameter displayName: The new display name
+   - returns: `true` if the `displayName` existed in the list with different case sensitivity and
+   was renamed to `displayName`. `false` otherwise.
+   */
+  @discardableResult
+  public func renameDisplayName(_ displayName: String) -> Bool {
+    guard let currentDisplayName = _names[keyForName(displayName)] else {
+      return false
+    }
+
+    return renameName(currentDisplayName, to: displayName)
   }
 
   /**
@@ -181,15 +209,16 @@ public final class NameManager: NSObject {
 
     if let displayName = _names[nameKey] {
       // Check from all listeners that this name can be removed
-      let shouldRemoveName =
-        !listeners.map({ $0.nameManager?(self, shouldRemoveName: displayName) ?? true })
-        .contains(false)
-
-      if shouldRemoveName {
-        _names[nameKey] = nil
-        listeners.forEach({ $0.nameManager?(self, didRemoveName: displayName) })
-        return true
+      for listener in listeners {
+        if !(listener.nameManager?(self, shouldRemoveName: displayName) ?? true) {
+          // One of the listeners doesn't want this name removed. Cancel it.
+          return false
+        }
       }
+
+      _names[nameKey] = nil
+      listeners.forEach({ $0.nameManager?(self, didRemoveName: displayName) })
+      return true
     }
 
     return false

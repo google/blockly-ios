@@ -22,8 +22,12 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
 
   // MARK: - Properties
 
+  /// Notification that is fired after this layout has performed a mutation
+  public static let NotificationDidPerformMutation =
+    Notification.Name("MutatorProcedureDefinitionLayoutNotificationDidPerformMutation")
+
   /// The model mutator
-  private let mutatorProcedureDefinition: MutatorProcedureDefinition
+  internal let mutatorProcedureDefinition: MutatorProcedureDefinition
 
   /// Flag determining if this procedure returns a value
   public var returnsValue: Bool {
@@ -91,6 +95,11 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
       layoutCoordinator.blockBumper
         .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
     }
+
+    // Post notification that this layout finished mutating
+    NotificationCenter.default.post(
+      name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation,
+      object: self)
   }
 
   // MARK: - Pre-Mutation
