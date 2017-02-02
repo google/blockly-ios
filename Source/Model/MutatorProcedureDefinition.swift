@@ -33,7 +33,7 @@ public class MutatorProcedureDefinition: NSObject {
   public let returnsValue: Bool
 
   /// The parameters of the procedure
-  public var parameters = [String]()
+  public var parameters = [ProcedureParameter]()
 
   /// Flag determining if statements can be attached to this procedure.
   /// NOTE: This value is always `true` if `returnsValue` is `false`.
@@ -62,7 +62,8 @@ extension MutatorProcedureDefinition: Mutator {
 
     // Update parameters label
     if let field = block.firstField(withName: "PARAMS") as? FieldLabel {
-      field.text = (!parameters.isEmpty ? "with: " : "") + parameters.joined(separator: ", ")
+      field.text = (!parameters.isEmpty ? "with: " : "") +
+        parameters.map({ $0.name }).joined(separator: ", ")
     }
 
     // Update statement
@@ -91,7 +92,7 @@ extension MutatorProcedureDefinition: Mutator {
 
     for parameter in parameters {
       xml.addChild(name: "arg", value: nil, attributes: [
-        "name": parameter
+        "name": parameter.name
       ])
     }
 
@@ -106,7 +107,7 @@ extension MutatorProcedureDefinition: Mutator {
     parameters.removeAll()
     for parameterXML in (mutationXML["arg"].all ?? []) {
       if let parameter = parameterXML.attributes["name"] {
-        parameters.append(parameter)
+        parameters.append(ProcedureParameter(name: parameter))
       }
     }
 

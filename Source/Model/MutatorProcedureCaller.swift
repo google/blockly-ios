@@ -33,7 +33,7 @@ public class MutatorProcedureCaller: NSObject {
   public var procedureName = ""
 
   /// The parameters of the procedure
-  public var parameters = [String]()
+  public var parameters = [ProcedureParameter]()
 }
 
 extension MutatorProcedureCaller: Mutator {
@@ -67,12 +67,12 @@ extension MutatorProcedureCaller: Mutator {
       let inputName = "ARG\(i)"
       if let input = block.firstInput(withName: inputName) {
         // Update existing parameter
-        (input.fields[0] as? FieldLabel)?.text = parameter
+        (input.fields[0] as? FieldLabel)?.text = parameter.name
       } else {
         // Create new input parameter
         let parameterBuilder = InputBuilder(type: .value, name: inputName)
         parameterBuilder.alignment = .right
-        parameterBuilder.appendField(FieldLabel(name: "ARGNAME\(i)", text: parameter))
+        parameterBuilder.appendField(FieldLabel(name: "ARGNAME\(i)", text: parameter.name))
         block.appendInput(parameterBuilder.makeInput())
       }
 
@@ -92,7 +92,7 @@ extension MutatorProcedureCaller: Mutator {
 
     for parameter in parameters {
       xml.addChild(name: "arg", value: nil, attributes: [
-        "name": parameter
+        "name": parameter.name
       ])
     }
 
@@ -107,7 +107,7 @@ extension MutatorProcedureCaller: Mutator {
     parameters.removeAll()
     for parameterXML in (mutationXML["arg"].all ?? []) {
       if let parameter = parameterXML.attributes["name"] {
-        parameters.append(parameter)
+        parameters.append(ProcedureParameter(name: parameter))
       }
     }
   }

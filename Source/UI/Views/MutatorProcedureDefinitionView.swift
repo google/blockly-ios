@@ -283,7 +283,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
       // Update text field value
       if indexPath.row < mutatorLayout.parameters.count {
-        cell.textField.text = mutatorLayout.parameters[indexPath.row]
+        cell.textField.text = mutatorLayout.parameters[indexPath.row].name
       } else {
         cell.textField.text = ""
       }
@@ -398,7 +398,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     var indexPaths = [IndexPath]()
 
     for (i, aParameter) in mutatorLayout.parameters.enumerated() {
-      if aParameter.lowercased() == parameter.lowercased() {
+      if aParameter.name.lowercased() == parameter.lowercased() {
         indexPaths.append(IndexPath(row: i, section: SECTION_PARAMETERS))
       }
     }
@@ -434,7 +434,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     {
       if indexPath.row >= mutatorLayout.parameters.count && !text.isEmpty {
         // Add new parameter
-        mutatorLayout.parameters.append(text)
+        mutatorLayout.parameters.append(ProcedureParameter(name: text))
         performMutation()
 
         // Update table
@@ -460,10 +460,10 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
           // The user set the parameter to the empty string. Reset it to what it was before editing
           // began. (If the user's intent was to delete the parameter, they need to use the delete
           // button.)
-          textField.text = mutatorLayout.parameters[indexPath.row]
+          textField.text = mutatorLayout.parameters[indexPath.row].name
         } else {
           // Update the parameter
-          mutatorLayout.parameters[indexPath.row] = text
+          mutatorLayout.parameters[indexPath.row].name = text
           performMutation()
 
           // Update all rows with this parameter name and the header title (based on whether
