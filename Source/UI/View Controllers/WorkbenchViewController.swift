@@ -151,7 +151,17 @@ open class WorkbenchViewController: UIViewController {
   }
 
   /// The `NameManager` that controls the variables in this workbench's scope.
-  private let variableNameManager: NameManager
+  public let variableNameManager: NameManager
+
+  /// Coordinator that handles logic for managing procedure functionality
+  public var procedureCoordinator: ProcedureCoordinator? {
+    didSet {
+      if oldValue != procedureCoordinator {
+        oldValue?.syncWithWorkbench(nil)
+        procedureCoordinator?.syncWithWorkbench(self)
+      }
+    }
+  }
 
   /// The main workspace layout coordinator
   fileprivate var _workspaceLayoutCoordinator: WorkspaceLayoutCoordinator? {
@@ -221,6 +231,7 @@ open class WorkbenchViewController: UIViewController {
     self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
     self.viewFactory = ViewFactory()
     self.variableNameManager = NameManager()
+    self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
@@ -232,15 +243,19 @@ open class WorkbenchViewController: UIViewController {
    - parameter engine: Value used for `self.layoutEngine`.
    - parameter layoutBuilder: Value used for `self.layoutBuilder`.
    - parameter viewFactory: Value used for `self.viewFactory`.
+   - parameter variableNameManager: Value used for `self.variableNameManager`.
+   - parameter procedureCoordinator: Value used for `self.procedureCoordinator`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
-              viewFactory: ViewFactory, variableNameManager: NameManager)
+              viewFactory: ViewFactory, variableNameManager: NameManager,
+              procedureCoordinator: ProcedureCoordinator)
   {
     self.style = style
     self.engine = engine
     self.layoutBuilder = layoutBuilder
     self.viewFactory = viewFactory
     self.variableNameManager = variableNameManager
+    self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
     commonInit()
   }
@@ -286,6 +301,9 @@ open class WorkbenchViewController: UIViewController {
     // Create toolbox views
     toolboxCategoryViewController = ToolboxCategoryViewController(viewFactory: viewFactory,
       orientation: style.toolboxOrientation, variableNameManager: variableNameManager)
+
+    // Synchronize the procedure coordinator
+    procedureCoordinator?.syncWithWorkbench(self)
 
     // Register for keyboard notifications
     NotificationCenter.default.addObserver(
@@ -454,6 +472,12 @@ open class WorkbenchViewController: UIViewController {
                                      layoutBuilder: layoutBuilder,
                                      connectionManager: aConnectionManager)
 
+    // Now that the workspace has changed, the procedure coordinator needs to get re-synced to
+    // reflect any new blocks in the workspace.
+    // TODO:(#61) As part of the refactor of WorkbenchViewController, this can potentially be
+    // moved into a listener so no explicit call to syncWithWorkbench() is made
+    procedureCoordinator?.syncWithWorkbench(self)
+
     refreshView()
   }
 
@@ -474,6 +498,12 @@ open class WorkbenchViewController: UIViewController {
       layoutBuilder: layoutBuilder)
     _toolboxLayout = toolboxLayout
     _toolboxLayout?.setBlockFactory(blockFactory)
+
+    // Now that the toolbox has changed, the procedure coordinator needs to get re-synced to
+    // reflect any new blocks in the toolbox.
+    // TODO:(#61) As part of the refactor of WorkbenchViewController, this can potentially be
+    // moved into a listener so no explicit call to syncWithWorkbench() is made
+    procedureCoordinator?.syncWithWorkbench(self)
 
     refreshView()
   }
@@ -553,10 +583,8 @@ open class WorkbenchViewController: UIViewController {
 
     // Create a deep copy of this block in this workspace (which will automatically create a layout
     // tree for the block)
-    let newBlock = try workspaceLayoutCoordinator.copyBlockTree(blockLayout.block, editable: true)
-
-    // Set its new workspace position
-    newBlock.layout?.parentBlockGroupLayout?.move(toWorkspacePosition: newWorkspacePosition)
+    let newBlock = try workspaceLayoutCoordinator.copyBlockTree(
+      blockLayout.block, editable: true, position: newWorkspacePosition)
 
     // Because there are listeners on the layout hierarchy to update the corresponding view
     // hierarchy when layouts change, we just need to find the view that was automatically created.
@@ -1067,8 +1095,9 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         _dragger.clearGestureDataForBlockLayout(blockLayout)
 
         do {
-          try _trashCanViewController.workspace?.copyBlockTree(blockLayout.block, editable: true)
-          try _workspaceLayout?.workspace.removeBlockTree(blockLayout.block)
+          _ = try _trashCanViewController.workspaceLayoutCoordinator?
+            .copyBlockTree(blockLayout.block, editable: true)
+          try _workspaceLayoutCoordinator?.removeBlockTree(blockLayout.block)
           updateWorkspaceCapacity()
         } catch let error {
           bky_assertionFailure("Could not copy block to trash can: \(error)")

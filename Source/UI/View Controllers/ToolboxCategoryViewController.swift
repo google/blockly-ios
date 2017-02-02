@@ -385,22 +385,7 @@ extension ToolboxCategoryViewController: NameManagerListener {
     }
 
     let workspace = variableCoordinator.workspaceLayout.workspace
-    let uniqueVariableBlocks = config.stringArray(for: LayoutConfig.UniqueVariableBlocks)
-    let newBlocks = workspace.allVariableBlocks(forName: newName)
     let oldBlocks = workspace.allVariableBlocks(forName: oldName)
-    // If there are blocks matching the new name, a variable is being renamed to an existing
-    //  variable, and any non-unique blocks matching the old variable must be removed.
-    if newBlocks.count != 0 {
-      for block in oldBlocks {
-        if !uniqueVariableBlocks.contains(block.name) {
-          do {
-            try workspace.removeBlockTree(block)
-          } catch {
-            bky_assertionFailure("Could not remove variable block from the toolbox: \(error)")
-          }
-        }
-      }
-    }
 
     // Rename each variable to the new name.
     for block in oldBlocks {
@@ -411,6 +396,26 @@ extension ToolboxCategoryViewController: NameManagerListener {
       let fieldVariables = layout.flattenedLayoutTree(ofType: FieldVariableLayout.self)
       for fieldVariable in fieldVariables {
         fieldVariable.nameManager(nameManager, didRenameName: oldName, toName: newName)
+      }
+    }
+
+    // Remove any duplicate non-unique variable blocks
+    let nonUniqueVariableBlocks = config.stringArray(for: LayoutConfig.VariableBlocks)
+    let newBlocks = workspace.allVariableBlocks(forName: newName)
+    var seenBlocks = Set<String>()
+    for block in newBlocks {
+      if nonUniqueVariableBlocks.contains(block.name) {
+        if seenBlocks.contains(block.name) {
+          // Seen this block already, remove it
+          do {
+            try workspace.removeBlockTree(block)
+          } catch {
+            bky_assertionFailure("Could not remove variable block from the toolbox: \(error)")
+          }
+        } else {
+          // Add this block as being seen
+          seenBlocks.insert(block.name)
+        }
       }
     }
   }
