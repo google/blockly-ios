@@ -35,7 +35,7 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
   }
 
   /// The parameters of the procedure
-  public var parameters: [String] {
+  public var parameters: [ProcedureParameter] {
     get { return mutatorProcedureDefinition.parameters }
     set { mutatorProcedureDefinition.parameters = newValue }
   }
@@ -126,7 +126,7 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
   public func containsDuplicateParameters() -> Bool {
     var set = Set<String>()
 
-    for parameter in parameters.map({ $0.lowercased() }) {
+    for parameter in parameters.map({ $0.name.lowercased() }) {
       if set.contains(parameter) {
         return true
       } else {
