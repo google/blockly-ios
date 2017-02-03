@@ -32,13 +32,18 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
   }
 
   /// The parameters of the procedure
-  public var parameters: [String] {
+  public var parameters: [ProcedureParameter] {
     get { return mutatorProcedureCaller.parameters }
     set { mutatorProcedureCaller.parameters = newValue }
   }
 
   /// Mutator helper used for transitioning between mutations
   private let mutatorHelper = MutatorHelper()
+
+  /// Table that maps parameter UUIDs to a target connection. This is used for reconnecting inputs
+  /// to previously connected connections.
+  private var savedTargetConnections: NSMapTable<NSString, Connection> =
+    NSMapTable.strongToWeakObjects()
 
   // MARK: - Initializers
 
@@ -77,9 +82,7 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
     let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
 
     // Reconnect saved connections
-    try mutatorHelper.reconnectSavedTargetConnections(
-      toInputs: mutatorProcedureCaller.sortedMutatorInputs(),
-      layoutCoordinator: layoutCoordinator)
+    try reconnectSavedTargetConnections()
 
     Layout.animate {
       layoutCoordinator.blockBumper
@@ -90,14 +93,43 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
   // MARK: - Pre-Mutation
 
   /**
-   For all inputs created by this mutator, save the currently connected target connection for
-   each of them. Any subsequent call to `performMutation()` will ensure that these saved target
+   For all inputs created by this mutator, save the currently connected target connection
+   for each of them. Any subsequent call to `performMutation()` will ensure that these saved target
    connections remain connected to that original input, as long as the input still exists
    post-mutation.
    */
   public func preserveCurrentInputConnections() {
-    mutatorHelper.clearSavedTargetConnections()
-    mutatorHelper.saveTargetConnections(
-      fromInputs: mutatorProcedureCaller.sortedMutatorInputs())
+    let inputs = mutatorProcedureCaller.sortedMutatorInputs()
+    savedTargetConnections.removeAllObjects()
+
+    for (i, input) in inputs.enumerated() {
+      if let targetConnection = input.connection?.targetConnection,
+        i < parameters.count
+      {
+        savedTargetConnections.setObject(targetConnection, forKey: parameters[i].uuid as NSString)
+      }
+    }
+  }
+
+  // MARK: - Post-Mutation
+
+  private func reconnectSavedTargetConnections() throws {
+    guard let layoutCoordinator = self.layoutCoordinator else {
+      return
+    }
+
+    let inputs = mutatorProcedureCaller.sortedMutatorInputs()
+
+    // Reconnect inputs
+    for (i, parameter) in parameters.enumerated() {
+      let key = parameter.uuid as NSString
+
+      if i < inputs.count,
+        let inputConnection = inputs[i].connection,
+        let targetConnection = savedTargetConnections.object(forKey: key)
+      {
+        try layoutCoordinator.connect(inputConnection, targetConnection)
+      }
+    }
   }
 }

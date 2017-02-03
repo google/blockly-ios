@@ -118,9 +118,12 @@ public class ProcedureCoordinator: NSObject {
         }
       }
 
-      // For any caller block in the workspace without a definition, auto-create one
+      // For every caller block, update its parameters to match its corresponding definition block's
+      // parameters or auto-create a definition block if none exists
       for callerBlock in callerBlocks {
-        if !procedureDefinitionBlockExists(forCallerBlock: callerBlock) {
+        if let definitionBlock = procedureDefinitionBlock(forCallerBlock: callerBlock) {
+          callerBlock.procedureParameters = definitionBlock.procedureParameters
+        } else {
           createProcedureDefinitionBlock(fromCallerBlock: callerBlock)
         }
       }
@@ -158,15 +161,10 @@ public class ProcedureCoordinator: NSObject {
       if let toolboxProcedureLayoutCoordinator = firstToolboxProcedureLayoutCoordinator(),
         let blockFactory = toolboxProcedureLayoutCoordinator.blockFactory
       {
-        let callerBlock = try blockFactory.makeBlock(name:
-          (definitionBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_RETURN) ?
-            ProcedureCoordinator.BLOCK_CALLER_RETURN :
-            ProcedureCoordinator.BLOCK_CALLER_NO_RETURN)
-        if let mutator = callerBlock.mutatorProcedureCaller {
-          mutator.procedureName = definitionBlock.procedureName
-          mutator.parameters = definitionBlock.procedureParameters
-          try mutator.mutateBlock()
-        }
+        let callerBlock =
+          try blockFactory.makeBlock(name: definitionBlock.associatedCallerBlockName)
+        callerBlock.procedureName = definitionBlock.procedureName
+        callerBlock.procedureParameters = definitionBlock.procedureParameters
         try toolboxProcedureLayoutCoordinator.addBlockTree(callerBlock)
 
         // Track this new block as a caller block so it can be updated if the definition changes
@@ -228,16 +226,16 @@ public class ProcedureCoordinator: NSObject {
     }
 
     for parameter in block.procedureParameters {
-      if !variableNameManager.containsName(parameter) {
+      if !variableNameManager.containsName(parameter.name) {
         // Add name to variable manager
         do {
-          try variableNameManager.addName(parameter)
+          try variableNameManager.addName(parameter.name)
         } catch let error {
           bky_assertionFailure("Could not add parameter '\(parameter)' as variable: \(error)")
         }
       } else {
         // Update the display name of the parameter
-        variableNameManager.renameDisplayName(parameter)
+        variableNameManager.renameDisplayName(parameter.name)
       }
     }
   }
@@ -248,19 +246,14 @@ public class ProcedureCoordinator: NSObject {
     }
 
     do {
-      let definitionBlock = try blockFactory.makeBlock(name:
-        (callerBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_RETURN) ?
-          ProcedureCoordinator.BLOCK_DEFINITION_RETURN :
-          ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN)
+      let definitionBlock =
+        try blockFactory.makeBlock(name: callerBlock.associatedDefinitionBlockName)
 
       // For now, set the definition block's procedure name to match the caller block's name.
       // If it's a duplicate of something else already in the workspace, it will automatically
       // get renamed when `trackProcedureDefinitionBlock(...)` is ultimately called.
       definitionBlock.procedureName = callerBlock.procedureName
-      if let mutator = definitionBlock.mutatorProcedureDefinition {
-        mutator.parameters = callerBlock.procedureParameters
-        try mutator.mutateBlock()
-      }
+      definitionBlock.procedureParameters = callerBlock.procedureParameters
       definitionBlock.position = callerBlock.position + WorkspacePoint(x: 20, y: 20)
 
       try workbench?.workspaceViewController.workspaceLayoutCoordinator?.addBlockTree(
@@ -297,10 +290,12 @@ public class ProcedureCoordinator: NSObject {
                            parameters: block.procedureParameters)
   }
 
-  fileprivate func procedureDefinitionBlockExists(forCallerBlock callerBlock: Block) -> Bool {
-    return definitionBlocks.contains(where: {
+  fileprivate func procedureDefinitionBlock(forCallerBlock callerBlock: Block) -> Block? {
+    return definitionBlocks.first(where: {
+      $0.associatedCallerBlockName == callerBlock.name &&
       procedureNameManager.namesAreEqual(callerBlock.procedureName, $0.procedureName) &&
-        callerBlock.procedureParameters == $0.procedureParameters })
+      callerBlock.procedureParameters.map({ $0.name }) == $0.procedureParameters.map({ $0.name })
+    })
   }
 
   // MARK: - Procedure Caller Methods
@@ -313,8 +308,12 @@ public class ProcedureCoordinator: NSObject {
     // Add to set of caller blocks
     callerBlocks.add(callerBlock)
 
-    // Check to see if there's a matching definition in the workspace. If not, create one.
-    if autoCreateDefinition && !procedureDefinitionBlockExists(forCallerBlock: callerBlock) {
+    if let definitionBlock = procedureDefinitionBlock(forCallerBlock: callerBlock) {
+      // Make sure the procedure caller block has the exact same parameters as the definition block,
+      // so its parameters' connections are properly preserved on parameter renames/re-orderings
+      callerBlock.procedureParameters = definitionBlock.procedureParameters
+    } else if autoCreateDefinition {
+      // Create definition block
       createProcedureDefinitionBlock(fromCallerBlock: callerBlock)
     }
   }
@@ -327,11 +326,15 @@ public class ProcedureCoordinator: NSObject {
     callerBlocks.remove(callerBlock)
   }
 
-  fileprivate func updateProcedureCallers(oldName: String, newName: String, parameters: [String]) {
+  fileprivate func updateProcedureCallers(
+    oldName: String, newName: String, parameters: [ProcedureParameter])
+  {
     for callerBlock in callerBlocks {
       if procedureNameManager.namesAreEqual(callerBlock.procedureName, oldName),
-        let mutatorCallerLayout = callerBlock.mutator?.layout as? MutatorProcedureCallerLayout
+        let mutatorCallerLayout = callerBlock.layout?.mutatorLayout as? MutatorProcedureCallerLayout
       {
+        // NOTE: mutatorLayout is used here since it will preserve connections for existing inputs
+        // if the parameters have been reordered.
         mutatorCallerLayout.preserveCurrentInputConnections()
         mutatorCallerLayout.procedureName = newName
         mutatorCallerLayout.parameters = parameters
@@ -431,7 +434,7 @@ extension ProcedureCoordinator: NameManagerListener {
       // If any of the procedures use the variables, disable this action
       for block in definitionBlocks {
         for parameter in block.procedureParameters {
-          if nameManager.namesAreEqual(name, parameter) {
+          if nameManager.namesAreEqual(name, parameter.name) {
             // Found a parameter using this name
             let message = "Can't delete the variable \"\(name)\" because it's part of the " +
               "function definition \"\(block.procedureName)\""
@@ -453,11 +456,15 @@ extension ProcedureCoordinator: NameManagerListener {
     if nameManager == workbench?.variableNameManager {
       // Update all procedure definitions that use this variable
       for block in definitionBlocks {
+        // NOTE: mutatorLayout is used here since it will generate a notification after
+        // the mutation has been performed. When this notification fires, `ProcedureCoordinator`
+        // listens to it and updates any associated caller blocks in the workspace to match
+        // the new definition.
         if let mutatorLayout = block.layout?.mutatorLayout as? MutatorProcedureDefinitionLayout {
           var updateMutator = false
           for (i, parameter) in mutatorLayout.parameters.enumerated() {
-            if nameManager.namesAreEqual(oldName, parameter) {
-              mutatorLayout.parameters[i] = newName
+            if nameManager.namesAreEqual(oldName, parameter.name) {
+              mutatorLayout.parameters[i].name = newName
               updateMutator = true
             }
           }
@@ -492,10 +499,6 @@ fileprivate extension Block {
     return isProcedureDefinition ? firstField(withName: "NAME") as? FieldInput : nil
   }
 
-  var procedureCallerNameLabel: FieldLabel? {
-    return isProcedureCaller ? firstField(withName: "NAME") as? FieldLabel : nil
-  }
-
   var mutatorProcedureDefinition: MutatorProcedureDefinition? {
     return mutator as? MutatorProcedureDefinition
   }
@@ -509,7 +512,7 @@ fileprivate extension Block {
       if isProcedureDefinition {
         return procedureDefinitionNameInput?.text ?? ""
       } else if isProcedureCaller {
-        return procedureCallerNameLabel?.text ?? ""
+        return mutatorProcedureCaller?.procedureName ?? ""
       } else {
         return ""
       }
@@ -518,12 +521,46 @@ fileprivate extension Block {
       if isProcedureDefinition {
         procedureDefinitionNameInput?.text = newValue
       } else if isProcedureCaller {
-        procedureCallerNameLabel?.text = newValue
+        mutatorProcedureCaller?.procedureName = newValue
+        try? mutatorProcedureCaller?.mutateBlock()
       }
     }
   }
 
-  var procedureParameters: [String] {
-    return mutatorProcedureCaller?.parameters ?? mutatorProcedureDefinition?.parameters ?? []
+  var procedureParameters: [ProcedureParameter] {
+    get {
+      return mutatorProcedureCaller?.parameters ?? mutatorProcedureDefinition?.parameters ?? []
+    }
+    set {
+      if isProcedureDefinition {
+        mutatorProcedureDefinition?.parameters = newValue
+        try? mutatorProcedureDefinition?.mutateBlock()
+      } else if isProcedureCaller {
+        mutatorProcedureCaller?.parameters = newValue
+        try? mutatorProcedureCaller?.mutateBlock()
+      }
+    }
+  }
+
+  var associatedCallerBlockName: String {
+    switch name {
+      case ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN:
+        return ProcedureCoordinator.BLOCK_CALLER_NO_RETURN
+      case ProcedureCoordinator.BLOCK_DEFINITION_RETURN:
+        return ProcedureCoordinator.BLOCK_CALLER_RETURN
+      default:
+        return ""
+    }
+  }
+
+  var associatedDefinitionBlockName: String {
+    switch name {
+      case ProcedureCoordinator.BLOCK_CALLER_NO_RETURN:
+        return ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN
+      case ProcedureCoordinator.BLOCK_CALLER_RETURN:
+        return ProcedureCoordinator.BLOCK_DEFINITION_RETURN
+      default:
+        return ""
+    }
   }
 }
