@@ -61,6 +61,7 @@ extension BlockJSONFile {
       mutators["procedures_defreturn"] = MutatorProcedureDefinition(returnsValue: true)
       mutators["procedures_callnoreturn"] = MutatorProcedureCaller()
       mutators["procedures_callreturn"] = MutatorProcedureCaller()
+      mutators["procedures_ifreturn"] = MutatorProcedureIfReturn()
     }
 
     return mutators

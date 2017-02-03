@@ -33,6 +33,8 @@ public class ProcedureCoordinator: NSObject {
   fileprivate static let BLOCK_CALLER_NO_RETURN = "procedures_callnoreturn"
   /// Block name for the procedure caller with a return value
   fileprivate static let BLOCK_CALLER_RETURN = "procedures_callreturn"
+  /// Block name for the if/return block
+  fileprivate static let BLOCK_IF_RETURN = "procedures_ifreturn"
 
   /// The workbench that this coordinator is synchronized with
   public private(set) weak var workbench: WorkbenchViewController? {
@@ -72,6 +74,9 @@ public class ProcedureCoordinator: NSObject {
     NotificationCenter.default.addObserver(
       self, selector: #selector(procedureDefinitionDidPerformMutation(_:)),
       name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(workspaceLayoutCoordinatorDidConnect(_:)),
+      name: WorkspaceLayoutCoordinator.NotificationDidConnect, object: nil)
   }
 
   deinit {
@@ -115,6 +120,8 @@ public class ProcedureCoordinator: NSObject {
           trackProcedureDefinitionBlock(block)
         } else if block.isProcedureCaller {
           trackProcedureCallerBlock(block, autoCreateDefinition: false)
+        } else if block.isIfReturn {
+          validateIfReturnBlock(block)
         }
       }
 
@@ -349,6 +356,33 @@ public class ProcedureCoordinator: NSObject {
     }
   }
 
+  // MARK: - If/Return Block Methods
+
+  fileprivate func validateIfReturnBlock(_ block: Block) {
+    guard let blockLayout = block.layout,
+      let mutatorLayout = blockLayout.mutatorLayout as? MutatorProcedureIfReturnLayout else
+    {
+      return
+    }
+
+    if let rootBlock = blockLayout.rootBlockGroupLayout?.blockLayouts[0].block {
+      if (rootBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN &&
+        mutatorLayout.hasReturnValue) ||
+        (rootBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_RETURN &&
+        !mutatorLayout.hasReturnValue)
+      {
+        do {
+          // This if/return block needs to flip its hasReturnValue to match the definition block
+          // that it's contained under.
+          mutatorLayout.hasReturnValue = !mutatorLayout.hasReturnValue
+          try mutatorLayout.performMutation()
+        } catch let error {
+          bky_assertionFailure("Could not validate if/return block: \(error)")
+        }
+      }
+    }
+  }
+
   // MARK: - Helpers
 
   fileprivate func firstToolboxProcedureLayoutCoordinator() -> WorkspaceLayoutCoordinator? {
@@ -372,6 +406,8 @@ extension ProcedureCoordinator: WorkspaceListener {
       trackProcedureDefinitionBlock(block)
     } else if block.isProcedureCaller {
       trackProcedureCallerBlock(block, autoCreateDefinition: true)
+    } else if block.isIfReturn {
+      validateIfReturnBlock(block)
     }
   }
 
@@ -422,6 +458,29 @@ extension ProcedureCoordinator {
       updateProcedureCallers(oldName: block.procedureName, newName: block.procedureName,
                              parameters: block.procedureParameters)
       upsertVariables(fromDefinitionBlock: block)
+    }
+  }
+
+  // MARK: - WorkspaceLayoutCoordinator.NotificationDidConnect Listener
+
+  fileprivate dynamic func workspaceLayoutCoordinatorDidConnect(_ notification: NSNotification) {
+    if let layoutCoordinator = notification.object as? WorkspaceLayoutCoordinator,
+      layoutCoordinator == workbench?.workspaceViewController.workspaceLayoutCoordinator,
+      let userInfoDictionary = (notification.userInfo as? Dictionary<String, Any>),
+      let connections = userInfoDictionary["connections"] as? Array<Connection>,
+      connections.count == 2
+    {
+      // Validate all if/return blocks in the block tree (starting from the superior connection's
+      // source block).
+      let superiorConnection =
+        (connections[0].type == .nextStatement || connections[0].type == .inputValue) ?
+          connections[0] : connections[1]
+
+      if let blocks = superiorConnection.sourceBlock?.allBlocksForTree() {
+        for block in blocks {
+          validateIfReturnBlock(block)
+        }
+      }
     }
   }
 }
@@ -493,6 +552,10 @@ fileprivate extension Block {
   var isProcedureCaller: Bool {
     return name == ProcedureCoordinator.BLOCK_CALLER_NO_RETURN ||
       name == ProcedureCoordinator.BLOCK_CALLER_RETURN
+  }
+
+  var isIfReturn: Bool {
+    return name == ProcedureCoordinator.BLOCK_IF_RETURN
   }
 
   var procedureDefinitionNameInput: FieldInput? {

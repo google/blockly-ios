@@ -114,16 +114,22 @@ open class DefaultLayoutFactory: NSObject {
       return MutatorIfElseLayout(mutator: mutator as! MutatorIfElse, engine: engine)
     }
 
+    registerLayoutCreator(forMutatorType: MutatorProcedureCaller.self) {
+      (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
+      return MutatorProcedureCallerLayout(
+        mutator: mutator as! MutatorProcedureCaller, engine: engine)
+    }
+
     registerLayoutCreator(forMutatorType: MutatorProcedureDefinition.self) {
       (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
       return MutatorProcedureDefinitionLayout(
         mutator: mutator as! MutatorProcedureDefinition, engine: engine)
     }
 
-    registerLayoutCreator(forMutatorType: MutatorProcedureCaller.self) {
+    registerLayoutCreator(forMutatorType: MutatorProcedureIfReturn.self) {
       (mutator: Mutator, engine: LayoutEngine) -> MutatorLayout in
-      return MutatorProcedureCallerLayout(
-        mutator: mutator as! MutatorProcedureCaller, engine: engine)
+      return MutatorProcedureIfReturnLayout(
+        mutator: mutator as! MutatorProcedureIfReturn, engine: engine)
     }
   }
 
