@@ -40,6 +40,16 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
   public init(mutator: MutatorProcedureIfReturn, engine: LayoutEngine) {
     self.mutatorProcedureIfReturn = mutator
     super.init(mutator: mutator, engine: engine)
+
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(workspaceLayoutCoordinatorDidConnect(_:)),
+      name: WorkspaceLayoutCoordinator.NotificationDidConnect, object: nil)
+
+    updateHasReturnValue()
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(self)
   }
 
   // MARK: - Super
@@ -100,5 +110,45 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
     mutatorHelper.clearSavedTargetConnections()
     mutatorHelper.saveTargetConnections(
       fromInputs: mutatorProcedureIfReturn.sortedMutatorInputs())
+  }
+
+  // MARK: - Validation
+
+  /**
+   If this layout is a descendant of a procedure definition block, this method automatically
+   updates `self.hasReturnValue` to match if the definition block has a return value
+   or not.
+   */
+  fileprivate func updateHasReturnValue() {
+    guard let rootBlock = mutator.block?.layout?.rootBlockGroupLayout?.blockLayouts[0].block else {
+      return
+    }
+
+    if (rootBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN && hasReturnValue) ||
+       (rootBlock.name == ProcedureCoordinator.BLOCK_DEFINITION_RETURN && !hasReturnValue)
+    {
+      do {
+        // This if/return block needs to flip its hasReturnValue to match the definition block
+        // that it's contained under.
+        hasReturnValue = !hasReturnValue
+        try performMutation()
+      } catch let error {
+        bky_assertionFailure("Could not update if/return block: \(error)")
+      }
+    }
+  }
+}
+
+extension MutatorProcedureIfReturnLayout {
+  // MARK: - WorkspaceLayoutCoordinator.NotificationDidConnect Listener
+
+  fileprivate dynamic func workspaceLayoutCoordinatorDidConnect(_ notification: NSNotification) {
+    if let layoutCoordinator = notification.object as? WorkspaceLayoutCoordinator,
+      isDescendant(of: layoutCoordinator.workspaceLayout)
+    {
+      // Some connection has changed in the workspace that this mutator is part of.
+      // This block may need to update its if/return mutation if it's changed grandparents.
+      updateHasReturnValue()
+    }
   }
 }
