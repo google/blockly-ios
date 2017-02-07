@@ -26,13 +26,13 @@ public class ProcedureCoordinator: NSObject {
   // MARK: - Properties
 
   /// Block name for the procedure definition with no return value
-  fileprivate static let BLOCK_DEFINITION_NO_RETURN = "procedures_defnoreturn"
+  public static let BLOCK_DEFINITION_NO_RETURN = "procedures_defnoreturn"
   /// Block name for the procedure definition with a return value
-  fileprivate static let BLOCK_DEFINITION_RETURN = "procedures_defreturn"
+  public static let BLOCK_DEFINITION_RETURN = "procedures_defreturn"
   /// Block name for the procedure caller with no return value
-  fileprivate static let BLOCK_CALLER_NO_RETURN = "procedures_callnoreturn"
+  public static let BLOCK_CALLER_NO_RETURN = "procedures_callnoreturn"
   /// Block name for the procedure caller with a return value
-  fileprivate static let BLOCK_CALLER_RETURN = "procedures_callreturn"
+  public static let BLOCK_CALLER_RETURN = "procedures_callreturn"
 
   /// The workbench that this coordinator is synchronized with
   public private(set) weak var workbench: WorkbenchViewController? {
