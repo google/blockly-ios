@@ -28,7 +28,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    Notification that is fired after this layout has connected two connections together.
 
    The notification's `userInfo` will contain a dictionary of the form:
-   
+
    `{ "connections": [<Connection>, <Connection>] }`
    */
   public static let NotificationDidConnect =

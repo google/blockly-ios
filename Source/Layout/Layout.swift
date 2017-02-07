@@ -231,7 +231,7 @@ open class Layout: NSObject {
 
   /**
    Returns whether this layout is a descendant of a given layout.
-   
+
    - parameter layout: The layout to check.
    - returns: `true` if the given `layout` is a grandparent of this layout. `false` otherwise.
    */

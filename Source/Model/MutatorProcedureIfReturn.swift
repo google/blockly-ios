@@ -92,7 +92,7 @@ extension MutatorProcedureIfReturn: Mutator {
     if let input = block.firstInput(withName: "VALUE") {
       inputs.append(input)
     }
-    
+
     return inputs
   }
 }
