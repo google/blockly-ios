@@ -1,576 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html devsite>
   <head>
-    <title>WorkbenchViewController Class Reference</title>
+    <title>Blockly Framework Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
-    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
-    <script src="../js/jquery.min.js" defer></script>
-    <script src="../js/jazzy.js" defer></script>
-    
+    <meta name="project_path" value="/blockly/_project.yaml"/><meta name="book_path" value="/blockly/_book.yaml"/>
   </head>
   <body>
-    <a name="//apple_ref/swift/Class/WorkbenchViewController" class="dashAnchor"></a>
-    <a title="WorkbenchViewController Class Reference"></a>
-    <header>
-      <div class="content-wrapper">
-        <p><a href="../index.html">Blockly Docs</a> (100% documented)</p>
-      </div>
-    </header>
     <div class="content-wrapper">
-      <p id="breadcrumbs">
-        <a href="../index.html">Blockly Reference</a>
-        <img id="carat" src="../img/carat.png" />
-        WorkbenchViewController Class Reference
-      </p>
-    </div>
-    <div class="content-wrapper">
-      <nav class="sidebar">
-        <ul class="nav-groups">
-          <li class="nav-group-name">
-            <a href="../Model.html">Model</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/Block.html">Block</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlockFactory.html">BlockFactory</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Connection.html">Connection</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Connection/BKYConnectionType.html">– BKYConnectionType</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Connection/CheckResult.html">– CheckResult</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Field.html">Field</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Field/JSONRegistry.html">– JSONRegistry</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Input.html">Input</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Input/BKYInputType.html">– BKYInputType</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Input/BKYInputAlignment.html">– BKYInputAlignment</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Toolbox.html">Toolbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Toolbox/Category.html">– Category</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Workspace.html">Workspace</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceFlow.html">WorkspaceFlow</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceFlow/Item.html">– Item</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Control.html">Control</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/BlockBumper.html">BlockBumper</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConnectionManager.html">ConnectionManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConnectionManager/Group.html">– Group</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ConnectionValidator.html">ConnectionValidator</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Dragger.html">Dragger</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/NameManager.html">NameManager</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Layout.html">Layout</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/BlockLayout.html">BlockLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/InputLayout.html">InputLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldLayout.html">FieldLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Layout.html">Layout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/LayoutBuilder.html">LayoutBuilder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/LayoutConfig.html">LayoutConfig</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/LayoutEngine.html">LayoutEngine</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/LayoutFactory.html">LayoutFactory</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ToolboxLayout.html">ToolboxLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceLayout.html">WorkspaceLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceFlowLayout.html">WorkspaceFlowLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceFlowLayout/BKYWorkspaceFlowLayoutDirection.html">– BKYWorkspaceFlowLayoutDirection</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../View.html">View</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/BezierPathLayer.html">BezierPathLayer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlockView.html">BlockView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlockGroupView.html">BlockGroupView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldView.html">FieldView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/InputView.html">InputView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/LayoutView.html">LayoutView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/TrashCanView.html">TrashCanView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ViewBuilder.html">ViewBuilder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ViewFactory.html">ViewFactory</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ViewManager.html">ViewManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceView.html">WorkspaceView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceView/ScrollView.html">– ScrollView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ZIndexedGroupView.html">ZIndexedGroupView</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../View Controller.html">View Controller</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/DropdownOptionsViewController.html">DropdownOptionsViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldColorPickerViewController.html">FieldColorPickerViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ToolboxCategoryListViewController.html">ToolboxCategoryListViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController47BKYToolboxCategoryListViewControllerOrientation">– BKYToolboxCategoryListViewControllerOrientation</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ToolboxCategoryViewController.html">ToolboxCategoryViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/TrashCanViewController.html">TrashCanViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkbenchViewController/BKYWorkbenchViewControllerStyle.html">– BKYWorkbenchViewControllerStyle</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkbenchViewController/UIState.html">– UIState</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Common.html">Common</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/BlocklyError.html">BlocklyError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlocklyError/BKYBlocklyErrorCode.html">– BKYBlocklyErrorCode</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodeGenerator.html">CodeGenerator</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodeGenerator/BKYCodeGeneratorState.html">– BKYCodeGeneratorState</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodeGeneratorService.html">CodeGeneratorService</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodeGeneratorService/Request.html">– Request</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ColorHelper.html">ColorHelper</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DropdownView.html">DropdownView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ImageLoader.html">ImageLoader</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/InsetTextField.html">InsetTextField</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/JSONHelper.html">JSONHelper</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ObjectPool.html">ObjectPool</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceBezierPath.html">WorkspaceBezierPath</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Fields.html">Fields</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/FieldAngle.html">FieldAngle</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldCheckbox.html">FieldCheckbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldColor.html">FieldColor</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDate.html">FieldDate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDropdown.html">FieldDropdown</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldImage.html">FieldImage</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldInput.html">FieldInput</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldLabel.html">FieldLabel</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldNumber.html">FieldNumber</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldVariable.html">FieldVariable</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../FieldLayouts.html">FieldLayouts</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/FieldAngleLayout.html">FieldAngleLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldCheckboxLayout.html">FieldCheckboxLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldColorLayout.html">FieldColorLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDateLayout.html">FieldDateLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDropdownLayout.html">FieldDropdownLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldImageLayout.html">FieldImageLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldInputLayout.html">FieldInputLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldLabelLayout.html">FieldLabelLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldNumberLayout.html">FieldNumberLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldVariableLayout.html">FieldVariableLayout</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../FieldViews.html">FieldViews</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/FieldAngleView.html">FieldAngleView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldCheckboxView.html">FieldCheckboxView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldColorView.html">FieldColorView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDateView.html">FieldDateView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldDropdownView.html">FieldDropdownView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldImageView.html">FieldImageView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldInputView.html">FieldInputView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldLabelView.html">FieldLabelView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldNumberView.html">FieldNumberView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/FieldVariableView.html">FieldVariableView</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Default Implementation.html">Default Implementation</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockGroupLayout.html">DefaultBlockGroupLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockLayout/Background.html">– Background</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockLayout/BackgroundRow.html">– BackgroundRow</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockLayout/InlineConnector.html">– InlineConnector</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultBlockView.html">DefaultBlockView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultConnectionValidator.html">DefaultConnectionValidator</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultInputLayout.html">DefaultInputLayout</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultLayoutConfig.html">DefaultLayoutConfig</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultLayoutEngine.html">DefaultLayoutEngine</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DefaultLayoutFactory.html">DefaultLayoutFactory</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/BlockBuilder.html">BlockBuilder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/BlocklyPanGestureRecognizer/BKYBlocklyPanGestureRecognizerTouchState.html">– BKYBlocklyPanGestureRecognizerTouchState</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/InputBuilder.html">InputBuilder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/WorkspaceLayoutCoordinator.html">WorkspaceLayoutCoordinator</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Extensions/Dictionary.html">Dictionary</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/EdgeInsets.html">EdgeInsets</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/String.html">String</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/WorkspacePoint.html">WorkspacePoint</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/WorkspaceSize.html">WorkspaceSize</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Other Functions.html#/s:F7Blocklyoi1pFTVSC17BKYWorkspacePointS0__S0_">+(_:_:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Functions.html#/s:F7Blocklyoi1sFTVSC17BKYWorkspacePointS0__S0_">-(_:_:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Protocols.html">Other Protocols</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Protocols/BlockDelegate.html">BlockDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/BlocklyPanGestureDelegate.html">BlocklyPanGestureDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ConnectionHighlightDelegate.html">ConnectionHighlightDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ConnectionPositionDelegate.html">ConnectionPositionDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/DropdownOptionsViewControllerDelegate.html">DropdownOptionsViewControllerDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/DropdownViewDelegate.html">DropdownViewDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/FieldColorPickerViewControllerDelegate.html">FieldColorPickerViewControllerDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/FieldDelegate.html">FieldDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/FieldLayoutMeasurer.html">FieldLayoutMeasurer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/FieldViewDelegate.html">FieldViewDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Protocols.html#/s:P7Blockly13InputDelegate">InputDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/LayoutDelegate.html">LayoutDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/LayoutHierarchyListener.html">LayoutHierarchyListener</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/NameManagerListener.html">NameManagerListener</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/Recyclable.html">Recyclable</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ToolboxCategoryListViewControllerDelegate.html">ToolboxCategoryListViewControllerDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ViewBuilderDelegate.html">ViewBuilderDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/WorkbenchViewControllerDelegate.html">WorkbenchViewControllerDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/WorkspaceListener.html">WorkspaceListener</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/WorkspaceViewControllerDelegate.html">WorkspaceViewControllerDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ZIndexedView.html">ZIndexedView</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structs</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Structs/LayoutFlag.html">LayoutFlag</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/WeakSet.html">WeakSet</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other Typealiases.html">Other Typealiases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:C7Blockly5Block7Builder">Builder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:C7Blockly5Input7Builder">Builder</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:7Blockly10EdgeInsets">EdgeInsets</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Size">Size</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:C7Blockly12LayoutConfig4Unit">Unit</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:7Blockly19WorkspaceEdgeInsets">WorkspaceEdgeInsets</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:7Blockly14WorkspacePoint">WorkspacePoint</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:7Blockly13WorkspaceSize">WorkspaceSize</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
       <article class="main-content">
         <section>
           <section class="section">
@@ -583,25 +20,23 @@
               </div>
             <p>View controller for editing a workspace.</p>
 
-<p>TODO:(#61) Refactor parts of this code into <code><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></code>.</p>
-
           </section>
           <section class="section task-group-section">
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Style%20Enum"></a>
-                <a name="//apple_ref/swift/Section/Style Enum" class="dashAnchor"></a>
-                <a href="#/Style%20Enum">
-                  <h3 class="section-name">Style Enum</h3>
+                <a name="/Constants"></a>
+                <a name="//apple_ref/swift/Section/Constants" class="dashAnchor"></a>
+                <a href="#/Constants">
+                  <h2 class="section-name">Constants</h2>
                 </a>
               </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C7Blockly23WorkbenchViewController5Style"></a>
-                    <a name="//apple_ref/swift/Alias/Style" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C7Blockly23WorkbenchViewController5Style">Style</a>
+                    <a name="/s:C7Blockly23WorkbenchViewController7UIState"></a>
+                    <a name="//apple_ref/swift/Alias/UIState" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:C7Blockly23WorkbenchViewController7UIState">UIState</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -609,14 +44,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Defines the style of the workbench</p>
+                        <p>Details the bitflags for <code>WorkbenchViewController</code>&rsquo;s state.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Style</span> <span class="o">=</span> <span class="kt"><a href="../Classes/WorkbenchViewController/BKYWorkbenchViewControllerStyle.html">BKYWorkbenchViewControllerStyle</a></span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">UIState</span> <span class="o">=</span> <span class="kt">WorkbenchViewControllerUIState</span></code></pre>
 
                         </div>
                       </div>
@@ -626,9 +61,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:OC7Blockly23WorkbenchViewController31BKYWorkbenchViewControllerStyle"></a>
-                    <a name="//apple_ref/swift/Enum/BKYWorkbenchViewControllerStyle" class="dashAnchor"></a>
-                    <a class="token" href="#/s:OC7Blockly23WorkbenchViewController31BKYWorkbenchViewControllerStyle">BKYWorkbenchViewControllerStyle</a>
+                    <a name="/s:C7Blockly23WorkbenchViewController12UIStateValue"></a>
+                    <a name="//apple_ref/swift/Alias/UIStateValue" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:C7Blockly23WorkbenchViewController12UIStateValue">UIStateValue</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -636,15 +71,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Defines the style of the workbench</p>
+                        <p>Specifies the bitflags for individual state values of <code>WorkbenchViewController</code>.</p>
 
-                        <a href="../Classes/WorkbenchViewController/BKYWorkbenchViewControllerStyle.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">BKYWorkbenchViewControllerStyle</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">UIStateValue</span> <span class="o">=</span> <span class="kt">WorkbenchViewControllerUIStateValue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC7Blockly23WorkbenchViewController5Style"></a>
+                    <a name="//apple_ref/swift/Enum/Style" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:OC7Blockly23WorkbenchViewController5Style">Style</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The style of the workbench</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Style</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -652,52 +113,12 @@
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/UIState%20Struct"></a>
-                <a name="//apple_ref/swift/Section/UIState Struct" class="dashAnchor"></a>
-                <a href="#/UIState%20Struct">
-                  <h3 class="section-name">UIState Struct</h3>
-                </a>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:VC7Blockly23WorkbenchViewController7UIState"></a>
-                    <a name="//apple_ref/swift/Struct/UIState" class="dashAnchor"></a>
-                    <a class="token" href="#/s:VC7Blockly23WorkbenchViewController7UIState">UIState</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Defines possible UI states that the view controller may be in</p>
-
-                        <a href="../Classes/WorkbenchViewController/UIState.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UIState</span> <span class="p">:</span> <span class="kt">OptionSet</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Properties"></a>
                 <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
                 <a href="#/Properties">
-                  <h3 class="section-name">Properties</h3>
+                  <h2 class="section-name">Properties</h2>
                 </a>
               </div>
               <ul>
@@ -706,7 +127,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController23workspaceViewControllerGSQCS_23WorkspaceViewController_"></a>
                     <a name="//apple_ref/swift/Property/workspaceViewController" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController23workspaceViewControllerGSQCS_23WorkspaceViewController_">workspaceViewController</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController23workspaceViewControllerGSQCS_23WorkspaceViewController_">workspaceViewController</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -719,9 +140,63 @@
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController12trashCanViewGSQCS_12TrashCanView_"></a>
+                    <a name="//apple_ref/swift/Property/trashCanView" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController12trashCanViewGSQCS_12TrashCanView_">trashCanView</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The trash can view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">trashCanView</span><span class="p">:</span> <span class="kt"><a href="../Classes/TrashCanView.html">TrashCanView</a></span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController29toolboxCategoryViewControllerGSQCS_29ToolboxCategoryViewController_"></a>
+                    <a name="//apple_ref/swift/Property/toolboxCategoryViewController" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController29toolboxCategoryViewControllerGSQCS_29ToolboxCategoryViewController_">toolboxCategoryViewController</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The toolbox category view controller.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">toolboxCategoryViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/ToolboxCategoryViewController.html">ToolboxCategoryViewController</a></span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -733,7 +208,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController6engineCS_12LayoutEngine"></a>
                     <a name="//apple_ref/swift/Property/engine" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController6engineCS_12LayoutEngine">engine</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController6engineCS_12LayoutEngine">engine</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -746,8 +221,8 @@
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">let</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span></code></pre>
 
                         </div>
@@ -760,7 +235,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController13layoutBuilderCS_13LayoutBuilder"></a>
                     <a name="//apple_ref/swift/Property/layoutBuilder" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController13layoutBuilderCS_13LayoutBuilder">layoutBuilder</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController13layoutBuilderCS_13LayoutBuilder">layoutBuilder</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -773,8 +248,8 @@
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">let</span> <span class="nv">layoutBuilder</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutBuilder.html">LayoutBuilder</a></span></code></pre>
 
                         </div>
@@ -787,7 +262,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController11viewFactoryCS_11ViewFactory"></a>
                     <a name="//apple_ref/swift/Property/viewFactory" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController11viewFactoryCS_11ViewFactory">viewFactory</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController11viewFactoryCS_11ViewFactory">viewFactory</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -800,8 +275,8 @@
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">let</span> <span class="nv">viewFactory</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFactory.html">ViewFactory</a></span></code></pre>
 
                         </div>
@@ -812,9 +287,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly23WorkbenchViewController5styleOS0_31BKYWorkbenchViewControllerStyle"></a>
+                    <a name="/s:vC7Blockly23WorkbenchViewController5styleOS0_5Style"></a>
                     <a name="//apple_ref/swift/Property/style" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController5styleOS0_31BKYWorkbenchViewControllerStyle">style</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController5styleOS0_5Style">style</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -822,14 +297,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The current style of workbench</p>
+                        <p>The style of workbench</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">let</span> <span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController5Style">Style</a></span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">let</span> <span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style">Style</a></span></code></pre>
 
                         </div>
                       </div>
@@ -841,7 +316,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController9workspaceGSqCS_9Workspace_"></a>
                     <a name="//apple_ref/swift/Property/workspace" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController9workspaceGSqCS_9Workspace_">workspace</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController9workspaceGSqCS_9Workspace_">workspace</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -849,13 +324,13 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The workspace that has been loaded via <code>loadWorkspace(:)</code></p>
+                        <p>The current state of the main workspace</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">?</span></code></pre>
 
                         </div>
@@ -868,7 +343,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController7toolboxGSqCS_7Toolbox_"></a>
                     <a name="//apple_ref/swift/Property/toolbox" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController7toolboxGSqCS_7Toolbox_">toolbox</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController7toolboxGSqCS_7Toolbox_">toolbox</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -881,9 +356,63 @@
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">toolbox</span><span class="p">:</span> <span class="kt"><a href="../Classes/Toolbox.html">Toolbox</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController19variableNameManagerCS_11NameManager"></a>
+                    <a name="//apple_ref/swift/Property/variableNameManager" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController19variableNameManagerCS_11NameManager">variableNameManager</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code><a href="../Classes/NameManager.html">NameManager</a></code> that controls the variables in this workbench&rsquo;s scope.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">variableNameManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/NameManager.html">NameManager</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController20procedureCoordinatorGSqCS_20ProcedureCoordinator_"></a>
+                    <a name="//apple_ref/swift/Property/procedureCoordinator" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController20procedureCoordinatorGSqCS_20ProcedureCoordinator_">procedureCoordinator</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Coordinator that handles logic for managing procedure functionality</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">procedureCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Classes/ProcedureCoordinator.html">ProcedureCoordinator</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -895,7 +424,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController14enableTrashCanSb"></a>
                     <a name="//apple_ref/swift/Property/enableTrashCan" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController14enableTrashCanSb">enableTrashCan</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController14enableTrashCanSb">enableTrashCan</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -903,14 +432,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Flag for enabling trash can functionality</p>
+                        <p>Displays (<code>true</code>) or hides (<code>false</code>) a trash can. By default, this value is set to <code>true</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">enableTrashCan</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController9allowZoomSb"></a>
+                    <a name="//apple_ref/swift/Property/allowZoom" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController9allowZoomSb">allowZoom</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Enables or disables pinch zooming of the workspace. Defaults to <code>true</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">allowZoom</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -922,7 +478,7 @@
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController22toolboxDrawerStaysOpenSb"></a>
                     <a name="//apple_ref/swift/Property/toolboxDrawerStaysOpen" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController22toolboxDrawerStaysOpenSb">toolboxDrawerStaysOpen</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController22toolboxDrawerStaysOpenSb">toolboxDrawerStaysOpen</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -937,8 +493,8 @@ By default, this value is set to <code>false</code>.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">toolboxDrawerStaysOpen</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
 
                         </div>
@@ -949,9 +505,9 @@ By default, this value is set to <code>false</code>.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly23WorkbenchViewController5stateVS0_7UIState"></a>
+                    <a name="/s:vC7Blockly23WorkbenchViewController5stateVSC30WorkbenchViewControllerUIState"></a>
                     <a name="//apple_ref/swift/Property/state" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController5stateVS0_7UIState">state</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController5stateVSC30WorkbenchViewControllerUIState">state</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -964,9 +520,9 @@ By default, this value is set to <code>false</code>.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="kt"><a href="../Classes/WorkbenchViewController/UIState.html">UIState</a></span><span class="o">.</span><span class="n">defaultState</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController7UIState">UIState</a></span><span class="o">.</span><span class="n">defaultState</span></code></pre>
 
                         </div>
                       </div>
@@ -978,7 +534,7 @@ By default, this value is set to <code>false</code>.</p>
                     <code>
                     <a name="/s:vC7Blockly23WorkbenchViewController8delegateXwGSqPS_31WorkbenchViewControllerDelegate__"></a>
                     <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Blockly23WorkbenchViewController8delegateXwGSqPS_31WorkbenchViewControllerDelegate__">delegate</a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController8delegateXwGSqPS_31WorkbenchViewControllerDelegate__">delegate</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -991,8 +547,8 @@ By default, this value is set to <code>false</code>.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/WorkbenchViewControllerDelegate.html">WorkbenchViewControllerDelegate</a></span><span class="p">?</span></code></pre>
 
                         </div>
@@ -1001,22 +557,21 @@ By default, this value is set to <code>false</code>.</p>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Initializers"></a>
                 <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
                 <a href="#/Initializers">
-                  <h3 class="section-name">Initializers</h3>
+                  <h2 class="section-name">Initializers</h2>
                 </a>
               </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_31BKYWorkbenchViewControllerStyle_S0_"></a>
+                    <a name="/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_5Style_S0_"></a>
                     <a name="//apple_ref/swift/Method/init(style:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_31BKYWorkbenchViewControllerStyle_S0_">init(style:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_5Style_S0_">init(style:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1027,18 +582,12 @@ By default, this value is set to <code>false</code>.</p>
                         <p>Creates the workbench with defaults for <code>self.engine</code>, <code>self.layoutBuilder</code>,
 <code>self.viewFactory</code>.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter style: The <code><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController5Style">Style</a></code> to use for this laying out items in this view controller.
-
-</div>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController5Style">Style</a></span><span class="p">)</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style">Style</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1058,8 +607,7 @@ By default, this value is set to <code>false</code>.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1068,9 +616,9 @@ By default, this value is set to <code>false</code>.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_31BKYWorkbenchViewControllerStyle6engineCS_12LayoutEngine13layoutBuilderCS_13LayoutBuilder11viewFactoryCS_11ViewFactory_S0_"></a>
-                    <a name="//apple_ref/swift/Method/init(style:engine:layoutBuilder:viewFactory:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_31BKYWorkbenchViewControllerStyle6engineCS_12LayoutEngine13layoutBuilderCS_13LayoutBuilder11viewFactoryCS_11ViewFactory_S0_">init(style:engine:layoutBuilder:viewFactory:)</a>
+                    <a name="/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_5Style6engineCS_12LayoutEngine13layoutBuilderCS_13LayoutBuilder11viewFactoryCS_11ViewFactory19variableNameManagerCS_11NameManager20procedureCoordinatorCS_20ProcedureCoordinator_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(style:engine:layoutBuilder:viewFactory:variableNameManager:procedureCoordinator:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewControllercFT5styleOS0_5Style6engineCS_12LayoutEngine13layoutBuilderCS_13LayoutBuilder11viewFactoryCS_11ViewFactory19variableNameManagerCS_11NameManager20procedureCoordinatorCS_20ProcedureCoordinator_S0_">init(style:engine:layoutBuilder:viewFactory:variableNameManager:procedureCoordinator:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1080,37 +628,14 @@ By default, this value is set to <code>false</code>.</p>
                       <div class="abstract">
                         <p>Creates the workbench.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter style: The <code><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController5Style">Style</a></code> to use for this laying out items in this view controller.
-
-</div>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter engine: Value used for <code>self.layoutEngine</code>.
-
-</div>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter layoutBuilder: Value used for <code>self.layoutBuilder</code>.
-
-</div>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter layoutBuilder: Value used for <code>self.viewFactory</code>.
-
-</div>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:C7Blockly23WorkbenchViewController5Style">Style</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">,</span> <span class="nv">layoutBuilder</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutBuilder.html">LayoutBuilder</a></span><span class="p">,</span>
-              <span class="nv">viewFactory</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFactory.html">ViewFactory</a></span><span class="p">)</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style">Style</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">,</span> <span class="nv">layoutBuilder</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutBuilder.html">LayoutBuilder</a></span><span class="p">,</span>
+              <span class="nv">viewFactory</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFactory.html">ViewFactory</a></span><span class="p">,</span> <span class="nv">variableNameManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/NameManager.html">NameManager</a></span><span class="p">,</span>
+              <span class="nv">procedureCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Classes/ProcedureCoordinator.html">ProcedureCoordinator</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1130,8 +655,7 @@ By default, this value is set to <code>false</code>.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>engine</em>
@@ -1143,8 +667,7 @@ By default, this value is set to <code>false</code>.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>layoutBuilder</em>
@@ -1156,11 +679,10 @@ By default, this value is set to <code>false</code>.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
-                                <em>layoutBuilder</em>
+                                <em>viewFactory</em>
                                 </code>
                               </td>
                               <td>
@@ -1169,21 +691,43 @@ By default, this value is set to <code>false</code>.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>variableNameManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Value used for <code>self.variableNameManager</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>procedureCoordinator</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Value used for <code>self.procedureCoordinator</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Public"></a>
                 <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
                 <a href="#/Public">
-                  <h3 class="section-name">Public</h3>
+                  <h2 class="section-name">Public</h2>
                 </a>
               </div>
               <ul>
@@ -1192,7 +736,7 @@ By default, this value is set to <code>false</code>.</p>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzCS_9WorkspaceT_"></a>
                     <a name="//apple_ref/swift/Method/loadWorkspace(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzCS_9WorkspaceT_">loadWorkspace(_:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzCS_9WorkspaceT_">loadWorkspace(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1203,12 +747,6 @@ By default, this value is set to <code>false</code>.</p>
                         <p>Automatically creates a <code><a href="../Classes/WorkspaceLayout.html">WorkspaceLayout</a></code> and <code><a href="../Classes/WorkspaceLayoutCoordinator.html">WorkspaceLayoutCoordinator</a></code> for a given workspace
 (using both the <code>self.engine</code> and <code>self.layoutBuilder</code> instances). The workspace is then
 rendered into the view controller.</p>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter workspace: The <code><a href="../Classes/Workspace.html">Workspace</a></code> to load
-
-</div>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -1225,8 +763,8 @@ rendered into the view controller.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">loadWorkspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
@@ -1247,8 +785,7 @@ rendered into the view controller.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1259,7 +796,7 @@ rendered into the view controller.</p>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzTCS_9Workspace17connectionManagerCS_17ConnectionManager_T_"></a>
                     <a name="//apple_ref/swift/Method/loadWorkspace(_:connectionManager:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzTCS_9Workspace17connectionManagerCS_17ConnectionManager_T_">loadWorkspace(_:connectionManager:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController13loadWorkspaceFzTCS_9Workspace17connectionManagerCS_17ConnectionManager_T_">loadWorkspace(_:connectionManager:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1271,18 +808,6 @@ rendered into the view controller.</p>
 (using both the <code>self.engine</code> and <code>self.layoutBuilder</code> instances). The workspace is then
 rendered into the view controller.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter workspace: The <code><a href="../Classes/Workspace.html">Workspace</a></code> to load
-
-</div>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter connectionManager: A <code><a href="../Classes/ConnectionManager.html">ConnectionManager</a></code> to track connections in the workspace.
-
-</div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if an associated <code><a href="../Classes/WorkspaceLayout.html">WorkspaceLayout</a></code> could not be created for the workspace.
@@ -1292,8 +817,8 @@ rendered into the view controller.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">loadWorkspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="nv">connectionManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/ConnectionManager.html">ConnectionManager</a></span><span class="p">)</span>
       <span class="k">throws</span></code></pre>
 
@@ -1315,8 +840,7 @@ rendered into the view controller.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>connectionManager</em>
@@ -1328,8 +852,7 @@ rendered into the view controller.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1338,9 +861,9 @@ rendered into the view controller.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewController11loadToolboxFzCS_7ToolboxT_"></a>
-                    <a name="//apple_ref/swift/Method/loadToolbox(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController11loadToolboxFzCS_7ToolboxT_">loadToolbox(_:)</a>
+                    <a name="/s:FC7Blockly23WorkbenchViewController11loadToolboxFzTCS_7Toolbox12blockFactoryGSqCS_12BlockFactory__T_"></a>
+                    <a name="//apple_ref/swift/Method/loadToolbox(_:blockFactory:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController11loadToolboxFzTCS_7Toolbox12blockFactoryGSqCS_12BlockFactory__T_">loadToolbox(_:blockFactory:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1351,9 +874,10 @@ rendered into the view controller.</p>
                         <p>Automatically creates a <code><a href="../Classes/ToolboxLayout.html">ToolboxLayout</a></code> for a given <code><a href="../Classes/Toolbox.html">Toolbox</a></code> (using both the <code>self.engine</code>
 and <code>self.layoutBuilder</code> instances) and loads it into the view controller.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter toolbox: The <code><a href="../Classes/Toolbox.html">Toolbox</a></code> to load
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    The block factory is only required if the toolbox needs to dynamically create blocks.
+(e.g. The variable category.)
 
 </div>
 
@@ -1366,9 +890,9 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">loadToolbox</span><span class="p">(</span><span class="n">_</span> <span class="nv">toolbox</span><span class="p">:</span> <span class="kt"><a href="../Classes/Toolbox.html">Toolbox</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">loadToolbox</span><span class="p">(</span><span class="n">_</span> <span class="nv">toolbox</span><span class="p">:</span> <span class="kt"><a href="../Classes/Toolbox.html">Toolbox</a></span><span class="p">,</span> <span class="nv">blockFactory</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockFactory.html">BlockFactory</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -1388,8 +912,19 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>blockFactory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>(Optional) The <code>BlockFactory</code> to associate with the toolbox.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1400,7 +935,7 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController11refreshViewFT_T_"></a>
                     <a name="//apple_ref/swift/Method/refreshView()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController11refreshViewFT_T_">refreshView()</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController11refreshViewFT_T_">refreshView()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1413,8 +948,8 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">refreshView</span><span class="p">()</span></code></pre>
 
                         </div>
@@ -1423,13 +958,12 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Private"></a>
                 <a name="//apple_ref/swift/Section/Private" class="dashAnchor"></a>
                 <a href="#/Private">
-                  <h3 class="section-name">Private</h3>
+                  <h2 class="section-name">Private</h2>
                 </a>
               </div>
               <ul>
@@ -1438,7 +972,7 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController13copyBlockViewFzCS_9BlockViewS1_"></a>
                     <a name="//apple_ref/swift/Method/copyBlockView(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController13copyBlockViewFzCS_9BlockViewS1_">copyBlockView(_:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController13copyBlockViewFzCS_9BlockViewS1_">copyBlockView(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1451,18 +985,6 @@ and <code>self.layoutBuilder</code> instances) and loads it into the view contro
 2) Building its layout tree and setting its workspace position to be relative to where the given
 block view is currently on-screen.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter blockView: The block view to copy into this workspace.
-
-</div>
-
-<div class="aside aside-returns">
-    <p class="aside-title">Returns</p>
-    The new block view that was added to this workspace.
-
-</div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the block view could not be created.
@@ -1472,8 +994,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">copyBlockView</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span></code></pre>
 
                         </div>
@@ -1494,8 +1016,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                       <div>
@@ -1507,13 +1028,12 @@ block view is currently on-screen.</p>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Public2"></a>
                 <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
                 <a href="#/Public2">
-                  <h3 class="section-name">Public</h3>
+                  <h2 class="section-name">Public</h2>
                 </a>
               </div>
               <ul>
@@ -1522,7 +1042,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController14didTapTrashCanFCSo8UIButtonT_"></a>
                     <a name="//apple_ref/swift/Method/didTapTrashCan(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController14didTapTrashCanFCSo8UIButtonT_">didTapTrashCan(_:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController14didTapTrashCanFCSo8UIButtonT_">didTapTrashCan(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1532,17 +1052,11 @@ block view is currently on-screen.</p>
                       <div class="abstract">
                         <p>Event that is fired when the trash can is tapped on.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter sender: The trash can button that sent the event.
-
-</div>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapTrashCan</span><span class="p">(</span><span class="n">_</span> <span class="nv">sender</span><span class="p">:</span> <span class="kt">UIButton</span><span class="p">)</span></code></pre>
 
                         </div>
@@ -1563,23 +1077,21 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <ul>
                 <li class="item">
                   <div>
                     <code>
                     <a name="/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController15didAddBlockViewCS_9BlockView_T_"></a>
                     <a name="//apple_ref/swift/Method/workspaceViewController(_:didAddBlockView:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController15didAddBlockViewCS_9BlockView_T_">workspaceViewController(_:didAddBlockView:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController15didAddBlockViewCS_9BlockView_T_">workspaceViewController(_:didAddBlockView:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1591,8 +1103,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="n">didAddBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
 
@@ -1614,8 +1126,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>blockView</em>
@@ -1627,8 +1138,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1639,7 +1149,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController18didRemoveBlockViewCS_9BlockView_T_"></a>
                     <a name="//apple_ref/swift/Method/workspaceViewController(_:didRemoveBlockView:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController18didRemoveBlockViewCS_9BlockView_T_">workspaceViewController(_:didRemoveBlockView:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController18didRemoveBlockViewCS_9BlockView_T_">workspaceViewController(_:didRemoveBlockView:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1651,8 +1161,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="n">didRemoveBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
 
@@ -1674,8 +1184,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>blockView</em>
@@ -1687,8 +1196,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1699,7 +1207,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController25willPresentViewControllerCSo16UIViewController_T_"></a>
                     <a name="//apple_ref/swift/Method/workspaceViewController(_:willPresentViewController:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController25willPresentViewControllerCSo16UIViewController_T_">workspaceViewController(_:willPresentViewController:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate23workspaceViewControllerFTCS_23WorkspaceViewController25willPresentViewControllerCSo16UIViewController_T_">workspaceViewController(_:willPresentViewController:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1711,8 +1219,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="nv">willPresentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
 
@@ -1734,8 +1242,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                            <tr>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>willPresentViewController</em>
@@ -1747,8 +1254,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -1759,7 +1265,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FP7Blockly31WorkspaceViewControllerDelegate46workspaceViewControllerDismissedViewControllerFCS_23WorkspaceViewControllerT_"></a>
                     <a name="//apple_ref/swift/Method/workspaceViewControllerDismissedViewController(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate46workspaceViewControllerDismissedViewControllerFCS_23WorkspaceViewControllerT_">workspaceViewControllerDismissedViewController(_:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly31WorkspaceViewControllerDelegate46workspaceViewControllerDismissedViewControllerFCS_23WorkspaceViewControllerT_">workspaceViewControllerDismissedViewController(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1771,8 +1277,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewControllerDismissedViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">)</span></code></pre>
 
@@ -1794,23 +1300,21 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <ul>
                 <li class="item">
                   <div>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController20copyBlockToWorkspaceFCS_9BlockViewGSqS1__"></a>
                     <a name="//apple_ref/swift/Method/copyBlockToWorkspace(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController20copyBlockToWorkspaceFCS_9BlockViewGSqS1__">copyBlockToWorkspace(_:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController20copyBlockToWorkspaceFCS_9BlockViewGSqS1__">copyBlockToWorkspace(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1820,19 +1324,11 @@ block view is currently on-screen.</p>
                       <div class="abstract">
                         <p>Copies the specified block from a flyout (trash/toolbox) to the workspace.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter blockView: The <code><a href="../Classes/BlockView.html">BlockView</a></code> to copy
-
-</div>
-
-<p><li>Return: The new <code><a href="../Classes/BlockView.html">BlockView</a></code></li></p>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">copyBlockToWorkspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">?</span></code></pre>
 
                         </div>
@@ -1853,9 +1349,13 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new <code><a href="../Classes/BlockView.html">BlockView</a></code></p>
+
                       </div>
                     </section>
                   </div>
@@ -1865,7 +1365,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController20removeBlockFromTrashFCS_9BlockViewT_"></a>
                     <a name="//apple_ref/swift/Method/removeBlockFromTrash(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController20removeBlockFromTrashFCS_9BlockViewT_">removeBlockFromTrash(_:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController20removeBlockFromTrashFCS_9BlockViewT_">removeBlockFromTrash(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1875,17 +1375,11 @@ block view is currently on-screen.</p>
                       <div class="abstract">
                         <p>Removes a <code><a href="../Classes/BlockView.html">BlockView</a></code> from the trash, when moving it back to the workspace.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter blockView: The <code><a href="../Classes/BlockView.html">BlockView</a></code> to remove.
-
-</div>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeBlockFromTrash</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
 
                         </div>
@@ -1906,23 +1400,21 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <ul>
                 <li class="item">
                   <div>
                     <code>
                     <a name="/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate33toolboxCategoryListViewControllerFTCS_33ToolboxCategoryListViewController17didSelectCategoryCCS_7Toolbox8Category_T_"></a>
                     <a name="//apple_ref/swift/Method/toolboxCategoryListViewController(_:didSelectCategory:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate33toolboxCategoryListViewControllerFTCS_33ToolboxCategoryListViewController17didSelectCategoryCCS_7Toolbox8Category_T_">toolboxCategoryListViewController(_:didSelectCategory:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate33toolboxCategoryListViewControllerFTCS_33ToolboxCategoryListViewController17didSelectCategoryCCS_7Toolbox8Category_T_">toolboxCategoryListViewController(_:didSelectCategory:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1934,8 +1426,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toolboxCategoryListViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt"><a href="../Classes/ToolboxCategoryListViewController.html">ToolboxCategoryListViewController</a></span><span class="p">,</span> <span class="n">didSelectCategory</span> <span class="nv">category</span><span class="p">:</span> <span class="kt"><a href="../Classes/Toolbox.html">Toolbox</a></span><span class="o">.</span><span class="kt">Category</span><span class="p">)</span></code></pre>
 
@@ -1949,7 +1441,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate52toolboxCategoryListViewControllerDidDeselectCategoryFCS_33ToolboxCategoryListViewControllerT_"></a>
                     <a name="//apple_ref/swift/Method/toolboxCategoryListViewControllerDidDeselectCategory(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate52toolboxCategoryListViewControllerDidDeselectCategoryFCS_33ToolboxCategoryListViewControllerT_">toolboxCategoryListViewControllerDidDeselectCategory(_:)</a>
+                    <h3><a class="token" href="#/s:FP7Blockly41ToolboxCategoryListViewControllerDelegate52toolboxCategoryListViewControllerDidDeselectCategoryFCS_33ToolboxCategoryListViewControllerT_">toolboxCategoryListViewControllerDidDeselectCategory(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1961,8 +1453,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toolboxCategoryListViewControllerDidDeselectCategory</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt"><a href="../Classes/ToolboxCategoryListViewController.html">ToolboxCategoryListViewController</a></span><span class="p">)</span></code></pre>
 
@@ -1972,15 +1464,14 @@ block view is currently on-screen.</p>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewController14highlightBlockFSST_"></a>
-                    <a name="//apple_ref/swift/Method/highlightBlock(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController14highlightBlockFSST_">highlightBlock(_:)</a>
+                    <a name="/s:FC7Blockly23WorkbenchViewController14highlightBlockFT9blockUUIDSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/highlightBlock(blockUUID:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController14highlightBlockFT9blockUUIDSS_T_">highlightBlock(blockUUID:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1990,18 +1481,12 @@ block view is currently on-screen.</p>
                       <div class="abstract">
                         <p>Highlights a block in the workspace.</p>
 
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter blockUUID: The UUID of the block to highlight
-
-</div>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="nv">blockUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -2021,8 +1506,7 @@ block view is currently on-screen.</p>
 
                                 </div>
                               </td>
-                            </tr>
-                          </tbody>
+                            </tr>                          </tbody>
                         </table>
                       </div>
                     </section>
@@ -2031,9 +1515,9 @@ block view is currently on-screen.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewController16unhighlightBlockFSST_"></a>
-                    <a name="//apple_ref/swift/Method/unhighlightBlock(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController16unhighlightBlockFSST_">unhighlightBlock(_:)</a>
+                    <a name="/s:FC7Blockly23WorkbenchViewController16unhighlightBlockFT9blockUUIDSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/unhighlightBlock(blockUUID:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController16unhighlightBlockFT9blockUUIDSS_T_">unhighlightBlock(blockUUID:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2050,9 +1534,9 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unhighlightBlock</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unhighlightBlock</span><span class="p">(</span><span class="nv">blockUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -2064,7 +1548,7 @@ block view is currently on-screen.</p>
                     <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController20unhighlightAllBlocksFT_T_"></a>
                     <a name="//apple_ref/swift/Method/unhighlightAllBlocks()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController20unhighlightAllBlocksFT_T_">unhighlightAllBlocks()</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController20unhighlightAllBlocksFT_T_">unhighlightAllBlocks()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2077,8 +1561,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unhighlightAllBlocks</span><span class="p">()</span></code></pre>
 
                         </div>
@@ -2087,15 +1571,14 @@ block view is currently on-screen.</p>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task-group">
+            </div>            <div class="task-group">
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_40BKYBlocklyPanGestureRecognizerTouchState_T_"></a>
+                    <a name="/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_10TouchState_T_"></a>
                     <a name="//apple_ref/swift/Method/blocklyPanGestureRecognizer(_:didTouchBlock:touch:touchState:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_40BKYBlocklyPanGestureRecognizerTouchState_T_">blocklyPanGestureRecognizer(_:didTouchBlock:touch:touchState:)</a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_10TouchState_T_">blocklyPanGestureRecognizer(_:didTouchBlock:touch:touchState:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2108,8 +1591,8 @@ block view is currently on-screen.</p>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">blocklyPanGestureRecognizer</span><span class="p">(</span><span class="n">_</span> <span class="nv">gesture</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a></span><span class="p">,</span>
     <span class="n">didTouchBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">,</span> <span class="nv">touch</span><span class="p">:</span> <span class="kt">UITouch</span><span class="p">,</span>
     <span class="nv">touchState</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a></span><span class="o">.</span><span class="kt">TouchState</span><span class="p">)</span></code></pre>
@@ -2120,15 +1603,348 @@ block view is currently on-screen.</p>
                   </div>
                 </li>
               </ul>
-            </div>
-          </section>
-        </section>
-        <section id="footer">
-          
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+            </div>          </section>
         </section>
       </article>
     </div>
   </body>
-</div>
 </html>
+toc:
+- heading: Blockly
+
+- title: iOS
+  path: /blockly/reference/ios/../iOS
+  section:
+    - title: BezierPathLayer
+      path: /blockly/reference/ios/../Classes/BezierPathLayer.html
+    - title: Block
+      path: /blockly/reference/ios/../Classes/Block.html
+    - title: BlockBuilder
+      path: /blockly/reference/ios/../Classes/BlockBuilder.html
+    - title: BlockBumper
+      path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockFactory
+      path: /blockly/reference/ios/../Classes/BlockFactory.html
+    - title: BlockGroupLayout
+      path: /blockly/reference/ios/../Classes/BlockGroupLayout.html
+    - title: BlockGroupView
+      path: /blockly/reference/ios/../Classes/BlockGroupView.html
+    - title: BlockJSONFile
+      path: /blockly/reference/ios/../Extensions/BlockJSONFile.html
+    - title: BlockLayout
+      path: /blockly/reference/ios/../Classes/BlockLayout.html
+    - title: BlockListener
+      path: /blockly/reference/ios/../Protocols/BlockListener.html
+    - title: BlocklyError
+      path: /blockly/reference/ios/../Classes/BlocklyError.html
+    - title: – Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+    - title: BlocklyPanGestureRecognizer
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
+    - title: – TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlockView
+      path: /blockly/reference/ios/../Classes/BlockView.html
+    - title: CodeGenerator
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html
+    - title: – State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+    - title: CodeGeneratorService
+      path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
+    - title: CodeGeneratorServiceRequestBuilder
+      path: /blockly/reference/ios/../Classes/CodeGeneratorServiceRequestBuilder.html
+    - title: ColorHelper
+      path: /blockly/reference/ios/../Classes/ColorHelper.html
+    - title: Connection
+      path: /blockly/reference/ios/../Classes/Connection.html
+    - title: – ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+    - title: – CheckResult
+      path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
+    - title: ConnectionHighlightDelegate
+      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
+    - title: ConnectionManager
+      path: /blockly/reference/ios/../Classes/ConnectionManager.html
+    - title: – Group
+      path: /blockly/reference/ios/../Classes/ConnectionManager/Group.html
+    - title: ConnectionPositionDelegate
+      path: /blockly/reference/ios/../Protocols/ConnectionPositionDelegate.html
+    - title: ConnectionValidator
+      path: /blockly/reference/ios/../Protocols/ConnectionValidator.html
+    - title: DefaultBlockGroupLayout
+      path: /blockly/reference/ios/../Classes/DefaultBlockGroupLayout.html
+    - title: DefaultBlockLayout
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout.html
+    - title: – Background
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/Background.html
+    - title: – BackgroundRow
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/BackgroundRow.html
+    - title: – InlineConnector
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/InlineConnector.html
+    - title: DefaultBlockView
+      path: /blockly/reference/ios/../Classes/DefaultBlockView.html
+    - title: DefaultConnectionValidator
+      path: /blockly/reference/ios/../Classes/DefaultConnectionValidator.html
+    - title: DefaultInputLayout
+      path: /blockly/reference/ios/../Classes/DefaultInputLayout.html
+    - title: DefaultLayoutConfig
+      path: /blockly/reference/ios/../Classes/DefaultLayoutConfig.html
+    - title: DefaultLayoutEngine
+      path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
+    - title: DefaultLayoutFactory
+      path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dragger
+      path: /blockly/reference/ios/../Classes/Dragger.html
+    - title: DropdownOptionsViewController
+      path: /blockly/reference/ios/../Classes/DropdownOptionsViewController.html
+    - title: DropdownOptionsViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/DropdownOptionsViewControllerDelegate.html
+    - title: DropdownView
+      path: /blockly/reference/ios/../Classes/DropdownView.html
+    - title: DropdownViewDelegate
+      path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
+    - title: EdgeInsets
+      path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: Field
+      path: /blockly/reference/ios/../Classes/Field.html
+    - title: – JSONRegistry
+      path: /blockly/reference/ios/../Classes/Field/JSONRegistry.html
+    - title: FieldAngle
+      path: /blockly/reference/ios/../Classes/FieldAngle.html
+    - title: FieldAngleLayout
+      path: /blockly/reference/ios/../Classes/FieldAngleLayout.html
+    - title: FieldAngleView
+      path: /blockly/reference/ios/../Classes/FieldAngleView.html
+    - title: FieldCheckbox
+      path: /blockly/reference/ios/../Classes/FieldCheckbox.html
+    - title: FieldCheckboxLayout
+      path: /blockly/reference/ios/../Classes/FieldCheckboxLayout.html
+    - title: FieldCheckboxView
+      path: /blockly/reference/ios/../Classes/FieldCheckboxView.html
+    - title: FieldColor
+      path: /blockly/reference/ios/../Classes/FieldColor.html
+    - title: FieldColorLayout
+      path: /blockly/reference/ios/../Classes/FieldColorLayout.html
+    - title: FieldColorPickerViewController
+      path: /blockly/reference/ios/../Classes/FieldColorPickerViewController.html
+    - title: FieldColorPickerViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/FieldColorPickerViewControllerDelegate.html
+    - title: FieldColorView
+      path: /blockly/reference/ios/../Classes/FieldColorView.html
+    - title: FieldDate
+      path: /blockly/reference/ios/../Classes/FieldDate.html
+    - title: FieldDateLayout
+      path: /blockly/reference/ios/../Classes/FieldDateLayout.html
+    - title: FieldDateView
+      path: /blockly/reference/ios/../Classes/FieldDateView.html
+    - title: FieldDropdown
+      path: /blockly/reference/ios/../Classes/FieldDropdown.html
+    - title: FieldDropdownLayout
+      path: /blockly/reference/ios/../Classes/FieldDropdownLayout.html
+    - title: FieldDropdownView
+      path: /blockly/reference/ios/../Classes/FieldDropdownView.html
+    - title: FieldImage
+      path: /blockly/reference/ios/../Classes/FieldImage.html
+    - title: FieldImageLayout
+      path: /blockly/reference/ios/../Classes/FieldImageLayout.html
+    - title: FieldImageView
+      path: /blockly/reference/ios/../Classes/FieldImageView.html
+    - title: FieldInput
+      path: /blockly/reference/ios/../Classes/FieldInput.html
+    - title: FieldInputLayout
+      path: /blockly/reference/ios/../Classes/FieldInputLayout.html
+    - title: FieldInputView
+      path: /blockly/reference/ios/../Classes/FieldInputView.html
+    - title: FieldLabel
+      path: /blockly/reference/ios/../Classes/FieldLabel.html
+    - title: FieldLabelLayout
+      path: /blockly/reference/ios/../Classes/FieldLabelLayout.html
+    - title: FieldLabelView
+      path: /blockly/reference/ios/../Classes/FieldLabelView.html
+    - title: FieldLayout
+      path: /blockly/reference/ios/../Classes/FieldLayout.html
+    - title: FieldLayoutMeasurer
+      path: /blockly/reference/ios/../Protocols/FieldLayoutMeasurer.html
+    - title: FieldListener
+      path: /blockly/reference/ios/../Protocols/FieldListener.html
+    - title: FieldNumber
+      path: /blockly/reference/ios/../Classes/FieldNumber.html
+    - title: FieldNumberLayout
+      path: /blockly/reference/ios/../Classes/FieldNumberLayout.html
+    - title: FieldNumberView
+      path: /blockly/reference/ios/../Classes/FieldNumberView.html
+    - title: FieldVariable
+      path: /blockly/reference/ios/../Classes/FieldVariable.html
+    - title: FieldVariableLayout
+      path: /blockly/reference/ios/../Classes/FieldVariableLayout.html
+    - title: FieldVariableView
+      path: /blockly/reference/ios/../Classes/FieldVariableView.html
+    - title: FieldView
+      path: /blockly/reference/ios/../Classes/FieldView.html
+    - title: ImageLoader
+      path: /blockly/reference/ios/../Classes/ImageLoader.html
+    - title: Input
+      path: /blockly/reference/ios/../Classes/Input.html
+    - title: – InputType
+      path: /blockly/reference/ios/../Classes/Input/InputType.html
+    - title: – Alignment
+      path: /blockly/reference/ios/../Classes/Input/Alignment.html
+    - title: InputBuilder
+      path: /blockly/reference/ios/../Classes/InputBuilder.html
+    - title: InputLayout
+      path: /blockly/reference/ios/../Classes/InputLayout.html
+    - title: InputView
+      path: /blockly/reference/ios/../Classes/InputView.html
+    - title: InsetTextField
+      path: /blockly/reference/ios/../Classes/InsetTextField.html
+    - title: JSONHelper
+      path: /blockly/reference/ios/../Classes/JSONHelper.html
+    - title: Layout
+      path: /blockly/reference/ios/../Classes/Layout.html
+    - title: LayoutBuilder
+      path: /blockly/reference/ios/../Classes/LayoutBuilder.html
+    - title: LayoutConfig
+      path: /blockly/reference/ios/../Classes/LayoutConfig.html
+    - title: LayoutDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutDelegate.html
+    - title: LayoutEngine
+      path: /blockly/reference/ios/../Classes/LayoutEngine.html
+    - title: LayoutFactory
+      path: /blockly/reference/ios/../Protocols/LayoutFactory.html
+    - title: LayoutFlag
+      path: /blockly/reference/ios/../Structs/LayoutFlag.html
+    - title: LayoutHierarchyListener
+      path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutView
+      path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MutatorHelper
+      path: /blockly/reference/ios/../Classes/MutatorHelper.html
+    - title: MutatorIfElse
+      path: /blockly/reference/ios/../Classes/MutatorIfElse.html
+    - title: MutatorIfElseLayout
+      path: /blockly/reference/ios/../Classes/MutatorIfElseLayout.html
+    - title: MutatorIfElseView
+      path: /blockly/reference/ios/../Classes/MutatorIfElseView.html
+    - title: MutatorLayout
+      path: /blockly/reference/ios/../Classes/MutatorLayout.html
+    - title: MutatorProcedureCaller
+      path: /blockly/reference/ios/../Classes/MutatorProcedureCaller.html
+    - title: MutatorProcedureCallerLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureCallerLayout.html
+    - title: MutatorProcedureDefinition
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinition.html
+    - title: MutatorProcedureDefinitionLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinitionLayout.html
+    - title: MutatorProcedureDefinitionView
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinitionView.html
+    - title: MutatorProcedureIfReturn
+      path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturn.html
+    - title: MutatorProcedureIfReturnLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturnLayout.html
+    - title: ProcedureCoordinator
+      path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
+    - title: ProcedureParameter
+      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+    - title: NameManager
+      path: /blockly/reference/ios/../Classes/NameManager.html
+    - title: NameManagerListener
+      path: /blockly/reference/ios/../Protocols/NameManagerListener.html
+    - title: ObjectPool
+      path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Toolbox
+      path: /blockly/reference/ios/../Classes/Toolbox.html
+    - title: – Category
+      path: /blockly/reference/ios/../Classes/Toolbox/Category.html
+    - title: ToolboxCategoryListViewController
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
+    - title: – Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+    - title: ToolboxCategoryListViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
+    - title: ToolboxCategoryViewController
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryViewController.html
+    - title: ToolboxLayout
+      path: /blockly/reference/ios/../Classes/ToolboxLayout.html
+    - title: TrashCanView
+      path: /blockly/reference/ios/../Classes/TrashCanView.html
+    - title: TrashCanViewController
+      path: /blockly/reference/ios/../Classes/TrashCanViewController.html
+    - title: ViewBuilder
+      path: /blockly/reference/ios/../Classes/ViewBuilder.html
+    - title: ViewBuilderDelegate
+      path: /blockly/reference/ios/../Protocols/ViewBuilderDelegate.html
+    - title: ViewFactory
+      path: /blockly/reference/ios/../Classes/ViewFactory.html
+    - title: ViewManager
+      path: /blockly/reference/ios/../Classes/ViewManager.html
+    - title: WeakSet
+      path: /blockly/reference/ios/../Structs/WeakSet.html
+    - title: WorkbenchViewController
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+    - title: WorkbenchViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
+    - title: Workspace
+      path: /blockly/reference/ios/../Classes/Workspace.html
+    - title: WorkspaceBezierPath
+      path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
+    - title: WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+    - title: WorkspaceFlow
+      path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
+    - title: – Item
+      path: /blockly/reference/ios/../Classes/WorkspaceFlow/Item.html
+    - title: WorkspaceFlowLayout
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
+    - title: – LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+    - title: WorkspaceLayout
+      path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
+    - title: WorkspaceLayoutCoordinator
+      path: /blockly/reference/ios/../Classes/WorkspaceLayoutCoordinator.html
+    - title: WorkspaceListener
+      path: /blockly/reference/ios/../Protocols/WorkspaceListener.html
+    - title: WorkspacePoint
+      path: /blockly/reference/ios/../Extensions/WorkspacePoint.html
+    - title: WorkspaceSize
+      path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
+    - title: WorkspaceView
+      path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – ScrollView
+      path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
+    - title: WorkspaceViewController
+      path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
+    - title: WorkspaceViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: ZIndexedGroupView
+      path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
+    - title: ZIndexedView
+      path: /blockly/reference/ios/../Protocols/ZIndexedView.html
+- title: Other Extensions
+  path: /blockly/reference/ios/../Other Extensions
+  section:
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
+- title: Other Functions
+  path: /blockly/reference/ios/../Other Functions
+  section:
+    - title: +(_:_:)
+      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
+    - title: -(_:_:)
+      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
+- title: Other Protocols
+  path: /blockly/reference/ios/../Other Protocols
+  section:
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html

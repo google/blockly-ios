@@ -1,0 +1,54 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/BKYEdgeInsets.h",
+      "line": 29,
+      "symbol": "BKYEdgeInsets",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/BKYLayoutConfigStructs.h",
+      "line": 30,
+      "symbol": "BKYLayoutConfigUnit",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/BKYLayoutConfigStructs.h",
+      "line": 53,
+      "symbol": "BKYLayoutConfigSize",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/BKYWorkspaceUnits.h",
+      "line": 27,
+      "symbol": "BKYWorkspacePoint",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/BKYWorkspaceUnits.h",
+      "line": 54,
+      "symbol": "BKYWorkspaceSize",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/Blockly.h",
+      "line": 19,
+      "symbol": "BlocklyVersionNumber",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Source/ObjC/Blockly.h",
+      "line": 22,
+      "symbol": "BlocklyVersionString",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/vicng/Github/blockly/ios/Samples"
+}
