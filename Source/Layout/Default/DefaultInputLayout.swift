@@ -22,7 +22,7 @@ import UIKit
 public final class DefaultInputLayout: InputLayout {
   // MARK: - Properties
 
-  // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
+  // TODO(#34): Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the input.connection
   fileprivate var _connection: Connection!

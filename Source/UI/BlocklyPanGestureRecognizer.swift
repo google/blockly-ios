@@ -79,7 +79,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /// An ordered list of blocks being dragged by the recognizer.
   private var _blocks = [BlockView]()
 
-  // TODO:(#176) Replace maximumTouches
+  // TODO(#176): Replace maximumTouches
 
   /// Maximum number of touches handled by the recognizer
   open var maximumTouches = Int.max
