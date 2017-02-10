@@ -161,6 +161,7 @@
 		FAC2ABFB1E43E7DA003DB287 /* ProcedureParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2ABFA1E43E7DA003DB287 /* ProcedureParameter.swift */; };
 		FAC2AC031E440A38003DB287 /* MutatorProcedureIfReturn.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */; };
 		FAC2AC051E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */; };
+		FAC2AC0E1E496827003DB287 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */; };
 		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
 		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
@@ -375,6 +376,7 @@
 		FAC2ABFA1E43E7DA003DB287 /* ProcedureParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureParameter.swift; sourceTree = "<group>"; };
 		FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturn.swift; sourceTree = "<group>"; };
 		FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturnLayout.swift; sourceTree = "<group>"; };
+		FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
 		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
@@ -782,6 +784,7 @@
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
+				FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */,
 				FAA86FF91C64272C000C7C61 /* ImageLoader.swift */,
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
@@ -1070,6 +1073,7 @@
 				FAD6526A1CB8791F00F73F11 /* DefaultLayoutFactory.swift in Sources */,
 				FAA8701A1C642805000C7C61 /* TrashCanViewController.swift in Sources */,
 				FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */,
+				FAC2AC0E1E496827003DB287 /* EdgeInsets.swift in Sources */,
 				FA2DFCB71B72DCFB0072A278 /* FieldCheckbox.swift in Sources */,
 				FAA870181C642805000C7C61 /* FieldColorPickerViewController.swift in Sources */,
 				FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */,

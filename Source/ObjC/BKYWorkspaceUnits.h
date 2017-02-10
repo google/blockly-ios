@@ -17,9 +17,7 @@
 
 // MARK: - BKYWorkspacePoint
 
-/**
- Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
- */
+/// Point in the Workspace coordinate system (which is separate from the UIView coordinate system).
 struct BKYWorkspacePoint {
   /// The x-coordinate
   CGFloat x;
@@ -46,9 +44,7 @@ extern BKYWorkspacePoint const BKYWorkspacePointZero
 
 // MARK: - BKYWorkspaceSize
 
-/**
- Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
- */
+/// Size in the Workspace coordinate system (which is separate from the UIView coordinate system).
 struct BKYWorkspaceSize {
   /// The width value
   CGFloat width;

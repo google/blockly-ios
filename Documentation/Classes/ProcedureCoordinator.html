@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html devsite>
+  <head>
+    <title>Blockly Framework Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <meta charset='utf-8'>
+    <meta name="project_path" value="/blockly/_project.yaml"/><meta name="book_path" value="/blockly/_book.yaml"/>
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ProcedureCoordinator</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ProcedureCoordinator</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Coordinates the logic of all procedure blocks inside a <code><a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a></code>.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h2 class="section-name">Properties</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly20ProcedureCoordinator26BLOCK_DEFINITION_NO_RETURNSS"></a>
+                    <a name="//apple_ref/swift/Variable/BLOCK_DEFINITION_NO_RETURN" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly20ProcedureCoordinator26BLOCK_DEFINITION_NO_RETURNSS">BLOCK_DEFINITION_NO_RETURN</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Block name for the procedure definition with no return value</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BLOCK_DEFINITION_NO_RETURN</span> <span class="o">=</span> <span class="s">"procedures_defnoreturn"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly20ProcedureCoordinator23BLOCK_DEFINITION_RETURNSS"></a>
+                    <a name="//apple_ref/swift/Variable/BLOCK_DEFINITION_RETURN" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly20ProcedureCoordinator23BLOCK_DEFINITION_RETURNSS">BLOCK_DEFINITION_RETURN</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Block name for the procedure definition with a return value</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BLOCK_DEFINITION_RETURN</span> <span class="o">=</span> <span class="s">"procedures_defreturn"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly20ProcedureCoordinator22BLOCK_CALLER_NO_RETURNSS"></a>
+                    <a name="//apple_ref/swift/Variable/BLOCK_CALLER_NO_RETURN" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly20ProcedureCoordinator22BLOCK_CALLER_NO_RETURNSS">BLOCK_CALLER_NO_RETURN</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Block name for the procedure caller with no return value</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BLOCK_CALLER_NO_RETURN</span> <span class="o">=</span> <span class="s">"procedures_callnoreturn"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7Blockly20ProcedureCoordinator19BLOCK_CALLER_RETURNSS"></a>
+                    <a name="//apple_ref/swift/Variable/BLOCK_CALLER_RETURN" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly20ProcedureCoordinator19BLOCK_CALLER_RETURNSS">BLOCK_CALLER_RETURN</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Block name for the procedure caller with a return value</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BLOCK_CALLER_RETURN</span> <span class="o">=</span> <span class="s">"procedures_callreturn"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly20ProcedureCoordinator9workbenchXwGSqCS_23WorkbenchViewController_"></a>
+                    <a name="//apple_ref/swift/Property/workbench" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly20ProcedureCoordinator9workbenchXwGSqCS_23WorkbenchViewController_">workbench</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The workbench that this coordinator is synchronized with</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">workbench</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Workbench"></a>
+                <a name="//apple_ref/swift/Section/Workbench" class="dashAnchor"></a>
+                <a href="#/Workbench">
+                  <h2 class="section-name">Workbench</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly20ProcedureCoordinator17syncWithWorkbenchFGSqCS_23WorkbenchViewController_T_"></a>
+                    <a name="//apple_ref/swift/Method/syncWithWorkbench(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly20ProcedureCoordinator17syncWithWorkbenchFGSqCS_23WorkbenchViewController_T_">syncWithWorkbench(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Synchronizes this coordinator with a workbench so that all procedure definition/caller blocks
+in the main workspace are in a proper state.</p>
+
+<p>Here are some examples of what can be defined as a <q>proper</q> state:
+- Each procedure definition block in the workspace is unique.
+- All procedure definition blocks defined in the workspace must have an associated caller block
+in the toolbox.
+- No procedure caller block exists in the workspace without an associated definition block.
+- All parameters used in procedure definition blocks are created as variables inside
+<code>workbench.variableNameManager</code>.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20ProcedureCoordinator9workbenchXwGSqCS_23WorkbenchViewController_">workbench</a></code> must have its toolbox and workspace loaded, or else this method does nothing
+but assign <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20ProcedureCoordinator9workbenchXwGSqCS_23WorkbenchViewController_">workbench</a></code> to <code>self.workbench</code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">syncWithWorkbench</span><span class="p">(</span><span class="n">_</span> <span class="nv">workbench</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workbench</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>WorkbenchViewController</code> to synchronize with. This value is then set to <code>self.workbench</code> after this method is called.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/WorkspaceListener%20Implementation"></a>
+                <a name="//apple_ref/swift/Section/WorkspaceListener Implementation" class="dashAnchor"></a>
+                <a href="#/WorkspaceListener%20Implementation">
+                  <h2 class="section-name">WorkspaceListener Implementation</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace11didAddBlockCS_5Block_T_"></a>
+                    <a name="//apple_ref/swift/Method/workspace(_:didAddBlock:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace11didAddBlockCS_5Block_T_">workspace(_:didAddBlock:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="n">didAddBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The workspace that added a block.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block that was added.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace15willRemoveBlockCS_5Block_T_"></a>
+                    <a name="//apple_ref/swift/Method/workspace(_:willRemoveBlock:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace15willRemoveBlockCS_5Block_T_">workspace(_:willRemoveBlock:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="n">willRemoveBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The workspace that will remove a block.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block that will be removed.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/FieldListener%20Implementation"></a>
+                <a name="//apple_ref/swift/Section/FieldListener Implementation" class="dashAnchor"></a>
+                <a href="#/FieldListener%20Implementation">
+                  <h2 class="section-name">FieldListener Implementation</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly13FieldListener14didUpdateFieldFCS_5FieldT_"></a>
+                    <a name="//apple_ref/swift/Method/didUpdateField(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly13FieldListener14didUpdateFieldFCS_5FieldT_">didUpdateField(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didUpdateField</span><span class="p">(</span><span class="n">_</span> <span class="nv">field</span><span class="p">:</span> <span class="kt"><a href="../Classes/Field.html">Field</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>field</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The field that changed.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/NameManagerListener%20Implementation"></a>
+                <a name="//apple_ref/swift/Section/NameManagerListener Implementation" class="dashAnchor"></a>
+                <a href="#/NameManagerListener%20Implementation">
+                  <h2 class="section-name">NameManagerListener Implementation</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly19NameManagerListener11nameManagerFTCS_11NameManager16shouldRemoveNameSS_Sb"></a>
+                    <a name="//apple_ref/swift/Method/nameManager(_:shouldRemoveName:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly19NameManagerListener11nameManagerFTCS_11NameManager16shouldRemoveNameSS_Sb">nameManager(_:shouldRemoveName:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">nameManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">nameManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/NameManager.html">NameManager</a></span><span class="p">,</span> <span class="n">shouldRemoveName</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nameManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>NameManager</code></p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name to potentially remove</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the name should be removed, <code>false</code> otherwise.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly19NameManagerListener11nameManagerFTCS_11NameManager13didRenameNameSS6toNameSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/nameManager(_:didRenameName:toName:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly19NameManagerListener11nameManagerFTCS_11NameManager13didRenameNameSS6toNameSS_T_">nameManager(_:didRenameName:toName:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">nameManager</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">nameManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/NameManager.html">NameManager</a></span><span class="p">,</span> <span class="n">didRenameName</span> <span class="nv">oldName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">toName</span> <span class="nv">newName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nameManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>NameManager</code></p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>oldName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The old name</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>newName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new name</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>          </section>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
+toc:
+- heading: Blockly
+
+- title: iOS
+  path: /blockly/reference/ios/../iOS
+  section:
+    - title: BezierPathLayer
+      path: /blockly/reference/ios/../Classes/BezierPathLayer.html
+    - title: Block
+      path: /blockly/reference/ios/../Classes/Block.html
+    - title: BlockBuilder
+      path: /blockly/reference/ios/../Classes/BlockBuilder.html
+    - title: BlockBumper
+      path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockFactory
+      path: /blockly/reference/ios/../Classes/BlockFactory.html
+    - title: BlockGroupLayout
+      path: /blockly/reference/ios/../Classes/BlockGroupLayout.html
+    - title: BlockGroupView
+      path: /blockly/reference/ios/../Classes/BlockGroupView.html
+    - title: BlockJSONFile
+      path: /blockly/reference/ios/../Extensions/BlockJSONFile.html
+    - title: BlockLayout
+      path: /blockly/reference/ios/../Classes/BlockLayout.html
+    - title: BlockListener
+      path: /blockly/reference/ios/../Protocols/BlockListener.html
+    - title: BlocklyError
+      path: /blockly/reference/ios/../Classes/BlocklyError.html
+    - title: – Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+    - title: BlocklyPanGestureRecognizer
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
+    - title: – TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlockView
+      path: /blockly/reference/ios/../Classes/BlockView.html
+    - title: CodeGenerator
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html
+    - title: – State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+    - title: CodeGeneratorService
+      path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
+    - title: CodeGeneratorServiceRequestBuilder
+      path: /blockly/reference/ios/../Classes/CodeGeneratorServiceRequestBuilder.html
+    - title: ColorHelper
+      path: /blockly/reference/ios/../Classes/ColorHelper.html
+    - title: Connection
+      path: /blockly/reference/ios/../Classes/Connection.html
+    - title: – ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+    - title: – CheckResult
+      path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
+    - title: ConnectionHighlightDelegate
+      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
+    - title: ConnectionManager
+      path: /blockly/reference/ios/../Classes/ConnectionManager.html
+    - title: – Group
+      path: /blockly/reference/ios/../Classes/ConnectionManager/Group.html
+    - title: ConnectionPositionDelegate
+      path: /blockly/reference/ios/../Protocols/ConnectionPositionDelegate.html
+    - title: ConnectionValidator
+      path: /blockly/reference/ios/../Protocols/ConnectionValidator.html
+    - title: DefaultBlockGroupLayout
+      path: /blockly/reference/ios/../Classes/DefaultBlockGroupLayout.html
+    - title: DefaultBlockLayout
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout.html
+    - title: – Background
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/Background.html
+    - title: – BackgroundRow
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/BackgroundRow.html
+    - title: – InlineConnector
+      path: /blockly/reference/ios/../Classes/DefaultBlockLayout/InlineConnector.html
+    - title: DefaultBlockView
+      path: /blockly/reference/ios/../Classes/DefaultBlockView.html
+    - title: DefaultConnectionValidator
+      path: /blockly/reference/ios/../Classes/DefaultConnectionValidator.html
+    - title: DefaultInputLayout
+      path: /blockly/reference/ios/../Classes/DefaultInputLayout.html
+    - title: DefaultLayoutConfig
+      path: /blockly/reference/ios/../Classes/DefaultLayoutConfig.html
+    - title: DefaultLayoutEngine
+      path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
+    - title: DefaultLayoutFactory
+      path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dragger
+      path: /blockly/reference/ios/../Classes/Dragger.html
+    - title: DropdownOptionsViewController
+      path: /blockly/reference/ios/../Classes/DropdownOptionsViewController.html
+    - title: DropdownOptionsViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/DropdownOptionsViewControllerDelegate.html
+    - title: DropdownView
+      path: /blockly/reference/ios/../Classes/DropdownView.html
+    - title: DropdownViewDelegate
+      path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
+    - title: EdgeInsets
+      path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: Field
+      path: /blockly/reference/ios/../Classes/Field.html
+    - title: – JSONRegistry
+      path: /blockly/reference/ios/../Classes/Field/JSONRegistry.html
+    - title: FieldAngle
+      path: /blockly/reference/ios/../Classes/FieldAngle.html
+    - title: FieldAngleLayout
+      path: /blockly/reference/ios/../Classes/FieldAngleLayout.html
+    - title: FieldAngleView
+      path: /blockly/reference/ios/../Classes/FieldAngleView.html
+    - title: FieldCheckbox
+      path: /blockly/reference/ios/../Classes/FieldCheckbox.html
+    - title: FieldCheckboxLayout
+      path: /blockly/reference/ios/../Classes/FieldCheckboxLayout.html
+    - title: FieldCheckboxView
+      path: /blockly/reference/ios/../Classes/FieldCheckboxView.html
+    - title: FieldColor
+      path: /blockly/reference/ios/../Classes/FieldColor.html
+    - title: FieldColorLayout
+      path: /blockly/reference/ios/../Classes/FieldColorLayout.html
+    - title: FieldColorPickerViewController
+      path: /blockly/reference/ios/../Classes/FieldColorPickerViewController.html
+    - title: FieldColorPickerViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/FieldColorPickerViewControllerDelegate.html
+    - title: FieldColorView
+      path: /blockly/reference/ios/../Classes/FieldColorView.html
+    - title: FieldDate
+      path: /blockly/reference/ios/../Classes/FieldDate.html
+    - title: FieldDateLayout
+      path: /blockly/reference/ios/../Classes/FieldDateLayout.html
+    - title: FieldDateView
+      path: /blockly/reference/ios/../Classes/FieldDateView.html
+    - title: FieldDropdown
+      path: /blockly/reference/ios/../Classes/FieldDropdown.html
+    - title: FieldDropdownLayout
+      path: /blockly/reference/ios/../Classes/FieldDropdownLayout.html
+    - title: FieldDropdownView
+      path: /blockly/reference/ios/../Classes/FieldDropdownView.html
+    - title: FieldImage
+      path: /blockly/reference/ios/../Classes/FieldImage.html
+    - title: FieldImageLayout
+      path: /blockly/reference/ios/../Classes/FieldImageLayout.html
+    - title: FieldImageView
+      path: /blockly/reference/ios/../Classes/FieldImageView.html
+    - title: FieldInput
+      path: /blockly/reference/ios/../Classes/FieldInput.html
+    - title: FieldInputLayout
+      path: /blockly/reference/ios/../Classes/FieldInputLayout.html
+    - title: FieldInputView
+      path: /blockly/reference/ios/../Classes/FieldInputView.html
+    - title: FieldLabel
+      path: /blockly/reference/ios/../Classes/FieldLabel.html
+    - title: FieldLabelLayout
+      path: /blockly/reference/ios/../Classes/FieldLabelLayout.html
+    - title: FieldLabelView
+      path: /blockly/reference/ios/../Classes/FieldLabelView.html
+    - title: FieldLayout
+      path: /blockly/reference/ios/../Classes/FieldLayout.html
+    - title: FieldLayoutMeasurer
+      path: /blockly/reference/ios/../Protocols/FieldLayoutMeasurer.html
+    - title: FieldListener
+      path: /blockly/reference/ios/../Protocols/FieldListener.html
+    - title: FieldNumber
+      path: /blockly/reference/ios/../Classes/FieldNumber.html
+    - title: FieldNumberLayout
+      path: /blockly/reference/ios/../Classes/FieldNumberLayout.html
+    - title: FieldNumberView
+      path: /blockly/reference/ios/../Classes/FieldNumberView.html
+    - title: FieldVariable
+      path: /blockly/reference/ios/../Classes/FieldVariable.html
+    - title: FieldVariableLayout
+      path: /blockly/reference/ios/../Classes/FieldVariableLayout.html
+    - title: FieldVariableView
+      path: /blockly/reference/ios/../Classes/FieldVariableView.html
+    - title: FieldView
+      path: /blockly/reference/ios/../Classes/FieldView.html
+    - title: ImageLoader
+      path: /blockly/reference/ios/../Classes/ImageLoader.html
+    - title: Input
+      path: /blockly/reference/ios/../Classes/Input.html
+    - title: – InputType
+      path: /blockly/reference/ios/../Classes/Input/InputType.html
+    - title: – Alignment
+      path: /blockly/reference/ios/../Classes/Input/Alignment.html
+    - title: InputBuilder
+      path: /blockly/reference/ios/../Classes/InputBuilder.html
+    - title: InputLayout
+      path: /blockly/reference/ios/../Classes/InputLayout.html
+    - title: InputView
+      path: /blockly/reference/ios/../Classes/InputView.html
+    - title: InsetTextField
+      path: /blockly/reference/ios/../Classes/InsetTextField.html
+    - title: JSONHelper
+      path: /blockly/reference/ios/../Classes/JSONHelper.html
+    - title: Layout
+      path: /blockly/reference/ios/../Classes/Layout.html
+    - title: LayoutBuilder
+      path: /blockly/reference/ios/../Classes/LayoutBuilder.html
+    - title: LayoutConfig
+      path: /blockly/reference/ios/../Classes/LayoutConfig.html
+    - title: LayoutDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutDelegate.html
+    - title: LayoutEngine
+      path: /blockly/reference/ios/../Classes/LayoutEngine.html
+    - title: LayoutFactory
+      path: /blockly/reference/ios/../Protocols/LayoutFactory.html
+    - title: LayoutFlag
+      path: /blockly/reference/ios/../Structs/LayoutFlag.html
+    - title: LayoutHierarchyListener
+      path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutView
+      path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MutatorHelper
+      path: /blockly/reference/ios/../Classes/MutatorHelper.html
+    - title: MutatorIfElse
+      path: /blockly/reference/ios/../Classes/MutatorIfElse.html
+    - title: MutatorIfElseLayout
+      path: /blockly/reference/ios/../Classes/MutatorIfElseLayout.html
+    - title: MutatorIfElseView
+      path: /blockly/reference/ios/../Classes/MutatorIfElseView.html
+    - title: MutatorLayout
+      path: /blockly/reference/ios/../Classes/MutatorLayout.html
+    - title: MutatorProcedureCaller
+      path: /blockly/reference/ios/../Classes/MutatorProcedureCaller.html
+    - title: MutatorProcedureCallerLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureCallerLayout.html
+    - title: MutatorProcedureDefinition
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinition.html
+    - title: MutatorProcedureDefinitionLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinitionLayout.html
+    - title: MutatorProcedureDefinitionView
+      path: /blockly/reference/ios/../Classes/MutatorProcedureDefinitionView.html
+    - title: MutatorProcedureIfReturn
+      path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturn.html
+    - title: MutatorProcedureIfReturnLayout
+      path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturnLayout.html
+    - title: ProcedureCoordinator
+      path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
+    - title: ProcedureParameter
+      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+    - title: NameManager
+      path: /blockly/reference/ios/../Classes/NameManager.html
+    - title: NameManagerListener
+      path: /blockly/reference/ios/../Protocols/NameManagerListener.html
+    - title: ObjectPool
+      path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Toolbox
+      path: /blockly/reference/ios/../Classes/Toolbox.html
+    - title: – Category
+      path: /blockly/reference/ios/../Classes/Toolbox/Category.html
+    - title: ToolboxCategoryListViewController
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
+    - title: – Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+    - title: ToolboxCategoryListViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
+    - title: ToolboxCategoryViewController
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryViewController.html
+    - title: ToolboxLayout
+      path: /blockly/reference/ios/../Classes/ToolboxLayout.html
+    - title: TrashCanView
+      path: /blockly/reference/ios/../Classes/TrashCanView.html
+    - title: TrashCanViewController
+      path: /blockly/reference/ios/../Classes/TrashCanViewController.html
+    - title: ViewBuilder
+      path: /blockly/reference/ios/../Classes/ViewBuilder.html
+    - title: ViewBuilderDelegate
+      path: /blockly/reference/ios/../Protocols/ViewBuilderDelegate.html
+    - title: ViewFactory
+      path: /blockly/reference/ios/../Classes/ViewFactory.html
+    - title: ViewManager
+      path: /blockly/reference/ios/../Classes/ViewManager.html
+    - title: WeakSet
+      path: /blockly/reference/ios/../Structs/WeakSet.html
+    - title: WorkbenchViewController
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+    - title: WorkbenchViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
+    - title: Workspace
+      path: /blockly/reference/ios/../Classes/Workspace.html
+    - title: WorkspaceBezierPath
+      path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
+    - title: WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+    - title: WorkspaceFlow
+      path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
+    - title: – Item
+      path: /blockly/reference/ios/../Classes/WorkspaceFlow/Item.html
+    - title: WorkspaceFlowLayout
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
+    - title: – LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+    - title: WorkspaceLayout
+      path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
+    - title: WorkspaceLayoutCoordinator
+      path: /blockly/reference/ios/../Classes/WorkspaceLayoutCoordinator.html
+    - title: WorkspaceListener
+      path: /blockly/reference/ios/../Protocols/WorkspaceListener.html
+    - title: WorkspacePoint
+      path: /blockly/reference/ios/../Extensions/WorkspacePoint.html
+    - title: WorkspaceSize
+      path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
+    - title: WorkspaceView
+      path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – ScrollView
+      path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
+    - title: WorkspaceViewController
+      path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
+    - title: WorkspaceViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: ZIndexedGroupView
+      path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
+    - title: ZIndexedView
+      path: /blockly/reference/ios/../Protocols/ZIndexedView.html
+- title: Other Extensions
+  path: /blockly/reference/ios/../Other Extensions
+  section:
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
+- title: Other Functions
+  path: /blockly/reference/ios/../Other Functions
+  section:
+    - title: +(_:_:)
+      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
+    - title: -(_:_:)
+      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
+- title: Other Protocols
+  path: /blockly/reference/ios/../Other Protocols
+  section:
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html
