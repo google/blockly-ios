@@ -130,14 +130,11 @@ extension FieldDropdownView: DropdownViewDelegate {
     viewController.delegate = self
     viewController.options = fieldDropdownLayout.options
     viewController.selectedIndex = fieldDropdownLayout.selectedIndex
+    viewController.textLabelFont =
+      fieldDropdownLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
 
-    if let fontCreator = fieldDropdownLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
-      // Use a scaled font, but don't let the scale go less than 1.0
-      viewController.textLabelFont = fontCreator(max(fieldDropdownLayout.engine.scale, 1.0))
-    }
-
-    delegate?.fieldView(self,
-                        requestedToPresentPopoverViewController: viewController, fromView: self)
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 

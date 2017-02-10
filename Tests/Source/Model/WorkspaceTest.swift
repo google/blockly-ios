@@ -21,11 +21,15 @@ class WorkspaceTest: XCTestCase {
   // MARK: - Properties
 
   var _workspace: Workspace!
+  var _blockFactory: BlockFactory!
 
   // MARK: - Setup
 
   override func setUp() {
     _workspace = Workspace()
+    _blockFactory = BlockFactory()
+    BKYAssertDoesNotThrow { try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"],
+                                                   bundle: Bundle(for: type(of: self))) }
   }
 
   // MARK: - Tests
@@ -199,5 +203,46 @@ class WorkspaceTest: XCTestCase {
     // Add tree of blocks
     BKYAssertDoesNotThrow { try workspace.addBlockTree(parentBlock) }
     XCTAssertEqual(workspace.remainingCapacity, 0)
+  }
+
+  func testGetAllVariables_None() {
+    let variableBlocks = _workspace.allVariableBlocks(forName: "name")
+
+    XCTAssertEqual(0, variableBlocks.count)
+    XCTAssertEqual([], variableBlocks)
+  }
+
+  func testGetAllVariables_Zero() {
+    let _ = BKYAssertDoesNotThrow {
+      try _blockFactory.addBlock(name: "no_connections", toWorkspace: _workspace)
+    }
+    let variableBlocks = _workspace.allVariableBlocks(forName: "name")
+
+    XCTAssertEqual(0, variableBlocks.count)
+  }
+
+  func testGetAllVariables_Some() {
+    guard let _ = BKYAssertDoesNotThrow(
+        { try _blockFactory.addBlock(name: "no_connections", toWorkspace: _workspace)} ),
+      let block1 = BKYAssertDoesNotThrow(
+        { try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace)} ),
+      let block2 = BKYAssertDoesNotThrow(
+        { try _blockFactory.addBlock(name: "field_variable_block", toWorkspace: _workspace)} ) else
+    {
+      XCTFail("Could not create blocks")
+      return
+    }
+    let blocks = [block1, block2]
+    let variableBlocks = _workspace.allVariableBlocks(forName: "variable1")
+
+    XCTAssertEqual(2, variableBlocks.count)
+    for block in blocks {
+      XCTAssertTrue(variableBlocks.contains(block))
+    }
+
+    let nonMatchingVariableBlocks = _workspace.allVariableBlocks(forName: "notVariable1")
+
+    XCTAssertEqual(0, nonMatchingVariableBlocks.count)
+    XCTAssertEqual([], nonMatchingVariableBlocks)
   }
 }

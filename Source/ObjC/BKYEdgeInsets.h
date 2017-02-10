@@ -15,9 +15,7 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-/**
- Defines inset distances for views/layouts, that allows for both LTR and RTL layouts.
- */
+/// Defines inset distances for views/layouts, that allows for both LTR and RTL layouts.
 struct BKYEdgeInsets {
   /// The inset distance for the top edge.
   CGFloat top;
@@ -48,18 +46,19 @@ BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CG
 extern BKYEdgeInsets const BKYEdgeInsetsZero
   CF_SWIFT_NAME(EdgeInsets.zero);
 
+// TODO:(#57) Once Jazzy supports generating docs with headers using the CF_SWIFT_NAME(...) getter
+// macro, add it here and remove EdgeInsets.swift.
+
 /**
  The inset distance for the left edge.
  In LTR layouts, this value is equal to `self.leading`.
  In RTL layouts, this value is equal to `self.trailing`.
  */
-CGFloat BKYEdgeInsetsGetLeft(BKYEdgeInsets edgeInsets)
-  CF_SWIFT_NAME(getter:EdgeInsets.left(self:));
+CGFloat BKYEdgeInsetsGetLeft(BKYEdgeInsets edgeInsets);
 
 /**
  The inset distance for the right edge.
  In LTR layouts, this value is equal to `self.trailing`.
  In RTL layouts, this value is equal to `self.leading`.
  */
-CGFloat BKYEdgeInsetsGetRight(BKYEdgeInsets edgeInsets)
-  CF_SWIFT_NAME(getter:EdgeInsets.right(self:));
+CGFloat BKYEdgeInsetsGetRight(BKYEdgeInsets edgeInsets);

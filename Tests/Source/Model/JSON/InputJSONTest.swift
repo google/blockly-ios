@@ -44,7 +44,7 @@ class InputJSONTest: XCTestCase {
       return
     }
 
-    let input = builder.build()
+    let input = builder.makeInput()
     XCTAssertEqual(Input.InputType.value, input.type)
     XCTAssertEqual("input value", input.name)
     XCTAssertEqual(Input.Alignment.center, input.alignment)
@@ -69,7 +69,7 @@ class InputJSONTest: XCTestCase {
       return
     }
 
-    let input = builder.build()
+    let input = builder.makeInput()
     XCTAssertEqual(Input.InputType.statement, input.type)
     XCTAssertEqual("input statement", input.name)
     XCTAssertEqual(Input.Alignment.left, input.alignment)
@@ -92,7 +92,7 @@ class InputJSONTest: XCTestCase {
       return
     }
 
-    let input = builder.build()
+    let input = builder.makeInput()
     XCTAssertEqual(Input.InputType.dummy, input.type)
     XCTAssertEqual("input dummy", input.name)
     XCTAssertNil(input.connection)

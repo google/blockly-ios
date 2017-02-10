@@ -52,6 +52,11 @@ open class ViewFactory: NSObject {
     registerLayoutType(FieldLabelLayout.self, withViewType: FieldLabelView.self)
     registerLayoutType(FieldNumberLayout.self, withViewType: FieldNumberView.self)
     registerLayoutType(FieldVariableLayout.self, withViewType: FieldVariableView.self)
+
+    // Register the views for known mutator layouts
+    registerLayoutType(MutatorIfElseLayout.self, withViewType: MutatorIfElseView.self)
+    registerLayoutType(MutatorProcedureDefinitionLayout.self,
+                       withViewType: MutatorProcedureDefinitionView.self)
   }
 
   // MARK: - Public

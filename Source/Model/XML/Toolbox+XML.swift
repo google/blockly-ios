@@ -88,11 +88,31 @@ extension Toolbox {
         icon = ImageLoader.loadImage(named: iconString, forClass: Toolbox.self)
       }
 
-      if let custom = categoryNode.attributes["custom"] {
-        bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
-      }
-
       let category = toolbox.addCategory(name: name, color: color ?? UIColor.clear, icon: icon)
+      if let custom = categoryNode.attributes["custom"] {
+        if custom.uppercased() == "VARIABLE" {
+          category.categoryType = .variable
+        } else if custom.uppercased() == "PROCEDURE" {
+          category.categoryType = .procedure
+
+          // Immediately add the base blocks
+          let noReturnBlock = try factory.makeBlock(name: "procedures_defnoreturn")
+          (noReturnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          try category.addBlockTree(noReturnBlock)
+
+          let returnBlock = try factory.makeBlock(name: "procedures_defreturn")
+          (returnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          if let mutator = returnBlock.mutator as? MutatorProcedureDefinition {
+            mutator.allowStatements = true
+            try mutator.mutateBlock()
+          }
+          try category.addBlockTree(returnBlock)
+
+          try category.addBlockTree(factory.makeBlock(name: "procedures_ifreturn"))
+        } else {
+          bky_print("Toolbox category 'custom' attribute ['\(custom)'] is not supported.")
+        }
+      }
 
       for subNode in categoryNode.children {
         try parseChildNode(subNode, forCategory: category, factory: factory)

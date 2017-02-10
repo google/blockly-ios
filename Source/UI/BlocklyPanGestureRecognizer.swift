@@ -79,7 +79,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /// An ordered list of blocks being dragged by the recognizer.
   private var _blocks = [BlockView]()
 
-  // TODO:(#176) Replace maximumTouches
+  // TODO(#176): Replace maximumTouches
 
   /// Maximum number of touches handled by the recognizer
   open var maximumTouches = Int.max
@@ -233,10 +233,12 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
         // TODO:(#175) Fix blocks jumping from touch to touch when one block is hit by two touches.
 
-        targetDelegate?.blocklyPanGestureRecognizer(self,
-                                                    didTouchBlock: block,
-                                                    touch: touch,
-                                                    touchState: .ended)
+        if state == .began || state == .changed {
+          targetDelegate?.blocklyPanGestureRecognizer(self,
+                                                      didTouchBlock: block,
+                                                      touch: touch,
+                                                      touchState: .ended)
+        }
       }
     }
 

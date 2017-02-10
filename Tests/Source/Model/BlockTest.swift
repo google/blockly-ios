@@ -502,6 +502,151 @@ class BlockTest: XCTestCase {
     }
   }
 
+  func testInsertInput() {
+    // Create block with one input
+    let blockBuilder = BlockBuilder(name: "test")
+    blockBuilder.inputBuilders.append(InputBuilder(type: .statement, name: "statement"))
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.makeBlock() }) else {
+      XCTFail("Couldn't build block")
+      return
+    }
+
+    XCTAssertEqual(1, block.inputs.count)
+    XCTAssertEqual(1, block.directConnections.count)
+
+    // Insert new input
+    let inputBuilder = InputBuilder(type: .value, name: "value")
+    let newInput = inputBuilder.makeInput()
+    block.insertInput(newInput, at: 0)
+
+    XCTAssertEqual(2, block.inputs.count)
+    XCTAssertEqual(newInput, block.inputs[0])
+    XCTAssertEqual(2, block.directConnections.count)
+  }
+
+  func testAppendInput() {
+    // Create block with one input
+    let blockBuilder = BlockBuilder(name: "test")
+    blockBuilder.inputBuilders.append(InputBuilder(type: .statement, name: "statement"))
+    guard let block = BKYAssertDoesNotThrow({ try blockBuilder.makeBlock() }) else {
+      XCTFail("Couldn't build block")
+      return
+    }
+
+    XCTAssertEqual(1, block.inputs.count)
+    XCTAssertEqual(1, block.directConnections.count)
+
+    // Append new input
+    let inputBuilder = InputBuilder(type: .value, name: "value")
+    let newInput = inputBuilder.makeInput()
+
+    block.appendInput(newInput)
+
+    XCTAssertEqual(2, block.inputs.count)
+    XCTAssertEqual(newInput, block.inputs[1])
+    XCTAssertEqual(2, block.directConnections.count)
+  }
+
+  func testRemoveInput() {
+    // Create "main" block with two inputs, and 3 child blocks (2 non-shadow, 1 shadow)
+    let mainBlockBuilder = BlockBuilder(name: "main")
+    mainBlockBuilder.inputBuilders.append(InputBuilder(type: .value, name: "value"))
+    mainBlockBuilder.inputBuilders.append(InputBuilder(type: .statement, name: "statement"))
+    let outputBlockBuilder = BlockBuilder(name: "output")
+    BKYAssertDoesNotThrow { try outputBlockBuilder.setOutputConnection(enabled: true) }
+    let previousBlockBuilder = BlockBuilder(name: "previous")
+    BKYAssertDoesNotThrow { try previousBlockBuilder.setPreviousConnection(enabled: true) }
+
+    guard
+      let mainBlock = BKYAssertDoesNotThrow({ try mainBlockBuilder.makeBlock() }),
+      let outputBlock = BKYAssertDoesNotThrow({ try outputBlockBuilder.makeBlock() }),
+      let outputConnection = outputBlock.outputConnection,
+      let shadowOutputBlock =
+        BKYAssertDoesNotThrow({ try outputBlockBuilder.makeBlock(shadow: true) }),
+      let shadowOutputConnection = shadowOutputBlock.outputConnection,
+      let previousBlock = BKYAssertDoesNotThrow({ try previousBlockBuilder.makeBlock() }),
+      let previousConnection = previousBlock.previousConnection else
+    {
+      XCTFail("Couldn't build blocks and/or connections")
+      return
+    }
+
+    // Connect child blocks to "main" block
+    BKYAssertDoesNotThrow {
+      try mainBlock.inputs[0].connection?.connectTo(outputConnection)
+      try mainBlock.inputs[0].connection?.connectShadowTo(shadowOutputConnection)
+      try mainBlock.inputs[1].connection?.connectTo(previousConnection)
+    }
+
+    XCTAssertEqual(2, mainBlock.inputs.count)
+    XCTAssertEqual(2, mainBlock.directConnections.count)
+    XCTAssertTrue(outputConnection.connected)
+    XCTAssertEqual(outputConnection, mainBlock.inputs[0].connection?.targetConnection)
+    XCTAssertTrue(shadowOutputConnection.shadowConnected)
+    XCTAssertEqual(shadowOutputConnection, mainBlock.inputs[0].connection?.shadowConnection)
+    XCTAssertTrue(previousConnection.connected)
+    XCTAssertEqual(previousConnection, mainBlock.inputs[1].connection?.targetConnection)
+
+    // Try to remove first input. This should throw an error since we can't remove inputs with
+    // connected blocks.
+    let valueInput = mainBlock.inputs[0]
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(valueInput) }
+
+    // Disconnect first input's connection and try removing it again. This should still throw an
+    // error, since it's still connected to a shadow block.
+    valueInput.connection?.disconnect()
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(valueInput) }
+
+    // Disconnect input's shadow connection and try removing it again. This should succeed.
+    valueInput.connection?.disconnectShadow()
+    BKYAssertDoesNotThrow { try mainBlock.removeInput(valueInput) }
+
+    XCTAssertEqual(1, mainBlock.inputs.count)
+    XCTAssertEqual(1, mainBlock.directConnections.count)
+    XCTAssertNotEqual(mainBlock.inputs[0], valueInput)
+    XCTAssertNil(valueInput.connectedBlock)
+    XCTAssertFalse(outputConnection.connected)
+    XCTAssertNil(valueInput.connectedShadowBlock)
+    XCTAssertFalse(shadowOutputConnection.connected)
+
+    // Try to remove second input. This should throw an error since we can't remove inputs with
+    // connected blocks.
+    let statementInput = mainBlock.inputs[0]
+    BKYAssertThrow(errorType: BlocklyError.self) { try mainBlock.removeInput(statementInput) }
+
+    // Disconnect second input's connection and try removing it again. This should succeed.
+    statementInput.connection?.disconnect()
+    BKYAssertDoesNotThrow { try mainBlock.removeInput(statementInput) }
+
+    XCTAssertEqual(0, mainBlock.inputs.count)
+    XCTAssertEqual(0, mainBlock.directConnections.count)
+    XCTAssertNil(statementInput.connectedBlock)
+    XCTAssertFalse(previousConnection.connected)
+  }
+
+  func testMutatorOnCreation() {
+    // Create mutator that simply creates an input on the block
+    let dummyMutator = DummyMutator()
+    dummyMutator.id = ""
+    dummyMutator.mutationClosure = { dummyMutator in
+      // Signal the mutator has been applied
+      dummyMutator.id = "mutator applied"
+    }
+
+    // Create block with the mutator
+    let mainBlockBuilder = BlockBuilder(name: "main")
+    mainBlockBuilder.mutator = dummyMutator
+
+    guard let block = BKYAssertDoesNotThrow({ try mainBlockBuilder.makeBlock() }) else {
+      XCTFail("Could not build block")
+      return
+    }
+
+    // Check to see that the mutator was applied on creation
+    XCTAssertNotNil(block.mutator)
+    XCTAssertEqual("mutator applied", (block.mutator as? DummyMutator)?.id)
+  }
+
   // MARK: - Helper methods
 
   /**

@@ -41,6 +41,18 @@ open class BlockLayout: Layout {
   /// The corresponding layout objects for `self.block.inputs[]`
   open fileprivate(set) var inputLayouts = [InputLayout]()
 
+  /// The corresponding layout object for `self.block.mutator`
+  open var mutatorLayout: MutatorLayout? = nil {
+    didSet {
+      if let oldLayout = oldValue {
+        removeChildLayout(oldLayout)
+      }
+      if let newLayout = mutatorLayout {
+        adoptChildLayout(newLayout)
+      }
+    }
+  }
+
   /// A list of all `FieldLayout` objects belonging under this `BlockLayout`.
   open var fieldLayouts: [FieldLayout] {
     var fieldLayouts = [FieldLayout]()
@@ -136,9 +148,15 @@ open class BlockLayout: Layout {
     self.block = block
     super.init(engine: engine)
 
+    block.listeners.add(self)
+
     for connection in self.block.directConnections {
       connection.highlightDelegate = self
     }
+  }
+
+  deinit {
+    block.listeners.remove(self)
   }
 
   // MARK: - Open
@@ -167,7 +185,7 @@ open class BlockLayout: Layout {
   }
 
   /**
-  Removes all elements from `self.inputLayouts` and sets their `parentLayout` to nil.
+  Clears `self.inputLayouts` and `self.mutatorLayout`, and sets their `parentLayout` to nil.
 
   - parameter updateLayout: If true, all parent layouts of this layout will be updated.
   */
@@ -175,6 +193,8 @@ open class BlockLayout: Layout {
     while inputLayouts.count > 0 {
       removeInputLayout(atIndex: 0)
     }
+
+    mutatorLayout = nil
 
     if updateLayout {
       updateLayoutUpTree()
@@ -228,8 +248,17 @@ extension BlockLayout: ConnectionHighlightDelegate {
 
 // MARK: - BlockDelegate
 
-extension BlockLayout: BlockDelegate {
-  public func didUpdate(block: Block) {
+extension BlockLayout: BlockListener {
+  public func didUpdateBlock(_ block: Block) {
+    // TODO:(#288) Remove highlightDelegate dependency once ConnectionHighlightDelegate
+    // functionality is refactored into this class
+
+    // Update highlight delegates of each connection (since block's directConnections may have
+    // changed due to inputs being added/removed)
+    for connection in block.directConnections {
+      connection.highlightDelegate = self
+    }
+
     // Refresh the block since it's been updated
     sendChangeEvent(withFlags: BlockLayout.Flag_NeedsDisplay)
   }

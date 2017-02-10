@@ -46,11 +46,14 @@ public final class BlockBuilder: NSObject {
   public private(set) var previousConnectionTypeChecks: [String]?
   /// The builders for inputs on the block. Defaults to `[]`.
   public var inputBuilders: [InputBuilder] = []
-  /// Sepcifies the inputs are inline. Defaults to `false`.
+  /// Specifies the inputs are inline. Defaults to `false`.
   public var inputsInline: Bool = false
   /// The absolute position of the block, in the Workspace coordinate system.
   /// Defaults to `WorkspacePoint.zero`.
   public var position: WorkspacePoint = WorkspacePoint.zero
+  /// Specifies a mutator to associate with the block. A copy of this mutator is attached to a
+  /// block when it is built. Defaults to `nil`.
+  public var mutator: Mutator? = nil
 
   // These values are publicly mutable in `Block`
 
@@ -94,6 +97,7 @@ public final class BlockBuilder: NSObject {
     color = block.color
     inputsInline = block.inputsInline
     position = block.position
+    mutator = block.mutator?.copyMutator()
 
     tooltip = block.tooltip
     comment = block.comment
@@ -159,14 +163,15 @@ public final class BlockBuilder: NSObject {
       previousConnection = Connection(type: .previousStatement)
       previousConnection!.typeChecks = previousConnectionTypeChecks
     }
-    let inputs = inputBuilders.map({ $0.build() })
+    let inputs = inputBuilders.map({ $0.makeInput() })
+    let mutatorCopy = mutator?.copyMutator()
 
-    let block = Block(
+    let block = try Block(
       uuid: uuid, name: name, color: color, inputs: inputs, inputsInline: inputsInline,
       position: position, shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL,
       deletable: deletable, movable: movable, disabled: disabled, editable: editable,
       outputConnection: outputConnection, previousConnection: previousConnection,
-      nextConnection: nextConnection)
+      nextConnection: nextConnection, mutator: mutatorCopy)
 
     return block
   }

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html devsite>
+  <head>
+    <title>Blockly Framework Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <meta charset='utf-8'>
+    <meta name="project_path" value="/blockly/_project.yaml"/><meta name="book_path" value="/blockly/_book.yaml"/>
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>iOS</h1>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@BKYBlockJSONFile"></a>
+                    <a name="//apple_ref/objc/Enum/BKYBlockJSONFile" class="dashAnchor"></a>
+                    <h3><a class="token" href="Enums/BKYBlockJSONFile.html">BKYBlockJSONFile</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Options for specifying files that contain different types of JSON block definitions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">struct</span> <span class="kt">BlockJSONFile</span> <span class="p">:</span> <span class="kt">OptionSet</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">BKYBlockJSONFile</span> <span class="o">:</span> <span class="n">NSInteger</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@S@BKYEdgeInsets"></a>
+                    <a name="//apple_ref/objc/Struct/BKYEdgeInsets" class="dashAnchor"></a>
+                    <h3><a class="token" href="Structs/BKYEdgeInsets.html">BKYEdgeInsets</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Defines inset distances for views/layouts, that allows for both LTR and RTL layouts.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">struct</span> <span class="kt">EdgeInsets</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">struct</span> <span class="n">BKYEdgeInsets</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYEdgeInsetsGetLeft"></a>
+                    <a name="//apple_ref/objc/Function/BKYEdgeInsetsGetLeft" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYEdgeInsetsGetLeft">BKYEdgeInsetsGetLeft</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The inset distance for the left edge.
+In LTR layouts, this value is equal to <code>self.leading</code>.
+In RTL layouts, this value is equal to <code>self.trailing</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="kt">BKYEdgeInsetsGetLeft</span><span class="p">(</span><span class="n">_</span> <span class="nv">edgeInsets</span><span class="p">:</span> <span class="kt">EdgeInsets</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n">CGFloat</span> <span class="n">BKYEdgeInsetsGetLeft</span><span class="p">(</span><span class="n"><a href="Structs/BKYEdgeInsets.html">BKYEdgeInsets</a></span> <span class="n">edgeInsets</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYEdgeInsetsGetRight"></a>
+                    <a name="//apple_ref/objc/Function/BKYEdgeInsetsGetRight" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYEdgeInsetsGetRight">BKYEdgeInsetsGetRight</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The inset distance for the right edge.
+In LTR layouts, this value is equal to <code>self.trailing</code>.
+In RTL layouts, this value is equal to <code>self.leading</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="kt">BKYEdgeInsetsGetRight</span><span class="p">(</span><span class="n">_</span> <span class="nv">edgeInsets</span><span class="p">:</span> <span class="kt">EdgeInsets</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n">CGFloat</span> <span class="n">BKYEdgeInsetsGetRight</span><span class="p">(</span><span class="n"><a href="Structs/BKYEdgeInsets.html">BKYEdgeInsets</a></span> <span class="n">edgeInsets</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYEdgeInsetsMake"></a>
+                    <a name="//apple_ref/objc/Function/BKYEdgeInsetsMake" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYEdgeInsetsMake">BKYEdgeInsetsMake</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates edge insets, with given values for each edge.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="cm">/*not inherited*/</span> <span class="nf">init</span><span class="p">(</span><span class="nv">top</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">leading</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">bottom</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">trailing</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n"><a href="Structs/BKYEdgeInsets.html">BKYEdgeInsets</a></span> <span class="n">BKYEdgeInsetsMake</span><span class="p">(</span><span class="n">CGFloat</span> <span class="n">top</span><span class="p">,</span> <span class="n">CGFloat</span> <span class="n">leading</span><span class="p">,</span> <span class="n">CGFloat</span> <span class="n">bottom</span><span class="p">,</span>
+                                <span class="n">CGFloat</span> <span class="n">trailing</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Top edge inset</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>leading</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Leading edge inset</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>bottom</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Bottom edge inset</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>trailing</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Trailing edge inset</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@BKYEdgeInsetsZero"></a>
+                    <a name="//apple_ref/objc/Constant/BKYEdgeInsetsZero" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@BKYEdgeInsetsZero">BKYEdgeInsetsZero</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates edge insets, with each inset value set to zero.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">zero</span><span class="p">:</span> <span class="kt">EdgeInsets</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">extern</span> <span class="k">const</span> <span class="n"><a href="Structs/BKYEdgeInsets.html">BKYEdgeInsets</a></span> <span class="n">BKYEdgeInsetsZero</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@S@BKYLayoutConfigSize"></a>
+                    <a name="//apple_ref/objc/Struct/BKYLayoutConfigSize" class="dashAnchor"></a>
+                    <h3><a class="token" href="Structs/BKYLayoutConfigSize.html">BKYLayoutConfigSize</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
+system and UIView coordinate system.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">struct</span> <span class="kt">LayoutConfigSize</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">struct</span> <span class="n">BKYLayoutConfigSize</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYLayoutConfigSizeMake"></a>
+                    <a name="//apple_ref/objc/Function/BKYLayoutConfigSizeMake" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYLayoutConfigSizeMake">BKYLayoutConfigSizeMake</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code><a href="Structs/BKYLayoutConfigSize.html">BKYLayoutConfigSize</a></code>, initialized with a given workspace width/height to generate
+<code>workspaceSize</code>.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <code>viewSize</code> is automatically initialized to the correct value based on the generated
+<code>workspaceSize</code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="cm">/*not inherited*/</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspaceWidth</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="n">_</span> <span class="nv">workspaceHeight</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n"><a href="Structs/BKYLayoutConfigSize.html">BKYLayoutConfigSize</a></span> <span class="n">BKYLayoutConfigSizeMake</span><span class="p">(</span><span class="n">CGFloat</span> <span class="n">workspaceWidth</span><span class="p">,</span>
+                                            <span class="n">CGFloat</span> <span class="n">workspaceHeight</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspaceWidth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The width value to use for <code>workspaceSize</code></p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>workspaceHeight</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The height value to use for <code>workspaceSize</code></p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@S@BKYLayoutConfigUnit"></a>
+                    <a name="//apple_ref/objc/Struct/BKYLayoutConfigUnit" class="dashAnchor"></a>
+                    <h3><a class="token" href="Structs/BKYLayoutConfigUnit.html">BKYLayoutConfigUnit</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Struct for representing a unit value in both the Workspace coordinate system and UIView
+coordinate system.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="kd">struct</span> <span class="kt">LayoutConfigUnit</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">struct</span> <span class="n">BKYLayoutConfigUnit</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYLayoutConfigUnitMake"></a>
+                    <a name="//apple_ref/objc/Function/BKYLayoutConfigUnitMake" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYLayoutConfigUnitMake">BKYLayoutConfigUnitMake</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code><a href="Structs/BKYLayoutConfigUnit.html">BKYLayoutConfigUnit</a></code>, initialized with a given <code>workspaceUnit</code>.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <code>viewUnit</code> is automatically initialized to the correct value based on the given
+<code>workspaceUnit</code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="cm">/*not inherited*/</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspaceUnit</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n"><a href="Structs/BKYLayoutConfigUnit.html">BKYLayoutConfigUnit</a></span> <span class="n">BKYLayoutConfigUnitMake</span><span class="p">(</span><span class="n">CGFloat</span> <span class="n">workspaceUnit</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspaceUnit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value to use for <code>workspaceUnit</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@BKYWorkbenchViewControllerUIState"></a>
+                    <a name="//apple_ref/objc/Enum/BKYWorkbenchViewControllerUIState" class="dashAnchor"></a>
+                    <h3><a class="token" href="Enums/BKYWorkbenchViewControllerUIState.html">BKYWorkbenchViewControllerUIState</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Details the bitflags for <code>WorkbenchViewController</code>&rsquo;s state.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">BKYWorkbenchViewControllerUIState</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@BKYWorkbenchViewControllerUIStateValue"></a>
+                    <a name="//apple_ref/objc/Enum/BKYWorkbenchViewControllerUIStateValue" class="dashAnchor"></a>
+                    <h3><a class="token" href="Enums/BKYWorkbenchViewControllerUIStateValue.html">BKYWorkbenchViewControllerUIStateValue</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Specifies the bitflags for <code><a href="Enums/BKYWorkbenchViewControllerUIState.html">BKYWorkbenchViewControllerUIState</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">BKYWorkbenchViewControllerUIStateValue</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@S@BKYWorkspacePoint"></a>
+                    <a name="//apple_ref/objc/Struct/BKYWorkspacePoint" class="dashAnchor"></a>
+                    <h3><a class="token" href="Structs/BKYWorkspacePoint.html">BKYWorkspacePoint</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Point in the Workspace coordinate system (which is separate from the UIView coordinate system).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">struct</span> <span class="n">BKYWorkspacePoint</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYWorkspacePointMake"></a>
+                    <a name="//apple_ref/objc/Function/BKYWorkspacePointMake" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYWorkspacePointMake">BKYWorkspacePointMake</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a point in the Workspace coordinate system, given <code>(x, y)</code> coordinates.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n"><a href="Structs/BKYWorkspacePoint.html">BKYWorkspacePoint</a></span> <span class="n">BKYWorkspacePointMake</span><span class="p">(</span><span class="n">CGFloat</span> <span class="n">x</span><span class="p">,</span> <span class="n">CGFloat</span> <span class="n">y</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>x</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>X-coordinate in the Workspace coordinate system</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>y</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Y-coordinate in the Workspace coordinate system</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@BKYWorkspacePointZero"></a>
+                    <a name="//apple_ref/objc/Constant/BKYWorkspacePointZero" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@BKYWorkspacePointZero">BKYWorkspacePointZero</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A point in the Workspace coordinate system, where x and y coordinates are set to zero.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="k">let</span> <span class="nv">BKYWorkspacePointZero</span><span class="p">:</span> <span class="kt"><a href="Structs/BKYWorkspacePoint.html">BKYWorkspacePoint</a></span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">extern</span> <span class="k">const</span> <span class="n"><a href="Structs/BKYWorkspacePoint.html">BKYWorkspacePoint</a></span> <span class="n">BKYWorkspacePointZero</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@S@BKYWorkspaceSize"></a>
+                    <a name="//apple_ref/objc/Struct/BKYWorkspaceSize" class="dashAnchor"></a>
+                    <h3><a class="token" href="Structs/BKYWorkspaceSize.html">BKYWorkspaceSize</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Size in the Workspace coordinate system (which is separate from the UIView coordinate system).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">struct</span> <span class="n">BKYWorkspaceSize</span> <span class="p">{}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@F@BKYWorkspaceSizeMake"></a>
+                    <a name="//apple_ref/objc/Function/BKYWorkspaceSizeMake" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@F@BKYWorkspaceSizeMake">BKYWorkspaceSizeMake</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a size in the Workspace coordinate system, given width and height values.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="n"><a href="Structs/BKYWorkspaceSize.html">BKYWorkspaceSize</a></span> <span class="n">BKYWorkspaceSizeMake</span><span class="p">(</span><span class="n">CGFloat</span> <span class="n">width</span><span class="p">,</span> <span class="n">CGFloat</span> <span class="n">height</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Width value in the Workspace coordinate system</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Height value in the Workspace coordinate system</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@BKYWorkspaceSizeZero"></a>
+                    <a name="//apple_ref/objc/Constant/BKYWorkspaceSizeZero" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@BKYWorkspaceSizeZero">BKYWorkspaceSizeZero</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A size in the Workspace coordinate system, where width and height values are set to zero.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="swift">
+                          <p class="aside-title-swift">Swift</p>
+                          <pre class="highlight"><code><span class="k">let</span> <span class="nv">BKYWorkspaceSizeZero</span><span class="p">:</span> <span class="kt"><a href="Structs/BKYWorkspaceSize.html">BKYWorkspaceSize</a></span></code></pre>
+
+                        </div>
+                        <div class="objc">
+                          <p class="aside-title-objc">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">extern</span> <span class="k">const</span> <span class="n"><a href="Structs/BKYWorkspaceSize.html">BKYWorkspaceSize</a></span> <span class="n">BKYWorkspaceSizeZero</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>          </section>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
+toc:
+- heading: Blockly
+
+- title: iOS
+  path: /blockly/reference/ios/iOS
+  section:
+    - title: BKYBlockJSONFile
+      path: /blockly/reference/ios/Enums/BKYBlockJSONFile.html
+    - title: BKYEdgeInsets
+      path: /blockly/reference/ios/Structs/BKYEdgeInsets.html
+    - title: BKYEdgeInsetsGetLeft
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYEdgeInsetsGetLeft
+    - title: BKYEdgeInsetsGetRight
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYEdgeInsetsGetRight
+    - title: BKYEdgeInsetsMake
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYEdgeInsetsMake
+    - title: BKYEdgeInsetsZero
+      path: /blockly/reference/ios/iOS.html#/c:@BKYEdgeInsetsZero
+    - title: BKYLayoutConfigSize
+      path: /blockly/reference/ios/Structs/BKYLayoutConfigSize.html
+    - title: BKYLayoutConfigSizeMake
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYLayoutConfigSizeMake
+    - title: BKYLayoutConfigUnit
+      path: /blockly/reference/ios/Structs/BKYLayoutConfigUnit.html
+    - title: BKYLayoutConfigUnitMake
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYLayoutConfigUnitMake
+    - title: BKYWorkbenchViewControllerUIState
+      path: /blockly/reference/ios/Enums/BKYWorkbenchViewControllerUIState.html
+    - title: BKYWorkbenchViewControllerUIStateValue
+      path: /blockly/reference/ios/Enums/BKYWorkbenchViewControllerUIStateValue.html
+    - title: BKYWorkspacePoint
+      path: /blockly/reference/ios/Structs/BKYWorkspacePoint.html
+    - title: BKYWorkspacePointMake
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYWorkspacePointMake
+    - title: BKYWorkspacePointZero
+      path: /blockly/reference/ios/iOS.html#/c:@BKYWorkspacePointZero
+    - title: BKYWorkspaceSize
+      path: /blockly/reference/ios/Structs/BKYWorkspaceSize.html
+    - title: BKYWorkspaceSizeMake
+      path: /blockly/reference/ios/iOS.html#/c:@F@BKYWorkspaceSizeMake
+    - title: BKYWorkspaceSizeZero
+      path: /blockly/reference/ios/iOS.html#/c:@BKYWorkspaceSizeZero

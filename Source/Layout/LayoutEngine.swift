@@ -55,6 +55,12 @@ open class LayoutEngine: NSObject {
     }
   }
 
+  /// The scale that should be used inside popovers
+  public final var popoverScale: CGFloat {
+    // Use the same scale as `self.scale`, but don't scale less than 1.0
+    return max(scale, 1.0)
+  }
+
   /// Flag determining if `Layout` instances associated with this layout engine should be rendered
   /// in right-to-left (`true`) or left-to-right (`false`)..
   public final var rtl: Bool

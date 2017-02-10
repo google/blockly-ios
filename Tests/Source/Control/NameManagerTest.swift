@@ -57,7 +57,7 @@ class NameManagerTest: XCTestCase {
   }
 
   func testListFunctions() {
-    _nameManager.addName("foo")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
     XCTAssertEqual(1, _nameManager.count)
     _ = _nameManager.generateUniqueName("bar", addToList: true)
     XCTAssertEqual(2, _nameManager.count)
@@ -73,7 +73,7 @@ class NameManagerTest: XCTestCase {
     let listener = NameManagerTestListener()
     _nameManager.listeners.add(listener)
 
-    _nameManager.addName("bar")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("bar") })
     XCTAssertEqual(["bar"], _nameManager.names)
     XCTAssertTrue(listener.addedName)
   }
@@ -82,24 +82,22 @@ class NameManagerTest: XCTestCase {
     let listener = NameManagerTestListener()
     _nameManager.listeners.add(listener)
 
-    _nameManager.addName("foo")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
     XCTAssertEqual(["foo"], _nameManager.names)
     XCTAssertTrue(listener.addedName)
     listener.clearState()
 
-    _nameManager.addName("FOO")
-    XCTAssertEqual(["FOO"], _nameManager.names)
-    // No new name was actually added, so a rename event should be fired instead of add name event
-    XCTAssertFalse(listener.addedName)
-    XCTAssertTrue(listener.renamedName)
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      try _nameManager.addName("FOO")
+    }
   }
 
   func testRequestRemovalForName() {
-    _nameManager.addName("foo")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
     XCTAssertTrue(_nameManager.containsName("FOO"))
-    XCTAssertTrue(_nameManager.requestRemovalForName("Foo"))
+    XCTAssertTrue(_nameManager.removeName("Foo"))
     XCTAssertFalse(_nameManager.containsName("foo"))
-    XCTAssertFalse(_nameManager.requestRemovalForName("foo"))
+    XCTAssertFalse(_nameManager.removeName("foo"))
   }
 
   func testRequestRemovalForName_BlockRemoval() {
@@ -107,31 +105,59 @@ class NameManagerTest: XCTestCase {
     listener.allowRemoveName = false
     _nameManager.listeners.add(listener)
 
-    _nameManager.addName("foo")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
     XCTAssertTrue(_nameManager.containsName("foo"))
-    XCTAssertFalse(_nameManager.requestRemovalForName("foo"))
+    XCTAssertFalse(_nameManager.removeName("foo"))
     XCTAssertTrue(_nameManager.containsName("foo"))
+  }
+
+  func testRenameDisplayName_Standard() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    BKYAssertDoesNotThrow({ try _nameManager.addName("bar") })
+    XCTAssertTrue(_nameManager.renameDisplayName("BaR"))
+    XCTAssertTrue(listener.renamedName)
+    XCTAssertTrue(_nameManager.containsName("BaR"))
+  }
+
+  func testRenameDisplayName_SameName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
+    XCTAssertFalse(_nameManager.renameDisplayName("foo"))
+    XCTAssertFalse(listener.renamedName)
+  }
+
+  func testRenameDisplayName_NonExistentName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
+    XCTAssertFalse(_nameManager.renameDisplayName("foo "))
+    XCTAssertFalse(listener.renamedName)
   }
 
   func testRenameName_Standard() {
     let listener = NameManagerTestListener()
     _nameManager.listeners.add(listener)
 
-    _nameManager.addName("foo")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
     XCTAssertTrue(_nameManager.renameName("foo", to: "BAR"))
     XCTAssertEqual(["BAR"], _nameManager.names)
     XCTAssertTrue(listener.renamedName)
   }
 
   func testRenameName_CaseInsensitive() {
-    _nameManager.addName("bar")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("bar") })
     XCTAssertTrue(_nameManager.renameName("BAR", to: "XYZ"))
     XCTAssertEqual(["XYZ"], _nameManager.names)
   }
 
   func testRenameName_ToAnotherExistingName() {
-    _nameManager.addName("foo")
-    _nameManager.addName("bar")
+    BKYAssertDoesNotThrow({ try _nameManager.addName("foo") })
+    BKYAssertDoesNotThrow({ try _nameManager.addName("bar") })
     XCTAssertTrue(_nameManager.renameName("bar", to: "FOO"))
     XCTAssertEqual(["FOO"], _nameManager.names) // There should only be one name now
   }
@@ -141,6 +167,23 @@ class NameManagerTest: XCTestCase {
     _nameManager.listeners.add(listener)
 
     XCTAssertFalse(_nameManager.renameName("NON EXISTENT NAME", to: "SOME NAME"))
+    XCTAssertFalse(listener.renamedName)
+  }
+
+  func testRenameName_emptyString() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    XCTAssertFalse(_nameManager.renameName("", to: "a"))
+    XCTAssertFalse(listener.renamedName)
+  }
+
+  func testRenameName_SameName() {
+    let listener = NameManagerTestListener()
+    _nameManager.listeners.add(listener)
+
+    BKYAssertDoesNotThrow({ try _nameManager.addName("a") })
+    XCTAssertFalse(_nameManager.renameName("a", to: "a"))
     XCTAssertFalse(listener.renamedName)
   }
 }

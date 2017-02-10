@@ -58,8 +58,6 @@ open class FieldDateLayout: FieldLayout {
       self.dateFormatter.dateStyle = .short
     }
     super.init(field: fieldDate, engine: engine, measurer: measurer)
-
-    fieldDate.delegate = self
   }
 
   // MARK: - Super

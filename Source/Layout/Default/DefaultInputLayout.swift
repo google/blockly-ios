@@ -22,7 +22,7 @@ import UIKit
 public final class DefaultInputLayout: InputLayout {
   // MARK: - Properties
 
-  // TODO:(#34) Consider replacing all connections/relative positions with a ConnectionLayout
+  // TODO(#34): Consider replacing all connections/relative positions with a ConnectionLayout
 
   /// For performance reasons, keep a strong reference to the input.connection
   fileprivate var _connection: Connection!
@@ -100,7 +100,11 @@ public final class DefaultInputLayout: InputLayout {
       (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
     let puzzleTabWidth = (!isInline && input.type == .value) ?
       (self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)) : 0
-    return fieldWidth + puzzleTabWidth
+    // Special case where field padding is added for statements in case no fields were added
+    let statementPaddingWidth = (input.type == .statement && fieldLayouts.isEmpty) ?
+      config.workspaceUnit(for: LayoutConfig.InlineXPadding) : 0
+
+    return fieldWidth + puzzleTabWidth + statementPaddingWidth
   }
 
   /// The minimal amount of width required to render the child statements of the input, specified as
@@ -156,23 +160,10 @@ public final class DefaultInputLayout: InputLayout {
       fieldLayout.edgeInsets.bottom =
         self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
-      if i == fieldLayouts.count - 1 {
-        // Add right padding to the last field
-        var addRightEdgeInset = true
-
-        // Special case: Don't add right padding to the last field of an inline dummy input if it's
-        // immediately followed by another dummy/value input.
-        if self.input.type == .dummy {
-          let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
-          if nextInputLayout?.input.type == .value || nextInputLayout?.input.type == .dummy {
-            addRightEdgeInset = false
-          }
-        }
-
-        if addRightEdgeInset {
-          fieldLayout.edgeInsets.trailing =
-            self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
-        }
+      if i == fieldLayouts.count - 1 && isLastInputOfBlockRow() {
+        // Add right padding to the last field if it's at the end of the row
+        fieldLayout.edgeInsets.trailing =
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
       }
 
       fieldXOffset += fieldLayout.totalSize.width
@@ -200,13 +191,22 @@ public final class DefaultInputLayout: InputLayout {
       let widthRequired: CGFloat
       var inlineConnectorMaximumYPoint: CGFloat = 0
       if self.isInline {
+        targetBlockGroupLayout.edgeInsets.leading =
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
         targetBlockGroupLayout.edgeInsets.top =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
         targetBlockGroupLayout.edgeInsets.bottom =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
 
+        // Add trailing padding if this is the end of the row
+        let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
+        if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
+          targetBlockGroupLayout.edgeInsets.trailing =
+            config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+        }
+
         self.inlineConnectorPosition = WorkspacePoint(
-          x: targetBlockGroupLayout.relativePosition.x,
+          x: targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.edgeInsets.leading,
           y: targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
 
         let minimumInlineConnectorSize =
@@ -219,7 +219,7 @@ public final class DefaultInputLayout: InputLayout {
         self.inlineConnectorSize = WorkspaceSize(width: inlineConnectorWidth,
                                                  height: inlineConnectorHeight)
         self.rightEdge = inlineConnectorPosition.x + inlineConnectorSize.width +
-          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+          targetBlockGroupLayout.edgeInsets.trailing
 
         inlineConnectorMaximumYPoint = inlineConnectorPosition.y + inlineConnectorSize.height +
           targetBlockGroupLayout.edgeInsets.bottom
@@ -311,7 +311,6 @@ public final class DefaultInputLayout: InputLayout {
   - parameter width: A width value, specified in the Workspace coordinate system.
   */
   internal func maximizeField(toWidth width: CGFloat) {
-    let minimalFieldWidthRequired = self.minimalFieldWidthRequired
     if width <= minimalFieldWidthRequired {
       return
     }
@@ -377,6 +376,25 @@ public final class DefaultInputLayout: InputLayout {
   }
 
   // MARK: - Private
+
+  fileprivate func isLastInputOfBlockRow() -> Bool {
+    if let block = input.sourceBlock, !block.inputsInline {
+      // This is the last input for the row since inputs are not inline
+      return true
+    }
+    if input.type == .statement {
+      // Statements are always the last input for their row
+      return true
+    }
+    if input.type == .dummy {
+      let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
+      if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
+        // This is the last dummy input or the next input is a statement, so we're at the end
+        return true
+      }
+    }
+    return false
+  }
 
   /**
   Resets all render specific properties back to their default values.

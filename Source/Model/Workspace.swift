@@ -80,20 +80,18 @@ open class Workspace : NSObject {
   /// The layout associated with this workspace
   public weak var layout: WorkspaceLayout?
 
-  /// Manager responsible for keeping track of all variable names under this workspace
-  public var variableNameManager: NameManager? = NameManager() {
-    didSet {
-      if variableNameManager == oldValue {
-        return
-      }
-      if oldValue != nil {
-        allBlocks.values.forEach { removeNameManagerFromBlock($0) }
-      }
-      if let newManager = variableNameManager {
-        allBlocks.values.forEach { addNameManager(newManager, toBlock: $0) }
-      }
-    }
+  /// Specifies the type of workspace this one is.
+  internal enum WorkspaceType: Int {
+    case
+    // A "normal" workspace, which supports dragging, import/export, code generation, etc.
+    interactive = 0,
+    // A toolbox workspace
+    toolbox,
+    // A trash workspace
+    trash
   }
+
+  internal var workspaceType: WorkspaceType = .interactive
 
   // MARK: - Initializers
 
@@ -167,7 +165,6 @@ open class Workspace : NSObject {
     for block in newBlocks {
       block.editable = block.editable && !readOnly
       allBlocks[block.uuid] = block
-      addNameManager(variableNameManager, toBlock: block)
     }
 
     // Notify delegate for each block addition, now that all of them have been added to the
@@ -205,7 +202,6 @@ open class Workspace : NSObject {
 
     // Remove blocks
     for block in blocksToRemove {
-      removeNameManagerFromBlock(block)
       allBlocks[block.uuid] = nil
     }
   }
@@ -215,12 +211,15 @@ open class Workspace : NSObject {
 
    - parameter rootBlock: The root block to copy
    - parameter editable: Sets whether each block is `editable` or not
+   - parameter position: The position of where the copied block should be placed in the workspace.
    - returns: The root block that was copied
    - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
   @discardableResult
-  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool, position: WorkspacePoint) throws
+    -> Block
+  {
     // Create a copy of the tree
     let copyResult = try rootBlock.deepCopy()
 
@@ -230,6 +229,8 @@ open class Workspace : NSObject {
     for block in copyResult.allBlocks {
       block.editable = editable
     }
+
+    copyResult.rootBlock.position = position
 
     // Add copy of tree to the workspace
     try addBlockTree(copyResult.rootBlock)
@@ -266,33 +267,25 @@ open class Workspace : NSObject {
     }
   }
 
-  // MARK: - Private
-
   /**
-   For all `FieldVariable` instances under a given `Block`, set their `nameManager` property to a
-   given `NameManager`.
+   Finds all blocks that have a field using a specific variable name.
 
-   - parameter nameManager: The `NameManager` to set
-   - parameter block: The `Block`
+   - param name: The name to search
    */
-  private func addNameManager(_ nameManager: NameManager?, toBlock block: Block) {
-    block.inputs.flatMap({ $0.fields }).forEach {
-      if let fieldVariable = $0 as? FieldVariable {
-        fieldVariable.nameManager = nameManager
+  public func allVariableBlocks(forName name: String) -> [Block] {
+    var variableBlocks: [Block] = []
+    for (_, block) in allBlocks {
+      for input in block.inputs {
+        for field in input.fields {
+          if let varField = field as? FieldVariable,
+            varField.variable == name
+          {
+            variableBlocks.append(block)
+          }
+        }
       }
     }
-  }
 
-  /**
-   Sets the `nameManager` for all `FieldVariable` instances under the given `Block` to `nil`.
-
-   - parameter block: The `Block`
-   */
-  private func removeNameManagerFromBlock(_ block: Block) {
-    block.inputs.flatMap({ $0.fields }).forEach {
-      if let fieldVariable = $0 as? FieldVariable {
-        fieldVariable.nameManager = nil
-      }
-    }
+    return variableBlocks
   }
 }

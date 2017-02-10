@@ -91,8 +91,8 @@ open class FieldColorView: FieldView {
     let viewController = FieldColorPickerViewController()
     viewController.color = fieldColorLayout?.color
     viewController.delegate = self
-    delegate?.fieldView(self,
-                        requestedToPresentPopoverViewController: viewController, fromView: self)
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 

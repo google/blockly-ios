@@ -229,6 +229,23 @@ open class Layout: NSObject {
     return allLayouts
   }
 
+  /**
+   Returns whether this layout is a descendant of a given layout.
+
+   - parameter layout: The layout to check.
+   - returns: `true` if the given `layout` is a grandparent of this layout. `false` otherwise.
+   */
+  public final func isDescendant(of layout: Layout) -> Bool {
+    var currentLayout = self
+    while let parent = currentLayout.parentLayout {
+      if parent == layout {
+        return true
+      }
+      currentLayout = parent
+    }
+    return false
+  }
+
   // MARK: - Internal
 
   /**

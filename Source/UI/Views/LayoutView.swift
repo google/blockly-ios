@@ -15,6 +15,35 @@
 
 import Foundation
 
+
+/**
+ Protocol for handling popover requests that occur from a `LayoutView`.
+ */
+@objc(BKYLayoutPopoverDelegate)
+public protocol LayoutPopoverDelegate {
+  /**
+   Event is called when a layout view requests to present a view controller.
+
+   - parameter layoutView: The `LayoutView` that made the request
+   - parameter viewController: The `UIViewController` to present
+   */
+  func layoutView(_ layoutView: LayoutView,
+                 requestedToPresentViewController viewController: UIViewController)
+
+  /**
+   Event that is called when a layout view requests to present a view controller as a popover.
+
+   - parameter layoutView: The `LayoutView` that made the request
+   - parameter viewController: The `UIViewController` to present
+   - parameter fromView: The `UIView` where the popover should pop up from
+   - returns: `true` if the `viewController` was presented. `false` otherwise.
+   */
+  @discardableResult
+  func layoutView(_ layoutView: LayoutView,
+                 requestedToPresentPopoverViewController viewController: UIViewController,
+                 fromView: UIView) -> Bool
+}
+
 /**
 Abstract class for rendering a `UIView` backed by a `Layout`.
 */
@@ -48,6 +77,9 @@ open class LayoutView: UIView {
     }
   }
 
+  /// The delegate for handling popover requests that occur from this view
+  public weak var popoverDelegate: LayoutPopoverDelegate?
+
   // MARK: - Public
 
   /**
@@ -76,7 +108,7 @@ open class LayoutView: UIView {
         UIView.animate(
           withDuration: duration,
           delay: 0,
-          options: [.beginFromCurrentState, .allowUserInteraction],
+          options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut],
           animations: code,
           completion: nil)
 

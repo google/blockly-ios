@@ -22,6 +22,18 @@ import Foundation
  */
 @objc(BKYWorkspaceLayoutCoordinator)
 open class WorkspaceLayoutCoordinator: NSObject {
+  // MARK: - Properties
+
+  /**
+   Notification that is fired after this layout has connected two connections together.
+
+   The notification's `userInfo` will contain a dictionary of the form:
+
+   `{ "connections": [<Connection>, <Connection>] }`
+   */
+  public static let NotificationDidConnect =
+    Notification.Name("WorkspaceLayoutCoordinatorNotificationDidConnect")
+
   /// The workspace layout whose layout hierarchy is being managed by this object
   open let workspaceLayout: WorkspaceLayout
 
@@ -34,6 +46,30 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
   /// Object responsible for bumping blocks away from each other
   open let blockBumper = BlockBumper()
+
+  /// Manager responsible for keeping track of all variable names under this workspace
+  public weak var variableNameManager: NameManager? {
+    didSet {
+      if variableNameManager == oldValue {
+        return
+      }
+
+      oldValue?.listeners.remove(self)
+
+      workspaceLayout.blockGroupLayouts.forEach {
+        $0.blockLayouts.forEach { removeNameManager(fromBlockLayout: $0) }
+      }
+      workspaceLayout.blockGroupLayouts.forEach {
+        $0.blockLayouts.forEach { addNameManager(variableNameManager, toBlockLayout: $0) }
+      }
+
+      variableNameManager?.listeners.add(self)
+    }
+  }
+
+  /// The factory for building blocks dynamically. Currently only used for building variable blocks
+  ///  for the toolbox.
+  public var blockFactory: BlockFactory?
 
   // MARK: - Initializers / De-initializers
 
@@ -68,14 +104,17 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Perform a layout update for the entire tree
     workspaceLayout.updateLayoutDownTree()
 
-    // Immediately start tracking connections of all visible blocks in the workspace
+    // Immediately start tracking all visible blocks in the workspace
     for blockLayout in workspaceLayout.allVisibleBlockLayoutsInWorkspace() {
-      trackConnections(forBlockLayout: blockLayout)
+      trackBlockLayout(blockLayout)
     }
+
+    variableNameManager?.listeners.add(self)
   }
 
   deinit {
     workspaceLayout.workspace.listeners.remove(self)
+    variableNameManager?.listeners.remove(self)
   }
 
   // MARK: - Public
@@ -104,12 +143,56 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Disconnect this block from anything
     if let previousConnection = rootBlock.previousConnection {
       disconnect(previousConnection)
+      disconnectShadow(previousConnection)
     }
     if let outputConnection = rootBlock.outputConnection {
       disconnect(outputConnection)
+      disconnectShadow(outputConnection)
     }
 
     try workspaceLayout.workspace.removeBlockTree(rootBlock)
+  }
+
+  /**
+   Disconnects a single block from all connections, and removes it. This function will also
+   reconnect next blocks to the previous block.
+
+   - parameter block: The block to remove.
+   - throws:
+   `BlocklyError`: Thrown if the block could not be removed from the workspace, or if the
+     connections can't be reconnected.
+   */
+  open func removeSingleBlock(_ block: Block) throws {
+    // Disconnect the previous connection.
+    var oldSuperior: Connection? = nil
+    if let previousConnection = block.previousConnection {
+      oldSuperior = previousConnection.targetConnection
+      disconnect(previousConnection)
+    }
+
+    // Disconnect the next connection. If both next and previous were connected, reconnect the
+    // next block with the old previous block.
+    if let nextConnection = block.nextConnection {
+      let oldInferior = nextConnection.targetConnection
+      disconnect(nextConnection)
+      if let inferior = oldInferior,
+        let superior = oldSuperior,
+        inferior.canConnectTo(superior) {
+        try connectStatementConnections(superior: superior, inferior: inferior)
+      }
+    }
+
+    // Disconnect any other non-shadow connections.
+    for connection in block.directConnections {
+      if connection != block.previousConnection &&
+        connection != block.nextConnection &&
+        !connection.shadowConnected
+      {
+        disconnect(connection)
+      }
+    }
+
+    try workspaceLayout.workspace.removeBlockTree(block)
   }
 
   /**
@@ -117,12 +200,17 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
    - parameter rootBlock: The root block to copy
    - parameter editable: Sets whether each block is `editable` or not
+   - parameter position: [Optional] The position of where the copied block should be placed in the
+   workspace. Defaults to `WorkspacePoint.zero`.
    - returns: The root block that was copied
    - throws:
    `BlocklyError`: Thrown if the block could not be copied
    */
-  open func copyBlockTree(_ rootBlock: Block, editable: Bool) throws -> Block {
-    return try workspaceLayout.workspace.copyBlockTree(rootBlock, editable: editable)
+  open func copyBlockTree(_ rootBlock: Block, editable: Bool,
+                          position: WorkspacePoint = WorkspacePoint.zero) throws -> Block
+  {
+    return try workspaceLayout.workspace.copyBlockTree(
+      rootBlock, editable: editable, position: position)
   }
 
   /**
@@ -152,7 +240,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
   }
 
   /**
-   Disconnects a specified connection. The layout heirarchy is automatically updated to reflect this
+   Disconnects a specified connection. The layout hierarchy is automatically updated to reflect this
    change.
 
    - parameter connection: The connection to be disconnected.
@@ -167,9 +255,24 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
+  /**
+   Disconnects the shadow connection for a specified connection. The layout hierarchy is
+   automatically updated to reflect this change.
+
+   - parameter connection: The connection whose shadow connection should be disconnected.
+   */
+  open func disconnectShadow(_ connection: Connection) {
+    let oldShadow = connection.shadowConnection
+    connection.disconnectShadow()
+
+    didChangeShadow(forConnection: connection, oldShadow: oldShadow)
+    if let oldShadow = oldShadow {
+      didChangeShadow(forConnection: oldShadow, oldShadow: connection)
+    }
+  }
 
   /**
-   Connects a pair of connections.  The layout heirarchy is automatically updated to reflect this
+   Connects a pair of connections.  The layout hierarchy is automatically updated to reflect this
    change.
 
    - parameter connection1: The first `Connection` to be connected.
@@ -182,6 +285,46 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
     didChangeTarget(forConnection: connection1, oldTarget: oldTarget1)
     didChangeTarget(forConnection: connection2, oldTarget: oldTarget2)
+
+    // TODO:(#272) When events are implemented, re-visit whether these notifications should be
+    // posted here.
+
+    // Post notification that two connections did connect
+    NotificationCenter.default.post(
+      name: WorkspaceLayoutCoordinator.NotificationDidConnect,
+      object: self,
+      userInfo: ["connections": [connection1, connection2]])
+  }
+
+  /**
+   Re-builds the layout hierarchy for a block that is already associated with a layout.
+
+   - parameter block: The block to rebuild its layout hierarchy.
+   - throws:
+   `BlocklyError`: Thrown if the specified block is not associated with a layout yet.
+   */
+  open func rebuildLayoutTree(forBlock block: Block) throws -> BlockLayout {
+    guard block.layout != nil else {
+      throw BlocklyError(.illegalState,
+        "Cannot re-build layout tree for a block that's not already associated with a layout.")
+    }
+
+    // Since this method is being called, there may be some connections that no longer belong to
+    // `block`. Take this time to untrack all orphaned connections from the connection manager.
+    connectionManager?.untrackOrphanedConnections()
+
+    // Rebuild the layout tree
+    let blockLayout =
+      try layoutBuilder.buildLayoutTree(forBlock: block, engine: workspaceLayout.engine)
+
+    // Track this block layout
+    trackBlockLayout(blockLayout)
+
+    // Update the layout tree, in both directions
+    blockLayout.updateLayoutDownTree()
+    blockLayout.updateLayoutUpTree()
+
+    return blockLayout
   }
 
   // MARK: - Private
@@ -257,8 +400,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  fileprivate func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?)
-  {
+  fileprivate func didChangeTarget(forConnection connection: Connection, oldTarget: Connection?) {
     do {
       try updateLayoutTree(forConnection: connection, oldTarget: oldTarget)
     } catch let error {
@@ -266,8 +408,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
   }
 
-  fileprivate func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?)
-  {
+  fileprivate func didChangeShadow(forConnection connection: Connection, oldShadow: Connection?) {
     do {
       if connection.shadowConnected && !connection.connected {
         // There's a new shadow block for the connection and it is not connected to anything.
@@ -314,7 +455,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Add shadow block layouts to proper block group
     if let blockGroupLayout =
       (aConnection.sourceInput?.layout?.blockGroupLayout ?? // For input values or statements
-        aConnection.sourceBlock.layout?.parentBlockGroupLayout) // For a block's next statement
+        aConnection.sourceBlock?.layout?.parentBlockGroupLayout) // For a block's next statement
     {
       Layout.doNotAnimate {
         blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
@@ -325,12 +466,12 @@ open class WorkspaceLayoutCoordinator: NSObject {
       blockGroupLayout.updateLayoutUpTree()
     }
 
-    // Update connection tracking
+    // Track shadow block layouts
     let allBlockLayouts = shadowBlockLayouts.flatMap {
       $0.flattenedLayoutTree(ofType: BlockLayout.self)
     }
     for blockLayout in allBlockLayouts {
-      trackConnections(forBlockLayout: blockLayout)
+      trackBlockLayout(blockLayout)
     }
 
     if allBlockLayouts.count > 0 {
@@ -358,10 +499,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
       .flatMap { $0.flattenedLayoutTree(ofType: BlockLayout.self) }
 
     for removedLayout in removedLayouts {
-      // Set the delegate of the block to nil (effectively removing its BlockLayout)
-      removedLayout.block.delegate = nil
-      // Untrack connections for the layout
-      untrackConnections(forBlockLayout: removedLayout)
+      // Remove the associated block layout
+      removedLayout.block.layout = nil
+      // Untrack the layout
+      untrackBlockLayout(removedLayout)
     }
 
     if removedLayouts.count > 0 {
@@ -430,7 +571,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         // Move them to target input's block group layout
         targetInputLayout.blockGroupLayout
           .claimWithFollowers(blockLayout: sourceBlockLayout, updateLayouts: true)
-      } else if let targetBlockLayout = targetConnection.sourceBlock.layout {
+      } else if let targetBlockLayout = targetConnection.sourceBlock?.layout {
         // Move them to the target block's group layout
         targetBlockLayout.parentBlockGroupLayout?
           .claimWithFollowers(blockLayout: sourceBlockLayout, updateLayouts: true)
@@ -476,39 +617,97 @@ open class WorkspaceLayoutCoordinator: NSObject {
   }
 
   /**
-   Tracks connections for a given block layout under `self.connectionManager`.
-   If `self.connectionManager is nil, nothing happens.
+   Tracks the connections for a given block layout under `self.connectionManager` and associates
+   itself with any sub-layouts that need a reference to this layout coordinator.
 
-   - parameter blockLayout: The `BlockLayout` whose connections should be tracked.
+   - parameter blockLayout: The `BlockLayout` that should be tracked.
    */
-  fileprivate func trackConnections(forBlockLayout blockLayout: BlockLayout) {
-    guard let connectionManager = self.connectionManager
-     , blockLayout.visible else
-    {
-      // Only track connections for visible block layouts
-      return
+  fileprivate func trackBlockLayout(_ blockLayout: BlockLayout) {
+    // If the block layout is visible, track positional changes for each connection in the
+    // connection manager
+    if let connectionManager = self.connectionManager, blockLayout.visible {
+      for connection in blockLayout.block.directConnections {
+        connectionManager.trackConnection(connection)
+      }
     }
 
-    // Track positional changes for each connection in the connection manager
-    for connection in blockLayout.block.directConnections {
-      connectionManager.trackConnection(connection)
+    addNameManager(variableNameManager, toBlockLayout: blockLayout)
+
+    addLayoutCoordinator(toBlockLayout: blockLayout)
+  }
+
+  /**
+   Untracks connections for a given block layout under `self.connectionManager` and disassociates
+   itself from any sub-layouts that referenced this layout coordinator.
+
+   - parameter blockLayout: The `BlockLayout` whose connections should be untracked.
+   */
+  fileprivate func untrackBlockLayout(_ blockLayout: BlockLayout) {
+    // Untrack positional changes for each connection in the connection manager
+    if let connectionManager = self.connectionManager {
+      for connection in blockLayout.block.directConnections {
+        connectionManager.untrackConnection(connection)
+      }
+    }
+
+    removeNameManager(fromBlockLayout: blockLayout)
+
+    removeLayoutCoordinator(fromBlockLayout: blockLayout)
+  }
+
+  /**
+   For all `FieldVariableLayout` instances under a given `BlockLayout`, set their `nameManager`
+   property to a given `NameManager`.
+
+   - parameter nameManager: The `NameManager` to set
+   - parameter blockLayout: The `BlockLayout`
+   */
+  fileprivate func addNameManager(_ nameManager: NameManager?,
+                                  toBlockLayout blockLayout: BlockLayout) {
+    blockLayout.inputLayouts.forEach {
+      $0.fieldLayouts.forEach {
+        if let fieldVariableLayout = $0 as? FieldVariableLayout {
+          fieldVariableLayout.nameManager = nameManager
+        }
+      }
     }
   }
 
   /**
-   Untracks connections for a given block layout under `self.connectionManager`.
-   If `self.connectionManager is nil, nothing happens.
+   Sets the `nameManager` for all `FieldVariableLayout` instances under the given `BlockLayout` to
+   `nil`.
 
-   - parameter blockLayout: The `BlockLayout` whose connections should be untracked.
+   - parameter blockLayout: The `BlockLayout`
    */
-  fileprivate func untrackConnections(forBlockLayout blockLayout: BlockLayout) {
-    guard let connectionManager = self.connectionManager else {
-      return
+  fileprivate func removeNameManager(fromBlockLayout blockLayout: BlockLayout) {
+    blockLayout.inputLayouts.forEach {
+      $0.fieldLayouts.forEach {
+        if let fieldVariableLayout = $0 as? FieldVariableLayout {
+          fieldVariableLayout.nameManager = nil
+        }
+      }
     }
+  }
 
-    // Untrack positional changes for each connection in the connection manager
-    for connection in blockLayout.block.directConnections {
-      connectionManager.untrackConnection(connection)
+  private func addLayoutCoordinator(toBlockLayout blockLayout: BlockLayout) {
+    // Add associations for sub-layouts
+    for layout in blockLayout.flattenedLayoutTree() {
+      if let variableLayout = layout as? FieldVariableLayout {
+        variableLayout.layoutCoordinator = self
+      } else if let mutatorLayout = layout as? MutatorLayout {
+        mutatorLayout.layoutCoordinator = self
+      }
+    }
+  }
+
+  private func removeLayoutCoordinator(fromBlockLayout blockLayout: BlockLayout) {
+    // Remove associations for sub-layouts
+    for layout in blockLayout.flattenedLayoutTree() {
+      if let variableLayout = layout as? FieldVariableLayout {
+        variableLayout.layoutCoordinator = nil
+      } else if let mutatorLayout = layout as? MutatorLayout {
+        mutatorLayout.layoutCoordinator = nil
+      }
     }
   }
 }
@@ -530,9 +729,9 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
         // Perform a layout for the tree
         blockGroupLayout.updateLayoutDownTree()
 
-        // Track connections of all new block layouts that were added
+        // Track all block layouts
         for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
-          trackConnections(forBlockLayout: blockLayout)
+          trackBlockLayout(blockLayout)
         }
 
         // Update the content size
@@ -547,20 +746,45 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
   }
 
   public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
+    if let layout = block.layout {
+      removeNameManager(fromBlockLayout: layout)
+    }
+
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return
     }
 
     if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
-      // Untrack connections for all block layouts that will be removed
+      // Untrack all block layouts
       for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
-        untrackConnections(forBlockLayout: blockLayout)
+        untrackBlockLayout(blockLayout)
       }
 
       workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
 
       workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+    }
+  }
+}
+
+// MARK: - NameManagerListener Implementation
+
+extension WorkspaceLayoutCoordinator: NameManagerListener {
+  public func nameManager(_ nameManager: NameManager, didRemoveName name: String) {
+    let blocks = workspaceLayout.workspace.allVariableBlocks(forName: name)
+    // Don't do anything to toolbox/trash workspaces.
+    if workspaceLayout.workspace.workspaceType != .interactive {
+      return
+    }
+
+    // Remove each block with matching variable fields.
+    for block in blocks {
+      do {
+        try removeSingleBlock(block)
+      } catch let error {
+        bky_assertionFailure("Couldn't remove block: \(error)")
+      }
     }
   }
 }

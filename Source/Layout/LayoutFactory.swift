@@ -18,7 +18,6 @@ import Foundation
 /**
  Protocol defining a factory responsible for returning new `Layout` instances.
  */
-@objc(BKYLayoutFactory)
 public protocol LayoutFactory: class {
   /**
    Builds and returns a `BlockLayout` for a given block and layout engine.
@@ -54,9 +53,7 @@ public protocol LayoutFactory: class {
   func makeInputLayout(input: Input, engine: LayoutEngine) throws -> InputLayout
 
   /**
-   Builds and returns a `FieldLayout` for a given field and layout engine, using the
-   `FieldLayoutCreator` that was registered via
-   `registerLayoutCreatorForFieldType(:, layoutCreator:)`.
+   Builds and returns a `FieldLayout` for a given field and layout engine.
 
     - parameter field: The given `Field`
     - parameter engine: The `LayoutEngine` to associate with the new layout
@@ -65,4 +62,15 @@ public protocol LayoutFactory: class {
     `BlocklyError`: Thrown if no suitable `FieldLayout` could be found for the `field`.
    */
   func makeFieldLayout(field: Field, engine: LayoutEngine) throws -> FieldLayout
+
+  /**
+   Builds and returns a `MutatorLayout` for a given mutator and layout engine.
+
+   - parameter mutator: The given `Mutator`
+   - parameter engine: The `LayoutEngine` to associate with the new layout
+   - returns: A new `MutatorLayout` instance.
+   - throws:
+   `BlocklyError`: Thrown if no suitable `MutatorLayout` could be found for the `mutator`.
+   */
+  func makeMutatorLayout(mutator: Mutator, engine: LayoutEngine) throws -> MutatorLayout
 }

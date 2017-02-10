@@ -68,6 +68,18 @@ open class ToolboxLayout: NSObject {
     }
   }
 
+  /**
+   Sets the block factory on the WorkbenchLayoutCoordinators owned by ToolboxLayout, so variable
+   blocks can be added dynamically to the toolbox.
+
+   - parameter blockFactory: The `BlockFactory` to add to the coordinators.
+   */
+  public func setBlockFactory(_ blockFactory: BlockFactory?) {
+    for coordinator in categoryLayoutCoordinators {
+      coordinator.blockFactory = blockFactory
+    }
+  }
+
   // MARK: - Private
 
   private func addLayoutCoordinator(forToolboxCategory category: Toolbox.Category) {

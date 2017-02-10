@@ -18,10 +18,8 @@
 
 // MARK: - BKYLayoutConfigUnit
 
-/**
- Struct for representing a unit value in both the Workspace coordinate system and UIView
- coordinate system.
- */
+/// Struct for representing a unit value in both the Workspace coordinate system and UIView
+/// coordinate system.
 struct BKYLayoutConfigUnit {
   /// The unit value specified in the Workspace coordinate system
   CGFloat workspaceUnit;
@@ -43,10 +41,8 @@ BKYLayoutConfigUnit BKYLayoutConfigUnitMake(CGFloat workspaceUnit)
 
 // MARK: - BKYLayoutConfigSize
 
-/**
- Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
- system and UIView coordinate system.
- */
+/// Struct for representing a Size value (i.e. width/height) in both the Workspace coordinate
+/// system and UIView coordinate system.
 struct BKYLayoutConfigSize {
   /// The size value specified in the Workspace coordinate system
   BKYWorkspaceSize workspaceSize;

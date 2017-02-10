@@ -159,10 +159,12 @@ extension WorkspaceViewController: ViewBuilderDelegate {
     // in this view controller.
     if let blockView = childView as? BlockView {
       delegate?.workspaceViewController(self, didAddBlockView: blockView)
-    } else if let fieldView = childView as? FieldView {
-      // Assign this view controller as the field view's delegate (to handle pop up controller
+    }
+
+    if let layoutView = childView as? LayoutView {
+      // Assign this view controller as the layout view's delegate (to handle pop up controller
       // events)
-      fieldView.delegate = self
+      layoutView.popoverDelegate = self
     }
   }
 
@@ -174,17 +176,19 @@ extension WorkspaceViewController: ViewBuilderDelegate {
     // in this view controller.
     if let blockView = childView as? BlockView {
       delegate?.workspaceViewController(self, didRemoveBlockView: blockView)
-    } else if let fieldView = childView as? FieldView , fieldView.delegate === self {
-      // Unassign this view controller as the field view's delegate
-      fieldView.delegate = nil
+    }
+
+    if let layoutView = childView as? LayoutView, layoutView.popoverDelegate === self {
+      // Unassign this view controller as the layout view's delegate
+      layoutView.popoverDelegate = nil
     }
   }
 }
 
 // MARK: - FieldViewDelegate implementation
 
-extension WorkspaceViewController: FieldViewDelegate {
-  public func fieldView(_ fieldView: FieldView,
+extension WorkspaceViewController: LayoutPopoverDelegate {
+  public func layoutView(_ layoutView: LayoutView,
     requestedToPresentPopoverViewController viewController: UIViewController, fromView: UIView)
     -> Bool
   {
@@ -205,7 +209,6 @@ extension WorkspaceViewController: FieldViewDelegate {
     viewController.popoverPresentationController?.sourceView = self.view
     viewController.popoverPresentationController?.sourceRect =
       self.view.convert(fromView.frame, from: fromView.superview)
-    viewController.popoverPresentationController?.permittedArrowDirections = .any
     viewController.popoverPresentationController?.delegate = self
 
     delegate?.workspaceViewController(self, willPresentViewController: viewController)
@@ -213,6 +216,12 @@ extension WorkspaceViewController: FieldViewDelegate {
     present(viewController, animated: true, completion: nil)
 
     return true
+  }
+
+  public func layoutView(_ layoutView: LayoutView,
+    requestedToPresentViewController viewController: UIViewController)
+  {
+    present(viewController, animated: true, completion: nil)
   }
 }
 

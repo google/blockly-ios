@@ -118,9 +118,9 @@ class ConnectionManagerTest: XCTestCase {
 
   func testConnectionManagerIsConnectionAllowedNext() {
     let one = createConnection(0, 0, .nextStatement,
-      sourceInput: InputBuilder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").makeInput())
     let two = createConnection(0, 0, .nextStatement,
-      sourceInput: InputBuilder(type: .value, name: "test input").build())
+      sourceInput: InputBuilder(type: .value, name: "test input").makeInput())
     manager.trackConnection(one)
     manager.trackConnection(two)
 
@@ -132,6 +132,56 @@ class ConnectionManagerTest: XCTestCase {
       XCTFail("Could not connect connections 3 and 4")
     }
     XCTAssertNil(manager.closestConnection(one, maxRadius: 20.0, ignoreGroup: nil))
+  }
+
+  func testConnectionManagerUntrackOrphanedConnections_MainGroupSingleOrphan() {
+    // Add orphaned connection to main group
+    let conn = Connection(type: .previousStatement)
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.allConnections.contains(conn))
+
+    // Untrack it
+    manager.untrackOrphanedConnections()
+    XCTAssertTrue(manager.mainGroup.allConnections.isEmpty)
+  }
+
+  func testConnectionManagerUntrackOrphanedConnections_CustomGroupSingleOrphan() {
+    // Add orphaned connection to custom group
+    let connectionGroup = manager.startGroup(forBlock: nil)
+    let conn = Connection(type: .inputValue)
+    manager.trackConnection(conn, assignToGroup: connectionGroup)
+    XCTAssertTrue(connectionGroup.allConnections.contains(conn))
+
+    // Untrack it
+    manager.untrackOrphanedConnections()
+    XCTAssertTrue(connectionGroup.allConnections.isEmpty)
+  }
+
+  func testConnectionManagerUntrackOrphanedConnections_MainGroupNonOrphan() {
+    // Add non-orphaned connection to main group
+    let sourceBlock = BKYAssertDoesNotThrow { try BlockBuilder(name: "test").makeBlock() }
+    let conn = Connection(type: .nextStatement)
+    conn.sourceBlock = sourceBlock
+    manager.trackConnection(conn)
+    XCTAssertTrue(manager.mainGroup.allConnections.contains(conn))
+
+    // Untrack orphans (which should do nothing)
+    manager.untrackOrphanedConnections()
+    XCTAssertTrue(manager.mainGroup.allConnections.contains(conn))
+  }
+
+  func testConnectionManagerUntrackOrphanedConnections_CustomGroupNonOrphan() {
+    // Add non-orphaned connection to custom group
+    let sourceBlock = BKYAssertDoesNotThrow { try BlockBuilder(name: "test").makeBlock() }
+    let connectionGroup = manager.startGroup(forBlock: nil)
+    let conn = Connection(type: .outputValue)
+    conn.sourceBlock = sourceBlock
+    manager.trackConnection(conn, assignToGroup: connectionGroup)
+    XCTAssertTrue(connectionGroup.allConnections.contains(conn))
+
+    // Untrack orphans (which should do nothing)
+    manager.untrackOrphanedConnections()
+    XCTAssertTrue(connectionGroup.allConnections.contains(conn))
   }
 
   // MARK: - ConnectionManager.Group Tests

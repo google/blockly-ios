@@ -45,8 +45,6 @@ open class FieldCheckboxLayout: FieldLayout {
   {
     self.fieldCheckbox = fieldCheckbox
     super.init(field: fieldCheckbox, engine: engine, measurer: measurer)
-
-    fieldCheckbox.delegate = self
   }
 
   // MARK: - Super

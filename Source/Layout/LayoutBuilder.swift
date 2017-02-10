@@ -124,7 +124,8 @@ open class LayoutBuilder: NSObject {
   Builds a `BlockLayout` tree for a given block and assigns it to the block's `delegate` property.
   This includes all connected blocks.
 
-  - parameter block: The block
+  - parameter block: The block. If no `BlockLayout` has been associated with the block yet, a new
+   one is created from `self.layoutFactory`.
   - parameter engine: The `LayoutEngine` to associate with the returned `BlockLayout`.
   - returns: The associated layout for the block.
   - throws:
@@ -132,14 +133,31 @@ open class LayoutBuilder: NSObject {
   */
   open func buildLayoutTree(forBlock block: Block, engine: LayoutEngine) throws -> BlockLayout
   {
-    let blockLayout = try layoutFactory.makeBlockLayout(block: block, engine: engine)
-    block.delegate = blockLayout // Have the layout listen for events on the block
+    let blockLayout =
+      try (block.layout ?? layoutFactory.makeBlockLayout(block: block, engine: engine))
+    block.layout = blockLayout
+
+    // As the layout tree is being re-built, hold a reference to the existing child layouts so
+    // they don't get prematurely de-referenced when `blockLayout.reset(...)` is called
+    var previousChildLayouts = blockLayout.childLayouts
+
+    // Remove all existing layouts
+    blockLayout.reset(updateLayout: false)
 
     // Build the input layouts for this block
     for input in block.inputs {
-      let inputLayout = try buildLayoutTree(forInput: input, engine: engine)
+      let inputLayout = try buildLayoutTree(forInput: input, engine: blockLayout.engine)
       blockLayout.appendInputLayout(inputLayout)
     }
+
+    // Build the mutator layout for this block
+    if let mutator = block.mutator {
+      let mutatorLayout = try buildLayout(forMutator: mutator, engine: blockLayout.engine)
+      blockLayout.mutatorLayout = mutatorLayout
+    }
+
+    // Now we can remove the reference to the previous child layouts
+    previousChildLayouts.removeAll()
 
     return blockLayout
   }
@@ -147,15 +165,24 @@ open class LayoutBuilder: NSObject {
   /**
   Builds an `InputLayout` tree for a given input and assigns it to the input's `delegate` property.
 
-  - parameter input: The input
+   - parameter input: The input. If no `InputLayout` has been associated with the input yet, a new
+   one is created from `self.layoutFactory`.
   - parameter engine: The `LayoutEngine` to associate with the returned `InputLayout`.
   - returns: The associated layout for the input.
   - throws:
   `BlocklyError`: Thrown if the layout could not be created for any of the input's fields.
   */
   open func buildLayoutTree(forInput input: Input, engine: LayoutEngine) throws -> InputLayout {
-    let inputLayout = try layoutFactory.makeInputLayout(input: input, engine: engine)
-    input.delegate = inputLayout // Have the layout listen for events on the input
+    let inputLayout =
+      try (input.layout ?? layoutFactory.makeInputLayout(input: input, engine: engine))
+    input.layout = inputLayout
+
+    // As the layout tree is being re-built, hold a reference to the existing child layouts so
+    // they don't get prematurely de-referenced when `inputLayout.reset(...)` is called
+    var previousChildLayouts = inputLayout.childLayouts
+
+    // Remove all existing layouts
+    inputLayout.reset(updateLayout: false)
 
     // Build field layouts for this input
     for field in input.fields {
@@ -172,21 +199,43 @@ open class LayoutBuilder: NSObject {
         block: connectedShadowBlock)
     }
 
+    // Now we can remove the reference to the previous child layouts
+    previousChildLayouts.removeAll()
+
     return inputLayout
   }
 
   /**
    Builds the layout for a given field and assigns it to the field's `delegate` property.
 
-   - parameter field: The field
+   - parameter field: The field. If no `FieldLayout` has been associated with the field yet, a new
+   one is created from `self.layoutFactory`.
    - parameter engine: The `LayoutEngine` to associate with the returned `FieldLayout`.
    - returns: The associated layout for the field.
    - throws:
    `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the field.
    */
   open func buildLayout(forField field: Field, engine: LayoutEngine) throws -> FieldLayout {
-    let fieldLayout = try layoutFactory.makeFieldLayout(field: field, engine: engine)
-    field.delegate = fieldLayout // Have the layout listen for events on the field
+    let fieldLayout =
+      try (field.layout ?? layoutFactory.makeFieldLayout(field: field, engine: engine))
+    field.layout = fieldLayout
     return fieldLayout
+  }
+
+  /**
+   Builds the layout for a given mutator.
+
+   - parameter mutator: The mutator. If no `MutatorLayout` has been associated with the mutator yet,
+   a new one is created from `self.layoutFactory`.
+   - parameter engine: The `LayoutEngine` to associate with the returned `MutatorLayout`.
+   - returns: The associated layout for the field.
+   - throws:
+   `BlocklyError`: Thrown by `layoutFactory` if the layout could not be created for the mutator.
+   */
+  open func buildLayout(forMutator mutator: Mutator, engine: LayoutEngine) throws -> MutatorLayout {
+    let mutatorLayout =
+      try mutator.layout ?? layoutFactory.makeMutatorLayout(mutator: mutator, engine: engine)
+    mutator.layout = mutatorLayout
+    return mutatorLayout
   }
 }

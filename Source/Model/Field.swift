@@ -18,8 +18,8 @@ import Foundation
 /**
  Protocol for events that occur on a `Field` instance.
  */
-@objc(BKYFieldDelegate)
-public protocol FieldDelegate: class {
+@objc(BKYFieldListener)
+public protocol FieldListener: class {
   /**
    Event that is fired when one of a field's properties has changed.
 
@@ -42,13 +42,11 @@ open class Field: NSObject {
   /// The input that owns this field
   public weak var sourceInput: Input?
 
-  /// A delegate for listening to events on this field
-  public weak var delegate: FieldDelegate?
+  /// The layout associated with this field.
+  public weak var layout: FieldLayout?
 
-  /// Convenience property for accessing `self.delegate` as a FieldLayout
-  public var layout: FieldLayout? {
-    return self.delegate as? FieldLayout
-  }
+  /// Listeners for events that occur on this field
+  public var listeners = WeakSet<FieldListener>()
 
   /// Flag indicating if this field can be edited
   public var editable: Bool = true {
@@ -56,7 +54,7 @@ open class Field: NSObject {
       if editable == oldValue {
         return
       }
-      delegate?.didUpdateField(self)
+      notifyDidUpdateField()
     }
   }
 
@@ -144,7 +142,7 @@ open class Field: NSObject {
     if editableProperty == oldValue {
       return false
     }
-    delegate?.didUpdateField(self)
+    notifyDidUpdateField()
     return true
   }
 
@@ -181,7 +179,14 @@ open class Field: NSObject {
     if editableProperty == oldValue {
       return false
     }
-    delegate?.didUpdateField(self)
+    notifyDidUpdateField()
     return true
+  }
+
+  /**
+   Sends a notification to `self.listeners` that this field has been updated.
+   */
+  public func notifyDidUpdateField() {
+    listeners.forEach { $0.didUpdateField(self) }
   }
 }

@@ -127,19 +127,19 @@ extension FieldVariableView: DropdownViewDelegate {
 
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
-
-    if let fontCreator = fieldVariableLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
-      // Use a scaled font, but don't let the scale go less than 1.0
-      viewController.textLabelFont = fontCreator(max(fieldVariableLayout.engine.scale, 1.0))
-    }
+    viewController.textLabelFont =
+      fieldVariableLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
 
     // Populate options
-    let options = fieldVariableLayout.variables
+    var options = fieldVariableLayout.variables
+    options.append((displayName: "Rename Variable", value: "rename"))
+    options.append((displayName: "Delete the \"\(fieldVariableLayout.variable)\" variable",
+      value: "remove"))
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
-    delegate?.fieldView(self,
-                        requestedToPresentPopoverViewController: viewController, fromView: self)
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
   }
 }
 
@@ -149,8 +149,75 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
                                             didSelectOptionIndex optionIndex: Int)
   {
-    // Change to a new variable
-    fieldVariableLayout?.changeToVariable(viewController.options[optionIndex].value)
+    guard let fieldVariableLayout = self.fieldVariableLayout else {
+      return
+    }
+
+    let options = fieldVariableLayout.variables
+    let value = viewController.options[optionIndex].value
     viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+    if (optionIndex == options.count) {
+      // Pop up a dialog to rename the variable.
+      renameVariable(fieldVariableLayout: fieldVariableLayout)
+    } else if (optionIndex == options.count + 1) {
+      // Pop up a dialog to remove the variable.
+      removeVariable(fieldVariableLayout: fieldVariableLayout)
+    } else {
+      // Change to a new variable
+      fieldVariableLayout.changeToExistingVariable(value)
+    }
+  }
+
+  private func renameVariable(fieldVariableLayout: FieldVariableLayout, error: String = "") {
+    let renameView =
+      UIAlertController(title: "Rename '\(fieldVariableLayout.variable)' variables to:",
+        message: error, preferredStyle: .alert)
+    renameView.addTextField { textField in
+      textField.placeholder = "Variable name"
+      textField.text = fieldVariableLayout.variable
+      textField.clearButtonMode = .whileEditing
+      textField.becomeFirstResponder()
+    }
+    renameView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    let renameAlertAction = UIAlertAction(title: "Rename", style: .default) { _ in
+      guard let textField = renameView.textFields?[0],
+        let newName = textField.text,
+        fieldVariableLayout.isValidName(newName) else
+      {
+        self.renameVariable(fieldVariableLayout: fieldVariableLayout,
+                            error: "(Error) You can't use an empty variable name.")
+        return
+      }
+
+      fieldVariableLayout.renameVariable(to: newName)
+    }
+    renameView.addAction(renameAlertAction)
+
+    if #available(iOS 9, *) {
+      // When the user presses the return button on the keyboard, it will automatically execute
+      // this action
+      renameView.preferredAction = renameAlertAction
+    }
+
+    popoverDelegate?.layoutView(self, requestedToPresentViewController: renameView)
+  }
+
+  private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
+    let variableCount = fieldVariableLayout.numberOfVariableReferences()
+    if variableCount == 1 {
+      // If this is the only instance of this variable, remove it.
+      fieldVariableLayout.removeVariable()
+    } else {
+      // Otherwise, verify the user intended to remove all instances of this variable.
+      let removeView = UIAlertController(title:
+        "Delete \(variableCount) uses of the \"\(fieldVariableLayout.variable)\" variable?",
+        message: "", preferredStyle: .alert)
+      removeView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+      removeView.addAction(UIAlertAction(title: "Remove", style: .default) { _ in
+        fieldVariableLayout.removeVariable()
+      })
+
+      popoverDelegate?.layoutView(self, requestedToPresentViewController: removeView)
+    }
   }
 }

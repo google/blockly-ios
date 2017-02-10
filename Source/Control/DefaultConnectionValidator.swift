@@ -34,10 +34,10 @@ open class DefaultConnectionValidator : NSObject, ConnectionValidator {
     }
 
     // Don't connect terminal blocks unless they're replaced by terminal blocks
-    if candidate.targetConnection?.sourceBlock.nextConnection != nil {
-      if moving.sourceBlock.nextConnection == nil {
-        return false
-      }
+    if candidate.targetConnection?.sourceBlock?.nextConnection != nil &&
+      moving.sourceBlock?.nextConnection == nil
+    {
+      return false
     }
 
     // Don't offer to connect an already connected left (male) value plug to

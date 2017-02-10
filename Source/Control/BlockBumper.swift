@@ -49,7 +49,7 @@ open class BlockBumper: NSObject {
   open func bumpBlockLayoutOfConnection(
     _ impingingConnection: Connection, awayFromConnection stationaryConnection: Connection)
   {
-    guard let blockLayout = impingingConnection.sourceBlock.layout,
+    guard let blockLayout = impingingConnection.sourceBlock?.layout,
       let blockGroupLayout = blockLayout.rootBlockGroupLayout else {
       return
     }
@@ -68,24 +68,38 @@ open class BlockBumper: NSObject {
    connected to the given block layout.
 
    - parameter blockLayout: The `BlockLayout` to bump others away from.
+   - parameter alwaysBumpOthers: [Optional] When set to `true`, `blockLayout` will always bump other
+   block groups instead of its own. When set to `false`, `blockLayout`'s own block group may be
+   bumped. This value defaults to `false`.
    */
-  open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout) {
-    // Move this block before trying to bump others
+  open func bumpNeighbors(ofBlockLayout blockLayout: BlockLayout, alwaysBumpOthers: Bool = false) {
+    // The default behavior is to always bump `blockLayout` away from the neighbors of its
+    // previous/output connections. However, if `alwaysBumpOthers` has been set to `true`, then
+    // those neighbors need to get bumped away instead.
     if let previousConnection = blockLayout.block.previousConnection {
-      bumpAwayFromNeighborsBlockLayout(ofConnection: previousConnection)
+      if alwaysBumpOthers {
+        bumpAllBlocks(nearConnection: previousConnection)
+      } else {
+        bumpAwayFromNeighborsBlockLayout(ofConnection: previousConnection)
+      }
     }
     if let outputConnection = blockLayout.block.outputConnection {
-      bumpAwayFromNeighborsBlockLayout(ofConnection: outputConnection)
+      if alwaysBumpOthers {
+        bumpAllBlocks(nearConnection: outputConnection)
+      } else {
+        bumpAwayFromNeighborsBlockLayout(ofConnection: outputConnection)
+      }
     }
 
     // Bump blocks away from high priority connections on this block
     for directConnection in blockLayout.block.directConnections {
       if directConnection.highPriority {
         if let connectedBlockLayout = directConnection.targetBlock?.layout {
-          bumpNeighbors(ofBlockLayout: connectedBlockLayout)
+          bumpNeighbors(ofBlockLayout: connectedBlockLayout, alwaysBumpOthers: alwaysBumpOthers)
         }
         if let connectedShadowBlockLayout = directConnection.shadowBlock?.layout {
-          bumpNeighbors(ofBlockLayout: connectedShadowBlockLayout)
+          bumpNeighbors(ofBlockLayout: connectedShadowBlockLayout,
+                        alwaysBumpOthers: alwaysBumpOthers)
         }
 
         bumpAllBlocks(nearConnection: directConnection)
@@ -103,7 +117,7 @@ open class BlockBumper: NSObject {
   private func bumpAwayFromNeighborsBlockLayout(ofConnection connection: Connection) {
     guard
       let connectionManager = workspaceLayoutCoordinator?.connectionManager,
-      let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
+      let rootBlockGroupLayout = connection.sourceBlock?.layout?.rootBlockGroupLayout else
     {
       return
     }
@@ -114,7 +128,7 @@ open class BlockBumper: NSObject {
     for neighbor in neighbors {
       // Bump away from the first neighbor that isn't in the same block group as the target
       // connection's block group
-      if neighbor.sourceBlock.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
+      if neighbor.sourceBlock?.layout?.rootBlockGroupLayout != rootBlockGroupLayout {
         bumpBlockLayoutOfConnection(connection, awayFromConnection: neighbor)
         return
       }
@@ -129,7 +143,7 @@ open class BlockBumper: NSObject {
   private func bumpAllBlocks(nearConnection connection: Connection) {
     guard
       let connectionManager = workspaceLayoutCoordinator?.connectionManager,
-      let rootBlockGroupLayout = connection.sourceBlock.layout?.rootBlockGroupLayout else
+      let rootBlockGroupLayout = connection.sourceBlock?.layout?.rootBlockGroupLayout else
     {
       return
     }
@@ -139,7 +153,7 @@ open class BlockBumper: NSObject {
 
     for neighbor in neighbors {
       // Only bump blocks that aren't in the same block group as the target connection's block group
-      if let neighborLayout = neighbor.sourceBlock.layout
+      if let neighborLayout = neighbor.sourceBlock?.layout
        , neighborLayout.rootBlockGroupLayout != rootBlockGroupLayout
       {
         bumpBlockLayoutOfConnection(neighbor, awayFromConnection: connection)

@@ -43,8 +43,6 @@ open class FieldColorLayout: FieldLayout {
   public init(fieldColor: FieldColor, engine: LayoutEngine, measurer: FieldLayoutMeasurer.Type) {
     self.fieldColor = fieldColor
     super.init(field: fieldColor, engine: engine, measurer: measurer)
-
-    fieldColor.delegate = self
   }
 
   // MARK: - Super

@@ -52,7 +52,7 @@ open class Toolbox: NSObject {
   }
 
   /**
-  Adds a category to the toolbox.
+   Adds a category to the toolbox.
 
   - parameter name: The name of the new category.
   - parameter color: The color of the new category.
@@ -62,6 +62,7 @@ open class Toolbox: NSObject {
   open func addCategory(name: String, color: UIColor, icon: UIImage?) -> Category {
     let category = Category(name: name, color: color, icon: icon)
     category.readOnly = self.readOnly
+    category.workspaceType = .toolbox
 
     self.categories.append(category)
 
@@ -78,6 +79,19 @@ extension Toolbox {
   @objc(BKYToolboxCategory)
   open class Category: WorkspaceFlow {
 
+    // MARK: - Constants
+
+    /** Represents all possible types of toolbox categories. */
+    public enum CategoryType: Int {
+      case
+      /// Specifies a category that is used for generic purposes.
+      generic = 0,
+      /// Specifies a category that is used for "variable" blocks.
+      variable,
+      /// Specifies a category that is used for "procedure" blocks.
+      procedure
+    }
+
     // MARK: - Properties
 
     /// The name of the category
@@ -86,6 +100,8 @@ extension Toolbox {
     open var color: UIColor
     /// An icon used to represent the category
     open var icon: UIImage?
+    /// The type of the category
+    open var categoryType: CategoryType = .generic
 
     // MARK: - Initializers
 

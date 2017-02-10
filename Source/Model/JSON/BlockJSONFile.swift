@@ -35,6 +35,9 @@ extension BlockJSONFile {
     if contains(.mathDefault) {
       fileLocations.append("Default/math_blocks.json")
     }
+    if contains(.procedureDefault) {
+      fileLocations.append("Default/procedure_blocks.json")
+    }
     if contains(.textDefault) {
       fileLocations.append("Default/text_blocks.json")
     }
@@ -43,5 +46,24 @@ extension BlockJSONFile {
     }
 
     return fileLocations
+  }
+
+  /// Dictionary mapping block names to mutators, for all blocks specified under
+  /// `self.fileLocations`
+  public var blockMutators: [String: Mutator] {
+    var mutators = [String: Mutator]()
+
+    if contains(.logicDefault) {
+      mutators["controls_if"] = MutatorIfElse()
+    }
+    if contains(.procedureDefault) {
+      mutators["procedures_defnoreturn"] = MutatorProcedureDefinition(returnsValue: false)
+      mutators["procedures_defreturn"] = MutatorProcedureDefinition(returnsValue: true)
+      mutators["procedures_callnoreturn"] = MutatorProcedureCaller()
+      mutators["procedures_callreturn"] = MutatorProcedureCaller()
+      mutators["procedures_ifreturn"] = MutatorProcedureIfReturn()
+    }
+
+    return mutators
   }
 }
