@@ -236,7 +236,7 @@ extension Field {
 
     // MARK: - Private
 
-    fileprivate static func parseDouble(_ any: Any) -> Double? {
+    fileprivate static func parseDouble(_ any: Any?) -> Double? {
       if let double = any as? Double {
         return double
       } else if let integer = any as? Int {
