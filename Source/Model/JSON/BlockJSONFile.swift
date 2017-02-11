@@ -48,22 +48,34 @@ extension BlockJSONFile {
     return fileLocations
   }
 
-  /// Dictionary mapping block names to mutators, for all blocks specified under
-  /// `self.fileLocations`
-  public var blockMutators: [String: Mutator] {
-    var mutators = [String: Mutator]()
+  /// Dictionary mapping extension names to `BlockExtension`, for all blocks specified under
+  /// `self.fileLocations`.
+  public var blockExtensions: [String: BlockExtension] {
+    var extensions = [String: BlockExtension]()
 
     if contains(.logicDefault) {
-      mutators["controls_if"] = MutatorIfElse()
+      extensions["controls_if_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorIfElse())
+      }
     }
     if contains(.procedureDefault) {
-      mutators["procedures_defnoreturn"] = MutatorProcedureDefinition(returnsValue: false)
-      mutators["procedures_defreturn"] = MutatorProcedureDefinition(returnsValue: true)
-      mutators["procedures_callnoreturn"] = MutatorProcedureCaller()
-      mutators["procedures_callreturn"] = MutatorProcedureCaller()
-      mutators["procedures_ifreturn"] = MutatorProcedureIfReturn()
+      extensions["procedures_defnoreturn_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorProcedureDefinition(returnsValue: false))
+      }
+      extensions["procedures_defreturn_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorProcedureDefinition(returnsValue: true))
+      }
+      extensions["procedures_callnoreturn_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorProcedureCaller())
+      }
+      extensions["procedures_callreturn_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorProcedureCaller())
+      }
+      extensions["procedures_ifreturn_mutator"] = BlockExtensionClosure { block in
+        try block.setMutator(MutatorProcedureIfReturn())
+      }
     }
 
-    return mutators
+    return extensions
   }
 }

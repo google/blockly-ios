@@ -54,6 +54,8 @@ public final class BlockBuilder: NSObject {
   /// Specifies a mutator to associate with the block. A copy of this mutator is attached to a
   /// block when it is built. Defaults to `nil`.
   public var mutator: Mutator? = nil
+  /// Specifies extensions that should be run on the block during initialization. Defaults to `[]`.
+  public var extensions = [BlockExtension]()
 
   // These values are publicly mutable in `Block`
 
@@ -171,7 +173,7 @@ public final class BlockBuilder: NSObject {
       position: position, shadow: shadow, tooltip: tooltip, comment: comment, helpURL: helpURL,
       deletable: deletable, movable: movable, disabled: disabled, editable: editable,
       outputConnection: outputConnection, previousConnection: previousConnection,
-      nextConnection: nextConnection, mutator: mutatorCopy)
+      nextConnection: nextConnection, mutator: mutatorCopy, extensions: extensions)
 
     return block
   }

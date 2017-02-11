@@ -150,6 +150,7 @@
 		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
+		FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABDB1931E4D40F600F92DAC /* BlockExtension.swift */; };
 		FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */; };
 		FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */; };
 		FAC034FA1D515D270017C1C8 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */; };
@@ -365,6 +366,7 @@
 		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FABDB1931E4D40F600F92DAC /* BlockExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockExtension.swift; sourceTree = "<group>"; };
 		FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorLayout.swift; sourceTree = "<group>"; };
 		FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateLayout.swift; sourceTree = "<group>"; };
 		FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
@@ -724,6 +726,7 @@
 				FA4D54A71C6AAE5000F95084 /* XML */,
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* BlockBuilder.swift */,
+				FABDB1931E4D40F600F92DAC /* BlockExtension.swift */,
 				F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */,
 				FA548C871B66E861008BC59C /* Connection.swift */,
 				FA6232511B6B12CF00F1EF42 /* Field.swift */,
@@ -1066,6 +1069,7 @@
 				FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
 				30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */,
+				FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */,
 				FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */,

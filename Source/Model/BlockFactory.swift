@@ -25,13 +25,20 @@ import Foundation
 @objc(BKYBlockFactory)
 public class BlockFactory : NSObject {
 
+  // MARK: - Properties
+
+  /// Dictionary of `BlockExtension` objects indexed by their extension name
+  public private(set) var blockExtensions = [String: BlockExtension]()
+
+  /// Dictionary of `BlockBuilder` objects indexed by their block name
   internal var _blockBuilders = Dictionary<String, BlockBuilder>()
 
   // MARK: - Public
 
   /**
-   Loads blocks from a list of default files defined by the Blockly library. All default mutators
-   for those loaded blocks are automatically associated with them as well.
+   Loads blocks from a list of default files defined by the Blockly library. The block extensions
+   for those loaded blocks are automatically loaded into the `self.blockExtensions` so they can
+   be used during block creation.
 
    - parameter defaultFiles: The list of default block definition files that should be loaded.
    - note: This method will overwrite any existing block definitions that contain the same name.
@@ -39,17 +46,12 @@ public class BlockFactory : NSObject {
   public func load(fromDefaultFiles defaultFiles: BlockJSONFile) {
     let bundle = Bundle(for: type(of: self))
 
+    updateBlockExtensions(defaultFiles.blockExtensions)
+
     do {
       try load(fromJSONPaths: defaultFiles.fileLocations, bundle: bundle)
     } catch let error {
       bky_assertionFailure("Could not load default block definition files in library bundle: " +
-        "\(defaultFiles.fileLocations).\nError: \(error)")
-    }
-
-    do {
-      try setBlockMutators(defaultFiles.blockMutators)
-    } catch let error {
-      bky_assertionFailure("Could not load mutators of block definition files in library bundle: " +
         "\(defaultFiles.fileLocations).\nError: \(error)")
     }
   }
@@ -75,7 +77,8 @@ public class BlockFactory : NSObject {
       let jsonString = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
       let json = try JSONHelper.makeJSONArray(string: jsonString)
       for blockJson in json {
-        let blockBuilder = try Block.makeBuilder(json: blockJson as! [String : Any])
+        let blockBuilder =
+          try Block.makeBuilder(json: blockJson as! [String : Any], extensions: blockExtensions)
         // Ensure the builder is valid
         _ = try blockBuilder.makeBlock()
 
@@ -86,28 +89,15 @@ public class BlockFactory : NSObject {
   }
 
   /**
-   Sets mutators for any loaded block builders, using a dictionary mapping block names to mutators.
+   Updates `self.blockExtensions` from a dictionary of given block extensions. If an extension
+   already exists in `self.blockExtensions` for a given name, that value is overwritten by the one
+   supplied by `extensions`.
 
-   - parameter blockMutators: Dictionary mapping block names to `Mutator` instances.
-   - throws:
-   `BlocklyError`: Thrown if a block builder could not be found for a given block name.
+   - parameter extensions: Dictionary mapping `BlockExtension` objects to their extension name.
    */
-  public func setBlockMutators(_ blockMutators: [String: Mutator]) throws {
-    var errors = [String]()
-
-    for mapping in blockMutators {
-      let blockName = mapping.key
-      let mutator = mapping.value
-
-      if let blockBuilder = _blockBuilders[blockName] {
-        blockBuilder.mutator = mutator
-      } else {
-        errors.append("\(#function): Could not locate block named '\(blockName)'.")
-      }
-    }
-
-    if !errors.isEmpty {
-      throw BlocklyError(.illegalArgument, errors.joined(separator: "\n"))
+  public func updateBlockExtensions(_ extensions: [String: BlockExtension]) {
+    for (name, blockExtension) in extensions {
+      blockExtensions[name] = blockExtension
     }
   }
 
