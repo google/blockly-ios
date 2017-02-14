@@ -99,7 +99,7 @@ public final class Block : NSObject {
   /// The color of the block
   public let color: UIColor
   /// An optional mutator for this block
-  public let mutator: Mutator?
+  public var mutator: Mutator?
   /// Tooltip text of the block
   public var tooltip: String {
     didSet { didSetEditableProperty(&tooltip, oldValue) }
@@ -160,7 +160,8 @@ public final class Block : NSObject {
     uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
     position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
     deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?) throws
+    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?,
+    extensions: [BlockExtension]) throws
   {
     self.uuid = uuid ?? UUID().uuidString
     self.name = name
@@ -179,12 +180,10 @@ public final class Block : NSObject {
     self.movable = movable
     self.disabled = disabled
     self.editable = editable
-    self.mutator = mutator
 
     super.init()
 
     // Set the source block for properties
-    self.mutator?.block = self
     self.outputConnection?.sourceBlock = self
     self.previousConnection?.sourceBlock = self
     self.nextConnection?.sourceBlock = self
@@ -193,8 +192,15 @@ public final class Block : NSObject {
     updateInputs()
     updateDirectConnections()
 
-    // Immediately apply the mutation
-    try self.mutator?.mutateBlock()
+    // Set the mutator
+    if let aMutator = mutator {
+      try setMutator(aMutator)
+    }
+
+    // Apply the extensions
+    for blockExtension in extensions {
+      try blockExtension.run(block: self)
+    }
   }
 
   // MARK: - Public
@@ -574,5 +580,27 @@ public final class Block : NSObject {
     if let connection = nextConnection {
       directConnections.append(connection)
     }
+  }
+
+  // MARK: - Mutator
+
+  /**
+   Associates a mutator with this block and immediately calls `mutateBlock()` on it.
+
+   - parameter mutator: The mutator to associate with the block.
+   - throws:
+   `BlocklyError`: Thrown if a mutator has already been associated with the block or if
+   `mutator.mutateBlock()` throws an error.
+   */
+  public func setMutator(_ mutator: Mutator) throws {
+    if self.mutator != nil {
+      throw BlocklyError(.illegalState,
+        "`self.mutator` has already been defined on this block. " +
+        "This value cannot be set more than once.")
+    }
+
+    self.mutator = mutator
+    mutator.block = self
+    try mutator.mutateBlock()
   }
 }

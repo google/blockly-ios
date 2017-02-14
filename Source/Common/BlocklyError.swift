@@ -50,6 +50,8 @@ public final class BlocklyError: NSError {
       jsonParsing = 400,
       /// Thrown when json parsing results in an invalid typecast.
       jsonInvalidTypecast = 401,
+      /// Thrown when an invalid argument is supplied in a JSON file.
+      jsonInvalidArgument = 402,
       /// Thrown when xml can't be correctly parsed.
       xmlParsing = 500,
       /// Thrown when xml specifies a block that's unknown to the system.

@@ -19,18 +19,19 @@ extension Block {
   // MARK: - Static Properties
 
   // JSON parameters
-  fileprivate static let PARAMETER_TYPE = "type"
+  fileprivate static let PARAMETER_ARGUMENTS = "args"
   // To maintain compatibility with Web Blockly, this value is spelled as "colour" and not "color"
   fileprivate static let PARAMETER_COLOR = "colour"
+  fileprivate static let PARAMETER_EXTENSIONS = "extensions"
+  fileprivate static let PARAMETER_HELP_URL = "helpUrl"
+  fileprivate static let PARAMETER_INPUTS_INLINE = "inputsInline"
+  fileprivate static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
+  fileprivate static let PARAMETER_MESSAGE = "message"
+  fileprivate static let PARAMETER_NEXT_STATEMENT = "nextStatement"
   fileprivate static let PARAMETER_OUTPUT = "output"
   fileprivate static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
-  fileprivate static let PARAMETER_NEXT_STATEMENT = "nextStatement"
-  fileprivate static let PARAMETER_INPUTS_INLINE = "inputsInline"
   fileprivate static let PARAMETER_TOOLTIP = "tooltip"
-  fileprivate static let PARAMETER_HELP_URL = "helpUrl"
-  fileprivate static let PARAMETER_MESSAGE = "message"
-  fileprivate static let PARAMETER_ARGUMENTS = "args"
-  fileprivate static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
+  fileprivate static let PARAMETER_TYPE = "type"
   fileprivate static let MESSAGE_PARAMETER_ALT = "alt"
   fileprivate static let MESSAGE_PARAMETER_TYPE = "type"
 
@@ -40,12 +41,17 @@ extension Block {
   Creates a new `BlockBuilder` from a JSON dictionary.
 
   - parameter json: The JSON dictionary.
+  - parameter extensions: Dictionary mapping names to `BlockExtension` objects. For any extension
+  name that has been defined in `json`, its corresponding block extension defined in this parameter
+  is added to the block builder.
   - throws:
   `BlocklyError`: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
-  malformed data, or contradictory data).
+  malformed data, or contradictory data). It also is thrown if an extension name has been defined in
+  `json`, but no corresponding mapping could be found in `extensions`.
   - returns: A new block builder.
   */
-  public class func makeBuilder(json: [String: Any]) throws -> BlockBuilder
+  public class func makeBuilder(json: [String: Any], extensions: [String: BlockExtension] = [:])
+    throws -> BlockBuilder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.invalidBlockDefinition,
@@ -99,6 +105,16 @@ extension Block {
     }
     if let helpURL = json[PARAMETER_HELP_URL] as? String {
       builder.helpURL = helpURL
+    }
+    if let extensionNames = json[PARAMETER_EXTENSIONS] as? [String] {
+      for extensionName in extensionNames {
+        if let blockExtension = extensions[extensionName] {
+          builder.extensions.append(blockExtension)
+        } else {
+          throw BlocklyError(
+            .jsonInvalidArgument, "No `BlockExtension` has been defined for \"\(extensionName)\".")
+        }
+      }
     }
 
     // Interpolate any messages for the block

@@ -13,6 +13,7 @@
         "name": "PARAMS"
       }
     ],
+    "extensions": ["procedures_defnoreturn_mutator"],
     "colour": 290,
     "tooltip": "Creates a function with no output.",
     "helpUrl": "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29"
@@ -39,6 +40,7 @@
         "align": "RIGHT"
       }
     ],
+    "extensions": ["procedures_defreturn_mutator"],
     "colour": 290,
     "tooltip": "Creates a function with an output.",
     "helpUrl": "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29"
@@ -56,6 +58,7 @@
         "name": "TOPROW"
       }
     ],
+    "extensions": ["procedures_callnoreturn_mutator"],
     "previousStatement": null,
     "nextStatement": null,
     "colour": 290,
@@ -74,6 +77,7 @@
         "name": "TOPROW"
       }
     ],
+    "extensions": ["procedures_callreturn_mutator"],
     "output": null,
     "colour": 290,
     "helpUrl": "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29"
@@ -92,6 +96,7 @@
         "name": "VALUE"
       }
     ],
+    "extensions": ["procedures_ifreturn_mutator"],
     "inputsInline": true,
     "previousStatement": null,
     "nextStatement": null,
