@@ -44,6 +44,9 @@ Data structure that contains `Block` instances.
 open class Workspace : NSObject {
   // MARK: - Properties
 
+  /// A unique identifier used to identify this workspace for its lifetime
+  public let uuid: String
+
   /// The maximum number of blocks that this workspace may contain. If this value is set to `nil`,
   /// no maximum limit is enforced.
   public let maxBlocks: Int?
@@ -99,6 +102,7 @@ open class Workspace : NSObject {
    Creates a Workspace, with no maximum capacity.
    */
   public override init() {
+    self.uuid = UUID().uuidString
     self.maxBlocks = nil
     super.init()
   }
@@ -108,7 +112,8 @@ open class Workspace : NSObject {
 
    - parameter maxBlocks: The maximum number of blocks allowed in this workspace.
    */
-  public init(maxBlocks: Int) {
+  public init(uuid: String, maxBlocks: Int) {
+    self.uuid = uuid
     self.maxBlocks = maxBlocks
     super.init()
   }

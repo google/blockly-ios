@@ -112,6 +112,7 @@
 		FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */; };
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
+		FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */; };
 		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */; };
@@ -163,6 +164,12 @@
 		FAC2AC031E440A38003DB287 /* MutatorProcedureIfReturn.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */; };
 		FAC2AC051E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */; };
 		FAC2AC0E1E496827003DB287 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */; };
+		FAC2AC131E4AC500003DB287 /* BlocklyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */; };
+		FAC2AC171E4AC563003DB287 /* ChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC161E4AC563003DB287 /* ChangeEvent.swift */; };
+		FAC2AC191E4AC580003DB287 /* CreateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC181E4AC580003DB287 /* CreateEvent.swift */; };
+		FAC2AC1B1E4AC592003DB287 /* DeleteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */; };
+		FAC2AC1D1E4AC5B4003DB287 /* MoveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1C1E4AC5B4003DB287 /* MoveEvent.swift */; };
+		FAC2AC1F1E4AC5D7003DB287 /* BlocklyUIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */; };
 		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
 		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
@@ -328,6 +335,7 @@
 		FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Helper.swift"; sourceTree = "<group>"; };
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
+		FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEventFactory.swift; sourceTree = "<group>"; };
 		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureCoordinator.swift; sourceTree = "<group>"; };
@@ -379,6 +387,12 @@
 		FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturn.swift; sourceTree = "<group>"; };
 		FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturnLayout.swift; sourceTree = "<group>"; };
 		FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEvent.swift; sourceTree = "<group>"; };
+		FAC2AC161E4AC563003DB287 /* ChangeEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEvent.swift; sourceTree = "<group>"; };
+		FAC2AC181E4AC580003DB287 /* CreateEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEvent.swift; sourceTree = "<group>"; };
+		FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteEvent.swift; sourceTree = "<group>"; };
+		FAC2AC1C1E4AC5B4003DB287 /* MoveEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveEvent.swift; sourceTree = "<group>"; };
+		FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyUIEvent.swift; sourceTree = "<group>"; };
 		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
 		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
@@ -722,6 +736,7 @@
 		FA548C851B66E861008BC59C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FAC2AC111E4AC500003DB287 /* Event */,
 				FA2DFC0C1B7177760072A278 /* JSON */,
 				FA4D54A71C6AAE5000F95084 /* XML */,
 				FA548C861B66E861008BC59C /* Block.swift */,
@@ -819,6 +834,20 @@
 				FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		FAC2AC111E4AC500003DB287 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */,
+				FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */,
+				FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */,
+				FAC2AC161E4AC563003DB287 /* ChangeEvent.swift */,
+				FAC2AC181E4AC580003DB287 /* CreateEvent.swift */,
+				FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */,
+				FAC2AC1C1E4AC5B4003DB287 /* MoveEvent.swift */,
+			);
+			path = Event;
 			sourceTree = "<group>";
 		};
 		FAD6523A1CB7210C00F73F11 /* Default */ = {
@@ -1019,12 +1048,14 @@
 				FAA8700E1C64272C000C7C61 /* UIView+Helper.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */,
+				FAC2AC171E4AC563003DB287 /* ChangeEvent.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */,
 				FA56E35B1E28454B00A53631 /* MutatorHelper.swift in Sources */,
 				FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */,
 				FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
+				FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */,
 				FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
 				FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */,
@@ -1086,6 +1117,8 @@
 				FA56E35F1E298E9C00A53631 /* NumberIncrementerView.swift in Sources */,
 				FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */,
 				FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */,
+				FAC2AC1B1E4AC592003DB287 /* DeleteEvent.swift in Sources */,
+				FAC2AC131E4AC500003DB287 /* BlocklyEvent.swift in Sources */,
 				FAFAEE711CDC0D2F00698179 /* NameManager.swift in Sources */,
 				FA16C2911D49A3BA00BAAFA2 /* FieldAngleLayout.swift in Sources */,
 				3064BAD51DAFFC58006425A2 /* BKYLayoutConfigStructs.m in Sources */,
@@ -1111,6 +1144,7 @@
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */,
+				FAC2AC1F1E4AC5D7003DB287 /* BlocklyUIEvent.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
@@ -1123,6 +1157,7 @@
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
+				FAC2AC191E4AC580003DB287 /* CreateEvent.swift in Sources */,
 				FAD652421CB7210C00F73F11 /* DefaultInputLayout.swift in Sources */,
 				FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */,
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
@@ -1146,6 +1181,7 @@
 				FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
 				FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */,
+				FAC2AC1D1E4AC5B4003DB287 /* MoveEvent.swift in Sources */,
 				FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */,
 				FA57C3A91CCADDC600952BFB /* Toolbox+XML.swift in Sources */,
 				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,
