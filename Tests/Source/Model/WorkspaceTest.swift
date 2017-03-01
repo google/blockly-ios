@@ -151,7 +151,7 @@ class WorkspaceTest: XCTestCase {
       return
     }
 
-    let workspace = Workspace(maxBlocks: 1)
+    let workspace = Workspace(uuid: UUID().uuidString, maxBlocks: 1)
     XCTAssertEqual(workspace.maxBlocks, 1)
     XCTAssertEqual(workspace.remainingCapacity, 1)
 

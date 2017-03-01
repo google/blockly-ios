@@ -110,10 +110,12 @@ open class Workspace : NSObject {
   /**
    Creates a Workspace, specifying a maximum capacity.
 
-   - parameter maxBlocks: The maximum number of blocks allowed in this workspace.
+   - parameter uuid: [Optional] A specific UUID to assign to this workspace. If none is specified,
+   one is automatically created and assigned to the workspace.
+   - parameter maxBlocks: [Optional] The maximum number of blocks allowed in this workspace.
    */
-  public init(uuid: String, maxBlocks: Int) {
-    self.uuid = uuid
+  public init(uuid: String? = nil, maxBlocks: Int? = nil) {
+    self.uuid = uuid ?? UUID().uuidString
     self.maxBlocks = maxBlocks
     super.init()
   }

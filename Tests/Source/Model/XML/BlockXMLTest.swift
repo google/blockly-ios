@@ -289,7 +289,9 @@ class BlockXMLTest: XCTestCase {
 
   func testParseXML_BlockWithMutator() {
     // Add DummyMutator to "frankenblock" factory builder
-    BKYAssertDoesNotThrow { try factory.setBlockMutators(["frankenblock": DummyMutator()]) }
+    factory.blockBuilder(forName: "frankenblock")?.extensions = [BlockExtensionClosure { block in
+      try block.setMutator(DummyMutator())
+    }]
 
     // Parse block with mutation xml
     let xml = BlockTestStrings.assembleBlock(BlockTestStrings.DUMMY_MUTATOR_VALUE)
@@ -1179,7 +1181,9 @@ class BlockXMLTest: XCTestCase {
 
   func testSerializeXML_BlockWithMutator() {
     // Add DummyMutator to "empty_block" factory builder
-    BKYAssertDoesNotThrow { try factory.setBlockMutators(["empty_block": DummyMutator()]) }
+    factory.blockBuilder(forName: "empty_block")?.extensions = [BlockExtensionClosure { block in
+      try block.setMutator(DummyMutator())
+    }]
 
     guard let block = BKYAssertDoesNotThrow({
       try factory.makeBlock(name: "empty_block", shadow: false, uuid: "block_uuid")
@@ -1222,7 +1226,7 @@ class BlockXMLTest: XCTestCase {
   func parseBlockFromXML(_ xmlString: String, _ factory: BlockFactory) -> Block.BlockTree? {
     do {
       let xmlDoc = try AEXMLDocument(xml: xmlString)
-      return try Block.blockTree(fromXml: xmlDoc.root, factory: factory)
+      return try Block.blockTree(fromXML: xmlDoc.root, factory: factory)
     } catch {
     }
 

@@ -59,7 +59,7 @@ public final class Dragger: NSObject {
 
     Layout.animate {
       // Remove any existing gesture data for the layout
-      clearGestureDataForBlockLayout(layout)
+      clearGestureData(forUUID: layout.uuid)
 
       // Disconnect this block from its previous or output connections prior to moving it
       let block = layout.block
@@ -148,10 +148,10 @@ public final class Dragger: NSObject {
       {
         workspaceLayoutCoordinator.connectPair(connectionPair)
 
-        clearGestureDataForBlockLayout(layout,
-          moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
+        clearGestureData(
+          forUUID: layout.uuid, moveConnectionsToGroup: connectionPair.fromConnectionManagerGroup)
       } else {
-        clearGestureDataForBlockLayout(layout)
+        clearGestureData(forUUID: layout.uuid)
 
         // Update the workspace canvas size since it may have changed (this was purposely skipped
         // during the drag for performance reasons, so we have to update it now). Also, there is
@@ -172,17 +172,16 @@ public final class Dragger: NSObject {
   }
 
   /**
-  Clears the drag data for a block layout, removes any highlights, and moves connections that were
-  being tracked by the drag to a new group.
+   Cancels dragging a block layout (and any of its connected block layouts) in the workspace.
 
-  - parameter layout: The given block layout
-  - parameter connectionGroup: The new connection group to move the connections to. If this is
-  nil, the connection manager's `mainGroup` is used.
+   - parameter layout: The `BlockLayout`.
   */
-  public func clearGestureDataForBlockLayout(
-    _ layout: BlockLayout, moveConnectionsToGroup connectionGroup: ConnectionManager.Group? = nil)
-  {
-    clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: connectionGroup)
+  public func cancelDraggingBlockLayout(_ layout: BlockLayout) {
+    // Remove the highlight for this block
+    layout.highlighted = false
+    layout.rootBlockGroupLayout?.dragging = false
+
+    clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: nil)
   }
 
   // MARK: - Private

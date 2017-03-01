@@ -143,7 +143,7 @@ extension Toolbox {
   {
     switch childNode.name {
     case "block":
-      let blockTree = try Block.blockTree(fromXml: childNode, factory: factory)
+      let blockTree = try Block.blockTree(fromXML: childNode, factory: factory)
       try category.addBlockTree(blockTree.rootBlock)
     case "category":
       throw BlocklyError(.xmlParsing, "Subcategories are not supported.")
