@@ -22,7 +22,24 @@ extension Block {
   // MARK: - Public
 
   /**
-   Creates a new block and subblocks from an XML object.
+   Creates a new tree of blocks from an XML object.
+
+   - parameter xml: The XML string representing the block tree.
+   - parameter factory: The `BlockFactory` to use to build blocks.
+   - returns: A `BlockTree` tuple of all blocks that were created.
+   - throws:
+   `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
+   malformed data, or contradictory data).
+   */
+  public class func blockTree(fromXMLString xmlString: String, factory: BlockFactory) throws
+    -> BlockTree
+  {
+    let xmlDoc = try AEXMLDocument(xml: xmlString)
+    return try blockTree(fromXML: xmlDoc.root, factory: factory)
+  }
+
+  /**
+   Creates a new tree of blocks from an XML object.
 
    - parameter xml: The element that contains this block's data.
    - parameter factory: The `BlockFactory` to use to build blocks.
@@ -31,7 +48,7 @@ extension Block {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func blockTree(fromXml xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
+  public class func blockTree(fromXML xml: AEXMLElement, factory: BlockFactory) throws -> BlockTree
   {
     let lowercaseTag = xml.name.lowercased()
     guard lowercaseTag == XMLConstants.TAG_BLOCK || lowercaseTag == XMLConstants.TAG_SHADOW else {
@@ -84,7 +101,7 @@ extension Block {
           block.comment = commentText
         }
       default:
-        if block.mutator != nil {
+        if block.mutator == nil {
           // Log unknown nodes (if there's a mutator, those unknown nodes may have been handled
           // already so we will not log them).
           bky_print("Unknown node name: \(child.name)")
@@ -128,12 +145,12 @@ extension Block {
       switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this input connection's target
-        let subBlockTree = try Block.blockTree(fromXml: child, factory: factory)
+        let subBlockTree = try Block.blockTree(fromXML: child, factory: factory)
         try inputConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this input connection's shadow
-        let subBlockTree = try Block.blockTree(fromXml: child, factory: factory)
+        let subBlockTree = try Block.blockTree(fromXML: child, factory: factory)
         try inputConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       default:
@@ -171,12 +188,12 @@ extension Block {
       switch child.name.lowercased() {
       case XMLConstants.TAG_BLOCK:
         // Create the child block tree from xml and connect it to this next connection's target
-        let subBlockTree = try blockTree(fromXml: child, factory: factory)
+        let subBlockTree = try blockTree(fromXML: child, factory: factory)
         try nextConnection.connectTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       case XMLConstants.TAG_SHADOW:
         // Create the child block tree from xml and connect it to this next connection's shadow
-        let subBlockTree = try blockTree(fromXml: child, factory: factory)
+        let subBlockTree = try blockTree(fromXML: child, factory: factory)
         try nextConnection.connectShadowTo(subBlockTree.rootBlock.inferiorConnection)
         blocks.append(contentsOf: subBlockTree.allBlocks)
       default:

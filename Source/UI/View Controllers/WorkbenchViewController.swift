@@ -335,7 +335,7 @@ open class WorkbenchViewController: UIViewController {
     addChildViewController(toolboxCategoryViewController)
 
     // Set up auto-layout constraints
-    let trashCanPadding = CGFloat(25)
+    let iconPadding = CGFloat(25)
     let views: [String: UIView] = [
       "toolboxCategoriesListView": _toolboxCategoryListViewController.view,
       "toolboxCategoryView": toolboxCategoryViewController.view,
@@ -344,15 +344,14 @@ open class WorkbenchViewController: UIViewController {
       "trashCanFolderView": _trashCanViewController.view,
     ]
     let metrics = [
-      "trashCanPadding": trashCanPadding,
+      "iconPadding": iconPadding,
     ]
     let constraints: [String]
 
     if style == .alternate {
-      // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
+      // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the top-trailing corner.
-      trashCanView.setButtonPadding(
-        top: trashCanPadding, leading: 0, bottom: 0, trailing: trashCanPadding)
+      trashCanView.setButtonPadding(top: iconPadding, leading: 0, bottom: 0, trailing: iconPadding)
       constraints = [
         // Position the toolbox category list along the bottom margin, and let the workspace view
         // fill the rest of the space
@@ -368,13 +367,12 @@ open class WorkbenchViewController: UIViewController {
         // Position the trash can folder view on the trailing edge of the view, between the toolbox
         // category view and trash can button
         "H:[trashCanFolderView]|",
-        "V:[trashCanView]-(trashCanPadding)-[trashCanFolderView]-[toolboxCategoryView]",
+        "V:[trashCanView]-(iconPadding)-[trashCanFolderView]-[toolboxCategoryView]",
       ]
     } else {
-      // Position the button inside the trashCanView to be `(trashCanPadding, trashCanPadding)`
+      // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the bottom-trailing corner.
-      trashCanView.setButtonPadding(
-        top: 0, leading: 0, bottom: trashCanPadding, trailing: trashCanPadding)
+      trashCanView.setButtonPadding(top: 0, leading: 0, bottom: iconPadding, trailing: iconPadding)
       constraints = [
         // Position the toolbox category list along the leading margin, and let the workspace view
         // fill the rest of the space
@@ -389,7 +387,7 @@ open class WorkbenchViewController: UIViewController {
         "V:[trashCanView]|",
         // Position the trash can folder view on the bottom of the view, between the toolbox
         // category view and trash can button
-        "H:[toolboxCategoryView]-[trashCanFolderView]-(trashCanPadding)-[trashCanView]",
+        "H:[toolboxCategoryView]-[trashCanFolderView]-(iconPadding)-[trashCanView]",
         "V:[trashCanFolderView]|",
       ]
     }
@@ -397,6 +395,7 @@ open class WorkbenchViewController: UIViewController {
     self.view.bky_addSubviews(Array(views.values))
     self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
+    self.view.bringSubview(toFront: toolboxCategoryViewController.view)
     self.view.sendSubview(toBack: workspaceViewController.view)
 
     let panGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
@@ -711,14 +710,12 @@ extension WorkbenchViewController {
 // MARK: - Trash Can
 
 extension WorkbenchViewController {
-  // MARK: - Public
-
   /**
    Event that is fired when the trash can is tapped on.
 
    - parameter sender: The trash can button that sent the event.
    */
-  public func didTapTrashCan(_ sender: UIButton) {
+  fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
       addUIStateValue(.trashCanOpen)
@@ -726,8 +723,6 @@ extension WorkbenchViewController {
       removeUIStateValue(.trashCanOpen)
     }
   }
-
-  // MARK: - Private
 
   fileprivate func setTrashCanViewVisible(_ visible: Bool) {
     trashCanView?.isHidden = !visible
@@ -773,6 +768,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   {
     if workspaceViewController == self.workspaceViewController {
       addGestureTracking(forBlockView: blockView)
+      updateWorkspaceCapacity()
     }
   }
 
@@ -781,6 +777,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   {
     if workspaceViewController == self.workspaceViewController {
       removeGestureTracking(forBlockView: blockView)
+      updateWorkspaceCapacity()
     }
   }
 
@@ -831,7 +828,6 @@ extension WorkbenchViewController {
     let newBlockView: BlockView
     do {
       newBlockView = try copyBlockView(rootBlockView)
-      updateWorkspaceCapacity()
     } catch let error {
       bky_assertionFailure("Could not copy toolbox block view into workspace view: \(error)")
       return nil
@@ -891,7 +887,7 @@ extension WorkbenchViewController {
     blockView.bky_removeAllGestureRecognizers()
 
     if let blockLayout = blockView.blockLayout {
-      _dragger.clearGestureDataForBlockLayout(blockLayout)
+      _dragger.cancelDraggingBlockLayout(blockLayout)
     }
   }
 
@@ -1092,13 +1088,17 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         fromView: workspaceView.scrollView.containerView)
       if touchTouchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
-        _dragger.clearGestureDataForBlockLayout(blockLayout)
+        _dragger.cancelDraggingBlockLayout(blockLayout)
 
         do {
-          _ = try _trashCanViewController.workspaceLayoutCoordinator?
-            .copyBlockTree(blockLayout.block, editable: true)
+          // Keep a reference of all blocks that are getting transferred over so they don't go
+          // out of memory.
+          var allBlocksToRemove = blockLayout.block.allBlocksForTree()
+
           try _workspaceLayoutCoordinator?.removeBlockTree(blockLayout.block)
-          updateWorkspaceCapacity()
+          try _trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(blockLayout.block)
+
+          allBlocksToRemove.removeAll()
         } catch let error {
           bky_assertionFailure("Could not copy block to trash can: \(error)")
         }
