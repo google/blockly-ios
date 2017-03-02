@@ -128,7 +128,10 @@ open class WorkspaceLayoutCoordinator: NSObject {
      `BlocklyError`: If the block to be added would put the workspace into an illegal state.
    */
   open func addBlockTree(_ rootBlock: Block) throws {
-    return try workspaceLayout.workspace.addBlockTree(rootBlock)
+    try workspaceLayout.workspace.addBlockTree(rootBlock)
+
+    let event = try CreateEvent(workspace: workspaceLayout.workspace, block: rootBlock)
+    EventManager.sharedInstance.addPendingEvent(event)
   }
 
   /**
@@ -209,8 +212,13 @@ open class WorkspaceLayoutCoordinator: NSObject {
   open func copyBlockTree(_ rootBlock: Block, editable: Bool,
                           position: WorkspacePoint = WorkspacePoint.zero) throws -> Block
   {
-    return try workspaceLayout.workspace.copyBlockTree(
+    let blockCopy = try workspaceLayout.workspace.copyBlockTree(
       rootBlock, editable: editable, position: position)
+
+    let event = try CreateEvent(workspace: workspaceLayout.workspace, block: blockCopy)
+    EventManager.sharedInstance.addPendingEvent(event)
+
+    return blockCopy
   }
 
   /**

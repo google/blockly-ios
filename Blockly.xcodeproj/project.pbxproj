@@ -113,6 +113,7 @@
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */; };
+		FA73EFD01E64ECDF001E0A24 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */; };
 		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */; };
@@ -336,6 +337,7 @@
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEventFactory.swift; sourceTree = "<group>"; };
+		FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureCoordinator.swift; sourceTree = "<group>"; };
@@ -890,6 +892,7 @@
 				300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */,
 				300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */,
 				FAE557781BE02B270019D0D4 /* Dragger.swift */,
+				FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */,
 				FA56E35A1E28454B00A53631 /* MutatorHelper.swift */,
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
 				FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */,
@@ -1121,6 +1124,7 @@
 				FAC2AC131E4AC500003DB287 /* BlocklyEvent.swift in Sources */,
 				FAFAEE711CDC0D2F00698179 /* NameManager.swift in Sources */,
 				FA16C2911D49A3BA00BAAFA2 /* FieldAngleLayout.swift in Sources */,
+				FA73EFD01E64ECDF001E0A24 /* EventManager.swift in Sources */,
 				3064BAD51DAFFC58006425A2 /* BKYLayoutConfigStructs.m in Sources */,
 				FA548D271B6708F2008BC59C /* BlockBuilder.swift in Sources */,
 				FA56E3651E3178E400A53631 /* MutatorProcedureDefinitionLayout.swift in Sources */,
