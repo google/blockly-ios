@@ -17,27 +17,15 @@ import UIKit
 import Blockly
 
 class SimpleWorkbenchViewController: WorkbenchViewController {
-  // MARK: - Super
-
-  /// Factory that produces block instances
-  let _blockFactory = BlockFactory()
-
   // MARK: - Initializers
 
   init() {
     super.init(style: .defaultStyle)
-    commonInit()
   }
 
   required init?(coder aDecoder: NSCoder) {
     assertionFailure("Called unsupported initializer")
     super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  private func commonInit() {
-    // Load blocks into the block factory
-    _blockFactory.load(fromDefaultFiles: .allDefault)
   }
 
   // MARK: - Super
@@ -50,7 +38,7 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     self.navigationItem.title = "Workbench with Default Blocks"
 
     // Load data
-    loadWorkspace()
+    loadBlockFactory()
     loadToolbox()
   }
 
@@ -60,15 +48,9 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
 
   // MARK: - Private
 
-  private func loadWorkspace() {
-    do {
-      // Create a workspace
-      let workspace = Workspace()
-
-      try loadWorkspace(workspace)
-    } catch let error {
-      print("Couldn't build layout tree for workspace: \(error)")
-    }
+  private func loadBlockFactory() {
+    // Load blocks into the block factory
+    blockFactory.load(fromDefaultFiles: .allDefault)
   }
 
   private func loadToolbox() {
@@ -77,8 +59,8 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
       let toolboxPath = "SimpleWorkbench/toolbox_basic.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
-        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
-        try loadToolbox(toolbox, blockFactory: _blockFactory)
+        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: blockFactory)
+        try loadToolbox(toolbox)
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")
       }

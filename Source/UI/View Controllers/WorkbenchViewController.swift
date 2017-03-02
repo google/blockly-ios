@@ -121,6 +121,30 @@ open class WorkbenchViewController: UIViewController {
   /// The trash can view.
   open fileprivate(set) var trashCanView: TrashCanView!
 
+  /// The undo button
+  open fileprivate(set) var undoButton: UIButton = {
+    let undoButton = UIButton(type: .custom)
+    if let image = ImageLoader.loadImage(named: "undo", forClass: WorkbenchViewController.self) {
+      undoButton.setImage(image, for: .normal)
+      undoButton.contentMode = .center
+    }
+    undoButton.addTarget(self, action: #selector(didTapUndoButton(_:)), for: .touchUpInside)
+    undoButton.isEnabled = false
+    return undoButton
+  }()
+
+  /// The redo button
+  open fileprivate(set) var redoButton: UIButton = {
+    let redoButton = UIButton(type: .custom)
+    if let image = ImageLoader.loadImage(named: "redo", forClass: WorkbenchViewController.self) {
+      redoButton.setImage(image, for: .normal)
+      redoButton.contentMode = .center
+    }
+    redoButton.addTarget(self, action: #selector(didTapRedoButton(_:)), for: .touchUpInside)
+    redoButton.isEnabled = false
+    return redoButton
+  }()
+
   /// The toolbox category view controller.
   open fileprivate(set) var toolboxCategoryViewController: ToolboxCategoryViewController! {
     didSet {
@@ -136,6 +160,9 @@ open class WorkbenchViewController: UIViewController {
   public final let engine: LayoutEngine
   /// The layout builder to create layout hierarchies
   public final let layoutBuilder: LayoutBuilder
+  /// The factory for creating blocks under this workbench. Any block added to the workbench
+  /// should be able to be re-created using this factory.
+  public final let blockFactory: BlockFactory
   /// The factory for creating views
   public final let viewFactory: ViewFactory
 
@@ -195,6 +222,13 @@ open class WorkbenchViewController: UIViewController {
     set { workspaceViewController.workspaceView.allowZoom = newValue }
   }
 
+  /// Enables or disables the ability to undo/redo actions in the workspace. Defaults to `true`.
+  open var allowUndoRedo: Bool = true {
+    didSet {
+      setUndoRedoVisible(allowUndoRedo)
+    }
+  }
+
   /**
   Flag for whether the toolbox drawer should stay visible once it has been opened (`true`)
   or if it should automatically close itself when the user does something else (`false`).
@@ -217,6 +251,22 @@ open class WorkbenchViewController: UIViewController {
   /// Flag indicating if the `self._trashCanViewController` is being shown
   fileprivate var _trashCanVisible: Bool = false
 
+  /// Stack of events to run when applying "undo" actions. The events are sorted in
+  /// chronological order, where the first event to "undo" is at the end of the array.
+  fileprivate var _undoStack = [BlocklyEvent]() {
+    didSet {
+      undoButton.isEnabled = !_undoStack.isEmpty
+    }
+  }
+
+  /// Stack of events to run when applying "redo" actions. The events are sorted in reverse
+  /// chronological order, where the first event to "redo" is at the end of the array.
+  fileprivate var _redoStack = [BlocklyEvent]() {
+    didSet {
+      redoButton.isEnabled = !_redoStack.isEmpty
+    }
+  }
+
   // MARK: - Initializers
 
   /**
@@ -229,6 +279,7 @@ open class WorkbenchViewController: UIViewController {
     self.style = style
     self.engine = DefaultLayoutEngine()
     self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+    self.blockFactory = BlockFactory()
     self.viewFactory = ViewFactory()
     self.variableNameManager = NameManager()
     self.procedureCoordinator = ProcedureCoordinator()
@@ -242,17 +293,19 @@ open class WorkbenchViewController: UIViewController {
    - parameter style: The `Style` to use for this laying out items in this view controller.
    - parameter engine: Value used for `self.layoutEngine`.
    - parameter layoutBuilder: Value used for `self.layoutBuilder`.
+   - parameter blockFactory: Value used for `self.blockFactory`.
    - parameter viewFactory: Value used for `self.viewFactory`.
    - parameter variableNameManager: Value used for `self.variableNameManager`.
    - parameter procedureCoordinator: Value used for `self.procedureCoordinator`.
    */
   public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
-              viewFactory: ViewFactory, variableNameManager: NameManager,
-              procedureCoordinator: ProcedureCoordinator)
+              blockFactory: BlockFactory, viewFactory: ViewFactory,
+              variableNameManager: NameManager, procedureCoordinator: ProcedureCoordinator)
   {
     self.style = style
     self.engine = engine
     self.layoutBuilder = layoutBuilder
+    self.blockFactory = blockFactory
     self.viewFactory = viewFactory
     self.variableNameManager = variableNameManager
     self.procedureCoordinator = ProcedureCoordinator()
@@ -312,11 +365,15 @@ open class WorkbenchViewController: UIViewController {
     NotificationCenter.default.addObserver(
       self, selector: #selector(keyboardWillHideNotification(_:)),
       name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+    // Listen for Blockly events
+    EventManager.sharedInstance.addListener(self)
   }
 
   deinit {
     // Unregister all notifications
     NotificationCenter.default.removeObserver(self)
+    EventManager.sharedInstance.removeListener(self)
   }
 
   // MARK: - Super
@@ -342,6 +399,8 @@ open class WorkbenchViewController: UIViewController {
       "workspaceView": workspaceViewController.view,
       "trashCanView": trashCanView,
       "trashCanFolderView": _trashCanViewController.view,
+      "undoButton": undoButton,
+      "redoButton": redoButton,
     ]
     let metrics = [
       "iconPadding": iconPadding,
@@ -361,6 +420,10 @@ open class WorkbenchViewController: UIViewController {
         // Position the toolbox category view above the list view
         "H:|[toolboxCategoryView]|",
         "V:[toolboxCategoryView][toolboxCategoriesListView]",
+        // Position the undo/redo buttons along the top-leading margin
+        "H:|-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
+        "V:|-(iconPadding)-[undoButton]",
+        "V:|-(iconPadding)-[redoButton]",
         // Position the trash can button along the top-trailing margin
         "H:[trashCanView]|",
         "V:|[trashCanView]",
@@ -382,6 +445,10 @@ open class WorkbenchViewController: UIViewController {
         // Position the toolbox category view beside the category list
         "H:[toolboxCategoriesListView][toolboxCategoryView]",
         "V:|[toolboxCategoryView]|",
+        // Position the undo/redo buttons along the bottom-leading margin
+        "H:[toolboxCategoriesListView]-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
+        "V:[undoButton]-(iconPadding)-|",
+        "V:[redoButton]-(iconPadding)-|",
         // Position the trash can button along the bottom-trailing margin
         "H:[trashCanView]|",
         "V:[trashCanView]|",
@@ -442,10 +509,15 @@ open class WorkbenchViewController: UIViewController {
    (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
    rendered into the view controller.
 
+   - note: All blocks in `workspace` must have corresponding `BlockBuilder` objects in
+   `self.blockFactory`, based on their associated block name. This is needed for things like
+   handling undo/redo and automatic creation of variable blocks.
+   - note: A `ConnectionManager` is automatically created for the `WorkspaceLayoutCoordinator`.
    - parameter workspace: The `Workspace` to load
    - throws:
-   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
-   - note: A `ConnectionManager` is automatically created for the `WorkspaceLayoutCoordinator`.
+   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace,
+   or if no corresponding `BlockBuilder` could be found in `self.blockFactory` for at least one of
+   the blocks in `workspace`.
    */
   open func loadWorkspace(_ workspace: Workspace) throws {
     try loadWorkspace(workspace, connectionManager: ConnectionManager())
@@ -456,13 +528,20 @@ open class WorkbenchViewController: UIViewController {
    (using both the `self.engine` and `self.layoutBuilder` instances). The workspace is then
    rendered into the view controller.
 
+   - note: All blocks in `workspace` must have corresponding `BlockBuilder` objects in
+   `self.blockFactory`, based on their associated block name. This is needed for things like
+   handling undo/redo and automatic creation of variable blocks.
    - parameter workspace: The `Workspace` to load
    - parameter connectionManager: A `ConnectionManager` to track connections in the workspace.
    - throws:
-   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace.
+   `BlocklyError`: Thrown if an associated `WorkspaceLayout` could not be created for the workspace,
+   or if no corresponding `BlockBuilder` could be found in `self.blockFactory` for at least one of
+   the blocks in `workspace`.
    */
-  open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager)
-      throws {
+  open func loadWorkspace(_ workspace: Workspace, connectionManager: ConnectionManager) throws {
+    // Verify all blocks in the workspace can be re-created from the block factory
+    try verifyBlockBuilders(forBlocks: Array(workspace.allBlocks.values))
+
     // Create a layout for the workspace, which is required for viewing the workspace
     let workspaceLayout = WorkspaceLayout(workspace: workspace, engine: engine)
     let aConnectionManager = connectionManager
@@ -484,14 +563,20 @@ open class WorkbenchViewController: UIViewController {
    Automatically creates a `ToolboxLayout` for a given `Toolbox` (using both the `self.engine`
    and `self.layoutBuilder` instances) and loads it into the view controller.
 
+   - note: All blocks defined by categories in `toolbox` must have corresponding
+   `BlockBuilder` objects in `self.blockFactory`, based on their associated block name. This is
+   needed for things like handling undo/redo and automatic creation of variable blocks.
    - parameter toolbox: The `Toolbox` to load
-   - parameter blockFactory: (Optional) The `BlockFactory` to associate with the toolbox.
-   - note: The block factory is only required if the toolbox needs to dynamically create blocks.
-     (e.g. The variable category.)
    - throws:
-   `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox.
+   `BlocklyError`: Thrown if an associated `ToolboxLayout` could not be created for the toolbox,
+   or if no corresponding `BlockBuilder` could be found in `self.blockFactory` for at least one of
+   the blocks specified in`toolbox`.
    */
-  open func loadToolbox(_ toolbox: Toolbox, blockFactory: BlockFactory? = nil) throws {
+  open func loadToolbox(_ toolbox: Toolbox) throws {
+    // Verify all blocks in the toolbox can be re-created from the block factory
+    let allToolboxBlocks = toolbox.categories.flatMap({ $0.allBlocks.values })
+    try verifyBlockBuilders(forBlocks: allToolboxBlocks)
+
     let toolboxLayout = ToolboxLayout(
       toolbox: toolbox, engine: engine, layoutDirection: style.toolboxCategoryLayoutDirection,
       layoutBuilder: layoutBuilder)
@@ -560,7 +645,7 @@ open class WorkbenchViewController: UIViewController {
    - throws:
    `BlocklyError`: Thrown if the block view could not be created.
    */
-  open func copyBlockView(_ blockView: BlockView) throws -> BlockView
+  fileprivate func copyBlockView(_ blockView: BlockView) throws -> BlockView
   {
     // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
     // causing a performance hit. Try to create an alternate method that performs an optimized
@@ -595,6 +680,26 @@ open class WorkbenchViewController: UIViewController {
     }
 
     return newBlockView
+  }
+
+  /**
+   Given a list of blocks, verifies that each block has a corresponding `BlockBuilder` in
+   `self.blockFactory`, based on the block's name.
+
+   - parameter blocks: List of blocks to check.
+   - throws:
+   `BlocklyError`: Thrown if one or more of the blocks is missing a corresponding `BlockBuilder`
+   in `self.blockFactory`.
+   */
+  fileprivate func verifyBlockBuilders(forBlocks blocks: [Block]) throws {
+    let names = blocks.map({ $0.name })
+        .filter({ self.blockFactory.blockBuilder(forName: $0) == nil })
+
+    if !names.isEmpty {
+      throw BlocklyError(.illegalState,
+        "Missing `BlockBuilder` in `self.blockFactory` for the following block names: \n" +
+        "'\(Array(Set(names)).sorted().joined(separator: "', '"))'")
+    }
   }
 }
 
@@ -703,6 +808,11 @@ extension WorkbenchViewController {
       dismiss(animated: animated, completion: nil)
     }
 
+    // Always show undo/redo except when blocks are being dragged, text fields are being edited,
+    // or a popover is being shown.
+    setUndoRedoVisible(
+      !state.intersectsWith([.draggingBlock, .editingTextField, .presentingPopover]))
+
     delegate?.workbenchViewController(self, didUpdateState: state)
   }
 }
@@ -757,6 +867,162 @@ extension WorkbenchViewController {
     }
 
     return false
+  }
+}
+
+// MARK: - Undo / Redo
+
+extension WorkbenchViewController: EventManagerListener {
+  public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    if event.workspaceID == workspace?.uuid {
+      _undoStack.append(event)
+
+      // Clear the redo stack now since a new event has been added to the undo stack
+      _redoStack.removeAll()
+    }
+  }
+
+  fileprivate func setUndoRedoVisible(_ visible: Bool) {
+    let showButtons = visible && allowUndoRedo
+
+    if (undoButton.isUserInteractionEnabled && !showButtons) ||
+       (!undoButton.isUserInteractionEnabled && showButtons)
+    {
+      undoButton.isUserInteractionEnabled = showButtons
+      redoButton.isUserInteractionEnabled = showButtons
+
+      UIView.animate(withDuration: 0.3) {
+        self.undoButton.alpha = showButtons ? 1 : 0.3
+        self.redoButton.alpha = showButtons ? 1 : 0.3
+      }
+    }
+  }
+
+  fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
+    guard !_undoStack.isEmpty else {
+      return
+    }
+
+    EventManager.sharedInstance.isEnabled = false
+
+    // Pop off the next group of events from the undo stack. These events will already be sorted
+    // in the order which they should be played (reverse chronological order).
+    let events = popGroupedEvents(fromStack: &_undoStack)
+
+    // Run each event in order
+    for event in events {
+      update(fromEvent: event, runForward: false)
+    }
+
+    // Add events back to redo stack
+    _redoStack.append(contentsOf: events)
+
+    EventManager.sharedInstance.isEnabled = true
+  }
+
+  fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
+    guard !_redoStack.isEmpty else {
+      return
+    }
+
+    EventManager.sharedInstance.isEnabled = false
+
+    // Pop off the next group of events from the redo stack. These events will already be sorted
+    // in the order which they should be played (chronological order).
+    let events = popGroupedEvents(fromStack: &_redoStack)
+
+    // Run each event in order
+    for event in events {
+      update(fromEvent: event, runForward: true)
+    }
+
+    // Add events back to undo stack
+    _undoStack.append(contentsOf: events)
+
+    EventManager.sharedInstance.isEnabled = true
+  }
+}
+
+// MARK: - Events
+
+extension WorkbenchViewController {
+
+  /**
+   Updates the workbench based on a `BlocklyEvent`.
+
+   - parameter event: The `BlocklyEvent`.
+   - parameter runForward: Flag determining if the event should be run forward (`true` for redo
+   operations) or run backward (`false` for undo operations).
+   */
+  open func update(fromEvent event: BlocklyEvent, runForward: Bool) {
+    if let createEvent = event as? CreateEvent {
+      update(fromCreateEvent: createEvent, runForward: runForward)
+    }
+  }
+
+  /**
+   Updates the workbench based on a `CreateEvent`.
+
+   - parameter event: The `CreateEvent`.
+   - parameter runForward: Flag determining if the event should be run forward (`true` for redo
+   operations) or run backward (`false` for undo operations).
+   */
+  open func update(fromCreateEvent event: CreateEvent, runForward: Bool) {
+    if runForward {
+      do {
+        let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
+        try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
+
+        if let trashBlock = _trashCanViewController.workspace?.allBlocks[blockTree.rootBlock.uuid]
+        {
+          // Remove this block from the trash can
+          try _trashCanViewController.workspaceLayoutCoordinator?.removeBlockTree(trashBlock)
+        }
+      } catch let error {
+        bky_debugPrint("Could not re-create block from event: \(error)")
+      }
+    } else {
+      for blockID in event.blockIDs {
+        if let block = workspace?.allBlocks[blockID] {
+          var allBlocksToRemove = block.allBlocksForTree()
+          try? _workspaceLayoutCoordinator?.removeBlockTree(block)
+          _ = try? _trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(block)
+
+          allBlocksToRemove.removeAll()
+        }
+      }
+    }
+  }
+
+  /**
+   Pops a group of events from the end of a stack of events and returns them in the order they
+   were popped off the stack.
+
+   If the top of the stack contains an event with a group ID, this method will pop off all
+   events that match that group ID.
+   If the top of the stack contains an event without a group ID, only that event is popped off.
+
+   - parameter stack: The stack of events.
+   - returns: An array of grouped events, sorted in the order they were popped off the stack.
+   */
+  fileprivate func popGroupedEvents(fromStack stack: inout [BlocklyEvent]) -> [BlocklyEvent] {
+    var events = [BlocklyEvent]()
+
+    if let lastEvent = stack.popLast() {
+      events.append(lastEvent)
+
+      // If this event was part of a group, get all other events part of this group
+      if let groupID = lastEvent.groupID {
+        while let event = stack.last,
+          event.groupID == groupID
+        {
+          stack.removeLast()
+          events.append(event)
+        }
+      }
+    }
+
+    return events
   }
 }
 
@@ -1115,6 +1381,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
       if !isGestureTouchingTrashCan(gesture) {
         removeUIStateValue(.trashCanHighlighted)
       }
+
+      EventManager.sharedInstance.firePendingEvents()
     }
 
     return

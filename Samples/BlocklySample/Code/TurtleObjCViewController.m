@@ -75,11 +75,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 @property(nonatomic) BKYCodeGeneratorService *codeGeneratorService;
 /// Request builder for code generator service
 @property(nonatomic) BKYCodeGeneratorServiceRequestBuilder *requestBuilder;
-/// The workspace for the blocks.
-@property(nonatomic) BKYWorkspace *workspace;
-/// Factory that produces block instances from a parsed json file.
-@property(nonatomic) BKYBlockFactory *blockFactory;
-
 
 /// Flag indicating whether the code is currently running.
 @property (nonatomic) Boolean currentlyRunning;
@@ -105,16 +100,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   self = [super initWithNibName:@"TurtleViewController" bundle:nil];
   if (!self) {
     return self;
-  }
-  NSError *error;
-
-  // Load blocks into the block factory
-  _blockFactory = [[BKYBlockFactory alloc] init];
-  [_blockFactory loadFromDefaultFiles:BKYBlockJSONFileAllDefault];
-  [_blockFactory loadFromJSONPaths:@[@"Turtle/turtle_blocks.json"] bundle:nil error:&error];
-
-  if ([self handleError:error]) {
-    return nil;
   }
 
   // Create the code generator service
@@ -163,10 +148,11 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   _workbenchViewController.delegate = self;
   _workbenchViewController.toolboxDrawerStaysOpen = YES;
 
-  // Create a workspace
-  _workspace = [[BKYWorkspace alloc] init];
-
-  [_workbenchViewController loadWorkspace:_workspace error:&error];
+  // Load blocks into the block factory
+  [_workbenchViewController.blockFactory loadFromDefaultFiles:BKYBlockJSONFileAllDefault];
+  [_workbenchViewController.blockFactory loadFromJSONPaths:@[@"Turtle/turtle_blocks.json"]
+                                                    bundle:nil
+                                                     error:&error];
 
   if ([self handleError:error]) {
     return;
@@ -183,15 +169,16 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     return;
   }
 
-  BKYToolbox *toolbox = [BKYToolbox makeToolboxWithXmlString:xmlString
-                                                     factory:_blockFactory
-                                                       error:&error];
+  BKYToolbox *toolbox =
+    [BKYToolbox makeToolboxWithXmlString:xmlString
+                                 factory:self.workbenchViewController.blockFactory
+                                   error:&error];
 
   if ([self handleError:error]) {
     return;
   }
 
-  [_workbenchViewController loadToolbox:toolbox blockFactory:_blockFactory error:&error];
+  [_workbenchViewController loadToolbox:toolbox error:&error];
 
   if ([self handleError:error]) {
     return;
@@ -284,7 +271,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     void (^onError)(NSString *error) =  ^(NSString *error) {
       [weakSelf codeGenerationFailedWithError:error];
     };
-    _currentRequestUUID = [_codeGeneratorService generateCodeForWorkspace:self.workspace
+    BKYWorkspace* workspace = _workbenchViewController.workspace;
+    _currentRequestUUID = [_codeGeneratorService generateCodeForWorkspace:workspace
                                                                     error:&error
                                                              onCompletion:onCompletion
                                                                   onError:onError];

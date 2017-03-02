@@ -41,7 +41,13 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   /// supported by Interface Builder)
   var _webView: WKWebView!
   /// The workbench for the blocks.
-  var _workbenchViewController: WorkbenchViewController!
+  lazy var _workbenchViewController: WorkbenchViewController = {
+    // Load the block editor
+    var workbenchViewController = WorkbenchViewController(style: .alternate)
+    workbenchViewController.delegate = self
+    workbenchViewController.toolboxDrawerStaysOpen = true
+    return workbenchViewController
+  }()
 
   /// Code generator service
   var _codeGeneratorService: CodeGeneratorService = {
@@ -72,23 +78,6 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     builder.addJSONBlockDefinitionFiles(["Turtle/turtle_blocks.json"])
 
     return builder
-  }()
-
-  /// Factory that produces block instances
-  lazy var _blockFactory: BlockFactory = {
-    let blockFactory = BlockFactory()
-
-    // Load default blocks into the block factory
-    blockFactory.load(fromDefaultFiles: .allDefault)
-
-    // Load custom turtle blocks into the block factory
-    do {
-      try blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
-    } catch let error {
-      print("An error occurred loading the turtle blocks: \(error)")
-    }
-
-    return blockFactory
   }()
 
   /// Flag indicating whether the code is currently running.
@@ -137,18 +126,14 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     self.edgesForExtendedLayout = UIRectEdge()
     self.navigationItem.title = "Swift Turtle Demo"
 
-    // Load the block editor
-    _workbenchViewController = WorkbenchViewController(style: .alternate)
-    _workbenchViewController.delegate = self
-    _workbenchViewController.toolboxDrawerStaysOpen = true
+    // Load default blocks into the block factory
+    _workbenchViewController.blockFactory.load(fromDefaultFiles: .allDefault)
 
-    // Create a workspace
+    // Load custom turtle blocks into the block factory
     do {
-      let workspace = Workspace()
-
-      try _workbenchViewController.loadWorkspace(workspace)
+      try _workbenchViewController.blockFactory.load(fromJSONPaths: ["Turtle/turtle_blocks.json"])
     } catch let error {
-      print("Couldn't load the workspace: \(error)")
+      print("An error occurred loading the turtle blocks: \(error)")
     }
 
     // Load the toolbox
@@ -156,8 +141,9 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
       let toolboxPath = "Turtle/toolbox.xml"
       if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
         let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
-        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: _blockFactory)
-        try _workbenchViewController.loadToolbox(toolbox, blockFactory: _blockFactory)
+        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString,
+                                              factory: _workbenchViewController.blockFactory)
+        try _workbenchViewController.loadToolbox(toolbox)
       } else {
         print("Could not load toolbox XML from '\(toolboxPath)'")
       }

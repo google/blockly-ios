@@ -17,21 +17,6 @@ import UIKit
 import Blockly
 
 class AllFieldsWorkbenchViewController: WorkbenchViewController {
-  // MARK: - Properties
-
-  /// Factory that produces block instances from a parsed json file
-  lazy var _blockFactory: BlockFactory = {
-    let blockFactory = BlockFactory()
-
-    do {
-      try blockFactory.load(fromJSONPaths: ["AllFieldsDemo/custom_field_blocks.json"])
-    } catch let error {
-      print("Couldn't load `custom_field_blocks.json` into the block factory: \(error)")
-    }
-
-    return blockFactory
-  }()
-
   // MARK: - Initializers
 
   init() {
@@ -52,7 +37,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
     self.navigationItem.title = "Workbench with All Field Types"
 
     // Load data
-    loadWorkspace()
+    loadBlockFactory()
     loadToolbox()
   }
 
@@ -62,14 +47,11 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
 
   // MARK: - Private
 
-  private func loadWorkspace() {
+  private func loadBlockFactory() {
     do {
-      // Create a workspace
-      let workspace = Workspace()
-
-      try loadWorkspace(workspace)
+      try blockFactory.load(fromJSONPaths: ["AllFieldsDemo/custom_field_blocks.json"])
     } catch let error {
-      print("Couldn't build layout tree for workspace: \(error)")
+      print("Couldn't load `custom_field_blocks.json` into the block factory: \(error)")
     }
   }
 
@@ -90,7 +72,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
 
     for blockName in blockNames {
       do {
-        let block = try _blockFactory.makeBlock(name: blockName)
+        let block = try blockFactory.makeBlock(name: blockName)
         try blocksCategory.addBlockTree(block)
       } catch let error {
         print("Error adding '\(blockName)' block to category: \(error)")
@@ -99,7 +81,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
 
     // Load the toolbox into the workbench
     do {
-      try loadToolbox(toolbox, blockFactory: _blockFactory)
+      try loadToolbox(toolbox)
     } catch let error {
       print("Error loading toolbox into workbench: \(error)")
       return
