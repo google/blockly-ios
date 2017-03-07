@@ -201,8 +201,19 @@ open class BlockGroupLayout: Layout {
    */
   open func move(toWorkspacePosition position: WorkspacePoint, updateCanvasSize: Bool = true) {
     if let workspaceLayout = self.parentLayout as? WorkspaceLayout {
-      self.relativePosition = position
-      refreshViewPositionsForTree(includeFields: false)
+      let updatePosition = {
+        self.relativePosition = position
+        self.refreshViewPositionsForTree(includeFields: false)
+      }
+
+      if let block = blockLayouts.first?.block {
+        let event = MoveEvent(workspace: workspaceLayout.workspace, block: block)
+        updatePosition()
+        try? event.recordNewValues(fromBlock: block)
+        EventManager.sharedInstance.addPendingEvent(event)
+      } else {
+        updatePosition()
+      }
 
       if updateCanvasSize {
         workspaceLayout.updateCanvasSize()

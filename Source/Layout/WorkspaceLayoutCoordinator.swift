@@ -129,9 +129,6 @@ open class WorkspaceLayoutCoordinator: NSObject {
    */
   open func addBlockTree(_ rootBlock: Block) throws {
     try workspaceLayout.workspace.addBlockTree(rootBlock)
-
-    let event = try CreateEvent(workspace: workspaceLayout.workspace, block: rootBlock)
-    EventManager.sharedInstance.addPendingEvent(event)
   }
 
   /**
@@ -215,9 +212,6 @@ open class WorkspaceLayoutCoordinator: NSObject {
     let blockCopy = try workspaceLayout.workspace.copyBlockTree(
       rootBlock, editable: editable, position: position)
 
-    let event = try CreateEvent(workspace: workspaceLayout.workspace, block: blockCopy)
-    EventManager.sharedInstance.addPendingEvent(event)
-
     return blockCopy
   }
 
@@ -254,12 +248,23 @@ open class WorkspaceLayoutCoordinator: NSObject {
    - parameter connection: The connection to be disconnected.
    */
   open func disconnect(_ connection: Connection) {
-    let oldTarget = connection.targetConnection
-    connection.disconnect()
+    let performDisconnect = {
+      let oldTarget = connection.targetConnection
+      connection.disconnect()
 
-    didChangeTarget(forConnection: connection, oldTarget: oldTarget)
-    if let oldTarget = oldTarget {
-      didChangeTarget(forConnection: oldTarget, oldTarget: connection)
+      self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
+      if let oldTarget = oldTarget {
+        self.didChangeTarget(forConnection: oldTarget, oldTarget: connection)
+      }
+    }
+
+    if let inferiorBlock = connection.isInferior ? connection.sourceBlock : connection.targetBlock {
+      let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+      performDisconnect()
+      try? event.recordNewValues(fromBlock: inferiorBlock)
+      EventManager.sharedInstance.addPendingEvent(event)
+    } else {
+      performDisconnect()
     }
   }
 
@@ -285,14 +290,30 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
    - parameter connection1: The first `Connection` to be connected.
    - parameter connection2: The `Connction` to connect to.
+   - throws:
+   `BlocklyError`: Thrown if either connection is not attached to a source block or if the
+   connections were unable to connect.
    */
   open func connect(_ connection1: Connection, _ connection2: Connection) throws {
+    guard let sourceBlock1 = connection1.sourceBlock,
+      let sourceBlock2 = connection2.sourceBlock else
+    {
+      throw BlocklyError(.illegalArgument,
+        "Connections need to be attached to a source block prior to being connected.")
+    }
+
+    let inferiorBlock = connection1.isInferior ? sourceBlock1 : sourceBlock2
+    let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+
     let oldTarget1 = connection1.targetConnection
     let oldTarget2 = connection2.targetConnection
     try connection1.connectTo(connection2)
 
     didChangeTarget(forConnection: connection1, oldTarget: oldTarget1)
     didChangeTarget(forConnection: connection2, oldTarget: oldTarget2)
+
+    try event.recordNewValues(fromBlock: inferiorBlock)
+    EventManager.sharedInstance.addPendingEvent(event)
 
     // TODO:(#272) When events are implemented, re-visit whether these notifications should be
     // posted here.
@@ -730,24 +751,27 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
     }
 
     do {
+      // Fire creation event for the root block
+      let event = try CreateEvent(workspace: workspaceLayout.workspace, block: block)
+      EventManager.sharedInstance.addPendingEvent(event)
+
       // Create the layout tree for this newly added block
-      if let blockGroupLayout =
+      let blockGroupLayout =
         try layoutBuilder.buildLayoutTree(forTopLevelBlock: block, workspaceLayout: workspaceLayout)
-      {
-        // Perform a layout for the tree
-        blockGroupLayout.updateLayoutDownTree()
 
-        // Track all block layouts
-        for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
-          trackBlockLayout(blockLayout)
-        }
+      // Perform a layout for the tree
+      blockGroupLayout.updateLayoutDownTree()
 
-        // Update the content size
-        workspaceLayout.updateCanvasSize()
-
-        // Schedule change event for an added block layout
-        workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+      // Track all block layouts
+      for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
+        trackBlockLayout(blockLayout)
       }
+
+      // Update the content size
+      workspaceLayout.updateCanvasSize()
+
+      // Schedule change event for an added block layout
+      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
     } catch let error {
       bky_assertionFailure("Could not create the layout tree for block: \(error)")
     }
@@ -761,6 +785,14 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return
+    }
+
+    do {
+      // Fire delete event for the root block
+      let event = try DeleteEvent(workspace: workspaceLayout.workspace, block: block)
+      EventManager.sharedInstance.addPendingEvent(event)
+    } catch let error {
+      bky_assertionFailure("Could not fire delete event: \(error)")
     }
 
     if let blockGroupLayout = block.layout?.parentBlockGroupLayout {

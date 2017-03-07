@@ -251,6 +251,9 @@ open class WorkbenchViewController: UIViewController {
   /// Flag indicating if the `self._trashCanViewController` is being shown
   fileprivate var _trashCanVisible: Bool = false
 
+  /// Flag determining if this view controller should be recording events for undo/redo purposes.
+  fileprivate var _recordEvents = true
+
   /// Stack of events to run when applying "undo" actions. The events are sorted in
   /// chronological order, where the first event to "undo" is at the end of the array.
   fileprivate var _undoStack = [BlocklyEvent]() {
@@ -870,10 +873,14 @@ extension WorkbenchViewController {
   }
 }
 
-// MARK: - Undo / Redo
+// MARK: - EventManagerListener Implementation
 
 extension WorkbenchViewController: EventManagerListener {
   public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    guard _recordEvents else {
+      return
+    }
+
     if event.workspaceID == workspace?.uuid {
       _undoStack.append(event)
 
@@ -881,7 +888,11 @@ extension WorkbenchViewController: EventManagerListener {
       _redoStack.removeAll()
     }
   }
+}
 
+// MARK: - Undo / Redo
+
+extension WorkbenchViewController {
   fileprivate func setUndoRedoVisible(_ visible: Bool) {
     let showButtons = visible && allowUndoRedo
 
@@ -903,7 +914,8 @@ extension WorkbenchViewController: EventManagerListener {
       return
     }
 
-    EventManager.sharedInstance.isEnabled = false
+    // Don't listen to any events, to avoid echoing
+    _recordEvents = false
 
     // Pop off the next group of events from the undo stack. These events will already be sorted
     // in the order which they should be played (reverse chronological order).
@@ -917,7 +929,12 @@ extension WorkbenchViewController: EventManagerListener {
     // Add events back to redo stack
     _redoStack.append(contentsOf: events)
 
-    EventManager.sharedInstance.isEnabled = true
+    // Fire pending events before listening to events again, in case outside listeners need to
+    // update their state from those events.
+    EventManager.sharedInstance.firePendingEvents()
+
+    // Listen to events again
+    _recordEvents = true
   }
 
   fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
@@ -925,7 +942,8 @@ extension WorkbenchViewController: EventManagerListener {
       return
     }
 
-    EventManager.sharedInstance.isEnabled = false
+    // Don't listen to any events, to avoid echoing
+    _recordEvents = false
 
     // Pop off the next group of events from the redo stack. These events will already be sorted
     // in the order which they should be played (chronological order).
@@ -939,7 +957,12 @@ extension WorkbenchViewController: EventManagerListener {
     // Add events back to undo stack
     _undoStack.append(contentsOf: events)
 
-    EventManager.sharedInstance.isEnabled = true
+    // Fire pending events before listening to events again, in case outside listeners need to
+    // update their state from those events.
+    EventManager.sharedInstance.firePendingEvents()
+
+    // Listen to events again
+    _recordEvents = true
   }
 }
 
@@ -957,6 +980,10 @@ extension WorkbenchViewController {
   open func update(fromEvent event: BlocklyEvent, runForward: Bool) {
     if let createEvent = event as? CreateEvent {
       update(fromCreateEvent: createEvent, runForward: runForward)
+    } else if let deleteEvent = event as? DeleteEvent {
+      update(fromDeleteEvent: deleteEvent, runForward: runForward)
+    } else if let moveEvent = event as? MoveEvent {
+      update(fromMoveEvent: moveEvent, runForward: runForward)
     }
   }
 
@@ -972,6 +999,40 @@ extension WorkbenchViewController {
       do {
         let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
         try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
+      } catch let error {
+        bky_debugPrint("Could not re-create block from event: \(error)")
+      }
+    } else {
+      for blockID in event.blockIDs {
+        if let block = workspace?.allBlocks[blockID] {
+          try? _workspaceLayoutCoordinator?.removeBlockTree(block)
+        }
+      }
+    }
+  }
+
+  /**
+   Updates the workbench based on a `DeleteEvent`.
+
+   - parameter event: The `DeleteEvent`.
+   - parameter runForward: Flag determining if the event should be run forward (`true` for redo
+   operations) or run backward (`false` for undo operations).
+   */
+  open func update(fromDeleteEvent event: DeleteEvent, runForward: Bool) {
+    if runForward {
+      for blockID in event.blockIDs {
+        if let block = workspace?.allBlocks[blockID] {
+          var allBlocksToRemove = block.allBlocksForTree()
+          try? _workspaceLayoutCoordinator?.removeBlockTree(block)
+          _ = try? _trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(block)
+
+          allBlocksToRemove.removeAll()
+        }
+      }
+    } else {
+      do {
+        let blockTree = try Block.blockTree(fromXMLString: event.oldXML, factory: blockFactory)
+        try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
 
         if let trashBlock = _trashCanViewController.workspace?.allBlocks[blockTree.rootBlock.uuid]
         {
@@ -981,15 +1042,73 @@ extension WorkbenchViewController {
       } catch let error {
         bky_debugPrint("Could not re-create block from event: \(error)")
       }
-    } else {
-      for blockID in event.blockIDs {
-        if let block = workspace?.allBlocks[blockID] {
-          var allBlocksToRemove = block.allBlocksForTree()
-          try? _workspaceLayoutCoordinator?.removeBlockTree(block)
-          _ = try? _trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(block)
+    }
+  }
 
-          allBlocksToRemove.removeAll()
+  /**
+   Updates the workbench based on a `MoveEvent`.
+
+   - parameter event: The `MoveEvent`.
+   - parameter runForward: Flag determining if the event should be run forward (`true` for redo
+   operations) or run backward (`false` for undo operations).
+   */
+  open func update(fromMoveEvent event: MoveEvent, runForward: Bool) {
+    guard let workspace = _workspaceLayoutCoordinator?.workspaceLayout.workspace,
+      let blockID = event.blockID,
+      let block = workspace.allBlocks[blockID] else
+    {
+      bky_debugPrint("Can't move non-existent block: \(event.blockID ?? "")")
+      return
+    }
+
+    let parentID = runForward ? event.newParentID : event.oldParentID
+    let inputName = runForward ? event.newInputName : event.oldInputName
+    let position = runForward ? event.newPosition : event.oldPosition
+
+    if let aParentID = parentID, workspace.allBlocks[aParentID] == nil {
+      bky_debugPrint("Can't connect to non-existent parent block: \(aParentID)")
+      return
+    }
+
+    // Check current parent of block
+    if let inferiorConnection = block.inferiorConnection {
+      if let currentParent = inferiorConnection.targetBlock, currentParent.uuid == parentID {
+        // No-op: The block is already connected to the parent it should be connected to.
+        return
+      } else {
+        // Disconnect the block from current parent
+        _workspaceLayoutCoordinator?.disconnect(inferiorConnection)
+      }
+    }
+
+    if let position = position,
+      let blockLayout = block.layout
+    {
+      // Move to new workspace position
+      blockLayout.rootBlockGroupLayout?.move(toWorkspacePosition: position)
+    } else if let inferiorConnection = block.inferiorConnection,
+      let parentID = parentID,
+      let parentBlock = workspace.allBlocks[parentID]
+    {
+      // Find target connection on parent block
+      var parentConnection: Connection?
+      if let inputName = inputName,
+        let input = parentBlock.firstInput(withName: inputName)
+      {
+        parentConnection = input.connection
+      } else if inferiorConnection.type == .previousStatement {
+        parentConnection = parentBlock.nextConnection
+      }
+
+      // Connect block to parent block
+      if let parentConnection = parentConnection {
+        do {
+          try _workspaceLayoutCoordinator?.connect(inferiorConnection, parentConnection)
+        } catch let error {
+          bky_debugPrint("Could not connect block: \(error)")
         }
+      } else {
+        bky_debugPrint("Can't connect to non-existent parent connection")
       }
     }
   }

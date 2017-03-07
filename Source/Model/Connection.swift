@@ -241,6 +241,12 @@ public final class Connection : NSObject {
     return !_highlights.isEmpty
   }
 
+  /// Returns if this connection is an "inferior" connection (ie. `.outputValue` or
+  /// `.previousStatement`).
+  public var isInferior: Bool {
+    return type == .outputValue || type == .previousStatement
+  }
+
   // MARK: - Initializers
 
   /**
@@ -423,8 +429,7 @@ public final class Connection : NSObject {
         if sourceBlock == shadowSourceBlock {
           checkResult.formUnion(.ReasonSelfConnection)
         }
-        let isInferiorBlock = (type == .outputValue || type == .previousStatement)
-        let inferiorBlock = isInferiorBlock ? sourceBlock : shadowSourceBlock
+        let inferiorBlock = isInferior ? sourceBlock : shadowSourceBlock
         if !inferiorBlock.shadow {
           checkResult.formUnion(.ReasonInferiorBlockShadowMismatch)
         }

@@ -27,10 +27,10 @@ public final class DeleteEvent: BlocklyEvent {
   public static let EVENT_TYPE = "delete"
 
   /// The XML serialization of all blocks deleted by this event.
-  private let oldXML: String
+  public let oldXML: String
 
   /// The list of all block ids for all blocks deleted by this event.
-  private let blockIDs: [String]
+  public let blockIDs: [String]
 
   // MARK: - Initializers
 

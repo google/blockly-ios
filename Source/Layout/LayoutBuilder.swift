@@ -66,20 +66,19 @@ open class LayoutBuilder: NSObject {
   - returns: A block group layout for the block, or nil if the block was not a top-level block.
   - throws:
   `BlocklyError`: Thrown if the block is not part of the workspace this builder is associated with,
-  or if the layout tree could not be created for this block.
+  if the layout tree could not be created for this block, or if this block is not a top-level block.
   */
   open func buildLayoutTree(forTopLevelBlock block: Block, workspaceLayout: WorkspaceLayout)
-    throws -> BlockGroupLayout?
+    throws -> BlockGroupLayout
   {
     // Check that block is part of this workspace and is a top-level block
-    if !workspaceLayout.workspace.containsBlock(block) {
+    guard workspaceLayout.workspace.containsBlock(block) else {
       throw BlocklyError(.illegalState,
         "Can't build a layout tree for a block that has not been added to the workspace")
     }
 
-    if !block.topLevel {
-      // Can't build layout trees for non top-level block
-      return nil
+    guard block.topLevel else {
+      throw BlocklyError(.illegalArgument, "Can't build a layout tree for a non top-level block.")
     }
 
     let blockGroupLayout =
