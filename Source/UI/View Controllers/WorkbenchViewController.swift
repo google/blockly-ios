@@ -1000,7 +1000,7 @@ extension WorkbenchViewController {
         let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
         try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
       } catch let error {
-        bky_debugPrint("Could not re-create block from event: \(error)")
+        bky_assertionFailure("Could not re-create block from event: \(error)")
       }
     } else {
       for blockID in event.blockIDs {
@@ -1040,7 +1040,7 @@ extension WorkbenchViewController {
           try _trashCanViewController.workspaceLayoutCoordinator?.removeBlockTree(trashBlock)
         }
       } catch let error {
-        bky_debugPrint("Could not re-create block from event: \(error)")
+        bky_assertionFailure("Could not re-create block from event: \(error)")
       }
     }
   }
@@ -1057,7 +1057,7 @@ extension WorkbenchViewController {
       let blockID = event.blockID,
       let block = workspace.allBlocks[blockID] else
     {
-      bky_debugPrint("Can't move non-existent block: \(event.blockID ?? "")")
+      bky_assertionFailure("Can't move non-existent block: \(event.blockID ?? "")")
       return
     }
 
@@ -1065,8 +1065,8 @@ extension WorkbenchViewController {
     let inputName = runForward ? event.newInputName : event.oldInputName
     let position = runForward ? event.newPosition : event.oldPosition
 
-    if let aParentID = parentID, workspace.allBlocks[aParentID] == nil {
-      bky_debugPrint("Can't connect to non-existent parent block: \(aParentID)")
+    if let parentID = parentID, workspace.allBlocks[parentID] == nil {
+      bky_assertionFailure("Can't connect to non-existent parent block: \(parentID)")
       return
     }
 
@@ -1105,10 +1105,10 @@ extension WorkbenchViewController {
         do {
           try _workspaceLayoutCoordinator?.connect(inferiorConnection, parentConnection)
         } catch let error {
-          bky_debugPrint("Could not connect block: \(error)")
+          bky_assertionFailure("Could not connect block: \(error)")
         }
       } else {
-        bky_debugPrint("Can't connect to non-existent parent connection")
+        bky_assertionFailure("Can't connect to non-existent parent connection")
       }
     }
   }
