@@ -1000,7 +1000,7 @@ extension WorkbenchViewController {
         let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
         try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
       } catch let error {
-        bky_debugPrint("Could not re-create block from event: \(error)")
+        bky_assertionFailure("Could not re-create block from event: \(error)")
       }
     } else {
       for blockID in event.blockIDs {
@@ -1040,7 +1040,7 @@ extension WorkbenchViewController {
           try _trashCanViewController.workspaceLayoutCoordinator?.removeBlockTree(trashBlock)
         }
       } catch let error {
-        bky_debugPrint("Could not re-create block from event: \(error)")
+        bky_assertionFailure("Could not re-create block from event: \(error)")
       }
     }
   }
@@ -1057,6 +1057,7 @@ extension WorkbenchViewController {
       let blockID = event.blockID,
       let block = workspace.allBlocks[blockID] else
     {
+      // Block may have been deleted (through a real-time event), so simply print an error.
       bky_debugPrint("Can't move non-existent block: \(event.blockID ?? "")")
       return
     }
@@ -1066,6 +1067,7 @@ extension WorkbenchViewController {
     let position = runForward ? event.newPosition : event.oldPosition
 
     if let parentID = parentID, workspace.allBlocks[parentID] == nil {
+      // Parent block may have been deleted (through a real-time event), so simply print an error.
       bky_debugPrint("Can't connect to non-existent parent block: \(parentID)")
       return
     }
@@ -1080,7 +1082,7 @@ extension WorkbenchViewController {
           // Disconnect the block from current parent
           try _workspaceLayoutCoordinator?.disconnect(inferiorConnection)
         } catch let error {
-          bky_debugPrint("Could not disconnect block from its parent: \(error)")
+          bky_assertionFailure("Could not disconnect block from its parent: \(error)")
           return
         }
       }
@@ -1097,10 +1099,10 @@ extension WorkbenchViewController {
     {
       // Find target connection on parent block
       var parentConnection: Connection?
-      if let inputName = inputName,
-        let input = parentBlock.firstInput(withName: inputName)
-      {
-        parentConnection = input.connection
+      if let inputName = inputName {
+        if let input = parentBlock.firstInput(withName: inputName) {
+          parentConnection = input.connection
+        }
       } else if inferiorConnection.type == .previousStatement {
         parentConnection = parentBlock.nextConnection
       }
@@ -1110,9 +1112,11 @@ extension WorkbenchViewController {
         do {
           try _workspaceLayoutCoordinator?.connect(inferiorConnection, parentConnection)
         } catch let error {
-          bky_debugPrint("Could not connect block: \(error)")
+          bky_assertionFailure("Could not connect block: \(error)")
         }
       } else {
+        // Parent connection may no longer exist (through a real-time event), so simply print an
+        // error.
         bky_debugPrint("Can't connect to non-existent parent connection")
       }
     }

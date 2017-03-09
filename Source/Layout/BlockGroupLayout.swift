@@ -212,6 +212,7 @@ open class BlockGroupLayout: Layout {
         try? event.recordNewValues(fromBlock: block)
         EventManager.sharedInstance.addPendingEvent(event)
       } else {
+        bky_debugPrint("An empty block group was moved. This may be the result of abnormal state.")
         updatePosition()
       }
 

@@ -19,7 +19,7 @@ import Foundation
  Protocol for listening to when events are fired by `EventManager`.
  */
 @objc(BKYEventManagerListener)
-protocol EventManagerListener: class {
+public protocol EventManagerListener: class {
   /**
    Method that is executed when an event manager fires an event.
 
@@ -58,7 +58,7 @@ public final class EventManager: NSObject {
 
    - parameter event: The `BlocklyEvent` to queue.
    */
-  func addPendingEvent(_ event: BlocklyEvent) {
+  public func addPendingEvent(_ event: BlocklyEvent) {
     guard isEnabled else {
       return
     }
@@ -69,7 +69,7 @@ public final class EventManager: NSObject {
   /**
    Fires all pending events.
    */
-  func firePendingEvents() {
+  public func firePendingEvents() {
     // TODO:(#272) Merge similar events before firing them.
 
     for event in pendingEvents {
@@ -88,7 +88,7 @@ public final class EventManager: NSObject {
 
    - parameter listener: The `EventManagerListener` to add.
    */
-  func addListener(_ listener: EventManagerListener) {
+  public func addListener(_ listener: EventManagerListener) {
     _listeners.add(listener)
   }
 
@@ -97,7 +97,7 @@ public final class EventManager: NSObject {
 
    - parameter listener: The `EventManagerListener` to remove.
    */
-  func removeListener(_ listener: EventManagerListener) {
+  public func removeListener(_ listener: EventManagerListener) {
     _listeners.remove(listener)
   }
 }
