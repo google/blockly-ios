@@ -66,13 +66,15 @@ public class MutatorHelper: NSObject {
    - parameter layoutCoordinator: The `WorkspaceLayoutCoordinator` used for disconnecting those
    inputs.
    - note: This method is typically called every time before applying a mutation.
+   - throws:
+   `BlocklyError`: Thrown if one of the inputs could not be disconnected.
    */
   public func disconnectConnectionsInReverseOrder(
-    fromInputs inputs: [Input], layoutCoordinator: WorkspaceLayoutCoordinator)
+    fromInputs inputs: [Input], layoutCoordinator: WorkspaceLayoutCoordinator) throws
   {
     for input in inputs.reversed() {
       if let connection = input.connection {
-        layoutCoordinator.disconnect(connection)
+        try layoutCoordinator.disconnect(connection)
       }
     }
   }
@@ -85,6 +87,8 @@ public class MutatorHelper: NSObject {
    - parameter layoutCoordinator: The `WorkspaceLayoutCoordinator` used for removing those
    shadow blocks.
    - note: This method is typically called every time before applying a mutation.
+   - throws:
+   `BlocklyError`: Thrown if one of the shadow blocks could not be disconnected.
    */
   public func removeShadowBlocksInReverseOrder(
     fromInputs inputs: [Input], layoutCoordinator: WorkspaceLayoutCoordinator) throws
@@ -93,7 +97,7 @@ public class MutatorHelper: NSObject {
       if let shadowConnection = input.connection?.shadowConnection,
         let shadowBlock = shadowConnection.sourceBlock
       {
-        layoutCoordinator.disconnectShadow(shadowConnection)
+        try layoutCoordinator.disconnectShadow(shadowConnection)
         try layoutCoordinator.removeBlockTree(shadowBlock)
       }
     }

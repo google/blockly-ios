@@ -37,6 +37,11 @@ public final class Dragger: NSObject {
   /// uuid
   fileprivate var _dragGestureData = [String: DragGestureData]()
 
+  /// The number of active drags that are being recognized by the dragger.
+  public var numberOfActiveDrags: Int {
+    return _dragGestureData.count
+  }
+
   // MARK: - Public
 
   /**
@@ -47,7 +52,8 @@ public final class Dragger: NSObject {
   - parameter touchPosition: The initial touch position, specified in the Workspace coordinate
   system
   */
-  public func startDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) {
+  public func startDraggingBlockLayout(_ layout: BlockLayout, touchPosition: WorkspacePoint) throws
+  {
     guard let workspaceLayoutCoordinator = self.workspaceLayoutCoordinator,
       let connectionManager = workspaceLayoutCoordinator.connectionManager
       , layout.block.draggable &&
@@ -57,17 +63,17 @@ public final class Dragger: NSObject {
       return
     }
 
-    Layout.animate {
+    try Layout.animate {
       // Remove any existing gesture data for the layout
       clearGestureData(forUUID: layout.uuid)
 
       // Disconnect this block from its previous or output connections prior to moving it
       let block = layout.block
       if let previousConnection = block.previousConnection {
-        workspaceLayoutCoordinator.disconnect(previousConnection)
+        try workspaceLayoutCoordinator.disconnect(previousConnection)
       }
       if let outputConnection = block.outputConnection {
-        workspaceLayoutCoordinator.disconnect(outputConnection)
+        try workspaceLayoutCoordinator.disconnect(outputConnection)
       }
 
       // Highlight this block

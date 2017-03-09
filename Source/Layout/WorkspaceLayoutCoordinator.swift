@@ -142,12 +142,12 @@ open class WorkspaceLayoutCoordinator: NSObject {
   open func removeBlockTree(_ rootBlock: Block) throws {
     // Disconnect this block from anything
     if let previousConnection = rootBlock.previousConnection {
-      disconnect(previousConnection)
-      disconnectShadow(previousConnection)
+      try disconnect(previousConnection)
+      try disconnectShadow(previousConnection)
     }
     if let outputConnection = rootBlock.outputConnection {
-      disconnect(outputConnection)
-      disconnectShadow(outputConnection)
+      try disconnect(outputConnection)
+      try disconnectShadow(outputConnection)
     }
 
     try workspaceLayout.workspace.removeBlockTree(rootBlock)
@@ -167,14 +167,14 @@ open class WorkspaceLayoutCoordinator: NSObject {
     var oldSuperior: Connection? = nil
     if let previousConnection = block.previousConnection {
       oldSuperior = previousConnection.targetConnection
-      disconnect(previousConnection)
+      try disconnect(previousConnection)
     }
 
     // Disconnect the next connection. If both next and previous were connected, reconnect the
     // next block with the old previous block.
     if let nextConnection = block.nextConnection {
       let oldInferior = nextConnection.targetConnection
-      disconnect(nextConnection)
+      try disconnect(nextConnection)
       if let inferior = oldInferior,
         let superior = oldSuperior,
         inferior.canConnectTo(superior) {
@@ -188,7 +188,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
         connection != block.nextConnection &&
         !connection.shadowConnected
       {
-        disconnect(connection)
+        try disconnect(connection)
       }
     }
 
@@ -246,26 +246,33 @@ open class WorkspaceLayoutCoordinator: NSObject {
    change.
 
    - parameter connection: The connection to be disconnected.
+   - throws:
+   `BlocklyError`: Thrown if the connection is not attached to a source block.
    */
-  open func disconnect(_ connection: Connection) {
-    let performDisconnect = {
-      let oldTarget = connection.targetConnection
-      connection.disconnect()
-
-      self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
-      if let oldTarget = oldTarget {
-        self.didChangeTarget(forConnection: oldTarget, oldTarget: connection)
-      }
+  open func disconnect(_ connection: Connection) throws {
+    guard connection.connected else {
+      // Already disconnected.
+      return
     }
 
-    if let inferiorBlock = connection.isInferior ? connection.sourceBlock : connection.targetBlock {
-      let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
-      performDisconnect()
-      try? event.recordNewValues(fromBlock: inferiorBlock)
-      EventManager.sharedInstance.addPendingEvent(event)
-    } else {
-      performDisconnect()
+    guard let sourceBlock = connection.sourceBlock,
+      let oldTarget = connection.targetConnection,
+      let targetBlock = connection.targetBlock else
+    {
+      throw BlocklyError(.illegalArgument,
+        "Connections need to be attached to a source block prior to being disconnected.")
     }
+
+    let inferiorBlock = connection.isInferior ? sourceBlock : targetBlock
+    let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+
+    connection.disconnect()
+
+    try event.recordNewValues(fromBlock: inferiorBlock)
+    EventManager.sharedInstance.addPendingEvent(event)
+
+    self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
+    self.didChangeTarget(forConnection: oldTarget, oldTarget: connection)
   }
 
   /**
@@ -273,15 +280,27 @@ open class WorkspaceLayoutCoordinator: NSObject {
    automatically updated to reflect this change.
 
    - parameter connection: The connection whose shadow connection should be disconnected.
+   - throws:
+   `BlocklyError`: Thrown if the connection is not attached to a source block.
    */
-  open func disconnectShadow(_ connection: Connection) {
-    let oldShadow = connection.shadowConnection
+  open func disconnectShadow(_ connection: Connection) throws {
+    guard connection.shadowConnected else {
+      // Shadow is not connected.
+      return
+    }
+
+    guard let oldShadow = connection.shadowConnection,
+      connection.sourceBlock != nil,
+      connection.shadowBlock != nil else
+    {
+      throw BlocklyError(.illegalArgument,
+        "Shadow connections need to be attached to a source block prior to being disconnected.")
+    }
+
     connection.disconnectShadow()
 
     didChangeShadow(forConnection: connection, oldShadow: oldShadow)
-    if let oldShadow = oldShadow {
-      didChangeShadow(forConnection: oldShadow, oldShadow: connection)
-    }
+    didChangeShadow(forConnection: oldShadow, oldShadow: connection)
   }
 
   /**
@@ -367,8 +386,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
     let previouslyConnectedBlock = superior.targetBlock
 
     // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
-    disconnect(superior)
-    disconnect(inferior)
+    try disconnect(superior)
+    try disconnect(inferior)
     try connect(superior, inferior)
 
     // Bring the entire block group layout to the front
@@ -407,8 +426,8 @@ open class WorkspaceLayoutCoordinator: NSObject {
     let previouslyConnectedBlock = superior.targetBlock
 
     // NOTE: Layouts are automatically re-computed after disconnecting/reconnecting
-    disconnect(superior)
-    disconnect(inferior)
+    try disconnect(superior)
+    try disconnect(inferior)
     try connect(superior, inferior)
 
     // Bring the entire block group layout to the front

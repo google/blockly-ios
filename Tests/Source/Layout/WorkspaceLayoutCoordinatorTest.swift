@@ -234,7 +234,7 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     XCTAssertEqual(blockLayout2, blockLayout1.inputLayouts[0].blockGroupLayout.blockLayouts[0])
 
     // Disconnect the blocks
-    _workspaceLayoutCoordinator.disconnect(conn1)
+    BKYAssertDoesNotThrow { try _workspaceLayoutCoordinator.disconnect(conn1) }
 
     // Check the structure for blockLayout1 that it has nothing to do with blockLayout2
     XCTAssertTrue(workspaceLayout.blockGroupLayouts.contains(blockLayout1.parentBlockGroupLayout!))
@@ -356,7 +356,7 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     XCTAssertEqual(blockLayout2, blockLayout1.parentBlockGroupLayout!.blockLayouts[1])
 
     // Disconnect the blocks
-    _workspaceLayoutCoordinator.disconnect(conn2)
+    BKYAssertDoesNotThrow { try _workspaceLayoutCoordinator.disconnect(conn2) }
 
     // Check the structure for blockLayout1 that it has nothing to do with blockLayout2
     XCTAssertNotNil(blockLayout1.parentBlockGroupLayout)

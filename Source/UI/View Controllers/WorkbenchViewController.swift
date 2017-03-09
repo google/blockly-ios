@@ -1000,7 +1000,7 @@ extension WorkbenchViewController {
         let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
         try _workspaceLayoutCoordinator?.addBlockTree(blockTree.rootBlock)
       } catch let error {
-        bky_assertionFailure("Could not re-create block from event: \(error)")
+        bky_debugPrint("Could not re-create block from event: \(error)")
       }
     } else {
       for blockID in event.blockIDs {
@@ -1040,7 +1040,7 @@ extension WorkbenchViewController {
           try _trashCanViewController.workspaceLayoutCoordinator?.removeBlockTree(trashBlock)
         }
       } catch let error {
-        bky_assertionFailure("Could not re-create block from event: \(error)")
+        bky_debugPrint("Could not re-create block from event: \(error)")
       }
     }
   }
@@ -1057,7 +1057,7 @@ extension WorkbenchViewController {
       let blockID = event.blockID,
       let block = workspace.allBlocks[blockID] else
     {
-      bky_assertionFailure("Can't move non-existent block: \(event.blockID ?? "")")
+      bky_debugPrint("Can't move non-existent block: \(event.blockID ?? "")")
       return
     }
 
@@ -1066,7 +1066,7 @@ extension WorkbenchViewController {
     let position = runForward ? event.newPosition : event.oldPosition
 
     if let parentID = parentID, workspace.allBlocks[parentID] == nil {
-      bky_assertionFailure("Can't connect to non-existent parent block: \(parentID)")
+      bky_debugPrint("Can't connect to non-existent parent block: \(parentID)")
       return
     }
 
@@ -1076,8 +1076,13 @@ extension WorkbenchViewController {
         // No-op: The block is already connected to the parent it should be connected to.
         return
       } else {
-        // Disconnect the block from current parent
-        _workspaceLayoutCoordinator?.disconnect(inferiorConnection)
+        do {
+          // Disconnect the block from current parent
+          try _workspaceLayoutCoordinator?.disconnect(inferiorConnection)
+        } catch let error {
+          bky_debugPrint("Could not disconnect block from its parent: \(error)")
+          return
+        }
       }
     }
 
@@ -1105,10 +1110,10 @@ extension WorkbenchViewController {
         do {
           try _workspaceLayoutCoordinator?.connect(inferiorConnection, parentConnection)
         } catch let error {
-          bky_assertionFailure("Could not connect block: \(error)")
+          bky_debugPrint("Could not connect block: \(error)")
         }
       } else {
-        bky_assertionFailure("Can't connect to non-existent parent connection")
+        bky_debugPrint("Can't connect to non-existent parent connection")
       }
     }
   }
@@ -1456,7 +1461,14 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
       }
 
       addUIStateValue(.draggingBlock)
-      _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
+      do {
+        try _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
+      } catch let error {
+        bky_assertionFailure("Could not start dragging block layout: \(error)")
+
+        // This shouldn't happen in practice. Cancel the gesture to be safe.
+        gesture.cancelAllTouches()
+      }
     } else if touchState == .changed || touchState == .ended {
       addUIStateValue(.draggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
@@ -1495,16 +1507,16 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
       // them when dragging multiple blocks simultaneously
       addGestureTracking(forBlockView: blockView)
 
-      // Update the UI state
-      removeUIStateValue(.draggingBlock)
-      if !isGestureTouchingTrashCan(gesture) {
-        removeUIStateValue(.trashCanHighlighted)
+      if _dragger.numberOfActiveDrags == 0 {
+        // Update the UI state
+        removeUIStateValue(.draggingBlock)
+        if !isGestureTouchingTrashCan(gesture) {
+          removeUIStateValue(.trashCanHighlighted)
+        }
+
+        EventManager.sharedInstance.firePendingEvents()
       }
-
-      EventManager.sharedInstance.firePendingEvents()
     }
-
-    return
   }
 }
 
