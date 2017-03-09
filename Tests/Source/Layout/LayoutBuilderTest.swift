@@ -137,30 +137,26 @@ class LayoutBuilderTest: XCTestCase {
       XCTFail("Could not create layout tree for top level block")
     }
 
-    // Try building layout trees for non top-level blocks (these should all return nil)
-    var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(forTopLevelBlock: blockInputOutput,
+    // Try building layout trees for non top-level blocks (these should all throw errors)
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(forTopLevelBlock: blockInputOutput,
         workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
 
-    emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(
         forTopLevelBlock: blockStatementMultipleInputValueInput, workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
 
-    emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(
         forTopLevelBlock: blockStatementNoNext, workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
 
-    emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(
         forTopLevelBlock: blockStatementOutputNoInput, workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
   }
 
   func testBuildLayoutTreeForTopLevelBlock_ValidWithShadows() {
@@ -207,18 +203,16 @@ class LayoutBuilderTest: XCTestCase {
       XCTFail("Could not create layout tree for top level block")
     }
 
-    // Try building layout trees for non top-level shadow blocks (these should all return nil)
-    var emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(
+    // Try building layout trees for non top-level shadow blocks (these should all throw errors)
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(
         forTopLevelBlock: blockShadowInput, workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
 
-    emptyBlockGroup = BKYAssertDoesNotThrow {
-      try _layoutBuilder.buildLayoutTree(
+    BKYAssertThrow(errorType: BlocklyError.self) {
+      _ = try _layoutBuilder.buildLayoutTree(
         forTopLevelBlock: blockShadowPrevious, workspaceLayout: self._workspaceLayout)
     }
-    XCTAssertNil(emptyBlockGroup)
   }
 
   func testBuildLayoutTreeForTopLevelBlock_WrongWorkspace() {

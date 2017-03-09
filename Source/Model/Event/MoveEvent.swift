@@ -136,15 +136,14 @@ public final class MoveEvent: BlocklyEvent {
    `BlocklyError`: Thrown if the given block's UUID does not match the `self.blockID` that was
    originally associated with this event.
    */
-  public func recordNew(forBlock block: Block) throws {
+  public func recordNewValues(fromBlock block: Block) throws {
     guard self.blockID == block.uuid else {
       throw BlocklyError(.illegalArgument, "Block id does not match original.")
     }
 
     if let parentConnection = block.inferiorConnection?.targetConnection {
       newParentID = parentConnection.sourceBlock?.uuid
-      newInputName = (parentConnection.type == .nextStatement) ?
-        nil : parentConnection.sourceInput?.name
+      newInputName = parentConnection.sourceInput?.name
       newPosition = nil
     } else {
       newParentID = nil

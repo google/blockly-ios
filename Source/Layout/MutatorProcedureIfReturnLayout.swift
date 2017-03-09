@@ -71,7 +71,7 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
     try Layout.doNotAnimate {
       // Disconnect connections of existing mutation inputs prior to mutating the block
       let inputs = mutatorProcedureIfReturn.sortedMutatorInputs()
-      mutatorHelper.disconnectConnectionsInReverseOrder(
+      try mutatorHelper.disconnectConnectionsInReverseOrder(
         fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
       // Remove any connected shadow blocks from these inputs

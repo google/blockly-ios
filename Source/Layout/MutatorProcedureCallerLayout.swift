@@ -68,7 +68,7 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
 
     // Disconnect connections of existing mutation inputs prior to mutating the block
     let inputs = mutatorProcedureCaller.sortedMutatorInputs()
-    mutatorHelper.disconnectConnectionsInReverseOrder(
+    try mutatorHelper.disconnectConnectionsInReverseOrder(
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Remove any connected shadow blocks from these inputs
