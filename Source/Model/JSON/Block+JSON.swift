@@ -27,6 +27,7 @@ extension Block {
   fileprivate static let PARAMETER_INPUTS_INLINE = "inputsInline"
   fileprivate static let PARAMETER_LAST_DUMMY_ALIGNMENT = "lastDummyAlign"
   fileprivate static let PARAMETER_MESSAGE = "message"
+  fileprivate static let PARAMETER_MUTATOR = "mutator"
   fileprivate static let PARAMETER_NEXT_STATEMENT = "nextStatement"
   fileprivate static let PARAMETER_OUTPUT = "output"
   fileprivate static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
@@ -38,20 +39,24 @@ extension Block {
   // MARK: - Public
 
   /**
-  Creates a new `BlockBuilder` from a JSON dictionary.
+   Creates a new `BlockBuilder` from a JSON dictionary.
 
-  - parameter json: The JSON dictionary.
-  - parameter extensions: Dictionary mapping names to `BlockExtension` objects. For any extension
-  name that has been defined in `json`, its corresponding block extension defined in this parameter
-  is added to the block builder.
-  - throws:
-  `BlocklyError`: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
-  malformed data, or contradictory data). It also is thrown if an extension name has been defined in
-  `json`, but no corresponding mapping could be found in `extensions`.
-  - returns: A new block builder.
-  */
-  public class func makeBuilder(json: [String: Any], extensions: [String: BlockExtension] = [:])
-    throws -> BlockBuilder
+   - parameter json: The JSON dictionary.
+   - parameter mutators: Dictionary mapping names to `Mutator` objects. For any mutator
+   name that has been defined in `json`, its corresponding mutator in this dictionary
+   is added to the block builder.
+   - parameter extensions: Dictionary mapping names to `BlockExtension` objects. For any extension
+   name that has been defined in `json`, its corresponding block extension in this dictionary
+   is added to the block builder.
+   - throws:
+   `BlocklyError`: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
+   malformed data, or contradictory data). It also is thrown if a mutator (or extension) name has
+   been defined in `json`, but no corresponding mapping could be found in `mutators`
+   (or `extensions`).
+   - returns: A new block builder.
+   */
+  public class func makeBuilder(json: [String: Any], mutators: [String: Mutator] = [:],
+                                extensions: [String: BlockExtension] = [:]) throws -> BlockBuilder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.invalidBlockDefinition,
@@ -105,6 +110,14 @@ extension Block {
     }
     if let helpURL = json[PARAMETER_HELP_URL] as? String {
       builder.helpURL = helpURL
+    }
+    if let mutator = json[PARAMETER_MUTATOR] as? String {
+      if let blockMutator = mutators[mutator] {
+        builder.mutator = blockMutator.copyMutator()
+      } else {
+        throw BlocklyError(
+          .jsonInvalidArgument, "No `Mutator` has been defined for \"\(mutator)\".")
+      }
     }
     if let extensionNames = json[PARAMETER_EXTENSIONS] as? [String] {
       for extensionName in extensionNames {

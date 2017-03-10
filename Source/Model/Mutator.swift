@@ -49,8 +49,9 @@ public protocol Mutator : class {
   /**
    Updates this mutator's internal state, using the XML from the block.
 
+   - paramter xml: The XML of the block.
    - note: This method call does not actually mutate the block.
-   `performMutation()` must be explicitly called after this.
+   `mutateBlock()` must be explicitly called after this.
    */
   func update(fromXML xml: AEXMLElement)
 
