@@ -32,6 +32,9 @@ public class BlockFactory : NSObject {
   /// Dictionary of `BlockExtension` objects indexed by their extension name
   public private(set) var blockExtensions = [String: BlockExtension]()
 
+  /// Dictionary of `Mutator` objects indexed by their mutator name
+  public private(set) var mutators = [String: Mutator]()
+
   /// Dictionary of `BlockBuilder` objects indexed by their block name
   private var blockBuilders = Dictionary<String, BlockBuilder>()
 
@@ -47,6 +50,7 @@ public class BlockFactory : NSObject {
   public func load(fromDefaultFiles defaultFiles: BlockJSONFile) {
     let bundle = Bundle(for: type(of: self))
 
+    updateMutators(defaultFiles.mutators)
     updateBlockExtensions(defaultFiles.blockExtensions)
 
     do {
@@ -78,8 +82,9 @@ public class BlockFactory : NSObject {
       let jsonString = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
       let json = try JSONHelper.makeJSONArray(string: jsonString)
       for blockJson in json {
-        let blockBuilder =
-          try Block.makeBuilder(json: blockJson as! [String : Any], extensions: blockExtensions)
+        let blockBuilder = try Block.makeBuilder(
+          json: blockJson as! [String : Any], mutators: mutators, extensions: blockExtensions)
+
         // Ensure the builder is valid
         _ = try blockBuilder.makeBlock()
 
@@ -113,6 +118,20 @@ public class BlockFactory : NSObject {
   }
 
   /**
+   Updates `self.mutators` from a dictionary of mutators. If a mutator already exists in
+   `self.mutators` for a given name, that value is overwritten by the one
+   supplied by `mutators`. These mutators are associated with block builders when they are
+   loaded from JSON files.
+
+   - parameter mutators: Dictionary mapping `Mutator` objects to their mutator name.
+   */
+  public func updateMutators(_ mutators: [String: Mutator]) {
+    for (name, mutator) in mutators {
+      self.mutators[name] = mutator
+    }
+  }
+
+  /**
    Updates `self.blockExtensions` from a dictionary of given block extensions. If an extension
    already exists in `self.blockExtensions` for a given name, that value is overwritten by the one
    supplied by `extensions`. These extensions are associated with block builders when they are
@@ -120,9 +139,9 @@ public class BlockFactory : NSObject {
 
    - parameter extensions: Dictionary mapping `BlockExtension` objects to their extension name.
    */
-  public func updateBlockExtensions(_ extensions: [String: BlockExtension]) {
-    for (name, blockExtension) in extensions {
-      blockExtensions[name] = blockExtension
+  public func updateBlockExtensions(_ blockExtensions: [String: BlockExtension]) {
+    for (name, blockExtension) in blockExtensions {
+      self.blockExtensions[name] = blockExtension
     }
   }
 

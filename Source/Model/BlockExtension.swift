@@ -44,7 +44,7 @@ public final class BlockExtensionClosure: NSObject, BlockExtension {
   // MARK: - Properties
 
   /// The closure that is executed by this extension during `Block` initialization.
-  private var _closure: (Block) throws -> Void
+  private var _closure: (Block) -> Void
 
   // MARK: - Initializers
 
@@ -53,7 +53,7 @@ public final class BlockExtensionClosure: NSObject, BlockExtension {
 
    - parameter closure: Code that should be run for a `Block` during its initialization.
    */
-  public init(_ closure: @escaping (Block) throws -> Void) {
+  public init(_ closure: @escaping (Block) -> Void) {
     _closure = closure
   }
 
@@ -65,6 +65,6 @@ public final class BlockExtensionClosure: NSObject, BlockExtension {
    - parameter block: The block that is used for the extension code closure.
    */
   public func run(block: Block) throws {
-    try _closure(block)
+    _closure(block)
   }
 }

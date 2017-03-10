@@ -48,33 +48,29 @@ extension BlockJSONFile {
     return fileLocations
   }
 
+  /// Dictionary mapping extension names to `Mutator`, for all blocks specified under
+  /// `self.fileLocations`.
+  public var mutators: [String: Mutator] {
+    var mutators = [String: Mutator]()
+
+    if contains(.logicDefault) {
+      mutators["controls_if_mutator"] = MutatorIfElse()
+    }
+    if contains(.procedureDefault) {
+      mutators["procedures_defnoreturn_mutator"] = MutatorProcedureDefinition(returnsValue: false)
+      mutators["procedures_defreturn_mutator"] = MutatorProcedureDefinition(returnsValue: true)
+      mutators["procedures_callnoreturn_mutator"] = MutatorProcedureCaller()
+      mutators["procedures_callreturn_mutator"] = MutatorProcedureCaller()
+      mutators["procedures_ifreturn_mutator"] = MutatorProcedureIfReturn()
+    }
+
+    return mutators
+  }
+
   /// Dictionary mapping extension names to `BlockExtension`, for all blocks specified under
   /// `self.fileLocations`.
   public var blockExtensions: [String: BlockExtension] {
-    var extensions = [String: BlockExtension]()
-
-    if contains(.logicDefault) {
-      extensions["controls_if_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorIfElse())
-      }
-    }
-    if contains(.procedureDefault) {
-      extensions["procedures_defnoreturn_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorProcedureDefinition(returnsValue: false))
-      }
-      extensions["procedures_defreturn_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorProcedureDefinition(returnsValue: true))
-      }
-      extensions["procedures_callnoreturn_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorProcedureCaller())
-      }
-      extensions["procedures_callreturn_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorProcedureCaller())
-      }
-      extensions["procedures_ifreturn_mutator"] = BlockExtensionClosure { block in
-        try block.setMutator(MutatorProcedureIfReturn())
-      }
-    }
+    let extensions = [String: BlockExtension]()
 
     return extensions
   }
