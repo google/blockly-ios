@@ -45,6 +45,12 @@ public class MutatorProcedureDefinition: NSObject {
     }
   }
 
+  /// The actual parameters that have been applied to the procedure definition
+  fileprivate var appliedParameters = [ProcedureParameter]()
+
+  /// Actual flag determining if statements can be attached to this procedure.
+  fileprivate var appliedAllowStatements: Bool = true
+
   // MARK: - Initializers
 
   public init(returnsValue: Bool) {
@@ -85,18 +91,22 @@ extension MutatorProcedureDefinition: Mutator {
       // Remove statement input
       try block.removeInput(input)
     }
+
+    // Save the values that have been applied
+    appliedParameters = parameters
+    appliedAllowStatements = allowStatements
   }
 
   public func toXMLElement() -> AEXMLElement {
     let xml = AEXMLElement(name: "mutation", value: nil, attributes: [:])
 
-    for parameter in parameters {
+    for parameter in appliedParameters {
       xml.addChild(name: "arg", value: nil, attributes: [
         "name": parameter.name
       ])
     }
 
-    xml.attributes["statements"] = !allowStatements ? "false" : "true"
+    xml.attributes["statements"] = !appliedAllowStatements ? "false" : "true"
 
     return xml
   }
@@ -124,6 +134,8 @@ extension MutatorProcedureDefinition: Mutator {
     let mutator = MutatorProcedureDefinition(returnsValue: returnsValue)
     mutator.parameters = parameters
     mutator.allowStatements = allowStatements
+    mutator.appliedParameters = appliedParameters
+    mutator.appliedAllowStatements = appliedAllowStatements
     return mutator
   }
 

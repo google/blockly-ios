@@ -246,6 +246,25 @@ open class Layout: NSObject {
     return false
   }
 
+  /**
+   Traverses up the layout tree and returns the first ancestor that is of a given type.
+ 
+   - parameter type: The type of `Layout` to find.
+   - returns: The first ancestor of the given `type`, or `nil` if none could be found.
+   */
+  public final func firstAncestor<T>(ofType type: T.Type? = nil) -> T? where T: Layout {
+    var parent = parentLayout
+
+    while parent != nil {
+      if let typedParent = parent as? T {
+        return typedParent
+      }
+      parent = parent?.parentLayout
+    }
+
+    return nil
+  }
+
   // MARK: - Internal
 
   /**

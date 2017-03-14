@@ -136,6 +136,59 @@ open class BlockLayout: Layout {
     return 0
   }
 
+  /// Flag indicating if this block has had its user interaction disabled.
+  open var disabled: Bool {
+    get { return block.disabled }
+    set {
+      if block.editable {
+        block.disabled = disabled
+
+        if let workspace = self.workspace {
+          let event = ChangeEvent.disabledStateEvent(workspace: workspace, block: block)
+          EventManager.sharedInstance.addPendingEvent(event)
+        }
+      }
+    }
+  }
+
+  /// Flag indicating if input connectors should be drawn inside a block (`true`) or
+  /// on the edge of the block (`false`).
+  open var inputsInline: Bool {
+    get { return block.inputsInline }
+    set {
+      if block.editable {
+        block.inputsInline = inputsInline
+
+        if let workspace = self.workspace {
+          let event = ChangeEvent.inlineStateEvent(workspace: workspace, block: block)
+          EventManager.sharedInstance.addPendingEvent(event)
+        }
+      }
+    }
+  }
+
+  /// The comment text of the block.
+  open var comment: String {
+    get { return block.comment }
+    set {
+      if block.editable && block.comment != newValue {
+        let oldValue = block.comment
+        block.comment = newValue
+
+        if let workspace = self.workspace {
+          let event = ChangeEvent.commentTextEvent(
+            workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+          EventManager.sharedInstance.addPendingEvent(event)
+        }
+      }
+    }
+  }
+
+  /// Returns the workspace this block belongs to, if it exists.
+  fileprivate var workspace: Workspace? {
+    return firstAncestor(ofType: WorkspaceLayout.self)?.workspace
+  }
+
   // MARK: - Initializers
 
   /**

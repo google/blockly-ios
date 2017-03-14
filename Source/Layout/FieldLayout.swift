@@ -81,6 +81,53 @@ open class FieldLayout: Layout {
     // Force this field to be redisplayed
     sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
   }
+
+  // MARK: - Update
+
+  /**
+   Sets the native value of this field from a serialized text value.
+
+   - parameter text: The serialized text value
+   - throws:
+   `BlocklyError`: Thrown if the serialized text value could not be converted into the field's
+   native value.
+   */
+  public func setValue(fromSerializedText text: String) throws {
+    try field.setValueFromSerializedText(text)
+  }
+
+  // MARK: - Change Events
+
+  /**
+   Automatically captures and fires a `ChangeEvent` for `self.field`, based on its state before
+   and after running a given closure block.
+
+   - parameter closure: A closure to execute, that will change the state of `self.field`.
+   */
+  open func captureAndFireChangeEvent(_ closure: () -> Void) {
+    if let workspace = firstAncestor(ofType: WorkspaceLayout.self)?.workspace,
+      let block = field.sourceInput?.sourceBlock
+    {
+      // Capture values before and after running update
+      let oldValue = try? field.serializedText()
+      closure()
+      let newValue = try? field.serializedText()
+
+      if case let anOldValue?? = oldValue,
+        case let aNewValue?? = newValue,
+        anOldValue != aNewValue
+      {
+        let event = ChangeEvent.fieldValueEvent(
+          workspace: workspace, block: block, field: field,
+          oldValue: anOldValue, newValue: aNewValue)
+        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.sharedInstance.firePendingEvents()
+      }
+    } else {
+      // Just run update
+      closure()
+    }
+  }
 }
 
 // MARK: - FieldDelegate implementation

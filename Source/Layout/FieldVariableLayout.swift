@@ -89,6 +89,17 @@ open class FieldVariableLayout: FieldLayout {
 
   // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
+    if let nameManager = self.nameManager,
+      !nameManager.containsName(variable)
+    {
+      // Automatically add variable to NameManager
+      do {
+        try nameManager.addName(variable)
+      } catch let error {
+        bky_assertionFailure("Couldn't add variable: \(error)")
+      }
+    }
+
     // Perform a layout up the tree
     updateLayoutUpTree()
   }
@@ -112,10 +123,12 @@ open class FieldVariableLayout: FieldLayout {
         return
       }
 
-      do {
-        try fieldVariable.setVariable(variable)
-      } catch let error {
-        bky_assertionFailure("Could not change to variable: \(error)")
+      captureAndFireChangeEvent {
+        do {
+          try fieldVariable.setVariable(variable)
+        } catch let error {
+          bky_assertionFailure("Could not change to variable: \(error)")
+        }
       }
     }
   }
@@ -127,10 +140,12 @@ open class FieldVariableLayout: FieldLayout {
    */
   open func renameVariable(to newName: String) {
     let oldName = self.variable
-    do {
-      try fieldVariable.setVariable(newName)
-    } catch let error {
-      bky_assertionFailure("Could not rename variable: \(error)")
+    captureAndFireChangeEvent {
+      do {
+        try fieldVariable.setVariable(newName)
+      } catch let error {
+        bky_assertionFailure("Could not rename variable: \(error)")
+      }
     }
     nameManager?.renameName(oldName, to: newName)
   }

@@ -34,6 +34,12 @@ public class MutatorProcedureCaller: NSObject {
 
   /// The parameters of the procedure
   public var parameters = [ProcedureParameter]()
+
+  /// The actual name that's been applied to the procedure
+  fileprivate var appliedProcedureName = ""
+
+  /// The actual parameters that have been added to the procedure caller
+  fileprivate var appliedParameters = [ProcedureParameter]()
 }
 
 extension MutatorProcedureCaller: Mutator {
@@ -84,13 +90,16 @@ extension MutatorProcedureCaller: Mutator {
       try block.removeInput(input)
       i += 1
     }
+
+    appliedProcedureName = procedureName
+    appliedParameters = parameters
   }
 
   public func toXMLElement() -> AEXMLElement {
     let xml = AEXMLElement(name: "mutation", value: nil, attributes: [:])
-    xml.attributes["name"] = procedureName
+    xml.attributes["name"] = appliedProcedureName
 
-    for parameter in parameters {
+    for parameter in appliedParameters {
       xml.addChild(name: "arg", value: nil, attributes: [
         "name": parameter.name
       ])
@@ -116,6 +125,8 @@ extension MutatorProcedureCaller: Mutator {
     let mutator = MutatorProcedureCaller()
     mutator.procedureName = procedureName
     mutator.parameters = parameters
+    mutator.appliedProcedureName = appliedProcedureName
+    mutator.appliedParameters = appliedParameters
     return mutator
   }
 

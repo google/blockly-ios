@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import AEXML
 import Foundation
 
 /**
@@ -53,5 +54,47 @@ open class MutatorLayout: Layout {
    */
   open func performMutation() throws {
     bky_assertionFailure("\(#function) needs to be implemented by a subclass")
+  }
+
+  /**
+   Updates the mutator from XML and immediately performs a mutation by calling `performMutation()`.
+
+   - parameter xml: The XML used to update the mutator.
+   - throws:
+   `BlocklyError`: Thrown if the mutation could not be performed.
+   */
+  open func performMutation(fromXML xml: AEXMLElement) throws {
+    mutator.update(fromXML: xml)
+    try performMutation()
+  }
+
+
+  // MARK: - Change Event
+
+  /**
+   Automatically captures and fires a `ChangeEvent` for `self.mutator`, based on its state before
+   and after running a given closure block.
+
+   - parameter closure: A closure to execute, that will change the state of `self.mutator`.
+   */
+  public func captureAndFireChangeEvent(closure: () throws -> Void) rethrows {
+    if let workspace = layoutCoordinator?.workspaceLayout.workspace,
+      let block = mutator.block
+    {
+      // Capture values before and after running mutation
+      let oldValue = mutator.toXMLElement().xml
+      try closure()
+      let newValue = mutator.toXMLElement().xml
+
+      if oldValue != newValue {
+        let event = ChangeEvent.mutateEvent(
+          workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.sharedInstance.firePendingEvents()
+      }
+    } else {
+      // Just run closure
+      try closure()
+    }
   }
 }

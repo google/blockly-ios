@@ -52,7 +52,9 @@ public final class Block : NSObject {
   public let name: String
   /// Flag indicating if input connectors should be drawn inside a block (`true`) or
   /// on the edge of the block (`false`)
-  public let inputsInline: Bool
+  public var inputsInline: Bool {
+    didSet { didSetEditableProperty(&inputsInline, oldValue) }
+  }
   /// The absolute position of the block, in the Workspace coordinate system
   public var position: WorkspacePoint
   /// Flag indicating if this is a shadow block (`true`) or not (`false)

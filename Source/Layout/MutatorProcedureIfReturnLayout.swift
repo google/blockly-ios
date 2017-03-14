@@ -78,8 +78,10 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
       try mutatorHelper.removeShadowBlocksInReverseOrder(
         fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
-      // Update the definition of the block
-      try mutatorProcedureIfReturn.mutateBlock()
+      try captureAndFireChangeEvent {
+        // Update the definition of the block
+        try mutatorProcedureIfReturn.mutateBlock()
+      }
 
       // Update UI
       blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)

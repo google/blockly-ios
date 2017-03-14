@@ -77,7 +77,9 @@ open class FieldDateLayout: FieldLayout {
    - parameter date: The value used to update `self.fieldDate`.
    */
   open func updateDate(_ date: Date) {
-    // Setting to a new date automatically fires a listener to update the layout
-    fieldDate.date = date
+    captureAndFireChangeEvent {
+      // Setting to a new date automatically fires a listener to update the layout
+      fieldDate.date = date
+    }
   }
 }

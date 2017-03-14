@@ -64,7 +64,9 @@ open class FieldCheckboxLayout: FieldLayout {
    - parameter checked: The value used to update `self.fieldCheckbox`.
    */
   open func updateCheckbox(_ checked: Bool) {
-    // Setting to a new checkbox value automatically fires a listener to update the layout
-    fieldCheckbox.checked = checked
+    captureAndFireChangeEvent {
+      // Setting to a new checkbox value automatically fires a listener to update the layout
+      fieldCheckbox.checked = checked
+    }
   }
 }

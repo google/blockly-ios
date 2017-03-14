@@ -81,7 +81,9 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Update the definition of the block
-    try mutatorProcedureDefinition.mutateBlock()
+    try captureAndFireChangeEvent {
+      try mutatorProcedureDefinition.mutateBlock()
+    }
 
     // Update UI
     let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)

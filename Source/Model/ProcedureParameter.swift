@@ -19,8 +19,7 @@ import Foundation
  A procedure parameter that is used by the `MutatorProcedureDefinition` and
  `MutatorProcedureCaller` objects.
  */
-@objc(BKYProcedureParameter)
-public class ProcedureParameter: NSObject {
+public struct ProcedureParameter {
 
   /// Unique id of this parameter. This value is used when renaming/re-ordering this parameter
   /// inside a definition/caller blocks.

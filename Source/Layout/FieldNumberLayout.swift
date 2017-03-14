@@ -54,6 +54,16 @@ open class FieldNumberLayout: FieldLayout {
     super.init(field: fieldNumber, engine: engine, measurer: measurer)
   }
 
+  // MARK: - Super
+
+  open override func didUpdateField(_ field: Field) {
+    // Update current text value to match the field now
+    currentTextValue = fieldNumber.textValue
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
+  }
+
   // MARK: - Public
 
   /**
@@ -61,10 +71,12 @@ open class FieldNumberLayout: FieldLayout {
    automatically sets `self.currentTextValue` to `self.fieldNumber.textValue`.
    */
   open func setValueFromLocalizedText(_ text: String) {
-    fieldNumber.setValueFromLocalizedText(text)
+    captureAndFireChangeEvent {
+      fieldNumber.setValueFromLocalizedText(text)
 
-    // Update `currentTextValue` to match the current localized text value of `fieldNumber`,
-    // which will automatically update the corresponding view, if necessary.
-    currentTextValue = fieldNumber.textValue
+      // Update `currentTextValue` to match the current localized text value of `fieldNumber`,
+      // which will automatically update the corresponding view, if necessary.
+      currentTextValue = fieldNumber.textValue
+    }
   }
 }
