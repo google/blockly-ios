@@ -156,8 +156,8 @@ open class BlockLayout: Layout {
   open var inputsInline: Bool {
     get { return block.inputsInline }
     set {
-      if block.editable {
-        block.inputsInline = inputsInline
+      if block.editable && block.inputsInline != newValue {
+        block.inputsInline = newValue
 
         if let workspace = self.workspace {
           let event = ChangeEvent.inlineStateEvent(workspace: workspace, block: block)
