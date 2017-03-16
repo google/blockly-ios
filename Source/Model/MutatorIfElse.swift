@@ -102,8 +102,8 @@ extension MutatorIfElse: Mutator {
 
   public func toXMLElement() -> AEXMLElement {
     return AEXMLElement(name: "mutation", value: nil, attributes: [
-        "elseif": String(elseIfCount),
-        "else": String(elseStatement ? "1" : "0")
+        "elseif": String(appliedElseIfCount),
+        "else": String(appliedElseStatement ? "1" : "0")
       ])
   }
 

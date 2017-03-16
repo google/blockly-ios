@@ -74,7 +74,9 @@ open class FieldDropdownLayout: FieldLayout {
    - parameter selectedIndex: The value used to update `self.fieldDropdown.selectedIndex`.
    */
   open func updateSelectedIndex(_ selectedIndex: Int) {
-    // Setting to a new index automatically fires a listener to update the layout
-    fieldDropdown.selectedIndex = selectedIndex
+    captureAndFireChangeEvent {
+      // Setting to a new index automatically fires a listener to update the layout
+      fieldDropdown.selectedIndex = selectedIndex
+    }
   }
 }

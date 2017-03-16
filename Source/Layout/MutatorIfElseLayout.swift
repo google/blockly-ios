@@ -71,7 +71,9 @@ public class MutatorIfElseLayout : MutatorLayout {
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Update the definition of the block
-    try mutatorIfElse.mutateBlock()
+    try captureAndFireChangeEvent {
+      try mutatorIfElse.mutateBlock()
+    }
 
     // Update UI
     let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)

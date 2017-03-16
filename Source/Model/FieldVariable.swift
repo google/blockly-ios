@@ -46,11 +46,7 @@ public final class FieldVariable: Field {
   }
 
   public override func setValueFromSerializedText(_ text: String) throws {
-    if text != "" {
-      self.variable = text
-    } else {
-      throw BlocklyError(.xmlParsing, "Cannot set a variable to empty text")
-    }
+    try setVariable(text)
   }
 
   public override func serializedText() throws -> String? {

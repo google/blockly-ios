@@ -13,6 +13,7 @@
 * limitations under the License.
 */
 
+import AEXML
 import UIKit
 
 /**
@@ -914,7 +915,13 @@ extension WorkbenchViewController {
       return
     }
 
+    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
+    // behavior for clients that rely on automatically state based on events being re-fired. We
+    // need to figure out a consistent behavior here.
+
     // Don't listen to any events, to avoid echoing
+    EventManager.sharedInstance.isEnabled = false
+
     _recordEvents = false
 
     // Pop off the next group of events from the undo stack. These events will already be sorted
@@ -934,6 +941,7 @@ extension WorkbenchViewController {
     EventManager.sharedInstance.firePendingEvents()
 
     // Listen to events again
+    EventManager.sharedInstance.isEnabled = true
     _recordEvents = true
   }
 
@@ -942,7 +950,12 @@ extension WorkbenchViewController {
       return
     }
 
+    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
+    // behavior for clients that rely on automatically state based on events being re-fired. We
+    // need to figure out a consistent behavior here.
+
     // Don't listen to any events, to avoid echoing
+    EventManager.sharedInstance.isEnabled = false
     _recordEvents = false
 
     // Pop off the next group of events from the redo stack. These events will already be sorted
@@ -962,6 +975,7 @@ extension WorkbenchViewController {
     EventManager.sharedInstance.firePendingEvents()
 
     // Listen to events again
+    EventManager.sharedInstance.isEnabled = true
     _recordEvents = true
   }
 }
@@ -984,6 +998,8 @@ extension WorkbenchViewController {
       update(fromDeleteEvent: deleteEvent, runForward: runForward)
     } else if let moveEvent = event as? MoveEvent {
       update(fromMoveEvent: moveEvent, runForward: runForward)
+    } else if let changeEvent = event as? ChangeEvent {
+      update(fromChangeEvent: changeEvent, runForward: runForward)
     }
   }
 
@@ -1119,6 +1135,60 @@ extension WorkbenchViewController {
         // error.
         bky_debugPrint("Can't connect to non-existent parent connection")
       }
+    }
+  }
+
+  /**
+   Updates the workbench based on a `ChangeEvent`.
+
+   - parameter event: The `ChangeEvent`.
+   - parameter runForward: Flag determining if the event should be run forward (`true` for redo
+   operations) or run backward (`false` for undo operations).
+   */
+  open func update(fromChangeEvent event: ChangeEvent, runForward: Bool) {
+    guard let workspace = _workspaceLayoutCoordinator?.workspaceLayout.workspace,
+      let blockID = event.blockID,
+      let block = workspace.allBlocks[blockID] else
+    {
+      bky_debugPrint("Can't change non-existent block: \(event.blockID ?? "")")
+      return
+    }
+
+    let value = (runForward ? event.newValue : event.oldValue) ?? ""
+    let boolValue = runForward ? event.newBoolValue : event.oldBoolValue
+
+    switch event.element {
+      case .collapsed:
+        // Not supported.
+        break
+      case .comment:
+        block.layout?.comment = value
+      case .disabled:
+        block.layout?.disabled = boolValue
+      case .field:
+        if let fieldName = event.fieldName,
+          let field = block.firstField(withName: fieldName)
+        {
+          do {
+            try field.layout?.setValue(fromSerializedText: value)
+          } catch let error {
+            bky_assertionFailure(
+              "Couldn't set value(\"\(value)\") for field(\"\(fieldName)\"):\n\(error)")
+          }
+        } else {
+          bky_assertionFailure("Can't set non-existent field: \(event.fieldName ?? "")")
+        }
+        break
+      case .inline:
+        block.layout?.inputsInline = boolValue
+      case .mutate:
+        do {
+          // Update the mutator from xml
+          let xml = try AEXMLDocument(xml: value)
+          try block.mutator?.layout?.performMutation(fromXML: xml)
+        } catch let error {
+          bky_assertionFailure("Can't update mutator from xml [\"\(value)\"]:\n\(error)")
+        }
     }
   }
 

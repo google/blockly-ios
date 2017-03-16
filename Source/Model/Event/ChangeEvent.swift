@@ -67,6 +67,14 @@ public final class ChangeEvent: BlocklyEvent {
   public let oldValue: String?
   /// The new value of the element.
   public let newValue: String?
+  /// Convenience property for evaluating `self.oldValue == "true"`
+  public var oldBoolValue: Bool {
+    return oldValue == "true"
+  }
+  /// Convenience property for evaluating `self.newValue == "true"`
+  public var newBoolValue: Bool {
+    return newValue == "true"
+  }
 
   // MARK: - Initializers
 
@@ -114,7 +122,6 @@ public final class ChangeEvent: BlocklyEvent {
       throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
     }
   }
-
 
   /**
    Creates a `ChangeEvent` reflecting a change in the block's comment text.

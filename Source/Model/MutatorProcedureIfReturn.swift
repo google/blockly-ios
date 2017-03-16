@@ -62,7 +62,7 @@ extension MutatorProcedureIfReturn: Mutator {
 
   public func toXMLElement() -> AEXMLElement {
     let xml = AEXMLElement(name: "mutation", value: nil, attributes: [:])
-    xml.attributes["value"] = hasReturnValue ? "1" : "0"
+    xml.attributes["value"] = appliedHasReturnValue ? "1" : "0"
     return xml
   }
 

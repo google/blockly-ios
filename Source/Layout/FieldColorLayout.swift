@@ -62,7 +62,9 @@ open class FieldColorLayout: FieldLayout {
    - parameter color: The value used to update `self.fieldColor`.
    */
   open func updateColor(_ color: UIColor) {
-    // Setting to a new color automatically fires a listener to update the layout
-    fieldColor.color = color
+    captureAndFireChangeEvent {
+      // Setting to a new color automatically fires a listener to update the layout
+      fieldColor.color = color
+    }
   }
 }
