@@ -915,6 +915,10 @@ extension WorkbenchViewController {
       return
     }
 
+    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
+    // behavior for clients that rely on automatically state based on events being re-fired. We
+    // need to figure out a consistent behavior here.
+
     // Don't listen to any events, to avoid echoing
     EventManager.sharedInstance.isEnabled = false
 
@@ -945,6 +949,10 @@ extension WorkbenchViewController {
     guard !_redoStack.isEmpty else {
       return
     }
+
+    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
+    // behavior for clients that rely on automatically state based on events being re-fired. We
+    // need to figure out a consistent behavior here.
 
     // Don't listen to any events, to avoid echoing
     EventManager.sharedInstance.isEnabled = false
