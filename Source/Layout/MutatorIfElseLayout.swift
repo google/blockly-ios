@@ -54,6 +54,15 @@ public class MutatorIfElseLayout : MutatorLayout {
     self.contentSize = WorkspaceSize(width: 32, height: 32)
   }
 
+  public override func beginMutationSession() {
+    // For all inputs created by this mutator, save the currently connected target connection for
+    // each of them. Any subsequent call to `performMutation()` will ensure that these saved target
+    // connections remain connected to that original input, as long as the input still exists
+    // post-mutation.
+    mutatorHelper.clearSavedTargetConnections()
+    mutatorHelper.saveTargetConnections(fromInputs: mutatorIfElse.sortedMutatorInputs())
+  }
+
   public override func performMutation() throws {
     guard let block = mutatorIfElse.block,
       let layoutCoordinator = self.layoutCoordinator else
@@ -71,7 +80,7 @@ public class MutatorIfElseLayout : MutatorLayout {
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Update the definition of the block
-    try captureAndFireChangeEvent {
+    try captureChangeEvent {
       try mutatorIfElse.mutateBlock()
     }
 
@@ -86,18 +95,5 @@ public class MutatorIfElseLayout : MutatorLayout {
       layoutCoordinator.blockBumper
         .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
     }
-  }
-
-  // MARK: - Pre-Mutation
-
-  /**
-   For all inputs created by this mutator, save the currently connected target connection for
-   each of them. Any subsequent call to `performMutation()` will ensure that these saved target
-   connections remain connected to that original input, as long as the input still exists
-   post-mutation.
-   */
-  public func preserveCurrentInputConnections() {
-    mutatorHelper.clearSavedTargetConnections()
-    mutatorHelper.saveTargetConnections(fromInputs: mutatorIfElse.sortedMutatorInputs())
   }
 }

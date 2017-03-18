@@ -60,7 +60,8 @@ public protocol WorkspaceViewControllerDelegate {
   /**
    Called when the `WorkspaceViewController` was dismissed.
 
-   - parameter workspaceViewController: The `WorkspaceViewController` that was dismissed.
+   - parameter workspaceViewController: The `WorkspaceViewController` that dismissed a view
+   controller.
    */
   func workspaceViewControllerDismissedViewController(
     _ workspaceViewController: WorkspaceViewController)
@@ -221,7 +222,19 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
   public func layoutView(_ layoutView: LayoutView,
     requestedToPresentViewController viewController: UIViewController)
   {
+    delegate?.workspaceViewController(self, willPresentViewController: viewController)
+
     present(viewController, animated: true, completion: nil)
+  }
+
+  public func layoutView(_ layoutView: LayoutView,
+                         requestedToDismissPopoverViewController viewController: UIViewController,
+                         animated: Bool) {
+    viewController.presentingViewController?.dismiss(animated: animated, completion: nil)
+
+    // Manually fire our custom delegate since it doesn't automatically get triggered from
+    // `self.popoverPresentationControllerDidDismissPopover(:)`.
+    self.delegate?.workspaceViewControllerDismissedViewController(self)
   }
 }
 

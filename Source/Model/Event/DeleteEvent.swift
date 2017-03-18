@@ -42,7 +42,7 @@ public final class DeleteEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
    */
-  public required init(workspace: Workspace, block: Block) throws {
+  public init(workspace: Workspace, block: Block) throws {
     oldXML = try block.toXML()
     blockIDs = block.allBlocksForTree().map { $0.uuid }
 
@@ -57,7 +57,7 @@ public final class DeleteEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown when the JSON could not be parsed into a `DeleteEvent` object.
    */
-  public required init(json: [String: Any]) throws {
+  public init(json: [String: Any]) throws {
     oldXML = json[BlocklyEvent.JSON_OLD_VALUE] as? String ?? "" // Not usually used.
     blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
 

@@ -42,6 +42,17 @@ public protocol LayoutPopoverDelegate {
   func layoutView(_ layoutView: LayoutView,
                  requestedToPresentPopoverViewController viewController: UIViewController,
                  fromView: UIView) -> Bool
+
+  /**
+   Event is called when a layout view requests to dismiss a view controller.
+
+   - parameter layoutView: The `LayoutView` that made the request.
+   - parameter viewController: The `UIViewController` to dismiss.
+   - parameter animated: Pass `true` to animate the transition.
+   */
+  func layoutView(_ layoutView: LayoutView,
+                  requestedToDismissPopoverViewController viewController: UIViewController,
+                  animated: Bool)
 }
 
 /**

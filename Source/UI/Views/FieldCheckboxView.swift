@@ -98,7 +98,9 @@ open class FieldCheckboxView: FieldView {
   // MARK: - Private
 
   fileprivate dynamic func switchValueDidChange(_ sender: UISwitch) {
-    fieldCheckboxLayout?.updateCheckbox(switchButton.isOn)
+    EventManager.sharedInstance.groupAndFireEvents {
+      fieldCheckboxLayout?.updateCheckbox(switchButton.isOn)
+    }
   }
 }
 

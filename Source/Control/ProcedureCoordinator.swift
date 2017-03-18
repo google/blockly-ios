@@ -334,8 +334,8 @@ public class ProcedureCoordinator: NSObject {
         let mutatorCallerLayout = callerBlock.layout?.mutatorLayout as? MutatorProcedureCallerLayout
       {
         // NOTE: mutatorLayout is used here since it will preserve connections for existing inputs
-        // if the parameters have been reordered.
-        mutatorCallerLayout.preserveCurrentInputConnections()
+        // if the parameters have been reordered (when starting a new mutation session).
+        mutatorCallerLayout.beginMutationSession()
         mutatorCallerLayout.procedureName = newName
         mutatorCallerLayout.parameters = parameters
 
@@ -375,7 +375,7 @@ extension ProcedureCoordinator: WorkspaceListener {
     }
   }
 
-  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
+  public func workspace(_ workspace: Workspace, didRemoveBlock block: Block) {
     if block.isProcedureDefinition {
       untrackProcedureDefinitionBlock(block)
     } else if block.isProcedureCaller {

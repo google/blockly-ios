@@ -64,6 +64,16 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
     self.contentSize = WorkspaceSize(width: 32, height: 32)
   }
 
+  public override func beginMutationSession() {
+    // For all inputs created by this mutator, save the currently connected target connection for
+    // each of them. Any subsequent call to `performMutation()` will ensure that these saved target
+    // connections remain connected to that original input, as long as the input still exists
+    // post-mutation.
+    mutatorHelper.clearSavedTargetConnections()
+    mutatorHelper.saveTargetConnections(
+      fromInputs: mutatorProcedureDefinition.sortedMutatorInputs())
+  }
+
   public override func performMutation() throws {
     guard let block = mutatorProcedureDefinition.block,
       let layoutCoordinator = self.layoutCoordinator else
@@ -81,7 +91,7 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Update the definition of the block
-    try captureAndFireChangeEvent {
+    try captureChangeEvent {
       try mutatorProcedureDefinition.mutateBlock()
     }
 
@@ -102,20 +112,6 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
     NotificationCenter.default.post(
       name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation,
       object: self)
-  }
-
-  // MARK: - Pre-Mutation
-
-  /**
-   For all inputs created by this mutator, save the currently connected target connection for
-   each of them. Any subsequent call to `performMutation()` will ensure that these saved target
-   connections remain connected to that original input, as long as the input still exists
-   post-mutation.
-   */
-  public func preserveCurrentInputConnections() {
-    mutatorHelper.clearSavedTargetConnections()
-    mutatorHelper.saveTargetConnections(
-      fromInputs: mutatorProcedureDefinition.sortedMutatorInputs())
   }
 
   // MARK: - Queries

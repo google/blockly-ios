@@ -112,8 +112,10 @@ extension FieldInputView: UITextFieldDelegate {
   }
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
-    // Only commit the change after the user has finished editing the field
-    fieldInputLayout?.updateText(self.textField.text ?? "")
+    EventManager.sharedInstance.groupAndFireEvents {
+      // Only commit the change after the user has finished editing the field
+      fieldInputLayout?.updateText(self.textField.text ?? "")
+    }
   }
 }
 

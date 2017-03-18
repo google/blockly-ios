@@ -264,11 +264,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection.isInferior ? sourceBlock : targetBlock
-    let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
 
     connection.disconnect()
 
-    try event.recordNewValues(fromBlock: inferiorBlock)
+    event.recordNewValues()
     EventManager.sharedInstance.addPendingEvent(event)
 
     self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
@@ -322,7 +322,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection1.isInferior ? sourceBlock1 : sourceBlock2
-    let event = MoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
 
     let oldTarget1 = connection1.targetConnection
     let oldTarget2 = connection2.targetConnection
@@ -331,7 +331,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     didChangeTarget(forConnection: connection1, oldTarget: oldTarget1)
     didChangeTarget(forConnection: connection2, oldTarget: oldTarget2)
 
-    try event.recordNewValues(fromBlock: inferiorBlock)
+    event.recordNewValues()
     EventManager.sharedInstance.addPendingEvent(event)
 
     // TODO:(#272) When events are implemented, re-visit whether these notifications should be
@@ -796,11 +796,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
     }
   }
 
-  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
-    if let layout = block.layout {
-      removeNameManager(fromBlockLayout: layout)
-    }
-
+  public func workspace(_ workspace: Workspace, didRemoveBlock block: Block) {
     if !block.topLevel {
       // We only need to remove layout trees for top-level blocks
       return

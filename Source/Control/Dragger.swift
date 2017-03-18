@@ -87,12 +87,17 @@ public final class Dragger: NSObject {
       // Start a new connection group for this block group layout
       let newConnectionGroup = connectionManager.startGroup(forBlock: block)
 
+      // Start a move event for this block
+      let workspace = workspaceLayoutCoordinator.workspaceLayout.workspace
+      let moveEvent = BlockMoveEvent(workspace: workspace, block: block)
+
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
         blockLayout: layout,
         blockLayoutStartPosition: layout.absolutePosition,
         touchStartPosition: touchPosition,
-        connectionGroup: newConnectionGroup
+        connectionGroup: newConnectionGroup,
+        moveEvent: moveEvent
       )
 
       _dragGestureData[layout.uuid] = dragGestureData
@@ -123,8 +128,16 @@ public final class Dragger: NSObject {
     let position = gestureData.blockLayoutStartPosition +
       (touchPosition - gestureData.touchStartPosition)
 
+    // Disable event capturing for temporary moves. Only the final position is of importance to us
+    // and by disabling this event, we don't generate a lot of potentially unmerge-able events
+    // (when multiple blocks are dragged simultaneously).
+    EventManager.sharedInstance.isEnabled = false
+
     // Move to the new position (only update the canvas size at the very end of the drag)
     layout.parentBlockGroupLayout?.move(toWorkspacePosition: position, updateCanvasSize: false)
+
+    // Re-enable event capturing.
+    EventManager.sharedInstance.isEnabled = true
 
     // Update the highlighted connection for this drag
     updateHighlightedConnection(forDrag: gestureData)
@@ -144,6 +157,13 @@ public final class Dragger: NSObject {
     }
 
     Layout.animate {
+      // Add move event for the current position of block, since it wasn't being captured
+      // while the block was moving.
+      if let drag = _dragGestureData[layout.uuid] {
+        drag.moveEvent.recordNewValues()
+        EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+      }
+
       // Remove the highlight for this block
       layout.highlighted = false
       layout.rootBlockGroupLayout?.dragging = false
@@ -183,6 +203,13 @@ public final class Dragger: NSObject {
    - parameter layout: The `BlockLayout`.
   */
   public func cancelDraggingBlockLayout(_ layout: BlockLayout) {
+    // Add move event for the current position of block, since it wasn't being captured
+    // while the block was moving.
+    if let drag = _dragGestureData[layout.uuid] {
+      drag.moveEvent.recordNewValues()
+      EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+    }
+
     // Remove the highlight for this block
     layout.highlighted = false
     layout.rootBlockGroupLayout?.dragging = false
@@ -283,16 +310,21 @@ private class DragGestureData {
   /// Group of connections from the connection manager at the beginning of the pan gesture.
   fileprivate let connectionGroup: ConnectionManager.Group
 
+  /// Event capturing the positional movement of a block during the lifespan of the drag.
+  fileprivate let moveEvent: BlockMoveEvent
+
   /// Stores the current connection that is being highlighted because of this drag gesture
   fileprivate weak var highlightedConnection: Connection?
 
   // MARK: - Initializers
 
   fileprivate init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
-    touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group) {
-      self.blockLayout = blockLayout
-      self.blockLayoutStartPosition = blockLayoutStartPosition
-      self.touchStartPosition = touchStartPosition
-      self.connectionGroup = connectionGroup
+    touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group,
+    moveEvent: BlockMoveEvent) {
+    self.blockLayout = blockLayout
+    self.blockLayoutStartPosition = blockLayoutStartPosition
+    self.touchStartPosition = touchStartPosition
+    self.connectionGroup = connectionGroup
+    self.moveEvent = moveEvent
   }
 }

@@ -98,8 +98,8 @@ open class MutatorIfElseView: LayoutView {
       MutatorIfElseViewPopoverController(mutatorIfElseLayout: mutatorIfElseLayout)
     viewController.preferredContentSize = CGSize(width: 220, height: 100)
 
-    // Preserve the current input connections so that subsequent mutations don't disconnect them
-    mutatorIfElseLayout.preserveCurrentInputConnections()
+    // Start new mutation session to automatically preserve connections as the block is mutated
+    mutatorIfElseLayout.beginMutationSession()
 
     popoverDelegate?.layoutView(self,
                                 requestedToPresentPopoverViewController: viewController,
@@ -177,6 +177,18 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
     }
   }
 
+  // MARK: - Perform Mutation
+
+  fileprivate func performMutation() {
+    do {
+      try EventManager.sharedInstance.groupAndFireEvents {
+        try mutatorIfElseLayout.performMutation()
+      }
+    } catch let error {
+      bky_assertionFailure("Could not update if/else block: \(error)")
+    }
+  }
+
   // MARK: - Else Mutation
 
   fileprivate dynamic func updateElseCount() {
@@ -184,7 +196,7 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
       let accessoryView = cell.accessoryView as? UISwitch
     {
       mutatorIfElseLayout.elseStatement = accessoryView.isOn
-      try? mutatorIfElseLayout.performMutation()
+      performMutation()
     }
   }
 }
@@ -196,6 +208,6 @@ extension MutatorIfElseViewPopoverController: IntegerIncrementerViewDelegate {
     _ integerIncrementerView: IntegerIncrementerView, didChangeToValue value: Int)
   {
     mutatorIfElseLayout.elseIfCount = value
-    try? mutatorIfElseLayout.performMutation()
+    performMutation()
   }
 }

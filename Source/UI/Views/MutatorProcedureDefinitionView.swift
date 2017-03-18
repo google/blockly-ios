@@ -96,8 +96,8 @@ open class MutatorProcedureDefinitionView: LayoutView {
 
     let viewController = MutatorProcedureDefinitionPopoverController(mutatorLayout: mutatorLayout)
 
-    // Preserve the current input connections so that subsequent mutations don't disconnect them
-    mutatorLayout.preserveCurrentInputConnections()
+    // Start new mutation session to automatically preserve connections as the block is mutated
+    mutatorLayout.beginMutationSession()
 
     popoverDelegate?.layoutView(self,
                                 requestedToPresentPopoverViewController: viewController,
@@ -410,7 +410,9 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
   func performMutation() {
     do {
-      try mutatorLayout.performMutation()
+      try EventManager.sharedInstance.groupAndFireEvents {
+        try mutatorLayout.performMutation()
+      }
     } catch let error {
       bky_assertionFailure("Could not perform mutation: \(error)")
     }

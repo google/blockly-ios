@@ -99,12 +99,13 @@ open class FieldLayout: Layout {
   // MARK: - Change Events
 
   /**
-   Automatically captures and fires a `ChangeEvent` for `self.field`, based on its state before
-   and after running a given closure block.
+   Automatically captures a `ChangeEvent` for `self.field`, based on its state before
+   and after running a given closure block. This event is then added to the pending events queue
+   on `EventManager.sharedInstance`.
 
    - parameter closure: A closure to execute, that will change the state of `self.field`.
    */
-  open func captureAndFireChangeEvent(_ closure: () -> Void) {
+  open func captureChangeEvent(_ closure: () -> Void) {
     if let workspace = firstAncestor(ofType: WorkspaceLayout.self)?.workspace,
       let block = field.sourceInput?.sourceBlock
     {
@@ -121,7 +122,6 @@ open class FieldLayout: Layout {
           workspace: workspace, block: block, field: field,
           oldValue: anOldValue, newValue: aNewValue)
         EventManager.sharedInstance.addPendingEvent(event)
-        EventManager.sharedInstance.firePendingEvents()
       }
     } else {
       // Just run update

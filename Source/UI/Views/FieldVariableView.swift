@@ -155,7 +155,8 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
 
     let options = fieldVariableLayout.variables
     let value = viewController.options[optionIndex].value
-    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+    popoverDelegate?.layoutView(
+      self, requestedToDismissPopoverViewController: viewController, animated: false)
     if (optionIndex == options.count) {
       // Pop up a dialog to rename the variable.
       renameVariable(fieldVariableLayout: fieldVariableLayout)
@@ -164,7 +165,9 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       removeVariable(fieldVariableLayout: fieldVariableLayout)
     } else {
       // Change to a new variable
-      fieldVariableLayout.changeToExistingVariable(value)
+      EventManager.sharedInstance.groupAndFireEvents {
+        fieldVariableLayout.changeToExistingVariable(value)
+      }
     }
   }
 
@@ -189,7 +192,9 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         return
       }
 
-      fieldVariableLayout.renameVariable(to: newName)
+      EventManager.sharedInstance.groupAndFireEvents {
+        fieldVariableLayout.renameVariable(to: newName)
+      }
     }
     renameView.addAction(renameAlertAction)
 
@@ -205,8 +210,10 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
     let variableCount = fieldVariableLayout.numberOfVariableReferences()
     if variableCount == 1 {
-      // If this is the only instance of this variable, remove it.
-      fieldVariableLayout.removeVariable()
+      EventManager.sharedInstance.groupAndFireEvents {
+        // If this is the only instance of this variable, remove it.
+        fieldVariableLayout.removeVariable()
+      }
     } else {
       // Otherwise, verify the user intended to remove all instances of this variable.
       let removeView = UIAlertController(title:
@@ -214,7 +221,9 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         message: "", preferredStyle: .alert)
       removeView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
       removeView.addAction(UIAlertAction(title: "Remove", style: .default) { _ in
-        fieldVariableLayout.removeVariable()
+        EventManager.sharedInstance.groupAndFireEvents {
+          fieldVariableLayout.removeVariable()
+        }
       })
 
       popoverDelegate?.layoutView(self, requestedToPresentViewController: removeView)

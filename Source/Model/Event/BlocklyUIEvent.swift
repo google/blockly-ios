@@ -83,7 +83,7 @@ public final class BlocklyUIEvent: BlocklyEvent {
    - parameter newValue: [Optional] The value after the event. Booleans are mapped to `true` and
    `false`. Defaults to `nil`.
    */
-  public required init(element: Element, workspace: Workspace, block: Block?,
+  public init(element: Element, workspace: Workspace, block: Block?,
                        oldValue: String? = nil, newValue: String? = nil)
   {
     self.element = element
@@ -100,7 +100,7 @@ public final class BlocklyUIEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyUIEvent` object.
    */
-  public required init(json: [String: Any]) throws {
+  public init(json: [String: Any]) throws {
     if let element = Element(string: json[BlocklyEvent.JSON_ELEMENT] as? String ?? "") {
       self.element = element
     } else {

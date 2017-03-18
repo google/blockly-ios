@@ -64,7 +64,7 @@ open class FieldAngleLayout: FieldLayout {
    */
   open func updateAngle(fromText text: String) {
     if let newAngle = Int(text) { // Only update it if it's a valid value
-      captureAndFireChangeEvent {
+      captureChangeEvent {
         // Setting to a new angle automatically fires a listener to update the layout
         fieldAngle.angle = newAngle
       }

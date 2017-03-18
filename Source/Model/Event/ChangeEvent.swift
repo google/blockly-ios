@@ -81,22 +81,22 @@ public final class ChangeEvent: BlocklyEvent {
   /**
    Constructs a `ChangeEvent`, signifying block's value changed.
 
-   - parameter workspace: The workspace containing the change.
-   - parameter block: The block containing the change.
+   - parameter workspaceID: The workspace ID containing the change.
+   - parameter blockID: The ID string of the block affected.
    - parameter field: [Optional] The field containing the change, if the change is a field value.
      Defaults to `nil`.
    - parameter oldValue: [Optional] The original value. Defaults to `nil`.
    - parameter newValue: [Optional] The new value. Defaults to `nil`.
    */
-  public required init(element: Element, workspace: Workspace, block: Block,
-               field: Field? = nil, oldValue: String? = nil, newValue: String? = nil)
+  public init(element: Element, workspaceID: String, blockID: String,
+               fieldName: String? = nil, oldValue: String? = nil, newValue: String? = nil)
   {
     self.element = element
-    self.fieldName = field?.name
+    self.fieldName = fieldName
     self.oldValue = oldValue
     self.newValue = newValue
     super.init(
-      type: ChangeEvent.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil, blockID: block.uuid)
+      type: ChangeEvent.EVENT_TYPE, workspaceID: workspaceID, groupID: nil, blockID: blockID)
   }
 
   /**
@@ -106,7 +106,7 @@ public final class ChangeEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown when the JSON could not be parsed into a `ChangeEvent` object.
    */
-  public required init(json: [String: Any]) throws {
+  public init(json: [String: Any]) throws {
     if let element = Element(string: json[BlocklyEvent.JSON_ELEMENT] as? String ?? "") {
       self.element = element
       self.fieldName = json[BlocklyEvent.JSON_NAME] as? String
@@ -135,8 +135,8 @@ public final class ChangeEvent: BlocklyEvent {
   public static func commentTextEvent(
     workspace: Workspace, block: Block, oldValue: String, newValue: String) -> ChangeEvent
   {
-    return ChangeEvent(
-      element: .comment, workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+    return ChangeEvent(element: .comment, workspaceID: workspace.uuid,
+                       blockID: block.uuid, oldValue: oldValue, newValue: newValue)
   }
 
   /**
@@ -147,7 +147,7 @@ public final class ChangeEvent: BlocklyEvent {
    - returns: The new `ChangeEvent`.
    */
   public static func disabledStateEvent(workspace: Workspace, block: Block) -> ChangeEvent {
-    return ChangeEvent(element: .disabled, workspace: workspace, block: block,
+    return ChangeEvent(element: .disabled, workspaceID: workspace.uuid, blockID: block.uuid,
                        oldValue: !block.disabled ? "true" : "false",
                        newValue: block.disabled ? "true" : "false")
   }
@@ -166,8 +166,8 @@ public final class ChangeEvent: BlocklyEvent {
     workspace: Workspace, block: Block, field: Field, oldValue: String, newValue: String)
     -> ChangeEvent
   {
-    return ChangeEvent(element: .field, workspace: workspace, block: block,
-                       field: field, oldValue: oldValue, newValue: newValue)
+    return ChangeEvent(element: .field, workspaceID: workspace.uuid, blockID: block.uuid,
+                       fieldName: field.name, oldValue: oldValue, newValue: newValue)
   }
 
   /**
@@ -178,7 +178,7 @@ public final class ChangeEvent: BlocklyEvent {
    - returns: The new `ChangeEvent`.
    */
   public static func inlineStateEvent(workspace: Workspace, block: Block) -> ChangeEvent {
-    return ChangeEvent(element: .inline, workspace: workspace, block: block,
+    return ChangeEvent(element: .inline, workspaceID: workspace.uuid, blockID: block.uuid,
                        oldValue: (!block.inputsInline ? "true" : "false"),
                        newValue: (block.inputsInline ? "true" : "false"))
   }
@@ -195,8 +195,8 @@ public final class ChangeEvent: BlocklyEvent {
   public static func mutateEvent(
     workspace: Workspace, block: Block, oldValue: String?, newValue: String?) -> ChangeEvent
   {
-    return ChangeEvent(
-      element: .mutate, workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+    return ChangeEvent(element: .mutate, workspaceID: workspace.uuid, blockID: block.uuid,
+                       oldValue: oldValue, newValue: newValue)
   }
 
   // MARK: - Super
@@ -211,5 +211,28 @@ public final class ChangeEvent: BlocklyEvent {
     json["newValue"] = newValue
 
     return json
+  }
+
+  public override func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
+    if let changeEvent = event as? ChangeEvent,
+      let blockID = self.blockID,
+      workspaceID == changeEvent.workspaceID &&
+      groupID == changeEvent.groupID &&
+      blockID == changeEvent.blockID &&
+      element == changeEvent.element &&
+      fieldName == changeEvent.fieldName
+    {
+      let event = ChangeEvent(
+        element: element, workspaceID: workspaceID, blockID: blockID,
+        fieldName: fieldName, oldValue: oldValue, newValue: changeEvent.newValue)
+      event.groupID = groupID
+      return event
+    }
+
+    return nil
+  }
+
+  public override func isDiscardable() -> Bool {
+    return oldValue == newValue
   }
 }
