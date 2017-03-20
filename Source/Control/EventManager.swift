@@ -31,6 +31,8 @@ public protocol EventManagerListener: class {
 
 /**
  Manages the use of events across Blockly.
+
+ - note: This class is not thread-safe and should only be accessed from the main thread.
  */
 @objc(BKYEventManager)
 public final class EventManager: NSObject {
@@ -88,8 +90,10 @@ public final class EventManager: NSObject {
    */
   public func firePendingEvents() {
     guard !_firingEvents else {
-      // The event manager is currently firing events. Schedule it to fire the next batch of events
-      // after it is done its current batch.
+      // The event manager is currently firing events. This means that one of the current listeners
+      // of `EventManager` is trying to fire more events before the current batch of events have
+      // been fully fired. For now, do nothing, but schedule to fire the next batch of events
+      // immediately after the current batch has been fired for all remaining listeners.
       _firePendingEventsAgain = true
       return
     }
@@ -110,7 +114,9 @@ public final class EventManager: NSObject {
     _firingEvents = false
 
     if _firePendingEventsAgain {
-      // Immediately fire the next batch of events
+      // Immediately fire the next batch of events.
+      // Note: It's possible this recurses infinitely and crashes. This is desired behavior though
+      // so devs can find the problem quickly.
       _firePendingEventsAgain = false
       firePendingEvents()
     }

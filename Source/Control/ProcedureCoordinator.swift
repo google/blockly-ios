@@ -334,8 +334,8 @@ public class ProcedureCoordinator: NSObject {
         let mutatorCallerLayout = callerBlock.layout?.mutatorLayout as? MutatorProcedureCallerLayout
       {
         // NOTE: mutatorLayout is used here since it will preserve connections for existing inputs
-        // if the parameters have been reordered (when starting a new mutation session).
-        mutatorCallerLayout.beginMutationSession()
+        // if the parameters have been reordered.
+        mutatorCallerLayout.preserveCurrentInputConnections()
         mutatorCallerLayout.procedureName = newName
         mutatorCallerLayout.parameters = parameters
 

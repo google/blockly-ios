@@ -45,24 +45,6 @@ open class MutatorLayout: Layout {
   // MARK: - Abstract
 
   /**
-   Performs any work prior to starting a new mutation "session". A session is defined as performing
-   multiple mutations together. An example of a session would be opening an "if/else" mutator
-   popover, performing multiple mutations to update the number of else-if and else statements, and
-   then closing the mutator popover.
-
-   With this method, a mutator layout can keep track of any existing state of a block that should
-   persist as mutations are performed on the block. For example, an "if/else" mutator layout could
-   use this method to store the existing connections of the block and then during
-   `performMutation()`, try to restore the connections of the block even as the number of else-if
-   and else statements are updated.
-
-   The default implementation does nothing. Subclasses may override this method to specify
-   behavior for their mutators.
-   */
-  open func beginMutationSession() {
-  }
-
-  /**
    Performs any work required to maintain the integrity of the layout hierarchy, in addition to
    calling `mutator.mutateBlock()`.
 

@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import AEXML
 import Foundation
 
 /**
@@ -59,23 +60,6 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
     self.contentSize = .zero
   }
 
-  public override func beginMutationSession() {
-    // For all inputs created by this mutator, save the currently connected target connection for
-    // each of them. Any subsequent call to `performMutation()` will ensure that these saved target
-    // connections remain connected to that original input, as long as the input still exists
-    // post-mutation.
-    let inputs = mutatorProcedureCaller.sortedMutatorInputs()
-    savedTargetConnections.removeAllObjects()
-
-    for (i, input) in inputs.enumerated() {
-      if let targetConnection = input.connection?.targetConnection,
-        i < parameters.count
-      {
-        savedTargetConnections.setObject(targetConnection, forKey: parameters[i].uuid as NSString)
-      }
-    }
-  }
-
   public override func performMutation() throws {
     guard let block = mutatorProcedureCaller.block,
       let layoutCoordinator = self.layoutCoordinator else
@@ -106,6 +90,34 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
     Layout.animate {
       layoutCoordinator.blockBumper
         .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+    }
+  }
+
+  public override func performMutation(fromXML xml: AEXMLElement) throws {
+    // Since this call is most likely being triggered from an event, clear all saved target
+    // connections, before updating via XML
+    savedTargetConnections.removeAllObjects()
+    try super.performMutation(fromXML: xml)
+  }
+
+  // MARK: - Pre-Mutation
+
+  /**
+   For all inputs created by this mutator, save the currently connected target connection
+   for each of them. Any subsequent call to `performMutation()` will ensure that these saved target
+   connections remain connected to that original input, as long as the input still exists
+   post-mutation.
+   */
+  public func preserveCurrentInputConnections() {
+    let inputs = mutatorProcedureCaller.sortedMutatorInputs()
+    savedTargetConnections.removeAllObjects()
+
+    for (i, input) in inputs.enumerated() {
+      if let targetConnection = input.connection?.targetConnection,
+        i < parameters.count
+      {
+        savedTargetConnections.setObject(targetConnection, forKey: parameters[i].uuid as NSString)
+      }
     }
   }
 

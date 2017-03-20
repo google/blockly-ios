@@ -98,8 +98,8 @@ open class MutatorIfElseView: LayoutView {
       MutatorIfElseViewPopoverController(mutatorIfElseLayout: mutatorIfElseLayout)
     viewController.preferredContentSize = CGSize(width: 220, height: 100)
 
-    // Start new mutation session to automatically preserve connections as the block is mutated
-    mutatorIfElseLayout.beginMutationSession()
+    // Preserve the current input connections so that subsequent mutations don't disconnect them
+    mutatorIfElseLayout.preserveCurrentInputConnections()
 
     popoverDelegate?.layoutView(self,
                                 requestedToPresentPopoverViewController: viewController,

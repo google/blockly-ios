@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import AEXML
 import Foundation
 
 /**
@@ -64,16 +65,6 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
     self.contentSize = WorkspaceSize(width: 32, height: 32)
   }
 
-  public override func beginMutationSession() {
-    // For all inputs created by this mutator, save the currently connected target connection for
-    // each of them. Any subsequent call to `performMutation()` will ensure that these saved target
-    // connections remain connected to that original input, as long as the input still exists
-    // post-mutation.
-    mutatorHelper.clearSavedTargetConnections()
-    mutatorHelper.saveTargetConnections(
-      fromInputs: mutatorProcedureDefinition.sortedMutatorInputs())
-  }
-
   public override func performMutation() throws {
     guard let block = mutatorProcedureDefinition.block,
       let layoutCoordinator = self.layoutCoordinator else
@@ -112,6 +103,27 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
     NotificationCenter.default.post(
       name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation,
       object: self)
+  }
+
+  public override func performMutation(fromXML xml: AEXMLElement) throws {
+    // Since this call is most likely being triggered from an event, clear all saved target
+    // connections, before updating via XML
+    mutatorHelper.clearSavedTargetConnections()
+    try super.performMutation(fromXML: xml)
+  }
+
+  // MARK: - Pre-Mutation
+
+  /**
+   For all inputs created by this mutator, save the currently connected target connection for
+   each of them. Any subsequent call to `performMutation()` will ensure that these saved target
+   connections remain connected to that original input, as long as the input still exists
+   post-mutation.
+   */
+  public func preserveCurrentInputConnections() {
+    mutatorHelper.clearSavedTargetConnections()
+    mutatorHelper.saveTargetConnections(
+      fromInputs: mutatorProcedureDefinition.sortedMutatorInputs())
   }
 
   // MARK: - Queries

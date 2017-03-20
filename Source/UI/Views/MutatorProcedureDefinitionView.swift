@@ -96,8 +96,8 @@ open class MutatorProcedureDefinitionView: LayoutView {
 
     let viewController = MutatorProcedureDefinitionPopoverController(mutatorLayout: mutatorLayout)
 
-    // Start new mutation session to automatically preserve connections as the block is mutated
-    mutatorLayout.beginMutationSession()
+    // Preserve the current input connections so that subsequent mutations don't disconnect them
+    mutatorLayout.preserveCurrentInputConnections()
 
     popoverDelegate?.layoutView(self,
                                 requestedToPresentPopoverViewController: viewController,

@@ -1189,7 +1189,6 @@ extension WorkbenchViewController {
           // Update the mutator from xml
           let mutatorLayout = block.mutator?.layout
           let xml = try AEXMLDocument(xml: value)
-          mutatorLayout?.beginMutationSession()
           try mutatorLayout?.performMutation(fromXML: xml)
         } catch let error {
           bky_assertionFailure("Can't update mutator from xml [\"\(value)\"]:\n\(error)")
