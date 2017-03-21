@@ -180,6 +180,9 @@ public class ProcedureCoordinator: NSObject {
       return
     }
 
+    // Remove all caller blocks that use this definition block
+    removeProcedureCallerBlocks(forDefinitionBlock: definitionBlock)
+
     // Remove from set of definition blocks
     definitionBlocks.remove(definitionBlock)
 
@@ -193,30 +196,6 @@ public class ProcedureCoordinator: NSObject {
 
     // Remove procedure name from manager
     procedureNameManager.removeName(definitionBlock.procedureName)
-
-    // Remove all caller blocks that use this definition block
-    do {
-      for callerBlock in callerBlocks {
-        if procedureNameManager.namesAreEqual(
-            callerBlock.procedureName, definitionBlock.procedureName)
-        {
-          if let toolboxCoordinator = firstToolboxProcedureLayoutCoordinator(),
-            toolboxCoordinator.workspaceLayout.workspace.containsBlock(callerBlock)
-          {
-            // Remove from toolbox
-            try toolboxCoordinator.removeBlockTree(callerBlock)
-          } else if let workspaceCoordinator =
-              workbench?.workspaceViewController?.workspaceLayoutCoordinator,
-            workspaceCoordinator.workspaceLayout.workspace.containsBlock(callerBlock)
-          {
-            // Remove from main workspace
-            try workspaceCoordinator.removeBlockTree(callerBlock)
-          }
-        }
-      }
-    } catch let error {
-      bky_assertionFailure("Could not remove caller blocks from toolbox/workspace: \(error)")
-    }
   }
 
   fileprivate func upsertVariables(fromDefinitionBlock block: Block) {
@@ -326,6 +305,35 @@ public class ProcedureCoordinator: NSObject {
     callerBlocks.remove(callerBlock)
   }
 
+  fileprivate func removeProcedureCallerBlocks(forDefinitionBlock definitionBlock: Block) {
+    guard definitionBlock.isProcedureDefinition else {
+      return
+    }
+
+    do {
+      for callerBlock in callerBlocks {
+        if procedureNameManager.namesAreEqual(
+          callerBlock.procedureName, definitionBlock.procedureName)
+        {
+          if let toolboxCoordinator = firstToolboxProcedureLayoutCoordinator(),
+            toolboxCoordinator.workspaceLayout.workspace.containsBlock(callerBlock)
+          {
+            // Remove from toolbox
+            try toolboxCoordinator.removeBlockTree(callerBlock)
+          } else if let workspaceCoordinator =
+            workbench?.workspaceViewController?.workspaceLayoutCoordinator,
+            workspaceCoordinator.workspaceLayout.workspace.containsBlock(callerBlock)
+          {
+            // Remove from main workspace
+            try workspaceCoordinator.removeBlockTree(callerBlock)
+          }
+        }
+      }
+    } catch let error {
+      bky_assertionFailure("Could not remove caller blocks from toolbox/workspace: \(error)")
+    }
+  }
+
   fileprivate func updateProcedureCallers(
     oldName: String, newName: String, parameters: [ProcedureParameter])
   {
@@ -372,6 +380,16 @@ extension ProcedureCoordinator: WorkspaceListener {
       trackProcedureDefinitionBlock(block)
     } else if block.isProcedureCaller {
       trackProcedureCallerBlock(block, autoCreateDefinition: true)
+    }
+  }
+
+  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
+    if block.isProcedureDefinition {
+      // Remove all caller blocks for the definition before removing the definition block. If
+      // the caller blocks are removed after the definition block, then it causes problems undoing
+      // the event stack where a caller block is recreated without any definition block. Reversing
+      // the order fixes this problem.
+      removeProcedureCallerBlocks(forDefinitionBlock: block)
     }
   }
 

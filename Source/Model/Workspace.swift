@@ -26,7 +26,15 @@ public protocol WorkspaceListener: class {
    - parameter workspace: The workspace that added a block.
    - parameter block: The block that was added.
   */
-  func workspace(_ workspace: Workspace, didAddBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, didAddBlock block: Block)
+
+  /**
+   Event that is called when a block will be removed from a workspace.
+
+   - parameter workspace: The workspace that will remove a block.
+   - parameter block: The block that will be removed.
+   */
+  @objc optional func workspace(_ workspace: Workspace, willRemoveBlock block: Block)
 
   /**
    Event that is called when a block has been removed from a workspace.
@@ -34,7 +42,7 @@ public protocol WorkspaceListener: class {
    - parameter workspace: The workspace that removed a block.
    - parameter block: The block that was removed.
    */
-  func workspace(_ workspace: Workspace, didRemoveBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, didRemoveBlock block: Block)
 }
 
 /**
@@ -177,7 +185,7 @@ open class Workspace : NSObject {
     // Notify delegate for each block addition, now that all of them have been added to the
     // workspace
     for block in newBlocks {
-      listeners.forEach { $0.workspace(self, didAddBlock: block) }
+      listeners.forEach { $0.workspace?(self, didAddBlock: block) }
     }
   }
 
@@ -199,17 +207,22 @@ open class Workspace : NSObject {
 
     var removedBlocks = [Block]()
 
-    // Remove blocks from workspace
+    // Figure out which blocks to remove from the workspace and fire listeners
     for block in rootBlock.allBlocksForTree() {
       if containsBlock(block) {
         removedBlocks.append(block)
-        allBlocks[block.uuid] = nil
+        listeners.forEach { $0.workspace?(self, willRemoveBlock: block) }
       }
+    }
+
+    // Remove blocks at the same time
+    for block in removedBlocks {
+      allBlocks[block.uuid] = nil
     }
 
     // Fire listeners for all blocks that were removed
     for block in removedBlocks {
-      listeners.forEach { $0.workspace(self, didRemoveBlock: block) }
+      listeners.forEach { $0.workspace?(self, didRemoveBlock: block) }
     }
   }
 
