@@ -92,7 +92,14 @@ public final class DefaultBlockView: BlockView {
     }
 
     runAnimatableCode(animated) {
-      CATransaction.begin()
+      // Note: This code isn't wrapped inside an explicit CATransaction since that will render the
+      // changes immediately. The problem with this is that all other views use the implicit
+      // CATransaction that is created for every run loop. If we use a different CATransaction,
+      // views may render in a non-synchronous way.
+      
+      // Potentially disable animations from running. Store the previous value so it can be restored
+      // later.
+      let disabledActions = CATransaction.disableActions()
       CATransaction.setDisableActions(self._disableLayerChangeAnimations || !animated)
 
       if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
@@ -176,7 +183,8 @@ public final class DefaultBlockView: BlockView {
         }
       }
 
-      CATransaction.commit()
+      // Restore disabled actions to previous value
+      CATransaction.setDisableActions(disabledActions)
 
       // Re-enable layer animations for any future changes
       self._disableLayerChangeAnimations = false
