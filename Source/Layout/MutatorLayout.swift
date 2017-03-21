@@ -72,12 +72,13 @@ open class MutatorLayout: Layout {
   // MARK: - Change Event
 
   /**
-   Automatically captures and fires a `ChangeEvent` for `self.mutator`, based on its state before
-   and after running a given closure block.
+   Automatically captures a `ChangeEvent` for `self.mutator`, based on its state before
+   and after running a given closure block. This event is then added to the pending events queue
+   on `EventManager.sharedInstance`.
 
    - parameter closure: A closure to execute, that will change the state of `self.mutator`.
    */
-  public func captureAndFireChangeEvent(closure: () throws -> Void) rethrows {
+  public func captureChangeEvent(closure: () throws -> Void) rethrows {
     if let workspace = layoutCoordinator?.workspaceLayout.workspace,
       let block = mutator.block
     {
@@ -90,7 +91,6 @@ open class MutatorLayout: Layout {
         let event = ChangeEvent.mutateEvent(
           workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
         EventManager.sharedInstance.addPendingEvent(event)
-        EventManager.sharedInstance.firePendingEvents()
       }
     } else {
       // Just run closure

@@ -144,11 +144,13 @@ extension FieldNumberView: UITextFieldDelegate {
   }
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
-    // Only commit the change after the user has finished editing the field
-    fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
+    EventManager.sharedInstance.groupAndFireEvents {
+      // Only commit the change after the user has finished editing the field
+      fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
 
-    // Update the text field based on the current fieldNumber
-    updateTextFieldFromFieldNumber()
+      // Update the text field based on the current fieldNumber
+      updateTextFieldFromFieldNumber()
+    }
   }
 
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

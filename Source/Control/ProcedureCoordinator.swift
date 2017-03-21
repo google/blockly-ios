@@ -375,7 +375,7 @@ extension ProcedureCoordinator: WorkspaceListener {
     }
   }
 
-  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
+  public func workspace(_ workspace: Workspace, didRemoveBlock block: Block) {
     if block.isProcedureDefinition {
       untrackProcedureDefinitionBlock(block)
     } else if block.isProcedureCaller {

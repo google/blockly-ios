@@ -43,7 +43,7 @@ public final class CreateEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
    */
-  public required init(workspace: Workspace, block: Block) throws {
+  public init(workspace: Workspace, block: Block) throws {
     xml = try block.toXML()
     blockIDs = block.allBlocksForTree().map { $0.uuid }
 
@@ -58,7 +58,7 @@ public final class CreateEvent: BlocklyEvent {
    - throws:
    `BlocklyError`: Thrown when the JSON could not be parsed into a `CreateEvent` object.
    */
-  public required init(json: [String: Any]) throws {
+  public init(json: [String: Any]) throws {
     xml = json[BlocklyEvent.JSON_XML] as? String ?? ""
     blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
     try super.init(type: CreateEvent.EVENT_TYPE, json: json)

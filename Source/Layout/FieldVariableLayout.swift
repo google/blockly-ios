@@ -123,7 +123,7 @@ open class FieldVariableLayout: FieldLayout {
         return
       }
 
-      captureAndFireChangeEvent {
+      captureChangeEvent {
         do {
           try fieldVariable.setVariable(variable)
         } catch let error {
@@ -140,7 +140,7 @@ open class FieldVariableLayout: FieldLayout {
    */
   open func renameVariable(to newName: String) {
     let oldName = self.variable
-    captureAndFireChangeEvent {
+    captureChangeEvent {
       do {
         try fieldVariable.setVariable(newName)
       } catch let error {

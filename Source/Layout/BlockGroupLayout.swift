@@ -207,9 +207,9 @@ open class BlockGroupLayout: Layout {
       }
 
       if let block = blockLayouts.first?.block {
-        let event = MoveEvent(workspace: workspaceLayout.workspace, block: block)
+        let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: block)
         updatePosition()
-        try? event.recordNewValues(fromBlock: block)
+        event.recordNewValues()
         EventManager.sharedInstance.addPendingEvent(event)
       } else {
         bky_debugPrint("An empty block group was moved. This may be the result of abnormal state.")

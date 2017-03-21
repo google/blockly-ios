@@ -410,7 +410,9 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
   func performMutation() {
     do {
-      try mutatorLayout.performMutation()
+      try EventManager.sharedInstance.groupAndFireEvents {
+        try mutatorLayout.performMutation()
+      }
     } catch let error {
       bky_assertionFailure("Could not perform mutation: \(error)")
     }

@@ -71,7 +71,7 @@ open class FieldNumberLayout: FieldLayout {
    automatically sets `self.currentTextValue` to `self.fieldNumber.textValue`.
    */
   open func setValueFromLocalizedText(_ text: String) {
-    captureAndFireChangeEvent {
+    captureChangeEvent {
       fieldNumber.setValueFromLocalizedText(text)
 
       // Update `currentTextValue` to match the current localized text value of `fieldNumber`,

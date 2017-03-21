@@ -1090,8 +1090,11 @@ extension WorkbenchViewController {
 
     // Check current parent of block
     if let inferiorConnection = block.inferiorConnection {
-      if let currentParent = inferiorConnection.targetBlock, currentParent.uuid == parentID {
-        // No-op: The block is already connected to the parent it should be connected to.
+      if let currentParent = inferiorConnection.targetBlock,
+        currentParent.uuid == parentID,
+        inferiorConnection.targetConnection?.sourceInput?.name == inputName
+      {
+        // No-op: The block is already connected to the target connection.
         return
       } else {
         do {
@@ -1184,8 +1187,9 @@ extension WorkbenchViewController {
       case .mutate:
         do {
           // Update the mutator from xml
+          let mutatorLayout = block.mutator?.layout
           let xml = try AEXMLDocument(xml: value)
-          try block.mutator?.layout?.performMutation(fromXML: xml)
+          try mutatorLayout?.performMutation(fromXML: xml)
         } catch let error {
           bky_assertionFailure("Can't update mutator from xml [\"\(value)\"]:\n\(error)")
         }
@@ -1510,6 +1514,10 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     // on-going drags when the screen is rotated).
 
     if touchState == .began {
+      if EventManager.sharedInstance.groupID == nil {
+        EventManager.sharedInstance.startGroup()
+      }
+
       let inToolbox = gesture.view == toolboxCategoryViewController.view
       let inTrash = gesture.view == _trashCanViewController.view
       // If the touch is in the toolbox, copy the block over to the workspace first.
@@ -1588,6 +1596,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
           removeUIStateValue(.trashCanHighlighted)
         }
 
+        EventManager.sharedInstance.stopGroup()
         EventManager.sharedInstance.firePendingEvents()
       }
     }

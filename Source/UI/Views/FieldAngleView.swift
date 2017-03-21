@@ -135,11 +135,13 @@ extension FieldAngleView: UITextFieldDelegate {
   }
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
-    // Only commit the change after the user has finished editing the field
-    fieldAngleLayout?.updateAngle(fromText: (textField.text ?? ""))
+    EventManager.sharedInstance.groupAndFireEvents {
+      // Only commit the change after the user has finished editing the field
+      fieldAngleLayout?.updateAngle(fromText: (textField.text ?? ""))
 
-    // Update the text from the layout
-    updateTextFieldFromLayout()
+      // Update the text from the layout
+      updateTextFieldFromLayout()
+    }
   }
 
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

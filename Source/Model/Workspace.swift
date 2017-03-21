@@ -29,12 +29,12 @@ public protocol WorkspaceListener: class {
   func workspace(_ workspace: Workspace, didAddBlock block: Block)
 
   /**
-   Event that is called when a block will be removed from a workspace.
+   Event that is called when a block has been removed from a workspace.
 
-   - parameter workspace: The workspace that will remove a block.
-   - parameter block: The block that will be removed.
+   - parameter workspace: The workspace that removed a block.
+   - parameter block: The block that was removed.
    */
-  func workspace(_ workspace: Workspace, willRemoveBlock block: Block)
+  func workspace(_ workspace: Workspace, didRemoveBlock block: Block)
 }
 
 /**
@@ -197,19 +197,19 @@ open class Workspace : NSObject {
         "to being removed from the workspace")
     }
 
-    var blocksToRemove = [Block]()
+    var removedBlocks = [Block]()
 
-    // Gather all blocks to be removed and notify the delegate
+    // Remove blocks from workspace
     for block in rootBlock.allBlocksForTree() {
       if containsBlock(block) {
-        blocksToRemove.append(block)
-        listeners.forEach { $0.workspace(self, willRemoveBlock: block) }
+        removedBlocks.append(block)
+        allBlocks[block.uuid] = nil
       }
     }
 
-    // Remove blocks
-    for block in blocksToRemove {
-      allBlocks[block.uuid] = nil
+    // Fire listeners for all blocks that were removed
+    for block in removedBlocks {
+      listeners.forEach { $0.workspace(self, didRemoveBlock: block) }
     }
   }
 

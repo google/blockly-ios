@@ -41,7 +41,7 @@ public class BlocklyEvent: NSObject {
   /// The ID for the workspace that triggered this event.
   public let workspaceID: String
   /// The ID for the group of related events.
-  public let groupID: String?
+  public var groupID: String?
   /// The ID of the primary or root affected block.
   public let blockID: String?
 
@@ -124,5 +124,74 @@ public class BlocklyEvent: NSObject {
     } else {
       throw BlocklyError(.jsonSerialization, "Could not serialize `self.toJSON()` into a String.")
     }
+  }
+
+  // MARK: - Filtering Events
+
+  /**
+   This method indicates if this event can be discarded so it doesn't get fired. An example of when
+   this might be true is for a `ChangeEvent` where no change is recorded between old and new values.
+
+   The default implementation of this method returns `false`. Subclasses may override this method
+   to specify individual behavior of when the event can be discarded, based on its current state.
+
+   - returns: `true` if this event can be discarded, or `false` otherwise.
+   */
+  public func isDiscardable() -> Bool {
+    return false
+  }
+
+  /**
+   Attempts to merge this event with the next chronological event that was fired, and returns the
+   result. If the events are incompatible and cannot be merged, `nil` is returned.
+
+   The default implementation of this method returns `nil`. Subclasses may override this method
+   to specify individual merge behavior with other events.
+
+   - parameter event: The next chronological event that was fired after this event.
+   - returns: If the events are compatible, this returns a new `BlocklyEvent` that is the result
+   of merging the two events together. Otherwise, `nil` is returned.
+   */
+  public func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
+    return nil
+  }
+}
+
+extension Array where Element: BlocklyEvent {
+  /**
+   Returns an array that filters any events that can be discarded (by checking `isDiscardable()`).
+
+   - returns: An array filtered of discardable events.
+   */
+  public func filterDiscardable() -> [BlocklyEvent] {
+    return self.filter({ !$0.isDiscardable() })
+  }
+
+  /**
+   Merges all events in the array, from beginning to end, by repeatedly calling
+   `merged(withNextChronologicalEvent:)` on adjacent events.
+
+   - returns: An array of merged events.
+   */
+  public func merged() -> [BlocklyEvent] {
+    var mergedEvents = self
+
+    var i = 0
+    while (i + 1) < mergedEvents.count {
+      let event1 = mergedEvents[i]
+      let event2 = mergedEvents[i + 1]
+
+      if let mergedEvent = event1.merged(withNextChronologicalEvent: event2) {
+        // Replace event1 and event2 with merged event. Don't iterate `i` since this new merged
+        // event could be merged with the next event.
+        mergedEvents.removeSubrange(i...(i + 1))
+        mergedEvents.insert(mergedEvent as! Element, at: i)
+      } else {
+        // Events couldn't be merged, iterate to next event
+        i += 1
+      }
+    }
+
+    return mergedEvents
   }
 }

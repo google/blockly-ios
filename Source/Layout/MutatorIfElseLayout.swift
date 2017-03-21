@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import AEXML
 import Foundation
 
 /**
@@ -71,7 +72,7 @@ public class MutatorIfElseLayout : MutatorLayout {
       fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
     // Update the definition of the block
-    try captureAndFireChangeEvent {
+    try captureChangeEvent {
       try mutatorIfElse.mutateBlock()
     }
 
@@ -86,6 +87,13 @@ public class MutatorIfElseLayout : MutatorLayout {
       layoutCoordinator.blockBumper
         .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
     }
+  }
+
+  public override func performMutation(fromXML xml: AEXMLElement) throws {
+    // Since this call is most likely being triggered from an event, clear all saved target
+    // connections, before updating via XML
+    mutatorHelper.clearSavedTargetConnections()
+    try super.performMutation(fromXML: xml)
   }
 
   // MARK: - Pre-Mutation

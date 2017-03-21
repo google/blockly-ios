@@ -75,7 +75,7 @@ open class FieldInputLayout: FieldLayout {
    - parameter text: The value used to update `self.fieldInput`.
    */
   open func updateText(_ text: String) {
-    captureAndFireChangeEvent {
+    captureChangeEvent {
       // Setting to new text automatically fires a listener to update the layout
       fieldInput.text = text
       currentTextValue = fieldInput.text

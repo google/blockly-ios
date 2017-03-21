@@ -144,7 +144,10 @@ extension FieldDropdownView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
     didSelectOptionIndex optionIndex: Int)
   {
-    fieldDropdownLayout?.updateSelectedIndex(optionIndex)
-    viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+    EventManager.sharedInstance.groupAndFireEvents {
+      fieldDropdownLayout?.updateSelectedIndex(optionIndex)
+      popoverDelegate?.layoutView(
+        self, requestedToDismissPopoverViewController: viewController, animated: true)
+    }
   }
 }

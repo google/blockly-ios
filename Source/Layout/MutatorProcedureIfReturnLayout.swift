@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import AEXML
 import Foundation
 
 /**
@@ -78,7 +79,7 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
       try mutatorHelper.removeShadowBlocksInReverseOrder(
         fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
-      try captureAndFireChangeEvent {
+      try captureChangeEvent {
         // Update the definition of the block
         try mutatorProcedureIfReturn.mutateBlock()
       }
@@ -98,6 +99,13 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
           .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
       }
     }
+  }
+
+  public override func performMutation(fromXML xml: AEXMLElement) throws {
+    // Since this call is most likely being triggered from an event, clear all saved target
+    // connections, before updating via XML
+    mutatorHelper.clearSavedTargetConnections()
+    try super.performMutation(fromXML: xml)
   }
 
   // MARK: - Pre-Mutation
