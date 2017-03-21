@@ -96,7 +96,7 @@ public final class DefaultBlockView: BlockView {
       // changes immediately. The problem with this is that all other views use the implicit
       // CATransaction that is created for every run loop. If we use a different CATransaction,
       // views may render in a non-synchronous way.
-      
+
       // Potentially disable animations from running. Store the previous value so it can be restored
       // later.
       let disabledActions = CATransaction.disableActions()
