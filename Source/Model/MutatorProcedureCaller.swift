@@ -101,7 +101,8 @@ extension MutatorProcedureCaller: Mutator {
 
     for parameter in appliedParameters {
       xml.addChild(name: "arg", value: nil, attributes: [
-        "name": parameter.name
+        "name": parameter.name,
+        "id": parameter.uuid
       ])
     }
 
@@ -116,7 +117,8 @@ extension MutatorProcedureCaller: Mutator {
     parameters.removeAll()
     for parameterXML in (mutationXML["arg"].all ?? []) {
       if let parameter = parameterXML.attributes["name"] {
-        parameters.append(ProcedureParameter(name: parameter))
+        let uuid = parameterXML.attributes["id"]
+        parameters.append(ProcedureParameter(name: parameter, uuid: uuid))
       }
     }
   }
