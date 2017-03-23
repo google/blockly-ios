@@ -93,7 +93,9 @@ open class FieldLayout: Layout {
    native value.
    */
   public func setValue(fromSerializedText text: String) throws {
-    try field.setValueFromSerializedText(text)
+    try captureChangeEvent {
+      try field.setValueFromSerializedText(text)
+    }
   }
 
   // MARK: - Change Events
@@ -105,13 +107,13 @@ open class FieldLayout: Layout {
 
    - parameter closure: A closure to execute, that will change the state of `self.field`.
    */
-  open func captureChangeEvent(_ closure: () -> Void) {
+  open func captureChangeEvent(_ closure: () throws -> Void) rethrows {
     if let workspace = firstAncestor(ofType: WorkspaceLayout.self)?.workspace,
       let block = field.sourceInput?.sourceBlock
     {
       // Capture values before and after running update
       let oldValue = try? field.serializedText()
-      closure()
+      try closure()
       let newValue = try? field.serializedText()
 
       if case let anOldValue?? = oldValue,
@@ -125,7 +127,7 @@ open class FieldLayout: Layout {
       }
     } else {
       // Just run update
-      closure()
+      try closure()
     }
   }
 }

@@ -69,13 +69,11 @@ public class ProcedureCoordinator: NSObject {
   public override init() {
     super.init()
 
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(procedureDefinitionDidPerformMutation(_:)),
-      name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation, object: nil)
+    EventManager.sharedInstance.addListener(self)
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self)
+    EventManager.sharedInstance.removeListener(self)
   }
 
   // MARK: - Workbench
@@ -145,11 +143,6 @@ public class ProcedureCoordinator: NSObject {
       procedureNameManager.generateUniqueName(definitionBlock.procedureName, addToList: true)
     definitionBlock.procedureName = uniqueProcedureName
 
-    // Track procedure name changes
-    if let procedureDefinitionNameInput = definitionBlock.procedureDefinitionNameInput {
-      procedureDefinitionNameInput.listeners.add(self)
-    }
-
     // Track block's current procedure name
     blockProcedureNames[definitionBlock.uuid] = uniqueProcedureName
 
@@ -185,11 +178,6 @@ public class ProcedureCoordinator: NSObject {
 
     // Remove from set of definition blocks
     definitionBlocks.remove(definitionBlock)
-
-    // Remove listener from name field
-    if let procedureDefinitionNameInput = definitionBlock.procedureDefinitionNameInput {
-      procedureDefinitionNameInput.listeners.remove(self)
-    }
 
     // Remove block procedure mapping
     blockProcedureNames[definitionBlock.uuid] = nil
@@ -349,6 +337,13 @@ public class ProcedureCoordinator: NSObject {
 
         do {
           try mutatorCallerLayout.performMutation()
+
+          if let blockLayout = mutatorCallerLayout.mutator.block?.layout {
+            Layout.animate {
+              mutatorCallerLayout.layoutCoordinator?.blockBumper
+                .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+            }
+          }
         } catch let error {
           bky_assertionFailure(
             "Could not update procedure caller to match procedure definition: \(error)")
@@ -374,6 +369,15 @@ public class ProcedureCoordinator: NSObject {
 
 extension ProcedureCoordinator: WorkspaceListener {
   // MARK: - WorkspaceListener Implementation
+
+  public func workspace(_ workspace: Workspace, willAddBlock block: Block) {
+    if block.isProcedureCaller && procedureDefinitionBlock(forCallerBlock: block) == nil {
+      // No procedure block exists for this caller in the workspace.
+      // Automatically create it first before adding in the caller block to the workspace. This
+      // makes sure that events are ordered in such a way that they can be properly undone.
+      createProcedureDefinitionBlock(fromCallerBlock: block)
+    }
+  }
 
   public func workspace(_ workspace: Workspace, didAddBlock block: Block) {
     if block.isProcedureDefinition {
@@ -402,45 +406,66 @@ extension ProcedureCoordinator: WorkspaceListener {
   }
 }
 
-extension ProcedureCoordinator: FieldListener {
-  // MARK: - FieldListener Implementation
+extension ProcedureCoordinator: EventManagerListener {
 
-  public func didUpdateField(_ field: Field) {
-    guard let block = field.sourceInput?.sourceBlock,
-      field == block.procedureDefinitionNameInput,
-      let oldProcedureName = blockProcedureNames[block.uuid],
-      let newProcedureName = (field as? FieldInput)?.text,
-      !procedureNameManager.namesAreEqual(oldProcedureName, newProcedureName) else
-    {
-      return
-    }
-
-    if newProcedureName.trimmingCharacters(in: .whitespaces).isEmpty {
-      // Procedure names shouldn't be empty. Put it back to what it was
-      // originally.
-      block.procedureName = oldProcedureName
-    } else {
-      // Procedure name has changed for definition block. Rename it.
-      renameProcedureDefinitionBlock(block, from: oldProcedureName, to: newProcedureName)
+  public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    if checkProcedureDefinitionNameChangeEvent(event) {
+    } else if checkProcedureDefinitionMutationEvent(event) {
     }
   }
-}
 
-extension ProcedureCoordinator {
-  // MARK: - MutatorProcedureDefinitionLayout.NotificationDidPerformMutation Listener
+  private func checkProcedureDefinitionNameChangeEvent(_ event: BlocklyEvent) -> Bool {
+    guard let fieldEvent = event as? ChangeEvent,
+      fieldEvent.element == .field,
+      fieldEvent.fieldName == "NAME",
+      fieldEvent.workspaceID == workbench?.workspace?.uuid,
+      let blockID = fieldEvent.blockID,
+      let block = workbench?.workspace?.allBlocks[blockID],
+      block.isProcedureDefinition,
+      let oldProcedureName = blockProcedureNames[block.uuid],
+      let newProcedureName = block.procedureDefinitionNameInput?.text,
+      !procedureNameManager.namesAreEqual(oldProcedureName, newProcedureName) else {
+      return false
+    }
 
-  fileprivate dynamic func procedureDefinitionDidPerformMutation(_ notification: NSNotification) {
-    if let mutatorLayout = notification.object as? MutatorProcedureDefinitionLayout,
-      let block = mutatorLayout.mutatorProcedureDefinition.block,
-      let workspace = workbench?.workspace,
-      workspace.containsBlock(block)
-    {
+    // Add additional events to the existing event group
+    EventManager.sharedInstance.groupAndFireEvents(groupID: fieldEvent.groupID) {
+      if newProcedureName.trimmingCharacters(in: .whitespaces).isEmpty {
+        // Procedure names shouldn't be empty. Put it back to what it was
+        // originally.
+        // Note: The field layout is used to reset the procedure name here so that a `ChangeEvent`
+        // is automatically created for this change.
+        try? block.procedureDefinitionNameInput?.layout?.setValue(
+          fromSerializedText: oldProcedureName)
+      } else {
+        // Procedure name has changed for definition block. Rename it.
+        renameProcedureDefinitionBlock(block, from: oldProcedureName, to: newProcedureName)
+      }
+    }
+
+    return true
+  }
+
+  private func checkProcedureDefinitionMutationEvent(_ event: BlocklyEvent) -> Bool {
+    guard let mutationEvent = event as? ChangeEvent,
+      mutationEvent.element == .mutate,
+      mutationEvent.workspaceID == workbench?.workspace?.uuid,
+      let blockID = mutationEvent.blockID,
+      let block = workbench?.workspace?.allBlocks[blockID],
+      block.isProcedureDefinition else {
+        return false
+    }
+
+    // Add additional events to the existing event group
+    EventManager.sharedInstance.groupAndFireEvents(groupID: mutationEvent.groupID) {
       // A procedure definition block inside the main workspace has been mutated.
       // Update the procedure callers and upsert the variables from this block.
       updateProcedureCallers(oldName: block.procedureName, newName: block.procedureName,
                              parameters: block.procedureParameters)
       upsertVariables(fromDefinitionBlock: block)
     }
+
+    return true
   }
 }
 
@@ -490,6 +515,13 @@ extension ProcedureCoordinator: NameManagerListener {
           if updateMutator {
             do {
               try mutatorLayout.performMutation()
+
+              if let blockLayout = mutatorLayout.mutator.block?.layout {
+                Layout.animate {
+                  mutatorLayout.layoutCoordinator?.blockBumper
+                    .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+                }
+              }
             } catch let error {
               bky_assertionFailure("Could not update mutator parameter variables: \(error)")
             }

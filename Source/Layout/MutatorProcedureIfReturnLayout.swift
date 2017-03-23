@@ -42,15 +42,13 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
     self.mutatorProcedureIfReturn = mutator
     super.init(mutator: mutator, engine: engine)
 
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(workspaceLayoutCoordinatorDidConnect(_:)),
-      name: WorkspaceLayoutCoordinator.NotificationDidConnect, object: nil)
-
     updateHasReturnValue()
+
+    EventManager.sharedInstance.addListener(self)
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self)
+    EventManager.sharedInstance.removeListener(self)
   }
 
   // MARK: - Super
@@ -67,38 +65,27 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
       return
     }
 
-    var blockLayout: BlockLayout?
+    // Disconnect connections of existing mutation inputs prior to mutating the block
+    let inputs = mutatorProcedureIfReturn.sortedMutatorInputs()
+    try mutatorHelper.disconnectConnectionsInReverseOrder(
+      fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
-    try Layout.doNotAnimate {
-      // Disconnect connections of existing mutation inputs prior to mutating the block
-      let inputs = mutatorProcedureIfReturn.sortedMutatorInputs()
-      try mutatorHelper.disconnectConnectionsInReverseOrder(
-        fromInputs: inputs, layoutCoordinator: layoutCoordinator)
+    // Remove any connected shadow blocks from these inputs
+    try mutatorHelper.removeShadowBlocksInReverseOrder(
+      fromInputs: inputs, layoutCoordinator: layoutCoordinator)
 
-      // Remove any connected shadow blocks from these inputs
-      try mutatorHelper.removeShadowBlocksInReverseOrder(
-        fromInputs: inputs, layoutCoordinator: layoutCoordinator)
-
-      try captureChangeEvent {
-        // Update the definition of the block
-        try mutatorProcedureIfReturn.mutateBlock()
-      }
+    try captureChangeEvent {
+      // Update the definition of the block
+      try mutatorProcedureIfReturn.mutateBlock()
 
       // Update UI
-      blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
-
-      // Reconnect saved connections
-      try mutatorHelper.reconnectSavedTargetConnections(
-        toInputs: mutatorProcedureIfReturn.sortedMutatorInputs(),
-        layoutCoordinator: layoutCoordinator)
+      _ = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
     }
 
-    if let blockLayout = blockLayout {
-      Layout.animate {
-        layoutCoordinator.blockBumper
-          .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
-      }
-    }
+    // Reconnect saved connections
+    try mutatorHelper.reconnectSavedTargetConnections(
+      toInputs: mutatorProcedureIfReturn.sortedMutatorInputs(),
+      layoutCoordinator: layoutCoordinator)
   }
 
   public override func performMutation(fromXML xml: AEXMLElement) throws {
@@ -141,7 +128,17 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
         // This if/return block needs to flip its hasReturnValue to match the definition block
         // that it's contained under.
         hasReturnValue = !hasReturnValue
-        try performMutation()
+
+        try Layout.doNotAnimate {
+          try performMutation()
+        }
+
+        if let blockLayout = mutator.block?.layout {
+          Layout.animate {
+            layoutCoordinator?.blockBumper
+              .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+          }
+        }
       } catch let error {
         bky_assertionFailure("Could not update if/return block: \(error)")
       }
@@ -149,16 +146,16 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
   }
 }
 
-extension MutatorProcedureIfReturnLayout {
-  // MARK: - WorkspaceLayoutCoordinator.NotificationDidConnect Listener
+extension MutatorProcedureIfReturnLayout: EventManagerListener {
+  public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    if layoutCoordinator?.workspaceLayout.workspace.uuid == event.workspaceID &&
+      event is MoveEvent {
 
-  fileprivate dynamic func workspaceLayoutCoordinatorDidConnect(_ notification: NSNotification) {
-    if let layoutCoordinator = notification.object as? WorkspaceLayoutCoordinator,
-      isDescendant(of: layoutCoordinator.workspaceLayout)
-    {
-      // Some connection has changed in the workspace that this mutator is part of.
-      // This block may need to update its if/return mutation if it's changed grandparents.
-      updateHasReturnValue()
+      EventManager.sharedInstance.groupAndFireEvents(groupID: event.groupID) {
+        // Something has been moved in the workspace, which means a connection may have changed.
+        // This block may need to update its if/return mutation if it's changed grandparents.
+        updateHasReturnValue()
+      }
     }
   }
 }

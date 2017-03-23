@@ -183,6 +183,13 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
     do {
       try EventManager.sharedInstance.groupAndFireEvents {
         try mutatorIfElseLayout.performMutation()
+
+        if let blockLayout = mutatorIfElseLayout.mutator.block?.layout {
+          Layout.animate {
+            mutatorIfElseLayout.layoutCoordinator?.blockBumper
+              .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+          }
+        }
       }
     } catch let error {
       bky_assertionFailure("Could not update if/else block: \(error)")

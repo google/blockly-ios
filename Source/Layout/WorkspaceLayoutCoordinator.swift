@@ -24,16 +24,6 @@ import Foundation
 open class WorkspaceLayoutCoordinator: NSObject {
   // MARK: - Properties
 
-  /**
-   Notification that is fired after this layout has connected two connections together.
-
-   The notification's `userInfo` will contain a dictionary of the form:
-
-   `{ "connections": [<Connection>, <Connection>] }`
-   */
-  public static let NotificationDidConnect =
-    Notification.Name("WorkspaceLayoutCoordinatorNotificationDidConnect")
-
   /// The workspace layout whose layout hierarchy is being managed by this object
   open let workspaceLayout: WorkspaceLayout
 
@@ -268,11 +258,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
     connection.disconnect()
 
-    event.recordNewValues()
-    EventManager.sharedInstance.addPendingEvent(event)
-
     self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
     self.didChangeTarget(forConnection: oldTarget, oldTarget: connection)
+
+    event.recordNewValues()
+    EventManager.sharedInstance.addPendingEvent(event)
   }
 
   /**
@@ -333,15 +323,6 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
     event.recordNewValues()
     EventManager.sharedInstance.addPendingEvent(event)
-
-    // TODO:(#272) When events are implemented, re-visit whether these notifications should be
-    // posted here.
-
-    // Post notification that two connections did connect
-    NotificationCenter.default.post(
-      name: WorkspaceLayoutCoordinator.NotificationDidConnect,
-      object: self,
-      userInfo: ["connections": [connection1, connection2]])
   }
 
   /**

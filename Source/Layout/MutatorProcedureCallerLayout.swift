@@ -79,18 +79,13 @@ public class MutatorProcedureCallerLayout : MutatorLayout {
     // Update the definition of the block
     try captureChangeEvent {
       try mutatorProcedureCaller.mutateBlock()
-    }
 
-    // Update UI
-    let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+      // Update UI
+      _ = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+    }
 
     // Reconnect saved connections
     try reconnectSavedTargetConnections()
-
-    Layout.animate {
-      layoutCoordinator.blockBumper
-        .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
-    }
   }
 
   public override func performMutation(fromXML xml: AEXMLElement) throws {

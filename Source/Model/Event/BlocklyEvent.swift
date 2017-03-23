@@ -172,6 +172,8 @@ extension Array where Element: BlocklyEvent {
    `merged(withNextChronologicalEvent:)` on adjacent events.
 
    - returns: An array of merged events.
+   - note: This method assumes that the array is sorted in chronological
+   order.
    */
   public func merged() -> [BlocklyEvent] {
     var mergedEvents = self
