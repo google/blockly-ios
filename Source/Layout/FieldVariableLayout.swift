@@ -65,6 +65,8 @@ open class FieldVariableLayout: FieldLayout {
     }
   }
 
+  // TODO:(#334) Investigate decoupling FieldVariableLayout from WorkspaceLayoutCoordinator.
+
   // Used to determine information about the variables on the workspace. Only set if the variable
   // layout is on a workspace.
   internal weak var layoutCoordinator: WorkspaceLayoutCoordinator?
