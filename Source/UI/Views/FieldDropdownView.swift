@@ -72,6 +72,8 @@ open class FieldDropdownView: FieldView {
         dropDownView.borderCornerRadius =
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
         dropDownView.textFont = fieldDropdownLayout.config.font(for: LayoutConfig.GlobalFont)
+        dropDownView.textColor =
+          fieldDropdownLayout.config.color(for: LayoutConfig.FieldInputTextColor)
       }
     }
   }
@@ -132,6 +134,8 @@ extension FieldDropdownView: DropdownViewDelegate {
     viewController.selectedIndex = fieldDropdownLayout.selectedIndex
     viewController.textLabelFont =
       fieldDropdownLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
+    viewController.textLabelColor =
+      fieldDropdownLayout.config.color(for: LayoutConfig.FieldInputTextColor)
 
     popoverDelegate?
       .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)

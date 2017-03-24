@@ -90,6 +90,7 @@ open class FieldNumberView: FieldView {
 
         let textField = self.textField
         textField.font = layout.config.font(for: LayoutConfig.GlobalFont)
+        textField.textColor = layout.config.color(for: LayoutConfig.FieldInputTextColor)
         textField.insetPadding =
           layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }

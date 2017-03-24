@@ -82,6 +82,7 @@ open class FieldInputView: FieldView {
         }
 
         textField.font = fieldInputLayout.config.font(for: LayoutConfig.GlobalFont)
+        textField.textColor = fieldInputLayout.config.color(for: LayoutConfig.FieldInputTextColor)
         textField.insetPadding =
           fieldInputLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
