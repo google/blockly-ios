@@ -67,6 +67,12 @@ open class LayoutConfig: NSObject {
   /// `nil` means that the system default should be used.
   public static let FieldCheckboxSwitchTintColor = LayoutConfig.newPropertyKey()
 
+  /// [`UIColor`] The default color for text in fields.
+  public static let FieldLabelTextColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The default color for text input in fields.
+  public static let FieldEditableTextColor = LayoutConfig.newPropertyKey()
+
   /// [`EdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
   /// should be used for each one
   public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
@@ -173,6 +179,8 @@ open class LayoutConfig: NSObject {
     // Use the default system colors by setting these config values to nil
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
+    setColor(.black, for: LayoutConfig.FieldLabelTextColor)
+    setColor(.black, for: LayoutConfig.FieldEditableTextColor)
 
     setEdgeInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
                   for: LayoutConfig.FieldTextFieldInsetPadding)
