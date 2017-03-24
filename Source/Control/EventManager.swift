@@ -50,13 +50,13 @@ public final class EventManager: NSObject {
   public var isEnabled: Bool = true
 
   /// The current group ID that is automatically assigned to new events with no group ID.
-  public private(set) var groupID: String?
+  public private(set) var currentGroupID: String?
 
   /// The stack of group IDs that have been created thus far.
   private var _groupStack = [String]() {
     didSet {
       // Update the current group ID
-      groupID = _groupStack.last
+      currentGroupID = _groupStack.last
     }
   }
 
@@ -87,7 +87,7 @@ public final class EventManager: NSObject {
     }
 
     if event.groupID == nil {
-      event.groupID = groupID
+      event.groupID = currentGroupID
     }
 
     pendingEvents.append(event)

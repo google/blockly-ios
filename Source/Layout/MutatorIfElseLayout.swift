@@ -76,7 +76,7 @@ public class MutatorIfElseLayout : MutatorLayout {
       try mutatorIfElse.mutateBlock()
 
       // Update UI
-      _ = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+      try layoutCoordinator.rebuildLayoutTree(forBlock: block)
     }
 
     // Reconnect saved connections

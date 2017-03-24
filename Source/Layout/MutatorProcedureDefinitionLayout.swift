@@ -86,7 +86,7 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
       try mutatorProcedureDefinition.mutateBlock()
 
       // Update UI
-      _ = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+      try layoutCoordinator.rebuildLayoutTree(forBlock: block)
     }
 
     // Reconnect saved connections

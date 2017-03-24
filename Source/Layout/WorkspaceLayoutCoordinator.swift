@@ -332,7 +332,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
    - throws:
    `BlocklyError`: Thrown if the specified block is not associated with a layout yet.
    */
-  open func rebuildLayoutTree(forBlock block: Block) throws -> BlockLayout {
+  open func rebuildLayoutTree(forBlock block: Block) throws {
     guard block.layout != nil else {
       throw BlocklyError(.illegalState,
         "Cannot re-build layout tree for a block that's not already associated with a layout.")
@@ -352,8 +352,6 @@ open class WorkspaceLayoutCoordinator: NSObject {
     // Update the layout tree, in both directions
     blockLayout.updateLayoutDownTree()
     blockLayout.updateLayoutUpTree()
-
-    return blockLayout
   }
 
   // MARK: - Private

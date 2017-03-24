@@ -409,6 +409,8 @@ extension ProcedureCoordinator: WorkspaceListener {
 extension ProcedureCoordinator: EventManagerListener {
 
   public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    // Try to handle the event. The first method that returns `true` means it's been handled and
+    // we can skip the rest of the checks.
     if checkProcedureDefinitionNameChangeEvent(event) {
     } else if checkProcedureDefinitionMutationEvent(event) {
     }

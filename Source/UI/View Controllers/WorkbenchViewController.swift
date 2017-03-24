@@ -1512,7 +1512,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     // on-going drags when the screen is rotated).
 
     if touchState == .began {
-      if EventManager.sharedInstance.groupID == nil {
+      if EventManager.sharedInstance.currentGroupID == nil {
         EventManager.sharedInstance.pushNewGroup()
       }
 
