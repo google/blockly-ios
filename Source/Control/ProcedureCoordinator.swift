@@ -411,14 +411,17 @@ extension ProcedureCoordinator: EventManagerListener {
   public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
     // Try to handle the event. The first method that returns `true` means it's been handled and
     // we can skip the rest of the checks.
-    if checkProcedureDefinitionNameChangeEvent(event) {
-    } else if checkProcedureDefinitionMutationEvent(event) {
+    if let fieldEvent = event as? ChangeEvent,
+      fieldEvent.element == .field {
+      processFieldChangeEvent(fieldEvent)
+    } else if let mutationEvent = event as? ChangeEvent,
+      mutationEvent.element == .mutate {
+      processMutationChangeEvent(mutationEvent)
     }
   }
 
-  private func checkProcedureDefinitionNameChangeEvent(_ event: BlocklyEvent) -> Bool {
-    guard let fieldEvent = event as? ChangeEvent,
-      fieldEvent.element == .field,
+  private func processFieldChangeEvent(_ fieldEvent: ChangeEvent) {
+    guard fieldEvent.element == .field,
       fieldEvent.fieldName == "NAME",
       fieldEvent.workspaceID == workbench?.workspace?.uuid,
       let blockID = fieldEvent.blockID,
@@ -427,7 +430,7 @@ extension ProcedureCoordinator: EventManagerListener {
       let oldProcedureName = blockProcedureNames[block.uuid],
       let newProcedureName = block.procedureDefinitionNameInput?.text,
       !procedureNameManager.namesAreEqual(oldProcedureName, newProcedureName) else {
-      return false
+      return
     }
 
     // Add additional events to the existing event group
@@ -444,18 +447,15 @@ extension ProcedureCoordinator: EventManagerListener {
         renameProcedureDefinitionBlock(block, from: oldProcedureName, to: newProcedureName)
       }
     }
-
-    return true
   }
 
-  private func checkProcedureDefinitionMutationEvent(_ event: BlocklyEvent) -> Bool {
-    guard let mutationEvent = event as? ChangeEvent,
-      mutationEvent.element == .mutate,
+  private func processMutationChangeEvent(_ mutationEvent: ChangeEvent) {
+    guard mutationEvent.element == .mutate,
       mutationEvent.workspaceID == workbench?.workspace?.uuid,
       let blockID = mutationEvent.blockID,
       let block = workbench?.workspace?.allBlocks[blockID],
       block.isProcedureDefinition else {
-        return false
+      return
     }
 
     // Add additional events to the existing event group
@@ -466,8 +466,6 @@ extension ProcedureCoordinator: EventManagerListener {
                              parameters: block.procedureParameters)
       upsertVariables(fromDefinitionBlock: block)
     }
-
-    return true
   }
 }
 
