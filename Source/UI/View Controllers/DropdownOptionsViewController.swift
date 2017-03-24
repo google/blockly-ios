@@ -67,6 +67,8 @@ open class DropdownOptionsViewController: UITableViewController {
       calculatePreferredContentSize()
     }
   }
+  /// The color of the font on each cell
+  open var textLabelColor: UIColor? = .black
   /// The maximum size to use when displaying this view controller as a popover
   open var maximumPopoverSize = CGSize(width: 248, height: 248)
   /// Identifier for reusing cells for this table
@@ -116,6 +118,7 @@ open class DropdownOptionsViewController: UITableViewController {
     cell.accessoryType = (selectedIndex == (indexPath as NSIndexPath).row ? .checkmark : .none)
     cell.selectionStyle = .default
     cell.textLabel?.font = textLabelFont
+    cell.textLabel?.textColor = textLabelColor
     cell.textLabel?.numberOfLines = 0
     cell.textLabel?.text = options[(indexPath as NSIndexPath).row].displayName
     cell.textLabel?.sizeToFit()
