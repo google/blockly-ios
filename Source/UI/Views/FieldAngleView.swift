@@ -88,6 +88,8 @@ open class FieldAngleView: FieldView {
         let textField = self.textField
         textField.text = fieldAngleLayout.textValue
         textField.font = fieldAngleLayout.config.font(for: LayoutConfig.GlobalFont)
+        textField.textColor =
+          fieldAngleLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
           fieldAngleLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
