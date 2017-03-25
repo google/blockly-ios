@@ -32,6 +32,8 @@ public protocol EventManagerListener: class {
 /**
  Manages the use of events across Blockly.
 
+ This class is designed as a singleton instance, accessible via `EventManager.sharedInstance`.
+
  - note: This class is not thread-safe and should only be accessed from the main thread.
  */
 @objc(BKYEventManager)
@@ -69,6 +71,14 @@ public final class EventManager: NSObject {
   /// Flag that determines if `firePendingEvents()` should be called again immediately after
   /// it has been called.
   private var _firePendingEventsAgain: Bool = false
+
+  // MARK: - Initializers
+
+  /**
+   A singleton instance for this class is accessible via `EventManager.sharedInstance.`
+   */
+  private override init() {
+  }
 
   // MARK: - Events
 
