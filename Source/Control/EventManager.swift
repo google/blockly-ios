@@ -155,7 +155,8 @@ public final class EventManager: NSObject {
 
    - parameter groupID: The groupID to push.
    - note: It is not recommended to push a group ID that differs from `self.currentGroupID`,
-   if it is not `nil`. Doing this will result in an error in debug mode and a warning in release mode.
+   if it is not `nil`. Doing this will result in an error in debug mode and a warning in release
+   mode.
    */
   public func pushGroup(groupID: String) {
     if let currentGroupID = self.currentGroupID, currentGroupID != groupID {
