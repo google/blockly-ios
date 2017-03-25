@@ -21,6 +21,14 @@ import Foundation
 @objc(BKYWorkspaceListener)
 public protocol WorkspaceListener: class {
   /**
+   Event that is called when a block will be added to a workspace.
+
+   - parameter workspace: The workspace that will add a block.
+   - parameter block: The block that will be added.
+   */
+  @objc optional func workspace(_ workspace: Workspace, willAddBlock block: Block)
+
+  /**
    Event that is called when a block has been added to a workspace.
 
    - parameter workspace: The workspace that added a block.
@@ -174,6 +182,11 @@ open class Workspace : NSObject {
     if let maxBlocks = self.maxBlocks , (allBlocks.count + newBlocks.count) > maxBlocks {
       throw BlocklyError(.workspaceExceedsCapacity,
         "Adding more blocks would exceed the maximum amount allowed (\(maxBlocks))")
+    }
+
+    // Fire listeners for all blocks that will be added to the workspace
+    for block in newBlocks {
+      listeners.forEach { $0.workspace?(self, willAddBlock: block) }
     }
 
     // All checks passed. Add the new blocks to the workspace.

@@ -883,7 +883,18 @@ extension WorkbenchViewController: EventManagerListener {
     }
 
     if event.workspaceID == workspace?.uuid {
-      _undoStack.append(event)
+      // Try to merge this event with the last one in the undo stack
+      if let lastEvent = _undoStack.last,
+        let mergedEvent = lastEvent.merged(withNextChronologicalEvent: event) {
+        _undoStack.removeLast()
+
+        if !mergedEvent.isDiscardable() {
+          _undoStack.append(mergedEvent)
+        }
+      } else {
+        // Couldn't merge event with last one, just append it
+        _undoStack.append(event)
+      }
 
       // Clear the redo stack now since a new event has been added to the undo stack
       _redoStack.removeAll()
@@ -915,13 +926,7 @@ extension WorkbenchViewController {
       return
     }
 
-    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
-    // behavior for clients that rely on automatically state based on events being re-fired. We
-    // need to figure out a consistent behavior here.
-
     // Don't listen to any events, to avoid echoing
-    EventManager.sharedInstance.isEnabled = false
-
     _recordEvents = false
 
     // Pop off the next group of events from the undo stack. These events will already be sorted
@@ -941,7 +946,6 @@ extension WorkbenchViewController {
     EventManager.sharedInstance.firePendingEvents()
 
     // Listen to events again
-    EventManager.sharedInstance.isEnabled = true
     _recordEvents = true
   }
 
@@ -950,12 +954,7 @@ extension WorkbenchViewController {
       return
     }
 
-    // TODO:(#272) Disabling events here avoids echoing for the library code, but it may prevent
-    // behavior for clients that rely on automatically state based on events being re-fired. We
-    // need to figure out a consistent behavior here.
-
     // Don't listen to any events, to avoid echoing
-    EventManager.sharedInstance.isEnabled = false
     _recordEvents = false
 
     // Pop off the next group of events from the redo stack. These events will already be sorted
@@ -975,7 +974,6 @@ extension WorkbenchViewController {
     EventManager.sharedInstance.firePendingEvents()
 
     // Listen to events again
-    EventManager.sharedInstance.isEnabled = true
     _recordEvents = true
   }
 }
@@ -1514,8 +1512,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     // on-going drags when the screen is rotated).
 
     if touchState == .began {
-      if EventManager.sharedInstance.groupID == nil {
-        EventManager.sharedInstance.startGroup()
+      if EventManager.sharedInstance.currentGroupID == nil {
+        EventManager.sharedInstance.pushNewGroup()
       }
 
       let inToolbox = gesture.view == toolboxCategoryViewController.view
@@ -1596,9 +1594,12 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
           removeUIStateValue(.trashCanHighlighted)
         }
 
-        EventManager.sharedInstance.stopGroup()
-        EventManager.sharedInstance.firePendingEvents()
+        EventManager.sharedInstance.popGroup()
       }
+
+      // Always fire pending events after a finger has been lifted. All grouped events will
+      // eventually get grouped together regardless if they were fired in batches.
+      EventManager.sharedInstance.firePendingEvents()
     }
   }
 }

@@ -84,25 +84,15 @@ public class MutatorProcedureDefinitionLayout : MutatorLayout {
     // Update the definition of the block
     try captureChangeEvent {
       try mutatorProcedureDefinition.mutateBlock()
-    }
 
-    // Update UI
-    let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+      // Update UI
+      try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+    }
 
     // Reconnect saved connections
     try mutatorHelper.reconnectSavedTargetConnections(
       toInputs: mutatorProcedureDefinition.sortedMutatorInputs(),
       layoutCoordinator: layoutCoordinator)
-
-    Layout.animate {
-      layoutCoordinator.blockBumper
-        .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
-    }
-
-    // Post notification that this layout finished mutating
-    NotificationCenter.default.post(
-      name: MutatorProcedureDefinitionLayout.NotificationDidPerformMutation,
-      object: self)
   }
 
   public override func performMutation(fromXML xml: AEXMLElement) throws {

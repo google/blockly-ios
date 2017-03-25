@@ -50,7 +50,15 @@ public final class EventManager: NSObject {
   public var isEnabled: Bool = true
 
   /// The current group ID that is automatically assigned to new events with no group ID.
-  public private(set) var groupID: String?
+  public private(set) var currentGroupID: String?
+
+  /// The stack of group IDs that have been created thus far.
+  private var _groupStack = [String]() {
+    didSet {
+      // Update the current group ID
+      currentGroupID = _groupStack.last
+    }
+  }
 
   /// Objects listening to event fires.
   private var _listeners = WeakSet<EventManagerListener>()
@@ -68,8 +76,8 @@ public final class EventManager: NSObject {
    Queues an event to be fired in the future (via `firePendingEvents()`). However, this event will
    not be queued if `self.isEnabled` is set to `false`.
 
-   If `event.groupID` is `nil`, it is automatically assigned the value of `self.groupID`, by this
-   method.
+   If `event.groupID` is `nil`, it is automatically assigned the value of `self.currentGroupID`,
+   by this method.
 
    - parameter event: The `BlocklyEvent` to queue.
    */
@@ -79,7 +87,7 @@ public final class EventManager: NSObject {
     }
 
     if event.groupID == nil {
-      event.groupID = groupID
+      event.groupID = currentGroupID
     }
 
     pendingEvents.append(event)
@@ -125,45 +133,83 @@ public final class EventManager: NSObject {
   // MARK: - Grouping
 
   /**
-   Starts a group by setting `self.groupID` to a new UUID. Each new pending event will automatically
-   be assigned to this group ID, if it is not already assigned to a group ID.
+   Generates a group UUID and pushes this new group ID to the group stack, effectively setting it to
+   `self.currentGroupID`. Each new pending event will automatically be assigned to this group ID,
+   if it is not already assigned to a group ID.
+
+   Every call to `pushNewGroup()` needs to be balanced by a future call to `popGroup()`.
+
+   - note: It is not recommended to push a new group ID if `self.currentGroupID` is not `nil`.
+   Doing this will result in an error in debug mode and a warning in release mode.
    */
-  public func startGroup() {
-    groupID = UUID().uuidString
+  public func pushNewGroup() {
+    pushGroup(groupID: UUID().uuidString)
   }
 
   /**
-   Starts a group by setting `self.groupID` to a given group ID. Each new pending event will
-   automatically be assigned to this group ID, if it is not already assigned to a group ID.
+   Pushes a given group ID to the group stack, effectively setting it to `self.currentGroupID`.
+   Each new pending event will automatically be assigned to this group ID, if it is not already
+   assigned to a group ID.
 
-   - parameter groupID: The groupID to assign.
+  Every call to `pushGroup(groupID:)` needs to be balanced by a future call to `popGroup()`.
+
+   - parameter groupID: The groupID to push.
+   - note: It is not recommended to push a group ID that differs from `self.currentGroupID`,
+   if it is not `nil`. Doing this will result in an error in debug mode and a warning in release
+   mode.
    */
-  public func startGroup(groupID: String) {
-    self.groupID = groupID
+  public func pushGroup(groupID: String) {
+    if let currentGroupID = self.currentGroupID, currentGroupID != groupID {
+      bky_assertionFailure(
+        "A new group ID was pushed to EventManager, when it differs from the current group ID." +
+        "This behavior is discouraged and you should refactor your code to avoid this situation.")
+    }
+
+    _groupStack.append(groupID)
   }
 
   /**
-   Stops the current group by setting `self.groupID` to `nil`. Each new pending event will no
-   longer be automatically assigned to a group ID.
+   Pops the current group ID from the group stack.
+
+   If the group stack is not empty, `self.currentGroupID` is assigned to the previously pushed group
+   ID.
+   If the group stack is empty, `self.currentGroupID` is assigned to `nil`.
+
+   Each new pending event will automatically be assigned to the new value of `self.currentGroupID`,
+   if it is not already assigned to a group ID.
    */
-  public func stopGroup() {
-    groupID = nil
+  public func popGroup() {
+    if !_groupStack.isEmpty {
+      _groupStack.removeLast()
+    } else {
+      bky_assertionFailure(
+        "An attempt was made to pop a group when no groups have been pushed to EventManager." +
+        "Calls to `pushNewGroup()` and `pushGroup()` should be balanced with the same number of " +
+        "calls to `popGroup()`.")
+    }
   }
 
   /**
    Convenience method that starts a new group, executes a given closure, stops the group, and then
    fires all pending events.
 
+   - parameter groupID: [Optional] Specifies a group ID to assign to a new group. If `nil`, a
+   unique UUID is created for the group ID.
    - parameter closure: The closure to execute.
    - note: This method guarantees a group is started, stopped, and all pending events are fired,
    regardless if the given closure throws an error.
    */
-  public func groupAndFireEvents(forClosure closure: () throws -> Void) rethrows {
-    startGroup()
+  public func groupAndFireEvents(groupID: String? = nil, forClosure closure: () throws -> Void)
+    rethrows {
+    if let groupID = groupID {
+      pushGroup(groupID: groupID)
+    } else {
+      pushNewGroup()
+    }
 
     defer {
       // This is guaranteed to run after the execution of `closure`, regardless if it fails or not.
-      stopGroup()
+      popGroup()
       firePendingEvents()
     }
 

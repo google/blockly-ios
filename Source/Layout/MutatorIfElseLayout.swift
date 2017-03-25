@@ -74,19 +74,14 @@ public class MutatorIfElseLayout : MutatorLayout {
     // Update the definition of the block
     try captureChangeEvent {
       try mutatorIfElse.mutateBlock()
-    }
 
-    // Update UI
-    let blockLayout = try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+      // Update UI
+      try layoutCoordinator.rebuildLayoutTree(forBlock: block)
+    }
 
     // Reconnect saved connections
     try mutatorHelper.reconnectSavedTargetConnections(
       toInputs: mutatorIfElse.sortedMutatorInputs(), layoutCoordinator: layoutCoordinator)
-
-    Layout.animate {
-      layoutCoordinator.blockBumper
-        .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
-    }
   }
 
   public override func performMutation(fromXML xml: AEXMLElement) throws {

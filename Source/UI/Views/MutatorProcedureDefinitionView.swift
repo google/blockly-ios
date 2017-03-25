@@ -412,6 +412,13 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     do {
       try EventManager.sharedInstance.groupAndFireEvents {
         try mutatorLayout.performMutation()
+
+        if let blockLayout = mutatorLayout.mutator.block?.layout {
+          Layout.animate {
+            mutatorLayout.layoutCoordinator?.blockBumper
+              .bumpNeighbors(ofBlockLayout: blockLayout, alwaysBumpOthers: true)
+          }
+        }
       }
     } catch let error {
       bky_assertionFailure("Could not perform mutation: \(error)")
