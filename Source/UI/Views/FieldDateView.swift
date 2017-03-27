@@ -97,6 +97,7 @@ open class FieldDateView: FieldView {
         let textField = self.textField
         textField.text = fieldDateLayout.textValue
         textField.font = fieldDateLayout.config.font(for: LayoutConfig.GlobalFont)
+        textField.textColor = fieldDateLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
           fieldDateLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }

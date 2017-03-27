@@ -50,6 +50,11 @@ public final class DropdownView: UIView {
     get { return _label.font }
     set(value) { _label.font = value }
   }
+  /// The color for the dropdown text
+  public var textColor: UIColor? {
+    get { return _label.textColor }
+    set(value) { _label.textColor = value }
+  }
   /// The background color of the area inside the dropdown
   public var dropDownBackgroundColor: CGColor? {
     get { return layer.backgroundColor }

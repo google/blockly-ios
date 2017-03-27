@@ -67,6 +67,7 @@ open class FieldLabelView: FieldView {
         let label = self.label
         label.text = fieldLabelLayout.text
         label.font = fieldLabelLayout.config.font(for: LayoutConfig.GlobalFont)
+        label.textColor = fieldLabelLayout.config.color(for: LayoutConfig.FieldLabelTextColor)
       }
     }
   }
