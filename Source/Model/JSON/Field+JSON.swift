@@ -76,6 +76,9 @@ extension Field {
 extension Field {
   /**
    Manages the registration of fields.
+
+   This class is designed as a singleton instance, accessible via
+   `Field.JSONRegistry.sharedInstance`.
    */
   @objc(BKYFieldJSONRegistry)
   public final class JSONRegistry: NSObject {
@@ -101,10 +104,12 @@ extension Field {
     // MARK: - Initializers
 
     /**
-     Fills the JSON registry with the built-in Blockly types.
+     A singleton instance for this class is accessible via `Field.JSONRegistry.sharedInstance.`
      */
-    public override init() {
+    private override init() {
       super.init()
+
+      // Fill the JSON registry with the built-in Blockly types.
 
       // Angle
       registerType(FIELD_TYPE_ANGLE) {

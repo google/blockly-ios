@@ -17,6 +17,8 @@ import Foundation
 
 /**
  Manages the set `LayoutView` instances that have been created.
+
+ This class is designed as a singleton instance, accessible via `ViewManager.sharedInstance`.
  */
 @objc(BKYViewManager)
 public final class ViewManager: NSObject {
@@ -24,6 +26,14 @@ public final class ViewManager: NSObject {
 
   /// Shared instance.
   public static let sharedInstance = ViewManager()
+
+  // MARK: - Initializers
+
+  /**
+   A singleton instance for this class is accessible via `ViewManager.sharedInstance.`
+   */
+  private override init() {
+  }
 
   // MARK: - Properties
 
