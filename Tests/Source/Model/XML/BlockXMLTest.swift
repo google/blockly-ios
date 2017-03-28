@@ -290,7 +290,9 @@ class BlockXMLTest: XCTestCase {
   func testParseXML_BlockWithMutator() {
     // Add DummyMutator to "frankenblock" factory builder
     factory.blockBuilder(forName: "frankenblock")?.extensions = [BlockExtensionClosure { block in
-      try block.setMutator(DummyMutator())
+      self.BKYAssertDoesNotThrow {
+        try block.setMutator(DummyMutator())
+      }
     }]
 
     // Parse block with mutation xml
@@ -1182,7 +1184,9 @@ class BlockXMLTest: XCTestCase {
   func testSerializeXML_BlockWithMutator() {
     // Add DummyMutator to "empty_block" factory builder
     factory.blockBuilder(forName: "empty_block")?.extensions = [BlockExtensionClosure { block in
-      try block.setMutator(DummyMutator())
+      self.BKYAssertDoesNotThrow {
+        try block.setMutator(DummyMutator())
+      }
     }]
 
     guard let block = BKYAssertDoesNotThrow({
