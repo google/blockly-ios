@@ -221,4 +221,72 @@ class CodeGeneratorServiceTest: XCTestCase {
       }
     })
   }
+
+  func testJSCodeGenerationWithMutators() {
+    _blockFactory.load(fromDefaultFiles: [.logicDefault])
+
+    // Build workspace with if/else-if block
+    let workspace = Workspace()
+    guard
+      let ifBlock = BKYAssertDoesNotThrow({ () -> Block in 
+        let block = try self._blockFactory.makeBlock(name: "controls_if")
+
+        if let mutatorIfElse = block.mutator as? MutatorIfElse {
+          mutatorIfElse.elseIfCount = 2
+          try mutatorIfElse.mutateBlock()
+        }
+
+        return block
+      }),
+      let booleanBlock = BKYAssertDoesNotThrow({
+        try self._blockFactory.makeBlock(name: "logic_boolean")
+      }),
+      let elseIfInput = ifBlock.firstInput(withName: "IF2"),
+      let fieldBool = booleanBlock.firstField(withName: "BOOL") as? FieldDropdown else
+    {
+      XCTFail("Could not build blocks")
+      return
+    }
+
+    BKYAssertDoesNotThrow { () -> Void in
+      if let index = fieldBool.options.index(where: { $0.displayName == "true" }) {
+        fieldBool.selectedIndex = index
+      } else {
+        XCTFail("Could not find `true` value on boolean block.")
+      }
+      try elseIfInput.connection?.connectTo(booleanBlock.inferiorConnection)
+      try workspace.addBlockTree(ifBlock)
+    }
+
+    // Set up timeout expectation
+    let expectation = self.expectation(description: "Code Generation")
+
+    // Set builder
+    let testBundle = Bundle(for: type(of: self))
+    let builder = CodeGeneratorServiceRequestBuilder(jsGeneratorObject: "Blockly.JavaScript")
+    builder.addJSBlockGeneratorFiles(["blockly_web/javascript_compressed.js"], bundle: testBundle)
+    builder.addJSONBlockDefinitionFiles(fromDefaultFiles: [.logicDefault])
+    _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
+
+    // Execute request
+    let _ = BKYAssertDoesNotThrow {
+      try _codeGeneratorService.generateCode(
+        forWorkspace: workspace,
+        onCompletion: { code in
+          XCTAssertEqual("if (false) {} else if (false) {} else if (true) {}",
+                         code.replacingOccurrences(of: "\n", with: ""))
+          expectation.fulfill()
+      }, onError: { error in
+        XCTFail("Error occurred during code generation: \(error)")
+        expectation.fulfill()
+      })
+    }
+
+    // Wait 10s for code generation to finish
+    waitForExpectations(timeout: 10.0, handler: { error in
+      if let error = error {
+        XCTFail("Code generation timed out: \(error)")
+      }
+    })
+  }
 }
