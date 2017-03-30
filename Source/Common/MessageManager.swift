@@ -16,55 +16,55 @@
 import Foundation
 
 /**
- Object responsible for managing translation strings within Blockly.
+ Object responsible for managing message strings within Blockly.
 
- `TranslationManager` stores translation messages that are accessible by a unique key.
- It also allows the ability to store "synonym" keys, that map back to an existing translation key,
- as another way to access an existing translation.
+ `MessageManager` stores messages that are accessible by a unique key.
+ It also allows the ability to store "synonym" keys, that map back to an existing message key,
+ as another way to access an existing message.
 
- Here is an example of `TranslationManager` in use:
+ Here is an example of `MessageManager` in use:
  ```
- let manager = TranslationManager.shared
+ let manager = MessageManager.shared
  
- // Add a translation for "LISTS_INLIST"
- manager.loadTranslations(["LISTS_INLIST": "in list"])
+ // Add a message for "LISTS_INLIST"
+ manager.loadMessages(["LISTS_INLIST": "in list"])
 
  // Set synonyms of "LISTS_INLIST"
  manager.loadSynonyms(["LISTS_GET_INDEX_INPUT_IN_LIST": "LISTS_INLIST"])
  manager.loadSynonyms(["LISTS_SET_INDEX_INPUT_IN_LIST": "LISTS_INLIST"])
 
- manager.translation(forKey: "LISTS_INLIST")                    // Returns "in list"
- manager.translation(forKey: "LISTS_GET_INDEX_INPUT_IN_LIST")   // Returns "in list"
- manager.translation(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
+ manager.message(forKey: "LISTS_INLIST")                    // Returns "in list"
+ manager.message(forKey: "LISTS_GET_INDEX_INPUT_IN_LIST")   // Returns "in list"
+ manager.message(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
  ```
 
- This class is designed as a singleton instance, accessible via `TranslationManager.shared`.
+ This class is designed as a singleton instance, accessible via `MessageManager.shared`.
  */
-@objc(BKYTranslationManager)
-public class TranslationManager: NSObject {
+@objc(BKYMessageManager)
+public class MessageManager: NSObject {
   // MARK: - Properties
 
   /// Shared instance.
-  public static var shared: TranslationManager = {
-    let manager = TranslationManager()
-    let bundle = Bundle(for: TranslationManager.self)
+  public static var shared: MessageManager = {
+    let manager = MessageManager()
+    let bundle = Bundle(for: MessageManager.self)
 
     // Load default files, and prefix all values with "bky_"
     do {
-      try manager.loadTranslations(
+      try manager.loadMessages(
         withPrefix: "bky_", jsonPath: "bky_constants.json", bundle: bundle)
-      try manager.loadTranslations(
+      try manager.loadMessages(
         withPrefix: "bky_", jsonPath: "bky_messages.json", bundle: bundle)
       try manager.loadSynonyms(withPrefix: "bky_", jsonPath: "bky_synonyms.json", bundle: bundle)
     } catch let error {
-      bky_debugPrint("Could not load default files for TranslationManager: \(error)")
+      bky_debugPrint("Could not load default files for MessageManager: \(error)")
     }
 
     return manager
   }()
 
-  /// Dictionary of translation keys mapped to translation values.
-  fileprivate var _translations = [String: String]()
+  /// Dictionary of message keys mapped to message values.
+  fileprivate var _messages = [String: String]()
 
   /// Dictionary of synonym keys mapped to message keys.
   fileprivate var _synonyms = [String: String]()
@@ -72,7 +72,7 @@ public class TranslationManager: NSObject {
   // MARK: - Initializers
 
   /**
-   A singleton instance for this class is accessible via `TranslationManager.shared.`
+   A singleton instance for this class is accessible via `MessageManager.shared.`
    */
   internal override init() {
   }
@@ -80,11 +80,11 @@ public class TranslationManager: NSObject {
   // MARK: - Loading Data
 
   /**
-   Loads translation messages from a file containing a JSON object, where each object value is a
-   translation key mapped to a translation message. When a translation is stored, each key is
+   Loads messages from a file containing a JSON object, where each object value is a
+   message key mapped to a message value. When a message is stored, each key is
    automatically prefixed with the `prefix` parameter passed into the method.
 
-   For example, assume a `translations.json` file that contains the following data:
+   For example, assume a `messages.json` file that contains the following data:
    ```
    {
      "GREETING": "Welcome",
@@ -92,24 +92,24 @@ public class TranslationManager: NSObject {
    }
    ```
 
-   Here's how these translations would be loaded and accessed in the manager:
+   Here's how this file would be loaded and accessed in the manager:
    ```
-   let manager = TranslationManager.shared
-   try manager.loadTranslations(withPrefix: "PREFIX_", jsonPath: "translations.json")
+   let manager = MessageManager.shared
+   try manager.loadMessages(withPrefix: "PREFIX_", jsonPath: "messages.json")
 
-   manager.translation(forKey: "PREFIX_GREETING")  // Returns "Welcome"
-   manager.translation(forKey: "GREETING")         // Returns `nil` since there is no prefix
+   manager.message(forKey: "PREFIX_GREETING")  // Returns "Welcome"
+   manager.message(forKey: "GREETING")         // Returns `nil` since there is no prefix
    ```
 
-   - note: Translation keys are case-insensitive. Any existing translation is overwritten by
-   any translation in the given file with a duplicate key.
-   - parameter prefix: The prefix to automatically add to every translation key.
-   - parameter jsonPath: Path to file containing a JSON object of translation messages mapped to
-   unique keys.
+   - note: Message keys are case-insensitive. Any existing message is overwritten by
+   any message in the given file with a duplicate key.
+   - parameter prefix: The prefix to automatically add to every message key.
+   - parameter jsonPath: Path to file containing a JSON object of message keys mapped to message
+   values.
    - parameter bundle: [Optional] If specified, the bundle to use when locating `jsonPath`.
-   If `nil` is specified, it defaults to using `Bundle.main`.
+   If `nil` is specified (the default value), `Bundle.main` is used.
    */
-  public func loadTranslations(
+  public func loadMessages(
     withPrefix prefix: String, jsonPath: String, bundle: Bundle? = nil) throws {
 
     let aBundle = bundle ?? Bundle.main
@@ -125,8 +125,8 @@ public class TranslationManager: NSObject {
       if key == "@metadata" {
         // Skip this value.
       } else if let stringValue = value as? String {
-        // Store the translation, but keyed with the given prefix
-        _translations[(prefix + key).lookupKey()] = stringValue
+        // Store the message, but keyed with the given prefix
+        _messages[(prefix + key).lookupKey()] = stringValue
       } else {
         bky_debugPrint("Unrecognized value type ('\(type(of: value))') for key ('\(key)').")
       }
@@ -134,23 +134,23 @@ public class TranslationManager: NSObject {
   }
 
   /**
-   Loads translation messages from a given dictionary, where each pair is a translation key mapped
-   to a translation message.
+   Loads messages from a given dictionary, where each pair is a message key mapped
+   to a message value.
 
-   - note: Translation keys are case-insensitive. Any existing translation is overwritten by
-   any translation in the given dictionary with a duplicate key.
-   - parameter translations: Dictionary of translation keys mapped to translation messages.
+   - note: Message keys are case-insensitive. Any existing message is overwritten by
+   any message in the given dictionary with a duplicate key.
+   - parameter messages: Dictionary of message keys mapped to message values.
    */
-  public func loadTranslations(_ translations: [String: String]) {
-    // Overwrite existing translations
-    for (key, value) in translations {
-      _translations[key.lookupKey()] = value
+  public func loadMessages(_ messages: [String: String]) {
+    // Overwrite existing messages
+    for (key, value) in messages {
+      _messages[key.lookupKey()] = value
     }
   }
 
   /**
    Loads synonyms from a file containing a JSON object, where each object value is a synonym key
-   mapped to a translation key. When a synonym is stored, both the synonym key and translation
+   mapped to a message key. When a synonym is stored, both the synonym key and message
    key are automatically prefixed with the `prefix` parameter passed into the method.
 
    For example, assume a `synonyms.json` file that contains the following data:
@@ -161,37 +161,37 @@ public class TranslationManager: NSObject {
    }
    ```
 
-   And also a `translations.json` file that contains the following data:
+   And also a `messages.json` file that contains the following data:
    ```
    {
      "MAIN_TITLE": "Welcome",
    }
    ```
 
-   Here's how these synonyms would be loaded and accessed in the manager:
+   Here's how these files would be loaded and accessed in the manager:
    ```
-   let manager = TranslationManager.shared
-   try manager.loadTranslations(withPrefix: "PREFIX_", jsonPath: "translations.json")
+   let manager = MessageManager.shared
+   try manager.loadMessages(withPrefix: "PREFIX_", jsonPath: "messages.json")
    try manager.loadSynonyms(withPrefix: "PREFIX_", jsonPath: "synonyms.json")
 
    // All of these calls return "Welcome"
-   manager.translation(forKey: "PREFIX_MAIN_SCREEN_TITLE")
-   manager.translation(forKey: "PREFIX_ALTERNATE_SCREEN_TITLE")
-   manager.translation(forKey: "PREFIX_TITLE")
+   manager.message(forKey: "PREFIX_MAIN_SCREEN_TITLE")
+   manager.message(forKey: "PREFIX_ALTERNATE_SCREEN_TITLE")
+   manager.message(forKey: "PREFIX_TITLE")
 
    // All of these calls return `nil`
-   manager.translation(forKey: "MAIN_SCREEN_TITLE")
-   manager.translation(forKey: "ALTERNATE_SCREEN_TITLE")
-   manager.translation(forKey: "TITLE")
+   manager.message(forKey: "MAIN_SCREEN_TITLE")
+   manager.message(forKey: "ALTERNATE_SCREEN_TITLE")
+   manager.message(forKey: "TITLE")
    ```
 
    - note: Synonym keys are case-insensitive. Any existing synonym is overwritten by
    any synonym in the given file with a duplicate key.
-   - parameter prefix: The prefix to automatically add to every synonym and translation key pair.
+   - parameter prefix: The prefix to automatically add to every synonym key and message key.
    - parameter jsonPath: Path to file containing a JSON object of synonym keys mapped to
-   translation keys.
+   message keys.
    - parameter bundle: [Optional] If specified, the bundle to use when locating `jsonPath`.
-   If `nil` is specified, it defaults to using `Bundle.main`.
+   If `nil` is specified (the default value), `Bundle.main` is used.
    */
   public func loadSynonyms(
     withPrefix prefix: String, jsonPath: String, bundle: Bundle? = nil) throws {
@@ -216,12 +216,12 @@ public class TranslationManager: NSObject {
   }
 
   /**
-   Loads synonyms from a given dictionary, where each pair is a synonym key mapped to a translation
+   Loads synonyms from a given dictionary, where each pair is a synonym key mapped to a message
    key.
 
    - note: Synonym keys are case-insensitive. Any existing synonym is overwritten by
    any synonym in the given file with a duplicate key.
-   - parameter synonyms: Dictionary of synonym keys mapped to translation keys.
+   - parameter synonyms: Dictionary of synonym keys mapped to message keys.
    */
   public func loadSynonyms(_ synonyms: [String: String]) {
     // Overwrite existing synonym values
@@ -230,26 +230,26 @@ public class TranslationManager: NSObject {
     }
   }
 
-  // MARK: - Translation
+  // MARK: - Message Retrieval
 
   /**
-   Returns a message translation for a given translation or synonym key. Lookup prioritizes
-   finding the key in the translation table first, before looking in the synonyms table.
-   If no message could be found for the key from either the translation or synonym tables,
+   Returns a message value for a given message key or synonym key. Lookup prioritizes
+   finding the key in the message table first, before looking in the synonym table.
+   If no value could be found for the key from either the message table or synonym table,
    then `nil` is returned.
 
    - note: Key lookups are case-insensitive.
-   - parameter key: A translation or synonym key.
-   - returns: The message for the given `key`, if it exists in the translation or synonym tables.
+   - parameter key: A message key or synonym key.
+   - returns: The message for the given `key`, if it exists in the message table or synonym table.
    If the `key` could not be found, then `nil` is returned.
-  */
-  public func translation(forKey key: String) -> String? {
+   */
+  public func message(forKey key: String) -> String? {
     let lookupKey = key.lookupKey()
 
-    if let value = _translations[lookupKey] {
+    if let value = _messages[lookupKey] {
       return value
     } else if let synonym = _synonyms[lookupKey],
-      let value = _translations[synonym] {
+      let value = _messages[synonym] {
       return value
     }
     return nil
