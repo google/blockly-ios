@@ -15,19 +15,10 @@
 
 CodeGeneratorBridge = {};
 
-// Dictionary mapping block types to a custom `domToMutation(xmlElement)` function. The function
-// is added to the block definition of its mapped type and is called when the block is being
-// initialized from XML data.
-CodeGeneratorBridge.BlockDomToMutation = {};
-
 CodeGeneratorBridge.initFactory = function(block) {
   return function() {
     this.jsonInit(block);
   };
-};
-
-CodeGeneratorBridge.domToMutationFactory = function(block) {
-  return CodeGeneratorBridge.BlockDomToMutation[block.type];
 };
 
 CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
@@ -36,8 +27,7 @@ CodeGeneratorBridge.importBlockDefinitions = function(definitions) {
     for (var index = 0; index < jsonArr.length; index++) {
       var block = jsonArr[index];
       Blockly.Blocks[block.type] = {
-        init: CodeGeneratorBridge.initFactory(block),
-        domToMutation: CodeGeneratorBridge.domToMutationFactory(block)
+        init: CodeGeneratorBridge.initFactory(block)
       };
     }
   }
@@ -50,7 +40,7 @@ CodeGeneratorBridge.generateCodeForWorkspace = function(workspaceXML, generator)
 
     // Create a headless workspace.
     var workspace = new Blockly.Workspace();
-    Blockly.Xml.domToWorkspace(workspace, dom);
+    Blockly.Xml.domToWorkspace(dom, workspace);
 
     // Generate the code
     var code = generator.workspaceToCode(workspace);

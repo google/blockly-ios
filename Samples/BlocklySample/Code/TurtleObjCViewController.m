@@ -105,7 +105,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   // Create the code generator service
   _codeGeneratorService = [[BKYCodeGeneratorService alloc] initWithJsCoreDependencies:@[
     @"Turtle/blockly_web/blockly_compressed.js",
-    @"Turtle/blockly_web/blocks_compressed.js",
     @"Turtle/blockly_web/msg/js/en.js"]];
 
   // Create the builder for creating code generator service requests
