@@ -130,7 +130,8 @@ extension Field {
       // Color
       registerType(FIELD_TYPE_COLOR) {
         (json: [String: Any]) throws -> Field in
-        let color = ColorHelper.makeColor(rgb: json[PARAMETER_COLOR] as? String ?? "")
+        let colorString = json[PARAMETER_COLOR] as? String ?? ""
+        let color = ColorHelper.makeColor(rgb: colorString)
         return FieldColor(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
           color: (color ?? UIColor.red))
@@ -162,7 +163,7 @@ extension Field {
           // Reconstruct options into array of (String, String) tuples
           // eg. [(displayName: "Name 1", value: "Value 1"),
           //     (displayName: "Name 2", value: "Value 2")]
-          options: options.map({ (displayName: $0[0], value: $0[1]) }),
+          options: options.map({ (displayName: Block.translatedMessage($0[0]), value: $0[1]) }),
           selectedIndex: 0)
       }
 
@@ -171,12 +172,12 @@ extension Field {
         (json: [String: Any]) throws -> Field in
         return FieldImage(
           name: (json[PARAMETER_NAME] as? String ?? ""),
-          imageLocation: (json[PARAMETER_IMAGE_URL] as? String ??
+          imageLocation: (Block.translatedJSONValue(json[PARAMETER_IMAGE_URL]) as? String ??
             "https://www.gstatic.com/codesite/ph/images/star_on.gif"),
           size: WorkspaceSize(
             width: CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
             height: CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
-          altText: (json[PARAMETER_ALT_TEXT] as? String ?? "*"))
+          altText: (Block.translatedJSONValue(json[PARAMETER_ALT_TEXT]) as? String ?? "*"))
       }
 
       // Input
@@ -184,7 +185,7 @@ extension Field {
         (json: [String: Any]) throws -> Field in
         return FieldInput(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          text: (json[PARAMETER_TEXT] as? String ?? "default"))
+          text: (Block.translatedJSONValue(json[PARAMETER_TEXT]) as? String ?? "default"))
       }
 
       // Label
@@ -192,7 +193,7 @@ extension Field {
         (json: [String: Any]) throws -> Field in
         return FieldLabel(
           name: (json[PARAMETER_NAME] as? String ?? ""),
-          text: (json[PARAMETER_TEXT] as? String ?? ""))
+          text: (Block.translatedJSONValue(json[PARAMETER_TEXT]) as? String ?? ""))
       }
 
       // Number
@@ -214,7 +215,7 @@ extension Field {
         (json: [String: Any]) throws -> Field in
         return FieldVariable(
           name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          variable: (json[PARAMETER_VARIABLE] as? String ?? "item"))
+          variable: (Block.translatedJSONValue(json[PARAMETER_VARIABLE]) as? String ?? "item"))
       }
     }
 

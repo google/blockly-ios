@@ -23,6 +23,11 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
+		FA0D8C101E8C46B900C87C56 /* TranslationManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0D8C0F1E8C46B900C87C56 /* TranslationManagerTest.swift */; };
+		FA0D8C121E8C4ADE00C87C56 /* i18n_translations1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C111E8C4ADE00C87C56 /* i18n_translations1.json */; };
+		FA0D8C141E8C4B7B00C87C56 /* i18n_translations2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C131E8C4B7B00C87C56 /* i18n_translations2.json */; };
+		FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */; };
+		FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
@@ -121,6 +126,7 @@
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
 		FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84251B1D3459EC0092CDDC /* InputView.swift */; };
 		FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */; };
+		FA8896E01E8B1DCC00404DFA /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA8896DE1E8B1DCC00404DFA /* bky_constants.json */; };
 		FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */; };
 		FA8BD28D1E0E204C0009F24A /* MutatorIfElseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
@@ -174,6 +180,9 @@
 		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
 		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
+		FAC92EFE1E835307000AE3E0 /* TranslationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC92EFD1E835307000AE3E0 /* TranslationManager.swift */; };
+		FAC92F091E85FFE2000AE3E0 /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */; };
+		FAC92F0C1E85FFE8000AE3E0 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */; };
 		FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -244,6 +253,11 @@
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryTest.swift; path = JSON/BlockFactoryTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
+		FA0D8C0F1E8C46B900C87C56 /* TranslationManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslationManagerTest.swift; sourceTree = "<group>"; };
+		FA0D8C111E8C4ADE00C87C56 /* i18n_translations1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_translations1.json; sourceTree = "<group>"; };
+		FA0D8C131E8C4B7B00C87C56 /* i18n_translations2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_translations2.json; sourceTree = "<group>"; };
+		FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms1.json; sourceTree = "<group>"; };
+		FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms2.json; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
@@ -345,6 +359,7 @@
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceViewController.swift; sourceTree = "<group>"; };
+		FA8896DF1E8B1DCC00404DFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_constants.json; sourceTree = "<group>"; };
 		FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElse.swift; sourceTree = "<group>"; };
 		FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElseLayout.swift; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
@@ -398,6 +413,9 @@
 		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
 		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
+		FAC92EFD1E835307000AE3E0 /* TranslationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslationManager.swift; sourceTree = "<group>"; };
+		FAC92F0A1E85FFE2000AE3E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FAC92F0D1E85FFE8000AE3E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_synonyms.json; sourceTree = "<group>"; };
 		FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinator.swift; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -522,6 +540,10 @@
 				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
 				FADF97351D9C83C00067C425 /* code_generator_blocks.json */,
 				FADF97371D9C84270067C425 /* code_generator_generators.js */,
+				FA0D8C111E8C4ADE00C87C56 /* i18n_translations1.json */,
+				FA0D8C131E8C4B7B00C87C56 /* i18n_translations2.json */,
+				FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */,
+				FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */,
 				FA57C3A61CCADD8300952BFB /* toolbox_test.xml */,
 				FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */,
 			);
@@ -618,6 +640,7 @@
 				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
 				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */,
 				FA4BB4B11B754D87000980E9 /* ColorHelperTest.swift */,
+				FA0D8C0F1E8C46B900C87C56 /* TranslationManagerTest.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -776,6 +799,9 @@
 		FA9B45B81C32D966001EAE68 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FA8896DE1E8B1DCC00404DFA /* bky_constants.json */,
+				FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */,
+				FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */,
 				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
 				FA5F2BC51C76A2E6008384BE /* CodeGenerator */,
 				FA77D3971D9B54290014CBC4 /* Default */,
@@ -814,6 +840,7 @@
 				FAFD377F1C9A55F800C77049 /* String+Encoding.swift */,
 				FAA86FFD1C64272C000C7C61 /* String+LayoutHelper.swift */,
 				FAF5004F1D5042F4009E4B24 /* String+Util.swift */,
+				FAC92EFD1E835307000AE3E0 /* TranslationManager.swift */,
 				FAA86FFE1C64272C000C7C61 /* UIColor+Helper.swift */,
 				FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */,
 				FAA86FFF1C64272C000C7C61 /* UIView+AutoLayout.swift */,
@@ -1007,7 +1034,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA77D3981D9B54290014CBC4 /* Default in Resources */,
+				FAC92F0C1E85FFE8000AE3E0 /* bky_synonyms.json in Resources */,
+				FA8896E01E8B1DCC00404DFA /* bky_constants.json in Resources */,
 				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
+				FAC92F091E85FFE2000AE3E0 /* bky_messages.json in Resources */,
 				FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1017,10 +1047,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
+				FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */,
 				FADF97381D9C84270067C425 /* code_generator_generators.js in Resources */,
+				FA0D8C121E8C4ADE00C87C56 /* i18n_translations1.json in Resources */,
 				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
 				FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */,
 				FA57C3A71CCADD8300952BFB /* toolbox_test.xml in Resources */,
+				FA0D8C141E8C4B7B00C87C56 /* i18n_translations2.json in Resources */,
+				FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */,
 				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
 				FADF97361D9C83C00067C425 /* code_generator_blocks.json in Resources */,
 				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
@@ -1133,6 +1167,7 @@
 				FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */,
 				FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */,
 				FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */,
+				FAC92EFE1E835307000AE3E0 /* TranslationManager.swift in Sources */,
 				FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */,
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
 				FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */,
@@ -1198,6 +1233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */,
+				FA0D8C101E8C46B900C87C56 /* TranslationManagerTest.swift in Sources */,
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
@@ -1240,6 +1276,33 @@
 			targetProxy = FA548C121B630BAD008BC59C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FA8896DE1E8B1DCC00404DFA /* bky_constants.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA8896DF1E8B1DCC00404DFA /* en */,
+			);
+			name = bky_constants.json;
+			sourceTree = "<group>";
+		};
+		FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAC92F0A1E85FFE2000AE3E0 /* en */,
+			);
+			name = bky_messages.json;
+			sourceTree = "<group>";
+		};
+		FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAC92F0D1E85FFE8000AE3E0 /* en */,
+			);
+			name = bky_synonyms.json;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FA548C191B630BAD008BC59C /* Debug */ = {

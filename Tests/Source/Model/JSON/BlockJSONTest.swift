@@ -166,12 +166,12 @@ class BlockJSONTest: XCTestCase {
   // MARK: - tokenizeMessage
 
   func testTokenizeMessage_emptyMessage() {
-    let tokens = Block.tokenized(message: "")
+    let tokens = Block.tokenizedMessage("")
     XCTAssertEqual(0, tokens.count)
   }
 
   func testTokenizeMessage_emojiMessage() {
-    let tokens = Block.tokenized(message: "👋 %1 🌏")
+    let tokens = Block.tokenizedMessage("👋 %1 🌏")
     XCTAssertEqual(3, tokens.count)
     if tokens.count >= 3 {
       XCTAssertEqual("👋 ", tokens[0] as? String)
@@ -181,7 +181,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_simpleMessage() {
-    let tokens = Block.tokenized(message: "Simple text")
+    let tokens = Block.tokenizedMessage("Simple text")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("Simple text", tokens[0] as? String)
@@ -189,7 +189,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_complexMessage() {
-    let tokens = Block.tokenized(message: "  token1%1%%%3another\n%29 😸📺 %1234567890")
+    let tokens = Block.tokenizedMessage("  token1%1%%%3another\n%29 😸📺 %1234567890")
     XCTAssertEqual(8, tokens.count)
     if tokens.count >= 8 {
       XCTAssertEqual("  token1", tokens[0] as? String)
@@ -204,7 +204,7 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_unescapePercent() {
-    let tokens = Block.tokenized(message: "blah%blahblah")
+    let tokens = Block.tokenizedMessage("blah%blahblah")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("blah%blahblah", tokens[0] as? String)
@@ -212,10 +212,76 @@ class BlockJSONTest: XCTestCase {
   }
 
   func testTokenizeMessage_trailingPercent() {
-    let tokens = Block.tokenized(message: "%")
+    let tokens = Block.tokenizedMessage("%")
     XCTAssertEqual(1, tokens.count)
     if tokens.count >= 1 {
       XCTAssertEqual("%", tokens[0] as? String)
     }
+  }
+
+  // MARK: - translateMessage
+
+  func testTranslateMessage_emptyMessage() {
+    let translation = Block.translatedMessage("")
+    XCTAssertEqual("", translation)
+  }
+
+  func testTranslateMessage_simpleMessage() {
+    TranslationManager.shared.loadTranslations([
+      "bky_simple": "Simple"
+    ])
+    let translation = Block.translatedMessage("%{bky_simple}")
+    XCTAssertEqual("Simple", translation)
+  }
+
+  func testTranslateMessage_twoSimpleKeys() {
+    TranslationManager.shared.loadTranslations([
+      "bky_key1": "Key1",
+      "bky_key2": "Key2"
+      ])
+    let translation = Block.translatedMessage("%{bky_key1} %{bky_key2}")
+    XCTAssertEqual("Key1 Key2", translation)
+  }
+
+  func testTranslateMessage_conjoinedKeys() {
+    TranslationManager.shared.loadTranslations([
+      "bky_key1": "Key1",
+      "bky_key2": "Key2"
+      ])
+    let translation = Block.translatedMessage("%{bky_key1}%{bky_key2}")
+    XCTAssertEqual("Key1Key2", translation)
+  }
+
+
+  func testTranslateMessage_recursiveLookup() {
+    TranslationManager.shared.loadTranslations([
+      "name": "Taylor",
+      "greeting": "Hello, my name is %{name}.",
+      "introduction": "%{greeting} NICE TO MEET YOU!"
+      ])
+    let translation = Block.translatedMessage("%{introduction}")
+    XCTAssertEqual("Hello, my name is Taylor. NICE TO MEET YOU!", translation)
+  }
+
+  func testTranslateMessage_nonExistentKey() {
+    let translation = Block.translatedMessage("%{no_key_found}")
+    XCTAssertEqual("%{no_key_found}", translation)
+  }
+
+
+  func testTranslateMessage_keyInsideWord() {
+    TranslationManager.shared.loadTranslations([
+      "key": "key",
+      ])
+    let translation = Block.translatedMessage("mon%{key}brains")
+    XCTAssertEqual("monkeybrains", translation)
+  }
+
+  func testTranslateMessage_escapedKey() {
+    TranslationManager.shared.loadTranslations([
+      "donttranslatethis": "This shouldn't be translated.",
+      ])
+    let translation = Block.translatedMessage("%%{donttranslatethis}")
+    XCTAssertEqual("%%{donttranslatethis}", translation)
   }
 }
