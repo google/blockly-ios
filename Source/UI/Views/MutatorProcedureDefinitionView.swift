@@ -296,7 +296,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
       accessoryView.isOn = mutatorLayout.allowStatements
 
       let cell = UITableViewCell(style: .default, reuseIdentifier: IDENTIFIER_ALLOW_STATEMENTS_CELL)
-      cell.textLabel?.text = "Allow statements"
+      cell.textLabel?.text = message(forKey: "BKY_PROCEDURES_ALLOW_STATEMENTS")
       cell.textLabel?.font = generalFont
       cell.textLabel?.numberOfLines = 0
       cell.accessoryView = accessoryView
@@ -384,11 +384,13 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
   }
 
   func parametersTitle() -> String {
+    // TODO:(#343) Localize this string
     return "INPUTS"
   }
 
   func parametersErrorMessage() -> String {
     if mutatorLayout.containsDuplicateParameters() {
+      // TODO:(#343) Localize this string
       return "This function has duplicate inputs."
     }
     return ""
@@ -515,6 +517,7 @@ fileprivate class ParameterCellView: UITableViewCell {
   /// The text field for entering the parameter
   lazy var textField: UITextField = {
     let textField = UITextField()
+    // TODO:(#343) Localize this string
     textField.placeholder = "+ Add input"
     return textField
   }()

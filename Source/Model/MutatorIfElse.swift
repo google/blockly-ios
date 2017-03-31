@@ -62,9 +62,13 @@ extension MutatorIfElse: Mutator {
         let i = count + 1 // 1-based indexing
         let ifBuilder = InputBuilder(type: .value, name: "IF\(i)")
         ifBuilder.connectionTypeChecks = ["Boolean"]
-        ifBuilder.appendField(FieldLabel(name: "ELSEIF", text: "else if"))
+
+        let elseIfText = message(forKey: "BKY_CONTROLS_IF_MSG_ELSEIF")
+        ifBuilder.appendField(FieldLabel(name: "ELSEIF", text: elseIfText))
+
+        let doText = message(forKey: "BKY_CONTROLS_IF_MSG_THEN")
         let doBuilder = InputBuilder(type: .statement, name: "DO\(i)")
-        doBuilder.appendField(FieldLabel(name: "DO", text: "do"))
+        doBuilder.appendField(FieldLabel(name: "DO", text: doText))
 
         // Insert else-if statement before any applied else input (which would be at the very end)
         block.insertInput(ifBuilder.makeInput(), at: (block.inputs.count - appliedElseCount))
@@ -87,7 +91,8 @@ extension MutatorIfElse: Mutator {
     if elseStatement && !appliedElseStatement {
       // Add else statement
       let elseBuilder = InputBuilder(type: .statement, name: "ELSE")
-      elseBuilder.appendField(FieldLabel(name: "ELSE", text: "else"))
+      let elseText = message(forKey: "BKY_CONTROLS_IF_MSG_ELSE")
+      elseBuilder.appendField(FieldLabel(name: "ELSE", text: elseText))
 
       // Always insert else statement at the very end
       block.appendInput(elseBuilder.makeInput())

@@ -159,7 +159,8 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
       accessoryView.delegate = self
 
       let cell = UITableViewCell(style: .default, reuseIdentifier: "ElseIfCell")
-      cell.textLabel?.text = "else if"
+      cell.textLabel?.text =
+        MessageManager.shared.message(forKey: "BKY_CONTROLS_IF_MSG_ELSEIF") ?? ""
       cell.accessoryView = accessoryView
 
       return cell
@@ -170,7 +171,7 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
       accessoryView.isOn = mutatorIfElseLayout.elseStatement
 
       let cell = UITableViewCell(style: .default, reuseIdentifier: "ElseCell")
-      cell.textLabel?.text = "else"
+      cell.textLabel?.text = MessageManager.shared.message(forKey: "BKY_CONTROLS_IF_MSG_ELSE") ?? ""
       cell.accessoryView = accessoryView
 
       return cell

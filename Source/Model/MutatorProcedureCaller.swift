@@ -63,7 +63,8 @@ extension MutatorProcedureCaller: Mutator {
       {
         input.removeField(field)
       } else if !parameters.isEmpty && withField == nil {
-        input.appendField(FieldLabel(name: "WITH", text: "with:"))
+        let withText = message(forKey: "BKY_PROCEDURES_CALL_BEFORE_PARAMS")
+        input.appendField(FieldLabel(name: "WITH", text: withText))
       }
     }
 

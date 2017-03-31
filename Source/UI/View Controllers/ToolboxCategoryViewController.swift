@@ -81,6 +81,7 @@ public final class ToolboxCategoryViewController: UIViewController {
   /// The button for adding variables to the name manager.
   private lazy var addVariableButton: UIButton = {
     let button = UIButton()
+    // TODO:(#343) Localize this string
     button.setTitle("+ Add variable", for: UIControlState.normal)
     button.setTitleColor(.white, for: .normal)
     button.setTitleColor(.gray, for: .highlighted)
@@ -258,9 +259,10 @@ public final class ToolboxCategoryViewController: UIViewController {
   }
 
   fileprivate func showAddAlert(error: String = "") {
-    let addView = UIAlertController(title: "New variable name:", message: error,
-                                    preferredStyle: .alert)
+    let title = message(forKey: "BKY_NEW_VARIABLE_TITLE")
+    let addView = UIAlertController(title: title, message: error, preferredStyle: .alert)
     addView.addTextField(configurationHandler: nil)
+    // TODO:(#343) Localize this string
     addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
     let addAlertAction = UIAlertAction(title: "Add", style: .default) { _ in
       guard let variableNameManager = self.variableNameManager else {
@@ -271,12 +273,17 @@ public final class ToolboxCategoryViewController: UIViewController {
         let newName = textField.text,
         FieldVariable.isValidName(newName) else
       {
+        // TODO:(#343) Localize this string
         self.showAddAlert(error: "(Error) You can't use an empty variable name.")
         return
       }
+      // TODO:(#343) Localize this string
+      textField.placeholder = "Variable name"
 
       if variableNameManager.containsName(newName) {
-        self.showAddAlert(error: "(Error) That variable already exists.")
+        let error = message(forKey: "BKY_VARIABLE_ALREADY_EXISTS")
+          .replacingOccurrences(of: "%1", with: newName)
+        self.showAddAlert(error: error)
         return
       }
 

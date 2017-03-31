@@ -68,7 +68,7 @@ extension MutatorProcedureDefinition: Mutator {
 
     // Update parameters label
     if let field = block.firstField(withName: "PARAMS") as? FieldLabel {
-      field.text = (!parameters.isEmpty ? "with: " : "") +
+      field.text = (!parameters.isEmpty ? message(forKey: "BKY_PROCEDURES_BEFORE_PARAMS") : "") +
         parameters.map({ $0.name }).joined(separator: ", ")
     }
 

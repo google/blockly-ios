@@ -28,6 +28,8 @@
 		FA0D8C141E8C4B7B00C87C56 /* i18n_messages2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */; };
 		FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */; };
 		FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */; };
+		FA0D8C281E8DCB5700C87C56 /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C261E8DCB5700C87C56 /* bky_constants.json */; };
+		FA0D8C301E8DD42200C87C56 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C2F1E8DD42200C87C56 /* bky_synonyms.json */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
@@ -126,7 +128,6 @@
 		FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425191D3459DD0092CDDC /* BlockGroupView.swift */; };
 		FA84251C1D3459EC0092CDDC /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84251B1D3459EC0092CDDC /* InputView.swift */; };
 		FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */; };
-		FA8896E01E8B1DCC00404DFA /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA8896DE1E8B1DCC00404DFA /* bky_constants.json */; };
 		FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */; };
 		FA8BD28D1E0E204C0009F24A /* MutatorIfElseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
@@ -182,7 +183,6 @@
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
 		FAC92EFE1E835307000AE3E0 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC92EFD1E835307000AE3E0 /* MessageManager.swift */; };
 		FAC92F091E85FFE2000AE3E0 /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */; };
-		FAC92F0C1E85FFE8000AE3E0 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */; };
 		FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -258,6 +258,9 @@
 		FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_messages2.json; sourceTree = "<group>"; };
 		FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms1.json; sourceTree = "<group>"; };
 		FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms2.json; sourceTree = "<group>"; };
+		FA0D8C261E8DCB5700C87C56 /* bky_constants.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_constants.json; sourceTree = "<group>"; };
+		FA0D8C2E1E8DD20300C87C56 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fr; path = fr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA0D8C2F1E8DD42200C87C56 /* bky_synonyms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_synonyms.json; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
@@ -359,7 +362,6 @@
 		FA8425191D3459DD0092CDDC /* BlockGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupView.swift; sourceTree = "<group>"; };
 		FA84251B1D3459EC0092CDDC /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceViewController.swift; sourceTree = "<group>"; };
-		FA8896DF1E8B1DCC00404DFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_constants.json; sourceTree = "<group>"; };
 		FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElse.swift; sourceTree = "<group>"; };
 		FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElseLayout.swift; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
@@ -415,7 +417,6 @@
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
 		FAC92EFD1E835307000AE3E0 /* MessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		FAC92F0A1E85FFE2000AE3E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FAC92F0D1E85FFE8000AE3E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_synonyms.json; sourceTree = "<group>"; };
 		FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinator.swift; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -799,9 +800,9 @@
 		FA9B45B81C32D966001EAE68 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FA8896DE1E8B1DCC00404DFA /* bky_constants.json */,
+				FA0D8C261E8DCB5700C87C56 /* bky_constants.json */,
 				FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */,
-				FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */,
+				FA0D8C2F1E8DD42200C87C56 /* bky_synonyms.json */,
 				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
 				FA5F2BC51C76A2E6008384BE /* CodeGenerator */,
 				FA77D3971D9B54290014CBC4 /* Default */,
@@ -1016,6 +1017,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
 			);
 			mainGroup = FA548BFB1B630BAC008BC59C;
 			productRefGroup = FA548C061B630BAC008BC59C /* Products */;
@@ -1033,12 +1035,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0D8C301E8DD42200C87C56 /* bky_synonyms.json in Resources */,
 				FA77D3981D9B54290014CBC4 /* Default in Resources */,
-				FAC92F0C1E85FFE8000AE3E0 /* bky_synonyms.json in Resources */,
-				FA8896E01E8B1DCC00404DFA /* bky_constants.json in Resources */,
 				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
 				FAC92F091E85FFE2000AE3E0 /* bky_messages.json in Resources */,
 				FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */,
+				FA0D8C281E8DCB5700C87C56 /* bky_constants.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,28 +1280,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		FA8896DE1E8B1DCC00404DFA /* bky_constants.json */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA8896DF1E8B1DCC00404DFA /* en */,
-			);
-			name = bky_constants.json;
-			sourceTree = "<group>";
-		};
 		FAC92F0B1E85FFE2000AE3E0 /* bky_messages.json */ = {
 			isa = PBXVariantGroup;
 			children = (
 				FAC92F0A1E85FFE2000AE3E0 /* en */,
+				FA0D8C2E1E8DD20300C87C56 /* fr */,
 			);
 			name = bky_messages.json;
-			sourceTree = "<group>";
-		};
-		FAC92F0E1E85FFE8000AE3E0 /* bky_synonyms.json */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FAC92F0D1E85FFE8000AE3E0 /* en */,
-			);
-			name = bky_synonyms.json;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1309,6 +1296,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1360,6 +1348,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
