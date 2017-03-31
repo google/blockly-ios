@@ -10,17 +10,16 @@
       }
     ],
     "output": "Colour",
-    "colour": 20,
-    "tooltip": "Choose a colour from the palette.",
-    "helpUrl": "https://en.wikipedia.org/wiki/Color"
+    "colour": "%{BKY_COLOUR_HUE}",
+    "helpUrl": "%{BKY_COLOUR_PICKER_HELPURL}",
+    "tooltip": "%{BKY_COLOUR_PICKER_TOOLTIP}"
   },
   {
     "type": "colour_random",
-    "message0": "random colour",
-    "args0": [],
-    "output": null,
-    "colour": 20,
-    "tooltip": "Choose a colour at random.",
-    "helpUrl": "http://randomcolour.com"
+    "message0": "%{BKY_COLOUR_RANDOM_TITLE}",
+    "output": "Colour",
+    "colour": "%{BKY_COLOUR_HUE}",
+    "helpUrl": "%{BKY_COLOUR_RANDOM_HELPURL}",
+    "tooltip": "%{BKY_COLOUR_RANDOM_TOOLTIP}"
   }
 ]

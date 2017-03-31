@@ -67,12 +67,15 @@ extension Block {
     let blockName = (json[PARAMETER_TYPE] as? String) ?? ""
     let builder = BlockBuilder(name: blockName)
 
-    if let colorHue = json[PARAMETER_COLOR] as? CGFloat {
+    let decodedColor = decodedJSONValue(json[PARAMETER_COLOR])
+    if let colorHue = decodedColor as? CGFloat {
       builder.color = ColorHelper.makeColor(hue: colorHue)
-    } else if let colorString = json[PARAMETER_COLOR] as? String,
-        let color = ColorHelper.makeColor(rgb: colorString)
-    {
-      builder.color = color
+    } else if let colorString = decodedColor as? String {
+      if let colorHue = NumberFormatter().number(from: colorString) {
+        builder.color = ColorHelper.makeColor(hue: CGFloat(colorHue))
+      } else if let color = ColorHelper.makeColor(rgb: colorString) {
+        builder.color = color
+      }
     }
 
     if let output = json[PARAMETER_OUTPUT] {
@@ -105,10 +108,10 @@ extension Block {
     if let inputsInline = json[PARAMETER_INPUTS_INLINE] as? Bool {
       builder.inputsInline = inputsInline
     }
-    if let tooltip = json[PARAMETER_TOOLTIP] as? String {
+    if let tooltip = decodedJSONValue(json[PARAMETER_TOOLTIP]) as? String {
       builder.tooltip = tooltip
     }
-    if let helpURL = json[PARAMETER_HELP_URL] as? String {
+    if let helpURL = decodedJSONValue(json[PARAMETER_HELP_URL]) as? String {
       builder.helpURL = helpURL
     }
     if let mutator = json[PARAMETER_MUTATOR] as? String {
@@ -145,8 +148,8 @@ extension Block {
 
       // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
-      builder.inputBuilders += try interpolate(
-        message: message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
+      builder.inputBuilders += try interpolatedMessage(
+        message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)
 
       i += 1
     }
@@ -171,10 +174,10 @@ extension Block {
   `Input` or `Field`.
   - returns: An `InputBuilder` array
   */
-  internal class func interpolate(message: String, arguments: Array<[String: Any]>,
+  internal class func interpolatedMessage(_ message: String, arguments: Array<[String: Any]>,
     lastDummyAlignment: Input.Alignment) throws -> [InputBuilder]
   {
-    let tokens = Block.tokenized(message: message)
+    let tokens = tokenizedString(message)
     var processedIndices = [Bool](repeating: false, count: arguments.count)
     var tempFieldList = [Field]()
     var allInputBuilders = Array<InputBuilder>()
@@ -253,32 +256,109 @@ extension Block {
   }
 
   /**
-  Tokenize message, splitting text by text parameter positions (eg. "%1","%2",etc.). Tokens are
+   Given a value, returns the decoded value of it if it's a `String`.
+   If it isn't a `String`, this method simply returns back the original value.
+
+   - parameter value: The JSON value to decode.
+   - returns: If `value` is a `String`, returns the decoded value of it. Otherwise, returns
+   back `value`.
+   */
+  internal class func decodedJSONValue(_ value: Any?) -> Any? {
+    guard let string = value as? String else {
+      // Value isn't a string, return it
+      return value
+    }
+
+    return decodedString(string)
+  }
+
+  /**
+   Decodes a given string by replacing any keys of the form "%{<key>}" found within the string with
+   corresponding messages found inside `MessageManager.shared` that use that key.
+
+   Additionally, for any keys that are successfully replaced, this method recursively decodes
+   those values, if those values contain references to more keys of the form "%{<key>}".
+
+   For example:
+   ```
+   MessageManager.shared.loadMessages([
+     "bky_name": "Blockly",
+     "bky_description": "This is the %{bky_name} library."
+   ])
+   Block.decodedString("%{bky_name}")              // Returns "Blockly"
+   Block.decodedString("%{bky_description}")       // Returns "This is the Blockly library."
+   Block.decodedString("%{non_existent_message}")  // Returns "%{non_existent_message}"
+   ```
+
+   - note: Decoding a string with a key inside another key is not supported by this method
+   (eg. `"%{bky_{%bky_key2}key1}"`). It's recommended that this situation is avoided as the outcome
+   of this cannot be guaranteed.
+   - parameter string: The string to decode.
+   - returns: The decoded version of `string`.
+   */
+  internal class func decodedString(_ string: String) -> String {
+    var returnValue = string
+
+    // Find all potential keys using the regex
+    let matches = MessageKeyFinder.shared.matches(
+      in: returnValue, options: [], range: NSMakeRange(0, returnValue.utf16.count))
+
+    // Perform each key replacement in backwards order. This allows us to easily do key replacements
+    // using the original ranges in the `matches`, without needing to keep track of range
+    // offsets due to a key match being replaced.
+    for match in matches.reversed() {
+      guard
+        match.numberOfRanges == 2,
+        match.rangeAt(1).location != NSNotFound, // The first capture group is what contains the key
+        let matchRange = bky_rangeFromNSRange(match.range, forString: returnValue),
+        let keyRange = bky_rangeFromNSRange(match.rangeAt(1), forString: returnValue) else {
+          continue
+      }
+
+      // Found a key, try to find a message for it.
+      let key = returnValue.substring(with: keyRange)
+
+      if let message = MessageManager.shared.message(forKey: key) {
+        // A message was found for the key. The message itself may contain more key references,
+        // so recursively decode this message before replacing the key in the original string.
+        let decodedMessage = decodedString(message)
+        returnValue.replaceSubrange(matchRange, with: decodedMessage)
+      }
+    }
+
+    return returnValue
+  }
+
+  /**
+  Tokenize string, splitting text by text parameter positions (eg. "%1","%2",etc.). Tokens are
   returned in an array, where regular text is returned as a `String` and positions are returned
   as an `Int`.
 
-  eg. `tokenized("Here is an example: %1\nAnd another example: %2.")`
+  eg. `tokenizedString("Here is an example: %1\nAnd another example: %2.")`
 
   returns:
 
   `["Here is an example: ", 1, "\nAnd another example: ", 2]`
 
-  - parameter message: The message to tokenize
+  - parameter string: The string to tokenize
   - returns: An array of tokens consisting of either `String` or `Int`
   */
-  internal class func tokenized(message: String) -> [Any] {
+  internal class func tokenizedString(_ string: String) -> [Any] {
     enum State {
       case baseCase, percentFound, percentAndDigitFound
     }
 
+    // Decode the message first to convert keys that may be present inside message
+    // (eg. %{BKY_COLOUR_HUE})
+    let decodedString = self.decodedString(string)
     var tokens = [Any]()
     var state = State.baseCase
     var currentTextToken = ""
     var currentNumber = 0
-    var i = message.startIndex
+    var i = decodedString.startIndex
 
-    while i < message.endIndex {
-      let character = message[i]
+    while i < decodedString.endIndex {
+      let character = decodedString[i]
 
       switch (state) {
       case .baseCase:
@@ -314,12 +394,12 @@ extension Block {
           // Not a number, add the current number token
           tokens.append(currentNumber)
           currentNumber = 0
-          i = message.index(before: i)  // Parse this char again.
+          i = decodedString.index(before: i)  // Parse this char again.
           state = .baseCase
         }
       }
 
-      i = message.index(after: i)
+      i = decodedString.index(after: i)
     }
 
     // Process any remaining values
@@ -333,7 +413,30 @@ extension Block {
     case .percentAndDigitFound:
       tokens.append(currentNumber)
     }
-    
+
     return tokens
+  }
+}
+
+/**
+ Helper class used for storing a regular expression that can parse message keys from a given string.
+ */
+fileprivate class MessageKeyFinder: NSRegularExpression {
+  // Shared instance.
+  fileprivate static var shared = MessageKeyFinder()
+
+  fileprivate init() {
+    // This pattern matches: %{bky_test}, %{SOMEKEY}
+    // Doesn't match: %%{bky_test}, %{0}, %1
+    let pattern = "(?<!%)%\\{([a-z][a-z|0-9|_]*)\\}"
+    do {
+      try super.init(pattern: pattern, options: .caseInsensitive)
+    } catch let error {
+      fatalError("Could not initialize regular expression [`\(pattern)`]: \(error)")
+    }
+  }
+
+  fileprivate required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
   }
 }

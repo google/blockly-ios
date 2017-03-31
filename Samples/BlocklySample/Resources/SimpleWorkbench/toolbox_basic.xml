@@ -162,6 +162,7 @@
         <block type="lists_setIndex"></block>
         <block type="lists_getSublist"></block>
         <block type="lists_sort"></block>
+        <block type="lists_reverse"></block>
     </category>
     <category name="Variables" colour="350" custom="VARIABLE">
     </category>

@@ -27,7 +27,7 @@ public class ColorHelper: NSObject {
    - parameter alpha: The alpha to set on the color. Defaults to 1.0, if none specified.
    - returns: A parsed RGB color, or nil if the string could not be parsed.
    */
-  public static func makeColor(rgb: String, alpha: Float = 1.0) -> UIColor? {
+  public static func makeColor(rgb: String, alpha: CGFloat = 1.0) -> UIColor? {
     var rgbUpper = rgb.uppercased()
 
     // Strip "#" if it exists
@@ -51,7 +51,7 @@ public class ColorHelper: NSObject {
       red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
       green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
       blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-      alpha: CGFloat(alpha))
+      alpha: alpha)
   }
 
   /**
