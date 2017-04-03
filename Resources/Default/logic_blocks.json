@@ -1,7 +1,7 @@
 [
   {
     "type": "controls_if",
-    "message0": "if %1",
+    "message0": "%{BKY_CONTROLS_IF_MSG_IF} %1",
     "args0": [
       {
         "type": "input_value",
@@ -9,7 +9,7 @@
         "check": "Boolean"
       }
     ],
-    "message1": "do %1",
+    "message1": "%{BKY_CONTROLS_IF_MSG_THEN} %1",
     "args1": [
       {
         "type": "input_statement",
@@ -19,7 +19,8 @@
     "mutator": "controls_if_mutator",
     "previousStatement": null,
     "nextStatement": null,
-    "colour": 210,
+    "colour": "%{BKY_LOGIC_HUE}",
+    "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
     "tooltip": "If a value is true, then do some statements."
   },
   {
@@ -34,14 +35,8 @@
         "type": "field_dropdown",
         "name": "OP",
         "options": [
-          [
-            "=",
-            "EQ"
-          ],
-          [
-            "\u2260",
-            "NEQ"
-          ]
+          ["=", "EQ"],
+          ["\u2260", "NEQ"]
         ]
       },
       {
@@ -51,9 +46,9 @@
     ],
     "inputsInline": true,
     "output": "Boolean",
-    "colour": 210,
+    "colour": "%{BKY_LOGIC_HUE}",
     "tooltip": "",
-    "helpUrl": "https://en.wikipedia.org/wiki/Equality_(mathematics)"
+    "helpUrl": "%{BKY_LOGIC_COMPARE_HELPURL}"
   },
   {
     "type": "logic_operation",
@@ -61,36 +56,32 @@
     "args0": [
       {
         "type": "input_value",
-        "name": "A"
+        "name": "A",
+        "check": "Boolean"
       },
       {
         "type": "field_dropdown",
         "name": "OP",
         "options": [
-          [
-            "and",
-            "AND"
-          ],
-          [
-            "or",
-            "OR"
-          ]
+          ["%{BKY_LOGIC_OPERATION_AND}","AND"],
+          ["%{BKY_LOGIC_OPERATION_OR}", "OR"]
         ]
       },
       {
         "type": "input_value",
-        "name": "B"
+        "name": "B",
+        "check": "Boolean"
       }
     ],
     "inputsInline": true,
     "output": "Boolean",
-    "colour": 210,
+    "colour": "%{BKY_LOGIC_HUE}",
     "tooltip": "",
-    "helpUrl": "https://github.com/google/blockly/wiki/Logic#logical-operations"
+    "helpUrl": "%{BKY_LOGIC_OPERATION_HELPURL}"
   },
   {
     "type": "logic_negate",
-    "message0": "not %1",
+    "message0": "%{BKY_LOGIC_NEGATE_TITLE}",
     "args0": [
       {
         "type": "input_value",
@@ -99,9 +90,9 @@
       }
     ],
     "output": "Boolean",
-    "colour": 210,
-    "tooltip": "Returns true if the input is false. Returns false if the input is true.",
-    "helpUrl": "https://github.com/google/blockly/wiki/Logic#not"
+    "colour": "%{BKY_LOGIC_HUE}",
+    "tooltip": "%{BKY_LOGIC_NEGATE_TOOLTIP}",
+    "helpUrl": "%{BKY_LOGIC_NEGATE_HELPURL}"
   },
   {
     "type": "logic_boolean",
@@ -111,51 +102,52 @@
         "type": "field_dropdown",
         "name": "BOOL",
         "options": [
-          [
-            "true",
-            "TRUE"
-          ],
-          [
-            "false",
-            "FALSE"
-          ]
+          ["%{BKY_LOGIC_BOOLEAN_TRUE}", "TRUE"],
+          ["%{BKY_LOGIC_BOOLEAN_FALSE}", "FALSE"]
         ]
       }
     ],
     "output": "Boolean",
-    "colour": 210,
-    "tooltip": "Returns either true or false.",
-    "helpUrl": "https://github.com/google/blockly/wiki/Logic#values"
+    "colour": "%{BKY_LOGIC_HUE}",
+    "tooltip": "%{BKY_LOGIC_BOOLEAN_TOOLTIP}",
+    "helpUrl": "%{BKY_LOGIC_BOOLEAN_HELPURL}"
   },
   {
     "type": "logic_null",
-    "message0": "null",
+    "message0": "%{BKY_LOGIC_NULL}",
     "output": null,
-    "colour": 210,
-    "tooltip": "Returns null.",
-    "helpUrl": "https://en.wikipedia.org/wiki/Nullable_type"
+    "colour": "%{BKY_LOGIC_HUE}",
+    "tooltip": "%{BKY_LOGIC_NULL_TOOLTIP}",
+    "helpUrl": "%{BKY_LOGIC_NULL_HELPURL}"
   },
   {
     "type": "logic_ternary",
-    "message0": "test %1 if true %2 if false %3",
+    "message0": "%{BKY_LOGIC_TERNARY_CONDITION} %1",
     "args0": [
       {
         "type": "input_value",
-        "name": "IF"
-      },
+        "name": "IF",
+        "check": "Boolean"
+      }
+    ],
+    "message1": "%{BKY_LOGIC_TERNARY_IF_TRUE} %1",
+    "args1": [
       {
         "type": "input_value",
         "name": "THEN"
-      },
+      }
+    ],
+    "message2": "%{BKY_LOGIC_TERNARY_IF_FALSE} %1",
+    "args2": [
       {
         "type": "input_value",
         "name": "ELSE"
       }
     ],
     "output": null,
-    "colour": 210,
-    "tooltip": "Check the condition in \"test\". If the condition is true, returns the \"if true\" value; otherwise returns the \"if false\" value.",
-    "helpUrl": "https://en.wikipedia.org/wiki/%3F:",
+    "colour": "%{BKY_LOGIC_HUE}",
+    "tooltip": "%{BKY_LOGIC_TERNARY_TOOLTIP}",
+    "helpUrl": "%{BKY_LOGIC_TERNARY_HELPURL}",
     "TODO(#374)": "https://github.com/google/blockly-android/issues/374"
   }
 ]

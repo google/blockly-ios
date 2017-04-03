@@ -31,6 +31,11 @@ open class FieldDateLayout: FieldLayout {
     return dateFormatter.string(from: fieldDate.date as Date)
   }
 
+  /// The date value that should be used when rendering this layout
+  open var date: Date {
+    return fieldDate.date
+  }
+
   // Formatter used to generate `self.textValue`
   open let dateFormatter: DateFormatter
 

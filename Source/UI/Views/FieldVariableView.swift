@@ -134,11 +134,14 @@ extension FieldVariableView: DropdownViewDelegate {
     viewController.textLabelColor =
       fieldVariableLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
 
+    let renameText = message(forKey: "BKY_RENAME_VARIABLE")
+    let deleteText = message(forKey: "BKY_DELETE_VARIABLE")
+      .replacingOccurrences(of: "%1", with: fieldVariableLayout.variable)
+
     // Populate options
     var options = fieldVariableLayout.variables
-    options.append((displayName: "Rename Variable", value: "rename"))
-    options.append((displayName: "Delete the \"\(fieldVariableLayout.variable)\" variable",
-      value: "remove"))
+    options.append((displayName: renameText, value: "rename"))
+    options.append((displayName: deleteText, value: "remove"))
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
@@ -176,21 +179,24 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   }
 
   private func renameVariable(fieldVariableLayout: FieldVariableLayout, error: String = "") {
-    let renameView =
-      UIAlertController(title: "Rename '\(fieldVariableLayout.variable)' variables to:",
-        message: error, preferredStyle: .alert)
+    let title = message(forKey: "BKY_RENAME_VARIABLE_TITLE")
+      .replacingOccurrences(of: "%1", with: fieldVariableLayout.variable)
+    let renameView = UIAlertController(title: title, message: error, preferredStyle: .alert)
     renameView.addTextField { textField in
+      // TODO:(#343) Localize this string
       textField.placeholder = "Variable name"
       textField.text = fieldVariableLayout.variable
       textField.clearButtonMode = .whileEditing
       textField.becomeFirstResponder()
     }
+    // TODO:(#343) Localize this string
     renameView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
     let renameAlertAction = UIAlertAction(title: "Rename", style: .default) { _ in
       guard let textField = renameView.textFields?[0],
         let newName = textField.text,
         fieldVariableLayout.isValidName(newName) else
       {
+        // TODO:(#343) Localize this string
         self.renameVariable(fieldVariableLayout: fieldVariableLayout,
                             error: "(Error) You can't use an empty variable name.")
         return
@@ -220,11 +226,13 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       }
     } else {
       // Otherwise, verify the user intended to remove all instances of this variable.
-      let removeView = UIAlertController(title:
-        "Delete \(variableCount) uses of the \"\(fieldVariableLayout.variable)\" variable?",
-        message: "", preferredStyle: .alert)
+      let title = message(forKey: "BKY_DELETE_VARIABLE_CONFIRMATION")
+        .replacingOccurrences(of: "%1", with: "\(variableCount)")
+        .replacingOccurrences(of: "%2", with: fieldVariableLayout.variable)
+      let removeView = UIAlertController(title: title, message: "", preferredStyle: .alert)
+      // TODO:(#343) Localize this string
       removeView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-      removeView.addAction(UIAlertAction(title: "Remove", style: .default) { _ in
+      removeView.addAction(UIAlertAction(title: "Delete", style: .default) { _ in
         EventManager.sharedInstance.groupAndFireEvents {
           fieldVariableLayout.removeVariable()
         }

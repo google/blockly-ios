@@ -262,3 +262,16 @@ fileprivate extension String {
     return self.lowercased()
   }
 }
+
+/**
+ Convenience method for calling the following code:
+
+ `MessageManager.shared.message(forKey: key) ?? key`
+
+ - parameter key: A message key or synonym key.
+ - returns: A message for the given `key`, if it was found in `MessageManager.shared`.
+ Otherwise, `key` is returned.
+ */
+internal func message(forKey key: String) -> String {
+  return MessageManager.shared.message(forKey: key) ?? key
+}

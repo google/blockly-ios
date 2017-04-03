@@ -24,8 +24,8 @@
       }
     ],
     "output": "String",
-    "colour": 160,
-    "tooltip": "A letter, word, or line of text.",
-    "helpUrl": "https://en.wikipedia.org/wiki/String_(computer_science)"
+    "colour": "%{BKY_TEXTS_HUE}",
+    "tooltip": "%{BKY_TEXT_TEXT_TOOLTIP}",
+    "helpUrl": "%{BKY_TEXT_TEXT_HELPURL}"
   }
 ]

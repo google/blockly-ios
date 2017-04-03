@@ -94,6 +94,8 @@ open class FieldDateView: FieldView {
 
     runAnimatableCode(animated) {
       if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
+        self.datePicker.date = fieldDateLayout.date
+
         let textField = self.textField
         textField.text = fieldDateLayout.textValue
         textField.font = fieldDateLayout.config.font(for: LayoutConfig.GlobalFont)
