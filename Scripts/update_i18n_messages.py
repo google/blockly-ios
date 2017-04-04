@@ -6,7 +6,7 @@
 # Usage:
 # python update_i18n_messages.py "<path-to-web-blockly>"
 #
-# Copyright 2013 Google Inc.
+# Copyright 2017 Google Inc.
 # https://developers.google.com/blockly/
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
