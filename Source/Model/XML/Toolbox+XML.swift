@@ -97,11 +97,14 @@ extension Toolbox {
 
           // Immediately add the base blocks
           let noReturnBlock = try factory.makeBlock(name: "procedures_defnoreturn")
-          (noReturnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          (noReturnBlock.firstField(withName: "NAME") as? FieldInput)?.text =
+            message(forKey: "BKY_PROCEDURES_DEFNORETURN_PROCEDURE")
           try category.addBlockTree(noReturnBlock)
 
           let returnBlock = try factory.makeBlock(name: "procedures_defreturn")
-          (returnBlock.firstField(withName: "NAME") as? FieldInput)?.text = "do something"
+          (returnBlock.firstField(withName: "NAME") as? FieldInput)?.text =
+            message(forKey: "BKY_PROCEDURES_DEFRETURN_PROCEDURE")
+
           if let mutator = returnBlock.mutator as? MutatorProcedureDefinition {
             mutator.allowStatements = true
             try mutator.mutateBlock()
