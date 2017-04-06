@@ -32,7 +32,18 @@ Pod::Spec.new do |s|
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
   # is why we use '.resources', instead of '.resource_bundles' (or else Blockly.xcassets wouldn't
   # be included properly).
-  s.resources = 'Resources/**'
+  s.resources = [
+    # Import non-localized files so that their folder structure is maintained in Xcode.
+    'Resources/Non-Localized/**',
+
+    # This will import localized files so that .lproj folders properly group localized files
+    # in Xcode. If it is done as simply a wildcard ("**"), they will be imported as folders
+    # not groups, and localization will not work.
+    # NOTE: A file without an extension, specifically located in the "Localized" directory will
+    # not get picked up. This shouldn't happen in practice though.
+    'Resources/Localized/*.*',
+    'Resources/Localized/**/*[^.][^l][^p][^r][^o][^j]/*',
+    'Resources/Localized/**/*.lproj/*']
 
   s.frameworks        = 'WebKit'
   s.ios.dependency 'AEXML', '~> 4.0.1'
@@ -45,8 +56,15 @@ Pod::Spec.new do |s|
       # Let Xcode know Blockly uses Swift 3.0 syntax
       'SWIFT_VERSION' => '3.0',
 
-      # Swift standard libraries need to be included for Blockly to work!
-      'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES',
+      # Add DEBUG compiler flag for debug builds
+      'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG',
+  }
+
+  s.user_target_xcconfig = {
+    # Swift standard libraries need to be included for Blockly to work!
+    # NOTE: This needs to be done at the app level, not at the framework level, or
+    # else an error could occur when uploading to the App Store.
+    'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES'
   }
 
 end

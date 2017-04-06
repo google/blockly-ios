@@ -237,11 +237,12 @@ extension Block {
     }
 
     // Throw an error if not every argument index was used
-    let unusedIndices = processedIndices.filter({ $0 == false })
+    let unusedIndices = processedIndices.indices.filter { processedIndices[$0] == false }
     if (unusedIndices.count > 0) {
-      let unusedIndicesString = unusedIndices.map({ String($0) }).joined(separator: ",")
+      let unusedIndicesString = unusedIndices.map({ String($0 + 1) }).joined(separator: ",")
       throw BlocklyError(.invalidBlockDefinition,
-        "Message did not reference the following indices: \(unusedIndicesString)")
+        "Tokenized message [\(tokens)] did not reference the following indices: " +
+        "\(unusedIndicesString)")
     }
 
     // If there were leftover fields we need to add a dummy input to hold them.

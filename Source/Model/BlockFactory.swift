@@ -48,7 +48,7 @@ public class BlockFactory : NSObject {
    - parameter defaultFiles: The list of default block definition files that should be loaded.
    */
   public func load(fromDefaultFiles defaultFiles: BlockJSONFile) {
-    let bundle = Bundle(for: type(of: self))
+    let bundle = Bundle(for: BlockFactory.self)
 
     updateMutators(defaultFiles.mutators)
     updateBlockExtensions(defaultFiles.blockExtensions)

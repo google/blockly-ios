@@ -72,7 +72,8 @@ open class CodeGeneratorServiceRequestBuilder: NSObject {
    - parameter defaultFiles: A list of default block definition files.
    */
   public func addJSONBlockDefinitionFiles(fromDefaultFiles defaultFiles: BlockJSONFile) {
-    addJSONBlockDefinitionFiles(defaultFiles.fileLocations, bundle: Bundle(for: type(of: self)))
+    addJSONBlockDefinitionFiles(defaultFiles.fileLocations,
+                                bundle: Bundle(for: CodeGeneratorServiceRequestBuilder.self))
   }
 
   /**

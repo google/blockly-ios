@@ -51,10 +51,8 @@ public class MessageManager: NSObject {
 
     // Load default files, and prefix all values with "bky_"
     do {
-      try manager.loadMessages(
-        withPrefix: "bky_", jsonPath: "bky_constants.json", bundle: bundle)
-      try manager.loadMessages(
-        withPrefix: "bky_", jsonPath: "bky_messages.json", bundle: bundle)
+      try manager.loadMessages( withPrefix: "bky_", jsonPath: "bky_constants.json", bundle: bundle)
+      try manager.loadMessages( withPrefix: "bky_", jsonPath: "bky_messages.json", bundle: bundle)
       try manager.loadSynonyms(withPrefix: "bky_", jsonPath: "bky_synonyms.json", bundle: bundle)
     } catch let error {
       bky_debugPrint("Could not load default files for MessageManager: \(error)")
