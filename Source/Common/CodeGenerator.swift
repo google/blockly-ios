@@ -288,12 +288,12 @@ extension CodeGenerator: WKNavigationDelegate {
       // consistently work (i.e. they don't always run after the web view has finished loading).
       // So instead, we just load all the resources through `webView.evaluateJavaScript(...)`.
 
+      let bundle = Bundle(for: CodeGenerator.self)
       var jsScripts = [String]()
 
       // Load our special bridge file
       jsScripts.append(try contents(ofBundledFile:
-        BundledFile(path: CodeGenerator.CODE_GENERATOR_BRIDGE_JS,
-                    bundle: Bundle(for: type(of: self)))))
+        BundledFile(path: CodeGenerator.CODE_GENERATOR_BRIDGE_JS, bundle: bundle)))
 
       // Load JS dependencies
       for bundledFile in jsCoreDependencies {
@@ -307,8 +307,7 @@ extension CodeGenerator: WKNavigationDelegate {
 
       // Load custom `domToMutation(...)` methods for known mutator blocks
       jsScripts.append(try contents(ofBundledFile:
-        BundledFile(path: CodeGenerator.CODE_GENERATOR_MUTATORS_JS,
-                    bundle: Bundle(for: type(of: self)))))
+        BundledFile(path: CodeGenerator.CODE_GENERATOR_MUTATORS_JS, bundle: bundle)))
 
       // Finally, import all the block definitions
       for bundledFile in jsonBlockDefinitionFiles {

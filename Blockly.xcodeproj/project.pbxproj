@@ -28,9 +28,6 @@
 		FA0D8C141E8C4B7B00C87C56 /* i18n_messages2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */; };
 		FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */; };
 		FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */; };
-		FA0D8C491E8F168800C87C56 /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C461E8F168800C87C56 /* bky_constants.json */; };
-		FA0D8C4B1E8F168800C87C56 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C481E8F168800C87C56 /* bky_synonyms.json */; };
-		FA0D8C4C1E8F169100C87C56 /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C4E1E8F169100C87C56 /* bky_messages.json */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
@@ -65,7 +62,6 @@
 		FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */; };
 		FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
-		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */; };
 		FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */; };
 		FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */; };
@@ -88,6 +84,12 @@
 		FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D21BFE9016000C621F /* BlockTest.swift */; };
 		FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4EE3D41BFE9342000C621F /* all_test_blocks.json */; };
 		FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */; };
+		FA5164F91E959914005CAA23 /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5164C41E959913005CAA23 /* bky_messages.json */; };
+		FA5164FE1E95992F005CAA23 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FA1E95992F005CAA23 /* Blockly.xcassets */; };
+		FA5164FF1E95992F005CAA23 /* CodeGenerator in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FB1E95992F005CAA23 /* CodeGenerator */; };
+		FA5165001E95992F005CAA23 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FC1E95992F005CAA23 /* Default */; };
+		FA5165081E959A09005CAA23 /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165061E959A09005CAA23 /* bky_constants.json */; };
+		FA5165091E959A09005CAA23 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165071E959A09005CAA23 /* bky_synonyms.json */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
 		FA548C8B1B66E861008BC59C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C871B66E861008BC59C /* Connection.swift */; };
@@ -111,7 +113,6 @@
 		FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC1801CE29B6C005C550D /* RangeHelper.swift */; };
 		FA5CC18B1CE2A2C6005C550D /* NameManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */; };
 		FA5CC18D1CE2AE81005C550D /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18C1CE2AE81005C550D /* WeakSet.swift */; };
-		FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */ = {isa = PBXBuildFile; fileRef = FA5F2BC51C76A2E6008384BE /* CodeGenerator */; };
 		FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XML.swift */; };
 		FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
@@ -122,7 +123,6 @@
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
 		FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */; };
 		FA73EFD01E64ECDF001E0A24 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */; };
-		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */; };
 		FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84250F1D3451510092CDDC /* ViewBuilder.swift */; };
@@ -258,60 +258,6 @@
 		FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_messages2.json; sourceTree = "<group>"; };
 		FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms1.json; sourceTree = "<group>"; };
 		FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms2.json; sourceTree = "<group>"; };
-		FA0D8C461E8F168800C87C56 /* bky_constants.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_constants.json; sourceTree = "<group>"; };
-		FA0D8C481E8F168800C87C56 /* bky_synonyms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_synonyms.json; sourceTree = "<group>"; };
-		FA0D8C4D1E8F169100C87C56 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C4F1E8F169B00C87C56 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fr; path = fr.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C611E8F262600C87C56 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ar; path = ar.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C621E8F263300C87C56 /* az */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = az; path = az.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C631E8F28EF00C87C56 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bg; path = bg.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C641E8F2D6300C87C56 /* bn */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bn; path = bn.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C651E8F2D9700C87C56 /* br */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = br; path = br.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C661E8F2DAA00C87C56 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ca; path = ca.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C671E8F2DB200C87C56 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = cs; path = cs.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C681E8F2DBF00C87C56 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = da; path = da.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C691E8F2DD900C87C56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = de; path = de.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C6A1E8F2E2700C87C56 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = el; path = el.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C6B1E8F2E4000C87C56 /* eo */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = eo; path = eo.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C6C1E8F2E6900C87C56 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "en-GB"; path = "en-GB.lproj/bky_messages.json"; sourceTree = "<group>"; };
-		FA0D8C6D1E8F2E7600C87C56 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = es; path = es.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C6E1E8F2E9300C87C56 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = et; path = et.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C6F1E8F2EBB00C87C56 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fa; path = fa.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C701E8F2ED700C87C56 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fi; path = fi.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C711E8F2EE500C87C56 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = he; path = he.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C721E8F2EFA00C87C56 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hi; path = hi.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C731E8F2F0A00C87C56 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hu; path = hu.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C741E8F2F3C00C87C56 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = id; path = id.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C751E8F2F4900C87C56 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = is; path = is.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C761E8F2F5400C87C56 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = it; path = it.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C771E8F2F5900C87C56 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ja; path = ja.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C781E8F2F5E00C87C56 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ko; path = ko.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C791E8F2F6E00C87C56 /* lb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lb; path = lb.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7A1E8F2F9200C87C56 /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lt; path = lt.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7B1E8F2FA500C87C56 /* lv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lv; path = lv.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7C1E8F2FB400C87C56 /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = mk; path = mk.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7D1E8F2FBB00C87C56 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ms; path = ms.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7E1E8F2FC400C87C56 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nb; path = nb.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C7F1E8F2FD000C87C56 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nl; path = nl.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C801E8F2FF600C87C56 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pl; path = pl.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C811E8F300D00C87C56 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "pt-BR"; path = "pt-BR.lproj/bky_messages.json"; sourceTree = "<group>"; };
-		FA0D8C821E8F306300C87C56 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pt; path = pt.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C831E8F307400C87C56 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ro; path = ro.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C841E8F307700C87C56 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ru; path = ru.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C851E8F30F200C87C56 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sk; path = sk.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C861E8F310600C87C56 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sl; path = sl.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C871E8F312900C87C56 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sq; path = sq.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C881E8F313900C87C56 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sr; path = sr.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C891E8F314E00C87C56 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sv; path = sv.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8A1E8F315C00C87C56 /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ta; path = ta.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8B1E8F316F00C87C56 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = th; path = th.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8C1E8F31C100C87C56 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = tr; path = tr.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8D1E8F31C900C87C56 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8E1E8F31CD00C87C56 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = vi; path = vi.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8C8F1E8F31DF00C87C56 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hans"; path = "zh-Hans.lproj/bky_messages.json"; sourceTree = "<group>"; };
-		FA0D8C901E8F31E200C87C56 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hant"; path = "zh-Hant.lproj/bky_messages.json"; sourceTree = "<group>"; };
-		FA0D8C911E8F341300C87C56 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = be; path = be.lproj/bky_messages.json; sourceTree = "<group>"; };
-		FA0D8CA01E9308F300C87C56 /* lrc */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lrc; path = lrc.lproj/bky_messages.json; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
@@ -346,7 +292,6 @@
 		FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceTest.swift; sourceTree = "<group>"; };
 		FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLConstants.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
-		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorView.swift; sourceTree = "<group>"; };
 		FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateView.swift; sourceTree = "<group>"; };
 		FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxView.swift; sourceTree = "<group>"; };
@@ -369,6 +314,63 @@
 		FA4EE3D21BFE9016000C621F /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
 		FA4EE3D41BFE9342000C621F /* all_test_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all_test_blocks.json; sourceTree = "<group>"; };
 		FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionTest.swift; sourceTree = "<group>"; };
+		FA5164C51E959913005CAA23 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ar; path = ar.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C61E959913005CAA23 /* az */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = az; path = az.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C71E959913005CAA23 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = be; path = be.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C81E959913005CAA23 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bg; path = bg.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C91E959913005CAA23 /* bn */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bn; path = bn.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CA1E959913005CAA23 /* br */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = br; path = br.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CB1E959913005CAA23 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ca; path = ca.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CC1E959913005CAA23 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = cs; path = cs.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CD1E959913005CAA23 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = da; path = da.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CE1E959913005CAA23 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = de; path = de.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CF1E959913005CAA23 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = el; path = el.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D01E959913005CAA23 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "en-GB"; path = "en-GB.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164D11E959913005CAA23 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D21E959913005CAA23 /* eo */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = eo; path = eo.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D31E959913005CAA23 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = es; path = es.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D41E959913005CAA23 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = et; path = et.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D51E959913005CAA23 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fa; path = fa.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D61E959913005CAA23 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fi; path = fi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D71E959913005CAA23 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fr; path = fr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D81E959913005CAA23 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = he; path = he.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D91E959913005CAA23 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hi; path = hi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DA1E959913005CAA23 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hu; path = hu.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DB1E959913005CAA23 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = id; path = id.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DC1E959913005CAA23 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = is; path = is.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DD1E959913005CAA23 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = it; path = it.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DE1E959913005CAA23 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ja; path = ja.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DF1E959913005CAA23 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ko; path = ko.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E01E959913005CAA23 /* lb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lb; path = lb.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E11E959913005CAA23 /* lrc */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lrc; path = lrc.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E21E959913005CAA23 /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lt; path = lt.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E31E959913005CAA23 /* lv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lv; path = lv.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E41E959913005CAA23 /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = mk; path = mk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E51E959913005CAA23 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ms; path = ms.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E61E959913005CAA23 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nb; path = nb.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E71E959913005CAA23 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nl; path = nl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E81E959913005CAA23 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pl; path = pl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E91E959913005CAA23 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "pt-BR"; path = "pt-BR.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164EA1E959913005CAA23 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pt; path = pt.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EB1E959913005CAA23 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ro; path = ro.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EC1E959913005CAA23 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ru; path = ru.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164ED1E959913005CAA23 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sk; path = sk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EE1E959913005CAA23 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sl; path = sl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EF1E959913005CAA23 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sq; path = sq.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F01E959913005CAA23 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sr; path = sr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F11E959913005CAA23 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sv; path = sv.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F21E959913005CAA23 /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ta; path = ta.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F31E959913005CAA23 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = th; path = th.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F41E959913005CAA23 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = tr; path = tr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F51E959913005CAA23 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F61E959913005CAA23 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = vi; path = vi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F71E959913005CAA23 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hans"; path = "zh-Hans.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164F81E959914005CAA23 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hant"; path = "zh-Hant.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164FA1E95992F005CAA23 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Blockly.xcassets; path = "Non-Localized/Blockly.xcassets"; sourceTree = "<group>"; };
+		FA5164FB1E95992F005CAA23 /* CodeGenerator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeGenerator; path = "Non-Localized/CodeGenerator"; sourceTree = "<group>"; };
+		FA5164FC1E95992F005CAA23 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Default; path = "Non-Localized/Default"; sourceTree = "<group>"; };
+		FA5165061E959A09005CAA23 /* bky_constants.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_constants.json; sourceTree = "<group>"; };
+		FA5165071E959A09005CAA23 /* bky_synonyms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_synonyms.json; sourceTree = "<group>"; };
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -395,7 +397,6 @@
 		FA5CC1801CE29B6C005C550D /* RangeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeHelper.swift; sourceTree = "<group>"; };
 		FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameManagerTest.swift; sourceTree = "<group>"; };
 		FA5CC18C1CE2AE81005C550D /* WeakSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
-		FA5F2BC51C76A2E6008384BE /* CodeGenerator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CodeGenerator; sourceTree = "<group>"; };
 		FA6085F61C6D469F003B6076 /* Workspace+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XML.swift"; sourceTree = "<group>"; };
 		FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
@@ -406,7 +407,6 @@
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEventFactory.swift; sourceTree = "<group>"; };
 		FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
-		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureCoordinator.swift; sourceTree = "<group>"; };
 		FA84250F1D3451510092CDDC /* ViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBuilder.swift; sourceTree = "<group>"; };
@@ -543,16 +543,6 @@
 				3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */,
 			);
 			name = ObjC;
-			sourceTree = "<group>";
-		};
-		FA0D8C401E8F163300C87C56 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				FA0D8C461E8F168800C87C56 /* bky_constants.json */,
-				FA0D8C4E1E8F169100C87C56 /* bky_messages.json */,
-				FA0D8C481E8F168800C87C56 /* bky_synonyms.json */,
-			);
-			path = Messages;
 			sourceTree = "<group>";
 		};
 		FA2726741B83C54900777B49 /* Layout */ = {
@@ -774,6 +764,35 @@
 			path = XML;
 			sourceTree = "<group>";
 		};
+		FA5164C11E9598FD005CAA23 /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA5164C31E959913005CAA23 /* Messages */,
+			);
+			name = Localized;
+			sourceTree = "<group>";
+		};
+		FA5164C21E959901005CAA23 /* Non-Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA5164FA1E95992F005CAA23 /* Blockly.xcassets */,
+				FA5164FB1E95992F005CAA23 /* CodeGenerator */,
+				FA5164FC1E95992F005CAA23 /* Default */,
+			);
+			name = "Non-Localized";
+			sourceTree = "<group>";
+		};
+		FA5164C31E959913005CAA23 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				FA5165061E959A09005CAA23 /* bky_constants.json */,
+				FA5164C41E959913005CAA23 /* bky_messages.json */,
+				FA5165071E959A09005CAA23 /* bky_synonyms.json */,
+			);
+			name = Messages;
+			path = Localized/Messages;
+			sourceTree = "<group>";
+		};
 		FA548BFB1B630BAC008BC59C = {
 			isa = PBXGroup;
 			children = (
@@ -860,10 +879,8 @@
 		FA9B45B81C32D966001EAE68 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
-				FA5F2BC51C76A2E6008384BE /* CodeGenerator */,
-				FA77D3971D9B54290014CBC4 /* Default */,
-				FA0D8C401E8F163300C87C56 /* Messages */,
+				FA5164C11E9598FD005CAA23 /* Localized */,
+				FA5164C21E959901005CAA23 /* Non-Localized */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1143,12 +1160,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA0D8C4B1E8F168800C87C56 /* bky_synonyms.json in Resources */,
-				FA0D8C491E8F168800C87C56 /* bky_constants.json in Resources */,
-				FA0D8C4C1E8F169100C87C56 /* bky_messages.json in Resources */,
-				FA77D3981D9B54290014CBC4 /* Default in Resources */,
-				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
-				FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */,
+				FA5165091E959A09005CAA23 /* bky_synonyms.json in Resources */,
+				FA5164F91E959914005CAA23 /* bky_messages.json in Resources */,
+				FA5164FE1E95992F005CAA23 /* Blockly.xcassets in Resources */,
+				FA5165001E95992F005CAA23 /* Default in Resources */,
+				FA5164FF1E95992F005CAA23 /* CodeGenerator in Resources */,
+				FA5165081E959A09005CAA23 /* bky_constants.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1388,61 +1405,61 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		FA0D8C4E1E8F169100C87C56 /* bky_messages.json */ = {
+		FA5164C41E959913005CAA23 /* bky_messages.json */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FA0D8C4D1E8F169100C87C56 /* en */,
-				FA0D8C4F1E8F169B00C87C56 /* fr */,
-				FA0D8C611E8F262600C87C56 /* ar */,
-				FA0D8C621E8F263300C87C56 /* az */,
-				FA0D8C631E8F28EF00C87C56 /* bg */,
-				FA0D8C641E8F2D6300C87C56 /* bn */,
-				FA0D8C651E8F2D9700C87C56 /* br */,
-				FA0D8C661E8F2DAA00C87C56 /* ca */,
-				FA0D8C671E8F2DB200C87C56 /* cs */,
-				FA0D8C681E8F2DBF00C87C56 /* da */,
-				FA0D8C691E8F2DD900C87C56 /* de */,
-				FA0D8C6A1E8F2E2700C87C56 /* el */,
-				FA0D8C6B1E8F2E4000C87C56 /* eo */,
-				FA0D8C6C1E8F2E6900C87C56 /* en-GB */,
-				FA0D8C6D1E8F2E7600C87C56 /* es */,
-				FA0D8C6E1E8F2E9300C87C56 /* et */,
-				FA0D8C6F1E8F2EBB00C87C56 /* fa */,
-				FA0D8C701E8F2ED700C87C56 /* fi */,
-				FA0D8C711E8F2EE500C87C56 /* he */,
-				FA0D8C721E8F2EFA00C87C56 /* hi */,
-				FA0D8C731E8F2F0A00C87C56 /* hu */,
-				FA0D8C741E8F2F3C00C87C56 /* id */,
-				FA0D8C751E8F2F4900C87C56 /* is */,
-				FA0D8C761E8F2F5400C87C56 /* it */,
-				FA0D8C771E8F2F5900C87C56 /* ja */,
-				FA0D8C781E8F2F5E00C87C56 /* ko */,
-				FA0D8C791E8F2F6E00C87C56 /* lb */,
-				FA0D8C7A1E8F2F9200C87C56 /* lt */,
-				FA0D8C7B1E8F2FA500C87C56 /* lv */,
-				FA0D8C7C1E8F2FB400C87C56 /* mk */,
-				FA0D8C7D1E8F2FBB00C87C56 /* ms */,
-				FA0D8C7E1E8F2FC400C87C56 /* nb */,
-				FA0D8C7F1E8F2FD000C87C56 /* nl */,
-				FA0D8C801E8F2FF600C87C56 /* pl */,
-				FA0D8C811E8F300D00C87C56 /* pt-BR */,
-				FA0D8C821E8F306300C87C56 /* pt */,
-				FA0D8C831E8F307400C87C56 /* ro */,
-				FA0D8C841E8F307700C87C56 /* ru */,
-				FA0D8C851E8F30F200C87C56 /* sk */,
-				FA0D8C861E8F310600C87C56 /* sl */,
-				FA0D8C871E8F312900C87C56 /* sq */,
-				FA0D8C881E8F313900C87C56 /* sr */,
-				FA0D8C891E8F314E00C87C56 /* sv */,
-				FA0D8C8A1E8F315C00C87C56 /* ta */,
-				FA0D8C8B1E8F316F00C87C56 /* th */,
-				FA0D8C8C1E8F31C100C87C56 /* tr */,
-				FA0D8C8D1E8F31C900C87C56 /* uk */,
-				FA0D8C8E1E8F31CD00C87C56 /* vi */,
-				FA0D8C8F1E8F31DF00C87C56 /* zh-Hans */,
-				FA0D8C901E8F31E200C87C56 /* zh-Hant */,
-				FA0D8C911E8F341300C87C56 /* be */,
-				FA0D8CA01E9308F300C87C56 /* lrc */,
+				FA5164C51E959913005CAA23 /* ar */,
+				FA5164C61E959913005CAA23 /* az */,
+				FA5164C71E959913005CAA23 /* be */,
+				FA5164C81E959913005CAA23 /* bg */,
+				FA5164C91E959913005CAA23 /* bn */,
+				FA5164CA1E959913005CAA23 /* br */,
+				FA5164CB1E959913005CAA23 /* ca */,
+				FA5164CC1E959913005CAA23 /* cs */,
+				FA5164CD1E959913005CAA23 /* da */,
+				FA5164CE1E959913005CAA23 /* de */,
+				FA5164CF1E959913005CAA23 /* el */,
+				FA5164D01E959913005CAA23 /* en-GB */,
+				FA5164D11E959913005CAA23 /* en */,
+				FA5164D21E959913005CAA23 /* eo */,
+				FA5164D31E959913005CAA23 /* es */,
+				FA5164D41E959913005CAA23 /* et */,
+				FA5164D51E959913005CAA23 /* fa */,
+				FA5164D61E959913005CAA23 /* fi */,
+				FA5164D71E959913005CAA23 /* fr */,
+				FA5164D81E959913005CAA23 /* he */,
+				FA5164D91E959913005CAA23 /* hi */,
+				FA5164DA1E959913005CAA23 /* hu */,
+				FA5164DB1E959913005CAA23 /* id */,
+				FA5164DC1E959913005CAA23 /* is */,
+				FA5164DD1E959913005CAA23 /* it */,
+				FA5164DE1E959913005CAA23 /* ja */,
+				FA5164DF1E959913005CAA23 /* ko */,
+				FA5164E01E959913005CAA23 /* lb */,
+				FA5164E11E959913005CAA23 /* lrc */,
+				FA5164E21E959913005CAA23 /* lt */,
+				FA5164E31E959913005CAA23 /* lv */,
+				FA5164E41E959913005CAA23 /* mk */,
+				FA5164E51E959913005CAA23 /* ms */,
+				FA5164E61E959913005CAA23 /* nb */,
+				FA5164E71E959913005CAA23 /* nl */,
+				FA5164E81E959913005CAA23 /* pl */,
+				FA5164E91E959913005CAA23 /* pt-BR */,
+				FA5164EA1E959913005CAA23 /* pt */,
+				FA5164EB1E959913005CAA23 /* ro */,
+				FA5164EC1E959913005CAA23 /* ru */,
+				FA5164ED1E959913005CAA23 /* sk */,
+				FA5164EE1E959913005CAA23 /* sl */,
+				FA5164EF1E959913005CAA23 /* sq */,
+				FA5164F01E959913005CAA23 /* sr */,
+				FA5164F11E959913005CAA23 /* sv */,
+				FA5164F21E959913005CAA23 /* ta */,
+				FA5164F31E959913005CAA23 /* th */,
+				FA5164F41E959913005CAA23 /* tr */,
+				FA5164F51E959913005CAA23 /* uk */,
+				FA5164F61E959913005CAA23 /* vi */,
+				FA5164F71E959913005CAA23 /* zh-Hans */,
+				FA5164F81E959914005CAA23 /* zh-Hant */,
 			);
 			name = bky_messages.json;
 			sourceTree = "<group>";
@@ -1549,7 +1566,6 @@
 		FA548C1C1B630BAD008BC59C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1577,7 +1593,6 @@
 		FA548C1D1B630BAD008BC59C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
