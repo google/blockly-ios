@@ -479,11 +479,14 @@ extension ProcedureCoordinator: NameManagerListener {
         for parameter in block.procedureParameters {
           if nameManager.namesAreEqual(name, parameter.name) {
             // Found a parameter using this name
-            let message = "Can't delete the variable \"\(name)\" because it's part of the " +
-              "function definition \"\(block.procedureName)\""
+            let errorText = message(forKey: "BKY_IOS_ERROR")
+            let description = message(forKey: "BKY_CANNOT_DELETE_VARIABLE_PROCEDURE")
+              .replacingOccurrences(of: "%1", with: name)
+              .replacingOccurrences(of: "%2", with: block.procedureName)
+            let okText = message(forKey: "BKY_IOS_OK")
 
-            let alert = UIAlertView(title: "Error", message: message, delegate: nil,
-                                    cancelButtonTitle: nil, otherButtonTitles: "OK")
+            let alert = UIAlertView(title: errorText, message: description, delegate: nil,
+                                    cancelButtonTitle: nil, otherButtonTitles: okText)
             alert.show()
             return false
           }

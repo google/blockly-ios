@@ -81,8 +81,8 @@ public final class ToolboxCategoryViewController: UIViewController {
   /// The button for adding variables to the name manager.
   private lazy var addVariableButton: UIButton = {
     let button = UIButton()
-    // TODO:(#343) Localize this string
-    button.setTitle("+ Add variable", for: UIControlState.normal)
+    let buttonText = message(forKey: "BKY_IOS_VARIABLES_ADD_VARIABLE")
+    button.setTitle(buttonText, for: UIControlState.normal)
     button.setTitleColor(.white, for: .normal)
     button.setTitleColor(.gray, for: .highlighted)
     button.backgroundColor = .darkGray
@@ -260,11 +260,14 @@ public final class ToolboxCategoryViewController: UIViewController {
 
   fileprivate func showAddAlert(error: String = "") {
     let title = message(forKey: "BKY_NEW_VARIABLE_TITLE")
+    let cancelText = message(forKey: "BKY_IOS_CANCEL")
+    let addText = message(forKey: "BKY_IOS_VARIABLES_ADD_BUTTON")
     let addView = UIAlertController(title: title, message: error, preferredStyle: .alert)
-    addView.addTextField(configurationHandler: nil)
-    // TODO:(#343) Localize this string
-    addView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    let addAlertAction = UIAlertAction(title: "Add", style: .default) { _ in
+    addView.addTextField { textField in
+      textField.placeholder = message(forKey: "BKY_IOS_VARIABLES_VARIABLE_NAME")
+    }
+    addView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
+    let addAlertAction = UIAlertAction(title: addText, style: .default) { _ in
       guard let variableNameManager = self.variableNameManager else {
         return
       }
@@ -273,12 +276,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         let newName = textField.text,
         FieldVariable.isValidName(newName) else
       {
-        // TODO:(#343) Localize this string
-        self.showAddAlert(error: "(Error) You can't use an empty variable name.")
+        self.showAddAlert(error: message(forKey: "BKY_IOS_VARIABLES_EMPTY_NAME_ERROR"))
         return
       }
-      // TODO:(#343) Localize this string
-      textField.placeholder = "Variable name"
 
       if variableNameManager.containsName(newName) {
         let error = message(forKey: "BKY_VARIABLE_ALREADY_EXISTS")

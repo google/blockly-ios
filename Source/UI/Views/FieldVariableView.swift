@@ -183,22 +183,21 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       .replacingOccurrences(of: "%1", with: fieldVariableLayout.variable)
     let renameView = UIAlertController(title: title, message: error, preferredStyle: .alert)
     renameView.addTextField { textField in
-      // TODO:(#343) Localize this string
-      textField.placeholder = "Variable name"
+      textField.placeholder = message(forKey: "BKY_IOS_VARIABLES_VARIABLE_NAME")
       textField.text = fieldVariableLayout.variable
       textField.clearButtonMode = .whileEditing
       textField.becomeFirstResponder()
     }
-    // TODO:(#343) Localize this string
-    renameView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    let renameAlertAction = UIAlertAction(title: "Rename", style: .default) { _ in
+    let cancelText = message(forKey: "BKY_IOS_CANCEL")
+    let renameText = message(forKey: "BKY_IOS_VARIABLES_RENAME_BUTTON")
+    renameView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
+    let renameAlertAction = UIAlertAction(title: renameText, style: .default) { _ in
       guard let textField = renameView.textFields?[0],
         let newName = textField.text,
         fieldVariableLayout.isValidName(newName) else
       {
-        // TODO:(#343) Localize this string
         self.renameVariable(fieldVariableLayout: fieldVariableLayout,
-                            error: "(Error) You can't use an empty variable name.")
+                            error: message(forKey: "BKY_IOS_VARIABLES_EMPTY_NAME_ERROR"))
         return
       }
 
@@ -230,9 +229,10 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         .replacingOccurrences(of: "%1", with: "\(variableCount)")
         .replacingOccurrences(of: "%2", with: fieldVariableLayout.variable)
       let removeView = UIAlertController(title: title, message: "", preferredStyle: .alert)
-      // TODO:(#343) Localize this string
-      removeView.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-      removeView.addAction(UIAlertAction(title: "Delete", style: .default) { _ in
+      let cancelText = message(forKey: "BKY_IOS_CANCEL")
+      let deleteText = message(forKey: "BKY_IOS_VARIABLES_DELETE_BUTTON")
+      removeView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
+      removeView.addAction(UIAlertAction(title: deleteText, style: .default) { _ in
         EventManager.sharedInstance.groupAndFireEvents {
           fieldVariableLayout.removeVariable()
         }
