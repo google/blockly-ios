@@ -39,7 +39,7 @@ def update_i18n_messages(blockly_ios_root, blockly_web_root):
   """
 
   ios_messages_dir =path.realpath(
-    path.join(blockly_ios_root, "Resources/Messages"))
+    path.join(blockly_ios_root, "Resources/Localized/Messages"))
   web_json_dir = path.realpath(path.join(blockly_web_root, "msg/json"))
   ios_constants_file_name = "bky_constants.json"
   ios_messages_file_name = "bky_messages.json"
