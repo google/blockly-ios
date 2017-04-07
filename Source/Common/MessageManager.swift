@@ -252,12 +252,96 @@ public class MessageManager: NSObject {
     }
     return nil
   }
+
+  // MARK: - String Decoding
+
+  /**
+   Decodes a given string by replacing any keys of the form "%{<key>}" found within the string with
+   corresponding messages found inside this instance that use that key.
+
+   Additionally, for any keys that are successfully replaced, this method recursively decodes
+   those values, if those values contain references to more keys of the form "%{<key>}".
+
+   For example:
+   ```
+   let messageManager = MessageManager.shared
+   messageManager.loadMessages([
+     "bky_name": "Blockly",
+     "bky_description": "This is the %{bky_name} library."
+   ])
+   messageManager.decodedString("%{bky_name}")                     // "Blockly"
+   messageManager.decodedString("%{bky_description}")              // "This is the Blockly library."
+   messageManager.decodedString("%{non_existent_message}")         // "%{non_existent_message}"
+   messageManager.decodedString("Learn to code with #%{bky_name}") // "Learn to code with #Blockly"
+   ```
+
+   - note: Decoding a string with a key inside another key is not supported by this method
+   (eg. `"%{bky_{%bky_key2}key1}"`). It's recommended that this situation is avoided as the outcome
+   of this cannot be guaranteed.
+   - parameter string: The string to decode.
+   - returns: The decoded version of `string`.
+   */
+  public func decodedString(_ string: String) -> String {
+    var returnValue = string
+
+    // Find all potential keys using the regex
+    let matches = MessageKeyFinder.shared.matches(
+      in: returnValue, options: [], range: NSMakeRange(0, returnValue.utf16.count))
+
+    // Perform each key replacement in backwards order. This allows us to easily do key replacements
+    // using the original ranges in the `matches`, without needing to keep track of range
+    // offsets due to a key match being replaced.
+    for match in matches.reversed() {
+      guard
+        match.numberOfRanges == 2,
+        match.rangeAt(1).location != NSNotFound, // The first capture group is what contains the key
+        let matchRange = bky_rangeFromNSRange(match.range, forString: returnValue),
+        let keyRange = bky_rangeFromNSRange(match.rangeAt(1), forString: returnValue) else {
+          continue
+      }
+
+      // Found a key, try to find a message for it.
+      let key = returnValue.substring(with: keyRange)
+
+      if let message = self.message(forKey: key) {
+        // A message was found for the key. The message itself may contain more key references,
+        // so recursively decode this message before replacing the key in the original string.
+        let decodedMessage = decodedString(message)
+        returnValue.replaceSubrange(matchRange, with: decodedMessage)
+      }
+    }
+
+    return returnValue
+  }
 }
 
 fileprivate extension String {
   func lookupKey() -> String {
     // Simply lookup by lowercasing all keys
     return self.lowercased()
+  }
+}
+
+/**
+ Helper class used for storing a regular expression that can parse message keys from a given string.
+ */
+fileprivate class MessageKeyFinder: NSRegularExpression {
+  // Shared instance.
+  fileprivate static var shared = MessageKeyFinder()
+
+  fileprivate init() {
+    // This pattern matches: %{bky_test}, %{SOMEKEY}
+    // Doesn't match: %%{bky_test}, %{0}, %1
+    let pattern = "(?<!%)%\\{([a-z][a-z|0-9|_]*)\\}"
+    do {
+      try super.init(pattern: pattern, options: .caseInsensitive)
+    } catch let error {
+      fatalError("Could not initialize regular expression [`\(pattern)`]: \(error)")
+    }
+  }
+
+  fileprivate required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
   }
 }
 

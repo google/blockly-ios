@@ -68,15 +68,16 @@ extension Toolbox {
     let toolbox = Toolbox()
 
     for categoryNode in (toolboxNode["category"].all ?? []) {
-      let name = categoryNode.attributes["name"] ?? ""
+      let name = MessageManager.shared.decodedString(categoryNode.attributes["name"] ?? "")
       var color: UIColor?
 
       // To maintain compatibility with Web Blockly, this value is accessed as "colour" and not
       // "color"
       if let colorString = categoryNode.attributes["colour"] {
-        if let colorHue = NumberFormatter().number(from: colorString) {
+        let decodedColor = MessageManager.shared.decodedString(colorString)
+        if let colorHue = NumberFormatter().number(from: decodedColor) {
           color = ColorHelper.makeColor(hue: CGFloat(colorHue))
-        } else if let aColor = ColorHelper.makeColor(rgb: colorString) {
+        } else if let aColor = ColorHelper.makeColor(rgb: decodedColor) {
           color = aColor
         } else {
           bky_print("Invalid toolbox category color: \"\(colorString)\"")
@@ -165,4 +166,3 @@ extension Toolbox {
     }
   }
 }
-
