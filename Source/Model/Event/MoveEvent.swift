@@ -15,191 +15,195 @@
 
 import Foundation
 
-/**
- Event fired when a block is moved on the workspace, or its parent connection is changed.
-
- This event must be created before the block is moved to capture the original position.
- After the move has been completed in the workspace, capture the updated position or parent
- using `recordNew(forBlock:)`.
- */
-@objc(BKYMoveEvent)
-public class MoveEvent: BlocklyEvent {
-
-  // MARK: - Properties
-
-  /// The event type for `ChangeEvent` objects.
-  public static let EVENT_TYPE = "move"
-
-  private static let JSON_NEW_COORDINATE = "newCoordinate"
-  private static let JSON_NEW_INPUT_NAME = "newInputName"
-  private static let JSON_NEW_PARENT_ID = "newParentId"
-
-  /// The previous parent block ID of the target block. If `nil`, it indicates the target block was
-  /// not previously connected to a parent.
-  public fileprivate(set) var oldParentID: String?
-  /// If `oldParentID` is not `nil`, this is the input name of the previous parent block that the
-  /// target block was connected to.
-  public fileprivate(set) var oldInputName: String?
-  /// The previous position of the target block. If `nil`, it indicates that the target block
-  /// was previously connected to a parent block.
-  public fileprivate(set) var oldPosition: WorkspacePoint?
-
-  /// The new parent block ID of the target block. If `nil`, it indicates the target block is
-  /// not connected to a parent.
-  public var newParentID: String?
-  /// If `newParentID` is not `nil`, this is the input name of the parent block that the target
-  /// block is connected to.
-  public var newInputName: String?
-  /// The new position of the target block. If `nil`, it indicates that the target block
-  /// is connected to a parent block.
-  public var newPosition: WorkspacePoint?
-
-  // MARK: - Initializers
-
+extension BlocklyEvent {
   /**
-   Constructs a `MoveEvent` signifying the movement of a block on the workspace.
+   Event fired when a block is moved on the workspace, or its parent connection is changed.
 
-   - parameter workspaceID: The ID of the workspace containing the moved blocks.
-   - parameter blockID: The ID of the root block that will move.
-   - parameter oldParentID: The value for `self.oldParentID`.
-   - parameter oldInputName: The value for `self.oldInputName`.
-   - parameter oldPosition: The value for `self.oldPosition`.
+   This event must be created before the block is moved to capture the original position.
+   After the move has been completed in the workspace, capture the updated position or parent
+   using `recordNew(forBlock:)`.
    */
-  public init(workspaceID: String, blockID: String,
-              oldParentID: String?, oldInputName: String?, oldPosition: WorkspacePoint?) {
-    self.oldParentID = oldParentID
-    self.oldInputName = oldInputName
-    self.oldPosition = oldPosition
-    super.init(type: MoveEvent.EVENT_TYPE, workspaceID: workspaceID, groupID: nil, blockID: blockID)
-  }
+  @objc(BKYEventMove)
+  public class Move: BlocklyEvent {
 
-  /**
-   Constructs a `MoveEvent` from the JSON serialized representation.
+    // MARK: - Properties
 
-   - parameter json: The serialized `MoveEvent`.
-   - throws:
-   `BlocklyError`: Thrown when the JSON could not be parsed into a `MoveEvent` object.
-   */
-  public init(json: [String: Any]) throws {
-    if let newCoordinate = json[MoveEvent.JSON_NEW_COORDINATE] as? String {
+    /// The event type for `BlocklyEvent.Move` objects.
+    public static let EVENT_TYPE = "move"
 
-      // JSON coordinates are always integers, separated by a comma.
-      let coordinates = newCoordinate.components(separatedBy: ",")
-      guard coordinates.count == 2,
-        let x = Int(coordinates[0]),
-        let y = Int(coordinates[1]) else
-      {
-        throw BlocklyError(
-          .jsonParsing, "Invalid \"\(MoveEvent.JSON_NEW_COORDINATE)\": \(newCoordinate)")
+    private static let JSON_NEW_COORDINATE = "newCoordinate"
+    private static let JSON_NEW_INPUT_NAME = "newInputName"
+    private static let JSON_NEW_PARENT_ID = "newParentId"
+
+    /// The previous parent block ID of the target block. If `nil`, it indicates the target block
+    /// was not previously connected to a parent.
+    public fileprivate(set) var oldParentID: String?
+    /// If `oldParentID` is not `nil`, this is the input name of the previous parent block that the
+    /// target block was connected to.
+    public fileprivate(set) var oldInputName: String?
+    /// The previous position of the target block. If `nil`, it indicates that the target block
+    /// was previously connected to a parent block.
+    public fileprivate(set) var oldPosition: WorkspacePoint?
+
+    /// The new parent block ID of the target block. If `nil`, it indicates the target block is
+    /// not connected to a parent.
+    public var newParentID: String?
+    /// If `newParentID` is not `nil`, this is the input name of the parent block that the target
+    /// block is connected to.
+    public var newInputName: String?
+    /// The new position of the target block. If `nil`, it indicates that the target block
+    /// is connected to a parent block.
+    public var newPosition: WorkspacePoint?
+
+    // MARK: - Initializers
+
+    /**
+     Constructs a `BlocklyEvent.Move` signifying the movement of a block on the workspace.
+
+     - parameter workspaceID: The ID of the workspace containing the moved blocks.
+     - parameter blockID: The ID of the root block that will move.
+     - parameter oldParentID: The value for `self.oldParentID`.
+     - parameter oldInputName: The value for `self.oldInputName`.
+     - parameter oldPosition: The value for `self.oldPosition`.
+     */
+    public init(workspaceID: String, blockID: String,
+                oldParentID: String?, oldInputName: String?, oldPosition: WorkspacePoint?) {
+      self.oldParentID = oldParentID
+      self.oldInputName = oldInputName
+      self.oldPosition = oldPosition
+      super.init(type: Move.EVENT_TYPE, workspaceID: workspaceID, groupID: nil, blockID: blockID)
+    }
+
+    /**
+     Constructs a `BlocklyEvent.Move` from the JSON serialized representation.
+
+     - parameter json: The serialized JSON representation of `BlocklyEvent.Move`.
+     - throws:
+     `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyEvent.Move` object.
+     */
+    public init(json: [String: Any]) throws {
+      if let newCoordinate = json[BlocklyEvent.Move.JSON_NEW_COORDINATE] as? String {
+
+        // JSON coordinates are always integers, separated by a comma.
+        let coordinates = newCoordinate.components(separatedBy: ",")
+        guard coordinates.count == 2,
+          let x = Int(coordinates[0]),
+          let y = Int(coordinates[1]) else
+        {
+          throw BlocklyError(
+            .jsonParsing, "Invalid \"\(BlocklyEvent.Move.JSON_NEW_COORDINATE)\": \(newCoordinate)")
+        }
+
+        newPosition = WorkspacePoint(x: CGFloat(x), y: CGFloat(y))
       }
 
-      newPosition = WorkspacePoint(x: CGFloat(x), y: CGFloat(y))
+      try super.init(type: BlocklyEvent.Move.EVENT_TYPE, json: json)
+
+      if (self.blockID?.isEmpty ?? true) {
+        throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+      }
     }
 
-    try super.init(type: MoveEvent.EVENT_TYPE, json: json)
+    // MARK: - Super
 
-    if (self.blockID?.isEmpty ?? true) {
-      throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+    public override func toJSON() throws -> [String: Any] {
+      var json = try super.toJSON()
+
+      if let newParentID = self.newParentID {
+        json[BlocklyEvent.Move.JSON_NEW_PARENT_ID] = newParentID
+      }
+
+      if let newInputName = self.newInputName {
+        json[BlocklyEvent.Move.JSON_NEW_INPUT_NAME] = newInputName
+      }
+
+      if let newPosition = self.newPosition {
+        let x = Int(floor(newPosition.x))
+        let y = Int(floor(newPosition.y))
+        json[BlocklyEvent.Move.JSON_NEW_COORDINATE] = "\(x),\(y)"
+      }
+
+      return json
+    }
+
+    public override func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
+      if let moveEvent = event as? BlocklyEvent.Move,
+        let blockID = self.blockID,
+        workspaceID == moveEvent.workspaceID &&
+        groupID == moveEvent.groupID &&
+        blockID == moveEvent.blockID
+      {
+        let mergedEvent = BlocklyEvent.Move(
+          workspaceID: workspaceID, blockID: blockID, oldParentID: oldParentID,
+          oldInputName: oldInputName, oldPosition: oldPosition)
+        mergedEvent.groupID = groupID
+        mergedEvent.newParentID = moveEvent.newParentID
+        mergedEvent.newInputName = moveEvent.newInputName
+        mergedEvent.newPosition = moveEvent.newPosition
+        return mergedEvent
+      }
+
+      return nil
+    }
+
+    public override func isDiscardable() -> Bool {
+      return oldParentID == newParentID &&
+        oldInputName == newInputName &&
+        oldPosition == newPosition
     }
   }
-
-  // MARK: - Super
-
-  public override func toJSON() throws -> [String: Any] {
-    var json = try super.toJSON()
-
-    if let newParentID = self.newParentID {
-      json[MoveEvent.JSON_NEW_PARENT_ID] = newParentID
-    }
-
-    if let newInputName = self.newInputName {
-      json[MoveEvent.JSON_NEW_INPUT_NAME] = newInputName
-    }
-
-    if let newPosition = self.newPosition {
-      let x = Int(floor(newPosition.x))
-      let y = Int(floor(newPosition.y))
-      json[MoveEvent.JSON_NEW_COORDINATE] = "\(x),\(y)"
-    }
-
-    return json
-  }
-
-  public override func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
-    if let moveEvent = event as? MoveEvent,
-      let blockID = self.blockID,
-      workspaceID == moveEvent.workspaceID &&
-      groupID == moveEvent.groupID &&
-      blockID == moveEvent.blockID
-    {
-      let mergedEvent = MoveEvent(
-        workspaceID: workspaceID, blockID: blockID, oldParentID: oldParentID,
-        oldInputName: oldInputName, oldPosition: oldPosition)
-      mergedEvent.groupID = groupID
-      mergedEvent.newParentID = moveEvent.newParentID
-      mergedEvent.newInputName = moveEvent.newInputName
-      mergedEvent.newPosition = moveEvent.newPosition
-      return mergedEvent
-    }
-
-    return nil
-  }
-
-  public override func isDiscardable() -> Bool {
-    return oldParentID == newParentID && oldInputName == newInputName && oldPosition == newPosition
-  }
-}
-
-/**
- Subclass of `MoveEvent` that makes it easier to track new values for a block as it moves
- throughout the workspace.
- */
-@objc(BKYBlockMoveEvent)
-public class BlockMoveEvent: MoveEvent {
-
-  /// The target block that is being moved
-  private let block: Block
 
   /**
-   Constructs a `MoveEvent` signifying the movement of a block on the workspace. The current
-   positional values of the block are recorded as the "old" values for the event.
-
-   - parameter workspace: The workspace containing the moved blocks.
-   - parameter block: The root block, while it is still in its original position.
+   Subclass of `BlocklyEvent.Move` that makes it easier to track new values for a block as it moves
+   throughout the workspace.
    */
-  public init(workspace: Workspace, block: Block) {
-    self.block = block
+  @objc(BKYEventBlockMove)
+  public class BlockMove: BlocklyEvent.Move {
 
-    var oldParentID: String?
-    var oldInputName: String?
-    var oldPosition: WorkspacePoint?
+    /// The target block that is being moved
+    private let block: Block
 
-    if let parentConnection = block.inferiorConnection?.targetConnection {
-      oldParentID = parentConnection.sourceBlock?.uuid
-      oldInputName = parentConnection.sourceInput?.name
-    } else {
-      oldPosition = block.position
+    /**
+     Constructs a `BlocklyEvent.Move` signifying the movement of a block on the workspace. The
+     current positional values of the block are recorded as the "old" values for the event.
+
+     - parameter workspace: The workspace containing the moved blocks.
+     - parameter block: The root block, while it is still in its original position.
+     */
+    public init(workspace: Workspace, block: Block) {
+      self.block = block
+
+      var oldParentID: String?
+      var oldInputName: String?
+      var oldPosition: WorkspacePoint?
+
+      if let parentConnection = block.inferiorConnection?.targetConnection {
+        oldParentID = parentConnection.sourceBlock?.uuid
+        oldInputName = parentConnection.sourceInput?.name
+      } else {
+        oldPosition = block.position
+      }
+      super.init(workspaceID: workspace.uuid, blockID: block.uuid,
+                 oldParentID: oldParentID, oldInputName: oldInputName, oldPosition: oldPosition)
     }
-    super.init(workspaceID: workspace.uuid, blockID: block.uuid,
-               oldParentID: oldParentID, oldInputName: oldInputName, oldPosition: oldPosition)
-  }
 
-  // MARK: - State Capture
+    // MARK: - State Capture
 
-  /**
-   Updates the event's "new" values to capture the current state of the block.
+    /**
+     Updates the event's "new" values to capture the current state of the block.
 
-   - parameter block: The `Block`.
-   */
-  public func recordNewValues() {
-    if let parentConnection = block.inferiorConnection?.targetConnection {
-      newParentID = parentConnection.sourceBlock?.uuid
-      newInputName = parentConnection.sourceInput?.name
-      newPosition = nil
-    } else {
-      newParentID = nil
-      newInputName = nil
-      newPosition = block.position
+     - parameter block: The `Block`.
+     */
+    public func recordNewValues() {
+      if let parentConnection = block.inferiorConnection?.targetConnection {
+        newParentID = parentConnection.sourceBlock?.uuid
+        newInputName = parentConnection.sourceInput?.name
+        newPosition = nil
+      } else {
+        newParentID = nil
+        newInputName = nil
+        newPosition = block.position
+      }
     }
   }
 }

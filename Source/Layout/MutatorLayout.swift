@@ -72,7 +72,7 @@ open class MutatorLayout: Layout {
   // MARK: - Change Event
 
   /**
-   Automatically captures a `ChangeEvent` for `self.mutator`, based on its state before
+   Automatically captures a `BlocklyEvent.Change` for `self.mutator`, based on its state before
    and after running a given closure block. This event is then added to the pending events queue
    on `EventManager.sharedInstance`.
 
@@ -88,7 +88,7 @@ open class MutatorLayout: Layout {
       let newValue = mutator.toXMLElement().xml
 
       if oldValue != newValue {
-        let event = ChangeEvent.mutateEvent(
+        let event = BlocklyEvent.Change.mutateEvent(
           workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
         EventManager.sharedInstance.addPendingEvent(event)
       }

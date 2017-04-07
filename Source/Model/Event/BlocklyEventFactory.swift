@@ -21,7 +21,7 @@ import Foundation
  This class is designed as a singleton instance, accessible via
  `BlocklyEventFactory.sharedInstance`.
  */
-@objc(BKYBlocklyEventFactory)
+@objc(BKYEventFactory)
 public class BlocklyEventFactory: NSObject {
 
   // MARK: - Properties
@@ -43,20 +43,20 @@ public class BlocklyEventFactory: NSObject {
   private override init() {
     super.init()
 
-    registerCreator(forEventType: ChangeEvent.EVENT_TYPE) { (json) -> BlocklyEvent in
-      return try ChangeEvent(json: json)
+    registerCreator(forEventType: BlocklyEvent.Change.EVENT_TYPE) { (json) -> BlocklyEvent in
+      return try BlocklyEvent.Change(json: json)
     }
-    registerCreator(forEventType: CreateEvent.EVENT_TYPE) { (json) -> BlocklyEvent in
-      return try CreateEvent(json: json)
+    registerCreator(forEventType: BlocklyEvent.Create.EVENT_TYPE) { (json) -> BlocklyEvent in
+      return try BlocklyEvent.Create(json: json)
     }
-    registerCreator(forEventType: DeleteEvent.EVENT_TYPE) { (json) -> BlocklyEvent in
-      return try DeleteEvent(json: json)
+    registerCreator(forEventType: BlocklyEvent.Delete.EVENT_TYPE) { (json) -> BlocklyEvent in
+      return try BlocklyEvent.Delete(json: json)
     }
-    registerCreator(forEventType: MoveEvent.EVENT_TYPE) { (json) -> BlocklyEvent in
-      return try MoveEvent(json: json)
+    registerCreator(forEventType: BlocklyEvent.Move.EVENT_TYPE) { (json) -> BlocklyEvent in
+      return try BlocklyEvent.Move(json: json)
     }
-    registerCreator(forEventType: BlocklyUIEvent.EVENT_TYPE) { (json) -> BlocklyEvent in
-      return try BlocklyUIEvent(json: json)
+    registerCreator(forEventType: BlocklyEvent.UI.EVENT_TYPE) { (json) -> BlocklyEvent in
+      return try BlocklyEvent.UI(json: json)
     }
   }
 

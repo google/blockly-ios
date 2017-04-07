@@ -89,7 +89,7 @@ public final class Dragger: NSObject {
 
       // Start a move event for this block
       let workspace = workspaceLayoutCoordinator.workspaceLayout.workspace
-      let moveEvent = BlockMoveEvent(workspace: workspace, block: block)
+      let moveEvent = BlocklyEvent.BlockMove(workspace: workspace, block: block)
 
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
@@ -311,7 +311,7 @@ private class DragGestureData {
   fileprivate let connectionGroup: ConnectionManager.Group
 
   /// Event capturing the positional movement of a block during the lifespan of the drag.
-  fileprivate let moveEvent: BlockMoveEvent
+  fileprivate let moveEvent: BlocklyEvent.BlockMove
 
   /// Stores the current connection that is being highlighted because of this drag gesture
   fileprivate weak var highlightedConnection: Connection?
@@ -320,7 +320,7 @@ private class DragGestureData {
 
   fileprivate init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
     touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group,
-    moveEvent: BlockMoveEvent) {
+    moveEvent: BlocklyEvent.BlockMove) {
     self.blockLayout = blockLayout
     self.blockLayoutStartPosition = blockLayoutStartPosition
     self.touchStartPosition = touchStartPosition

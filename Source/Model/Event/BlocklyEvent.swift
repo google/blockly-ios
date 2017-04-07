@@ -16,7 +16,7 @@
 /**
  * Base class for all Blockly events.
  */
-@objc(BKYBlocklyEvent)
+@objc(BKYEvent)
 public class BlocklyEvent: NSObject {
 
   // MARK: - Properties
@@ -130,7 +130,8 @@ public class BlocklyEvent: NSObject {
 
   /**
    This method indicates if this event can be discarded so it doesn't get fired. An example of when
-   this might be true is for a `ChangeEvent` where no change is recorded between old and new values.
+   this might be true is for a `BlocklyEvent.Change` where no change is recorded between old and
+   new values.
 
    The default implementation of this method returns `false`. Subclasses may override this method
    to specify individual behavior of when the event can be discarded, based on its current state.

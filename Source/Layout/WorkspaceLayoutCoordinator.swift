@@ -254,7 +254,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection.isInferior ? sourceBlock : targetBlock
-    let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    let event = BlocklyEvent.BlockMove(workspace: workspaceLayout.workspace, block: inferiorBlock)
 
     connection.disconnect()
 
@@ -312,7 +312,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection1.isInferior ? sourceBlock1 : sourceBlock2
-    let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    let event = BlocklyEvent.BlockMove(workspace: workspaceLayout.workspace, block: inferiorBlock)
 
     let oldTarget1 = connection1.targetConnection
     let oldTarget2 = connection2.targetConnection
@@ -750,7 +750,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 
     do {
       // Fire creation event for the root block
-      let event = try CreateEvent(workspace: workspaceLayout.workspace, block: block)
+      let event = try BlocklyEvent.Create(workspace: workspaceLayout.workspace, block: block)
       EventManager.sharedInstance.addPendingEvent(event)
 
       // Create the layout tree for this newly added block
@@ -783,7 +783,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
 
     do {
       // Fire delete event for the root block
-      let event = try DeleteEvent(workspace: workspaceLayout.workspace, block: block)
+      let event = try BlocklyEvent.Delete(workspace: workspaceLayout.workspace, block: block)
       EventManager.sharedInstance.addPendingEvent(event)
     } catch let error {
       bky_assertionFailure("Could not fire delete event: \(error)")

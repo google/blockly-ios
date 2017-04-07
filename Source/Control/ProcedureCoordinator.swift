@@ -411,16 +411,16 @@ extension ProcedureCoordinator: EventManagerListener {
   public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
     // Try to handle the event. The first method that returns `true` means it's been handled and
     // we can skip the rest of the checks.
-    if let fieldEvent = event as? ChangeEvent,
+    if let fieldEvent = event as? BlocklyEvent.Change,
       fieldEvent.element == .field {
       processFieldChangeEvent(fieldEvent)
-    } else if let mutationEvent = event as? ChangeEvent,
+    } else if let mutationEvent = event as? BlocklyEvent.Change,
       mutationEvent.element == .mutate {
       processMutationChangeEvent(mutationEvent)
     }
   }
 
-  private func processFieldChangeEvent(_ fieldEvent: ChangeEvent) {
+  private func processFieldChangeEvent(_ fieldEvent: BlocklyEvent.Change) {
     guard fieldEvent.element == .field,
       fieldEvent.fieldName == "NAME",
       fieldEvent.workspaceID == workbench?.workspace?.uuid,
@@ -438,8 +438,8 @@ extension ProcedureCoordinator: EventManagerListener {
       if newProcedureName.trimmingCharacters(in: .whitespaces).isEmpty {
         // Procedure names shouldn't be empty. Put it back to what it was
         // originally.
-        // Note: The field layout is used to reset the procedure name here so that a `ChangeEvent`
-        // is automatically created for this change.
+        // Note: The field layout is used to reset the procedure name here so that a
+        // `BlocklyEvent.Change` is automatically created for this change.
         try? block.procedureDefinitionNameInput?.layout?.setValue(
           fromSerializedText: oldProcedureName)
       } else {
@@ -449,7 +449,7 @@ extension ProcedureCoordinator: EventManagerListener {
     }
   }
 
-  private func processMutationChangeEvent(_ mutationEvent: ChangeEvent) {
+  private func processMutationChangeEvent(_ mutationEvent: BlocklyEvent.Change) {
     guard mutationEvent.element == .mutate,
       mutationEvent.workspaceID == workbench?.workspace?.uuid,
       let blockID = mutationEvent.blockID,

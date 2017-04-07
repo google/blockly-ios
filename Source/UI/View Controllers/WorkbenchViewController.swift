@@ -990,25 +990,25 @@ extension WorkbenchViewController {
    operations) or run backward (`false` for undo operations).
    */
   open func update(fromEvent event: BlocklyEvent, runForward: Bool) {
-    if let createEvent = event as? CreateEvent {
+    if let createEvent = event as? BlocklyEvent.Create {
       update(fromCreateEvent: createEvent, runForward: runForward)
-    } else if let deleteEvent = event as? DeleteEvent {
+    } else if let deleteEvent = event as? BlocklyEvent.Delete {
       update(fromDeleteEvent: deleteEvent, runForward: runForward)
-    } else if let moveEvent = event as? MoveEvent {
+    } else if let moveEvent = event as? BlocklyEvent.Move {
       update(fromMoveEvent: moveEvent, runForward: runForward)
-    } else if let changeEvent = event as? ChangeEvent {
+    } else if let changeEvent = event as? BlocklyEvent.Change {
       update(fromChangeEvent: changeEvent, runForward: runForward)
     }
   }
 
   /**
-   Updates the workbench based on a `CreateEvent`.
+   Updates the workbench based on a `BlocklyEvent.Create`.
 
-   - parameter event: The `CreateEvent`.
+   - parameter event: The `BlocklyEvent.Create`.
    - parameter runForward: Flag determining if the event should be run forward (`true` for redo
    operations) or run backward (`false` for undo operations).
    */
-  open func update(fromCreateEvent event: CreateEvent, runForward: Bool) {
+  open func update(fromCreateEvent event: BlocklyEvent.Create, runForward: Bool) {
     if runForward {
       do {
         let blockTree = try Block.blockTree(fromXMLString: event.xml, factory: blockFactory)
@@ -1026,13 +1026,13 @@ extension WorkbenchViewController {
   }
 
   /**
-   Updates the workbench based on a `DeleteEvent`.
+   Updates the workbench based on a `BlocklyEvent.Delete`.
 
-   - parameter event: The `DeleteEvent`.
+   - parameter event: The `BlocklyEvent.Delete`.
    - parameter runForward: Flag determining if the event should be run forward (`true` for redo
    operations) or run backward (`false` for undo operations).
    */
-  open func update(fromDeleteEvent event: DeleteEvent, runForward: Bool) {
+  open func update(fromDeleteEvent event: BlocklyEvent.Delete, runForward: Bool) {
     if runForward {
       for blockID in event.blockIDs {
         if let block = workspace?.allBlocks[blockID] {
@@ -1060,13 +1060,13 @@ extension WorkbenchViewController {
   }
 
   /**
-   Updates the workbench based on a `MoveEvent`.
+   Updates the workbench based on a `BlocklyEvent.Move`.
 
-   - parameter event: The `MoveEvent`.
+   - parameter event: The `BlocklyEvent.Move`.
    - parameter runForward: Flag determining if the event should be run forward (`true` for redo
    operations) or run backward (`false` for undo operations).
    */
-  open func update(fromMoveEvent event: MoveEvent, runForward: Bool) {
+  open func update(fromMoveEvent event: BlocklyEvent.Move, runForward: Bool) {
     guard let workspace = _workspaceLayoutCoordinator?.workspaceLayout.workspace,
       let blockID = event.blockID,
       let block = workspace.allBlocks[blockID] else
@@ -1140,13 +1140,13 @@ extension WorkbenchViewController {
   }
 
   /**
-   Updates the workbench based on a `ChangeEvent`.
+   Updates the workbench based on a `BlocklyEvent.Change`.
 
-   - parameter event: The `ChangeEvent`.
+   - parameter event: The `BlocklyEvent.Change`.
    - parameter runForward: Flag determining if the event should be run forward (`true` for redo
    operations) or run backward (`false` for undo operations).
    */
-  open func update(fromChangeEvent event: ChangeEvent, runForward: Bool) {
+  open func update(fromChangeEvent event: BlocklyEvent.Change, runForward: Bool) {
     guard let workspace = _workspaceLayoutCoordinator?.workspaceLayout.workspace,
       let blockID = event.blockID,
       let block = workspace.allBlocks[blockID] else
