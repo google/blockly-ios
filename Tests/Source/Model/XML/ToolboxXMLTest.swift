@@ -93,6 +93,44 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqualWithAccuracy(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
   }
 
+  func testParseXML_EmptyCategoriesUsingMessages() {
+    // Load messages
+    MessageManager.shared.loadMessages([
+      "CATEGORY_NAME": "Empty category",
+      "COLOUR": "#00ff00"
+    ])
+
+    let xmlString =
+      "<xml>" +
+        "<category name='%{CATEGORY_NAME}' colour='%{COLOUR}'></category>" +
+        "<category name='%{NO_CATEGORY_KEY}' colour='%{NO_COLOUR_KEY}'></category>" +
+      "</xml>"
+    guard let toolbox = BKYAssertDoesNotThrow({
+      try Toolbox.makeToolbox(xmlString: xmlString, factory: factory)
+    }) else
+    {
+      XCTFail("Could not create toolbox")
+      return
+    }
+
+    XCTAssertEqual(2, toolbox.categories.count)
+    XCTAssertEqual("Empty category", toolbox.categories[0].name)
+    let rgba = toolbox.categories[0].color.bky_rgba()
+    XCTAssertEqualWithAccuracy(0.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(1.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
+
+    // Since no messages exist for the keys in the second category, the name should be the
+    // original key and the colour should be black.
+    XCTAssertEqual("%{NO_CATEGORY_KEY}", toolbox.categories[1].name)
+    let rgba2 = toolbox.categories[1].color.bky_rgba()
+    XCTAssertEqualWithAccuracy(0.0, rgba2.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba2.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba2.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqualWithAccuracy(0.0, rgba2.alpha, accuracy: TestConstants.ACCURACY_CGF)
+  }
+  
   func testParseXML_TwoCategory() {
     let xmlString =
       "<xml>" +

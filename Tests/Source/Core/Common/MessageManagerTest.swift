@@ -236,4 +236,70 @@ class MessageManagerTest: XCTestCase {
     // Synonym recursion isn't supported, so this should return `nil`
     XCTAssertNil(_messageManager.message(forKey: "ref2"))
   }
+
+  // MARK: - String Decoding
+
+  func testDecodedString_emptyMessage() {
+    let string = _messageManager.decodedString("")
+    XCTAssertEqual("", string)
+  }
+
+  func testDecodedString_simpleMessage() {
+    _messageManager.loadMessages([
+      "bky_simple": "Simple"
+      ])
+    let string = _messageManager.decodedString("%{bky_simple}")
+    XCTAssertEqual("Simple", string)
+  }
+
+  func testDecodedString_twoSimpleKeys() {
+    _messageManager.loadMessages([
+      "bky_key1": "Key1",
+      "bky_key2": "Key2"
+      ])
+    let string = _messageManager.decodedString("%{bky_key1} %{bky_key2}")
+    XCTAssertEqual("Key1 Key2", string)
+  }
+
+  func testDecodedString_conjoinedKeys() {
+    _messageManager.loadMessages([
+      "bky_key1": "Key1",
+      "bky_key2": "Key2"
+      ])
+    let string = _messageManager.decodedString("%{bky_key1}%{bky_key2}")
+    XCTAssertEqual("Key1Key2", string)
+  }
+
+
+  func testDecodedString_recursiveLookup() {
+    _messageManager.loadMessages([
+      "name": "Taylor",
+      "greeting": "Hello, my name is %{name}.",
+      "introduction": "%{greeting} NICE TO MEET YOU!"
+      ])
+    let string = _messageManager.decodedString("%{introduction}")
+    XCTAssertEqual("Hello, my name is Taylor. NICE TO MEET YOU!", string)
+  }
+
+  func testDecodedString_nonExistentKey() {
+    let string = _messageManager.decodedString("%{no_key_found}")
+    XCTAssertEqual("%{no_key_found}", string)
+  }
+
+
+  func testDecodedString_keyInsideWord() {
+    _messageManager.loadMessages([
+      "key": "key",
+      ])
+    let string = _messageManager.decodedString("mon%{key}brains")
+    XCTAssertEqual("monkeybrains", string)
+  }
+
+  func testDecodedString_escapedKey() {
+    _messageManager.loadMessages([
+      "donttranslatethis": "This shouldn't be translated.",
+      ])
+    let string = _messageManager.decodedString("%%{donttranslatethis}")
+    XCTAssertEqual("%%{donttranslatethis}", string)
+  }
 }

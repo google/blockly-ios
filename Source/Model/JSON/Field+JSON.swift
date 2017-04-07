@@ -163,7 +163,9 @@ extension Field {
           // Reconstruct options into array of (String, String) tuples
           // eg. [(displayName: "Name 1", value: "Value 1"),
           //     (displayName: "Name 2", value: "Value 2")]
-          options: options.map({ (displayName: Block.decodedString($0[0]), value: $0[1]) }),
+          options: options.map {
+            (displayName: MessageManager.shared.decodedString($0[0]), value: $0[1])
+          },
           selectedIndex: 0)
       }
 
