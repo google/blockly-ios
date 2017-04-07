@@ -16,7 +16,7 @@
 /**
  * Base class for all Blockly events.
  */
-@objc(BKYBlocklyEvent)
+@objc(BKYEvent)
 public class BlocklyEvent: NSObject {
 
   // MARK: - Properties

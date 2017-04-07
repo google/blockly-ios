@@ -178,7 +178,7 @@
 		FAC2AC191E4AC580003DB287 /* CreateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC181E4AC580003DB287 /* CreateEvent.swift */; };
 		FAC2AC1B1E4AC592003DB287 /* DeleteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */; };
 		FAC2AC1D1E4AC5B4003DB287 /* MoveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1C1E4AC5B4003DB287 /* MoveEvent.swift */; };
-		FAC2AC1F1E4AC5D7003DB287 /* BlocklyUIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */; };
+		FAC2AC1F1E4AC5D7003DB287 /* BlocklyEvent+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */; };
 		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
 		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
@@ -462,7 +462,7 @@
 		FAC2AC181E4AC580003DB287 /* CreateEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEvent.swift; sourceTree = "<group>"; };
 		FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteEvent.swift; sourceTree = "<group>"; };
 		FAC2AC1C1E4AC5B4003DB287 /* MoveEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveEvent.swift; sourceTree = "<group>"; };
-		FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyUIEvent.swift; sourceTree = "<group>"; };
+		FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+UI.swift"; sourceTree = "<group>"; };
 		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
 		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
@@ -946,7 +946,7 @@
 			children = (
 				FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */,
 				FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */,
-				FAC2AC1E1E4AC5D7003DB287 /* BlocklyUIEvent.swift */,
+				FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */,
 				FAC2AC161E4AC563003DB287 /* ChangeEvent.swift */,
 				FAC2AC181E4AC580003DB287 /* CreateEvent.swift */,
 				FAC2AC1A1E4AC592003DB287 /* DeleteEvent.swift */,
@@ -1310,7 +1310,7 @@
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */,
-				FAC2AC1F1E4AC5D7003DB287 /* BlocklyUIEvent.swift in Sources */,
+				FAC2AC1F1E4AC5D7003DB287 /* BlocklyEvent+UI.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,

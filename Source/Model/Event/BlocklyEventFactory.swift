@@ -21,7 +21,7 @@ import Foundation
  This class is designed as a singleton instance, accessible via
  `BlocklyEventFactory.sharedInstance`.
  */
-@objc(BKYBlocklyEventFactory)
+@objc(BKYEventFactory)
 public class BlocklyEventFactory: NSObject {
 
   // MARK: - Properties
