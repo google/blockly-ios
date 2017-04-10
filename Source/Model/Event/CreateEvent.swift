@@ -15,65 +15,67 @@
 
 import Foundation
 
-/**
- Event fired when a block is added to the workspace, possibly containing other child blocks
- and next blocks.
- */
-@objc(BKYCreateEvent)
-public final class CreateEvent: BlocklyEvent {
-
-  // MARK: - Properties
-
-  /// The event type for `CreateEvent` objects.
-  public static let EVENT_TYPE = "create"
-
-  /// The XML serialization of all blocks created by this event.
-  public let xml: String
-
-  /// The list of block ids for all blocks created by this event.
-  public let blockIDs: [String]
-
-  // MARK: - Initializers
-
+extension BlocklyEvent {
   /**
-   Constructs a `CreateEvent` for the given block.
-
-   - parameter workspace: The workspace containing the new block.
-   - parameter block: The newly created block.
-   - throws:
-   `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
+   Event fired when a block is added to the workspace, possibly containing other child blocks
+   and next blocks.
    */
-  public init(workspace: Workspace, block: Block) throws {
-    xml = try block.toXML()
-    blockIDs = block.allBlocksForTree().map { $0.uuid }
+  @objc(BKYEventCreate)
+  public final class Create: BlocklyEvent {
 
-    super.init(
-      type: CreateEvent.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil, blockID: block.uuid)
-  }
+    // MARK: - Properties
 
-  /**
-   Constructs a `CreateEvent` from the JSON serialized representation.
+    /// The event type for `BlocklyEvent.Create` objects.
+    public static let EVENT_TYPE = "create"
 
-   - parameter json: The serialized `CreateEvent.
-   - throws:
-   `BlocklyError`: Thrown when the JSON could not be parsed into a `CreateEvent` object.
-   */
-  public init(json: [String: Any]) throws {
-    xml = json[BlocklyEvent.JSON_XML] as? String ?? ""
-    blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
-    try super.init(type: CreateEvent.EVENT_TYPE, json: json)
+    /// The XML serialization of all blocks created by this event.
+    public let xml: String
 
-    if (self.blockID?.isEmpty ?? true) {
-      throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+    /// The list of block ids for all blocks created by this event.
+    public let blockIDs: [String]
+
+    // MARK: - Initializers
+
+    /**
+     Constructs a `BlocklyEvent.Create` for the given block.
+
+     - parameter workspace: The workspace containing the new block.
+     - parameter block: The newly created block.
+     - throws:
+     `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
+     */
+    public init(workspace: Workspace, block: Block) throws {
+      xml = try block.toXML()
+      blockIDs = block.allBlocksForTree().map { $0.uuid }
+
+      super.init(
+        type: Create.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil, blockID: block.uuid)
     }
-  }
 
-  // MARK: - Super
+    /**
+     Constructs a `BlocklyEvent.Create` from the JSON serialized representation.
 
-  public override func toJSON() throws -> [String: Any] {
-    var json = try super.toJSON()
-    json["xml"] = xml
-    json["ids"] = blockIDs
-    return json
+     - parameter json: The serialized JSON representation of `BlocklyEvent.Create`.
+     - throws:
+     `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyEvent.Create` object.
+     */
+    public init(json: [String: Any]) throws {
+      xml = json[BlocklyEvent.JSON_XML] as? String ?? ""
+      blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
+      try super.init(type: BlocklyEvent.Create.EVENT_TYPE, json: json)
+
+      if (self.blockID?.isEmpty ?? true) {
+        throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+      }
+    }
+
+    // MARK: - Super
+
+    public override func toJSON() throws -> [String: Any] {
+      var json = try super.toJSON()
+      json["xml"] = xml
+      json["ids"] = blockIDs
+      return json
+    }
   }
 }

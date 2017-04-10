@@ -207,7 +207,7 @@ open class BlockGroupLayout: Layout {
       }
 
       if let block = blockLayouts.first?.block {
-        let event = BlockMoveEvent(workspace: workspaceLayout.workspace, block: block)
+        let event = BlocklyEvent.BlockMove(workspace: workspaceLayout.workspace, block: block)
         updatePosition()
         event.recordNewValues()
         EventManager.sharedInstance.addPendingEvent(event)

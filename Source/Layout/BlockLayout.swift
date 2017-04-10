@@ -144,7 +144,7 @@ open class BlockLayout: Layout {
         block.disabled = disabled
 
         if let workspace = self.workspace {
-          let event = ChangeEvent.disabledStateEvent(workspace: workspace, block: block)
+          let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
           EventManager.sharedInstance.addPendingEvent(event)
         }
       }
@@ -160,7 +160,7 @@ open class BlockLayout: Layout {
         block.inputsInline = newValue
 
         if let workspace = self.workspace {
-          let event = ChangeEvent.inlineStateEvent(workspace: workspace, block: block)
+          let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
           EventManager.sharedInstance.addPendingEvent(event)
         }
       }
@@ -176,7 +176,7 @@ open class BlockLayout: Layout {
         block.comment = newValue
 
         if let workspace = self.workspace {
-          let event = ChangeEvent.commentTextEvent(
+          let event = BlocklyEvent.Change.commentTextEvent(
             workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
           EventManager.sharedInstance.addPendingEvent(event)
         }

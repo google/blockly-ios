@@ -101,7 +101,7 @@ open class FieldLayout: Layout {
   // MARK: - Change Events
 
   /**
-   Automatically captures a `ChangeEvent` for `self.field`, based on its state before
+   Automatically captures a `BlocklyEvent.Change` for `self.field`, based on its state before
    and after running a given closure block. This event is then added to the pending events queue
    on `EventManager.sharedInstance`.
 
@@ -120,7 +120,7 @@ open class FieldLayout: Layout {
         case let aNewValue?? = newValue,
         anOldValue != aNewValue
       {
-        let event = ChangeEvent.fieldValueEvent(
+        let event = BlocklyEvent.Change.fieldValueEvent(
           workspace: workspace, block: block, field: field,
           oldValue: anOldValue, newValue: aNewValue)
         EventManager.sharedInstance.addPendingEvent(event)

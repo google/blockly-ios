@@ -15,64 +15,66 @@
 
 import Foundation
 
-/**
- Event fired when a block is removed from the workspace.
- */
-@objc(BKYDeleteEvent)
-public final class DeleteEvent: BlocklyEvent {
-
-  // MARK: - Properties
-
-  /// The event type for `DeleteEvent` objects.
-  public static let EVENT_TYPE = "delete"
-
-  /// The XML serialization of all blocks deleted by this event.
-  public let oldXML: String
-
-  /// The list of all block ids for all blocks deleted by this event.
-  public let blockIDs: [String]
-
-  // MARK: - Initializers
-
+extension BlocklyEvent {
   /**
-   Constructs a `DeleteEvent`, signifying the removal of a block from the workspace.
-
-   - parameter workspace: The workspace containing the deletion.
-   - parameter block: The deleted block (or to-be-deleted block), with all children attached.
-   - throws:
-   `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
+   Event fired when a block is removed from the workspace.
    */
-  public init(workspace: Workspace, block: Block) throws {
-    oldXML = try block.toXML()
-    blockIDs = block.allBlocksForTree().map { $0.uuid }
+  @objc(BKYEventDelete)
+  public final class Delete: BlocklyEvent {
 
-    super.init(
-      type: DeleteEvent.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil, blockID: block.uuid)
-  }
+    // MARK: - Properties
 
-  /**
-   Constructs a `DeleteEvent` from the JSON serialized representation.
+    /// The event type for `BlocklyEvent.Delete` objects.
+    public static let EVENT_TYPE = "delete"
 
-   - parameter json: The serialized DeleteEvent.
-   - throws:
-   `BlocklyError`: Thrown when the JSON could not be parsed into a `DeleteEvent` object.
-   */
-  public init(json: [String: Any]) throws {
-    oldXML = json[BlocklyEvent.JSON_OLD_VALUE] as? String ?? "" // Not usually used.
-    blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
+    /// The XML serialization of all blocks deleted by this event.
+    public let oldXML: String
 
-    try super.init(type: DeleteEvent.EVENT_TYPE, json: json)
+    /// The list of all block ids for all blocks deleted by this event.
+    public let blockIDs: [String]
 
-    if (self.blockID?.isEmpty ?? true) {
-      throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+    // MARK: - Initializers
+
+    /**
+     Constructs a `BlocklyEvent.Delete`, signifying the removal of a block from the workspace.
+
+     - parameter workspace: The workspace containing the deletion.
+     - parameter block: The deleted block (or to-be-deleted block), with all children attached.
+     - throws:
+     `BlocklyError`: Thrown if the given block tree could not be serialized into xml.
+     */
+    public init(workspace: Workspace, block: Block) throws {
+      oldXML = try block.toXML()
+      blockIDs = block.allBlocksForTree().map { $0.uuid }
+
+      super.init(
+        type: Delete.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil, blockID: block.uuid)
     }
-  }
 
-  // MARK: - Super
+    /**
+     Constructs a `BlocklyEvent.Delete` from the JSON serialized representation.
 
-  public override func toJSON() throws -> [String: Any] {
-    var json = try super.toJSON()
-    json["ids"] = blockIDs
-    return json
+     - parameter json: The serialized JSON representation of `BlocklyEvent.Delete`.
+     - throws:
+     `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyEvent.Delete` object.
+     */
+    public init(json: [String: Any]) throws {
+      oldXML = json[BlocklyEvent.JSON_OLD_VALUE] as? String ?? "" // Not usually used.
+      blockIDs = json[BlocklyEvent.JSON_IDS] as? [String] ?? []
+
+      try super.init(type: BlocklyEvent.Delete.EVENT_TYPE, json: json)
+
+      if (self.blockID?.isEmpty ?? true) {
+        throw BlocklyError(.jsonParsing, "\"\(BlocklyEvent.JSON_BLOCK_ID)\" must be assigned.")
+      }
+    }
+
+    // MARK: - Super
+
+    public override func toJSON() throws -> [String: Any] {
+      var json = try super.toJSON()
+      json["ids"] = blockIDs
+      return json
+    }
   }
 }
