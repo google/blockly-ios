@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc     = true
 
-  s.source_files     = 'Source/**/*'
+  s.source_files     = 'Sources/**/*'
 
   # It appears resources inside xcassets can't be loaded from packaged resource bundles, so that
   # is why we use '.resources', instead of '.resource_bundles' (or else Blockly.xcassets wouldn't

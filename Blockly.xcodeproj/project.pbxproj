@@ -634,7 +634,7 @@
 			path = Control;
 			sourceTree = "<group>";
 		};
-		FA4BB4061B744A8E000980E9 /* Source */ = {
+		FA4BB4061B744A8E000980E9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				FA3786A51C00093B009D18DF /* Control */,
@@ -645,7 +645,7 @@
 				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 				FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		FA4BB4071B744A8E000980E9 /* Model */ = {
@@ -796,7 +796,7 @@
 		FA548BFB1B630BAC008BC59C = {
 			isa = PBXGroup;
 			children = (
-				FA548C5E1B63144A008BC59C /* Source */,
+				FA548C5E1B63144A008BC59C /* Sources */,
 				FA9B45B81C32D966001EAE68 /* Resources */,
 				FA548C591B63136F008BC59C /* Tests */,
 				FA9C9A911C6432A4008524BF /* External */,
@@ -817,14 +817,14 @@
 		FA548C591B63136F008BC59C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				FA4BB4061B744A8E000980E9 /* Source */,
+				FA4BB4061B744A8E000980E9 /* Sources */,
 				FA2DFC051B71740E0072A278 /* Resources */,
 				FA548C5B1B63136F008BC59C /* Info.plist */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		FA548C5E1B63144A008BC59C /* Source */ = {
+		FA548C5E1B63144A008BC59C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				3064BAB21DAF3DC1006425A2 /* ObjC */,
@@ -835,7 +835,7 @@
 				FA4BB4B31B7575FE000980E9 /* UI */,
 				FA548C601B63144A008BC59C /* Info.plist */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		FA548C851B66E861008BC59C /* Model */ = {
@@ -1576,7 +1576,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1603,7 +1603,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
