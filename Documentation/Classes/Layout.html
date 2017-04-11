@@ -239,16 +239,6 @@ UI configuration.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/TODO:(%2334)%20If%20ConnectionLayout%20is%20created,%20change%20absolutePosition%20to%20be%20final"></a>
-                <a name="//apple_ref/swift/Section/TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final" class="dashAnchor"></a>
-                <a href="#/TODO:(%2334)%20If%20ConnectionLayout%20is%20created,%20change%20absolutePosition%20to%20be%20final">
-                  <h2 class="section-name">TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final</h2>
-                </a>
-              </div>
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -669,13 +659,6 @@ particular order.</p>
                 </li>
               </ul>
             </div>            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/TODO:(%23173)%20Once%20the%20model/layout%20has%20been%20refactored%20so%20layout%20hierarchy%20changes%20aren&#39;t%20made"></a>
-                <a name="//apple_ref/swift/Section/TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren&#39;t made" class="dashAnchor"></a>
-                <a href="#/TODO:(%23173)%20Once%20the%20model/layout%20has%20been%20refactored%20so%20layout%20hierarchy%20changes%20aren&#39;t%20made">
-                  <h2 class="section-name">TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren&#39;t made</h2>
-                </a>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -796,8 +779,8 @@ call will animate its layout changes.
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns whether the next change event that is sent out via <code>sendChangeEvent(:)</code> should be
-animated or not.</p>
+                        <p>Property indicating whether the next change event that is sent out via <code>sendChangeEvent(:)</code>
+should be animated or not.</p>
 
                       </div>
                       <div class="declaration">
@@ -824,6 +807,8 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: Array
+      path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
@@ -832,6 +817,26 @@ toc:
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
       path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockExtension
+      path: /blockly/reference/ios/../Protocols/BlockExtension.html
+    - title: BlockExtensionClosure
+      path: /blockly/reference/ios/../Classes/BlockExtensionClosure.html
+    - title: BlocklyEvent
+      path: /blockly/reference/ios/../Classes/BlocklyEvent.html
+    - title: – Change
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Change.html
+    - title: – Delete
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Delete.html
+    - title: – UI
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/UI.html
+    - title: – Create
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
+    - title: – Move
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
+    - title: – BlockMove
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
+    - title: BlocklyEventFactory
+      path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
       path: /blockly/reference/ios/../Classes/BlockFactory.html
     - title: BlockGroupLayout
@@ -852,6 +857,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: CodeGenerator
@@ -902,6 +909,8 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
     - title: DefaultLayoutFactory
       path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
       path: /blockly/reference/ios/../Classes/Dragger.html
     - title: DropdownOptionsViewController
@@ -914,6 +923,10 @@ toc:
       path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
     - title: EdgeInsets
       path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: EventManager
+      path: /blockly/reference/ios/../Classes/EventManager.html
+    - title: EventManagerListener
+      path: /blockly/reference/ios/../Protocols/EventManagerListener.html
     - title: Field
       path: /blockly/reference/ios/../Classes/Field.html
     - title: – JSONRegistry
@@ -1024,8 +1037,14 @@ toc:
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
       path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
     - title: LayoutView
       path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MessageManager
+      path: /blockly/reference/ios/../Classes/MessageManager.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
     - title: MutatorHelper
       path: /blockly/reference/ios/../Classes/MutatorHelper.html
     - title: MutatorIfElse
@@ -1053,13 +1072,17 @@ toc:
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
-      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+      path: /blockly/reference/ios/../Structs/ProcedureParameter.html
     - title: NameManager
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
     - title: Toolbox
       path: /blockly/reference/ios/../Classes/Toolbox.html
     - title: – Category
@@ -1126,34 +1149,9 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView
       path: /blockly/reference/ios/../Protocols/ZIndexedView.html
-- title: Other Extensions
-  path: /blockly/reference/ios/../Other Extensions
-  section:
-    - title: Dictionary
-      path: /blockly/reference/ios/../Extensions/Dictionary.html
-    - title: String
-      path: /blockly/reference/ios/../Extensions/String.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
-- title: Other Functions
-  path: /blockly/reference/ios/../Other Functions
-  section:
-    - title: +(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
-    - title: -(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
-- title: Other Protocols
-  path: /blockly/reference/ios/../Other Protocols
-  section:
-    - title: BlocklyPanGestureRecognizerDelegate
-      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
-    - title: LayoutPopoverDelegate
-      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
-    - title: Mutator
-      path: /blockly/reference/ios/../Protocols/Mutator.html
-    - title: Recyclable
-      path: /blockly/reference/ios/../Protocols/Recyclable.html

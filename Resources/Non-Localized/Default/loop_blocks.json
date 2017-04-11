@@ -1,0 +1,135 @@
+[
+  {
+    "type": "controls_repeat_ext",
+    "message0": "%{BKY_CONTROLS_REPEAT_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "TIMES",
+        "check": "Number"
+      }
+    ],
+    "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
+    "args1": [
+      {
+        "type": "input_statement",
+        "name": "DO"
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_LOOPS_HUE}",
+    "inputsInline": true,
+    "tooltip": "%{BKY_CONTROLS_REPEAT_TOOLTIP}",
+    "helpUrl": "%{BKY_CONTROLS_REPEAT_HELPURL}"
+  },
+  {
+    "type": "controls_whileUntil",
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "MODE",
+        "options": [
+          ["%{BKY_CONTROLS_WHILEUNTIL_OPERATOR_WHILE}", "WHILE"],
+          ["%{BKY_CONTROLS_WHILEUNTIL_OPERATOR_UNTIL}", "UNTIL"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "BOOL",
+        "check": "Boolean"
+      }
+    ],
+    "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
+    "args1": [{
+      "type": "input_statement",
+      "name": "DO"
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_LOOPS_HUE}",
+    "tooltip": "While a value is false, then do some statements.",
+    "helpUrl": "%{BKY_CONTROLS_WHILEUNTIL_HELPURL}"
+  },
+  {
+    "type": "controls_for",
+    "message0": "%{BKY_CONTROLS_FOR_TITLE}",
+    "args0": [
+      {
+        "type": "field_variable",
+        "name": "VAR",
+        "variable": null
+      },
+      {
+        "type": "input_value",
+        "name": "FROM",
+        "check": "Number",
+        "align": "RIGHT"
+      },
+      {
+        "type": "input_value",
+        "name": "TO",
+        "check": "Number",
+        "align": "RIGHT"
+      },
+      {
+        "type": "input_value",
+        "name": "BY",
+        "check": "Number",
+        "align": "RIGHT"
+      }
+    ],
+    "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
+    "args1": [{
+      "type": "input_statement",
+      "name": "DO"
+    }],
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_LOOPS_HUE}",
+    "helpUrl": "%{BKY_CONTROLS_FOR_HELPURL}"
+  },
+  {
+    "type": "controls_forEach",
+    "message0": "%{BKY_CONTROLS_FOREACH_TITLE}",
+    "args0": [
+      {
+        "type": "field_variable",
+        "name": "VAR",
+        "variable": null
+      },
+      {
+        "type": "input_value",
+        "name": "LIST",
+        "check": "Array"
+      }
+    ],
+    "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
+    "args1": [{
+      "type": "input_statement",
+      "name": "DO"
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_LOOPS_HUE}",
+    "helpUrl": "%{BKY_CONTROLS_FOREACH_HELPURL}"
+  },
+  {
+    "type": "controls_flow_statements",
+    "message0": "%1",
+    "args0": [{
+      "type": "field_dropdown",
+      "name": "FLOW",
+      "options": [
+        ["%{BKY_CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK}", "BREAK"],
+        ["%{BKY_CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE}", "CONTINUE"]
+      ]
+    }],
+    "previousStatement": null,
+    "colour": "%{BKY_LOOPS_HUE}",
+    "helpUrl": "%{BKY_CONTROLS_FLOW_STATEMENTS_HELPURL}",
+    "TODO(#375)": "https://github.com/google/blockly-android/issues/375"
+  }
+]

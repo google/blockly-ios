@@ -1,0 +1,262 @@
+[
+  {
+    "type": "lists_create_empty",
+    "message0": "%{BKY_LISTS_CREATE_EMPTY_TITLE}",
+    "output": "Array",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_CREATE_EMPTY_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_CREATE_EMPTY_HELPURL}"
+  },
+  {
+    "type": "lists_repeat",
+    "message0": "%{BKY_LISTS_REPEAT_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "ITEM"
+      },
+      {
+        "type": "input_value",
+        "name": "NUM",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Array",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_REPEAT_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_REPEAT_HELPURL}"
+  },
+  {
+    "type": "lists_reverse",
+    "message0": "%{BKY_LISTS_REVERSE_MESSAGE0}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "LIST",
+        "check": "Array"
+      }
+    ],
+    "output": "Array",
+    "inputsInline": true,
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_REVERSE_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_REVERSE_HELPURL}"
+  },
+  {
+    "type": "lists_isEmpty",
+    "message0": "%{BKY_LISTS_ISEMPTY_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": ["String", "Array"]
+      }
+    ],
+    "inputsInline": true,
+    "output": "Boolean",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_ISEMPTY_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_ISEMPTY_HELPURL}"
+  },
+  {
+    "type": "lists_length",
+    "message0": "%{BKY_LISTS_LENGTH_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": ["String", "Array"]
+      }
+    ],
+    "output": "Number",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_LENGTH_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_LENGTH_HELPURL}"
+  },
+  {
+    "type": "lists_indexOf",
+    "message0": "%{BKY_LISTS_INLIST} %1 %2 %3",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": "Array"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "END",
+        "options": [
+          ["%{BKY_LISTS_INDEX_OF_FIRST}", "FIRST"],
+          ["%{BKY_LISTS_INDEX_OF_LAST}", "LAST"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "FIND"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Number",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "Returns the index of the first/last occurrence of the item in the list. Returns -1 if item is not found.",
+    "helpUrl": "%{BKY_LISTS_INDEX_OF_HELPURL}",
+    "TODO(#379)": "https://github.com/google/blockly-android/issues/379"
+  },
+  {
+    "type": "lists_getIndex",
+    "message0": "%{BKY_LISTS_GET_INDEX_INPUT_IN_LIST} %1 %2 %3 %4",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": "Array"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "MODE",
+        "options": [
+          ["%{BKY_LISTS_GET_INDEX_GET}", "GET"],
+          ["%{BKY_LISTS_GET_INDEX_GET_REMOVE}", "GET_REMOVE"]
+        ]
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE",
+        "options": [
+          ["%{BKY_LISTS_GET_INDEX_FROM_START}", "FROM_START"],
+          ["%{BKY_LISTS_GET_INDEX_FROM_END}", "FROM_END"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "NAME",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": null,
+    "colour": "%{BKY_LISTS_HUE}",
+    "helpUrl": "%{BKY_LISTS_GET_INDEX_HELPURL}",
+    "TODO(#380)": "https://github.com/google/blockly-android/issues/380",
+    "TODO(#381)": "https://github.com/google/blockly-android/issues/381",
+    "TODO(#383)": "https://github.com/google/blockly-android/issues/383"
+  },
+  {
+    "type": "lists_setIndex",
+    "message0": "%{BKY_LISTS_SET_INDEX_INPUT_IN_LIST} %1 %2 %3 %4 as %5",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "LIST",
+        "check": "Array"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "MODE",
+        "options": [
+          ["%{BKY_LISTS_SET_INDEX_SET}", "SET"],
+          ["%{BKY_LISTS_SET_INDEX_INSERT}","INSERT"]
+        ]
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE",
+        "options": [
+          ["%{BKY_LISTS_GET_INDEX_FROM_START}", "FROM_START"],
+          ["%{BKY_LISTS_GET_INDEX_FROM_END}","FROM_END"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "AT",
+        "check": "Number"
+      },
+      {
+        "type": "input_value",
+        "name": "TO"
+      }
+    ],
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_SET_INDEX_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_SET_INDEX_HELPURL}",
+    "TODO(#381)": "https://github.com/google/blockly-android/issues/381",
+    "TODO(#383)": "https://github.com/google/blockly-android/issues/383"
+  },
+  {
+    "type": "lists_getSublist",
+    "message0": "%{BKY_LISTS_GET_SUBLIST_INPUT_IN_LIST} %1 %2 %3 %4 %5",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "LIST",
+        "check": "Array"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE1",
+        "options": [
+          ["%{BKY_LISTS_GET_SUBLIST_START_FROM_START}", "FROM_START"],
+          ["%{BKY_LISTS_GET_SUBLIST_START_FROM_END}","FROM_END"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "AT1",
+        "check": "Number"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE2",
+        "options": [
+          ["%{BKY_LISTS_GET_SUBLIST_END_FROM_START}", "FROM_START"],
+          ["%{BKY_LISTS_GET_SUBLIST_END_FROM_END}", "FROM_END"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "AT2",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Array",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_GET_SUBLIST_TOOLTIP}"
+  },
+  {
+    "type": "lists_sort",
+    "message0": "%{BKY_LISTS_SORT_TITLE}",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "TYPE",
+        "options": [
+          ["%{BKY_LISTS_SORT_TYPE_NUMERIC}","NUMERIC"],
+          ["%{BKY_LISTS_SORT_TYPE_TEXT}", "TEXT"],
+          ["%{BKY_LISTS_SORT_TYPE_IGNORECASE}", "IGNORE_CASE"]
+        ]
+      },
+      {
+        "type": "field_dropdown",
+        "name": "DIRECTION",
+        "options": [
+          ["%{BKY_LISTS_SORT_ORDER_ASCENDING}", "1"],
+          ["%{BKY_LISTS_SORT_ORDER_DESCENDING}", "-1"]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "LIST",
+        "check": "Array"
+      }
+    ],
+    "output": "Array",
+    "colour": "%{BKY_LISTS_HUE}",
+    "tooltip": "%{BKY_LISTS_SORT_TOOLTIP}",
+    "helpUrl": "%{BKY_LISTS_SORT_HELPURL}"
+  }
+]

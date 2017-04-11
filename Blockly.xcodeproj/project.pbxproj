@@ -23,6 +23,11 @@
 		F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */; };
 		F98FF7E51BB208EB00A4F8E5 /* BlockFactoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */; };
 		F98FF7E71BB4911500A4F8E5 /* BlockBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */; };
+		FA0D8C101E8C46B900C87C56 /* MessageManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0D8C0F1E8C46B900C87C56 /* MessageManagerTest.swift */; };
+		FA0D8C121E8C4ADE00C87C56 /* i18n_messages1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C111E8C4ADE00C87C56 /* i18n_messages1.json */; };
+		FA0D8C141E8C4B7B00C87C56 /* i18n_messages2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */; };
+		FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */; };
+		FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */; };
 		FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */; };
 		FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */; };
 		FA1631571CE3E4C9008DDBC8 /* WrapperBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */; };
@@ -57,7 +62,6 @@
 		FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */; };
 		FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */; };
 		FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */; };
-		FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA41C4221C582F3500D46967 /* Blockly.xcassets */; };
 		FA42D7E11C5AD3C9000C8EB4 /* FieldColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */; };
 		FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */; };
 		FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */; };
@@ -80,6 +84,12 @@
 		FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D21BFE9016000C621F /* BlockTest.swift */; };
 		FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4EE3D41BFE9342000C621F /* all_test_blocks.json */; };
 		FA4EE3DA1BFEAECC000C621F /* ConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */; };
+		FA5164F91E959914005CAA23 /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5164C41E959913005CAA23 /* bky_messages.json */; };
+		FA5164FE1E95992F005CAA23 /* Blockly.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FA1E95992F005CAA23 /* Blockly.xcassets */; };
+		FA5164FF1E95992F005CAA23 /* CodeGenerator in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FB1E95992F005CAA23 /* CodeGenerator */; };
+		FA5165001E95992F005CAA23 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA5164FC1E95992F005CAA23 /* Default */; };
+		FA5165081E959A09005CAA23 /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165061E959A09005CAA23 /* bky_constants.json */; };
+		FA5165091E959A09005CAA23 /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165071E959A09005CAA23 /* bky_synonyms.json */; };
 		FA548C111B630BAD008BC59C /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA548C051B630BAC008BC59C /* Blockly.framework */; };
 		FA548C8A1B66E861008BC59C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C861B66E861008BC59C /* Block.swift */; };
 		FA548C8B1B66E861008BC59C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA548C871B66E861008BC59C /* Connection.swift */; };
@@ -103,7 +113,6 @@
 		FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC1801CE29B6C005C550D /* RangeHelper.swift */; };
 		FA5CC18B1CE2A2C6005C550D /* NameManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */; };
 		FA5CC18D1CE2AE81005C550D /* WeakSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CC18C1CE2AE81005C550D /* WeakSet.swift */; };
-		FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */ = {isa = PBXBuildFile; fileRef = FA5F2BC51C76A2E6008384BE /* CodeGenerator */; };
 		FA6085F71C6D469F003B6076 /* Workspace+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085F61C6D469F003B6076 /* Workspace+XML.swift */; };
 		FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */; };
 		FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6232511B6B12CF00F1EF42 /* Field.swift */; };
@@ -112,7 +121,8 @@
 		FA6ADD891CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */; };
 		FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */; };
 		FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */; };
-		FA77D3981D9B54290014CBC4 /* Default in Resources */ = {isa = PBXBuildFile; fileRef = FA77D3971D9B54290014CBC4 /* Default */; };
+		FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */; };
+		FA73EFD01E64ECDF001E0A24 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */; };
 		FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */; };
 		FA7985951E39980E004720B5 /* ProcedureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */; };
 		FA8425101D3451510092CDDC /* ViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA84250F1D3451510092CDDC /* ViewBuilder.swift */; };
@@ -150,6 +160,7 @@
 		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
+		FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABDB1931E4D40F600F92DAC /* BlockExtension.swift */; };
 		FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */; };
 		FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */; };
 		FAC034FA1D515D270017C1C8 /* FieldImageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */; };
@@ -162,9 +173,16 @@
 		FAC2AC031E440A38003DB287 /* MutatorProcedureIfReturn.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */; };
 		FAC2AC051E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */; };
 		FAC2AC0E1E496827003DB287 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */; };
+		FAC2AC131E4AC500003DB287 /* BlocklyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */; };
+		FAC2AC171E4AC563003DB287 /* BlocklyEvent+Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC161E4AC563003DB287 /* BlocklyEvent+Change.swift */; };
+		FAC2AC191E4AC580003DB287 /* BlocklyEvent+Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC181E4AC580003DB287 /* BlocklyEvent+Create.swift */; };
+		FAC2AC1B1E4AC592003DB287 /* BlocklyEvent+Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1A1E4AC592003DB287 /* BlocklyEvent+Delete.swift */; };
+		FAC2AC1D1E4AC5B4003DB287 /* BlocklyEvent+Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1C1E4AC5B4003DB287 /* BlocklyEvent+Move.swift */; };
+		FAC2AC1F1E4AC5D7003DB287 /* BlocklyEvent+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */; };
 		FAC549601DEFBC4100484B02 /* Mutator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC5495F1DEFBC4100484B02 /* Mutator.swift */; };
 		FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC549611DEFC12200484B02 /* MutatorLayout.swift */; };
 		FAC6A5711DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */; };
+		FAC92EFE1E835307000AE3E0 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC92EFD1E835307000AE3E0 /* MessageManager.swift */; };
 		FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */; };
 		FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */; };
 		FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */; };
@@ -235,6 +253,11 @@
 		F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_factory_json_test.json; sourceTree = "<group>"; };
 		F98FF7E41BB208EB00A4F8E5 /* BlockFactoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockFactoryTest.swift; path = JSON/BlockFactoryTest.swift; sourceTree = "<group>"; };
 		F98FF7E61BB4911500A4F8E5 /* BlockBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBuilderTest.swift; sourceTree = "<group>"; };
+		FA0D8C0F1E8C46B900C87C56 /* MessageManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManagerTest.swift; sourceTree = "<group>"; };
+		FA0D8C111E8C4ADE00C87C56 /* i18n_messages1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_messages1.json; sourceTree = "<group>"; };
+		FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_messages2.json; sourceTree = "<group>"; };
+		FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms1.json; sourceTree = "<group>"; };
+		FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = i18n_synonyms2.json; sourceTree = "<group>"; };
 		FA1039271D936C24005FDF1D /* WorkspaceUnits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUnits.swift; sourceTree = "<group>"; };
 		FA10E3F41C696A9F0095F088 /* FieldAngleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldAngleView.swift; sourceTree = "<group>"; };
 		FA1631561CE3E4C9008DDBC8 /* WrapperBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperBox.swift; sourceTree = "<group>"; };
@@ -269,7 +292,6 @@
 		FA3FD1451CF3CFBE005B6D0F /* WorkspaceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceTest.swift; sourceTree = "<group>"; };
 		FA3FD1541CF7C886005B6D0F /* XMLConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLConstants.swift; sourceTree = "<group>"; };
 		FA41C41A1C582AB800D46967 /* FieldDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDropdownView.swift; sourceTree = "<group>"; };
-		FA41C4221C582F3500D46967 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Blockly.xcassets; sourceTree = "<group>"; };
 		FA42D7E01C5AD3C9000C8EB4 /* FieldColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorView.swift; sourceTree = "<group>"; };
 		FA42D7EA1C605A5F000C8EB4 /* FieldDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateView.swift; sourceTree = "<group>"; };
 		FA42D7F41C61B448000C8EB4 /* FieldCheckboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCheckboxView.swift; sourceTree = "<group>"; };
@@ -292,6 +314,63 @@
 		FA4EE3D21BFE9016000C621F /* BlockTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTest.swift; sourceTree = "<group>"; };
 		FA4EE3D41BFE9342000C621F /* all_test_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all_test_blocks.json; sourceTree = "<group>"; };
 		FA4EE3D91BFEAECC000C621F /* ConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionTest.swift; sourceTree = "<group>"; };
+		FA5164C51E959913005CAA23 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ar; path = ar.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C61E959913005CAA23 /* az */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = az; path = az.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C71E959913005CAA23 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = be; path = be.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C81E959913005CAA23 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bg; path = bg.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164C91E959913005CAA23 /* bn */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = bn; path = bn.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CA1E959913005CAA23 /* br */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = br; path = br.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CB1E959913005CAA23 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ca; path = ca.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CC1E959913005CAA23 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = cs; path = cs.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CD1E959913005CAA23 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = da; path = da.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CE1E959913005CAA23 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = de; path = de.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164CF1E959913005CAA23 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = el; path = el.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D01E959913005CAA23 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "en-GB"; path = "en-GB.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164D11E959913005CAA23 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D21E959913005CAA23 /* eo */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = eo; path = eo.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D31E959913005CAA23 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = es; path = es.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D41E959913005CAA23 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = et; path = et.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D51E959913005CAA23 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fa; path = fa.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D61E959913005CAA23 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fi; path = fi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D71E959913005CAA23 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = fr; path = fr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D81E959913005CAA23 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = he; path = he.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164D91E959913005CAA23 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hi; path = hi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DA1E959913005CAA23 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hu; path = hu.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DB1E959913005CAA23 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = id; path = id.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DC1E959913005CAA23 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = is; path = is.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DD1E959913005CAA23 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = it; path = it.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DE1E959913005CAA23 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ja; path = ja.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164DF1E959913005CAA23 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ko; path = ko.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E01E959913005CAA23 /* lb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lb; path = lb.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E11E959913005CAA23 /* lrc */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lrc; path = lrc.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E21E959913005CAA23 /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lt; path = lt.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E31E959913005CAA23 /* lv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = lv; path = lv.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E41E959913005CAA23 /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = mk; path = mk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E51E959913005CAA23 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ms; path = ms.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E61E959913005CAA23 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nb; path = nb.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E71E959913005CAA23 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = nl; path = nl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E81E959913005CAA23 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pl; path = pl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164E91E959913005CAA23 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "pt-BR"; path = "pt-BR.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164EA1E959913005CAA23 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = pt; path = pt.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EB1E959913005CAA23 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ro; path = ro.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EC1E959913005CAA23 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ru; path = ru.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164ED1E959913005CAA23 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sk; path = sk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EE1E959913005CAA23 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sl; path = sl.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164EF1E959913005CAA23 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sq; path = sq.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F01E959913005CAA23 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sr; path = sr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F11E959913005CAA23 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sv; path = sv.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F21E959913005CAA23 /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ta; path = ta.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F31E959913005CAA23 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = th; path = th.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F41E959913005CAA23 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = tr; path = tr.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F51E959913005CAA23 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F61E959913005CAA23 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = vi; path = vi.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FA5164F71E959913005CAA23 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hans"; path = "zh-Hans.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164F81E959914005CAA23 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hant"; path = "zh-Hant.lproj/bky_messages.json"; sourceTree = "<group>"; };
+		FA5164FA1E95992F005CAA23 /* Blockly.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Blockly.xcassets; path = "Non-Localized/Blockly.xcassets"; sourceTree = "<group>"; };
+		FA5164FB1E95992F005CAA23 /* CodeGenerator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeGenerator; path = "Non-Localized/CodeGenerator"; sourceTree = "<group>"; };
+		FA5164FC1E95992F005CAA23 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Default; path = "Non-Localized/Default"; sourceTree = "<group>"; };
+		FA5165061E959A09005CAA23 /* bky_constants.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_constants.json; sourceTree = "<group>"; };
+		FA5165071E959A09005CAA23 /* bky_synonyms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bky_synonyms.json; sourceTree = "<group>"; };
 		FA548C051B630BAC008BC59C /* Blockly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Blockly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C101B630BAD008BC59C /* BlocklyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocklyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA548C5B1B63136F008BC59C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -318,7 +397,6 @@
 		FA5CC1801CE29B6C005C550D /* RangeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeHelper.swift; sourceTree = "<group>"; };
 		FA5CC18A1CE2A2C6005C550D /* NameManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameManagerTest.swift; sourceTree = "<group>"; };
 		FA5CC18C1CE2AE81005C550D /* WeakSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakSet.swift; sourceTree = "<group>"; };
-		FA5F2BC51C76A2E6008384BE /* CodeGenerator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CodeGenerator; sourceTree = "<group>"; };
 		FA6085F61C6D469F003B6076 /* Workspace+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Workspace+XML.swift"; sourceTree = "<group>"; };
 		FA6085FF1C6D7049003B6076 /* WorkspaceXMLTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceXMLTest.swift; sourceTree = "<group>"; };
 		FA6232511B6B12CF00F1EF42 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
@@ -327,7 +405,8 @@
 		FA6ADD881CD1C611001F1AD9 /* UIEdgeInsets+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Helper.swift"; sourceTree = "<group>"; };
 		FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceTest.swift; sourceTree = "<group>"; };
 		FA715BD81BF82F7600D83410 /* LayoutBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
-		FA77D3971D9B54290014CBC4 /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Default; sourceTree = "<group>"; };
+		FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEventFactory.swift; sourceTree = "<group>"; };
+		FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FA77D3F31D9B8E850014CBC4 /* BlockJSONFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockJSONFile.swift; sourceTree = "<group>"; };
 		FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcedureCoordinator.swift; sourceTree = "<group>"; };
 		FA84250F1D3451510092CDDC /* ViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBuilder.swift; sourceTree = "<group>"; };
@@ -365,6 +444,7 @@
 		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FABDB1931E4D40F600F92DAC /* BlockExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockExtension.swift; sourceTree = "<group>"; };
 		FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorLayout.swift; sourceTree = "<group>"; };
 		FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateLayout.swift; sourceTree = "<group>"; };
 		FAC034F91D515D270017C1C8 /* FieldImageLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldImageLayout.swift; sourceTree = "<group>"; };
@@ -377,9 +457,16 @@
 		FAC2AC021E440A38003DB287 /* MutatorProcedureIfReturn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturn.swift; sourceTree = "<group>"; };
 		FAC2AC041E440ADD003DB287 /* MutatorProcedureIfReturnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureIfReturnLayout.swift; sourceTree = "<group>"; };
 		FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocklyEvent.swift; sourceTree = "<group>"; };
+		FAC2AC161E4AC563003DB287 /* BlocklyEvent+Change.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+Change.swift"; sourceTree = "<group>"; };
+		FAC2AC181E4AC580003DB287 /* BlocklyEvent+Create.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+Create.swift"; sourceTree = "<group>"; };
+		FAC2AC1A1E4AC592003DB287 /* BlocklyEvent+Delete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+Delete.swift"; sourceTree = "<group>"; };
+		FAC2AC1C1E4AC5B4003DB287 /* BlocklyEvent+Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+Move.swift"; sourceTree = "<group>"; };
+		FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlocklyEvent+UI.swift"; sourceTree = "<group>"; };
 		FAC5495F1DEFBC4100484B02 /* Mutator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutator.swift; sourceTree = "<group>"; };
 		FAC549611DEFC12200484B02 /* MutatorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorLayout.swift; sourceTree = "<group>"; };
 		FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorServiceRequestBuilder.swift; sourceTree = "<group>"; };
+		FAC92EFD1E835307000AE3E0 /* MessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		FACBAB581D8371220063A975 /* WorkspaceLayoutCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinator.swift; sourceTree = "<group>"; };
 		FAD3ABF61BCDD7CD00C0B254 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
 		FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -504,6 +591,10 @@
 				F98FF7E21BB2087700A4F8E5 /* block_factory_json_test.json */,
 				FADF97351D9C83C00067C425 /* code_generator_blocks.json */,
 				FADF97371D9C84270067C425 /* code_generator_generators.js */,
+				FA0D8C111E8C4ADE00C87C56 /* i18n_messages1.json */,
+				FA0D8C131E8C4B7B00C87C56 /* i18n_messages2.json */,
+				FA0D8C151E8C4BB800C87C56 /* i18n_synonyms1.json */,
+				FA0D8C1B1E8C94DD00C87C56 /* i18n_synonyms2.json */,
 				FA57C3A61CCADD8300952BFB /* toolbox_test.xml */,
 				FA4D54D61C6BFAFE00F95084 /* xml_parsing_test.json */,
 			);
@@ -543,7 +634,7 @@
 			path = Control;
 			sourceTree = "<group>";
 		};
-		FA4BB4061B744A8E000980E9 /* Source */ = {
+		FA4BB4061B744A8E000980E9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				FA3786A51C00093B009D18DF /* Control */,
@@ -554,7 +645,7 @@
 				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
 				FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		FA4BB4071B744A8E000980E9 /* Model */ = {
@@ -597,9 +688,10 @@
 		FA4BB4AE1B75483D000980E9 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
 				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */,
 				FA4BB4B11B754D87000980E9 /* ColorHelperTest.swift */,
+				FA0D8C0F1E8C46B900C87C56 /* MessageManagerTest.swift */,
+				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -672,10 +764,39 @@
 			path = XML;
 			sourceTree = "<group>";
 		};
+		FA5164C11E9598FD005CAA23 /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA5164C31E959913005CAA23 /* Messages */,
+			);
+			name = Localized;
+			sourceTree = "<group>";
+		};
+		FA5164C21E959901005CAA23 /* Non-Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA5164FA1E95992F005CAA23 /* Blockly.xcassets */,
+				FA5164FB1E95992F005CAA23 /* CodeGenerator */,
+				FA5164FC1E95992F005CAA23 /* Default */,
+			);
+			name = "Non-Localized";
+			sourceTree = "<group>";
+		};
+		FA5164C31E959913005CAA23 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				FA5165061E959A09005CAA23 /* bky_constants.json */,
+				FA5164C41E959913005CAA23 /* bky_messages.json */,
+				FA5165071E959A09005CAA23 /* bky_synonyms.json */,
+			);
+			name = Messages;
+			path = Localized/Messages;
+			sourceTree = "<group>";
+		};
 		FA548BFB1B630BAC008BC59C = {
 			isa = PBXGroup;
 			children = (
-				FA548C5E1B63144A008BC59C /* Source */,
+				FA548C5E1B63144A008BC59C /* Sources */,
 				FA9B45B81C32D966001EAE68 /* Resources */,
 				FA548C591B63136F008BC59C /* Tests */,
 				FA9C9A911C6432A4008524BF /* External */,
@@ -696,14 +817,14 @@
 		FA548C591B63136F008BC59C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				FA4BB4061B744A8E000980E9 /* Source */,
+				FA4BB4061B744A8E000980E9 /* Sources */,
 				FA2DFC051B71740E0072A278 /* Resources */,
 				FA548C5B1B63136F008BC59C /* Info.plist */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		FA548C5E1B63144A008BC59C /* Source */ = {
+		FA548C5E1B63144A008BC59C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				3064BAB21DAF3DC1006425A2 /* ObjC */,
@@ -714,16 +835,18 @@
 				FA4BB4B31B7575FE000980E9 /* UI */,
 				FA548C601B63144A008BC59C /* Info.plist */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		FA548C851B66E861008BC59C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FAC2AC111E4AC500003DB287 /* Event */,
 				FA2DFC0C1B7177760072A278 /* JSON */,
 				FA4D54A71C6AAE5000F95084 /* XML */,
 				FA548C861B66E861008BC59C /* Block.swift */,
 				FA548D261B6708F2008BC59C /* BlockBuilder.swift */,
+				FABDB1931E4D40F600F92DAC /* BlockExtension.swift */,
 				F98FF7E01BB2036A00A4F8E5 /* BlockFactory.swift */,
 				FA548C871B66E861008BC59C /* Connection.swift */,
 				FA6232511B6B12CF00F1EF42 /* Field.swift */,
@@ -756,9 +879,8 @@
 		FA9B45B81C32D966001EAE68 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FA41C4221C582F3500D46967 /* Blockly.xcassets */,
-				FA5F2BC51C76A2E6008384BE /* CodeGenerator */,
-				FA77D3971D9B54290014CBC4 /* Default */,
+				FA5164C11E9598FD005CAA23 /* Localized */,
+				FA5164C21E959901005CAA23 /* Non-Localized */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -789,6 +911,7 @@
 				FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */,
 				FAA86FFA1C64272C000C7C61 /* JSONHelper.swift */,
 				FAA86FFB1C64272C000C7C61 /* Logging.swift */,
+				FAC92EFD1E835307000AE3E0 /* MessageManager.swift */,
 				FAA86FFC1C64272C000C7C61 /* ObjectPool.swift */,
 				FA5CC1801CE29B6C005C550D /* RangeHelper.swift */,
 				FAFD377F1C9A55F800C77049 /* String+Encoding.swift */,
@@ -816,6 +939,20 @@
 				FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		FAC2AC111E4AC500003DB287 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				FAC2AC121E4AC500003DB287 /* BlocklyEvent.swift */,
+				FAC2AC161E4AC563003DB287 /* BlocklyEvent+Change.swift */,
+				FAC2AC181E4AC580003DB287 /* BlocklyEvent+Create.swift */,
+				FAC2AC1A1E4AC592003DB287 /* BlocklyEvent+Delete.swift */,
+				FAC2AC1C1E4AC5B4003DB287 /* BlocklyEvent+Move.swift */,
+				FAC2AC1E1E4AC5D7003DB287 /* BlocklyEvent+UI.swift */,
+				FA73EFCD1E60F900001E0A24 /* BlocklyEventFactory.swift */,
+			);
+			path = Event;
 			sourceTree = "<group>";
 		};
 		FAD6523A1CB7210C00F73F11 /* Default */ = {
@@ -858,6 +995,7 @@
 				300CABD01D5CF816000E43B2 /* ConnectionValidator.swift */,
 				300CABE71D5E8606000E43B2 /* DefaultConnectionValidator.swift */,
 				FAE557781BE02B270019D0D4 /* Dragger.swift */,
+				FA73EFCF1E64ECDF001E0A24 /* EventManager.swift */,
 				FA56E35A1E28454B00A53631 /* MutatorHelper.swift */,
 				FAFAEE701CDC0D2F00698179 /* NameManager.swift */,
 				FA7985941E39980E004720B5 /* ProcedureCoordinator.swift */,
@@ -954,6 +1092,57 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				ar,
+				az,
+				bg,
+				bn,
+				br,
+				ca,
+				cs,
+				da,
+				de,
+				el,
+				eo,
+				"en-GB",
+				es,
+				et,
+				fa,
+				fi,
+				he,
+				hi,
+				hu,
+				id,
+				is,
+				it,
+				ja,
+				ko,
+				lb,
+				lt,
+				lv,
+				mk,
+				ms,
+				nb,
+				nl,
+				pl,
+				"pt-BR",
+				pt,
+				ro,
+				ru,
+				sk,
+				sl,
+				sq,
+				sr,
+				sv,
+				ta,
+				th,
+				tr,
+				uk,
+				vi,
+				"zh-Hans",
+				"zh-Hant",
+				be,
+				lrc,
 			);
 			mainGroup = FA548BFB1B630BAC008BC59C;
 			productRefGroup = FA548C061B630BAC008BC59C /* Products */;
@@ -971,9 +1160,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA77D3981D9B54290014CBC4 /* Default in Resources */,
-				FA41C4231C582F3500D46967 /* Blockly.xcassets in Resources */,
-				FA5F2BC61C76A2E6008384BE /* CodeGenerator in Resources */,
+				FA5165091E959A09005CAA23 /* bky_synonyms.json in Resources */,
+				FA5164F91E959914005CAA23 /* bky_messages.json in Resources */,
+				FA5164FE1E95992F005CAA23 /* Blockly.xcassets in Resources */,
+				FA5165001E95992F005CAA23 /* Default in Resources */,
+				FA5164FF1E95992F005CAA23 /* CodeGenerator in Resources */,
+				FA5165081E959A09005CAA23 /* bky_constants.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,10 +1174,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
+				FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */,
 				FADF97381D9C84270067C425 /* code_generator_generators.js in Resources */,
+				FA0D8C121E8C4ADE00C87C56 /* i18n_messages1.json in Resources */,
 				FA4EE3D51BFE9342000C621F /* all_test_blocks.json in Resources */,
 				FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */,
 				FA57C3A71CCADD8300952BFB /* toolbox_test.xml in Resources */,
+				FA0D8C141E8C4B7B00C87C56 /* i18n_messages2.json in Resources */,
+				FA0D8C1C1E8C94DD00C87C56 /* i18n_synonyms2.json in Resources */,
 				FA2DFC071B7174350072A278 /* block_json_test.json in Resources */,
 				FADF97361D9C83C00067C425 /* code_generator_blocks.json in Resources */,
 				FAFAA7361BE9A92F008731CD /* block_factory_json_test.json in Resources */,
@@ -1016,12 +1212,14 @@
 				FAA8700E1C64272C000C7C61 /* UIView+Helper.swift in Sources */,
 				FA2DFCBB1B72DD0C0072A278 /* FieldDate.swift in Sources */,
 				FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */,
+				FAC2AC171E4AC563003DB287 /* BlocklyEvent+Change.swift in Sources */,
 				FA41C41B1C582AB800D46967 /* FieldDropdownView.swift in Sources */,
 				FAC035071D516EE10017C1C8 /* FieldDropdownLayout.swift in Sources */,
 				FA56E35B1E28454B00A53631 /* MutatorHelper.swift in Sources */,
 				FACBAB591D8371220063A975 /* WorkspaceLayoutCoordinator.swift in Sources */,
 				FAF5005D1D50669E009E4B24 /* FieldCheckboxLayout.swift in Sources */,
 				FA6232521B6B12CF00F1EF42 /* Field.swift in Sources */,
+				FA73EFCE1E60F900001E0A24 /* BlocklyEventFactory.swift in Sources */,
 				FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */,
 				FAA870031C64272C000C7C61 /* BlocklyError.swift in Sources */,
 				FA9D2FBD1C111A1300D0E528 /* WorkspaceFlowLayout.swift in Sources */,
@@ -1066,6 +1264,7 @@
 				FA42D7EB1C605A5F000C8EB4 /* FieldDateView.swift in Sources */,
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
 				30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */,
+				FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */,
 				FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */,
@@ -1082,8 +1281,11 @@
 				FA56E35F1E298E9C00A53631 /* NumberIncrementerView.swift in Sources */,
 				FA4BB56F1B7C03EA000980E9 /* BlockView.swift in Sources */,
 				FAD3ABF71BCDD7CD00C0B254 /* LayoutFactory.swift in Sources */,
+				FAC2AC1B1E4AC592003DB287 /* BlocklyEvent+Delete.swift in Sources */,
+				FAC2AC131E4AC500003DB287 /* BlocklyEvent.swift in Sources */,
 				FAFAEE711CDC0D2F00698179 /* NameManager.swift in Sources */,
 				FA16C2911D49A3BA00BAAFA2 /* FieldAngleLayout.swift in Sources */,
+				FA73EFD01E64ECDF001E0A24 /* EventManager.swift in Sources */,
 				3064BAD51DAFFC58006425A2 /* BKYLayoutConfigStructs.m in Sources */,
 				FA548D271B6708F2008BC59C /* BlockBuilder.swift in Sources */,
 				FA56E3651E3178E400A53631 /* MutatorProcedureDefinitionLayout.swift in Sources */,
@@ -1092,6 +1294,7 @@
 				FAC035111D5170B20017C1C8 /* FieldVariableLayout.swift in Sources */,
 				FAA870101C64273E000C7C61 /* LayoutHelper.swift in Sources */,
 				FA5CC1811CE29B6C005C550D /* RangeHelper.swift in Sources */,
+				FAC92EFE1E835307000AE3E0 /* MessageManager.swift in Sources */,
 				FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */,
 				FA548C8A1B66E861008BC59C /* Block.swift in Sources */,
 				FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */,
@@ -1107,6 +1310,7 @@
 				FA16C2861D407E6600BAAFA2 /* ToolboxCategoryViewController.swift in Sources */,
 				FAE557701BE0219C0019D0D4 /* ConnectionManager.swift in Sources */,
 				300CABE81D5E8606000E43B2 /* DefaultConnectionValidator.swift in Sources */,
+				FAC2AC1F1E4AC5D7003DB287 /* BlocklyEvent+UI.swift in Sources */,
 				FAE557761BE028840019D0D4 /* ViewManager.swift in Sources */,
 				FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */,
 				FA715BD91BF82F7600D83410 /* LayoutBuilder.swift in Sources */,
@@ -1119,6 +1323,7 @@
 				FA548C8B1B66E861008BC59C /* Connection.swift in Sources */,
 				FAB31CA51C51830F0071EBF8 /* WorkspaceFlow.swift in Sources */,
 				FAA870121C64276A000C7C61 /* WorkspaceBezierPath.swift in Sources */,
+				FAC2AC191E4AC580003DB287 /* BlocklyEvent+Create.swift in Sources */,
 				FAD652421CB7210C00F73F11 /* DefaultInputLayout.swift in Sources */,
 				FAD6522E1CB5DDFB00F73F11 /* ViewFactory.swift in Sources */,
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
@@ -1142,6 +1347,7 @@
 				FAC549621DEFC12200484B02 /* MutatorLayout.swift in Sources */,
 				FA67AEB91C4F20FB00274A73 /* FieldInputView.swift in Sources */,
 				FAFAEE241CD81F4D00698179 /* FieldNumber.swift in Sources */,
+				FAC2AC1D1E4AC5B4003DB287 /* BlocklyEvent+Move.swift in Sources */,
 				FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */,
 				FA57C3A91CCADDC600952BFB /* Toolbox+XML.swift in Sources */,
 				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,
@@ -1154,6 +1360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4D54B11C6AAED400F95084 /* BlockXMLTest.swift in Sources */,
+				FA0D8C101E8C46B900C87C56 /* MessageManagerTest.swift in Sources */,
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
@@ -1197,11 +1404,74 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		FA5164C41E959913005CAA23 /* bky_messages.json */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA5164C51E959913005CAA23 /* ar */,
+				FA5164C61E959913005CAA23 /* az */,
+				FA5164C71E959913005CAA23 /* be */,
+				FA5164C81E959913005CAA23 /* bg */,
+				FA5164C91E959913005CAA23 /* bn */,
+				FA5164CA1E959913005CAA23 /* br */,
+				FA5164CB1E959913005CAA23 /* ca */,
+				FA5164CC1E959913005CAA23 /* cs */,
+				FA5164CD1E959913005CAA23 /* da */,
+				FA5164CE1E959913005CAA23 /* de */,
+				FA5164CF1E959913005CAA23 /* el */,
+				FA5164D01E959913005CAA23 /* en-GB */,
+				FA5164D11E959913005CAA23 /* en */,
+				FA5164D21E959913005CAA23 /* eo */,
+				FA5164D31E959913005CAA23 /* es */,
+				FA5164D41E959913005CAA23 /* et */,
+				FA5164D51E959913005CAA23 /* fa */,
+				FA5164D61E959913005CAA23 /* fi */,
+				FA5164D71E959913005CAA23 /* fr */,
+				FA5164D81E959913005CAA23 /* he */,
+				FA5164D91E959913005CAA23 /* hi */,
+				FA5164DA1E959913005CAA23 /* hu */,
+				FA5164DB1E959913005CAA23 /* id */,
+				FA5164DC1E959913005CAA23 /* is */,
+				FA5164DD1E959913005CAA23 /* it */,
+				FA5164DE1E959913005CAA23 /* ja */,
+				FA5164DF1E959913005CAA23 /* ko */,
+				FA5164E01E959913005CAA23 /* lb */,
+				FA5164E11E959913005CAA23 /* lrc */,
+				FA5164E21E959913005CAA23 /* lt */,
+				FA5164E31E959913005CAA23 /* lv */,
+				FA5164E41E959913005CAA23 /* mk */,
+				FA5164E51E959913005CAA23 /* ms */,
+				FA5164E61E959913005CAA23 /* nb */,
+				FA5164E71E959913005CAA23 /* nl */,
+				FA5164E81E959913005CAA23 /* pl */,
+				FA5164E91E959913005CAA23 /* pt-BR */,
+				FA5164EA1E959913005CAA23 /* pt */,
+				FA5164EB1E959913005CAA23 /* ro */,
+				FA5164EC1E959913005CAA23 /* ru */,
+				FA5164ED1E959913005CAA23 /* sk */,
+				FA5164EE1E959913005CAA23 /* sl */,
+				FA5164EF1E959913005CAA23 /* sq */,
+				FA5164F01E959913005CAA23 /* sr */,
+				FA5164F11E959913005CAA23 /* sv */,
+				FA5164F21E959913005CAA23 /* ta */,
+				FA5164F31E959913005CAA23 /* th */,
+				FA5164F41E959913005CAA23 /* tr */,
+				FA5164F51E959913005CAA23 /* uk */,
+				FA5164F61E959913005CAA23 /* vi */,
+				FA5164F71E959913005CAA23 /* zh-Hans */,
+				FA5164F81E959914005CAA23 /* zh-Hant */,
+			);
+			name = bky_messages.json;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		FA548C191B630BAD008BC59C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1253,6 +1523,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1295,7 +1566,6 @@
 		FA548C1C1B630BAD008BC59C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1306,7 +1576,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1323,7 +1593,6 @@
 		FA548C1D1B630BAD008BC59C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1334,7 +1603,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

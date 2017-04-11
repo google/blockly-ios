@@ -1,0 +1,7 @@
+{
+  "@metadata": {
+    "Ignored data": "This should be ignored"
+  },
+  "VALUE1": "This is value #1",
+  "some_value": "This is some value"
+}

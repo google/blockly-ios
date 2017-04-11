@@ -19,7 +19,7 @@ Supports devices running **iOS 8.0 or above**.
 
 Blockly for iOS includes:
 
-- Almost all features available in Blockly for [Web][2] and [Android][3].
+- All major features available in Blockly for [Web][2] and [Android][3]
 - Multi-touch support (currently only on iOS)
 - Block animations (currently only on iOS)
 
@@ -39,9 +39,21 @@ For complete API documentation, visit our [API Reference Page][5].
 Google is proud to offer Blockly for iOS for free and open source
 under the [Apache License, version 2.0][6].
 
+# Community
+
+Blockly has an active [developer forum][7]. Please drop by and say hello. Show us
+your prototypes early; collectively we have a lot of experience and can offer
+hints which will save you time.
+
+# Registration
+
+Help us focus our development efforts by telling us [what you are doing with
+Blockly][8]. The questionnaire only takes a few minutes and will help us better
+support the Blockly community.
+
 # Contributing
 
-Want to contribute? Great! First, read [our guidelines for contributors][7].
+Want to contribute? Great! First, read [our guidelines for contributors][9].
 
 [1]: https://developer.google.com/blockly/ "Blockly documentation"
 [2]: https://github.com/google/blockly "Blockly for Web repo on GitHub"
@@ -49,4 +61,6 @@ Want to contribute? Great! First, read [our guidelines for contributors][7].
 [4]: https://developer.google.com/blockly/guides/get-started/ios "Blockly for iOS developer tutorial"
 [5]: https://developer.google.com/blockly/reference/ios "Blockly for iOS API Reference Documentation"
 [6]: https://github.com/google/blockly-ios/blob/master/LICENSE "Apache open source license, version 2.0"
-[7]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
+[7]: https://groups.google.com/forum/#!forum/blockly "Blockly developer forum"
+[8]: https://goo.gl/forms/kZTsO9wGLmpoPXC02 "Blockly developer registration form"
+[9]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
