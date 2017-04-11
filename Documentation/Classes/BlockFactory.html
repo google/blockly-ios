@@ -20,13 +20,82 @@
               </div>
             <p>Factory for instantiating new <code><a href="../Classes/Block.html">Block</a></code> instances by name.</p>
 
-<p>Block definitions can be loaded into the factory from:
-- Default files defined by the Blockly library
-- Custom JSON files</p>
+<p>Block builders can be loaded into the factory by:</p>
+
+<ul>
+<li>Loading default files containing JSON block definitions. The contents of these files are
+predefined by the Blockly library.</li>
+<li>Loading custom files containing JSON block definitions.</li>
+<li>Manually creating a <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code> for a specific block name and assigning it to the factory.</li>
+</ul>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h2 class="section-name">Properties</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly12BlockFactory15blockExtensionsGVs10DictionarySSPS_14BlockExtension__"></a>
+                    <a name="//apple_ref/swift/Property/blockExtensions" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly12BlockFactory15blockExtensionsGVs10DictionarySSPS_14BlockExtension__">blockExtensions</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dictionary of <code><a href="../Protocols/BlockExtension.html">BlockExtension</a></code> objects indexed by their extension name</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">blockExtensions</span> <span class="o">=</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/BlockExtension.html">BlockExtension</a></span><span class="p">]()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly12BlockFactory8mutatorsGVs10DictionarySSPS_7Mutator__"></a>
+                    <a name="//apple_ref/swift/Property/mutators" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly12BlockFactory8mutatorsGVs10DictionarySSPS_7Mutator__">mutators</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dictionary of <code><a href="../Protocols/Mutator.html">Mutator</a></code> objects indexed by their mutator name</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">mutators</span> <span class="o">=</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="p">]()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Public"></a>
                 <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
@@ -48,12 +117,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Loads blocks from a list of default files defined by the Blockly library. All default mutators
-for those loaded blocks are automatically associated with them as well.</p>
+                        <p>Loads block builders from a list of default files containing JSON block definitions. The
+contents of these files are predefined by the Blockly library.</p>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
-    This method will overwrite any existing block definitions that contain the same name.
+    This method will overwrite any existing block builders that contain the same name.
 
 </div>
 
@@ -101,11 +170,11 @@ for those loaded blocks are automatically associated with them as well.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Loads blocks from a list of JSON files.</p>
+                        <p>Loads block builders from a list of files containing JSON block definitions.</p>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
-    This method will overwrite any existing block definitions that contain the same name.
+    This method will overwrite any existing block builders that contain the same name.
 
 </div>
 
@@ -137,7 +206,7 @@ invalid block definition(s).
                               </td>
                               <td>
                                 <div>
-                                  <p>List of paths to files containing blocks in JSON.</p>
+                                  <p>List of paths to files containing JSON block definitions.</p>
 
                                 </div>
                               </td>
@@ -162,9 +231,9 @@ invalid block definition(s).
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12BlockFactory16setBlockMutatorsFzGVs10DictionarySSPS_7Mutator__T_"></a>
-                    <a name="//apple_ref/swift/Method/setBlockMutators(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12BlockFactory16setBlockMutatorsFzGVs10DictionarySSPS_7Mutator__T_">setBlockMutators(_:)</a></h3>
+                    <a name="/s:FC7Blockly12BlockFactory15setBlockBuilderFTCS_12BlockBuilder7forNameSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/setBlockBuilder(_:forName:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12BlockFactory15setBlockBuilderFTCS_12BlockBuilder7forNameSS_T_">setBlockBuilder(_:forName:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -172,11 +241,11 @@ invalid block definition(s).
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sets mutators for any loaded block builders, using a dictionary mapping block names to mutators.</p>
+                        <p>Sets the block builder to use when making new blocks of a given name.</p>
 
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a block builder could not be found for a given block name.
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This method automatically sets <code>blockBuilder.name</code> to match the given <code>name</code>.
 
 </div>
 
@@ -185,7 +254,7 @@ invalid block definition(s).
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setBlockMutators</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockMutators</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="p">])</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setBlockBuilder</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockBuilder</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockBuilder.html">BlockBuilder</a></span><span class="p">,</span> <span class="n">forName</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -196,12 +265,173 @@ invalid block definition(s).
                             <tr>
                               <td>
                                 <code>
-                                <em>blockMutators</em>
+                                <em>blockBuilder</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Dictionary mapping block names to <code>Mutator</code> instances.</p>
+                                  <p>The <code>BlockBuilder</code> to use.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block name to associate with this block builder.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12BlockFactory12blockBuilderFT7forNameSS_GSqCS_12BlockBuilder_"></a>
+                    <a name="//apple_ref/swift/Method/blockBuilder(forName:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12BlockFactory12blockBuilderFT7forNameSS_GSqCS_12BlockBuilder_">blockBuilder(forName:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the block builder that is being used for given block name.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">blockBuilder</span><span class="p">(</span><span class="n">forName</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockBuilder.html">BlockBuilder</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block name to search for the block builder.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code> matching the given <code>name</code> or <code>nil</code> if no block builder could be found.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12BlockFactory14updateMutatorsFGVs10DictionarySSPS_7Mutator__T_"></a>
+                    <a name="//apple_ref/swift/Method/updateMutators(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12BlockFactory14updateMutatorsFGVs10DictionarySSPS_7Mutator__T_">updateMutators(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates <code>self.mutators</code> from a dictionary of mutators. If a mutator already exists in
+<code>self.mutators</code> for a given name, that value is overwritten by the one
+supplied by <code><a href="../Classes/BlockFactory.html#/s:vC7Blockly12BlockFactory8mutatorsGVs10DictionarySSPS_7Mutator__">mutators</a></code>. These mutators are associated with block builders when they are
+loaded from JSON files.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateMutators</span><span class="p">(</span><span class="n">_</span> <span class="nv">mutators</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>mutators</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Dictionary mapping <code>Mutator</code> objects to their mutator name.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12BlockFactory21updateBlockExtensionsFGVs10DictionarySSPS_14BlockExtension__T_"></a>
+                    <a name="//apple_ref/swift/Method/updateBlockExtensions(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12BlockFactory21updateBlockExtensionsFGVs10DictionarySSPS_14BlockExtension__T_">updateBlockExtensions(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates <code>self.blockExtensions</code> from a dictionary of given block extensions. If an extension
+already exists in <code>self.blockExtensions</code> for a given name, that value is overwritten by the one
+supplied by <code>extensions</code>. These extensions are associated with block builders when they are
+loaded from JSON files.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateBlockExtensions</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockExtensions</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/BlockExtension.html">BlockExtension</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>extensions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Dictionary mapping <code>BlockExtension</code> objects to their extension name.</p>
 
                                 </div>
                               </td>
@@ -364,6 +594,8 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: Array
+      path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
@@ -372,6 +604,26 @@ toc:
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
       path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockExtension
+      path: /blockly/reference/ios/../Protocols/BlockExtension.html
+    - title: BlockExtensionClosure
+      path: /blockly/reference/ios/../Classes/BlockExtensionClosure.html
+    - title: BlocklyEvent
+      path: /blockly/reference/ios/../Classes/BlocklyEvent.html
+    - title: – Change
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Change.html
+    - title: – Delete
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Delete.html
+    - title: – UI
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/UI.html
+    - title: – Create
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
+    - title: – Move
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
+    - title: – BlockMove
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
+    - title: BlocklyEventFactory
+      path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
       path: /blockly/reference/ios/../Classes/BlockFactory.html
     - title: BlockGroupLayout
@@ -392,6 +644,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: CodeGenerator
@@ -442,6 +696,8 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
     - title: DefaultLayoutFactory
       path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
       path: /blockly/reference/ios/../Classes/Dragger.html
     - title: DropdownOptionsViewController
@@ -454,6 +710,10 @@ toc:
       path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
     - title: EdgeInsets
       path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: EventManager
+      path: /blockly/reference/ios/../Classes/EventManager.html
+    - title: EventManagerListener
+      path: /blockly/reference/ios/../Protocols/EventManagerListener.html
     - title: Field
       path: /blockly/reference/ios/../Classes/Field.html
     - title: – JSONRegistry
@@ -564,8 +824,14 @@ toc:
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
       path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
     - title: LayoutView
       path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MessageManager
+      path: /blockly/reference/ios/../Classes/MessageManager.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
     - title: MutatorHelper
       path: /blockly/reference/ios/../Classes/MutatorHelper.html
     - title: MutatorIfElse
@@ -593,13 +859,17 @@ toc:
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
-      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+      path: /blockly/reference/ios/../Structs/ProcedureParameter.html
     - title: NameManager
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
     - title: Toolbox
       path: /blockly/reference/ios/../Classes/Toolbox.html
     - title: – Category
@@ -666,34 +936,9 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView
       path: /blockly/reference/ios/../Protocols/ZIndexedView.html
-- title: Other Extensions
-  path: /blockly/reference/ios/../Other Extensions
-  section:
-    - title: Dictionary
-      path: /blockly/reference/ios/../Extensions/Dictionary.html
-    - title: String
-      path: /blockly/reference/ios/../Extensions/String.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
-- title: Other Functions
-  path: /blockly/reference/ios/../Other Functions
-  section:
-    - title: +(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
-    - title: -(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
-- title: Other Protocols
-  path: /blockly/reference/ios/../Other Protocols
-  section:
-    - title: BlocklyPanGestureRecognizerDelegate
-      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
-    - title: LayoutPopoverDelegate
-      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
-    - title: Mutator
-      path: /blockly/reference/ios/../Protocols/Mutator.html
-    - title: Recyclable
-      path: /blockly/reference/ios/../Protocols/Recyclable.html

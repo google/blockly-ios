@@ -170,7 +170,7 @@ open class WorkspaceView: LayoutView {
    to this `WorkspaceView`.
 
    - parameter blockView: The `BlockView`
-   - returns: The `blockView`'s corresponding Workspace position
+   - returns: The `blockView`'s corresponding workspace position.
    */
   public final func workspacePosition(fromBlockView blockView: UIView) -> WorkspacePoint {
     var blockViewPoint = CGPoint.zero
@@ -484,10 +484,11 @@ open class WorkspaceView: LayoutView {
   }
 
   /**
-  Returns true if a given block layout should be rendered within the workspace view.
-  Otherwise, false is returned.
+   Returns `if a given block layout should be rendered within this workspace view.
 
-  - parameter blockLayout: A given block layout.
+   - parameter blockLayout: The `BlockLayout`.
+   - returns: `true` if a given block layout should be rendered within this workspace view.
+   `false` otherwise.
   */
   fileprivate func shouldRenderBlockLayout(_ blockLayout: BlockLayout) -> Bool {
     // Allow blocks within a 1/2 screen away to be rendered

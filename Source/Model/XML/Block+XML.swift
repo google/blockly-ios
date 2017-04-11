@@ -31,8 +31,8 @@ extension Block {
    `BlocklyError`: Occurs if there is a problem parsing the xml (eg. insufficient data,
    malformed data, or contradictory data).
    */
-  public class func blockTree(fromXMLString xmlString: String, factory: BlockFactory) throws
-    -> BlockTree
+  public class func blockTree(
+    fromXMLString xmlString: String, factory: BlockFactory) throws -> BlockTree
   {
     let xmlDoc = try AEXMLDocument(xml: xmlString)
     return try blockTree(fromXML: xmlDoc.root, factory: factory)

@@ -290,7 +290,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
   }
 
   fileprivate func addTimestampedText(_ text: String) {
-    // TODO:(#268) Replace Turtle with a version that uses JS Interpreter
+    // TODO(#268): Replace Turtle with a version that uses JS Interpreter
     var trimmedText = ""
     let lines = text.components(separatedBy: "\n")
     for line in lines {

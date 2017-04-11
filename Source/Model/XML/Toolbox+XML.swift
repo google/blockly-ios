@@ -127,7 +127,7 @@ extension Toolbox {
     if let uncategorizedBlocks = toolboxNode["block"].all,
       uncategorizedBlocks.count > 0
     {
-      // TODO:(#101) Localize "Blocks"
+      // TODO(#101): Localize "Blocks"
       let categoryName = "Blocks"
       let color = ColorHelper.makeColor(hue: 160)
       let category = toolbox.addCategory(name: categoryName, color: color, icon: nil)

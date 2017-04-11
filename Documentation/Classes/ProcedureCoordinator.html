@@ -251,6 +251,63 @@ but assign <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20Pr
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace12willAddBlockCS_5Block_T_"></a>
+                    <a name="//apple_ref/swift/Method/workspace(_:willAddBlock:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace12willAddBlockCS_5Block_T_">workspace(_:willAddBlock:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="n">willAddBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The workspace that will add a block.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block that will be added.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace11didAddBlockCS_5Block_T_"></a>
                     <a name="//apple_ref/swift/Method/workspace(_:didAddBlock:)" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace11didAddBlockCS_5Block_T_">workspace(_:didAddBlock:)</a></h3>
@@ -362,22 +419,12 @@ but assign <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20Pr
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/FieldListener%20Implementation"></a>
-                <a name="//apple_ref/swift/Section/FieldListener Implementation" class="dashAnchor"></a>
-                <a href="#/FieldListener%20Implementation">
-                  <h2 class="section-name">FieldListener Implementation</h2>
-                </a>
-              </div>
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP7Blockly13FieldListener14didUpdateFieldFCS_5FieldT_"></a>
-                    <a name="//apple_ref/swift/Method/didUpdateField(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FP7Blockly13FieldListener14didUpdateFieldFCS_5FieldT_">didUpdateField(_:)</a></h3>
+                    <a name="/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace14didRemoveBlockCS_5Block_T_"></a>
+                    <a name="//apple_ref/swift/Method/workspace(_:didRemoveBlock:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly17WorkspaceListener9workspaceFTCS_9Workspace14didRemoveBlockCS_5Block_T_">workspace(_:didRemoveBlock:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -391,7 +438,7 @@ but assign <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20Pr
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didUpdateField</span><span class="p">(</span><span class="n">_</span> <span class="nv">field</span><span class="p">:</span> <span class="kt"><a href="../Classes/Field.html">Field</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspace</span><span class="p">(</span><span class="n">_</span> <span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="n">didRemoveBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -402,12 +449,84 @@ but assign <code><a href="../Classes/ProcedureCoordinator.html#/s:vC7Blockly20Pr
                             <tr>
                               <td>
                                 <code>
-                                <em>field</em>
+                                <em>workspace</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The field that changed.</p>
+                                  <p>The workspace that removed a block.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The block that was removed.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly20EventManagerListener12eventManagerFTCS_12EventManager12didFireEventCS_12BlocklyEvent_T_"></a>
+                    <a name="//apple_ref/swift/Method/eventManager(_:didFireEvent:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly20EventManagerListener12eventManagerFTCS_12EventManager12didFireEventCS_12BlocklyEvent_T_">eventManager(_:didFireEvent:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">eventManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">eventManager</span><span class="p">:</span> <span class="kt"><a href="../Classes/EventManager.html">EventManager</a></span><span class="p">,</span> <span class="n">didFireEvent</span> <span class="nv">event</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>eventManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>EventManager</code> firing the event.</p>
+
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>BlocklyEvent</code> that was fired.</p>
 
                                 </div>
                               </td>
@@ -572,6 +691,8 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: Array
+      path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
@@ -580,6 +701,26 @@ toc:
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
       path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockExtension
+      path: /blockly/reference/ios/../Protocols/BlockExtension.html
+    - title: BlockExtensionClosure
+      path: /blockly/reference/ios/../Classes/BlockExtensionClosure.html
+    - title: BlocklyEvent
+      path: /blockly/reference/ios/../Classes/BlocklyEvent.html
+    - title: – Change
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Change.html
+    - title: – Delete
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Delete.html
+    - title: – UI
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/UI.html
+    - title: – Create
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
+    - title: – Move
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
+    - title: – BlockMove
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
+    - title: BlocklyEventFactory
+      path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
       path: /blockly/reference/ios/../Classes/BlockFactory.html
     - title: BlockGroupLayout
@@ -600,6 +741,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: CodeGenerator
@@ -650,6 +793,8 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
     - title: DefaultLayoutFactory
       path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
       path: /blockly/reference/ios/../Classes/Dragger.html
     - title: DropdownOptionsViewController
@@ -662,6 +807,10 @@ toc:
       path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
     - title: EdgeInsets
       path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: EventManager
+      path: /blockly/reference/ios/../Classes/EventManager.html
+    - title: EventManagerListener
+      path: /blockly/reference/ios/../Protocols/EventManagerListener.html
     - title: Field
       path: /blockly/reference/ios/../Classes/Field.html
     - title: – JSONRegistry
@@ -772,8 +921,14 @@ toc:
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
       path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
     - title: LayoutView
       path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MessageManager
+      path: /blockly/reference/ios/../Classes/MessageManager.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
     - title: MutatorHelper
       path: /blockly/reference/ios/../Classes/MutatorHelper.html
     - title: MutatorIfElse
@@ -801,13 +956,17 @@ toc:
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
-      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+      path: /blockly/reference/ios/../Structs/ProcedureParameter.html
     - title: NameManager
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
     - title: Toolbox
       path: /blockly/reference/ios/../Classes/Toolbox.html
     - title: – Category
@@ -874,34 +1033,9 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView
       path: /blockly/reference/ios/../Protocols/ZIndexedView.html
-- title: Other Extensions
-  path: /blockly/reference/ios/../Other Extensions
-  section:
-    - title: Dictionary
-      path: /blockly/reference/ios/../Extensions/Dictionary.html
-    - title: String
-      path: /blockly/reference/ios/../Extensions/String.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
-- title: Other Functions
-  path: /blockly/reference/ios/../Other Functions
-  section:
-    - title: +(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
-    - title: -(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
-- title: Other Protocols
-  path: /blockly/reference/ios/../Other Protocols
-  section:
-    - title: BlocklyPanGestureRecognizerDelegate
-      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
-    - title: LayoutPopoverDelegate
-      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
-    - title: Mutator
-      path: /blockly/reference/ios/../Protocols/Mutator.html
-    - title: Recyclable
-      path: /blockly/reference/ios/../Protocols/Recyclable.html

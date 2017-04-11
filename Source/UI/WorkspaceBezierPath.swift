@@ -100,8 +100,9 @@ public final class WorkspaceBezierPath: NSObject {
   - parameter relative: True if the specified center point should be relative to the `currentPoint`.
   False if it should be an absolute point.
   */
-  public func addArc(withCenter center: WorkspacePoint, radius: CGFloat, startAngle: CGFloat,
-    endAngle: CGFloat, clockwise: Bool, relative: Bool) {
+  public func addArc(
+    withCenter center: WorkspacePoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat,
+    clockwise: Bool, relative: Bool) {
       viewBezierPath.addArc(
         withCenter: viewPointFromWorkspacePoint(center, relative: relative),
         radius: radius * _layoutEngine.scale,
@@ -126,17 +127,18 @@ public final class WorkspaceBezierPath: NSObject {
   - parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be are absolute points.
   */
-  public func addCurve(to endPoint: WorkspacePoint, controlPoint1: WorkspacePoint,
-    controlPoint2: WorkspacePoint, relative: Bool) {
-      let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
-      let viewControlPoint1 = viewPointFromWorkspacePoint(controlPoint1, relative: relative)
-      let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
-      viewBezierPath.addCurve(
-        to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
+  public func addCurve(
+    to endPoint: WorkspacePoint, controlPoint1: WorkspacePoint, controlPoint2: WorkspacePoint,
+    relative: Bool) {
+    let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
+    let viewControlPoint1 = viewPointFromWorkspacePoint(controlPoint1, relative: relative)
+    let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
+    viewBezierPath.addCurve(
+      to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
 
-      setCurrentWorkspacePoint(endPoint, relative: relative)
-      _reflectionOfLastCurveControlPoint =
-        viewBezierPath.currentPoint + viewEndPoint - viewControlPoint2
+    setCurrentWorkspacePoint(endPoint, relative: relative)
+    _reflectionOfLastCurveControlPoint =
+      viewBezierPath.currentPoint + viewEndPoint - viewControlPoint2
   }
 
   /**
@@ -148,15 +150,15 @@ public final class WorkspaceBezierPath: NSObject {
   - parameter relative: True if the specified points should be relative to the `currentPoint`.
   False if they should be absolute points.
   */
-  public func addQuadCurve(to endPoint: WorkspacePoint,
-    controlPoint: WorkspacePoint, relative: Bool) {
-      let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
-      let viewControlPoint = viewPointFromWorkspacePoint(controlPoint, relative: relative)
-      viewBezierPath.addQuadCurve(to: viewEndPoint, controlPoint:viewControlPoint)
+  public func addQuadCurve(
+    to endPoint: WorkspacePoint, controlPoint: WorkspacePoint, relative: Bool) {
+    let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
+    let viewControlPoint = viewPointFromWorkspacePoint(controlPoint, relative: relative)
+    viewBezierPath.addQuadCurve(to: viewEndPoint, controlPoint:viewControlPoint)
 
-      setCurrentWorkspacePoint(endPoint, relative: relative)
-      _reflectionOfLastCurveControlPoint =
-        viewBezierPath.currentPoint + viewEndPoint - viewControlPoint
+    setCurrentWorkspacePoint(endPoint, relative: relative)
+    _reflectionOfLastCurveControlPoint =
+      viewBezierPath.currentPoint + viewEndPoint - viewControlPoint
   }
 
   /**
@@ -173,17 +175,17 @@ public final class WorkspaceBezierPath: NSObject {
   - parameter relative: True if all specified points should be relative to the `currentPoint`. False
   if they should be absolute points.
   */
-  public func addSmoothCurve(to endPoint: WorkspacePoint,
-    controlPoint2: WorkspacePoint, relative: Bool) {
-      let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
-      let viewControlPoint1 = _reflectionOfLastCurveControlPoint ?? viewBezierPath.currentPoint
-      let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
-      viewBezierPath.addCurve(
-        to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
+  public func addSmoothCurve(
+    to endPoint: WorkspacePoint, controlPoint2: WorkspacePoint, relative: Bool) {
+    let viewEndPoint = viewPointFromWorkspacePoint(endPoint, relative: relative)
+    let viewControlPoint1 = _reflectionOfLastCurveControlPoint ?? viewBezierPath.currentPoint
+    let viewControlPoint2 = viewPointFromWorkspacePoint(controlPoint2, relative: relative)
+    viewBezierPath.addCurve(
+      to: viewEndPoint, controlPoint1: viewControlPoint1, controlPoint2: viewControlPoint2)
 
-      setCurrentWorkspacePoint(endPoint, relative: relative)
-      _reflectionOfLastCurveControlPoint =
-        viewBezierPath.currentPoint + viewEndPoint - viewControlPoint2
+    setCurrentWorkspacePoint(endPoint, relative: relative)
+    _reflectionOfLastCurveControlPoint =
+      viewBezierPath.currentPoint + viewEndPoint - viewControlPoint2
   }
 
   /**

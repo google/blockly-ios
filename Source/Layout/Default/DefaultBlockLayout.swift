@@ -92,9 +92,9 @@ public final class DefaultBlockLayout: BlockLayout {
   // MARK: - Super
 
   public override func performLayout(includeChildren: Bool) {
-    // TODO:(#41) Potentially move logic from this method into Block.Background to make things
+    // TODO(#41): Potentially move logic from this method into Block.Background to make things
     // easier to follow.
-    // TODO:(#41) Handle stroke widths for the background.
+    // TODO(#41): Handle stroke widths for the background.
 
     let outputPuzzleTabXOffset = block.outputConnection != nil ?
       self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) : 0
@@ -280,7 +280,7 @@ public final class DefaultBlockLayout: BlockLayout {
     size.height = max(size.height, maxBackgroundY)
 
     if block.nextConnection != nil {
-      // TODO:(#41) Make the size.height a property of self.background
+      // TODO(#41): Make the size.height a property of self.background
       /// Create room to draw the notch height at the bottom
       let notchHeight = config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
       size.height += notchHeight

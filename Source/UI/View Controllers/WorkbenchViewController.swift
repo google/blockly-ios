@@ -35,22 +35,24 @@ extension WorkbenchViewControllerUIState {
   /**
    Initializes the workbench view controller UI state with a `WorkbenchViewController.UIStateValue`.
 
-   - parameter value: The `enum` value of the state.
+   - parameter value: The `WorkbenchViewControllerUIStateValue` of the state.
    */
   public init(value: WorkbenchViewControllerUIStateValue) {
     self.init(rawValue: 1 << UInt(value.rawValue))
   }
 
   /**
-   Checks if the state intersects with another. Returns `true` if they share any common options,
-   `false` otherwise.
+   Checks if this state intersects with another state.
+
+   - parameter other: The other `WorkbenchViewControllerUIState`.
+   - returns: `true` if this state and `other` share any common options. `false` otherwise.
    */
   public func intersectsWith(_ other: WorkbenchViewControllerUIState) -> Bool {
     return intersection(other).rawValue != 0
   }
 }
 
-// TODO:(#61) Refactor parts of `WorkbenchViewController` into `WorkspaceViewController`.
+// TODO(#61): Refactor parts of `WorkbenchViewController` into `WorkspaceViewController`.
 
 /**
  View controller for editing a workspace.
@@ -302,9 +304,10 @@ open class WorkbenchViewController: UIViewController {
    - parameter variableNameManager: Value used for `self.variableNameManager`.
    - parameter procedureCoordinator: Value used for `self.procedureCoordinator`.
    */
-  public init(style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder,
-              blockFactory: BlockFactory, viewFactory: ViewFactory,
-              variableNameManager: NameManager, procedureCoordinator: ProcedureCoordinator)
+  public init(
+    style: Style, engine: LayoutEngine, layoutBuilder: LayoutBuilder, blockFactory: BlockFactory,
+    viewFactory: ViewFactory, variableNameManager: NameManager,
+    procedureCoordinator: ProcedureCoordinator)
   {
     self.style = style
     self.engine = engine
@@ -322,7 +325,7 @@ open class WorkbenchViewController: UIViewController {
    - Warning: This is currently unsupported.
    */
   public required init?(coder aDecoder: NSCoder) {
-    // TODO:(#52) Support the ability to create view controllers from XIBs.
+    // TODO(#52): Support the ability to create view controllers from XIBs.
     // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
     fatalError("Called unsupported initializer")
   }
@@ -556,7 +559,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Now that the workspace has changed, the procedure coordinator needs to get re-synced to
     // reflect any new blocks in the workspace.
-    // TODO:(#61) As part of the refactor of WorkbenchViewController, this can potentially be
+    // TODO(#61): As part of the refactor of WorkbenchViewController, this can potentially be
     // moved into a listener so no explicit call to syncWithWorkbench() is made
     procedureCoordinator?.syncWithWorkbench(self)
 
@@ -589,7 +592,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Now that the toolbox has changed, the procedure coordinator needs to get re-synced to
     // reflect any new blocks in the toolbox.
-    // TODO:(#61) As part of the refactor of WorkbenchViewController, this can potentially be
+    // TODO(#61): As part of the refactor of WorkbenchViewController, this can potentially be
     // moved into a listener so no explicit call to syncWithWorkbench() is made
     procedureCoordinator?.syncWithWorkbench(self)
 
@@ -651,7 +654,7 @@ open class WorkbenchViewController: UIViewController {
    */
   fileprivate func copyBlockView(_ blockView: BlockView) throws -> BlockView
   {
-    // TODO:(#57) When this operation is being used as part of a "copy-and-delete" operation, it's
+    // TODO(#57): When this operation is being used as part of a "copy-and-delete" operation, it's
     // causing a performance hit. Try to create an alternate method that performs an optimized
     // "cut" operation.
 
@@ -1283,7 +1286,7 @@ extension WorkbenchViewController {
     // The block the user is dragging out of the toolbox/trash may be a child of a large nested
     // block. We want to do a deep copy on the root block (not just the current block).
     guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0],
-      // TODO:(#45) This should be copying the root block layout, not the root block view.
+      // TODO(#45): This should be copying the root block layout, not the root block view.
       let rootBlockView = ViewManager.sharedInstance.findBlockView(forLayout: rootBlockLayout)
       else
     {
@@ -1496,9 +1499,9 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
   /**
    Pan gesture event handler for a block view inside `self.workspaceView`.
    */
-  public func blocklyPanGestureRecognizer(_ gesture: BlocklyPanGestureRecognizer,
-    didTouchBlock block: BlockView, touch: UITouch,
-    touchState: BlocklyPanGestureRecognizer.TouchState)
+  public func blocklyPanGestureRecognizer(
+    _ gesture: BlocklyPanGestureRecognizer, didTouchBlock block: BlockView,
+    touch: UITouch, touchState: BlocklyPanGestureRecognizer.TouchState)
   {
     guard let blockLayout = block.blockLayout?.draggableBlockLayout else {
       return
@@ -1508,7 +1511,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     let touchPosition = touch.location(in: workspaceView.scrollView.containerView)
     let workspacePosition = workspaceView.workspacePosition(fromViewPoint: touchPosition)
 
-    // TODO:(#44) Handle screen rotations (either lock the screen during drags or stop any
+    // TODO(#44): Handle screen rotations (either lock the screen during drags or stop any
     // on-going drags when the screen is rotated).
 
     if touchState == .began {

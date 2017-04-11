@@ -57,7 +57,7 @@ class BlockBuilderTest: XCTestCase {
     // Validate that the connections were not copied
     XCTAssertNil(blockCopy.nextConnection?.targetConnection)
     XCTAssertNil(blockCopy.previousConnection?.targetConnection)
-    // TODO:(roboerik) validate output and input connections
+    // TODO(roboerik): validate output and input connections
 
     // Validate mutators are actually different instances amongst new blocks
     XCTAssertTrue(block.mutator !== block2.mutator)

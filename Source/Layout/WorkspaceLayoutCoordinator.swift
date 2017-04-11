@@ -550,7 +550,7 @@ open class WorkspaceLayoutCoordinator: NSObject {
   fileprivate func updateLayoutTree(forConnection connection: Connection, oldTarget: Connection?)
     throws
   {
-    // TODO:(#29) Optimize re-rendering all layouts affected by this method
+    // TODO(#29): Optimize re-rendering all layouts affected by this method
 
     guard connection.type == .previousStatement || connection.type == .outputValue else {
       // Only previous/output connectors are responsible for updating the block group

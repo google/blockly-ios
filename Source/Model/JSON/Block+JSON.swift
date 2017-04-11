@@ -55,8 +55,9 @@ extension Block {
    (or `extensions`).
    - returns: A new block builder.
    */
-  public class func makeBuilder(json: [String: Any], mutators: [String: Mutator] = [:],
-                                extensions: [String: BlockExtension] = [:]) throws -> BlockBuilder
+  public class func makeBuilder(
+    json: [String: Any], mutators: [String: Mutator] = [:],
+    extensions: [String: BlockExtension] = [:]) throws -> BlockBuilder
   {
     if (json[PARAMETER_OUTPUT] != nil && json[PARAMETER_PREVIOUS_STATEMENT] != nil) {
       throw BlocklyError(.invalidBlockDefinition,
@@ -146,7 +147,7 @@ extension Block {
       let lastDummyAlignment =
         Input.Alignment(string: lastDummyAlignmentString) ?? Input.Alignment.left
 
-      // TODO:(#38) If the message is a reference, we need to load the reference from somewhere
+      // TODO(#38): If the message is a reference, we need to load the reference from somewhere
       // else (eg. localization)
       builder.inputBuilders += try interpolatedMessage(
         message, arguments: arguments, lastDummyAlignment: lastDummyAlignment)

@@ -89,8 +89,9 @@ extension BlocklyEvent {
      - parameter oldValue: [Optional] The original value. Defaults to `nil`.
      - parameter newValue: [Optional] The new value. Defaults to `nil`.
      */
-    public init(element: Element, workspaceID: String, blockID: String,
-                 fieldName: String? = nil, oldValue: String? = nil, newValue: String? = nil)
+    public init(
+      element: Element, workspaceID: String, blockID: String, fieldName: String? = nil,
+      oldValue: String? = nil, newValue: String? = nil)
     {
       self.element = element
       self.fieldName = fieldName
@@ -147,7 +148,8 @@ extension BlocklyEvent {
      - parameter block: The block where the state changed.
      - returns: The new `BlocklyEvent.Change`.
      */
-    public static func disabledStateEvent(workspace: Workspace, block: Block) -> BlocklyEvent.Change {
+    public static func disabledStateEvent(
+      workspace: Workspace, block: Block) -> BlocklyEvent.Change {
       return BlocklyEvent.Change(
         element: .disabled, workspaceID: workspace.uuid, blockID: block.uuid,
         oldValue: !block.disabled ? "true" : "false",

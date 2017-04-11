@@ -26,11 +26,11 @@ public final class BlocklyError: NSError {
   /// Domain to use when throwing an error from this class
   public static let Domain = "com.google.blockly.Blockly"
 
-  // TODO:(#59) Clean up error codes to follow some sort of convention.
+  // TODO(#59): Clean up error codes to follow some sort of convention.
 
   // MARK: - Constants
 
-  /// Signifies the type of error to be thrown by `BlockError`.
+  /// Signifies the type of error to be thrown by `BlocklyError`.
   @objc(BKYBlocklyErrorCode)
   public enum Code: Int {
     case

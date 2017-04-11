@@ -241,8 +241,8 @@ public final class Connection : NSObject {
     return !_highlights.isEmpty
   }
 
-  /// Returns if this connection is an "inferior" connection (ie. `.outputValue` or
-  /// `.previousStatement`).
+  /// This value is `true` if this connection is an "inferior" connection (ie. `.outputValue` or
+  /// `.previousStatement`). Otherwise, this value is `false`.
   public var isInferior: Bool {
     return type == .outputValue || type == .previousStatement
   }

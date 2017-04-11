@@ -24,12 +24,12 @@ import Foundation
 public struct WeakSet<Element: AnyObject> {
   // MARK: - Properties
 
-  /// Returns an array of all objects
+  /// An array representation of all objects in this set.
   public var all: [Element] {
     return _objects.allObjects
   }
 
-  /// Wrapper of a set of weakly-referenced objects
+  /// Wrapper of a set of weakly-referenced objects.
   private var _boxedObjects = WrapperBox<NSHashTable<Element>>(NSHashTable.weakObjects())
   /// Set of immutable objects
   private var _objects: NSHashTable<Element> {

@@ -145,8 +145,8 @@ extension FieldDropdownView: DropdownViewDelegate {
 // MARK: - DropdownOptionsViewControllerDelegate
 
 extension FieldDropdownView: DropdownOptionsViewControllerDelegate {
-  public func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
-    didSelectOptionIndex optionIndex: Int)
+  public func dropdownOptionsViewController(
+    _ viewController: DropdownOptionsViewController, didSelectOptionIndex optionIndex: Int)
   {
     EventManager.sharedInstance.groupAndFireEvents {
       fieldDropdownLayout?.updateSelectedIndex(optionIndex)

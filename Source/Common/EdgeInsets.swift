@@ -15,7 +15,7 @@
 
 import Foundation
 
-// TODO:(#57) Once Jazzy supports the CF_SWIFT_NAME getter macro, add that in BKYEdgeInsets.h and
+// TODO(#57): Once Jazzy supports the CF_SWIFT_NAME getter macro, add that in BKYEdgeInsets.h and
 // delete this file.
 
 /**

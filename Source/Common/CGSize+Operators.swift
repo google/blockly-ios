@@ -17,6 +17,10 @@ import Foundation
 
 /**
  Returns the sum of two sizes.
+
+ - parameter size1: The first size.
+ - parameter size2: The second size.
+ - returns: The sum of `size1` and `size2`.
  */
 internal func + (size1: CGSize, size2: CGSize) -> CGSize {
   return CGSize(width: size1.width + size2.width, height: size1.height + size2.height)
@@ -24,6 +28,10 @@ internal func + (size1: CGSize, size2: CGSize) -> CGSize {
 
 /**
  Returns the difference of one size from another size.
+
+ - parameter size1: The first size.
+ - parameter size2: The second size.
+ - returns: The difference of `size1` and `size2` (ie. `size1 - size2`).
  */
 internal func - (size1: CGSize, size2: CGSize) -> CGSize {
   return CGSize(width: size1.width - size2.width, height: size1.height - size2.height)

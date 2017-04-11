@@ -29,7 +29,7 @@ public final class DefaultInputLayout: InputLayout {
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
-      /// TODO:(#29) This is method is eating into performance. During method execution,
+      /// TODO(#29): This is method is eating into performance. During method execution,
       /// "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
       /// often and take about 15% of CPU time.
 
@@ -182,7 +182,7 @@ public final class DefaultInputLayout: InputLayout {
     // InputLayout.
     switch (self.input.type) {
     case .value:
-      // TODO:(#41) Handle stroke widths for the inline connector cut-out
+      // TODO(#41): Handle stroke widths for the inline connector cut-out
 
       // Position the block group
       targetBlockGroupLayout.relativePosition.x = fieldXOffset
@@ -274,7 +274,7 @@ public final class DefaultInputLayout: InputLayout {
       targetBlockGroupLayout.relativePosition.x = statementIndent
       targetBlockGroupLayout.relativePosition.y = statementRowTopPadding
 
-      // TODO:(#41) If more blocks can be added to the last block in the group, add a bit of
+      // TODO(#41): If more blocks can be added to the last block in the group, add a bit of
       // space to the bottom of the middle part to show this is possible
       self.statementMiddleHeight = max(
         targetBlockGroupLayout.totalSize.height, fieldMaximumHeight,

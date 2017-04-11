@@ -142,8 +142,8 @@ open class DefaultLayoutFactory: NSObject {
    - parameter fieldType: The `Field.Type` that the creator should be mapped to.
    - parameter layoutCreator: The `FieldLayoutCreator` that will be used for `fieldType`.
    */
-  open func registerLayoutCreator(forFieldType fieldType: Field.Type,
-    layoutCreator: @escaping FieldLayoutCreator)
+  open func registerLayoutCreator(
+    forFieldType fieldType: Field.Type, layoutCreator: @escaping FieldLayoutCreator)
   {
     _fieldLayoutCreators[ObjectIdentifier(fieldType)] = layoutCreator
   }

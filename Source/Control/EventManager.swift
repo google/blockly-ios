@@ -209,8 +209,8 @@ public final class EventManager: NSObject {
    - note: This method guarantees a group is started, stopped, and all pending events are fired,
    regardless if the given closure throws an error.
    */
-  public func groupAndFireEvents(groupID: String? = nil, forClosure closure: () throws -> Void)
-    rethrows {
+  public func groupAndFireEvents(
+    groupID: String? = nil, forClosure closure: () throws -> Void) rethrows {
     if let groupID = groupID {
       pushGroup(groupID: groupID)
     } else {

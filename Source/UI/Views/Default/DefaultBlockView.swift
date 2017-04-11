@@ -209,7 +209,7 @@ public final class DefaultBlockView: BlockView {
       return
     }
 
-    // TODO:(#170) Connection highlights need to be animated into position. Currently, they always
+    // TODO(#170): Connection highlights need to be animated into position. Currently, they always
     // just appear in their final destination position.
 
     // Use existing _highlightLayer or create a new one
@@ -224,7 +224,7 @@ public final class DefaultBlockView: BlockView {
       layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor ??
       UIColor.clear.cgColor
     highlightLayer.fillColor = nil
-    // TODO:(#41) The highlight view frame needs to be larger than this view since it uses a
+    // TODO(#41): The highlight view frame needs to be larger than this view since it uses a
     // larger line width
     // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
     highlightLayer.zPosition = 1

@@ -19,6 +19,7 @@ import Foundation
  Factory for instantiating new `Block` instances by name.
 
  Block builders can be loaded into the factory by:
+
  - Loading default files containing JSON block definitions. The contents of these files are
  predefined by the Blockly library.
  - Loading custom files containing JSON block definitions.

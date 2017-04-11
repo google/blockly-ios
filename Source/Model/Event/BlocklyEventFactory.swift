@@ -24,13 +24,15 @@ import Foundation
 @objc(BKYEventFactory)
 public class BlocklyEventFactory: NSObject {
 
+  // MARK: - Closures
+
+  /// Closure for returning a `BlocklyEvent` from a JSON dictionary.
+  public typealias Creator = (_ json: [String: Any]) throws -> BlocklyEvent
+
   // MARK: - Properties
 
   /// Shared instance.
   public static let sharedInstance = BlocklyEventFactory()
-
-  /// Closure for returning a `BlocklyEvent` from a JSON dictionary.
-  public typealias Creator = (_ json: [String: Any]) throws -> BlocklyEvent
 
   /// Mapping of event types to creation closures.
   private var _creators = Dictionary<BlocklyEvent.EventType, Creator>()
