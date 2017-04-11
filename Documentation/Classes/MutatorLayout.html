@@ -194,6 +194,116 @@ calling <code>mutator.mutateBlock()</code>.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly13MutatorLayout15performMutationERR"></a>
+                    <a name="//apple_ref/swift/Method/performMutation(fromXML:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly13MutatorLayout15performMutationERR">performMutation(fromXML:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the mutator from XML and immediately performs a mutation by calling <code><a href="../Classes/MutatorLayout.html#/s:FC7Blockly13MutatorLayout15performMutationFzT_T_">performMutation()</a></code>.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the mutation could not be performed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">performMutation</span><span class="p">(</span><span class="n">fromXML</span> <span class="nv">xml</span><span class="p">:</span> <span class="kt">AEXMLElement</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>xml</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The XML used to update the mutator.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Change%20Event"></a>
+                <a name="//apple_ref/swift/Section/Change Event" class="dashAnchor"></a>
+                <a href="#/Change%20Event">
+                  <h2 class="section-name">Change Event</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly13MutatorLayout18captureChangeEventFzT7closureFzT_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/captureChangeEvent(closure:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly13MutatorLayout18captureChangeEventFzT7closureFzT_T__T_">captureChangeEvent(closure:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Automatically captures a <code><a href="../Classes/BlocklyEvent/Change.html">BlocklyEvent.Change</a></code> for <code>self.mutator</code>, based on its state before
+and after running a given closure block. This event is then added to the pending events queue
+on <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager14sharedInstanceS0_">EventManager.sharedInstance</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">captureChangeEvent</span><span class="p">(</span><span class="nv">closure</span><span class="p">:</span> <span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">rethrows</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>closure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure to execute, that will change the state of <code>self.mutator</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>          </section>
         </section>
@@ -207,6 +317,8 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: Array
+      path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
@@ -215,6 +327,26 @@ toc:
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
       path: /blockly/reference/ios/../Classes/BlockBumper.html
+    - title: BlockExtension
+      path: /blockly/reference/ios/../Protocols/BlockExtension.html
+    - title: BlockExtensionClosure
+      path: /blockly/reference/ios/../Classes/BlockExtensionClosure.html
+    - title: BlocklyEvent
+      path: /blockly/reference/ios/../Classes/BlocklyEvent.html
+    - title: – Change
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Change.html
+    - title: – Delete
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Delete.html
+    - title: – UI
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/UI.html
+    - title: – Create
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
+    - title: – Move
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
+    - title: – BlockMove
+      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
+    - title: BlocklyEventFactory
+      path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
       path: /blockly/reference/ios/../Classes/BlockFactory.html
     - title: BlockGroupLayout
@@ -235,6 +367,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+    - title: BlocklyPanGestureRecognizerDelegate
+      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: CodeGenerator
@@ -285,6 +419,8 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
     - title: DefaultLayoutFactory
       path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
+    - title: Dictionary
+      path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
       path: /blockly/reference/ios/../Classes/Dragger.html
     - title: DropdownOptionsViewController
@@ -297,6 +433,10 @@ toc:
       path: /blockly/reference/ios/../Protocols/DropdownViewDelegate.html
     - title: EdgeInsets
       path: /blockly/reference/ios/../Extensions/EdgeInsets.html
+    - title: EventManager
+      path: /blockly/reference/ios/../Classes/EventManager.html
+    - title: EventManagerListener
+      path: /blockly/reference/ios/../Protocols/EventManagerListener.html
     - title: Field
       path: /blockly/reference/ios/../Classes/Field.html
     - title: – JSONRegistry
@@ -407,8 +547,14 @@ toc:
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
       path: /blockly/reference/ios/../Protocols/LayoutHierarchyListener.html
+    - title: LayoutPopoverDelegate
+      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
     - title: LayoutView
       path: /blockly/reference/ios/../Classes/LayoutView.html
+    - title: MessageManager
+      path: /blockly/reference/ios/../Classes/MessageManager.html
+    - title: Mutator
+      path: /blockly/reference/ios/../Protocols/Mutator.html
     - title: MutatorHelper
       path: /blockly/reference/ios/../Classes/MutatorHelper.html
     - title: MutatorIfElse
@@ -436,13 +582,17 @@ toc:
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
-      path: /blockly/reference/ios/../Classes/ProcedureParameter.html
+      path: /blockly/reference/ios/../Structs/ProcedureParameter.html
     - title: NameManager
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
+    - title: Recyclable
+      path: /blockly/reference/ios/../Protocols/Recyclable.html
+    - title: String
+      path: /blockly/reference/ios/../Extensions/String.html
     - title: Toolbox
       path: /blockly/reference/ios/../Classes/Toolbox.html
     - title: – Category
@@ -509,34 +659,9 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
+    - title: WorkbenchViewControllerUIState
+      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView
       path: /blockly/reference/ios/../Protocols/ZIndexedView.html
-- title: Other Extensions
-  path: /blockly/reference/ios/../Other Extensions
-  section:
-    - title: Dictionary
-      path: /blockly/reference/ios/../Extensions/Dictionary.html
-    - title: String
-      path: /blockly/reference/ios/../Extensions/String.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
-- title: Other Functions
-  path: /blockly/reference/ios/../Other Functions
-  section:
-    - title: +(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1pFTVSC14WorkspacePointS0__S0_
-    - title: -(_:_:)
-      path: /blockly/reference/ios/../Other Functions.html#/s:F7Blocklyoi1sFTVSC14WorkspacePointS0__S0_
-- title: Other Protocols
-  path: /blockly/reference/ios/../Other Protocols
-  section:
-    - title: BlocklyPanGestureRecognizerDelegate
-      path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
-    - title: LayoutPopoverDelegate
-      path: /blockly/reference/ios/../Protocols/LayoutPopoverDelegate.html
-    - title: Mutator
-      path: /blockly/reference/ios/../Protocols/Mutator.html
-    - title: Recyclable
-      path: /blockly/reference/ios/../Protocols/Recyclable.html

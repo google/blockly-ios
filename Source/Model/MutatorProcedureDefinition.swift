@@ -144,6 +144,8 @@ extension MutatorProcedureDefinition: Mutator {
   /**
    Returns a list of inputs that have been created by this mutator on `self.block`, sorted in
    ascending order of their index within `self.block.inputs`.
+
+   - returns: A sorted list of inputs created by this mutator on `self.block`.
    */
   public func sortedMutatorInputs() -> [Input] {
     guard let block = self.block else {

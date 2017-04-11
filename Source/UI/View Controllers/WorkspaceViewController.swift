@@ -15,7 +15,7 @@
 
 import UIKit
 
-// TODO:(#120) This delegate only exists right now so `WorkbenchViewController` can attach
+// TODO(#120): This delegate only exists right now so `WorkbenchViewController` can attach
 // gesture recognizers on the BlockView. Refactor this so the gesture recognizers are managed
 // in this view controller and then this delegate can be deleted.
 
@@ -42,7 +42,7 @@ public protocol WorkspaceViewControllerDelegate {
   func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
 
-  // TODO:(#135) The following two methods only exist right now so that the state can be updated in
+  // TODO(#135): The following two methods only exist right now so that the state can be updated in
   // `WorkbenchViewController`. This seems like a temporary solution -- a better solution would be
   // that `WorkspaceViewController` manages state and there are ways that `WorkbenchViewController`
   // can change state behaviour. Once state handling has been refactored, these two methods can be
@@ -155,7 +155,7 @@ extension WorkspaceViewController: ViewBuilderDelegate {
   public func viewBuilder(
     _ viewBuilder: ViewBuilder, didAddChild childView: UIView, toParent parentView: UIView)
   {
-    // TODO:(#120) This delegate only exists right now so `WorkbenchViewController` can attach
+    // TODO(#120): This delegate only exists right now so `WorkbenchViewController` can attach
     // gesture recognizers on the BlockView. Refactor this so the gesture recognizers are managed
     // in this view controller.
     if let blockView = childView as? BlockView {
@@ -172,7 +172,7 @@ extension WorkspaceViewController: ViewBuilderDelegate {
   public func viewBuilder(
     _ viewBuilder: ViewBuilder, didRemoveChild childView: UIView, fromParent parentView: UIView)
   {
-    // TODO:(#120) This delegate only exists right now so `WorkbenchViewController` can attach
+    // TODO(#120): This delegate only exists right now so `WorkbenchViewController` can attach
     // gesture recognizers on the BlockView. Refactor this so the gesture recognizers are managed
     // in this view controller.
     if let blockView = childView as? BlockView {
@@ -189,7 +189,8 @@ extension WorkspaceViewController: ViewBuilderDelegate {
 // MARK: - FieldViewDelegate implementation
 
 extension WorkspaceViewController: LayoutPopoverDelegate {
-  public func layoutView(_ layoutView: LayoutView,
+  public func layoutView(
+    _ layoutView: LayoutView,
     requestedToPresentPopoverViewController viewController: UIViewController, fromView: UIView)
     -> Bool
   {
@@ -219,17 +220,18 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     return true
   }
 
-  public func layoutView(_ layoutView: LayoutView,
-    requestedToPresentViewController viewController: UIViewController)
+  public func layoutView(
+    _ layoutView: LayoutView, requestedToPresentViewController viewController: UIViewController)
   {
     delegate?.workspaceViewController(self, willPresentViewController: viewController)
 
     present(viewController, animated: true, completion: nil)
   }
 
-  public func layoutView(_ layoutView: LayoutView,
-                         requestedToDismissPopoverViewController viewController: UIViewController,
-                         animated: Bool) {
+  public func layoutView(
+    _ layoutView: LayoutView,
+    requestedToDismissPopoverViewController viewController: UIViewController,
+    animated: Bool) {
     viewController.presentingViewController?.dismiss(animated: animated, completion: nil)
 
     // Manually fire our custom delegate since it doesn't automatically get triggered from

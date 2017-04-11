@@ -78,7 +78,7 @@ public final class FieldNumber: Field {
       }
     }
   }
-  /// Returns if `self.value` is constrained to being an integer value.
+  /// Flag indicating if `self.value` is constrained to being an integer value.
   public var isInteger: Bool {
     return precision != nil && precision! == round(precision!)
   }

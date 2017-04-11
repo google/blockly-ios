@@ -39,10 +39,10 @@ public protocol BlocklyPanGestureRecognizerDelegate: class {
    Note: This function returns a `BlockView`, in case this function changes the view that's passed
    in, typically copying the view onto a new workspace.
 
-   Parameter gesture: The gesture calling this function.
-   Parameter block: The `BlockView` being touched.
-   Parameter touch: The `UITouch` hitting the block.
-   Parameter touchState: The `TouchState` for this individual touch.
+   - parameter gesture: The gesture calling this function.
+   - parameter block: The `BlockView` being touched.
+   - parameter touch: The `UITouch` hitting the block.
+   - parameter touchState: The `BlocklyPanGestureRecognizer.TouchState` for this individual touch.
    */
   func blocklyPanGestureRecognizer(_ gesture: BlocklyPanGestureRecognizer,
                                    didTouchBlock block: BlockView,
@@ -231,7 +231,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
           continue
         }
 
-        // TODO:(#175) Fix blocks jumping from touch to touch when one block is hit by two touches.
+        // TODO(#175): Fix blocks jumping from touch to touch when one block is hit by two touches.
 
         if state == .began || state == .changed {
           targetDelegate?.blocklyPanGestureRecognizer(self,

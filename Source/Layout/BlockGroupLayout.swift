@@ -154,25 +154,25 @@ open class BlockGroupLayout: Layout {
   - returns: The list of block layouts that were removed, starting from the given block layout. If
   the given block layout could not be found, it is still returned as a single-element list.
   */
-  open func removeAllBlockLayouts(startingFrom blockLayout: BlockLayout, updateLayout: Bool = true)
-    -> [BlockLayout] {
-      var removedElements = [BlockLayout]()
+  open func removeAllBlockLayouts(
+    startingFrom blockLayout: BlockLayout, updateLayout: Bool = true) -> [BlockLayout] {
+    var removedElements = [BlockLayout]()
 
-      if let index = blockLayouts.index(of: blockLayout) {
-        while (index < blockLayouts.count) {
-          let removedLayout = removeBlockLayout(atIndex: index, updateLayout: false)
-          removedElements.append(removedLayout)
-        }
-
-        if updateLayout {
-          updateLayoutUpTree()
-        }
-      } else {
-        // Always return the given block layout, even it's not found
-        removedElements.append(blockLayout)
+    if let index = blockLayouts.index(of: blockLayout) {
+      while (index < blockLayouts.count) {
+        let removedLayout = removeBlockLayout(atIndex: index, updateLayout: false)
+        removedElements.append(removedLayout)
       }
 
-      return removedElements
+      if updateLayout {
+        updateLayoutUpTree()
+      }
+    } else {
+      // Always return the given block layout, even it's not found
+      removedElements.append(blockLayout)
+    }
+
+    return removedElements
   }
 
   /**

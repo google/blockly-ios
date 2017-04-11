@@ -119,6 +119,10 @@ public final class FieldDate: Field {
 
   /**
    Returns a string representation of a date in the format "yyyy-MM-dd".
+
+   - parameter date: A `Date`.
+   - returns: A string representation of `date` in the format "yyyy-MM-dd", using the user's
+   current timezone.
    */
   internal class func stringFromDate(_ date: Date) -> String {
     let dateFormatter = DateFormatter()

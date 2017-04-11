@@ -24,6 +24,7 @@ import WebKit
 
  This object is essentially a wrapper of a non-UI web version of Blockly, which generates workspace
  code via JavaScript. For more information on how this works, see:
+
  https://developers.google.com/blockly/installation/code-generators
 
  - note:

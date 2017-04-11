@@ -56,7 +56,7 @@ open class FieldInputLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
 
   open override func didUpdateField(_ field: Field) {
     // Update current text value to match the field now

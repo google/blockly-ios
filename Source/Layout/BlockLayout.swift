@@ -82,8 +82,8 @@ open class BlockLayout: Layout {
     return root
   }
 
-  /// The first draggable `BlockLayout` up the layout tree. Returns `nil` if there is
-  /// no `BlockLayout` that can be dragged.
+  /// The first draggable `BlockLayout` up the layout tree.
+  /// If there is no `BlockLayout` exists up the layout tree, this value is `nil`.  
   open var draggableBlockLayout: BlockLayout? {
     var layout: Layout? = self
 
@@ -184,7 +184,7 @@ open class BlockLayout: Layout {
     }
   }
 
-  /// Returns the workspace this block belongs to, if it exists.
+  /// The workspace this block belongs to, if it exists.
   fileprivate var workspace: Workspace? {
     return firstAncestor(ofType: WorkspaceLayout.self)?.workspace
   }
@@ -303,7 +303,7 @@ extension BlockLayout: ConnectionHighlightDelegate {
 
 extension BlockLayout: BlockListener {
   public func didUpdateBlock(_ block: Block) {
-    // TODO:(#288) Remove highlightDelegate dependency once ConnectionHighlightDelegate
+    // TODO(#288): Remove highlightDelegate dependency once ConnectionHighlightDelegate
     // functionality is refactored into this class
 
     // Update highlight delegates of each connection (since block's directConnections may have

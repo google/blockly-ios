@@ -208,8 +208,10 @@ public final class Block : NSObject {
   // MARK: - Public
 
   /**
-  Returns a list of all connections directly or indirectly connected to this block.
-  */
+   Returns a list of all connections directly or indirectly connected to this block.
+
+   - returns: A list of all connections directly or indirectly connected to this block.
+   */
   public func allConnectionsForTree() -> [Connection] {
     var connections = [Connection]()
 
@@ -432,8 +434,8 @@ public final class Block : NSObject {
    - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  public func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
-    -> Bool
+  public func didSetEditableProperty<T: Equatable>(
+    _ editableProperty: inout T, _ oldValue: T) -> Bool
   {
     if !self.editable {
       editableProperty = oldValue
@@ -464,7 +466,8 @@ public final class Block : NSObject {
    - returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  public func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {
+  public func didSetProperty<T: Equatable>(
+    _ property: T, _ oldValue: T) -> Bool {
     if property == oldValue {
       return false
     }

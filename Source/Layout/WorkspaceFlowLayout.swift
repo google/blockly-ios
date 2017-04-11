@@ -43,8 +43,9 @@ public final class WorkspaceFlowLayout: WorkspaceLayout {
    The maximum amount of space to use per line of blocks before a new line of blocks should be
    created, expressed as a Workspace coordinate unit.
 
-   ie. If `self.layoutDirection == .Vertical`, this value is the maximum height for a column
+   If `self.layoutDirection == .Vertical`, this value is the maximum height for a column
    of consecutive blocks.
+
    If `self.layoutDirection == .Horizontal`, this value is the maximum width for a row
    of consecutive blocks.
 

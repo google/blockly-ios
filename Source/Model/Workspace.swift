@@ -139,7 +139,9 @@ open class Workspace : NSObject {
   // MARK: - Public
 
   /**
-   Returns: A list of all blocks in the workspace whose `topLevel` property is true.
+   Returns a list of all blocks in the workspace whose `topLevel` property is true.
+
+   - returns: A list of all top-level blocks in the workspace.
    */
   open func topLevelBlocks() -> [Block] {
     return allBlocks.values.filter({ $0.topLevel })
@@ -250,8 +252,8 @@ open class Workspace : NSObject {
    `BlocklyError`: Thrown if the block could not be copied
    */
   @discardableResult
-  open func copyBlockTree(_ rootBlock: Block, editable: Bool, position: WorkspacePoint) throws
-    -> Block
+  open func copyBlockTree(
+    _ rootBlock: Block, editable: Bool, position: WorkspacePoint) throws -> Block
   {
     // Create a copy of the tree
     let copyResult = try rootBlock.deepCopy()
@@ -272,8 +274,11 @@ open class Workspace : NSObject {
   }
 
   /**
-  Returns if this block has been added to the workspace.
-  */
+   Returns if this block has been added to the workspace.
+
+   - parameter block: The `Block` to check.
+   - returns: `true` if this block has been added to the workspace. `false` otherwise.
+   */
   open func containsBlock(_ block: Block) -> Bool {
     return (allBlocks[block.uuid] == block)
   }

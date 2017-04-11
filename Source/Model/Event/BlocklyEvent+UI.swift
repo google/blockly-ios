@@ -84,8 +84,9 @@ extension BlocklyEvent {
      - parameter newValue: [Optional] The value after the event. Booleans are mapped to `true` and
      `false`. Defaults to `nil`.
      */
-    public init(element: Element, workspace: Workspace, block: Block?,
-                oldValue: String? = nil, newValue: String? = nil)
+    public init(
+      element: Element, workspace: Workspace, block: Block?, oldValue: String? = nil,
+      newValue: String? = nil)
     {
       self.element = element
       super.init(type: BlocklyEvent.UI.EVENT_TYPE, workspaceID: workspace.uuid, groupID: nil,
@@ -147,8 +148,9 @@ extension BlocklyEvent {
      - parameter selectedAfter: `true` if the block is currently selected. `false` otherwise.
      - returns: The new `BlocklyEvent.UI`.
      */
-    public static func blockSelectedEvent(workspace: Workspace, block: Block, selectedBefore: Bool,
-                                          selectedAfter: Bool) -> BlocklyEvent.UI
+    public static func blockSelectedEvent(
+      workspace: Workspace, block: Block, selectedBefore: Bool, selectedAfter: Bool)
+      -> BlocklyEvent.UI
     {
       return BlocklyEvent.UI(element: .selected, workspace: workspace, block: block,
                              oldValue: selectedBefore ? "true" : "false",

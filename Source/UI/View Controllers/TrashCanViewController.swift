@@ -67,7 +67,7 @@ public final class TrashCanViewController: WorkspaceViewController {
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    // TODO:(#52) Support the ability to create view controllers from XIBs.
+    // TODO(#52): Support the ability to create view controllers from XIBs.
     // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
     fatalError("Called unsupported initializer")
   }

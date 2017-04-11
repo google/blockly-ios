@@ -41,15 +41,17 @@ public protocol Mutator : class {
   func mutateBlock() throws
 
   /**
-   Returns XML based on this mutator's internal state, which will be included as a direct child
+   Returns the XML based on this mutator's internal state, which will be included as a direct child
    of the exported XML for `self.block`.
+
+   - returns: An `AEXMLElement` object representing this mutator's internal state.
    */
   func toXMLElement() -> AEXMLElement
 
   /**
    Updates this mutator's internal state, using the XML from the block.
 
-   - paramter xml: The XML of the block.
+   - parameter xml: The XML of the block.
    - note: This method call does not actually mutate the block.
    `mutateBlock()` must be explicitly called after this.
    */
@@ -58,7 +60,7 @@ public protocol Mutator : class {
   /**
    Returns a copy of this mutator.
 
-   - Returns: A new copy of this mutator, but with its `block` property set to `nil`.
+   - returns: A new copy of this mutator, but with its `block` property set to `nil`.
    */
   func copyMutator() -> Mutator
 }

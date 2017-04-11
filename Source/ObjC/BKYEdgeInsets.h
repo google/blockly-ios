@@ -46,7 +46,7 @@ BKYEdgeInsets BKYEdgeInsetsMake(CGFloat top, CGFloat leading, CGFloat bottom, CG
 extern BKYEdgeInsets const BKYEdgeInsetsZero
   CF_SWIFT_NAME(EdgeInsets.zero);
 
-// TODO:(#57) Once Jazzy supports generating docs with headers using the CF_SWIFT_NAME(...) getter
+// TODO(#57): Once Jazzy supports generating docs with headers using the CF_SWIFT_NAME(...) getter
 // macro, add it here and remove EdgeInsets.swift.
 
 /**

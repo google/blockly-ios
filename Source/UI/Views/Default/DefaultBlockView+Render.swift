@@ -33,8 +33,9 @@ extension DefaultBlockView {
    - parameter notchHeight: The height of the notch, specified as a Workspace coordinate system
    unit.
    */
-  public final func addNotch(toPath path: WorkspaceBezierPath, drawLeftToRight: Bool,
-    notchWidth: CGFloat, notchHeight: CGFloat)
+  public final func addNotch(
+    toPath path: WorkspaceBezierPath, drawLeftToRight: Bool, notchWidth: CGFloat,
+    notchHeight: CGFloat)
   {
     if drawLeftToRight {
       path.addLineTo(x: notchWidth - 15, y: 0, relative: true)
@@ -90,8 +91,9 @@ extension DefaultBlockView {
    - parameter puzzleTabHeight: The height of the puzzle tab, specified as a Workspace coordinate
    system unit.
    */
-  public final func addPuzzleTab(toPath path: WorkspaceBezierPath, drawTopToBottom: Bool,
-    puzzleTabWidth: CGFloat, puzzleTabHeight: CGFloat)
+  public final func addPuzzleTab(
+    toPath path: WorkspaceBezierPath, drawTopToBottom: Bool, puzzleTabWidth: CGFloat,
+    puzzleTabHeight: CGFloat)
   {
     let verticalLineHeight = puzzleTabHeight * 0.2
     let roundedHalfPieceHeight = puzzleTabHeight * 0.3

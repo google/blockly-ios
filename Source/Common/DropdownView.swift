@@ -30,9 +30,12 @@ public protocol DropdownViewDelegate: class {
  A view that resembles a dropdown. It contains a text field with a dropdown arrow image.
 
  e.g.
+
  ```
   =========
+
  | ITEM  ▼ |
+
   =========
  ```
  */
@@ -151,7 +154,7 @@ public final class DropdownView: UIView {
    */
   public static func measureSize(
     text: String, dropDownArrowImage: UIImage?, textFont: UIFont, borderWidth: CGFloat,
-         horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
+    horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
   {
     // Measure text size
     let textSize = text.bky_singleLineSize(forFont: textFont)

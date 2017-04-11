@@ -21,7 +21,7 @@ Controller for `Connection` instances, where connections can be separated into g
 */
 @objc(BKYConnectionManager)
 public final class ConnectionManager: NSObject {
-  // MARK: - Aliases
+  // MARK: - Tuples
 
   public typealias ConnectionPair =
     (moving: Connection, target: Connection, fromConnectionManagerGroup: ConnectionManager.Group)
@@ -171,29 +171,29 @@ public final class ConnectionManager: NSObject {
   `pair.target` connection is the closest compatible connection. Nil is returned if no suitable
   connection pair could be found.
   */
-  public func findBestConnection(forGroup group: ConnectionManager.Group, maxRadius: CGFloat)
-    -> ConnectionPair? {
-      guard let block = group.ownerBlock else {
-        return nil
+  public func findBestConnection(
+    forGroup group: ConnectionManager.Group, maxRadius: CGFloat) -> ConnectionPair? {
+    guard let block = group.ownerBlock else {
+      return nil
+    }
+
+    // Find the connection that is closest to any direct connection on the block.
+    var candidate: ConnectionPair?
+    var radius = maxRadius
+
+    for blockConnection in block.directConnections {
+      if let compatibleConnection =
+        closestConnection(blockConnection, maxRadius: radius, ignoreGroup: group)
+      {
+        candidate = (
+          moving: blockConnection,
+          target: compatibleConnection.0,
+          fromConnectionManagerGroup: compatibleConnection.1)
+        radius = blockConnection.distanceFromConnection(compatibleConnection.0)
       }
+    }
 
-      // Find the connection that is closest to any direct connection on the block.
-      var candidate: ConnectionPair?
-      var radius = maxRadius
-
-      for blockConnection in block.directConnections {
-        if let compatibleConnection =
-          closestConnection(blockConnection, maxRadius: radius, ignoreGroup: group)
-        {
-          candidate = (
-            moving: blockConnection,
-            target: compatibleConnection.0,
-            fromConnectionManagerGroup: compatibleConnection.1)
-          radius = blockConnection.distanceFromConnection(compatibleConnection.0)
-        }
-      }
-
-      return candidate
+    return candidate
   }
 
   /**
@@ -205,8 +205,8 @@ public final class ConnectionManager: NSObject {
   coordinate system unit
   - returns: A list of all nearby compatible connections.
   */
-  public func stationaryNeighbors(forConnection connection: Connection, maxRadius: CGFloat)
-    -> [Connection]
+  public func stationaryNeighbors(
+    forConnection connection: Connection, maxRadius: CGFloat) -> [Connection]
   {
     return _groups.filter({ $0.dragMode == false })
       .flatMap({ $0.neighbors(forConnection: connection, maxRadius: maxRadius)})
@@ -471,7 +471,7 @@ extension ConnectionManager {
     /**
     Remove the given connection from this list.
 
-    -Parameter connection: The connection to remove.
+    - parameter connection: The connection to remove.
     */
     internal func removeConnection(_ connection: Connection) {
       if let removalIndex = findConnection(connection) {

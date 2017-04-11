@@ -15,7 +15,7 @@
 
 import Foundation
 
-// TODO:(#25) Change this view so it is a button that opens a date picker in a popover
+// TODO(#25): Change this view so it is a button that opens a date picker in a popover
 /**
  View for rendering a `FieldDateLayout`.
  */

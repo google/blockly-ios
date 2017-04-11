@@ -65,7 +65,7 @@ open class FieldVariableLayout: FieldLayout {
     }
   }
 
-  // TODO:(#334) Investigate decoupling FieldVariableLayout from WorkspaceLayoutCoordinator.
+  // TODO(#334): Investigate decoupling FieldVariableLayout from WorkspaceLayoutCoordinator.
 
   // Used to determine information about the variables on the workspace. Only set if the variable
   // layout is on a workspace.
@@ -89,7 +89,7 @@ open class FieldVariableLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO:(#114) Remove `override` once `FieldLayout` is deleted.
+  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     if let nameManager = self.nameManager,
       !nameManager.containsName(variable)

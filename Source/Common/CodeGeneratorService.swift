@@ -25,7 +25,8 @@ import Foundation
  */
 @objc(BKYCodeGeneratorService)
 public final class CodeGeneratorService: NSObject {
-  // MARK: - Typealiases
+  // MARK: - Closures
+
   public typealias CompletionClosure = (_ code: String) -> Void
   public typealias ErrorClosure = (_ error: String) -> Void
 

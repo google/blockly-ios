@@ -63,10 +63,11 @@ public final class ViewManager: NSObject {
 
   /**
    Returns the `BlockView` that has been cached for a given `BlockLayout`. If the view could not
-   be found in the cache, nil is returned.
+   be found in the cache, `nil` is returned.
 
    - parameter layout: The `BlockLayout` to look for
-   - returns: A `BlockView` with the given layout assigned to it, or nil if no view could be found.
+   - returns: A `BlockView` with the given layout assigned to it, or `nil` if no view could be
+   found.
    */
   public func findBlockView(forLayout layout: BlockLayout) -> BlockView? {
     return (findView(forLayout: layout) as? BlockView) ?? nil
@@ -74,10 +75,11 @@ public final class ViewManager: NSObject {
 
   /**
    Returns the `FieldView` that has been cached for a given `FieldLayout`. If the view could not
-   be found in the cache, nil is returned.
+   be found in the cache, `nil` is returned.
 
    - parameter layout: The `FieldLayout` to look for
-   - returns: A `FieldView` with the given layout assigned to it, or nil if no view could be found.
+   - returns: A `FieldView` with the given layout assigned to it, or `nil` if no view could be
+   found.
    */
   public func findFieldView(forLayout layout: FieldLayout) -> FieldView? {
     return (findView(forLayout: layout) as? FieldView) ?? nil
@@ -85,10 +87,11 @@ public final class ViewManager: NSObject {
 
   /**
    Returns the `LayoutView` that has been cached for a given `Layout`. If the view could not
-   be found in the cache, nil is returned.
+   be found in the cache, `nil` is returned.
 
    - parameter layout: The `Layout` to look for
-   - returns: A `LayoutView` with the given layout assigned to it, or nil if no view could be found.
+   - returns: A `LayoutView` with the given layout assigned to it, or `nil` if no view could be
+   found.
    */
   @inline(__always)
   public func findView(forLayout layout: Layout) -> LayoutView? {

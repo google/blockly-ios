@@ -233,8 +233,8 @@ public final class NameManager: NSObject {
     for (name, displayName) in allNames {
       _names[name] = nil
       listeners.forEach({ $0.nameManager?(self, didRemoveName: displayName) })
-    }
-  }
+    }  }
+
 
   /**
    Returns if a given name has already been added.
@@ -265,6 +265,7 @@ public final class NameManager: NSObject {
    name or automatically increment the name's number if its suffix is already a number.
 
    e.g.
+
    ```
    let manager = NameManager()
    manager.generateUniqueName("foo", addToList: true) // Returns "foo"

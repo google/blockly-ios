@@ -66,8 +66,9 @@ extension BlocklyEvent {
      - parameter oldInputName: The value for `self.oldInputName`.
      - parameter oldPosition: The value for `self.oldPosition`.
      */
-    public init(workspaceID: String, blockID: String,
-                oldParentID: String?, oldInputName: String?, oldPosition: WorkspacePoint?) {
+    public init(
+      workspaceID: String, blockID: String, oldParentID: String?, oldInputName: String?,
+      oldPosition: WorkspacePoint?) {
       self.oldParentID = oldParentID
       self.oldInputName = oldInputName
       self.oldPosition = oldPosition

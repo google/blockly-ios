@@ -23,18 +23,28 @@ extension WorkspacePoint: Equatable {
   }
 }
 
-/**
- Returns the sum of two points.
- */
-public func + (point1: WorkspacePoint, point2: WorkspacePoint) -> WorkspacePoint {
-  return WorkspacePoint(x: point1.x + point2.x, y: point1.y + point2.y)
-}
+extension WorkspacePoint {
+  /**
+   Returns the sum of two points.
 
-/**
- Returns the difference of one point from another point.
- */
-public func - (point1: WorkspacePoint, point2: WorkspacePoint) -> WorkspacePoint {
-  return WorkspacePoint(x: point1.x - point2.x, y: point1.y - point2.y)
+   - parameter point1: The first point.
+   - parameter point2: The second point.
+   - returns: The sum of `point1` and `point2`.
+   */
+  public static func + (point1: WorkspacePoint, point2: WorkspacePoint) -> WorkspacePoint {
+    return WorkspacePoint(x: point1.x + point2.x, y: point1.y + point2.y)
+  }
+
+  /**
+   Returns the difference of one point from another point.
+
+   - parameter point1: The first point.
+   - parameter point2: The second point.
+   - returns: The difference of `point1` and `point2` (ie. `point1 - point2`).
+   */
+  public static func - (point1: WorkspacePoint, point2: WorkspacePoint) -> WorkspacePoint {
+    return WorkspacePoint(x: point1.x - point2.x, y: point1.y - point2.y)
+  }
 }
 
 // MARK: - WorkspaceSize

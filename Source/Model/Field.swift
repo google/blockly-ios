@@ -133,8 +133,8 @@ open class Field: NSObject {
    - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T, _ oldValue: T)
-    -> Bool
+  open func didSetEditableProperty<T: Equatable>(
+    _ editableProperty: inout T, _ oldValue: T) -> Bool
   {
     if !self.editable {
       editableProperty = oldValue
@@ -170,8 +170,8 @@ open class Field: NSObject {
    - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
    */
   @discardableResult
-  open func didSetEditableProperty<T: Equatable>(_ editableProperty: inout T?, _ oldValue: T?)
-    -> Bool
+  open func didSetEditableProperty<T: Equatable>(
+    _ editableProperty: inout T?, _ oldValue: T?) -> Bool
   {
     if !self.editable {
       editableProperty = oldValue

@@ -110,7 +110,7 @@ open class Layout: NSObject {
     }
   }
 
-  // TODO:(#34) If ConnectionLayout is created, change absolutePosition to be final
+  // TODO(#34): If ConnectionLayout is created, change absolutePosition to be final
 
   /// Absolute position of this layout, relative to the root node, in the Workspace coordinate
   /// system.
@@ -364,7 +364,7 @@ open class Layout: NSObject {
     contentOffset: WorkspacePoint,
     rtl: Bool, includeFields: Bool)
   {
-    // TODO:(#29) Optimize this method so it only recalculates view positions for layouts that
+    // TODO(#29): Optimize this method so it only recalculates view positions for layouts that
     // are "dirty"
 
     // Update the layout's absolute position in the workspace
@@ -420,7 +420,7 @@ open class Layout: NSObject {
 // MARK: - Layout Animation
 
 extension Layout {
-  // TODO:(#173) Once the model/layout has been refactored so layout hierarchy changes aren't made
+  // TODO(#173): Once the model/layout has been refactored so layout hierarchy changes aren't made
   // automatically on connection changes, revisit whether an animation stack is needed.
 
   /// Stack that keeps track of whether future layout code changes should be animated.
@@ -453,8 +453,8 @@ extension Layout {
   }
 
   /**
-   Returns whether the next change event that is sent out via `sendChangeEvent(:)` should be
-   animated or not.
+   Property indicating whether the next change event that is sent out via `sendChangeEvent(:)`
+   should be animated or not.
    */
   public var animateChangeEvent: Bool {
     // Take the most recent value of what's on the animation stack to determine if the next change

@@ -111,8 +111,11 @@ open class WorkspaceLayout: Layout {
   // MARK: - Public
 
   /**
-  Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
-  */
+   Returns all visible layouts associated with every block inside `self.workspace.allBlocks`.
+
+   - returns: A list of all visible `BlockLayout` objects associated with every block in this
+   workspace.
+   */
   open func allVisibleBlockLayoutsInWorkspace() -> [BlockLayout] {
     return flattenedLayoutTree(ofType: BlockLayout.self).filter { $0.visible }
   }

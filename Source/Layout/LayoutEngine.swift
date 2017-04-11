@@ -82,8 +82,9 @@ open class LayoutEngine: NSObject {
    - parameter maxScale: The maximum scale for the engine, relative to Workspace coordinate system.
    Degaults to 2.0.
    */
-  public init(config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil, minimumScale: CGFloat = 0.5,
-              maximumScale: CGFloat = 2.0) {
+  public init(
+    config: LayoutConfig = LayoutConfig(), rtl: Bool? = nil, minimumScale: CGFloat = 0.5,
+    maximumScale: CGFloat = 2.0) {
     self.config = config
     self.rtl =
       rtl ?? (UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft)
