@@ -19,7 +19,7 @@ Supports devices running **iOS 8.0 or above**.
 
 Blockly for iOS includes:
 
-- Almost all features available in Blockly for [Web][2] and [Android][3].
+- All major features available in Blockly for [Web][2] and [Android][3]
 - Multi-touch support (currently only on iOS)
 - Block animations (currently only on iOS)
 
@@ -41,7 +41,9 @@ under the [Apache License, version 2.0][6].
 
 # Community
 
-Blockly has an active [developer forum][7]. Please drop by and say hello. Show us your prototypes early; collectively we have a lot of experience and can offer hints which will save you time.
+Blockly has an active [developer forum][7]. Please drop by and say hello. Show us
+your prototypes early; collectively we have a lot of experience and can offer
+hints which will save you time.
 
 # Registration
 
