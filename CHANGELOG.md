@@ -1,3 +1,7 @@
+# [Version 0.7.1](https://github.com/google/blockly-ios/tree/0.7.1) (Apr 2017)
+
+- Fixes compile errors/warnings related to Swift 3.1 (when using Xcode 8.3+).
+
 # [Version 0.7](https://github.com/google/blockly-ios/tree/0.7) (Apr 2017)
 
 - Adds support for events and undo-redo functionality.
