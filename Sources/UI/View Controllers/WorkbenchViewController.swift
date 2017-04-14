@@ -1628,7 +1628,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
       }
 
       // Fire the gesture if it started more than 20 degrees in the perpendicular direction
-      let angle = (radians / CGFloat(M_PI)) * 180
+      let angle = (radians / CGFloat.pi) * 180
       if angle > 20 {
         return true
       } else {

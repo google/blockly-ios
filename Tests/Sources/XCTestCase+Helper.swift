@@ -119,8 +119,12 @@ extension XCTestCase {
       conciseFunctionName = function
     }
     var bonusDescription = ""
-    bonusDescription += (message != nil ? " - \(message)" : "")
-    bonusDescription += (error != nil ? " - \(error)" : "")
+    if let message = message {
+      bonusDescription += " - \(message)"
+    }
+    if let error = error {
+      bonusDescription += " - \(error)"
+    }
     return "\(conciseFunctionName) failed: \(description) \(bonusDescription)"
   }
 }
