@@ -206,7 +206,7 @@ public final class CodeGenerator: NSObject {
         "\"\(trimmedXML.bky_escapedJavaScriptParameter())\", \(self.jsGeneratorObject))"
 
     self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
-      if error != nil {
+      if let error = error {
         self.codeGenerationFailed("An error occurred generating code: \(error)")
       }
     })
@@ -326,7 +326,7 @@ extension CodeGenerator: WKNavigationDelegate {
       let js = jsScripts.joined(separator: "\n")
 
       self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
-        if error != nil {
+        if let error = error {
           self.loadFailed("Could not evaluate JavaScript resource files: \(error)")
         } else {
           self.loadCompleted()

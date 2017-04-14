@@ -131,31 +131,32 @@ open class LayoutConfig: NSObject {
   // from a Dictionary<PropertyKey, Any> is a big performance hit.
 
   /// Dictionary mapping property keys to `Bool` values
-  private var _bools = Dictionary<PropertyKey, Bool>()
+  public private(set) var bools = Dictionary<PropertyKey, Bool>()
 
   /// Dictionary mapping property keys to `UIColor` values
-  private var _colors = Dictionary<PropertyKey, UIColor>()
+  public private(set) var colors = Dictionary<PropertyKey, UIColor>()
 
   /// Dictionary mapping property keys to `Double` values
-  private var _doubles = Dictionary<PropertyKey, Double>()
+  public private(set) var doubles = Dictionary<PropertyKey, Double>()
 
   /// Dictionary mapping property keys to `EdgeInsets` values
-  private var _edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
+  public private(set) var edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
 
   /// Dictionary mapping property keys to `CGFloat` values
-  private var _floats = Dictionary<PropertyKey, CGFloat>()
+  public private(set) var floats = Dictionary<PropertyKey, CGFloat>()
 
-  /// Dictionary mapping property keys to `ScaledFont` values
+  /// Dictionary mapping property keys to `ScaledFont` values.
+  /// NOTE: Fonts are purposely not exposed publicly as it does not require inline support.
   private var _fonts = Dictionary<PropertyKey, ScaledFont>()
 
   /// Dictionary mapping property keys to `Size` values
-  private var _sizes = Dictionary<PropertyKey, Size>()
+  public private(set) var sizes = Dictionary<PropertyKey, Size>()
 
   /// Dictionary mapping property keys to `Unit` values
-  private var _units = Dictionary<PropertyKey, Unit>()
+  public private(set) var units = Dictionary<PropertyKey, Unit>()
 
   /// Dictionary mapping property keys to `[String]` values
-  private var _stringArrays = Dictionary<PropertyKey, [String]>()
+  public private(set) var stringArrays = Dictionary<PropertyKey, [String]>()
 
   // MARK: - Initializers
 
@@ -226,7 +227,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setBool(_ boolValue: Bool, for key: PropertyKey) -> Bool {
-    _bools[key] = boolValue
+    bools[key] = boolValue
     return boolValue
   }
 
@@ -240,7 +241,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func bool(for key: PropertyKey, defaultValue: Bool = false) -> Bool {
-    return _bools[key] ?? setBool(defaultValue, for: key)
+    return bools[key] ?? setBool(defaultValue, for: key)
   }
 
   /**
@@ -252,7 +253,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setDouble(_ doubleValue: Double, for key: PropertyKey) -> Double {
-    _doubles[key] = doubleValue
+    doubles[key] = doubleValue
     return doubleValue
   }
 
@@ -266,7 +267,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func double(for key: PropertyKey, defaultValue: Double = 0) -> Double {
-    return _doubles[key] ?? setDouble(defaultValue, for: key)
+    return doubles[key] ?? setDouble(defaultValue, for: key)
   }
 
   /**
@@ -278,7 +279,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setColor(_ color: UIColor?, for key: PropertyKey) -> UIColor? {
-    _colors[key] = color
+    colors[key] = color
     return color
   }
 
@@ -292,7 +293,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func color(for key: PropertyKey, defaultValue: UIColor? = nil) -> UIColor? {
-    return _colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
+    return colors[key] ?? (defaultValue != nil ? setColor(defaultValue, for: key) : nil)
   }
 
   /**
@@ -304,7 +305,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setEdgeInsets(_ edgeInsets: EdgeInsets, for key: PropertyKey) -> EdgeInsets {
-    _edgeInsets[key] = edgeInsets
+    self.edgeInsets[key] = edgeInsets
     return edgeInsets
   }
 
@@ -320,7 +321,7 @@ open class LayoutConfig: NSObject {
   public func edgeInsets(for key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
     -> EdgeInsets
   {
-    return _edgeInsets[key] ?? setEdgeInsets(defaultValue, for: key)
+    return edgeInsets[key] ?? setEdgeInsets(defaultValue, for: key)
   }
 
   /**
@@ -332,7 +333,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setFloat(_ floatValue: CGFloat, for key: PropertyKey) -> CGFloat {
-    _floats[key] = floatValue
+    floats[key] = floatValue
     return floatValue
   }
 
@@ -346,7 +347,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func float(for key: PropertyKey, defaultValue: CGFloat = 0) -> CGFloat {
-    return _floats[key] ?? setFloat(defaultValue, for: key)
+    return floats[key] ?? setFloat(defaultValue, for: key)
   }
 
   /**
@@ -367,7 +368,6 @@ open class LayoutConfig: NSObject {
    - returns: If the `key` was found, its associated `FontCreator` value. Otherwise, `nil` is
    returned.
    */
-  @inline(__always)
   public func fontCreator(for key: PropertyKey) -> FontCreator? {
     return _fonts[key]?.creator
   }
@@ -380,7 +380,6 @@ open class LayoutConfig: NSObject {
    - returns: The scaled `UIFont` using the closure associated with the `key`, or a default `UIFont`
    if the key could not be located.
    */
-  @inline(__always)
   public func font(for key: PropertyKey) -> UIFont {
     return _fonts[key]?.font ?? UIFont.systemFont(ofSize: 16 * _scale)
   }
@@ -393,7 +392,6 @@ open class LayoutConfig: NSObject {
    - returns: The scaled `UIFont` using the closure associated with the `key`, or a default `UIFont`
    if the key could not be located.
    */
-  @inline(__always)
   public func popoverFont(for key: PropertyKey) -> UIFont {
     return _fonts[key]?.popoverFont ?? UIFont.systemFont(ofSize: 16 * _popoverScale)
   }
@@ -407,7 +405,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setSize(_ size: Size, for key: PropertyKey) -> Size {
-    _sizes[key] = size
+    sizes[key] = size
     return size
   }
 
@@ -421,7 +419,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
-    return _sizes[key] ?? setSize(defaultValue, for: key)
+    return sizes[key] ?? setSize(defaultValue, for: key)
   }
 
   /**
@@ -463,7 +461,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setUnit(_ unit: Unit, for key: PropertyKey) -> Unit {
-    _units[key] = unit
+    units[key] = unit
     return unit
   }
 
@@ -477,7 +475,7 @@ open class LayoutConfig: NSObject {
    */
   @inline(__always)
   public func unit(for key: PropertyKey, defaultValue: Unit = Unit(0)) -> Unit {
-    return _units[key] ?? setUnit(defaultValue, for: key)
+    return units[key] ?? setUnit(defaultValue, for: key)
   }
 
   /**
@@ -515,7 +513,7 @@ open class LayoutConfig: NSObject {
    */
   @discardableResult
   public func setStringArray(_ stringArrayValue: [String], for key: PropertyKey) -> [String] {
-    _stringArrays[key] = stringArrayValue
+    stringArrays[key] = stringArrayValue
     return stringArrayValue
   }
 
@@ -529,7 +527,7 @@ open class LayoutConfig: NSObject {
    - returns: The `key`'s value
    */
   public func stringArray(for key: PropertyKey, defaultValue: [String] = []) -> [String] {
-    return _stringArrays[key] ?? setStringArray(defaultValue, for: key)
+    return stringArrays[key] ?? setStringArray(defaultValue, for: key)
   }
 
   // MARK: - Update Values
@@ -544,14 +542,14 @@ open class LayoutConfig: NSObject {
     _scale = engine.scale
     _popoverScale = engine.popoverScale
 
-    for (key, var unit) in _units {
+    for (key, var unit) in units {
       unit.viewUnit = engine.viewUnitFromWorkspaceUnit(unit.workspaceUnit)
-      _units[key] = unit
+      units[key] = unit
     }
 
-    for (key, var size) in _sizes {
+    for (key, var size) in sizes {
       size.viewSize = engine.viewSizeFromWorkspaceSize(size.workspaceSize)
-      _sizes[key] = size
+      sizes[key] = size
     }
 
     for (_, scaledFont) in _fonts {

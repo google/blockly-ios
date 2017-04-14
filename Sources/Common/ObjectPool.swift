@@ -80,7 +80,7 @@ public final class ObjectPool: NSObject {
     // Prepare the object for re-use
     object.prepareForReuse()
 
-    let className = String(describing: (of: type(of: object))) as NSString
+    let className = String(describing: type(of: object)) as NSString
 
     if let list = _recycledObjects.object(forKey: className) {
       // Append to the array

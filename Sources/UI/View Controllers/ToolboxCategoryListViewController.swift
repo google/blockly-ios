@@ -365,11 +365,11 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     rotationView.bounds = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
     if orientation == .vertical {
-      // Rotate so the category appears vertically
-      rotationView.transform = CGAffineTransform(rotationAngle: -CGFloat(M_PI_2)) // Rotate -90°
+      // Rotate by -90° so the category appears vertically
+      rotationView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2.0)
 
-      // We want icons to appear right-side up, so we un-rotate them by 90 degrees
-      iconView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
+      // We want icons to appear right-side up, so we un-rotate them by 90°
+      iconView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
     }
   }
 
