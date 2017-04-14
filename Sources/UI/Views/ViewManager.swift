@@ -38,7 +38,7 @@ public final class ViewManager: NSObject {
   // MARK: - Properties
 
   /// Dictionary that indexes weak `LayoutView` references based on their `layout.uuid`
-  private var _views: NSMapTable<NSString, LayoutView> = NSMapTable.strongToWeakObjects()
+  public private(set) var views: NSMapTable<NSString, LayoutView> = NSMapTable.strongToWeakObjects()
 
   // MARK: - Public
 
@@ -49,7 +49,7 @@ public final class ViewManager: NSObject {
    - parameter layout: The `Layout` associated with the view
    */
   public func cacheView(_ layoutView: LayoutView, forLayout layout: Layout) {
-    _views.setObject(layoutView, forKey: layout.uuid as NSString?)
+    views.setObject(layoutView, forKey: layout.uuid as NSString?)
   }
 
   /**
@@ -58,7 +58,7 @@ public final class ViewManager: NSObject {
    - parameter layout: The given layout
    */
   public func uncacheView(forLayout layout: Layout) {
-    _views.removeObject(forKey: layout.uuid as NSString?)
+    views.removeObject(forKey: layout.uuid as NSString?)
   }
 
   /**
@@ -95,6 +95,6 @@ public final class ViewManager: NSObject {
    */
   @inline(__always)
   public func findView(forLayout layout: Layout) -> LayoutView? {
-    return _views.object(forKey: layout.uuid as NSString?)
+    return views.object(forKey: layout.uuid as NSString?)
   }
 }

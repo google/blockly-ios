@@ -279,7 +279,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     _webView.evaluateJavaScript(
       "Turtle.execute(\"\(codeParam)\")",
       completionHandler: { _, error -> Void in
-        if error != nil {
+        if let error = error {
           self.codeGenerationFailed(error: "\(error)")
         }
       })

@@ -150,7 +150,7 @@ extension DefaultBlockView {
   public final func addTopLeftCorner(toPath path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
   {
     path.addArc(withCenter: WorkspacePoint(x: blockCornerRadius, y: 0),
-      radius: blockCornerRadius, startAngle: CGFloat(M_PI), endAngle: CGFloat(M_PI * 1.5),
+      radius: blockCornerRadius, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 1.5,
       clockwise: true, relative: true)
   }
 
