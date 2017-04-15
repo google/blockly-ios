@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Blockly'
   s.module_name      = 'Blockly'
-  s.version          = '0.7.1'
+  s.version          = '0.7.2'
   s.summary          = 'A library from Google for building visual programming editors.'
   s.description      = <<-DESC
   Blockly is a visual editor that allows users to write programs by plugging blocks together.
