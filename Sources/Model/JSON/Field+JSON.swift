@@ -114,9 +114,11 @@ extension Field {
       // Angle
       registerType(FIELD_TYPE_ANGLE) {
         (json: [String: Any]) throws -> Field in
-        return FieldAngle(
-          name: (json[PARAMETER_NAME] as? String ?? "NAME"),
-          angle: (json[PARAMETER_ANGLE] as? Int ?? 90))
+        // NOTE: name and angle are declared in their own variables here to get around an
+        // Xcode 8.3/Swift 3.1 whole-module-optimization compiler bug.
+        let name = (json[PARAMETER_NAME] as? String ?? "NAME")
+        let angle: Int = JSONRegistry.parseInt(json[PARAMETER_ANGLE]) ?? 90
+        return FieldAngle(name: name, angle: angle)
       }
 
       // Checkbox
@@ -251,6 +253,17 @@ extension Field {
         // Use-case where Swift parsed `any` as an Int first, so we need to reconstruct it as a
         // Double.
         return Double(integer)
+      }
+      return nil
+    }
+
+    fileprivate static func parseInt(_ any: Any?) -> Int? {
+      // NOTE: While the code below (`any as? Int`) could simply be done at the location of the
+      // caller, there's a bug with the Xcode 8.3.1/Swift 3.1 compiler where this doesn't work
+      // properly when whole-module-optimization is turned on.
+      // Moving this code into a function seems to fix the problem.
+      if let integer = any as? Int {
+        return integer
       }
       return nil
     }
