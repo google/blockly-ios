@@ -60,6 +60,9 @@ class MusicMakerViewController: UIViewController {
     } else {
       // TODO: Run code for this button
       print("Pressed music button #\(buttonNumber).")
+
+      let codeRunner = CodeRunner()
+      codeRunner.runJavascriptCode("for (var i = 0; i < 100; i++) { MusicMaker.playSound('\(buttonNumber)'); }")
     }
   }
 

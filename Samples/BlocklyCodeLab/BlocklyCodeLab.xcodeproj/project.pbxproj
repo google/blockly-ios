@@ -10,9 +10,15 @@
 		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
 		FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A31EA046260071C1A3 /* AppDelegate.swift */; };
 		FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */; };
-		FA2F45A91EA046260071C1A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2F45A71EA046260071C1A3 /* Main.storyboard */; };
-		FA2F45AB1EA046260071C1A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA2F45AA1EA046260071C1A3 /* Assets.xcassets */; };
-		FA2F45AE1EA046260071C1A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2F45AC1EA046260071C1A3 /* LaunchScreen.storyboard */; };
+		FA8317361EA1BE1400A3A62E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8317311EA1BE1400A3A62E /* Assets.xcassets */; };
+		FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */; };
+		FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317341EA1BE1400A3A62E /* Main.storyboard */; };
+		FA8317401EA1BE2600A3A62E /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FA83173A1EA1BE2600A3A62E /* blockly_web */; };
+		FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA83173E1EA1BE2600A3A62E /* sound_blocks.json */; };
+		FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA83173F1EA1BE2600A3A62E /* toolbox.xml */; };
+		FA8317471EA1C0D900A3A62E /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8317461EA1C0D900A3A62E /* FileHelper.swift */; };
+		FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */; };
+		FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */; };
 		FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,12 +27,18 @@
 		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
 		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA2F45A31EA046260071C1A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA2F45A31EA046260071C1A3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
-		FA2F45A81EA046260071C1A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FA2F45AA1EA046260071C1A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		FA2F45AD1EA046260071C1A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA2F45AF1EA046260071C1A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA8317311EA1BE1400A3A62E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA8317331EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA8317351EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FA83173A1EA1BE2600A3A62E /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; name = blockly_web; path = "Non-Localized/blockly_web"; sourceTree = "<group>"; };
+		FA83173E1EA1BE2600A3A62E /* sound_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sound_blocks.json; path = "Non-Localized/sound_blocks.json"; sourceTree = "<group>"; };
+		FA83173F1EA1BE2600A3A62E /* toolbox.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = toolbox.xml; path = "Non-Localized/toolbox.xml"; sourceTree = "<group>"; };
+		FA8317461EA1C0D900A3A62E /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeRunner.swift; sourceTree = "<group>"; };
 		FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -35,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */,
 				C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,6 +58,7 @@
 		186D0DCD0885D6572D388526 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */,
 				CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */,
 			);
 			name = Frameworks;
@@ -82,13 +96,42 @@
 			children = (
 				FA2F45A31EA046260071C1A3 /* AppDelegate.swift */,
 				FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */,
+				FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */,
+				FA8317461EA1C0D900A3A62E /* FileHelper.swift */,
 				FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */,
-				FA2F45A71EA046260071C1A3 /* Main.storyboard */,
-				FA2F45AA1EA046260071C1A3 /* Assets.xcassets */,
-				FA2F45AC1EA046260071C1A3 /* LaunchScreen.storyboard */,
 				FA2F45AF1EA046260071C1A3 /* Info.plist */,
+				FAE5AF971EA1B61E00551B07 /* Resources */,
 			);
 			path = BlocklyCodeLab;
+			sourceTree = "<group>";
+		};
+		FA8317301EA1BE1400A3A62E /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA8317311EA1BE1400A3A62E /* Assets.xcassets */,
+				FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */,
+				FA8317341EA1BE1400A3A62E /* Main.storyboard */,
+			);
+			path = Localized;
+			sourceTree = "<group>";
+		};
+		FA8317391EA1BE1700A3A62E /* Non-Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA83173A1EA1BE2600A3A62E /* blockly_web */,
+				FA83173E1EA1BE2600A3A62E /* sound_blocks.json */,
+				FA83173F1EA1BE2600A3A62E /* toolbox.xml */,
+			);
+			name = "Non-Localized";
+			sourceTree = "<group>";
+		};
+		FAE5AF971EA1B61E00551B07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA8317301EA1BE1400A3A62E /* Localized */,
+				FA8317391EA1BE1700A3A62E /* Non-Localized */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,9 +196,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA2F45AE1EA046260071C1A3 /* LaunchScreen.storyboard in Resources */,
-				FA2F45AB1EA046260071C1A3 /* Assets.xcassets in Resources */,
-				FA2F45A91EA046260071C1A3 /* Main.storyboard in Resources */,
+				FA8317401EA1BE2600A3A62E /* blockly_web in Resources */,
+				FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */,
+				FA8317361EA1BE1400A3A62E /* Assets.xcassets in Resources */,
+				FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */,
+				FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */,
+				FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +260,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA8317471EA1C0D900A3A62E /* FileHelper.swift in Sources */,
+				FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */,
 				FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */,
 				FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */,
 				FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */,
@@ -223,20 +271,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FA2F45A71EA046260071C1A3 /* Main.storyboard */ = {
+		FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FA2F45A81EA046260071C1A3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		FA2F45AC1EA046260071C1A3 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA2F45AD1EA046260071C1A3 /* Base */,
+				FA8317331EA1BE1400A3A62E /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FA8317341EA1BE1400A3A62E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA8317351EA1BE1400A3A62E /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

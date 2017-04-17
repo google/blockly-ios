@@ -24,15 +24,51 @@ class ButtonEditorViewController: UIViewController {
   // MARK: - Properties
 
   /// The main Blockly editor.
-  private let workbenchViewController = WorkbenchViewController(style: .defaultStyle)
+  private var workbenchViewController: WorkbenchViewController = {
+    let workbenchViewController = WorkbenchViewController(style: .alternate)
+
+    // Load default blocks into the block factory
+    let blockFactory = workbenchViewController.blockFactory
+    blockFactory.load(fromDefaultFiles: .allDefault)
+
+    // Load sound blocks into the block factory
+    do {
+      try blockFactory.load(fromJSONPaths: ["sound_blocks.json"])
+    } catch let error {
+      print("An error occurred loading the turtle blocks: \(error)")
+    }
+
+    // Load toolbox
+    do {
+      let toolboxPath = "toolbox.xml"
+      if let bundlePath = Bundle.main.path(forResource: toolboxPath, ofType: nil) {
+        let xmlString = try String(contentsOfFile: bundlePath, encoding: String.Encoding.utf8)
+        let toolbox = try Toolbox.makeToolbox(xmlString: xmlString, factory: blockFactory)
+        try workbenchViewController.loadToolbox(toolbox)
+      } else {
+        print("Could not load toolbox XML from '\(toolboxPath)'")
+      }
+    } catch let error {
+      print("An error occurred loading the toolbox: \(error)")
+    }
+
+    return workbenchViewController
+  }()
 
   /// The button number to edit.
   public private(set) var buttonNumber: Int = 0
+
+  /// File where data is saved.
+  private var saveFile: String {
+    return "workspace\(buttonNumber).xml"
+  }
 
   // MARK: - Super
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    edgesForExtendedLayout = []
 
     // Add editor to this view controller
     addChildViewController(workbenchViewController)
@@ -54,10 +90,27 @@ class ButtonEditorViewController: UIViewController {
   public func loadBlocks(forButtonNumber buttonNumber: Int) {
     self.buttonNumber = buttonNumber
 
-    // TODO: Load saved blocks for button
+    // Load workspace from disk
+    if let xml = FileHelper.loadContents(of: saveFile) {
+      do {
+        let workspace = Workspace()
+        try workspace.loadBlocks(fromXMLString: xml, factory: workbenchViewController.blockFactory)
+        try workbenchViewController.loadWorkspace(workspace)
+      } catch let error {
+        print("Couldn't load workspace from disk: \(error)")
+      }
+    }
   }
 
   public func saveBlocks() {
-    // TODO
+    // Save the workspace to disk
+    if let workspace = workbenchViewController.workspace {
+      do {
+        let xml = try workspace.toXML()
+        FileHelper.saveContents(xml, to: saveFile)
+      } catch let error {
+        print("Couldn't save workspace to disk: \(error)")
+      }
+    }
   }
 }
