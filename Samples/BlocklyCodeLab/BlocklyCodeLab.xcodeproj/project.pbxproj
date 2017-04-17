@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3038F1381EA568E4008208EE /* AudioPlayer.swift */; };
+		305D28A81EA56A2700686E13 /* cheer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A21EA56A2700686E13 /* cheer.mp3 */; };
+		305D28A91EA56A2700686E13 /* fart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A31EA56A2700686E13 /* fart.mp3 */; };
+		305D28AA1EA56A2700686E13 /* fire_bow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A41EA56A2700686E13 /* fire_bow.mp3 */; };
+		305D28AB1EA56A2700686E13 /* lightbulb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A51EA56A2700686E13 /* lightbulb.mp3 */; };
+		305D28AC1EA56A2700686E13 /* party_horn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A61EA56A2700686E13 /* party_horn.mp3 */; };
+		305D28AD1EA56A2700686E13 /* string_tension.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A71EA56A2700686E13 /* string_tension.mp3 */; };
 		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
 		FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A31EA046260071C1A3 /* AppDelegate.swift */; };
 		FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */; };
@@ -24,6 +31,13 @@
 
 /* Begin PBXFileReference section */
 		1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.release.xcconfig"; sourceTree = "<group>"; };
+		3038F1381EA568E4008208EE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		305D28A21EA56A2700686E13 /* cheer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = cheer.mp3; path = ../res/cheer.mp3; sourceTree = "<group>"; };
+		305D28A31EA56A2700686E13 /* fart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = fart.mp3; path = ../res/fart.mp3; sourceTree = "<group>"; };
+		305D28A41EA56A2700686E13 /* fire_bow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = fire_bow.mp3; path = ../res/fire_bow.mp3; sourceTree = "<group>"; };
+		305D28A51EA56A2700686E13 /* lightbulb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = lightbulb.mp3; path = ../res/lightbulb.mp3; sourceTree = "<group>"; };
+		305D28A61EA56A2700686E13 /* party_horn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = party_horn.mp3; path = ../res/party_horn.mp3; sourceTree = "<group>"; };
+		305D28A71EA56A2700686E13 /* string_tension.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = string_tension.mp3; path = ../res/string_tension.mp3; sourceTree = "<group>"; };
 		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
 		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +78,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		305D28AE1EA56A4F00686E13 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				305D28A21EA56A2700686E13 /* cheer.mp3 */,
+				305D28A31EA56A2700686E13 /* fart.mp3 */,
+				305D28A41EA56A2700686E13 /* fire_bow.mp3 */,
+				305D28A51EA56A2700686E13 /* lightbulb.mp3 */,
+				305D28A61EA56A2700686E13 /* party_horn.mp3 */,
+				305D28A71EA56A2700686E13 /* string_tension.mp3 */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
 		4D6166B58DA104EC365FB044 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +121,7 @@
 		FA2F45A21EA046260071C1A3 /* BlocklyCodeLab */ = {
 			isa = PBXGroup;
 			children = (
+				3038F1381EA568E4008208EE /* AudioPlayer.swift */,
 				FA2F45A31EA046260071C1A3 /* AppDelegate.swift */,
 				FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */,
 				FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */,
@@ -118,6 +146,7 @@
 		FA8317391EA1BE1700A3A62E /* Non-Localized */ = {
 			isa = PBXGroup;
 			children = (
+				305D28AE1EA56A4F00686E13 /* Sounds */,
 				FA83173A1EA1BE2600A3A62E /* blockly_web */,
 				FA83173E1EA1BE2600A3A62E /* sound_blocks.json */,
 				FA83173F1EA1BE2600A3A62E /* toolbox.xml */,
@@ -196,11 +225,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				305D28AD1EA56A2700686E13 /* string_tension.mp3 in Resources */,
 				FA8317401EA1BE2600A3A62E /* blockly_web in Resources */,
 				FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */,
+				305D28AC1EA56A2700686E13 /* party_horn.mp3 in Resources */,
+				305D28A91EA56A2700686E13 /* fart.mp3 in Resources */,
 				FA8317361EA1BE1400A3A62E /* Assets.xcassets in Resources */,
 				FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */,
+				305D28AB1EA56A2700686E13 /* lightbulb.mp3 in Resources */,
 				FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */,
+				305D28AA1EA56A2700686E13 /* fire_bow.mp3 in Resources */,
+				305D28A81EA56A2700686E13 /* cheer.mp3 in Resources */,
 				FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,7 +285,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -265,6 +300,7 @@
 				FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */,
 				FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */,
 				FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */,
+				3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

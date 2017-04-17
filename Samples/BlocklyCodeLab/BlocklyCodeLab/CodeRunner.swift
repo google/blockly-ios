@@ -57,7 +57,7 @@ class CodeRunner {
 @objc class MusicMaker: NSObject, MusicMakerJSExports {
   static func playSound(_ sound: String) {
     DispatchQueue.main.async {
-      print("DING DONG: \(sound)!")
+      AudioPlayer.sharedInstance.play(sound)
     }
   }
 }
