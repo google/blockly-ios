@@ -11,7 +11,15 @@
         ["Fire Bow", "Sounds/fire_bow.mp3"],
         ["Lightbulb", "Sounds/lightbulb.mp3"],
         ["Party Horn", "Sounds/party_horn.mp3"],
-        ["String Tension", "Sounds/string_tension.mp3"]
+        ["String Tension", "Sounds/string_tension.mp3"],
+        ["C4", "Sounds/c4.m4a"],
+        ["D4", "Sounds/d4.m4a"],
+        ["E4", "Sounds/e4.m4a"],
+        ["F4", "Sounds/f4.m4a"],
+        ["G4", "Sounds/g4.m4a"],
+        ["A4", "Sounds/a4.m4a"],
+        ["B4", "Sounds/b4.m4a"],
+        ["C5", "Sounds/c5.m4a"]
       ]
     }],
     "previousStatement": null,
