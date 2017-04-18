@@ -19,7 +19,7 @@
 		FA8317471EA1C0D900A3A62E /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8317461EA1C0D900A3A62E /* FileHelper.swift */; };
 		FA8317491EA56A5100A3A62E /* CodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8317481EA56A5100A3A62E /* CodeManager.swift */; };
 		FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */ = {isa = PBXBuildFile; fileRef = FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */; };
-		FA8317531EA5BB2A00A3A62E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8317521EA5BB2A00A3A62E /* Assets.xcassets */; };
+		FA8317551EA6C28E00A3A62E /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = FA8317541EA6C28E00A3A62E /* Sounds */; };
 		FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */; };
 		FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */; };
 		FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */; };
@@ -28,12 +28,6 @@
 /* Begin PBXFileReference section */
 		1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.release.xcconfig"; sourceTree = "<group>"; };
 		3038F1381EA568E4008208EE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
-		305D28A21EA56A2700686E13 /* cheer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = cheer.mp3; path = ../res/cheer.mp3; sourceTree = "<group>"; };
-		305D28A31EA56A2700686E13 /* fart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = fart.mp3; path = ../res/fart.mp3; sourceTree = "<group>"; };
-		305D28A41EA56A2700686E13 /* fire_bow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = fire_bow.mp3; path = ../res/fire_bow.mp3; sourceTree = "<group>"; };
-		305D28A51EA56A2700686E13 /* lightbulb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = lightbulb.mp3; path = ../res/lightbulb.mp3; sourceTree = "<group>"; };
-		305D28A61EA56A2700686E13 /* party_horn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = party_horn.mp3; path = ../res/party_horn.mp3; sourceTree = "<group>"; };
-		305D28A71EA56A2700686E13 /* string_tension.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = string_tension.mp3; path = ../res/string_tension.mp3; sourceTree = "<group>"; };
 		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
 		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,7 +42,7 @@
 		FA8317461EA1C0D900A3A62E /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		FA8317481EA56A5100A3A62E /* CodeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeManager.swift; sourceTree = "<group>"; };
 		FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sound_block_generators.js; path = "Non-Localized/sound_block_generators.js"; sourceTree = "<group>"; };
-		FA8317521EA5BB2A00A3A62E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA8317541EA6C28E00A3A62E /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sounds; path = "Non-Localized/Sounds"; sourceTree = "<group>"; };
 		FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeRunner.swift; sourceTree = "<group>"; };
 		FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
@@ -74,19 +68,6 @@
 				CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		305D28AE1EA56A4F00686E13 /* Sounds */ = {
-			isa = PBXGroup;
-			children = (
-				305D28A21EA56A2700686E13 /* cheer.mp3 */,
-				305D28A31EA56A2700686E13 /* fart.mp3 */,
-				305D28A41EA56A2700686E13 /* fire_bow.mp3 */,
-				305D28A51EA56A2700686E13 /* lightbulb.mp3 */,
-				305D28A61EA56A2700686E13 /* party_horn.mp3 */,
-				305D28A71EA56A2700686E13 /* string_tension.mp3 */,
-			);
-			name = Sounds;
 			sourceTree = "<group>";
 		};
 		4D6166B58DA104EC365FB044 /* Pods */ = {
@@ -135,7 +116,6 @@
 		FA8317301EA1BE1400A3A62E /* Localized */ = {
 			isa = PBXGroup;
 			children = (
-				FA8317521EA5BB2A00A3A62E /* Assets.xcassets */,
 				FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */,
 				FA8317341EA1BE1400A3A62E /* Main.storyboard */,
 			);
@@ -145,8 +125,8 @@
 		FA8317391EA1BE1700A3A62E /* Non-Localized */ = {
 			isa = PBXGroup;
 			children = (
-				305D28AE1EA56A4F00686E13 /* Sounds */,
 				FA83173A1EA1BE2600A3A62E /* blockly_web */,
+				FA8317541EA6C28E00A3A62E /* Sounds */,
 				FA83173E1EA1BE2600A3A62E /* sound_blocks.json */,
 				FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */,
 				FA83173F1EA1BE2600A3A62E /* toolbox.xml */,
@@ -198,6 +178,7 @@
 				TargetAttributes = {
 					FA2F459F1EA046250071C1A3 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = EQHXZ8M8AV;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -227,9 +208,9 @@
 			files = (
 				FA8317401EA1BE2600A3A62E /* blockly_web in Resources */,
 				FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */,
+				FA8317551EA6C28E00A3A62E /* Sounds in Resources */,
 				FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */,
 				FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */,
-				FA8317531EA5BB2A00A3A62E /* Assets.xcassets in Resources */,
 				FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */,
 				FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */,
 			);
@@ -420,6 +401,7 @@
 			baseConfigurationReference = 73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;
@@ -433,6 +415,7 @@
 			baseConfigurationReference = 1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;

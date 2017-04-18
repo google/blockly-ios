@@ -1,32 +1,21 @@
 [
   {
-    "type": "sounds_play_sound",
+    "type": "play_sound",
     "message0": "Play %1",
-    "args0": [{
-      "type": "input_value",
-      "name": "SOUND",
-      "check": "Sound"
-    }],
-    "previousStatement": null,
-    "nextStatement": null,
-    "colour": 20
-  },
-  {
-    "type": "sounds_dropdown",
-    "message0": "%1",
     "args0": [{
       "type": "field_dropdown",
       "name": "VALUE",
       "options": [
-        ["Cheer", "cheer"],
-        ["Fart", "fart"],
-        ["Fire Bow", "fire_bow"],
-        ["Lightbulb", "lightbulb"],
-        ["Party Horn", "party_horn"],
-        ["String Tension", "string_tension"]
+        ["Cheer", "Sounds/cheer.mp3"],
+        ["Fart", "Sounds/fart.mp3"],
+        ["Fire Bow", "Sounds/fire_bow.mp3"],
+        ["Lightbulb", "Sounds/lightbulb.mp3"],
+        ["Party Horn", "Sounds/party_horn.mp3"],
+        ["String Tension", "Sounds/string_tension.mp3"]
       ]
     }],
-    "output": "Sound",
+    "previousStatement": null,
+    "nextStatement": null,
     "colour": 20
   }
 ]

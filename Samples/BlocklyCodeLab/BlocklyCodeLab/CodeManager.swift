@@ -25,20 +25,13 @@ class CodeManager {
   var savedCode = [String: String]()
 
   /// Service used for converting workspace XML into JS code.
-  lazy var codeGeneratorService: CodeGeneratorService = {
-    // Create the code generator service
-    let codeGeneratorService = CodeGeneratorService(
-      jsCoreDependencies: [
-        // The JS file containing the Blockly engine
-        "blockly_web/blockly_compressed.js",
-        // The JS file containing a list of internationalized messages
-        "blockly_web/msg/js/en.js"
-      ])
-
-    // Assign the request builder to the service
-    codeGeneratorService.setRequestBuilder(self.requestBuilder, shouldCache: true)
-    return codeGeneratorService
-  }()
+  var codeGeneratorService = CodeGeneratorService(
+    jsCoreDependencies: [
+      // The JS file containing the Blockly engine
+      "blockly_web/blockly_compressed.js",
+      // The JS file containing a list of internationalized messages
+      "blockly_web/msg/js/en.js"
+    ])
 
   /// Builder for creating code generator service requests.
   var requestBuilder: CodeGeneratorServiceRequestBuilder = {
@@ -57,6 +50,12 @@ class CodeManager {
 
     return builder
   }()
+
+  init() {
+    // Assign the request builder to the service and cache it so subsequent code generation
+    // runs are immediate.
+    codeGeneratorService.setRequestBuilder(self.requestBuilder, shouldCache: true)
+  }
 
   deinit {
     codeGeneratorService.cancelAllRequests()

@@ -56,7 +56,7 @@ class CodeRunner {
 @objc protocol MusicMakerJSExports: JSExport {
   static func create() -> MusicMaker
 
-  func playSound(_ sound: String)
+  func playSound(_ assetName: String, _ blockID: String)
 }
 
 @objc class MusicMaker: NSObject, MusicMakerJSExports {
@@ -66,6 +66,22 @@ class CodeRunner {
 
   static func create() -> MusicMaker {
     return MusicMaker()
+  }
+
+  func playSound(_ file: String, _ blockID: String) {
+    guard let player = AudioPlayer(file: file) else {
+      return
+    }
+
+    player.onFinish = { successfully in
+      self.audioPlayer = nil
+      self.notifyCondition(self.playSoundCondition, predicate: &self.playedSound)
+    }
+
+    if player.play() {
+      audioPlayer = player
+      wait(forCondition: self.playSoundCondition, predicate: &self.playedSound)
+    }
   }
 
   func wait(forCondition condition: NSCondition, predicate: inout Bool) {
@@ -82,21 +98,5 @@ class CodeRunner {
     predicate = true
     condition.signal()
     condition.unlock()
-  }
-
-  func playSound(_ sound: String) {
-    guard let player = AudioPlayer(file: sound) else {
-      return
-    }
-
-    player.onFinish = { successfully in
-      self.audioPlayer = nil
-      self.notifyCondition(self.playSoundCondition, predicate: &self.playedSound)
-    }
-
-    if player.play() {
-      audioPlayer = player
-      wait(forCondition: self.playSoundCondition, predicate: &self.playedSound)
-    }
   }
 }

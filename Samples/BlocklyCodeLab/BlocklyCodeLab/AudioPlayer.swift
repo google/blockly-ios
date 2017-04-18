@@ -28,13 +28,14 @@ class AudioPlayer: NSObject {
   // MARK: - Initializers
 
   public init?(file: String) {
-    guard let sound = NSDataAsset(name: file) else {
-      print("Could not find the sound effect for '\(file)' in `Assets.xcassets`.")
+    guard let path = Bundle.main.path(forResource: file, ofType: "") else {
+      print("Could not find the sound effect for '\(file)'.")
       return nil
     }
 
     do {
-      player = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeMPEGLayer3)
+      let pathURL = URL(fileURLWithPath: path)
+      player = try AVAudioPlayer(contentsOf: pathURL)
       super.init()
 
       player.delegate = self
