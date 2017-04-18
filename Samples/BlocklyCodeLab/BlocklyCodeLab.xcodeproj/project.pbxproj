@@ -8,22 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3038F1381EA568E4008208EE /* AudioPlayer.swift */; };
-		305D28A81EA56A2700686E13 /* cheer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A21EA56A2700686E13 /* cheer.mp3 */; };
-		305D28A91EA56A2700686E13 /* fart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A31EA56A2700686E13 /* fart.mp3 */; };
-		305D28AA1EA56A2700686E13 /* fire_bow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A41EA56A2700686E13 /* fire_bow.mp3 */; };
-		305D28AB1EA56A2700686E13 /* lightbulb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A51EA56A2700686E13 /* lightbulb.mp3 */; };
-		305D28AC1EA56A2700686E13 /* party_horn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A61EA56A2700686E13 /* party_horn.mp3 */; };
-		305D28AD1EA56A2700686E13 /* string_tension.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 305D28A71EA56A2700686E13 /* string_tension.mp3 */; };
 		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
 		FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A31EA046260071C1A3 /* AppDelegate.swift */; };
 		FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */; };
-		FA8317361EA1BE1400A3A62E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8317311EA1BE1400A3A62E /* Assets.xcassets */; };
 		FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */; };
 		FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317341EA1BE1400A3A62E /* Main.storyboard */; };
 		FA8317401EA1BE2600A3A62E /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FA83173A1EA1BE2600A3A62E /* blockly_web */; };
 		FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA83173E1EA1BE2600A3A62E /* sound_blocks.json */; };
 		FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA83173F1EA1BE2600A3A62E /* toolbox.xml */; };
 		FA8317471EA1C0D900A3A62E /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8317461EA1C0D900A3A62E /* FileHelper.swift */; };
+		FA8317491EA56A5100A3A62E /* CodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8317481EA56A5100A3A62E /* CodeManager.swift */; };
+		FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */ = {isa = PBXBuildFile; fileRef = FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */; };
+		FA8317531EA5BB2A00A3A62E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8317521EA5BB2A00A3A62E /* Assets.xcassets */; };
 		FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */; };
 		FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */; };
 		FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */; };
@@ -44,13 +40,15 @@
 		FA2F45A31EA046260071C1A3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
 		FA2F45AF1EA046260071C1A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA8317311EA1BE1400A3A62E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA8317331EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA8317351EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA83173A1EA1BE2600A3A62E /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; name = blockly_web; path = "Non-Localized/blockly_web"; sourceTree = "<group>"; };
 		FA83173E1EA1BE2600A3A62E /* sound_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sound_blocks.json; path = "Non-Localized/sound_blocks.json"; sourceTree = "<group>"; };
 		FA83173F1EA1BE2600A3A62E /* toolbox.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = toolbox.xml; path = "Non-Localized/toolbox.xml"; sourceTree = "<group>"; };
 		FA8317461EA1C0D900A3A62E /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		FA8317481EA56A5100A3A62E /* CodeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeManager.swift; sourceTree = "<group>"; };
+		FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sound_block_generators.js; path = "Non-Localized/sound_block_generators.js"; sourceTree = "<group>"; };
+		FA8317521EA5BB2A00A3A62E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeRunner.swift; sourceTree = "<group>"; };
 		FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +123,7 @@
 				FA2F45A31EA046260071C1A3 /* AppDelegate.swift */,
 				FAEF58BF1EA05112002E5FDA /* ButtonEditorViewController.swift */,
 				FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */,
+				FA8317481EA56A5100A3A62E /* CodeManager.swift */,
 				FA8317461EA1C0D900A3A62E /* FileHelper.swift */,
 				FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */,
 				FA2F45AF1EA046260071C1A3 /* Info.plist */,
@@ -136,7 +135,7 @@
 		FA8317301EA1BE1400A3A62E /* Localized */ = {
 			isa = PBXGroup;
 			children = (
-				FA8317311EA1BE1400A3A62E /* Assets.xcassets */,
+				FA8317521EA5BB2A00A3A62E /* Assets.xcassets */,
 				FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */,
 				FA8317341EA1BE1400A3A62E /* Main.storyboard */,
 			);
@@ -149,6 +148,7 @@
 				305D28AE1EA56A4F00686E13 /* Sounds */,
 				FA83173A1EA1BE2600A3A62E /* blockly_web */,
 				FA83173E1EA1BE2600A3A62E /* sound_blocks.json */,
+				FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */,
 				FA83173F1EA1BE2600A3A62E /* toolbox.xml */,
 			);
 			name = "Non-Localized";
@@ -225,17 +225,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				305D28AD1EA56A2700686E13 /* string_tension.mp3 in Resources */,
 				FA8317401EA1BE2600A3A62E /* blockly_web in Resources */,
 				FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */,
-				305D28AC1EA56A2700686E13 /* party_horn.mp3 in Resources */,
-				305D28A91EA56A2700686E13 /* fart.mp3 in Resources */,
-				FA8317361EA1BE1400A3A62E /* Assets.xcassets in Resources */,
 				FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */,
-				305D28AB1EA56A2700686E13 /* lightbulb.mp3 in Resources */,
 				FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */,
-				305D28AA1EA56A2700686E13 /* fire_bow.mp3 in Resources */,
-				305D28A81EA56A2700686E13 /* cheer.mp3 in Resources */,
+				FA8317531EA5BB2A00A3A62E /* Assets.xcassets in Resources */,
+				FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */,
 				FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,7 +280,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -299,6 +294,7 @@
 				FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */,
 				FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */,
 				FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */,
+				FA8317491EA56A5100A3A62E /* CodeManager.swift in Sources */,
 				FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */,
 				3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */,
 			);
@@ -366,7 +362,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -410,7 +406,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

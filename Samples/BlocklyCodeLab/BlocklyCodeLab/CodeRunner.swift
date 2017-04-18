@@ -41,23 +41,62 @@ class CodeRunner {
     }
   }
 
-  public func runJavascriptCode(_ code: String) {
-    // TODO: Cancel existing code
+  public func runJavascriptCode(_ code: String, onFinish: @escaping () -> ()) {
     // Execute JS Code on the background thread
     jsThread.async {
-      self.context.evaluateScript(code)
+      self.context.evaluateScript("var musicMaker = MusicMaker.create();" + code)
+
+      DispatchQueue.main.async {
+        onFinish()
+      }
     }
   }
 }
 
 @objc protocol MusicMakerJSExports: JSExport {
-  static func playSound(_ sound: String)
+  static func create() -> MusicMaker
+
+  func playSound(_ sound: String)
 }
 
 @objc class MusicMaker: NSObject, MusicMakerJSExports {
-  static func playSound(_ sound: String) {
-    DispatchQueue.main.async {
-      AudioPlayer.sharedInstance.play(sound)
+  let playSoundCondition = NSCondition()
+  var playedSound = false
+  var audioPlayer: AudioPlayer?
+
+  static func create() -> MusicMaker {
+    return MusicMaker()
+  }
+
+  func wait(forCondition condition: NSCondition, predicate: inout Bool) {
+    condition.lock()
+    while (!predicate) {
+      condition.wait()
+    }
+    predicate = false
+    condition.unlock()
+  }
+
+  func notifyCondition(_ condition: NSCondition, predicate: inout Bool) {
+    condition.lock()
+    predicate = true
+    condition.signal()
+    condition.unlock()
+  }
+
+  func playSound(_ sound: String) {
+    guard let player = AudioPlayer(file: sound) else {
+      return
+    }
+
+    player.onFinish = { successfully in
+      self.audioPlayer = nil
+      self.notifyCondition(self.playSoundCondition, predicate: &self.playedSound)
+    }
+
+    if player.play() {
+      audioPlayer = player
+      wait(forCondition: self.playSoundCondition, predicate: &self.playedSound)
     }
   }
 }

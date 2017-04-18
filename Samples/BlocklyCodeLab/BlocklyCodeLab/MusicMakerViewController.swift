@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import Blockly
 import UIKit
 
 /**
@@ -24,12 +25,36 @@ import UIKit
  */
 class MusicMakerViewController: UIViewController {
 
+  /// Generates and stores Javascript code for each button.
+  var codeManager = CodeManager()
+
+  /// List of all objects that are currently running Javascript code.
+  var codeRunners = [CodeRunner]()
+
+  /// The current button number that is being edited.
+  var editingButtonNumber = 0
+
   // MARK: - Super
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    updateState()
+    // Load code for each button
+    for i in 1...6 {
+      generateCode(forButton: i)
+    }
+
+    updateState(animated: false)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // If this view controller is appearing again after editing a button, generate new code for it.
+    if editingButtonNumber > 0 {
+      generateCode(forButton: editingButtonNumber)
+      editingButtonNumber = 0
+    }
   }
 
   override func didReceiveMemoryWarning() {
@@ -41,7 +66,7 @@ class MusicMakerViewController: UIViewController {
 
   private dynamic func toggleEditing(_ sender: UIButton) {
     setEditing(!isEditing, animated: true)
-    updateState()
+    updateState(animated: true)
   }
 
   @IBAction func pressedMusicButton(_ sender: Any) {
@@ -53,32 +78,61 @@ class MusicMakerViewController: UIViewController {
     let buttonNumber = button.tag
 
     if isEditing {
-      // Load the editor for this button number
-      let buttonEditorViewController = ButtonEditorViewController()
-      buttonEditorViewController.loadBlocks(forButtonNumber: buttonNumber)
-      navigationController?.pushViewController(buttonEditorViewController, animated: true)
+      editButton(buttonNumber)
     } else {
-      // TODO: Run code for this button
-      print("Pressed music button #\(buttonNumber).")
+      runCode(forButton: buttonNumber)
+    }
+  }
 
+  // MARK: - Editing
+
+  func editButton(_ button: Int) {
+    // Load the editor for this button number
+    let buttonEditorViewController = ButtonEditorViewController()
+    buttonEditorViewController.loadBlocks(forButtonNumber: button)
+    navigationController?.pushViewController(buttonEditorViewController, animated: true)
+
+    editingButtonNumber = button
+  }
+
+  func generateCode(forButton button: Int) {
+    // If a saved workspace file exists for this button, generate the code for it.
+    if let workspaceXML = FileHelper.loadContents(of: "workspace\(button).xml") {
+      codeManager.generateCode(forKey: String(button), workspaceXML: workspaceXML)
+    }
+  }
+
+  func runCode(forButton button: Int) {
+    // If code exists for this button, run it.
+    if let code = codeManager.code(forKey: String(button)) {
       let codeRunner = CodeRunner()
-      codeRunner.runJavascriptCode("for (var i = 0; i < 2; i++) { MusicMaker.playSound(\"fart\"); }")
+      codeRunners.append(codeRunner)
+
+      codeRunner.runJavascriptCode(code) {
+        self.codeRunners = self.codeRunners.filter { $0 !== codeRunner }
+      }
     }
   }
 
   // MARK: - State
 
-  private func updateState() {
+  private func updateState(animated: Bool) {
     if isEditing {
       let button = UIBarButtonItem(
         barButtonSystemItem: .done, target: self, action: #selector(toggleEditing(_:)))
-      navigationItem.setRightBarButton(button, animated: true)
+      navigationItem.setRightBarButton(button, animated: animated)
       navigationItem.title = "Configure Music Maker"
     } else {
       let button = UIBarButtonItem(
         barButtonSystemItem: .edit, target: self, action: #selector(toggleEditing(_:)))
-      navigationItem.setRightBarButton(button, animated: true)
+      navigationItem.setRightBarButton(button, animated: animated)
       navigationItem.title = "Music Maker"
+    }
+
+    UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+      self.view.backgroundColor = self.isEditing ?
+        UIColor(red: 158.0/255.0, green: 158.0/255.0, blue: 158.0/255.0, alpha: 1.0) :
+        UIColor.white
     }
   }
 }

@@ -27,6 +27,8 @@ class ButtonEditorViewController: UIViewController {
   private var workbenchViewController: WorkbenchViewController = {
     let workbenchViewController = WorkbenchViewController(style: .alternate)
 
+    workbenchViewController.toolboxDrawerStaysOpen = true
+
     // Load default blocks into the block factory
     let blockFactory = workbenchViewController.blockFactory
     blockFactory.load(fromDefaultFiles: .allDefault)
@@ -58,11 +60,6 @@ class ButtonEditorViewController: UIViewController {
   /// The button number to edit.
   public private(set) var buttonNumber: Int = 0
 
-  /// File where data is saved.
-  private var saveFile: String {
-    return "workspace\(buttonNumber).xml"
-  }
-
   // MARK: - Super
 
   override func viewDidLoad() {
@@ -91,7 +88,7 @@ class ButtonEditorViewController: UIViewController {
     self.buttonNumber = buttonNumber
 
     // Load workspace from disk
-    if let xml = FileHelper.loadContents(of: saveFile) {
+    if let xml = FileHelper.loadContents(of: "workspace\(buttonNumber).xml") {
       do {
         let workspace = Workspace()
         try workspace.loadBlocks(fromXMLString: xml, factory: workbenchViewController.blockFactory)
@@ -107,7 +104,7 @@ class ButtonEditorViewController: UIViewController {
     if let workspace = workbenchViewController.workspace {
       do {
         let xml = try workspace.toXML()
-        FileHelper.saveContents(xml, to: saveFile)
+        FileHelper.saveContents(xml, to: "workspace\(buttonNumber).xml")
       } catch let error {
         print("Couldn't save workspace to disk: \(error)")
       }
