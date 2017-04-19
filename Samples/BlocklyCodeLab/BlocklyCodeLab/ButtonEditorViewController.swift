@@ -26,7 +26,6 @@ class ButtonEditorViewController: UIViewController {
   /// The main Blockly editor.
   private var workbenchViewController: WorkbenchViewController = {
     let workbenchViewController = WorkbenchViewController(style: .alternate)
-
     workbenchViewController.toolboxDrawerStaysOpen = true
 
     // Load default blocks into the block factory
@@ -57,8 +56,8 @@ class ButtonEditorViewController: UIViewController {
     return workbenchViewController
   }()
 
-  /// The button number to edit.
-  public private(set) var buttonNumber: Int = 0
+  /// The ID of the button that is being edited.
+  public private(set) var buttonID: String = ""
 
   // MARK: - Super
 
@@ -84,11 +83,11 @@ class ButtonEditorViewController: UIViewController {
 
   // MARK: - Load / Write
 
-  public func loadBlocks(forButtonNumber buttonNumber: Int) {
-    self.buttonNumber = buttonNumber
+  public func loadBlocks(forButtonID buttonID: String) {
+    self.buttonID = buttonID
 
     // Load workspace from disk
-    if let xml = FileHelper.loadContents(of: "workspace\(buttonNumber).xml") {
+    if let xml = FileHelper.loadContents(of: "workspace\(buttonID).xml") {
       do {
         let workspace = Workspace()
         try workspace.loadBlocks(fromXMLString: xml, factory: workbenchViewController.blockFactory)
@@ -104,7 +103,7 @@ class ButtonEditorViewController: UIViewController {
     if let workspace = workbenchViewController.workspace {
       do {
         let xml = try workspace.toXML()
-        FileHelper.saveContents(xml, to: "workspace\(buttonNumber).xml")
+        FileHelper.saveContents(xml, to: "workspace\(buttonID).xml")
       } catch let error {
         print("Couldn't save workspace to disk: \(error)")
       }

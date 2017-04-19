@@ -31,8 +31,11 @@ class MusicMakerViewController: UIViewController {
   /// List of all objects that are currently running Javascript code.
   var codeRunners = [CodeRunner]()
 
-  /// The current button number that is being edited.
-  var editingButtonNumber = 0
+  /// The current button ID that is being edited.
+  var editingButtonID: String = ""
+
+  /// Instruction label.
+  @IBOutlet weak var instructions: UILabel!
 
   // MARK: - Super
 
@@ -40,10 +43,12 @@ class MusicMakerViewController: UIViewController {
     super.viewDidLoad()
 
     // Load code for each button
-    for i in 1...6 {
-      generateCode(forButton: i)
+    for i in 1...9 {
+      generateCode(forButtonID: String(i))
     }
 
+    // Start in edit mode
+    setEditing(true, animated: false)
     updateState(animated: false)
   }
 
@@ -51,9 +56,9 @@ class MusicMakerViewController: UIViewController {
     super.viewWillAppear(animated)
 
     // If this view controller is appearing again after editing a button, generate new code for it.
-    if editingButtonNumber > 0 {
-      generateCode(forButton: editingButtonNumber)
-      editingButtonNumber = 0
+    if !editingButtonID.isEmpty {
+      generateCode(forButtonID: editingButtonID)
+      editingButtonID = ""
     }
   }
 
@@ -70,47 +75,47 @@ class MusicMakerViewController: UIViewController {
   }
 
   @IBAction func pressedMusicButton(_ sender: Any) {
-    guard let button = sender as? UIButton else {
+    guard let button = sender as? UIButton,
+      let buttonID = button.currentTitle else {
       return
     }
 
-    // Each button is uniquely tagged in the storyboard with a number
-    let buttonNumber = button.tag
-
     if isEditing {
-      editButton(buttonNumber)
+      editButtonID(buttonID)
     } else {
-      runCode(forButton: buttonNumber)
+      runCode(forButtonID: buttonID)
     }
   }
 
   // MARK: - Editing
 
-  func editButton(_ button: Int) {
+  func editButtonID(_ buttonID: String) {
     // Load the editor for this button number
     let buttonEditorViewController = ButtonEditorViewController()
-    buttonEditorViewController.loadBlocks(forButtonNumber: button)
+    buttonEditorViewController.loadBlocks(forButtonID: buttonID)
     navigationController?.pushViewController(buttonEditorViewController, animated: true)
 
-    editingButtonNumber = button
+    editingButtonID = buttonID
   }
 
-  func generateCode(forButton button: Int) {
+  func generateCode(forButtonID buttonID: String) {
     // If a saved workspace file exists for this button, generate the code for it.
-    if let workspaceXML = FileHelper.loadContents(of: "workspace\(button).xml") {
-      codeManager.generateCode(forKey: String(button), workspaceXML: workspaceXML)
+    if let workspaceXML = FileHelper.loadContents(of: "workspace\(buttonID).xml") {
+      codeManager.generateCode(forKey: String(buttonID), workspaceXML: workspaceXML)
     }
   }
 
-  func runCode(forButton button: Int) {
+  func runCode(forButtonID buttonID: String) {
     // If code exists for this button, run it.
-    if let code = codeManager.code(forKey: String(button)) {
+    if let code = codeManager.code(forKey: buttonID) {
       let codeRunner = CodeRunner()
       codeRunners.append(codeRunner)
 
       codeRunner.runJavascriptCode(code) {
         self.codeRunners = self.codeRunners.filter { $0 !== codeRunner }
       }
+    } else {
+      print("No code has been set up for button \(buttonID).")
     }
   }
 
@@ -121,18 +126,26 @@ class MusicMakerViewController: UIViewController {
       let button = UIBarButtonItem(
         barButtonSystemItem: .done, target: self, action: #selector(toggleEditing(_:)))
       navigationItem.setRightBarButton(button, animated: animated)
-      navigationItem.title = "Configure Music Maker"
+      navigationItem.title = "Music Maker Configuration"
     } else {
       let button = UIBarButtonItem(
         barButtonSystemItem: .edit, target: self, action: #selector(toggleEditing(_:)))
       navigationItem.setRightBarButton(button, animated: animated)
       navigationItem.title = "Music Maker"
+      instructions.text = ""
     }
 
     UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-      self.view.backgroundColor = self.isEditing ?
-        UIColor(red: 158.0/255.0, green: 158.0/255.0, blue: 158.0/255.0, alpha: 1.0) :
-        UIColor.white
+      if self.isEditing {
+        self.instructions.text = "\nTap any button to edit its code.\n\nWhen complete, press Done."
+        self.instructions.alpha = 1
+        self.view.backgroundColor =
+          UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1.0)
+      } else {
+        self.instructions.text = ""
+        self.instructions.alpha = 0
+        self.view.backgroundColor = UIColor.white
+      }
     }
   }
 }

@@ -6,5 +6,5 @@
 // Generators for blocks defined in `sound_blocks.json`.
 Blockly.JavaScript['play_sound'] = function(block) {
   var value = '\'' + block.getFieldValue('VALUE') + '\'';
-  return 'musicMaker.playSound(' + value + ', \'' + block.id + '\');\n';
+  return 'MusicMaker.playSound(' + value + ');\n';
 };

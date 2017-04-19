@@ -17,16 +17,25 @@ import AVFoundation
 import UIKit
 
 /**
- Simple audio player wrapper used for playing a single file.
+ Audio player wrapper used for playing a single file.
  */
 class AudioPlayer: NSObject {
 
-  public var onFinish: ((Bool) -> ())?
+  /// Closure that is executed when the audio player finishes playing the file.
+  public var onFinish: ((AudioPlayer, Bool) -> ())?
 
+  /// The underlying audio player.
   private let player: AVAudioPlayer
 
   // MARK: - Initializers
 
+  /**
+   Initializes an audio player wrapper for a given audio file.
+
+   - parameter file: The audio file.
+   - returns: If `file` could be loaded successfully, return an instance of `AudioPlayer`.
+   If not, `nil` is returned.
+   */
   public init?(file: String) {
     guard let path = Bundle.main.path(forResource: file, ofType: "") else {
       print("Could not find the sound effect for '\(file)'.")
@@ -48,6 +57,11 @@ class AudioPlayer: NSObject {
 
   // MARK: - Playback
 
+  /**
+   Plays the loaded audio file.
+
+   - returns: `true` if the file could be played. `false` otherwise.
+   */
   func play() -> Bool {
     return player.play()
   }
@@ -55,6 +69,6 @@ class AudioPlayer: NSObject {
 
 extension AudioPlayer: AVAudioPlayerDelegate {
   func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-    onFinish?(flag)
+    onFinish?(self, flag)
   }
 }

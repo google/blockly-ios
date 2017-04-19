@@ -19,6 +19,12 @@ import Foundation
  Helper for loading and saving files to the user document directory.
  */
 class FileHelper {
+  /**
+   Loads the contents of a given file.
+
+   - parameter file: The location of the file in the user's document directory.
+   - returns: If the file was found, the contents of the file. If not, then `nil`.
+   */
   public static func loadContents(of file: String) -> String? {
     let documentDirectory =
       NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -35,6 +41,11 @@ class FileHelper {
     return nil
   }
 
+  /**
+   Saves contents to a given file. Any previous content is overwritten if it existed before.
+
+   - parameter file: The save location in the user's document directory.
+   */
   public static func saveContents(_ contents: String, to file: String) {
     let documentDirectory =
       NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
