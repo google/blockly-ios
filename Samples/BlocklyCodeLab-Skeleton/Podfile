@@ -1,0 +1,7 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'BlocklyCodeLab' do
+  use_frameworks!
+
+  pod 'Blockly'
+end

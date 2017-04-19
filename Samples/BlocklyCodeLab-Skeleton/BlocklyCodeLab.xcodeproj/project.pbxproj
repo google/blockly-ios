@@ -1,0 +1,459 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
+		FA0A91451EA8196C00F29F8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A913C1EA8196C00F29F8A /* AppDelegate.swift */; };
+		FA0A91461EA8196C00F29F8A /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A913D1EA8196C00F29F8A /* ButtonEditorViewController.swift */; };
+		FA0A91491EA8196C00F29F8A /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A91411EA8196C00F29F8A /* AudioPlayer.swift */; };
+		FA0A914A1EA8196C00F29F8A /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A91421EA8196C00F29F8A /* FileHelper.swift */; };
+		FA0A914C1EA8196C00F29F8A /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A91441EA8196C00F29F8A /* MusicMakerViewController.swift */; };
+		FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */; };
+		FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317341EA1BE1400A3A62E /* Main.storyboard */; };
+		FA8317401EA1BE2600A3A62E /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FA83173A1EA1BE2600A3A62E /* blockly_web */; };
+		FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */ = {isa = PBXBuildFile; fileRef = FA83173E1EA1BE2600A3A62E /* sound_blocks.json */; };
+		FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA83173F1EA1BE2600A3A62E /* toolbox.xml */; };
+		FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */ = {isa = PBXBuildFile; fileRef = FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */; };
+		FA8317551EA6C28E00A3A62E /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = FA8317541EA6C28E00A3A62E /* Sounds */; };
+		FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.release.xcconfig"; sourceTree = "<group>"; };
+		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
+		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA0A913C1EA8196C00F29F8A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA0A913D1EA8196C00F29F8A /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
+		FA0A91411EA8196C00F29F8A /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		FA0A91421EA8196C00F29F8A /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		FA0A91441EA8196C00F29F8A /* MusicMakerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
+		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA2F45AF1EA046260071C1A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA8317331EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA8317351EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FA83173A1EA1BE2600A3A62E /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; name = blockly_web; path = "Non-Localized/blockly_web"; sourceTree = "<group>"; };
+		FA83173E1EA1BE2600A3A62E /* sound_blocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sound_blocks.json; path = "Non-Localized/sound_blocks.json"; sourceTree = "<group>"; };
+		FA83173F1EA1BE2600A3A62E /* toolbox.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = toolbox.xml; path = "Non-Localized/toolbox.xml"; sourceTree = "<group>"; };
+		FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = sound_block_generators.js; path = "Non-Localized/sound_block_generators.js"; sourceTree = "<group>"; };
+		FA8317541EA6C28E00A3A62E /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sounds; path = "Non-Localized/Sounds"; sourceTree = "<group>"; };
+		FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA2F459D1EA046250071C1A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */,
+				C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		186D0DCD0885D6572D388526 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */,
+				CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4D6166B58DA104EC365FB044 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */,
+				1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FA0A913B1EA8196C00F29F8A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FA0A91401EA8196C00F29F8A /* Helpers */,
+				FA0A913C1EA8196C00F29F8A /* AppDelegate.swift */,
+				FA0A913D1EA8196C00F29F8A /* ButtonEditorViewController.swift */,
+				FA0A91441EA8196C00F29F8A /* MusicMakerViewController.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		FA0A91401EA8196C00F29F8A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FA0A91411EA8196C00F29F8A /* AudioPlayer.swift */,
+				FA0A91421EA8196C00F29F8A /* FileHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FA2F45971EA046250071C1A3 = {
+			isa = PBXGroup;
+			children = (
+				FA2F45A21EA046260071C1A3 /* BlocklyCodeLab */,
+				FA2F45A11EA046260071C1A3 /* Products */,
+				4D6166B58DA104EC365FB044 /* Pods */,
+				186D0DCD0885D6572D388526 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FA2F45A11EA046260071C1A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA2F45A21EA046260071C1A3 /* BlocklyCodeLab */ = {
+			isa = PBXGroup;
+			children = (
+				FA0A913B1EA8196C00F29F8A /* Sources */,
+				FA2F45AF1EA046260071C1A3 /* Info.plist */,
+				FAE5AF971EA1B61E00551B07 /* Resources */,
+			);
+			path = BlocklyCodeLab;
+			sourceTree = "<group>";
+		};
+		FA8317301EA1BE1400A3A62E /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */,
+				FA8317341EA1BE1400A3A62E /* Main.storyboard */,
+			);
+			path = Localized;
+			sourceTree = "<group>";
+		};
+		FA8317391EA1BE1700A3A62E /* Non-Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA83173A1EA1BE2600A3A62E /* blockly_web */,
+				FA8317541EA6C28E00A3A62E /* Sounds */,
+				FA83173E1EA1BE2600A3A62E /* sound_blocks.json */,
+				FA83174A1EA56CBD00A3A62E /* sound_block_generators.js */,
+				FA83173F1EA1BE2600A3A62E /* toolbox.xml */,
+			);
+			name = "Non-Localized";
+			sourceTree = "<group>";
+		};
+		FAE5AF971EA1B61E00551B07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA8317301EA1BE1400A3A62E /* Localized */,
+				FA8317391EA1BE1700A3A62E /* Non-Localized */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA2F459F1EA046250071C1A3 /* BlocklyCodeLab */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLab" */;
+			buildPhases = (
+				B341D2BC6A7FA45ADC883676 /* [CP] Check Pods Manifest.lock */,
+				FA2F459C1EA046250071C1A3 /* Sources */,
+				FA2F459D1EA046250071C1A3 /* Frameworks */,
+				FA2F459E1EA046250071C1A3 /* Resources */,
+				9B4E96E6F90B507A172DE5AE /* [CP] Embed Pods Frameworks */,
+				8B1407581A368D83E9A0B80E /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlocklyCodeLab;
+			productName = BlocklyCodeLab;
+			productReference = FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA2F45981EA046250071C1A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Google;
+				TargetAttributes = {
+					FA2F459F1EA046250071C1A3 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = EQHXZ8M8AV;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLab" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA2F45971EA046250071C1A3;
+			productRefGroup = FA2F45A11EA046260071C1A3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA2F459F1EA046250071C1A3 /* BlocklyCodeLab */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA2F459E1EA046250071C1A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA8317401EA1BE2600A3A62E /* blockly_web in Resources */,
+				FA8317381EA1BE1400A3A62E /* Main.storyboard in Resources */,
+				FA8317551EA6C28E00A3A62E /* Sounds in Resources */,
+				FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */,
+				FA8317451EA1BE2600A3A62E /* toolbox.xml in Resources */,
+				FA83174B1EA56CBD00A3A62E /* sound_block_generators.js in Resources */,
+				FA8317441EA1BE2600A3A62E /* sound_blocks.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B1407581A368D83E9A0B80E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B4E96E6F90B507A172DE5AE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B341D2BC6A7FA45ADC883676 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA2F459C1EA046250071C1A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA0A914C1EA8196C00F29F8A /* MusicMakerViewController.swift in Sources */,
+				FA0A91461EA8196C00F29F8A /* ButtonEditorViewController.swift in Sources */,
+				FA0A91491EA8196C00F29F8A /* AudioPlayer.swift in Sources */,
+				FA0A91451EA8196C00F29F8A /* AppDelegate.swift in Sources */,
+				FA0A914A1EA8196C00F29F8A /* FileHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA8317331EA1BE1400A3A62E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FA8317341EA1BE1400A3A62E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA8317351EA1BE1400A3A62E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FA2F45B01EA046260071C1A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA2F45B11EA046260071C1A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA2F45B31EA046260071C1A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQHXZ8M8AV;
+				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		FA2F45B41EA046260071C1A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQHXZ8M8AV;
+				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLab" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA2F45B01EA046260071C1A3 /* Debug */,
+				FA2F45B11EA046260071C1A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLab" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA2F45B31EA046260071C1A3 /* Debug */,
+				FA2F45B41EA046260071C1A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA2F45981EA046250071C1A3 /* Project object */;
+}
