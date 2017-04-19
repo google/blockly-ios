@@ -41,66 +41,21 @@ class CodeRunner {
     }
   }
 
-  public func runJavascriptCode(_ code: String, onFinish: @escaping () -> ()) {
+  /**
+   Runs Javascript code on a background thread.
+
+   - parameter code: The Javascript code.
+   - parameter completion: Closure that is called on the main thread when the code has finished
+   executing.
+   */
+  public func runJavascriptCode(_ code: String, completion: @escaping () -> ()) {
     // Execute JS Code on the background thread
     jsThread.async {
       self.context.evaluateScript(code)
 
       DispatchQueue.main.async {
-        onFinish()
+        completion()
       }
-    }
-  }
-}
-
-/**
- Protocol declaring all methods and properties that should be exposed to JS context.
- */
-@objc protocol MusicMakerJSExports: JSExport {
-  static func playSound(_ assetName: String)
-}
-
-@objc class MusicMaker: NSObject, MusicMakerJSExports {
-  /// Keeps track of all sounds currently being played.
-  static var audioPlayers = Set<AudioPlayer>()
-
-  /// Maps a UUID to a condition lock. One entry is created every time a sound is played and it is
-  /// removed playback completion.
-  static var conditionLocks = [String: NSConditionLock]()
-
-  /**
-   Method that is exposed to the JS context, to play a specific sound.
- 
-   - parameter file: The sound file to play.
-   */
-  static func playSound(_ file: String) {
-    guard let player = AudioPlayer(file: file) else {
-      return
-    }
-
-    // Create a condition lock for this player so we don't return back to JS code until
-    // the player has finished playing.
-    let uuid = NSUUID().uuidString
-    self.conditionLocks[uuid] = NSConditionLock(condition: 0)
-
-    player.onFinish = { player, successfully in
-      // Now that the player has finished, dispose of it and change the condition of the lock to
-      // "1" to unblock the code below.
-      self.conditionLocks[uuid]?.lock()
-      self.audioPlayers.remove(player)
-      self.conditionLocks[uuid]?.unlock(withCondition: 1)
-    }
-
-    if player.play() {
-      // Hold a reference to the audio player so it doesn't go out of memory.
-      self.audioPlayers.insert(player)
-
-      // Wait for the condition lock to change to "1", which happens when the player finishes.
-      // Once this happens, dispose of the lock and let control return back to the caller of
-      // `playSound(...)` in the JS code.
-      self.conditionLocks[uuid]?.lock(whenCondition: 1)
-      self.conditionLocks[uuid]?.unlock()
-      self.conditionLocks[uuid] = nil
     }
   }
 }

@@ -89,15 +89,25 @@ class MusicMakerViewController: UIViewController {
 
   // MARK: - Editing
 
+  /**
+   Opens the code editor for a given button ID.
+
+   - parameter buttonID: The button ID to edit.
+   */
   func editButtonID(_ buttonID: String) {
+    editingButtonID = buttonID
+
     // Load the editor for this button number
     let buttonEditorViewController = ButtonEditorViewController()
     buttonEditorViewController.loadBlocks(forButtonID: buttonID)
     navigationController?.pushViewController(buttonEditorViewController, animated: true)
-
-    editingButtonID = buttonID
   }
 
+  /**
+   Requests that the code manager generate code for a given button ID.
+
+   - parameter buttonID: The button ID.
+   */
   func generateCode(forButtonID buttonID: String) {
     // If a saved workspace file exists for this button, generate the code for it.
     if let workspaceXML = FileHelper.loadContents(of: "workspace\(buttonID).xml") {
@@ -105,15 +115,24 @@ class MusicMakerViewController: UIViewController {
     }
   }
 
+  /**
+   Runs code associated with a given button ID.
+
+   - parameter buttonID: The button ID.
+   */
   func runCode(forButtonID buttonID: String) {
     // If code exists for this button, run it.
     if let code = codeManager.code(forKey: buttonID) {
       let codeRunner = CodeRunner()
+
+      // Add this code runner to the list of code runners to keep it in memory while it is
+      // executing.
       codeRunners.append(codeRunner)
 
-      codeRunner.runJavascriptCode(code) {
+      codeRunner.runJavascriptCode(code, completion: {
+        // Remove this code runner from the list of code runners, so it is deallocated.
         self.codeRunners = self.codeRunners.filter { $0 !== codeRunner }
-      }
+      })
     } else {
       print("No code has been set up for button \(buttonID).")
     }

@@ -23,6 +23,9 @@ class ButtonEditorViewController: UIViewController {
 
   // MARK: - Properties
 
+  /// The ID of the button that is being edited.
+  public private(set) var buttonID: String = ""
+
   /// The main Blockly editor.
   private var workbenchViewController: WorkbenchViewController = {
     let workbenchViewController = WorkbenchViewController(style: .alternate)
@@ -56,9 +59,6 @@ class ButtonEditorViewController: UIViewController {
     return workbenchViewController
   }()
 
-  /// The ID of the button that is being edited.
-  public private(set) var buttonID: String = ""
-
   // MARK: - Super
 
   override func viewDidLoad() {
@@ -83,21 +83,33 @@ class ButtonEditorViewController: UIViewController {
 
   // MARK: - Load / Write
 
+  /**
+   Load a workspace for a button ID into the workbench, if it exists on disk.
+
+   - parameter buttonID: The button ID to load.
+   */
   public func loadBlocks(forButtonID buttonID: String) {
     self.buttonID = buttonID
 
-    // Load workspace from disk
-    if let xml = FileHelper.loadContents(of: "workspace\(buttonID).xml") {
-      do {
-        let workspace = Workspace()
+    do {
+      // Create fresh workspace
+      let workspace = Workspace()
+
+      // Load blocks into this workspace from a saved file (if it exists).
+      if let xml = FileHelper.loadContents(of: "workspace\(buttonID).xml") {
         try workspace.loadBlocks(fromXMLString: xml, factory: workbenchViewController.blockFactory)
-        try workbenchViewController.loadWorkspace(workspace)
-      } catch let error {
-        print("Couldn't load workspace from disk: \(error)")
       }
+
+      // Load the workspace into the workbench
+      try workbenchViewController.loadWorkspace(workspace)
+    } catch let error {
+      print("Couldn't load workspace from disk: \(error)")
     }
   }
 
+  /**
+   Saves the workspace for this button ID to disk.
+   */
   public func saveBlocks() {
     // Save the workspace to disk
     if let workspace = workbenchViewController.workspace {

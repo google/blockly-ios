@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3038F1381EA568E4008208EE /* AudioPlayer.swift */; };
 		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
+		FA14F0BE1EA80C02005A9541 /* MusicMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA14F0BD1EA80C02005A9541 /* MusicMaker.swift */; };
 		FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A31EA046260071C1A3 /* AppDelegate.swift */; };
 		FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */; };
 		FA8317371EA1BE1400A3A62E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA8317321EA1BE1400A3A62E /* LaunchScreen.storyboard */; };
@@ -30,6 +31,7 @@
 		3038F1381EA568E4008208EE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
 		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA14F0BD1EA80C02005A9541 /* MusicMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMaker.swift; sourceTree = "<group>"; };
 		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2F45A31EA046260071C1A3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				FAE5AF8F1EA1ACE600551B07 /* CodeRunner.swift */,
 				FA8317481EA56A5100A3A62E /* CodeManager.swift */,
 				FA8317461EA1C0D900A3A62E /* FileHelper.swift */,
+				FA14F0BD1EA80C02005A9541 /* MusicMaker.swift */,
 				FA2F45A51EA046260071C1A3 /* MusicMakerViewController.swift */,
 				FA2F45AF1EA046260071C1A3 /* Info.plist */,
 				FAE5AF971EA1B61E00551B07 /* Resources */,
@@ -275,6 +278,7 @@
 				FAE5AF901EA1ACE600551B07 /* CodeRunner.swift in Sources */,
 				FA2F45A61EA046260071C1A3 /* MusicMakerViewController.swift in Sources */,
 				FAEF58C01EA05112002E5FDA /* ButtonEditorViewController.swift in Sources */,
+				FA14F0BE1EA80C02005A9541 /* MusicMaker.swift in Sources */,
 				FA8317491EA56A5100A3A62E /* CodeManager.swift in Sources */,
 				FA2F45A41EA046260071C1A3 /* AppDelegate.swift in Sources */,
 				3038F13A1EA568E4008208EE /* AudioPlayer.swift in Sources */,

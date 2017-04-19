@@ -21,11 +21,12 @@ import UIKit
  */
 class AudioPlayer: NSObject {
 
-  /// Closure that is executed when the audio player finishes playing the file.
-  public var onFinish: ((AudioPlayer, Bool) -> ())?
-
-  /// The underlying audio player.
+  /// The underlying `AVAudioPlayer`.
   private let player: AVAudioPlayer
+
+  /// Closure that is called when the audio player has finished playing the file. The `Bool` flag
+  /// flag represents if playback completed successfully.
+  public var completion: ((_ player: AudioPlayer, _ successfully: Bool) -> ())?
 
   // MARK: - Initializers
 
@@ -69,6 +70,10 @@ class AudioPlayer: NSObject {
 
 extension AudioPlayer: AVAudioPlayerDelegate {
   func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-    onFinish?(self, flag)
+    completion?(self, flag)
+  }
+
+  public func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+    completion?(self, false)
   }
 }
