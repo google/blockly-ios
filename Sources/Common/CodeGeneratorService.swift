@@ -27,8 +27,21 @@ import Foundation
 public final class CodeGeneratorService: NSObject {
   // MARK: - Closures
 
-  public typealias CompletionClosure = (_ code: String) -> Void
-  public typealias ErrorClosure = (_ error: String) -> Void
+  /**
+   Closure that is called when code has been generated for a request.
+
+   - parameter requestUUID: The UUID of the request.
+   - parameter code: The code that was generated.
+   */
+  public typealias CompletionClosure = (_ requestUUID: String, _ code: String) -> Void
+
+  /**
+   Closure that is called when an error occurs during a code generation request.
+
+   - parameter requestUUID: The UUID of the request.
+   - parameter error: A description of the error that occurred.
+   */
+  public typealias ErrorClosure = (_ requestUUID: String, _ error: String) -> Void
 
   // MARK: - Properties
 
@@ -317,7 +330,7 @@ internal class CodeGeneratorServiceRequest: Operation {
   fileprivate func completeRequest(withCode code: String) {
     DispatchQueue.main.async {
       if !self.isCancelled {
-        self.onCompletion?(code)
+        self.onCompletion?(self.uuid, code)
       }
       self.finishOperation()
     }
@@ -326,7 +339,7 @@ internal class CodeGeneratorServiceRequest: Operation {
   fileprivate func completeRequest(withError error: String) {
     DispatchQueue.main.async {
       if !self.isCancelled {
-        self.onError?(error)
+        self.onError?(self.uuid, error)
       }
       self.finishOperation()
     }

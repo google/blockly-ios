@@ -1,3 +1,10 @@
+# [Version 0.7.3](https://github.com/google/blockly-ios/tree/0.7.3) (Apr 2017)
+
+- For both `CodeGeneratorService#generateCode(forWorkspace:onCompletion:onError:)` and
+`CodeGeneratorService#generateCode(forWorkspaceXML:onCompletion:onError:)`,
+the callbacks for `onCompletion` and `onError` now include a `requestUUID` parameter.
+- Updates Cocoapods podspec file to specify Swift 3.1.
+
 # [Version 0.7.2](https://github.com/google/blockly-ios/tree/0.7.2) (Apr 2017)
 
 - Adds workaround for whole-module-optimization compiler bug in Xcode 8.3/Swift 3.1.
