@@ -264,10 +264,10 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     // Request code generation for the workspace
     NSError *error;
     __weak __typeof(self) weakSelf = self;
-    void (^onCompletion)(NSString *code) = ^(NSString *code) {
+    void (^onCompletion)(NSString* uuid, NSString *code) = ^(NSString* uuid, NSString *code) {
       [weakSelf codeGenerationCompletionWithCode:code];
     };
-    void (^onError)(NSString *error) =  ^(NSString *error) {
+    void (^onError)(NSString* uuid, NSString *error) =  ^(NSString* uuid, NSString *error) {
       [weakSelf codeGenerationFailedWithError:error];
     };
     BKYWorkspace* workspace = _workbenchViewController.workspace;
