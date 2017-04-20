@@ -225,14 +225,15 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
           addTimestampedText("Generating code...")
 
           // Request code generation for the workspace
-          let onCompletion = { code in
-            self.codeGenerationCompleted(code: code)
-          }
-          let onError = { error in
-            self.codeGenerationFailed(error: error)
-          }
-          _currentRequestUUID = try _codeGeneratorService.generateCode(forWorkspace: workspace,
-            onCompletion: onCompletion, onError: onError)
+          _currentRequestUUID =
+            try _codeGeneratorService.generateCode(
+              forWorkspace: workspace,
+              onCompletion: { requestUUID, code in
+                self.codeGenerationCompleted(code: code)
+              },
+              onError: { requestUUID, error in
+                self.codeGenerationFailed(error: error)
+              })
 
           playButton.isEnabled = false
         }
