@@ -44,6 +44,7 @@
 		FA27268D1B8687A200777B49 /* BlockGroupLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */; };
 		FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */; };
 		FA27D9E21D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA27D9E11D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift */; };
+		FA2CA3531EA84F990054924E /* PathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2CA3521EA84F990054924E /* PathHelper.swift */; };
 		FA2DFC071B7174350072A278 /* block_json_test.json in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFC061B7174350072A278 /* block_json_test.json */; };
 		FA2DFC101B7177760072A278 /* Input+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC0E1B7177760072A278 /* Input+JSON.swift */; };
 		FA2DFC121B7177B10072A278 /* Field+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2DFC111B7177B10072A278 /* Field+JSON.swift */; };
@@ -192,7 +193,6 @@
 		FAD652421CB7210C00F73F11 /* DefaultInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6523E1CB7210C00F73F11 /* DefaultInputLayout.swift */; };
 		FAD6524D1CB7211500F73F11 /* DefaultBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6524C1CB7211500F73F11 /* DefaultBlockView.swift */; };
 		FAD652511CB7266100F73F11 /* InputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD652501CB7266100F73F11 /* InputLayout.swift */; };
-		FAD652661CB85CAF00F73F11 /* DefaultBlockView+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD652651CB85CAF00F73F11 /* DefaultBlockView+Render.swift */; };
 		FAD6526A1CB8791F00F73F11 /* DefaultLayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD652691CB8791F00F73F11 /* DefaultLayoutFactory.swift */; };
 		FAD652741CB87B2200F73F11 /* DefaultLayoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD652731CB87B2200F73F11 /* DefaultLayoutEngine.swift */; };
 		FAD652781CB88FEF00F73F11 /* DefaultLayoutConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD652771CB88FEF00F73F11 /* DefaultLayoutConfig.swift */; };
@@ -274,6 +274,7 @@
 		FA27268C1B8687A200777B49 /* BlockGroupLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayout.swift; sourceTree = "<group>"; };
 		FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolTest.swift; sourceTree = "<group>"; };
 		FA27D9E11D8CCE6A0099B333 /* WorkspaceLayoutCoordinatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutCoordinatorTest.swift; sourceTree = "<group>"; };
+		FA2CA3521EA84F990054924E /* PathHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathHelper.swift; sourceTree = "<group>"; };
 		FA2DFC061B7174350072A278 /* block_json_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = block_json_test.json; sourceTree = "<group>"; };
 		FA2DFC0E1B7177760072A278 /* Input+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+JSON.swift"; sourceTree = "<group>"; };
 		FA2DFC111B7177B10072A278 /* Field+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+JSON.swift"; sourceTree = "<group>"; };
@@ -476,7 +477,6 @@
 		FAD6523E1CB7210C00F73F11 /* DefaultInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultInputLayout.swift; sourceTree = "<group>"; };
 		FAD6524C1CB7211500F73F11 /* DefaultBlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultBlockView.swift; sourceTree = "<group>"; };
 		FAD652501CB7266100F73F11 /* InputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLayout.swift; sourceTree = "<group>"; };
-		FAD652651CB85CAF00F73F11 /* DefaultBlockView+Render.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DefaultBlockView+Render.swift"; sourceTree = "<group>"; };
 		FAD652691CB8791F00F73F11 /* DefaultLayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayoutFactory.swift; sourceTree = "<group>"; };
 		FAD652731CB87B2200F73F11 /* DefaultLayoutEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayoutEngine.swift; sourceTree = "<group>"; };
 		FAD652771CB88FEF00F73F11 /* DefaultLayoutConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayoutConfig.swift; sourceTree = "<group>"; };
@@ -702,6 +702,7 @@
 				FAA870131C642805000C7C61 /* View Controllers */,
 				FA4BB5681B7C03EA000980E9 /* Views */,
 				30DC64DA1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift */,
+				FA2CA3521EA84F990054924E /* PathHelper.swift */,
 				FAA870111C64276A000C7C61 /* WorkspaceBezierPath.swift */,
 			);
 			path = UI;
@@ -973,7 +974,6 @@
 			isa = PBXGroup;
 			children = (
 				FAD6524C1CB7211500F73F11 /* DefaultBlockView.swift */,
-				FAD652651CB85CAF00F73F11 /* DefaultBlockView+Render.swift */,
 			);
 			path = Default;
 			sourceTree = "<group>";
@@ -1237,6 +1237,7 @@
 				FA16317A1CE54F89008DDBC8 /* FieldVariableView.swift in Sources */,
 				FA84251A1D3459DD0092CDDC /* BlockGroupView.swift in Sources */,
 				FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */,
+				FA2CA3531EA84F990054924E /* PathHelper.swift in Sources */,
 				FA27267D1B83C54900777B49 /* Layout.swift in Sources */,
 				FAD652401CB7210C00F73F11 /* DefaultBlockLayout+Background.swift in Sources */,
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
@@ -1329,7 +1330,6 @@
 				FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */,
 				FA4E840B1CAE4AAE009FB0CD /* ToolboxLayout.swift in Sources */,
 				FAE2A61A1C753F310085D36B /* CodeGenerator.swift in Sources */,
-				FAD652661CB85CAF00F73F11 /* DefaultBlockView+Render.swift in Sources */,
 				FAD652511CB7266100F73F11 /* InputLayout.swift in Sources */,
 				FA4E83EB1CACF00A009FB0CD /* LayoutEngine.swift in Sources */,
 				3064BAD61DAFFC58006425A2 /* BKYWorkspaceUnits.m in Sources */,

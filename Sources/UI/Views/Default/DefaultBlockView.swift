@@ -266,11 +266,11 @@ public final class DefaultBlockView: BlockView {
       if i == 0 {
         if background.previousStatementConnector {
           // Draw previous statement connector
-          addNotch(
+          PathHelper.addNotch(
             toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         } else if background.startHat {
           // Draw hat for the block
-          addHat(toPath: path, hatSize: startHatSize)
+          PathHelper.addHat(toPath: path, hatSize: startHatSize)
         }
       }
 
@@ -294,7 +294,7 @@ public final class DefaultBlockView: BlockView {
           y: path.currentWorkspacePoint.y, relative: false)
 
         // Draw notch
-        addNotch(
+        PathHelper.addNotch(
           toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineTo(
@@ -316,7 +316,7 @@ public final class DefaultBlockView: BlockView {
       } else if row.outputConnector {
         // Draw output connector and then the rest of the middle height
         let startingY = path.currentWorkspacePoint.y
-        addPuzzleTab(toPath: path, drawTopToBottom: true,
+        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
         bky_assert(restOfVerticalEdge >= 0,
@@ -340,7 +340,7 @@ public final class DefaultBlockView: BlockView {
     if background.nextStatementConnector {
       path.addLineTo(
         x: xLeftEdgeOffset + notchWidth, y: path.currentWorkspacePoint.y, relative: false)
-      addNotch(
+      PathHelper.addNotch(
         toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
@@ -352,7 +352,7 @@ public final class DefaultBlockView: BlockView {
       // Add output connector
       path.addLineTo(x: 0, y: puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
 
-      addPuzzleTab(toPath: path, drawTopToBottom: false,
+      PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
         puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
     }
 
@@ -377,7 +377,7 @@ public final class DefaultBlockView: BlockView {
         // Left edge
         path.addLineTo(x: 0, y: -(inlineConnector.size.height - puzzleTabHeight), relative: true)
         // Puzzle notch
-        addPuzzleTab(toPath: path, drawTopToBottom: false,
+        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
       }
     }
@@ -423,7 +423,7 @@ public final class DefaultBlockView: BlockView {
         path.move(to: connectionRelativePosition +
           WorkspacePoint(x: puzzleTabWidth, y: -puzzleTabHeight / 2),
           relative: false)
-        addPuzzleTab(toPath: path, drawTopToBottom: true,
+        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         break
       case .previousStatement, .nextStatement:
@@ -431,7 +431,7 @@ public final class DefaultBlockView: BlockView {
         path.move(to: connectionRelativePosition -
           WorkspacePoint(x: notchWidth / 2, y: notchHeight),
           relative: false)
-        addNotch(
+        PathHelper.addNotch(
           toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         break
       }
