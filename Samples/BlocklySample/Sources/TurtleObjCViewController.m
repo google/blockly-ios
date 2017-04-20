@@ -73,8 +73,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 @property(nonatomic) BKYWorkbenchViewController *workbenchViewController;
 /// Code generator service
 @property(nonatomic) BKYCodeGeneratorService *codeGeneratorService;
-/// Request builder for code generator service
-@property(nonatomic) BKYCodeGeneratorServiceRequestBuilder *requestBuilder;
 
 /// Flag indicating whether the code is currently running.
 @property (nonatomic) Boolean currentlyRunning;
@@ -108,12 +106,15 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     @"Turtle/blockly_web/msg/js/en.js"]];
 
   // Create the builder for creating code generator service requests
-  self.requestBuilder =
+  BKYCodeGeneratorServiceRequestBuilder *requestBuilder =
     [[BKYCodeGeneratorServiceRequestBuilder alloc] initWithJSGeneratorObject:@"Blockly.JavaScript"];
-  [_requestBuilder addJSBlockGeneratorFiles:@[@"Turtle/blockly_web/javascript_compressed.js",
+  [requestBuilder addJSBlockGeneratorFiles:@[@"Turtle/blockly_web/javascript_compressed.js",
                                               @"Turtle/generators.js"]];
-  [_requestBuilder addJSONBlockDefinitionFilesFromDefaultFiles:BKYBlockJSONFileAllDefault];
-  [_requestBuilder addJSONBlockDefinitionFiles:@[@"Turtle/turtle_blocks.json"]];
+  [requestBuilder addJSONBlockDefinitionFilesFromDefaultFiles:BKYBlockJSONFileAllDefault];
+  [requestBuilder addJSONBlockDefinitionFiles:@[@"Turtle/turtle_blocks.json"]];
+
+  // Set the request builder for the CodeGeneratorService.
+  [_codeGeneratorService setRequestBuilder:requestBuilder shouldCache:YES];
 
   _dateFormatter = [[NSDateFormatter alloc] init];
   _dateFormatter.dateFormat = @"HH:mm:ss.SSS";
@@ -217,8 +218,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   _webView.layer.borderWidth = 1;
   self.codeText.superview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
   self.codeText.superview.layer.borderWidth = 1;
-
-  [_codeGeneratorService setRequestBuilder:_requestBuilder shouldCache:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

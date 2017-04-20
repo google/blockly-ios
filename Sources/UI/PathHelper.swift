@@ -30,6 +30,7 @@ public class PathHelper: NSObject {
    --
    \_/
    ```
+
    - parameter path: The Bezier path to add to.
    - parameter drawLeftToRight: True if the path should be drawn from left-to-right. False if it
    should be drawn right-to-left.
@@ -66,6 +67,7 @@ public class PathHelper: NSObject {
    /
    \
    ```
+
    - parameter path: The Bezier path to add to.
    */
   public static func addJaggedTeeth(toPath path: WorkspaceBezierPath) {
@@ -87,6 +89,7 @@ public class PathHelper: NSObject {
    \/|
    |
    ```
+
    - parameter path: The Bezier path to add to.
    - parameter drawTopToBottom: True if the path should be drawn from top-to-bottom. False if it
    should be drawn bottom-to-top.
@@ -126,7 +129,7 @@ public class PathHelper: NSObject {
   }
 
   /**
-   Moves the path to start drawing the top-left corner
+   Moves the path to start drawing the top-left corner.
 
    - parameter path: The Bezier path.
    - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
@@ -147,6 +150,7 @@ public class PathHelper: NSObject {
    /
    |
    ```
+
    - parameter path: The Bezier path.
    - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
    system unit.
@@ -166,6 +170,7 @@ public class PathHelper: NSObject {
    ---
    /   \
    ```
+
    - parameter path: The Bezier path.
    - parameter hatSize: The size of the hat, specified as a Workspace coordinate system size.
    */
