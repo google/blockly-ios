@@ -14,9 +14,6 @@
  -->
 
 <xml>
-  <category name="Sounds" colour="20">
-    <block type="play_sound"></block>
-  </category>
   <category name="Loops" colour="%{BKY_LOOPS_HUE}">
     <block type="controls_repeat_ext">
       <value name="TIMES">
