@@ -154,8 +154,9 @@ public final class Connection : NSObject {
       var errorMessage = ""
       var i = 1
       while let validValue = Value(rawValue: i) {
-        if intersectsWith(CheckResult(value: validValue)) {
-          errorMessage += "\(validValue.errorMessage())\n"
+        if intersectsWith(CheckResult(value: validValue)),
+          let message = validValue.errorMessage() {
+          errorMessage += "\(message)\n"
         }
         i += 1
       }

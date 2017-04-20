@@ -53,6 +53,8 @@ toc:
     path: /blockly/reference/ios/Protocols/BlocklyPanGestureRecognizerDelegate
   - title: BlockView
     path: /blockly/reference/ios/Classes/BlockView
+  - title: BundledFile
+    path: /blockly/reference/ios/iOS
   - title: CodeGenerator
     path: /blockly/reference/ios/Classes/CodeGenerator
   - title: – State
@@ -261,6 +263,8 @@ toc:
     path: /blockly/reference/ios/Classes/MutatorProcedureIfReturn
   - title: MutatorProcedureIfReturnLayout
     path: /blockly/reference/ios/Classes/MutatorProcedureIfReturnLayout
+  - title: PathHelper
+    path: /blockly/reference/ios/Classes/PathHelper
   - title: ProcedureCoordinator
     path: /blockly/reference/ios/Classes/ProcedureCoordinator
   - title: ProcedureParameter

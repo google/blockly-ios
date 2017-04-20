@@ -183,13 +183,15 @@ public final class FieldNumber: Field {
       throw BlocklyError(.illegalArgument, "Constraints cannot be infinite nor NaN.")
     }
 
-    guard (minimum ?? -DBL_MAX) <= (maximum ?? DBL_MAX) else {
+    if let minimumValue = minimum,
+      let maximumValue = maximum,
+      minimumValue > maximumValue {
       throw BlocklyError(.illegalArgument,
-        "`minimum` value [\(minimum)] must be less than `maximum` value [\(maximum)].")
+        "`minimum` value [\(minimumValue)] must be less than `maximum` value [\(maximumValue)].")
     }
 
-    guard precision == nil || precision! > 0 else {
-      throw BlocklyError(.illegalArgument, "`precision` [\(precision)] must be positive.")
+    if let precisionValue = precision, precisionValue <= 0 {
+      throw BlocklyError(.illegalArgument, "`precision` [\(precisionValue)] must be positive.")
     }
 
     var effectiveMinimum: Double? = nil
@@ -216,7 +218,9 @@ public final class FieldNumber: Field {
         }
       }
 
-      guard (effectiveMinimum ?? -DBL_MAX) <= (effectiveMaximum ?? DBL_MAX) else {
+      if let minimumValue = effectiveMinimum,
+        let maximumValue = effectiveMaximum,
+        minimumValue > maximumValue {
         throw BlocklyError(.illegalArgument, "No valid value in range.")
       }
     } else {

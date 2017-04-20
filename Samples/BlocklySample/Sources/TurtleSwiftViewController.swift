@@ -59,11 +59,8 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
         // The JS file containing a list of internationalized messages
         "Turtle/blockly_web/msg/js/en.js"
       ])
-    return codeGeneratorService
-  }()
 
-  /// Builder for creating code generator service requests
-  var _codeGeneratorServiceRequestBuilder: CodeGeneratorServiceRequestBuilder = {
+    // Create builder for creating code generator service requests
     let builder = CodeGeneratorServiceRequestBuilder(
       // This is the name of the JS object that will generate JavaScript code
       jsGeneratorObject: "Blockly.JavaScript")
@@ -77,7 +74,10 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     // Load the block definitions for our custom turtle blocks
     builder.addJSONBlockDefinitionFiles(["Turtle/turtle_blocks.json"])
 
-    return builder
+    // Set the request builder for the CodeGeneratorService.
+    codeGeneratorService.setRequestBuilder(builder, shouldCache: true)
+
+    return codeGeneratorService
   }()
 
   /// Flag indicating whether the code is currently running.
@@ -186,8 +186,6 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     codeText.superview?.layer.borderColor = UIColor.lightGray.cgColor
     codeText.superview?.layer.borderWidth = 1
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
-
-    _codeGeneratorService.setRequestBuilder(_codeGeneratorServiceRequestBuilder, shouldCache: true)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -225,14 +223,15 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
           addTimestampedText("Generating code...")
 
           // Request code generation for the workspace
-          let onCompletion = { code in
-            self.codeGenerationCompleted(code: code)
-          }
-          let onError = { error in
-            self.codeGenerationFailed(error: error)
-          }
-          _currentRequestUUID = try _codeGeneratorService.generateCode(forWorkspace: workspace,
-            onCompletion: onCompletion, onError: onError)
+          _currentRequestUUID =
+            try _codeGeneratorService.generateCode(
+              forWorkspace: workspace,
+              onCompletion: { requestUUID, code in
+                self.codeGenerationCompleted(code: code)
+              },
+              onError: { requestUUID, error in
+                self.codeGenerationFailed(error: error)
+              })
 
           playButton.isEnabled = false
         }
@@ -279,7 +278,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     _webView.evaluateJavaScript(
       "Turtle.execute(\"\(codeParam)\")",
       completionHandler: { _, error -> Void in
-        if error != nil {
+        if let error = error {
           self.codeGenerationFailed(error: "\(error)")
         }
       })
