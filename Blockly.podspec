@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Blockly'
   s.module_name      = 'Blockly'
-  s.version          = '0.7.3'
+  s.version          = '0.7.4'
   s.summary          = 'A library from Google for building visual programming editors.'
   s.description      = <<-DESC
   Blockly is a visual editor that allows users to write programs by plugging blocks together.
@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
     'Resources/Localized/**/*.lproj/*']
 
   s.frameworks        = 'WebKit'
-  s.ios.dependency 'AEXML', '~> 4.0.1'
+  s.ios.dependency 'AEXML', '~> 4.1.0'
 
   s.pod_target_xcconfig = {
       # Enable whole-module-optimization for all builds except for Debug builds
