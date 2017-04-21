@@ -26,7 +26,7 @@ import UIKit
 class MusicMakerViewController: UIViewController {
 
   /// The current button ID that is being edited.
-  var editingButtonID: String = ""
+  private var editingButtonID: String = ""
 
   /// Instruction label.
   @IBOutlet weak var instructions: UILabel!
@@ -48,57 +48,6 @@ class MusicMakerViewController: UIViewController {
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
-  }
-
-  // MARK: - User Interaction Handlers
-
-  private dynamic func toggleEditing(_ sender: UIButton) {
-    setEditing(!isEditing, animated: true)
-    updateState(animated: true)
-  }
-
-  @IBAction func pressedMusicButton(_ sender: Any) {
-    guard let button = sender as? UIButton,
-      let buttonID = button.currentTitle else {
-      return
-    }
-
-    if isEditing {
-      editButtonID(buttonID)
-    } else {
-      runCode(forButtonID: buttonID)
-    }
-  }
-
-  // MARK: - Editing
-
-  /**
-   Opens the code editor for a given button ID.
-
-   - parameter buttonID: The button ID to edit.
-   */
-  func editButtonID(_ buttonID: String) {
-    editingButtonID = buttonID
-
-    print("TODO: Edit button \(buttonID).")
-  }
-
-  /**
-   Requests that the code manager generate code for a given button ID.
-
-   - parameter buttonID: The button ID.
-   */
-  func generateCode(forButtonID buttonID: String) {
-    print("TODO: Generate code for button \(buttonID).")
-  }
-
-  /**
-   Runs code associated with a given button ID.
-
-   - parameter buttonID: The button ID.
-   */
-  func runCode(forButtonID buttonID: String) {
-    print("TODO: Run code for button \(buttonID).")
   }
 
   // MARK: - State
@@ -129,5 +78,56 @@ class MusicMakerViewController: UIViewController {
         self.view.backgroundColor = UIColor.white
       }
     }
+  }
+
+  // MARK: - User Interaction Handlers
+
+  private dynamic func toggleEditing(_ sender: UIButton) {
+    setEditing(!isEditing, animated: true)
+    updateState(animated: true)
+  }
+
+  @IBAction func pressedMusicButton(_ sender: Any) {
+    guard let button = sender as? UIButton,
+      let buttonID = button.currentTitle else {
+      return
+    }
+
+    if isEditing {
+      editButtonID(buttonID)
+    } else {
+      runCode(forButtonID: buttonID)
+    }
+  }
+
+  // MARK: - Editing and Running Code
+
+  /**
+   Opens the code editor for a given button ID.
+
+   - parameter buttonID: The button ID to edit.
+   */
+  func editButtonID(_ buttonID: String) {
+    editingButtonID = buttonID
+
+    print("TODO: Edit button \(buttonID).")
+  }
+
+  /**
+   Requests that the code manager generate code for a given button ID.
+
+   - parameter buttonID: The button ID.
+   */
+  func generateCode(forButtonID buttonID: String) {
+    print("TODO: Generate code for button \(buttonID).")
+  }
+
+  /**
+   Runs code associated with a given button ID.
+
+   - parameter buttonID: The button ID.
+   */
+  func runCode(forButtonID buttonID: String) {
+    print("TODO: Run code for button \(buttonID).")
   }
 }

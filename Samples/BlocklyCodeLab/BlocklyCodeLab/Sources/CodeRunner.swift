@@ -22,10 +22,10 @@ import UIKit
  */
 class CodeRunner {
   /// The JS context used for running the JS code.
-  var context: JSContext!
+  private var context: JSContext!
 
   /// A background thread used for executing the JS code.
-  let jsThread = DispatchQueue(label: "jsContext")
+  private let jsThread = DispatchQueue(label: "jsContext")
 
   init() {
     // Instantiate the JS context on a background thread.
@@ -48,7 +48,7 @@ class CodeRunner {
    - parameter completion: Closure that is called on the main thread when the code has finished
    executing.
    */
-  public func runJavascriptCode(_ code: String, completion: @escaping () -> ()) {
+  func runJavascriptCode(_ code: String, completion: @escaping () -> ()) {
     // Execute JS Code on the background thread
     jsThread.async {
       self.context.evaluateScript(code)

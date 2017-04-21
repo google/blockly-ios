@@ -18,9 +18,9 @@ import Foundation
 /**
  Class exposed to a JS context.
  */
-@objc class MusicMaker: NSObject{
+class MusicMaker {
   /// Keeps track of all sounds currently being played.
-  static var audioPlayers = Set<AudioPlayer>()
+  private static var audioPlayers = Set<AudioPlayer>()
 
   /**
    Play a specific sound.

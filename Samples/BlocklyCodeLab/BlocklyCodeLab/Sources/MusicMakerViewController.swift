@@ -26,13 +26,13 @@ import UIKit
 class MusicMakerViewController: UIViewController {
 
   /// Generates and stores Javascript code for each button.
-  var codeManager = CodeManager()
+  private var codeManager = CodeManager()
 
   /// List of all objects that are currently running Javascript code.
-  var codeRunners = [CodeRunner]()
+  private var codeRunners = [CodeRunner]()
 
   /// The current button ID that is being edited.
-  var editingButtonID: String = ""
+  private var editingButtonID: String = ""
 
   /// Instruction label.
   @IBOutlet weak var instructions: UILabel!
@@ -67,6 +67,36 @@ class MusicMakerViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
 
+  // MARK: - State
+
+  private func updateState(animated: Bool) {
+    if isEditing {
+      let button = UIBarButtonItem(
+        barButtonSystemItem: .done, target: self, action: #selector(toggleEditing(_:)))
+      navigationItem.setRightBarButton(button, animated: animated)
+      navigationItem.title = "Music Maker Configuration"
+    } else {
+      let button = UIBarButtonItem(
+        barButtonSystemItem: .edit, target: self, action: #selector(toggleEditing(_:)))
+      navigationItem.setRightBarButton(button, animated: animated)
+      navigationItem.title = "Music Maker"
+      instructions.text = ""
+    }
+
+    UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+      if self.isEditing {
+        self.instructions.text = "\nTap any button to edit its code.\n\nWhen complete, press Done."
+        self.instructions.alpha = 1
+        self.view.backgroundColor =
+          UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1.0)
+      } else {
+        self.instructions.text = ""
+        self.instructions.alpha = 0
+        self.view.backgroundColor = UIColor.white
+      }
+    }
+  }
+
   // MARK: - User Interaction Handlers
 
   private dynamic func toggleEditing(_ sender: UIButton) {
@@ -87,7 +117,7 @@ class MusicMakerViewController: UIViewController {
     }
   }
 
-  // MARK: - Editing
+  // MARK: - Editing and Running Code
 
   /**
    Opens the code editor for a given button ID.
@@ -135,36 +165,6 @@ class MusicMakerViewController: UIViewController {
       })
     } else {
       print("No code has been set up for button \(buttonID).")
-    }
-  }
-
-  // MARK: - State
-
-  private func updateState(animated: Bool) {
-    if isEditing {
-      let button = UIBarButtonItem(
-        barButtonSystemItem: .done, target: self, action: #selector(toggleEditing(_:)))
-      navigationItem.setRightBarButton(button, animated: animated)
-      navigationItem.title = "Music Maker Configuration"
-    } else {
-      let button = UIBarButtonItem(
-        barButtonSystemItem: .edit, target: self, action: #selector(toggleEditing(_:)))
-      navigationItem.setRightBarButton(button, animated: animated)
-      navigationItem.title = "Music Maker"
-      instructions.text = ""
-    }
-
-    UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-      if self.isEditing {
-        self.instructions.text = "\nTap any button to edit its code.\n\nWhen complete, press Done."
-        self.instructions.alpha = 1
-        self.view.backgroundColor =
-          UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1.0)
-      } else {
-        self.instructions.text = ""
-        self.instructions.alpha = 0
-        self.view.backgroundColor = UIColor.white
-      }
     }
   }
 }

@@ -22,10 +22,10 @@ import Foundation
  */
 class CodeManager {
   /// Stores JS code for a unique key (ie. a button ID).
-  var savedCode = [String: String]()
+  private var savedCode = [String: String]()
 
   /// Service used for converting workspace XML into JS code.
-  var codeGeneratorService = CodeGeneratorService(
+  private var codeGeneratorService = CodeGeneratorService(
     jsCoreDependencies: [
       // The JS file containing the Blockly engine
       "blockly_web/blockly_compressed.js",
@@ -34,7 +34,7 @@ class CodeManager {
     ])
 
   /// Builder for creating code generator service requests.
-  var requestBuilder: CodeGeneratorServiceRequestBuilder = {
+  private var requestBuilder: CodeGeneratorServiceRequestBuilder = {
     let builder = CodeGeneratorServiceRequestBuilder(
       // This is the name of the JS object that will generate JavaScript code
       jsGeneratorObject: "Blockly.JavaScript")
@@ -71,11 +71,11 @@ class CodeManager {
 
       let _ = try codeGeneratorService.generateCode(
         forWorkspaceXML: workspaceXML,
-        onCompletion: { code in
+        onCompletion: { requestUUID, code in
           // Code generated successfully. Save it for future use.
           self.savedCode[key] = code
         },
-        onError: { error in
+        onError: { requestUUID, error in
           print("An error occurred generating code - \(error)\n" +
             "key: \(key)\n" +
             "workspaceXML: \(workspaceXML)\n")

@@ -28,11 +28,11 @@ import JavaScriptCore
  */
 @objc class MusicMaker: NSObject, MusicMakerJSExports {
   /// Keeps track of all sounds currently being played.
-  static var audioPlayers = Set<AudioPlayer>()
+  private static var audioPlayers = Set<AudioPlayer>()
 
   /// Maps a UUID to a condition lock. One entry is created every time a sound is played and it is
   /// removed playback completion.
-  static var conditionLocks = [String: NSConditionLock]()
+  private static var conditionLocks = [String: NSConditionLock]()
 
   /**
    Play a specific sound. It blocks synchronously until playback of the sound has finished.
