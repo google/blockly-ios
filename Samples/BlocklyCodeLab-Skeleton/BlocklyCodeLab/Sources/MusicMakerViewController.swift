@@ -110,7 +110,9 @@ class MusicMakerViewController: UIViewController {
   func editButtonID(_ buttonID: String) {
     editingButtonID = buttonID
 
-    print("TODO: Edit button \(buttonID).")
+    // Load the editor for this button number
+    let buttonEditorViewController = ButtonEditorViewController()
+    navigationController?.pushViewController(buttonEditorViewController, animated: true)
   }
 
   /**
