@@ -110,14 +110,16 @@ public final class CodeGeneratorService: NSObject {
   }
 
   /**
-   Begins code generation for a workspace.
+   Requests that code be generated from a given workspace.
 
    - note: `setRequestBuilder(:shouldCache:)` must be called prior to calling this method.
-   - parameter workspace: The workspace to generate code for.
+   - parameter workspace: The `Workspace` to generate code for.
    - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
    - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   - returns: A UUID representing this particular request.
    - throws:
-   `BlocklyError`: Occurs if no request builder has not been set prior to calling this method.
+   `BlocklyError`: Occurs if no request builder has not been set prior to calling this method or
+   if `workspace` could not be serialized into XML.
    */
   public func generateCode(forWorkspace workspace: Workspace,
                            onCompletion: CompletionClosure? = nil,
@@ -128,12 +130,13 @@ public final class CodeGeneratorService: NSObject {
   }
 
   /**
-   Begins code generation for a workspace.
+   Requests that code be generated from given workspace XML.
 
    - note: `setRequestBuilder(:shouldCache:)` must be called prior to calling this method.
    - parameter xml: The workspace XML to generate code for.
    - parameter onCompletion: The `CompletionClosure` to be called when the code is generated.
    - parameter onError: The `ErrorClosure` to be called if the code fails to generate.
+   - returns: A UUID representing this particular request.
    - throws:
    `BlocklyError`: Occurs if no request builder has not been set prior to calling this method.
    */
