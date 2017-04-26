@@ -372,10 +372,24 @@ extension ProcedureCoordinator: WorkspaceListener {
 
   public func workspace(_ workspace: Workspace, willAddBlock block: Block) {
     if block.isProcedureCaller && procedureDefinitionBlock(forCallerBlock: block) == nil {
+      // Look up the tree from here to the top-level,
+	  // looking for the "parental" definition of procedure.
+      var wrapProcedureDefinition = block.previousBlock;
+      while (wrapProcedureDefinition != nil) {
+        if (wrapProcedureDefinition!.isProcedureDefinition &&
+          wrapProcedureDefinition?.procedureName == block.procedureName) { break }
+        else if wrapProcedureDefinition!.topLevel {
+          wrapProcedureDefinition = nil
+          break
+        }
+        wrapProcedureDefinition = wrapProcedureDefinition?.previousBlock
+      }
+      if wrapProcedureDefinition == nil {
       // No procedure block exists for this caller in the workspace.
       // Automatically create it first before adding in the caller block to the workspace. This
       // makes sure that events are ordered in such a way that they can be properly undone.
-      createProcedureDefinitionBlock(fromCallerBlock: block)
+        createProcedureDefinitionBlock(fromCallerBlock: block)
+	  }
     }
   }
 
