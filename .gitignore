@@ -46,6 +46,9 @@ xcuserdata
 # Exclude the Carthage Build folder
 /third_party/Carthage/Build
 
+# Python compiled
+*.pyc
+
 # Mac OS - Generated files
 .DS_Store
 .AppleDouble
