@@ -14,7 +14,7 @@
  -->
 
 <xml>
-  <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+  <category name="Loops" colour="120">
     <block type="controls_repeat_ext">
       <value name="TIMES">
         <shadow type="math_number">
