@@ -51,7 +51,7 @@ class CodeRunner {
   func runJavascriptCode(_ code: String, completion: @escaping () -> ()) {
     // Execute JS Code on the background thread
     jsThread.async {
-      self.context?.evaluateScript(code)
+      _ = self.context?.evaluateScript(code)
 
       DispatchQueue.main.async {
         completion()
