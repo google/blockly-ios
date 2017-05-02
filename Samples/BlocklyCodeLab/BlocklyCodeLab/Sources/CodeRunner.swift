@@ -22,7 +22,7 @@ import UIKit
  */
 class CodeRunner {
   /// The JS context used for running the JS code.
-  private var context: JSContext!
+  private var context: JSContext?
 
   /// A background thread used for executing the JS code.
   private let jsThread = DispatchQueue(label: "jsContext")
@@ -37,7 +37,7 @@ class CodeRunner {
       }
 
       // Expose `MusicMaker` as a bridged Javascript object
-      self.context.setObject(MusicMaker.self, forKeyedSubscript: "MusicMaker" as NSString)
+      self.context?.setObject(MusicMaker.self, forKeyedSubscript: "MusicMaker" as NSString)
     }
   }
 
@@ -51,7 +51,7 @@ class CodeRunner {
   func runJavascriptCode(_ code: String, completion: @escaping () -> ()) {
     // Execute JS Code on the background thread
     jsThread.async {
-      self.context.evaluateScript(code)
+      self.context?.evaluateScript(code)
 
       DispatchQueue.main.async {
         completion()
