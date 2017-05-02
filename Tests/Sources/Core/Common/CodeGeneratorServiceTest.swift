@@ -77,15 +77,17 @@ class CodeGeneratorServiceTest: XCTestCase {
     builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
 
+    let abc = ""
+
     // Execute request
     let _ = BKYAssertDoesNotThrow {
       try _codeGeneratorService.generateCode(
         forWorkspace: workspace,
-        onCompletion: { code in
+        onCompletion: { _, code in
           XCTAssertEqual("for count in range(10):  pass",
                          code.replacingOccurrences(of: "\n", with: ""))
           expectation.fulfill()
-        }, onError: { error in
+        }, onError: { _, error in
           XCTFail("Error occurred during code generation: \(error)")
           expectation.fulfill()
       })
@@ -140,11 +142,11 @@ class CodeGeneratorServiceTest: XCTestCase {
       let _ = BKYAssertDoesNotThrow {
         try _codeGeneratorService.generateCode(
           forWorkspace: workspace,
-          onCompletion: { code in
+          onCompletion: { _, code in
             XCTAssertEqual("for count in range(10):  pass",
                            code.replacingOccurrences(of: "\n", with: ""))
             expectation.fulfill()
-          }, onError: { error in
+          }, onError: { _, error in
             XCTFail("Error occurred during code generation: \(error)")
             expectation.fulfill()
           })
@@ -205,10 +207,10 @@ class CodeGeneratorServiceTest: XCTestCase {
     let _ = BKYAssertDoesNotThrow {
       try _codeGeneratorService.generateCode(
         forWorkspace: workspace,
-        onCompletion: { code in
+        onCompletion: { _, code in
           XCTAssertEqual("#abcdef", code)
           expectation.fulfill()
-        }, onError: { error in
+        }, onError: { _, error in
           XCTFail("Error occurred during code generation: \(error)")
           expectation.fulfill()
         })
@@ -272,11 +274,11 @@ class CodeGeneratorServiceTest: XCTestCase {
     let _ = BKYAssertDoesNotThrow {
       try _codeGeneratorService.generateCode(
         forWorkspace: workspace,
-        onCompletion: { code in
+        onCompletion: { _, code in
           XCTAssertEqual("if (false) {} else if (false) {} else if (true) {}",
                          code.replacingOccurrences(of: "\n", with: ""))
           expectation.fulfill()
-      }, onError: { error in
+      }, onError: { _, error in
         XCTFail("Error occurred during code generation: \(error)")
         expectation.fulfill()
       })
