@@ -23,7 +23,11 @@ class ButtonEditorViewController: UIViewController {
   // MARK: - Properties
 
   /// The ID of the button that is being edited.
-  public private(set) var buttonID: String = ""
+  public private(set) var buttonID: String = "" {
+    didSet {
+      self.navigationItem.title = "Edit Button \(buttonID)"
+    }
+  }
 
   // MARK: - Super
 
