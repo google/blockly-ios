@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */; };
+		3D38C6CD56E74ACBD406F32E /* Pods_BlocklyCodeLabStarter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FEAE724B63B995525561F4 /* Pods_BlocklyCodeLabStarter.framework */; };
 		FA0A91451EA8196C00F29F8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A913C1EA8196C00F29F8A /* AppDelegate.swift */; };
 		FA0A91461EA8196C00F29F8A /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A913D1EA8196C00F29F8A /* ButtonEditorViewController.swift */; };
 		FA0A91491EA8196C00F29F8A /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A91411EA8196C00F29F8A /* AudioPlayer.swift */; };
@@ -25,14 +25,17 @@
 /* Begin PBXFileReference section */
 		1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.release.xcconfig"; sourceTree = "<group>"; };
 		73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLab.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab.debug.xcconfig"; sourceTree = "<group>"; };
+		86E56F13BFFD95BED2971134 /* Pods-BlocklyCodeLabStarter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLabStarter.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLabStarter/Pods-BlocklyCodeLabStarter.release.xcconfig"; sourceTree = "<group>"; };
 		CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F41F0D5366361929394F6854 /* Pods-BlocklyCodeLabStarter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlocklyCodeLabStarter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlocklyCodeLabStarter/Pods-BlocklyCodeLabStarter.debug.xcconfig"; sourceTree = "<group>"; };
+		F8FEAE724B63B995525561F4 /* Pods_BlocklyCodeLabStarter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlocklyCodeLabStarter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0A913C1EA8196C00F29F8A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA0A913D1EA8196C00F29F8A /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
 		FA0A91411EA8196C00F29F8A /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		FA0A91421EA8196C00F29F8A /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		FA0A91441EA8196C00F29F8A /* MusicMakerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
 		FA0A914D1EA8285400F29F8A /* MusicMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMaker.swift; sourceTree = "<group>"; };
-		FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA2F45A01EA046260071C1A3 /* BlocklyCodeLabStarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLabStarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2F45AF1EA046260071C1A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA8317331EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA8317351EA1BE1400A3A62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -48,7 +51,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAE5AF8E1EA1ACBA00551B07 /* JavaScriptCore.framework in Frameworks */,
-				C375BCD3004B3C7F2897CD50 /* Pods_BlocklyCodeLab.framework in Frameworks */,
+				3D38C6CD56E74ACBD406F32E /* Pods_BlocklyCodeLabStarter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +63,7 @@
 			children = (
 				FAE5AF8D1EA1ACBA00551B07 /* JavaScriptCore.framework */,
 				CF18A2F00B915F05432A5AE0 /* Pods_BlocklyCodeLab.framework */,
+				F8FEAE724B63B995525561F4 /* Pods_BlocklyCodeLabStarter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -69,6 +73,8 @@
 			children = (
 				73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */,
 				1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */,
+				F41F0D5366361929394F6854 /* Pods-BlocklyCodeLabStarter.debug.xcconfig */,
+				86E56F13BFFD95BED2971134 /* Pods-BlocklyCodeLabStarter.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -97,7 +103,7 @@
 		FA2F45971EA046250071C1A3 = {
 			isa = PBXGroup;
 			children = (
-				FA2F45A21EA046260071C1A3 /* BlocklyCodeLab */,
+				FA2F45A21EA046260071C1A3 /* BlocklyCodeLabStarter */,
 				FA2F45A11EA046260071C1A3 /* Products */,
 				4D6166B58DA104EC365FB044 /* Pods */,
 				186D0DCD0885D6572D388526 /* Frameworks */,
@@ -107,19 +113,19 @@
 		FA2F45A11EA046260071C1A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */,
+				FA2F45A01EA046260071C1A3 /* BlocklyCodeLabStarter.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FA2F45A21EA046260071C1A3 /* BlocklyCodeLab */ = {
+		FA2F45A21EA046260071C1A3 /* BlocklyCodeLabStarter */ = {
 			isa = PBXGroup;
 			children = (
 				FA0A913B1EA8196C00F29F8A /* Sources */,
 				FA2F45AF1EA046260071C1A3 /* Info.plist */,
 				FAE5AF971EA1B61E00551B07 /* Resources */,
 			);
-			path = BlocklyCodeLab;
+			path = BlocklyCodeLabStarter;
 			sourceTree = "<group>";
 		};
 		FA8317301EA1BE1400A3A62E /* Localized */ = {
@@ -153,9 +159,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FA2F459F1EA046250071C1A3 /* BlocklyCodeLab */ = {
+		FA2F459F1EA046250071C1A3 /* BlocklyCodeLabStarter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLab" */;
+			buildConfigurationList = FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLabStarter" */;
 			buildPhases = (
 				B341D2BC6A7FA45ADC883676 /* [CP] Check Pods Manifest.lock */,
 				FA2F459C1EA046250071C1A3 /* Sources */,
@@ -168,9 +174,9 @@
 			);
 			dependencies = (
 			);
-			name = BlocklyCodeLab;
+			name = BlocklyCodeLabStarter;
 			productName = BlocklyCodeLab;
-			productReference = FA2F45A01EA046260071C1A3 /* BlocklyCodeLab.app */;
+			productReference = FA2F45A01EA046260071C1A3 /* BlocklyCodeLabStarter.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -190,7 +196,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLab" */;
+			buildConfigurationList = FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLabStarter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -203,7 +209,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FA2F459F1EA046250071C1A3 /* BlocklyCodeLab */,
+				FA2F459F1EA046250071C1A3 /* BlocklyCodeLabStarter */,
 			);
 		};
 /* End PBXProject section */
@@ -236,7 +242,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLabStarter/Pods-BlocklyCodeLabStarter-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9B4E96E6F90B507A172DE5AE /* [CP] Embed Pods Frameworks */ = {
@@ -251,7 +257,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLab/Pods-BlocklyCodeLab-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlocklyCodeLabStarter/Pods-BlocklyCodeLabStarter-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B341D2BC6A7FA45ADC883676 /* [CP] Check Pods Manifest.lock */ = {
@@ -402,13 +408,13 @@
 		};
 		FA2F45B31EA046260071C1A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73A2EF2902B484B8CE58F48F /* Pods-BlocklyCodeLab.debug.xcconfig */;
+			baseConfigurationReference = F41F0D5366361929394F6854 /* Pods-BlocklyCodeLabStarter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
-				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
+				INFOPLIST_FILE = BlocklyCodeLabStarter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLabStarter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -416,13 +422,13 @@
 		};
 		FA2F45B41EA046260071C1A3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C2D441A23AD5BEE339BDACE /* Pods-BlocklyCodeLab.release.xcconfig */;
+			baseConfigurationReference = 86E56F13BFFD95BED2971134 /* Pods-BlocklyCodeLabStarter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
-				INFOPLIST_FILE = BlocklyCodeLab/Info.plist;
+				INFOPLIST_FILE = BlocklyCodeLabStarter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLab;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLabStarter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -431,7 +437,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLab" */ = {
+		FA2F459B1EA046250071C1A3 /* Build configuration list for PBXProject "BlocklyCodeLabStarter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA2F45B01EA046260071C1A3 /* Debug */,
@@ -440,7 +446,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLab" */ = {
+		FA2F45B21EA046260071C1A3 /* Build configuration list for PBXNativeTarget "BlocklyCodeLabStarter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA2F45B31EA046260071C1A3 /* Debug */,
