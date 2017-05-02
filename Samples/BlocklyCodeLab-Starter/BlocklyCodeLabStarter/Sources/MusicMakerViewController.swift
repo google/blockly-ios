@@ -94,7 +94,7 @@ class MusicMakerViewController: UIViewController {
     }
 
     if isEditing {
-      editButtonID(buttonID)
+      editButton(buttonID: buttonID)
     } else {
       runCode(forButtonID: buttonID)
     }
@@ -107,7 +107,7 @@ class MusicMakerViewController: UIViewController {
 
    - parameter buttonID: The button ID to edit.
    */
-  func editButtonID(_ buttonID: String) {
+  func editButton(buttonID: String) {
     editingButtonID = buttonID
 
     // Load the editor for this button number
