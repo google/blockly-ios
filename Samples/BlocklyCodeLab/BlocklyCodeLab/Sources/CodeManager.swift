@@ -37,15 +37,15 @@ class CodeManager {
     let requestBuilder = CodeGeneratorServiceRequestBuilder(
       // This is the name of the JS object that will generate JavaScript code
       jsGeneratorObject: "Blockly.JavaScript")
+    // Load the block definitions for all default blocks
+    requestBuilder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
+    // Load the block definitions for our custom sound block
+    requestBuilder.addJSONBlockDefinitionFiles(["sound_blocks.json"])
     requestBuilder.addJSBlockGeneratorFiles([
       // Use JavaScript code generators for the default blocks
       "blockly_web/javascript_compressed.js",
-      // Use JavaScript code generators for our custom turtle blocks
+      // Use JavaScript code generators for our custom sound block
       "sound_block_generators.js"])
-    // Load the block definitions for all default blocks
-    requestBuilder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
-    // Load the block definitions for our custom turtle blocks
-    requestBuilder.addJSONBlockDefinitionFiles(["sound_blocks.json"])
 
     // Assign the request builder to the service and cache it so subsequent code generation
     // runs are immediate.
