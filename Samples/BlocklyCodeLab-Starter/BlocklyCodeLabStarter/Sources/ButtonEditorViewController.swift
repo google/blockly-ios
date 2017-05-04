@@ -37,6 +37,10 @@ class ButtonEditorViewController: UIViewController {
     edgesForExtendedLayout = []
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+  }
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
   }

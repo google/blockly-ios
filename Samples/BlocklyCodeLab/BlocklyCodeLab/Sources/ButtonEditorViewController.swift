@@ -78,6 +78,10 @@ class ButtonEditorViewController: UIViewController {
     workbenchViewController.didMove(toParentViewController: self)
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+  }
+
   override func viewWillDisappear(_ animated: Bool) {
     // Save on exit
     saveBlocks()
