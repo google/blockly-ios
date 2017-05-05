@@ -41,10 +41,6 @@ class ButtonEditorViewController: UIViewController {
     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-  }
-
   // MARK: - Load / Write
 
   /**

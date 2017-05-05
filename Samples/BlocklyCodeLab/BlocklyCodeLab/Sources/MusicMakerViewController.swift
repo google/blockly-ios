@@ -152,7 +152,8 @@ class MusicMakerViewController: UIViewController {
    */
   func runCode(forButtonID buttonID: String) {
     // If code exists for this button, run it.
-    if let code = codeManager.code(forKey: buttonID) {
+    if let code = codeManager.code(forKey: buttonID),
+      code != "" {
       let codeRunner = CodeRunner()
 
       // Add this code runner to the list of code runners to keep it in memory while it is
