@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="xDz-52-yWQ">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Music Maker-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MusicMakerViewController" customModule="BlocklyCodeLab" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPe-R0-2gg">
+                                <rect key="frame" x="20" y="64" width="728" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nYB-JA-VnA">
+                                <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NE0-X7-zWt">
+                                        <rect key="frame" x="24" y="28.5" width="721" height="903"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Yd2-Uu-gJl">
+                                                <rect key="frame" x="0.0" y="0.0" width="721" height="287.5"/>
+                                                <subviews>
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sjm-Uv-JVh">
+                                                        <rect key="frame" x="0.0" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.95686274509803915" green="0.2627450980392157" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="1">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="XQa-XY-Yl9"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUv-Yw-wnv">
+                                                        <rect key="frame" x="247" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="2">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="FT1-cl-MY2"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBr-hb-jOw">
+                                                        <rect key="frame" x="494" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="3">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="utU-nA-dju"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ffm-4f-o4V">
+                                                <rect key="frame" x="0.0" y="307.5" width="721" height="288"/>
+                                                <subviews>
+                                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWO-ut-7Gz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="227" height="288"/>
+                                                        <color key="backgroundColor" red="1" green="0.92156862745098034" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="4">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="dcb-HD-eIR"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rud-G7-xrG">
+                                                        <rect key="frame" x="247" y="0.0" width="227" height="288"/>
+                                                        <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="5">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="Iun-lf-ZIA"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTn-br-cYz">
+                                                        <rect key="frame" x="494" y="0.0" width="227" height="288"/>
+                                                        <color key="backgroundColor" red="0.47450980392156861" green="0.33333333333333331" blue="0.28235294117647058" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="6">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="swx-lO-3Sl"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wl3-ST-WuK">
+                                                <rect key="frame" x="0.0" y="615.5" width="721" height="287.5"/>
+                                                <subviews>
+                                                    <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zYt-0Z-EKS">
+                                                        <rect key="frame" x="0.0" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="7">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="5LI-vW-l9h"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGE-CL-5Ag">
+                                                        <rect key="frame" x="247" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.011764705882352941" green="0.66274509803921566" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="8">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="L64-L2-a5h"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3jP-Nk-9Ub">
+                                                        <rect key="frame" x="494" y="0.0" width="227" height="287.5"/>
+                                                        <color key="backgroundColor" red="0.91372549020000005" green="0.1176470588" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                        <state key="normal" title="9">
+                                                            <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pressedMusicButton:" destination="dkx-z0-nzr" eventType="touchDown" id="AeP-uv-taI"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Yd2-Uu-gJl" secondAttribute="trailing" id="Jqs-c1-ZZM"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ffm-4f-o4V" secondAttribute="trailing" id="SUD-UI-c85"/>
+                                            <constraint firstItem="Ffm-4f-o4V" firstAttribute="leading" secondItem="NE0-X7-zWt" secondAttribute="leading" id="dBC-SD-VVX"/>
+                                            <constraint firstItem="Yd2-Uu-gJl" firstAttribute="leading" secondItem="NE0-X7-zWt" secondAttribute="leading" id="fDB-mh-cNV"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99019607843137258" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="NE0-X7-zWt" firstAttribute="leading" secondItem="nYB-JA-VnA" secondAttribute="trailing" multiplier="0.03" id="JlH-CI-iBJ"/>
+                                    <constraint firstItem="NE0-X7-zWt" firstAttribute="trailing" secondItem="nYB-JA-VnA" secondAttribute="trailing" multiplier="0.97" id="T0O-uN-4R2"/>
+                                    <constraint firstItem="NE0-X7-zWt" firstAttribute="top" secondItem="nYB-JA-VnA" secondAttribute="bottom" multiplier="0.03" id="fss-co-r7z"/>
+                                    <constraint firstItem="NE0-X7-zWt" firstAttribute="bottom" secondItem="nYB-JA-VnA" secondAttribute="bottom" multiplier="0.97" id="sWY-aN-jrr"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="nYB-JA-VnA" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="6cp-IU-B7C"/>
+                            <constraint firstItem="nPe-R0-2gg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7au-T9-ttN"/>
+                            <constraint firstItem="nYB-JA-VnA" firstAttribute="top" secondItem="nPe-R0-2gg" secondAttribute="bottom" id="9fo-2a-ZBl"/>
+                            <constraint firstItem="nPe-R0-2gg" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="FUW-HB-Wy0"/>
+                            <constraint firstItem="nPe-R0-2gg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="JcY-1z-aWp"/>
+                            <constraint firstItem="nYB-JA-VnA" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="UtW-1C-iKS"/>
+                            <constraint firstItem="nYB-JA-VnA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="l58-9t-hH7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Music Maker" id="gTs-TL-Afu">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="edit" id="2Xc-tt-Xgu"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="instructions" destination="nPe-R0-2gg" id="11d-Xh-g3i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="168.80000000000001" y="259.52023988005999"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="e3H-mS-8ls">
+            <objects>
+                <navigationController id="xDz-52-yWQ" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RqH-eX-jfz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="K6O-wN-aAk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MeB-MS-wUm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-590" y="260"/>
+        </scene>
+    </scenes>
+</document>
