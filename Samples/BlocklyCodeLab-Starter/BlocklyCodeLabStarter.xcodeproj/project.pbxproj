@@ -18,91 +18,7 @@
 		FA2627D61EC116B0003C3D13 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D01EC116B0003C3D13 /* FileHelper.swift */; };
 		FA2627D71EC116B0003C3D13 /* MusicMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D11EC116B0003C3D13 /* MusicMaker.swift */; };
 		FA2627D81EC116B0003C3D13 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D21EC116B0003C3D13 /* MusicMakerViewController.swift */; };
-		FA2628431EC12AA1003C3D13 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA26282D1EC12A19003C3D13 /* AEXML.framework */; };
-		FA2628441EC12AA1003C3D13 /* AEXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA26282D1EC12A19003C3D13 /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FA2628491EC12AA1003C3D13 /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA26281F1EC12A0D003C3D13 /* Blockly.framework */; };
-		FA26284A1EC12AA1003C3D13 /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA26281F1EC12A0D003C3D13 /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		FA26281E1EC12A0D003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FA548C051B630BAC008BC59C;
-			remoteInfo = Blockly;
-		};
-		FA2628201EC12A0D003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FA548C101B630BAD008BC59C;
-			remoteInfo = BlocklyTests;
-		};
-		FA26282C1EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92791BDD47210011F36F;
-			remoteInfo = "AEXML iOS";
-		};
-		FA26282E1EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92DF1BDD5D330011F36F;
-			remoteInfo = "AEXML watchOS";
-		};
-		FA2628301EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92991BDD4CEF0011F36F;
-			remoteInfo = "AEXML iOS Tests";
-		};
-		FA2628321EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92BE1BDD5B300011F36F;
-			remoteInfo = "AEXML tvOS";
-		};
-		FA2628341EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92CC1BDD5BB20011F36F;
-			remoteInfo = "AEXML tvOS Tests";
-		};
-		FA2628361EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A928A1BDD49390011F36F;
-			remoteInfo = "AEXML OSX";
-		};
-		FA2628381EC12A19003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B4A92AB1BDD54F50011F36F;
-			remoteInfo = "AEXML OSX Tests";
-		};
-		FA2628451EC12AA1003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B4A92781BDD47210011F36F;
-			remoteInfo = "AEXML iOS";
-		};
-		FA26284B1EC12AA1003C3D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FA548C041B630BAC008BC59C;
-			remoteInfo = Blockly;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		FA2627901EC11041003C3D13 /* Embed Frameworks */ = {
@@ -111,8 +27,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA2628441EC12AA1003C3D13 /* AEXML.framework in Embed Frameworks */,
-				FA26284A1EC12AA1003C3D13 /* Blockly.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,8 +47,6 @@
 		FA2627D11EC116B0003C3D13 /* MusicMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMaker.swift; sourceTree = "<group>"; };
 		FA2627D21EC116B0003C3D13 /* MusicMakerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
 		FA2627D91EC1175B003C3D13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlocklyCodeLabStarter/Info.plist; sourceTree = "<group>"; };
-		FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../../Blockly.xcodeproj; sourceTree = "<group>"; };
-		FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../../third_party/Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,8 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA2628431EC12AA1003C3D13 /* AEXML.framework in Frameworks */,
-				FA2628491EC12AA1003C3D13 /* Blockly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,8 +63,6 @@
 		FA26272C1EC10F17003C3D13 = {
 			isa = PBXGroup;
 			children = (
-				FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */,
-				FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */,
 				FA2627CB1EC116B0003C3D13 /* Sources */,
 				FA26274A1EC10F67003C3D13 /* Resources */,
 				FA2627361EC10F17003C3D13 /* Products */,
@@ -221,29 +129,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		FA26281A1EC12A0C003C3D13 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA26281F1EC12A0D003C3D13 /* Blockly.framework */,
-				FA2628211EC12A0D003C3D13 /* BlocklyTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FA2628231EC12A18003C3D13 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA26282D1EC12A19003C3D13 /* AEXML.framework */,
-				FA26282F1EC12A19003C3D13 /* AEXML.framework */,
-				FA2628311EC12A19003C3D13 /* AEXML iOS Tests.xctest */,
-				FA2628331EC12A19003C3D13 /* AEXML.framework */,
-				FA2628351EC12A19003C3D13 /* AEXML tvOS Tests.xctest */,
-				FA2628371EC12A19003C3D13 /* AEXML.framework */,
-				FA2628391EC12A19003C3D13 /* AEXML OSX Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -259,8 +144,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FA2628461EC12AA1003C3D13 /* PBXTargetDependency */,
-				FA26284C1EC12AA1003C3D13 /* PBXTargetDependency */,
 			);
 			name = BlocklyCodeLabStarter;
 			productName = BlocklyCodeLab;
@@ -294,88 +177,12 @@
 			mainGroup = FA26272C1EC10F17003C3D13;
 			productRefGroup = FA2627361EC10F17003C3D13 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = FA2628231EC12A18003C3D13 /* Products */;
-					ProjectRef = FA2628221EC12A18003C3D13 /* AEXML.xcodeproj */;
-				},
-				{
-					ProductGroup = FA26281A1EC12A0C003C3D13 /* Products */;
-					ProjectRef = FA2628191EC12A0C003C3D13 /* Blockly.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				FA2627341EC10F17003C3D13 /* BlocklyCodeLabStarter */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		FA26281F1EC12A0D003C3D13 /* Blockly.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Blockly.framework;
-			remoteRef = FA26281E1EC12A0D003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628211EC12A0D003C3D13 /* BlocklyTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BlocklyTests.xctest;
-			remoteRef = FA2628201EC12A0D003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA26282D1EC12A19003C3D13 /* AEXML.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AEXML.framework;
-			remoteRef = FA26282C1EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA26282F1EC12A19003C3D13 /* AEXML.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AEXML.framework;
-			remoteRef = FA26282E1EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628311EC12A19003C3D13 /* AEXML iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "AEXML iOS Tests.xctest";
-			remoteRef = FA2628301EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628331EC12A19003C3D13 /* AEXML.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AEXML.framework;
-			remoteRef = FA2628321EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628351EC12A19003C3D13 /* AEXML tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "AEXML tvOS Tests.xctest";
-			remoteRef = FA2628341EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628371EC12A19003C3D13 /* AEXML.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AEXML.framework;
-			remoteRef = FA2628361EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FA2628391EC12A19003C3D13 /* AEXML OSX Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "AEXML OSX Tests.xctest";
-			remoteRef = FA2628381EC12A19003C3D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FA2627331EC10F17003C3D13 /* Resources */ = {
@@ -407,19 +214,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FA2628461EC12AA1003C3D13 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "AEXML iOS";
-			targetProxy = FA2628451EC12AA1003C3D13 /* PBXContainerItemProxy */;
-		};
-		FA26284C1EC12AA1003C3D13 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Blockly;
-			targetProxy = FA26284B1EC12AA1003C3D13 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		FA2627B71EC11682003C3D13 /* LaunchScreen.storyboard */ = {
