@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0800"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
-               BuildableName = "AEXML.framework"
-               BlueprintName = "AEXML tvOS"
-               ReferencedContainer = "container:AEXML.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B4A92CB1BDD5BB20011F36F"
-               BuildableName = "AEXML tvOS Tests.xctest"
-               BlueprintName = "AEXML tvOS Tests"
-               ReferencedContainer = "container:AEXML.xcodeproj">
+               BlueprintIdentifier = "FA2627341EC10F17003C3D13"
+               BuildableName = "BlocklyCodeLabStarter.app"
+               BlueprintName = "BlocklyCodeLabStarter"
+               ReferencedContainer = "container:BlocklyCodeLabStarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -40,27 +26,16 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B4A92CB1BDD5BB20011F36F"
-               BuildableName = "AEXML tvOS Tests.xctest"
-               BlueprintName = "AEXML tvOS Tests"
-               ReferencedContainer = "container:AEXML.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
-            BuildableName = "AEXML.framework"
-            BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            BlueprintIdentifier = "FA2627341EC10F17003C3D13"
+            BuildableName = "BlocklyCodeLabStarter.app"
+            BlueprintName = "BlocklyCodeLabStarter"
+            ReferencedContainer = "container:BlocklyCodeLabStarter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
-            BuildableName = "AEXML.framework"
-            BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            BlueprintIdentifier = "FA2627341EC10F17003C3D13"
+            BuildableName = "BlocklyCodeLabStarter.app"
+            BlueprintName = "BlocklyCodeLabStarter"
+            ReferencedContainer = "container:BlocklyCodeLabStarter.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -94,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B4A92BD1BDD5B300011F36F"
-            BuildableName = "AEXML.framework"
-            BlueprintName = "AEXML tvOS"
-            ReferencedContainer = "container:AEXML.xcodeproj">
+            BlueprintIdentifier = "FA2627341EC10F17003C3D13"
+            BuildableName = "BlocklyCodeLabStarter.app"
+            BlueprintName = "BlocklyCodeLabStarter"
+            ReferencedContainer = "container:BlocklyCodeLabStarter.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
