@@ -1,8 +1,0 @@
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
-
-target 'BlocklyCodeLabStarter' do
-  use_frameworks!
-
-  pod 'Blockly'
-end
