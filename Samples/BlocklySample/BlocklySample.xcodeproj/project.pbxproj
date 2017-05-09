@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3035DCFF1DA45C940087B9CC /* TurtleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3035DCFE1DA45C940087B9CC /* TurtleViewController.xib */; };
-		FA1ED8911D9B43C600A5B19A /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; };
-		FA1ED8921D9B43C600A5B19A /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA2F44511E9C6A2D0071C1A3 /* AllFieldsDemo in Resources */ = {isa = PBXBuildFile; fileRef = FA2F444D1E9C6A2D0071C1A3 /* AllFieldsDemo */; };
 		FA2F44521E9C6A2D0071C1A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA2F444E1E9C6A2D0071C1A3 /* Images.xcassets */; };
 		FA2F44531E9C6A2D0071C1A3 /* SimpleWorkbench in Resources */ = {isa = PBXBuildFile; fileRef = FA2F444F1E9C6A2D0071C1A3 /* SimpleWorkbench */; };
@@ -18,8 +16,10 @@
 		FA4DBED61DB04B26002E493E /* AllFieldsWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4DBED51DB04B26002E493E /* AllFieldsWorkbenchViewController.swift */; };
 		FA5F28B11C756B73008384BE /* TurtleSwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F28B01C756B73008384BE /* TurtleSwiftViewController.swift */; };
 		FA5F2BC41C7692D0008384BE /* DemoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */; };
-		FAA5E1A81D8F8553006FFC36 /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA5E19B1D8F8525006FFC36 /* AEXML.framework */; };
-		FAA5E1A91D8F8553006FFC36 /* AEXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA5E19B1D8F8525006FFC36 /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAA7BEE31EC13BB600CA88CA /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA7BED61EC13BA400CA88CA /* AEXML.framework */; };
+		FAA7BEE41EC13BB600CA88CA /* AEXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA7BED61EC13BA400CA88CA /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAA7BEE71EC13BB600CA88CA /* Blockly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA7BEC81EC13B9600CA88CA /* Blockly.framework */; };
+		FAA7BEE81EC13BB600CA88CA /* Blockly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA7BEC81EC13B9600CA88CA /* Blockly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAC357E51D9244A2003FB436 /* TurtleObjCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC357E41D9244A2003FB436 /* TurtleObjCViewController.m */; };
 		FAE2A6481C756AA20085D36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6441C756AA20085D36B /* AppDelegate.swift */; };
 		FAE2A6491C756AA20085D36B /* SimpleWorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE2A6471C756AA20085D36B /* SimpleWorkbenchViewController.swift */; };
@@ -27,82 +27,82 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FA1ED88D1D9B43BC00A5B19A /* PBXContainerItemProxy */ = {
+		FAA7BEC71EC13B9600CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */;
+			containerPortal = FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FA548C051B630BAC008BC59C;
 			remoteInfo = Blockly;
 		};
-		FA1ED88F1D9B43BC00A5B19A /* PBXContainerItemProxy */ = {
+		FAA7BEC91EC13B9600CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */;
+			containerPortal = FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FA548C101B630BAD008BC59C;
 			remoteInfo = BlocklyTests;
 		};
-		FA1ED8931D9B43C600A5B19A /* PBXContainerItemProxy */ = {
+		FAA7BED51EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FA548C041B630BAC008BC59C;
-			remoteInfo = Blockly;
-		};
-		FAA5E19A1D8F8525006FFC36 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92791BDD47210011F36F;
 			remoteInfo = "AEXML iOS";
 		};
-		FAA5E19C1D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BED71EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92DF1BDD5D330011F36F;
 			remoteInfo = "AEXML watchOS";
 		};
-		FAA5E19E1D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BED91EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92991BDD4CEF0011F36F;
 			remoteInfo = "AEXML iOS Tests";
 		};
-		FAA5E1A01D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BEDB1EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92BE1BDD5B300011F36F;
 			remoteInfo = "AEXML tvOS";
 		};
-		FAA5E1A21D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BEDD1EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92CC1BDD5BB20011F36F;
 			remoteInfo = "AEXML tvOS Tests";
 		};
-		FAA5E1A41D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BEDF1EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A928A1BDD49390011F36F;
 			remoteInfo = "AEXML OSX";
 		};
-		FAA5E1A61D8F8525006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BEE11EC13BA400CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8B4A92AB1BDD54F50011F36F;
 			remoteInfo = "AEXML OSX Tests";
 		};
-		FAA5E1AA1D8F8553006FFC36 /* PBXContainerItemProxy */ = {
+		FAA7BEE51EC13BB600CA88CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+			containerPortal = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8B4A92781BDD47210011F36F;
 			remoteInfo = "AEXML iOS";
+		};
+		FAA7BEE91EC13BB600CA88CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FA548C041B630BAC008BC59C;
+			remoteInfo = Blockly;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -113,8 +113,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FAA5E1A91D8F8553006FFC36 /* AEXML.framework in Embed Frameworks */,
-				FA1ED8921D9B43C600A5B19A /* Blockly.framework in Embed Frameworks */,
+				FAA7BEE41EC13BB600CA88CA /* AEXML.framework in Embed Frameworks */,
+				FAA7BEE81EC13BB600CA88CA /* Blockly.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,7 +124,6 @@
 /* Begin PBXFileReference section */
 		302352761DB04B0100450D09 /* TurtleViewControllerInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TurtleViewControllerInterface.h; sourceTree = "<group>"; };
 		3035DCFE1DA45C940087B9CC /* TurtleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TurtleViewController.xib; sourceTree = "<group>"; };
-		FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../Blockly.xcodeproj; sourceTree = "<group>"; };
 		FA2F444D1E9C6A2D0071C1A3 /* AllFieldsDemo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AllFieldsDemo; path = "Non-Localized/AllFieldsDemo"; sourceTree = "<group>"; };
 		FA2F444E1E9C6A2D0071C1A3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Non-Localized/Images.xcassets"; sourceTree = "<group>"; };
 		FA2F444F1E9C6A2D0071C1A3 /* SimpleWorkbench */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SimpleWorkbench; path = "Non-Localized/SimpleWorkbench"; sourceTree = "<group>"; };
@@ -187,7 +186,8 @@
 		FA548C2E1B6312AE008BC59C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA5F28B01C756B73008384BE /* TurtleSwiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurtleSwiftViewController.swift; sourceTree = "<group>"; };
 		FA5F2BC31C7692D0008384BE /* DemoPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoPickerViewController.swift; sourceTree = "<group>"; };
-		FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../third_party/Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
+		FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blockly.xcodeproj; path = ../../Blockly.xcodeproj; sourceTree = "<group>"; };
+		FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = ../../third_party/Carthage/Checkouts/AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 		FAC357E41D9244A2003FB436 /* TurtleObjCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurtleObjCViewController.m; sourceTree = "<group>"; };
 		FAC357ED1D92598C003FB436 /* TurtleObjCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleObjCViewController.h; sourceTree = "<group>"; };
 		FAE2A6441C756AA20085D36B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -202,24 +202,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA7BEE31EC13BB600CA88CA /* AEXML.framework in Frameworks */,
 				FAFD37631C93C76C00C77049 /* WebKit.framework in Frameworks */,
-				FAA5E1A81D8F8553006FFC36 /* AEXML.framework in Frameworks */,
-				FA1ED8911D9B43C600A5B19A /* Blockly.framework in Frameworks */,
+				FAA7BEE71EC13BB600CA88CA /* Blockly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FA1ED8891D9B43BC00A5B19A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */,
-				FA1ED8901D9B43BC00A5B19A /* BlocklyTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FA2F444C1E9C6A1C0071C1A3 /* Non-Localized */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,22 +277,31 @@
 		FA9518C31C695C7900B026FC /* External */ = {
 			isa = PBXGroup;
 			children = (
-				FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */,
-				FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */,
+				FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */,
+				FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */,
 			);
 			name = External;
 			sourceTree = "<group>";
 		};
-		FAA5E1911D8F8525006FFC36 /* Products */ = {
+		FAA7BEC31EC13B9600CA88CA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FAA5E19B1D8F8525006FFC36 /* AEXML.framework */,
-				FAA5E19D1D8F8525006FFC36 /* AEXML.framework */,
-				FAA5E19F1D8F8525006FFC36 /* AEXML iOS Tests.xctest */,
-				FAA5E1A11D8F8525006FFC36 /* AEXML.framework */,
-				FAA5E1A31D8F8525006FFC36 /* AEXML tvOS Tests.xctest */,
-				FAA5E1A51D8F8525006FFC36 /* AEXML.framework */,
-				FAA5E1A71D8F8525006FFC36 /* AEXML OSX Tests.xctest */,
+				FAA7BEC81EC13B9600CA88CA /* Blockly.framework */,
+				FAA7BECA1EC13B9600CA88CA /* BlocklyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAA7BECC1EC13BA400CA88CA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7BED61EC13BA400CA88CA /* AEXML.framework */,
+				FAA7BED81EC13BA400CA88CA /* AEXML.framework */,
+				FAA7BEDA1EC13BA400CA88CA /* AEXML iOS Tests.xctest */,
+				FAA7BEDC1EC13BA400CA88CA /* AEXML.framework */,
+				FAA7BEDE1EC13BA400CA88CA /* AEXML tvOS Tests.xctest */,
+				FAA7BEE01EC13BA400CA88CA /* AEXML.framework */,
+				FAA7BEE21EC13BA400CA88CA /* AEXML OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -348,8 +348,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				FAA5E1AB1D8F8553006FFC36 /* PBXTargetDependency */,
-				FA1ED8941D9B43C600A5B19A /* PBXTargetDependency */,
+				FAA7BEE61EC13BB600CA88CA /* PBXTargetDependency */,
+				FAA7BEEA1EC13BB600CA88CA /* PBXTargetDependency */,
 			);
 			name = BlocklySample;
 			productName = BlocklySample;
@@ -438,12 +438,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FAA5E1911D8F8525006FFC36 /* Products */;
-					ProjectRef = FAA5E1901D8F8525006FFC36 /* AEXML.xcodeproj */;
+					ProductGroup = FAA7BECC1EC13BA400CA88CA /* Products */;
+					ProjectRef = FAA7BECB1EC13BA400CA88CA /* AEXML.xcodeproj */;
 				},
 				{
-					ProductGroup = FA1ED8891D9B43BC00A5B19A /* Products */;
-					ProjectRef = FA1ED8881D9B43BC00A5B19A /* Blockly.xcodeproj */;
+					ProductGroup = FAA7BEC31EC13B9600CA88CA /* Products */;
+					ProjectRef = FAA7BEC21EC13B9600CA88CA /* Blockly.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -454,67 +454,67 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FA1ED88E1D9B43BC00A5B19A /* Blockly.framework */ = {
+		FAA7BEC81EC13B9600CA88CA /* Blockly.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Blockly.framework;
-			remoteRef = FA1ED88D1D9B43BC00A5B19A /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEC71EC13B9600CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FA1ED8901D9B43BC00A5B19A /* BlocklyTests.xctest */ = {
+		FAA7BECA1EC13B9600CA88CA /* BlocklyTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = BlocklyTests.xctest;
-			remoteRef = FA1ED88F1D9B43BC00A5B19A /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEC91EC13B9600CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E19B1D8F8525006FFC36 /* AEXML.framework */ = {
+		FAA7BED61EC13BA400CA88CA /* AEXML.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AEXML.framework;
-			remoteRef = FAA5E19A1D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BED51EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E19D1D8F8525006FFC36 /* AEXML.framework */ = {
+		FAA7BED81EC13BA400CA88CA /* AEXML.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AEXML.framework;
-			remoteRef = FAA5E19C1D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BED71EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E19F1D8F8525006FFC36 /* AEXML iOS Tests.xctest */ = {
+		FAA7BEDA1EC13BA400CA88CA /* AEXML iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "AEXML iOS Tests.xctest";
-			remoteRef = FAA5E19E1D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BED91EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E1A11D8F8525006FFC36 /* AEXML.framework */ = {
+		FAA7BEDC1EC13BA400CA88CA /* AEXML.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AEXML.framework;
-			remoteRef = FAA5E1A01D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEDB1EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E1A31D8F8525006FFC36 /* AEXML tvOS Tests.xctest */ = {
+		FAA7BEDE1EC13BA400CA88CA /* AEXML tvOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "AEXML tvOS Tests.xctest";
-			remoteRef = FAA5E1A21D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEDD1EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E1A51D8F8525006FFC36 /* AEXML.framework */ = {
+		FAA7BEE01EC13BA400CA88CA /* AEXML.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AEXML.framework;
-			remoteRef = FAA5E1A41D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEDF1EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FAA5E1A71D8F8525006FFC36 /* AEXML OSX Tests.xctest */ = {
+		FAA7BEE21EC13BA400CA88CA /* AEXML OSX Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "AEXML OSX Tests.xctest";
-			remoteRef = FAA5E1A61D8F8525006FFC36 /* PBXContainerItemProxy */;
+			remoteRef = FAA7BEE11EC13BA400CA88CA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -552,15 +552,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FA1ED8941D9B43C600A5B19A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Blockly;
-			targetProxy = FA1ED8931D9B43C600A5B19A /* PBXContainerItemProxy */;
-		};
-		FAA5E1AB1D8F8553006FFC36 /* PBXTargetDependency */ = {
+		FAA7BEE61EC13BB600CA88CA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "AEXML iOS";
-			targetProxy = FAA5E1AA1D8F8553006FFC36 /* PBXContainerItemProxy */;
+			targetProxy = FAA7BEE51EC13BB600CA88CA /* PBXContainerItemProxy */;
+		};
+		FAA7BEEA1EC13BB600CA88CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Blockly;
+			targetProxy = FAA7BEE91EC13BB600CA88CA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
