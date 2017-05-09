@@ -43,7 +43,7 @@ class ButtonEditorViewController: UIViewController {
     do {
       try blockFactory.load(fromJSONPaths: ["sound_blocks.json"])
     } catch let error {
-      print("An error occurred loading the turtle blocks: \(error)")
+      print("An error occurred loading the sound blocks: \(error)")
     }
 
     // Load toolbox
