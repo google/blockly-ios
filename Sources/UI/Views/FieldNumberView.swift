@@ -145,7 +145,12 @@ extension FieldNumberView: UITextFieldDelegate {
   }
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
-    EventManager.sharedInstance.groupAndFireEvents {
+    // Group and fire with any existing group. This solves an edge-case problem where dragging a
+    // block while editing a text field could simultaneously start two new event groups (one for
+    // the drag gesture and the other for ending text field editing). To prevent this from
+    // happening, this method simply appends to any existing one instead (if it exists).
+    let eventManager = EventManager.sharedInstance
+    eventManager.groupAndFireEvents(groupID: eventManager.currentGroupID) {
       // Only commit the change after the user has finished editing the field
       fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
 

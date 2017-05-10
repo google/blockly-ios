@@ -742,62 +742,57 @@ open class WorkspaceLayoutCoordinator: NSObject {
 // MARK: - WorkspaceListener implementation
 
 extension WorkspaceLayoutCoordinator: WorkspaceListener {
-  public func workspace(_ workspace: Workspace, didAddBlock block: Block) {
-    if !block.topLevel {
-      // We only need to create layout trees for top level blocks
-      return
-    }
+  public func workspace(_ workspace: Workspace, didAddBlockTrees blockTrees: [Block]) {
+    for block in blockTrees {
+      do {
+        // Fire creation event for the root block
+        let event = try BlocklyEvent.Create(workspace: workspaceLayout.workspace, block: block)
+        EventManager.sharedInstance.addPendingEvent(event)
 
-    do {
-      // Fire creation event for the root block
-      let event = try BlocklyEvent.Create(workspace: workspaceLayout.workspace, block: block)
-      EventManager.sharedInstance.addPendingEvent(event)
+        // Create the layout tree for this newly added block
+        let blockGroupLayout =
+          try layoutBuilder.buildLayoutTree(forTopLevelBlock: block,
+                                            workspaceLayout: workspaceLayout)
 
-      // Create the layout tree for this newly added block
-      let blockGroupLayout =
-        try layoutBuilder.buildLayoutTree(forTopLevelBlock: block, workspaceLayout: workspaceLayout)
+        // Perform a layout for the tree
+        blockGroupLayout.updateLayoutDownTree()
 
-      // Perform a layout for the tree
-      blockGroupLayout.updateLayoutDownTree()
+        // Track all block layouts
+        for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
+          trackBlockLayout(blockLayout)
+        }
 
-      // Track all block layouts
-      for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
-        trackBlockLayout(blockLayout)
+        // Update the content size
+        workspaceLayout.updateCanvasSize()
+
+        // Schedule change event for an added block layout
+        workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+      } catch let error {
+        bky_assertionFailure("Could not create the layout tree for block: \(error)")
       }
-
-      // Update the content size
-      workspaceLayout.updateCanvasSize()
-
-      // Schedule change event for an added block layout
-      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
-    } catch let error {
-      bky_assertionFailure("Could not create the layout tree for block: \(error)")
     }
   }
 
-  public func workspace(_ workspace: Workspace, didRemoveBlock block: Block) {
-    if !block.topLevel {
-      // We only need to remove layout trees for top-level blocks
-      return
-    }
-
-    do {
-      // Fire delete event for the root block
-      let event = try BlocklyEvent.Delete(workspace: workspaceLayout.workspace, block: block)
-      EventManager.sharedInstance.addPendingEvent(event)
-    } catch let error {
-      bky_assertionFailure("Could not fire delete event: \(error)")
-    }
-
-    if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
-      // Untrack all block layouts
-      for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
-        untrackBlockLayout(blockLayout)
+  public func workspace(_ workspace: Workspace, didRemoveBlockTrees blockTrees: [Block]) {
+    for block in blockTrees {
+      do {
+        // Fire delete event for the root block
+        let event = try BlocklyEvent.Delete(workspace: workspaceLayout.workspace, block: block)
+        EventManager.sharedInstance.addPendingEvent(event)
+      } catch let error {
+        bky_assertionFailure("Could not fire delete event: \(error)")
       }
 
-      workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
+      if let blockGroupLayout = block.layout?.parentBlockGroupLayout {
+        // Untrack all block layouts
+        for blockLayout in blockGroupLayout.flattenedLayoutTree(ofType: BlockLayout.self) {
+          untrackBlockLayout(blockLayout)
+        }
 
-      workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+        workspaceLayout.removeBlockGroupLayout(blockGroupLayout)
+
+        workspaceLayout.sendChangeEvent(withFlags: WorkspaceLayout.Flag_NeedsDisplay)
+      }
     }
   }
 }
