@@ -742,7 +742,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
       do {
         // Fire creation event for the root block
         let event = try BlocklyEvent.Create(workspace: workspaceLayout.workspace, block: block)
-        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.shared.addPendingEvent(event)
 
         // Create the layout tree for this newly added block
         let blockGroupLayout =
@@ -773,7 +773,7 @@ extension WorkspaceLayoutCoordinator: WorkspaceListener {
       do {
         // Fire delete event for the root block
         let event = try BlocklyEvent.Delete(workspace: workspaceLayout.workspace, block: block)
-        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.shared.addPendingEvent(event)
       } catch let error {
         bky_assertionFailure("Could not fire delete event: \(error)")
       }

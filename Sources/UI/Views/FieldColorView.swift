@@ -116,7 +116,7 @@ extension FieldColorView: FieldColorPickerViewControllerDelegate {
   public func fieldColorPickerViewController(
     _ viewController: FieldColorPickerViewController, didPickColor color: UIColor)
   {
-    EventManager.sharedInstance.groupAndFireEvents {
+    EventManager.shared.groupAndFireEvents {
       fieldColorLayout?.updateColor(color)
       popoverDelegate?.layoutView(
         self, requestedToDismissPopoverViewController: viewController, animated: true)

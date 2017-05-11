@@ -193,7 +193,7 @@ open class WorkspaceView: LayoutView {
    */
   open func scrollBlockIntoView(_ block: Block, animated: Bool) {
     guard let blockLayout = block.layout,
-      let blockView = ViewManager.sharedInstance.findBlockView(forLayout: blockLayout) else
+      let blockView = ViewManager.shared.findBlockView(forLayout: blockLayout) else
     {
       return
     }

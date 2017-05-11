@@ -204,7 +204,7 @@ extension BlocklyEvent {
     /**
      Helper method for automatically capturing a `BlocklyEvent.Move` event for a given block,
      based on its state before and after running a closure. This event is then added to the
-     pending events queue on `EventManager.sharedInstance`.
+     pending events queue on `EventManager.shared`.
 
      - parameter workspace: The `Workspace` that contains `block`.
      - parameter block: The `Block` whose state should be captured.
@@ -215,7 +215,7 @@ extension BlocklyEvent {
       let event = BlocklyEvent.Move(workspace: workspace, block: block)
       try closure()
       event.recordNewValues(forBlock: block)
-      EventManager.sharedInstance.addPendingEvent(event)
+      EventManager.shared.addPendingEvent(event)
     }
   }
 }

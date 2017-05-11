@@ -172,7 +172,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       removeVariable(fieldVariableLayout: fieldVariableLayout)
     } else {
       // Change to a new variable
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         fieldVariableLayout.changeToExistingVariable(value)
       }
     }
@@ -202,7 +202,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         return
       }
 
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         fieldVariableLayout.renameVariable(to: newName)
       }
     }
@@ -220,7 +220,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
     let variableCount = fieldVariableLayout.numberOfVariableReferences()
     if variableCount == 1 {
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         // If this is the only instance of this variable, remove it.
         fieldVariableLayout.removeVariable()
       }
@@ -234,7 +234,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       let deleteText = message(forKey: "BKY_IOS_VARIABLES_DELETE_BUTTON")
       removeView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
       removeView.addAction(UIAlertAction(title: deleteText, style: .default) { _ in
-        EventManager.sharedInstance.groupAndFireEvents {
+        EventManager.shared.groupAndFireEvents {
           fieldVariableLayout.removeVariable()
         }
       })

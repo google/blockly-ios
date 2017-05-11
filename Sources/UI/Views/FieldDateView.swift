@@ -127,7 +127,7 @@ open class FieldDateView: FieldView {
   }
 
   fileprivate func updateDateFromDatePicker() {
-    EventManager.sharedInstance.groupAndFireEvents {
+    EventManager.shared.groupAndFireEvents {
       fieldDateLayout?.updateDate(datePicker.date)
     }
   }

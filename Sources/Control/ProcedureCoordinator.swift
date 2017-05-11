@@ -69,11 +69,11 @@ public class ProcedureCoordinator: NSObject {
   public override init() {
     super.init()
 
-    EventManager.sharedInstance.addListener(self)
+    EventManager.shared.addListener(self)
   }
 
   deinit {
-    EventManager.sharedInstance.removeListener(self)
+    EventManager.shared.removeListener(self)
   }
 
   // MARK: - Workbench
@@ -455,7 +455,7 @@ extension ProcedureCoordinator: EventManagerListener {
     }
 
     // Add additional events to the existing event group
-    EventManager.sharedInstance.groupAndFireEvents(groupID: fieldEvent.groupID) {
+    EventManager.shared.groupAndFireEvents(groupID: fieldEvent.groupID) {
       if newProcedureName.trimmingCharacters(in: .whitespaces).isEmpty {
         // Procedure names shouldn't be empty. Put it back to what it was
         // originally.
@@ -480,7 +480,7 @@ extension ProcedureCoordinator: EventManagerListener {
     }
 
     // Add additional events to the existing event group
-    EventManager.sharedInstance.groupAndFireEvents(groupID: mutationEvent.groupID) {
+    EventManager.shared.groupAndFireEvents(groupID: mutationEvent.groupID) {
       // A procedure definition block inside the main workspace has been mutated.
       // Update the procedure callers and upsert the variables from this block.
       updateProcedureCallers(oldName: block.procedureName, newName: block.procedureName,

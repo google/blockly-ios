@@ -145,7 +145,7 @@ open class BlockLayout: Layout {
 
         if let workspace = self.workspace {
           let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
-          EventManager.sharedInstance.addPendingEvent(event)
+          EventManager.shared.addPendingEvent(event)
         }
       }
     }
@@ -161,7 +161,7 @@ open class BlockLayout: Layout {
 
         if let workspace = self.workspace {
           let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
-          EventManager.sharedInstance.addPendingEvent(event)
+          EventManager.shared.addPendingEvent(event)
         }
       }
     }
@@ -178,7 +178,7 @@ open class BlockLayout: Layout {
         if let workspace = self.workspace {
           let event = BlocklyEvent.Change.commentTextEvent(
             workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
-          EventManager.sharedInstance.addPendingEvent(event)
+          EventManager.shared.addPendingEvent(event)
         }
       }
     }
