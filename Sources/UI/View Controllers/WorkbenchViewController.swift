@@ -490,6 +490,22 @@ open class WorkbenchViewController: UIViewController {
     _toolboxCategoryListViewController.didMove(toParentViewController: self)
     toolboxCategoryViewController.didMove(toParentViewController: self)
 
+    // Update workspace view edge insets to account for control overlays
+    let controlHeight =
+      max(undoButton.image(for: .normal)?.size.height ?? 0,
+          redoButton.image(for: .normal)?.size.height ?? 0,
+          trashCanView.button.image(for: .normal)?.size.height ?? 0)
+    switch style {
+    case .defaultStyle:
+      workspaceView.scrollIntoViewEdgeInsets =
+        EdgeInsets(top: iconPadding, leading: iconPadding, bottom: controlHeight + iconPadding * 2,
+                   trailing: iconPadding)
+    case .alternate:
+      workspaceView.scrollIntoViewEdgeInsets =
+        EdgeInsets(top: controlHeight + iconPadding * 2, leading: iconPadding, bottom: iconPadding,
+                   trailing: iconPadding)
+    }
+
     // Create a default workspace, if one doesn't already exist
     if workspace == nil {
       do {
@@ -564,6 +580,12 @@ open class WorkbenchViewController: UIViewController {
     procedureCoordinator?.syncWithWorkbench(self)
 
     refreshView()
+
+    // Automatically change the viewport to show the top-most block
+    if let topBlock =
+      workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
+      scrollBlockIntoView(blockUUID: topBlock.uuid, animated: false)
+    }
   }
 
   /**
@@ -1489,7 +1511,12 @@ extension WorkbenchViewController {
         return
     }
 
-    workspaceView.scrollBlockIntoView(block, animated: animated)
+    // Always perform this method at the end of the run loop, in order to ensure views have first
+    // been created/positioned in the scroll view. This fixes a problem where attempting
+    // to scroll blocks into the view, immediately after the workspace has loaded, does not work.
+    DispatchQueue.main.async {
+      self.workspaceView.scrollBlockIntoView(block, animated: animated)
+    }
   }
 }
 
