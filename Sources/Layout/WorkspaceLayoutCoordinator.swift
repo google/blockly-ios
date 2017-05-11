@@ -254,15 +254,12 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection.isInferior ? sourceBlock : targetBlock
-    let event = BlocklyEvent.BlockMove(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    BlocklyEvent.Move.captureMoveEvent(workspace: workspaceLayout.workspace, block: inferiorBlock) {
+      connection.disconnect()
 
-    connection.disconnect()
-
-    self.didChangeTarget(forConnection: connection, oldTarget: oldTarget)
-    self.didChangeTarget(forConnection: oldTarget, oldTarget: connection)
-
-    event.recordNewValues()
-    EventManager.sharedInstance.addPendingEvent(event)
+      didChangeTarget(forConnection: connection, oldTarget: oldTarget)
+      didChangeTarget(forConnection: oldTarget, oldTarget: connection)
+    }
   }
 
   /**
@@ -312,17 +309,15 @@ open class WorkspaceLayoutCoordinator: NSObject {
     }
 
     let inferiorBlock = connection1.isInferior ? sourceBlock1 : sourceBlock2
-    let event = BlocklyEvent.BlockMove(workspace: workspaceLayout.workspace, block: inferiorBlock)
+    try BlocklyEvent.Move.captureMoveEvent(
+      workspace: workspaceLayout.workspace, block: inferiorBlock) {
+      let oldTarget1 = connection1.targetConnection
+      let oldTarget2 = connection2.targetConnection
+      try connection1.connectTo(connection2)
 
-    let oldTarget1 = connection1.targetConnection
-    let oldTarget2 = connection2.targetConnection
-    try connection1.connectTo(connection2)
-
-    didChangeTarget(forConnection: connection1, oldTarget: oldTarget1)
-    didChangeTarget(forConnection: connection2, oldTarget: oldTarget2)
-
-    event.recordNewValues()
-    EventManager.sharedInstance.addPendingEvent(event)
+      didChangeTarget(forConnection: connection1, oldTarget: oldTarget1)
+      didChangeTarget(forConnection: connection2, oldTarget: oldTarget2)
+    }
   }
 
   /**

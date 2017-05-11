@@ -89,7 +89,7 @@ public final class Dragger: NSObject {
 
       // Start a move event for this block
       let workspace = workspaceLayoutCoordinator.workspaceLayout.workspace
-      let moveEvent = BlocklyEvent.BlockMove(workspace: workspace, block: block)
+      let moveEvent = BlocklyEvent.Move(workspace: workspace, block: block)
 
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
@@ -160,7 +160,7 @@ public final class Dragger: NSObject {
       // Add move event for the current position of block, since it wasn't being captured
       // while the block was moving.
       if let drag = _dragGestureData[layout.uuid] {
-        drag.moveEvent.recordNewValues()
+        drag.moveEvent.recordNewValues(forBlock: drag.blockLayout?.block)
         EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
       }
 
@@ -206,7 +206,7 @@ public final class Dragger: NSObject {
     // Add move event for the current position of block, since it wasn't being captured
     // while the block was moving.
     if let drag = _dragGestureData[layout.uuid] {
-      drag.moveEvent.recordNewValues()
+      drag.moveEvent.recordNewValues(forBlock: drag.blockLayout?.block)
       EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
     }
 
@@ -311,7 +311,7 @@ private class DragGestureData {
   fileprivate let connectionGroup: ConnectionManager.Group
 
   /// Event capturing the positional movement of a block during the lifespan of the drag.
-  fileprivate let moveEvent: BlocklyEvent.BlockMove
+  fileprivate let moveEvent: BlocklyEvent.Move
 
   /// Stores the current connection that is being highlighted because of this drag gesture
   fileprivate weak var highlightedConnection: Connection?
@@ -320,7 +320,7 @@ private class DragGestureData {
 
   fileprivate init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
     touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group,
-    moveEvent: BlocklyEvent.BlockMove) {
+    moveEvent: BlocklyEvent.Move) {
     self.blockLayout = blockLayout
     self.blockLayoutStartPosition = blockLayoutStartPosition
     self.touchStartPosition = touchStartPosition
