@@ -267,12 +267,13 @@ public final class ToolboxCategoryViewController: UIViewController {
       textField.placeholder = message(forKey: "BKY_IOS_VARIABLES_VARIABLE_NAME")
     }
     addView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
-    let addAlertAction = UIAlertAction(title: addText, style: .default) { _ in
+    let addAlertAction = UIAlertAction(title: addText, style: .default) {
+      [weak addView] _ in
       guard let variableNameManager = self.variableNameManager else {
         return
       }
 
-      guard let textField = addView.textFields?[0],
+      guard let textField = addView?.textFields?[0],
         let newName = textField.text,
         FieldVariable.isValidName(newName) else
       {

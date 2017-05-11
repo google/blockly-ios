@@ -24,7 +24,7 @@ extension BlocklyEvent {
    using `recordNew(forBlock:)`.
    */
   @objc(BKYEventMove)
-  public class Move: BlocklyEvent {
+  public final class Move: BlocklyEvent {
 
     // MARK: - Properties
 
@@ -105,6 +105,28 @@ extension BlocklyEvent {
       }
     }
 
+    /**
+     Constructs a `BlocklyEvent.Move` signifying the movement of a block on the workspace. The
+     current positional values of the block are recorded as the "old" values for the event.
+
+     - parameter workspace: The workspace containing the moved blocks.
+     - parameter block: The root block, while it is still in its original position.
+     */
+    public convenience init(workspace: Workspace, block: Block) {
+      var oldParentID: String?
+      var oldInputName: String?
+      var oldPosition: WorkspacePoint?
+
+      if let parentConnection = block.inferiorConnection?.targetConnection {
+        oldParentID = parentConnection.sourceBlock?.uuid
+        oldInputName = parentConnection.sourceInput?.name
+      } else {
+        oldPosition = block.position
+      }
+      self.init(workspaceID: workspace.uuid, blockID: block.uuid,
+                oldParentID: oldParentID, oldInputName: oldInputName, oldPosition: oldPosition)
+    }
+
     // MARK: - Super
 
     public override func toJSON() throws -> [String: Any] {
@@ -152,50 +174,22 @@ extension BlocklyEvent {
         oldInputName == newInputName &&
         oldPosition == newPosition
     }
-  }
 
-  /**
-   Subclass of `BlocklyEvent.Move` that makes it easier to track new values for a block as it moves
-   throughout the workspace.
-   */
-  @objc(BKYEventBlockMove)
-  public class BlockMove: BlocklyEvent.Move {
-
-    /// The target block that is being moved
-    private let block: Block
+    // MARK: - Capturing State
 
     /**
-     Constructs a `BlocklyEvent.Move` signifying the movement of a block on the workspace. The
-     current positional values of the block are recorded as the "old" values for the event.
+     Updates the event's "new" values to capture the current state of a given block.
 
-     - parameter workspace: The workspace containing the moved blocks.
-     - parameter block: The root block, while it is still in its original position.
+     - note: If the given block is `nil` or its UUID doesn't match the event's `blockID`, then no
+     values are captured.
+     - parameter block: The `Block` to capture.
      */
-    public init(workspace: Workspace, block: Block) {
-      self.block = block
-
-      var oldParentID: String?
-      var oldInputName: String?
-      var oldPosition: WorkspacePoint?
-
-      if let parentConnection = block.inferiorConnection?.targetConnection {
-        oldParentID = parentConnection.sourceBlock?.uuid
-        oldInputName = parentConnection.sourceInput?.name
-      } else {
-        oldPosition = block.position
+    public func recordNewValues(forBlock block: Block?) {
+      guard let block = block, blockID == block.uuid else {
+        // The block ID's don't match. Do nothing.
+        return
       }
-      super.init(workspaceID: workspace.uuid, blockID: block.uuid,
-                 oldParentID: oldParentID, oldInputName: oldInputName, oldPosition: oldPosition)
-    }
 
-    // MARK: - State Capture
-
-    /**
-     Updates the event's "new" values to capture the current state of the block.
-
-     - parameter block: The `Block`.
-     */
-    public func recordNewValues() {
       if let parentConnection = block.inferiorConnection?.targetConnection {
         newParentID = parentConnection.sourceBlock?.uuid
         newInputName = parentConnection.sourceInput?.name
@@ -205,6 +199,23 @@ extension BlocklyEvent {
         newInputName = nil
         newPosition = block.position
       }
+    }
+
+    /**
+     Helper method for automatically capturing a `BlocklyEvent.Move` event for a given block,
+     based on its state before and after running a closure. This event is then added to the
+     pending events queue on `EventManager.sharedInstance`.
+
+     - parameter workspace: The `Workspace` that contains `block`.
+     - parameter block: The `Block` whose state should be captured.
+     - parameter closure: A closure to execute.
+     */
+    static func captureMoveEvent(workspace: Workspace, block: Block, closure: () throws -> Void)
+      rethrows {
+      let event = BlocklyEvent.Move(workspace: workspace, block: block)
+      try closure()
+      event.recordNewValues(forBlock: block)
+      EventManager.sharedInstance.addPendingEvent(event)
     }
   }
 }

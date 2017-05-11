@@ -191,8 +191,9 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
     let cancelText = message(forKey: "BKY_IOS_CANCEL")
     let renameText = message(forKey: "BKY_IOS_VARIABLES_RENAME_BUTTON")
     renameView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
-    let renameAlertAction = UIAlertAction(title: renameText, style: .default) { _ in
-      guard let textField = renameView.textFields?[0],
+    let renameAlertAction = UIAlertAction(title: renameText, style: .default) {
+      [weak renameView] _ in
+      guard let textField = renameView?.textFields?[0],
         let newName = textField.text,
         fieldVariableLayout.isValidName(newName) else
       {
