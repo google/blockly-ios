@@ -411,7 +411,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
   func performMutation() {
     do {
-      try EventManager.sharedInstance.groupAndFireEvents {
+      try EventManager.shared.groupAndFireEvents {
         try mutatorLayout.performMutation()
 
         if let blockLayout = mutatorLayout.mutator.block?.layout {

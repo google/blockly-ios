@@ -131,13 +131,13 @@ public final class Dragger: NSObject {
     // Disable event capturing for temporary moves. Only the final position is of importance to us
     // and by disabling this event, we don't generate a lot of potentially unmerge-able events
     // (when multiple blocks are dragged simultaneously).
-    EventManager.sharedInstance.isEnabled = false
+    EventManager.shared.isEnabled = false
 
     // Move to the new position (only update the canvas size at the very end of the drag)
     layout.parentBlockGroupLayout?.move(toWorkspacePosition: position, updateCanvasSize: false)
 
     // Re-enable event capturing.
-    EventManager.sharedInstance.isEnabled = true
+    EventManager.shared.isEnabled = true
 
     // Update the highlighted connection for this drag
     updateHighlightedConnection(forDrag: gestureData)
@@ -161,7 +161,7 @@ public final class Dragger: NSObject {
       // while the block was moving.
       if let drag = _dragGestureData[layout.uuid] {
         drag.moveEvent.recordNewValues()
-        EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+        EventManager.shared.addPendingEvent(drag.moveEvent)
       }
 
       // Remove the highlight for this block
@@ -207,7 +207,7 @@ public final class Dragger: NSObject {
     // while the block was moving.
     if let drag = _dragGestureData[layout.uuid] {
       drag.moveEvent.recordNewValues()
-      EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+      EventManager.shared.addPendingEvent(drag.moveEvent)
     }
 
     // Remove the highlight for this block

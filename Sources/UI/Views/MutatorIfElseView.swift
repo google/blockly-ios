@@ -182,7 +182,7 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
 
   fileprivate func performMutation() {
     do {
-      try EventManager.sharedInstance.groupAndFireEvents {
+      try EventManager.shared.groupAndFireEvents {
         try mutatorIfElseLayout.performMutation()
 
         if let blockLayout = mutatorIfElseLayout.mutator.block?.layout {

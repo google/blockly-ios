@@ -73,13 +73,13 @@ open class LayoutView: UIView {
       if let previousValue = oldValue {
         previousValue.delegate = nil
         // Automatically untrack this view in the ViewManager
-        ViewManager.sharedInstance.uncacheView(forLayout: previousValue)
+        ViewManager.shared.uncacheView(forLayout: previousValue)
       }
 
       if let newValue = layout {
         newValue.delegate = self
         // Automatically track this view in the ViewManager
-        ViewManager.sharedInstance.cacheView(self, forLayout: newValue)
+        ViewManager.shared.cacheView(self, forLayout: newValue)
 
         refreshView()
       } else {
