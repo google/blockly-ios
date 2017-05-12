@@ -194,7 +194,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
     let renameAlertAction = UIAlertAction(title: renameText, style: .default) {
       [weak renameView] _ in
       guard let textField = renameView?.textFields?[0],
-        let newName = textField.text,
+        let newName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
         fieldVariableLayout.isValidName(newName) else
       {
         self.renameVariable(fieldVariableLayout: fieldVariableLayout,
