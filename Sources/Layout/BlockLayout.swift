@@ -258,7 +258,7 @@ open class BlockLayout: Layout {
 
   /**
    Adds a highlight source to a given connection on this block.
-   
+
    If there were no previous highlight sources for this connection, a `Flag_UpdateHighlight`
    change event is triggered in order to update connection highlighting for this block.
 
