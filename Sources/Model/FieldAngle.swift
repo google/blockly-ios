@@ -27,7 +27,7 @@ public final class FieldAngle: Field {
     didSet {
       // Normalize the value that was set
       angle = FieldAngle.normalizeAngle(angle)
-      didSetEditableProperty(&angle, oldValue)
+      didSetProperty(angle, oldValue)
     }
   }
 

@@ -24,7 +24,7 @@ public final class FieldColor: Field {
 
   /// The `UIColor` of this field.
   public var color: UIColor {
-    didSet { didSetEditableProperty(&color, oldValue) }
+    didSet { didSetProperty(color, oldValue) }
   }
 
   // MARK: - Initializers

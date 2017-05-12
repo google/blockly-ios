@@ -53,7 +53,7 @@ public final class Block : NSObject {
   /// Flag indicating if input connectors should be drawn inside a block (`true`) or
   /// on the edge of the block (`false`)
   public var inputsInline: Bool {
-    didSet { didSetEditableProperty(&inputsInline, oldValue) }
+    didSet { didSetProperty(inputsInline, oldValue) }
   }
   /// The absolute position of the block, in the Workspace coordinate system
   public var position: WorkspacePoint
@@ -104,15 +104,15 @@ public final class Block : NSObject {
   public var mutator: Mutator?
   /// Tooltip text of the block
   public var tooltip: String {
-    didSet { didSetEditableProperty(&tooltip, oldValue) }
+    didSet { didSetProperty(tooltip, oldValue) }
   }
   /// The comment text of the block
   public var comment: String {
-    didSet { didSetEditableProperty(&comment, oldValue) }
+    didSet { didSetProperty(comment, oldValue) }
   }
   /// A help URL to learn more info about this block
   public var helpURL: String {
-    didSet { didSetEditableProperty(&helpURL, oldValue) }
+    didSet { didSetProperty(helpURL, oldValue) }
   }
   /// Flag indicating if this block may be deleted
   public var deletable: Bool {
@@ -139,6 +139,7 @@ public final class Block : NSObject {
       }
 
       updateInputs()
+      notifyDidUpdateBlock()
     }
   }
 
@@ -411,63 +412,25 @@ public final class Block : NSObject {
   }
 
   /**
-   A convenience method that should be called inside the `didSet { ... }` block of editable instance
-   properties.
-
-   If `self.editable == true` and `editableProperty != oldValue`, this method will automatically
-   call `delegate?.didUpdateBlock(self)`.
-
-   If `self.editable == true` and `editableProperty == oldValue`, nothing happens.
-
-   If `self.editable == false`, this method automatically reverts `editableProperty` back to
-   `oldValue`.
-
-   Usage:
-   ```
-   var someEditableInteger: Int {
-   didSet { didSetEditableProperty(&someEditableInteger, oldValue) }
-   }
-   ```
-
-   - parameter editableProperty: The instance property that had been set
-   - parameter oldValue: The old value of the instance property
-   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
-   */
-  @discardableResult
-  public func didSetEditableProperty<T: Equatable>(
-    _ editableProperty: inout T, _ oldValue: T) -> Bool
-  {
-    if !self.editable {
-      editableProperty = oldValue
-    }
-    if editableProperty == oldValue {
-      return false
-    }
-    notifyDidUpdateBlock()
-    return true
-  }
-
-  /**
    A convenience method that should be called inside the `didSet { ... }` block of instance
    properties.
 
-   If `property != oldValue`, this method will automatically call `delegate?.didUpdateBlock(self)`.
-   If `editableProperty == oldValue`, nothing happens.
+   If `property != oldValue`, this method will automatically call `notifyDidUpdateBlock()`.
+   If `property == oldValue`, nothing happens.
 
    Usage:
    ```
    var someString: String {
-   didSet { didSetProperty(someString, oldValue) }
+     didSet { didSetProperty(someString, oldValue) }
    }
    ```
 
-   - parameter property: The instance property that had been set
-   - parameter oldValue: The old value of the instance property
-   - returns: `true` if `property` is now different than `oldValue`, `false` otherwise.
+   - parameter property: The instance property that had been set.
+   - parameter oldValue: The old value of the instance property.
+   - returns: `true` if `property` is now different than `oldValue`. `false` otherwise.
    */
   @discardableResult
-  public func didSetProperty<T: Equatable>(
-    _ property: T, _ oldValue: T) -> Bool {
+  public func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {
     if property == oldValue {
       return false
     }

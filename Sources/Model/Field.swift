@@ -113,33 +113,23 @@ open class Field: NSObject {
    A convenience method that should be called inside the `didSet { ... }` block of instance
    properties from `Field` subclasses.
 
-   If `self.editable == true` and `editableProperty != oldValue`, this method will automatically
-   call `delegate?.didUpdateField(self)`.
-
-   If `self.editable == true` and `editableProperty == oldValue`, nothing happens.
-
-   If `self.editable == false`, this method automatically reverts `editableProperty` back to
-   `oldValue`.
+   If `property != oldValue`, this method will automatically call `notifyDidUpdateField()`.
+   If `property == oldValue`, nothing happens.
 
    Usage:
    ```
-   var someInteger: Int {
-     didSet { didSetEditableProperty(&someInteger, oldValue) }
+   var someString: String {
+     didSet { didSetProperty(someString, oldValue) }
    }
    ```
 
-   - parameter editableProperty: The instance property that had been set
-   - parameter oldValue: The old value of the instance property
-   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   - parameter property: The instance property that had been set.
+   - parameter oldValue: The old value of the instance property.
+   - returns: `true` if `property` is now different than `oldValue`. `false` otherwise.
    */
   @discardableResult
-  open func didSetEditableProperty<T: Equatable>(
-    _ editableProperty: inout T, _ oldValue: T) -> Bool
-  {
-    if !self.editable {
-      editableProperty = oldValue
-    }
-    if editableProperty == oldValue {
+  open func didSetProperty<T: Equatable>(_ property: T, _ oldValue: T) -> Bool {
+    if property == oldValue {
       return false
     }
     notifyDidUpdateField()
@@ -150,33 +140,23 @@ open class Field: NSObject {
    A convenience method that should be called inside the `didSet { ... }` block of instance
    properties from `Field` subclasses.
 
-   If `self.editable == true` and `editableProperty != oldValue`, this method will automatically
-   call `delegate?.didUpdateField(self)`.
-
-   If `self.editable == true` and `editableProperty == oldValue`, nothing happens.
-
-   If `self.editable == false`, this method automatically reverts `editableProperty` back to
-   `oldValue`.
+   If `property != oldValue`, this method will automatically call `notifyDidUpdateField()`.
+   If `property == oldValue`, nothing happens.
 
    Usage:
    ```
-   var someInteger: Int {
-     didSet { didSetEditableProperty(&someInteger, oldValue) }
+   var someNullableString: String? {
+     didSet { didSetProperty(someNullableString, oldValue) }
    }
    ```
 
-   - parameter editableProperty: The instance property that had been set
-   - parameter oldValue: The old value of the instance property
-   - returns: `true` if `editableProperty` is now different than `oldValue`, `false` otherwise.
+   - parameter property: The instance property that had been set.
+   - parameter oldValue: The old value of the instance property.
+   - returns: `true` if `property` is now different than `oldValue`. `false` otherwise.
    */
   @discardableResult
-  open func didSetEditableProperty<T: Equatable>(
-    _ editableProperty: inout T?, _ oldValue: T?) -> Bool
-  {
-    if !self.editable {
-      editableProperty = oldValue
-    }
-    if editableProperty == oldValue {
+  open func didSetProperty<T: Equatable>(_ property: T?, _ oldValue: T?) -> Bool {
+    if property == oldValue {
       return false
     }
     notifyDidUpdateField()

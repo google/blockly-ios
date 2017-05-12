@@ -24,7 +24,7 @@ public final class FieldCheckbox: Field {
 
   /// `true` if the checkbox field is checked, `false` if it is not.
   public var checked: Bool {
-    didSet { didSetEditableProperty(&checked, oldValue) }
+    didSet { didSetProperty(checked, oldValue) }
   }
 
   // MARK: - Initializers

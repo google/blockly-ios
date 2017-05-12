@@ -48,7 +48,7 @@ public final class FieldNumber: Field {
   public var value: Double {
     didSet {
       value = constrainedValue(value) // Make sure the new value is constrained
-      didSetEditableProperty(&value, oldValue)
+      didSetProperty(value, oldValue)
     }
   }
   /// The localized text representation of `self.value`
@@ -57,11 +57,11 @@ public final class FieldNumber: Field {
   }
   /// The minimum value of `self.value`. If `nil`, `self.value` is unconstrained by a minimum value.
   public fileprivate(set) var minimumValue: Double? = nil {
-    didSet { didSetEditableProperty(&minimumValue, oldValue) }
+    didSet { didSetProperty(minimumValue, oldValue) }
   }
   /// The maximum value of `self.value`. If `nil`, `self.value` is unconstrained by a maximum value.
   public fileprivate(set) var maximumValue: Double? = nil {
-    didSet { didSetEditableProperty(&maximumValue, oldValue) }
+    didSet { didSetProperty(maximumValue, oldValue) }
   }
   /**
    The precision of the value allowed by this field.
@@ -73,7 +73,7 @@ public final class FieldNumber: Field {
    */
   public fileprivate(set) var precision: Double? = nil {
     didSet {
-      if didSetEditableProperty(&self.precision, oldValue) {
+      if didSetProperty(precision, oldValue) {
         updateNumberFormatter()
       }
     }

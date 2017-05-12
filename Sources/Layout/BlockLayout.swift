@@ -140,13 +140,15 @@ open class BlockLayout: Layout {
   open var disabled: Bool {
     get { return block.disabled }
     set {
-      if block.editable {
-        block.disabled = disabled
+      if block.disabled == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
-          EventManager.shared.addPendingEvent(event)
-        }
+      block.disabled = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }
@@ -156,13 +158,15 @@ open class BlockLayout: Layout {
   open var inputsInline: Bool {
     get { return block.inputsInline }
     set {
-      if block.editable && block.inputsInline != newValue {
-        block.inputsInline = newValue
+      if block.inputsInline == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
-          EventManager.shared.addPendingEvent(event)
-        }
+      block.inputsInline = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }
@@ -171,15 +175,17 @@ open class BlockLayout: Layout {
   open var comment: String {
     get { return block.comment }
     set {
-      if block.editable && block.comment != newValue {
-        let oldValue = block.comment
-        block.comment = newValue
+      if block.comment == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.commentTextEvent(
-            workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
-          EventManager.shared.addPendingEvent(event)
-        }
+      let oldValue = block.comment
+      block.comment = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.commentTextEvent(
+          workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }

@@ -24,7 +24,7 @@ open class FieldColorLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldColor` that backs this layout
-  open let fieldColor: FieldColor
+  private let fieldColor: FieldColor
 
   /// The checkbox value that should be used when rendering this layout
   open var color: UIColor {
@@ -47,7 +47,6 @@ open class FieldColorLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

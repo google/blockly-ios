@@ -24,7 +24,7 @@ open class FieldDropdownLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldDropdown` that backs this layout
-  open let fieldDropdown: FieldDropdown
+  private let fieldDropdown: FieldDropdown
 
   /// The list of options that should be presented when rendering this layout
   open var options: [FieldDropdown.Option] {
@@ -59,7 +59,6 @@ open class FieldDropdownLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

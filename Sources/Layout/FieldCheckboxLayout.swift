@@ -24,7 +24,7 @@ open class FieldCheckboxLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldCheckbox` that backs this layout
-  open let fieldCheckbox: FieldCheckbox
+  private let fieldCheckbox: FieldCheckbox
 
   /// The checkbox value that should be used when rendering this layout
   open var checked: Bool {
@@ -49,7 +49,6 @@ open class FieldCheckboxLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

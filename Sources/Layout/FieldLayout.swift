@@ -132,7 +132,7 @@ open class FieldLayout: Layout {
   }
 }
 
-// MARK: - FieldDelegate implementation
+// MARK: - FieldListener implementation
 
 extension FieldLayout: FieldListener {
   public func didUpdateField(_ field: Field) {
