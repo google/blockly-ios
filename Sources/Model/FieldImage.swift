@@ -24,7 +24,7 @@ public final class FieldImage: Field {
 
   /// The `WorkspaceSize` of this field.
   public var size: WorkspaceSize {
-    didSet { didSetEditableProperty(&size, oldValue) }
+    didSet { didSetProperty(size, oldValue) }
   }
   /**
    The location of the image in this field.
@@ -34,11 +34,11 @@ public final class FieldImage: Field {
    of a URL web image to fetch.
    */
   public var imageLocation: String {
-    didSet { didSetEditableProperty(&imageLocation, oldValue) }
+    didSet { didSetProperty(imageLocation, oldValue) }
   }
   /// The alt text for this field.
   public var altText: String {
-    didSet { didSetEditableProperty(&altText, oldValue) }
+    didSet { didSetProperty(altText, oldValue) }
   }
 
   // MARK: - Initializers

@@ -29,6 +29,11 @@ open class MutatorLayout: Layout {
   /// to this mutator.
   open weak var layoutCoordinator: WorkspaceLayoutCoordinator?
 
+  /// Flag determining if user interaction should be enabled for the corresponding view.
+  public var userInteractionEnabled: Bool {
+    return mutator.block?.editable ?? false
+  }
+
   // MARK: - Initializers
 
   /**

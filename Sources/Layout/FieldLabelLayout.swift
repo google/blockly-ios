@@ -24,7 +24,7 @@ open class FieldLabelLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldLabel` that backs this layout
-  open let fieldLabel: FieldLabel
+  private let fieldLabel: FieldLabel
 
   /// The value that should be used when rendering this layout
   open var text: String {
@@ -47,7 +47,6 @@ open class FieldLabelLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

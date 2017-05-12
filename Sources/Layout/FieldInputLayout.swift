@@ -24,7 +24,7 @@ open class FieldInputLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldInput` that backs this layout
-  open let fieldInput: FieldInput
+  private let fieldInput: FieldInput
 
   /// The current text value that should be used when rendering this layout.
   /// This value is automatically set to `self.fieldInput.text` on initialization and
@@ -55,8 +55,6 @@ open class FieldInputLayout: FieldLayout {
   }
 
   // MARK: - Super
-
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
 
   open override func didUpdateField(_ field: Field) {
     // Update current text value to match the field now

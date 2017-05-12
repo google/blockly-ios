@@ -29,7 +29,7 @@ open class FieldVariableLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldVariable` that backs this layout
-  open let fieldVariable: FieldVariable
+  private let fieldVariable: FieldVariable
 
   /// The list of all variable options that should be presented when rendering this layout
   open var variables: [Option] {
@@ -89,7 +89,6 @@ open class FieldVariableLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     if let nameManager = self.nameManager,
       !nameManager.containsName(variable)

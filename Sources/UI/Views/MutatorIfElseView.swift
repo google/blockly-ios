@@ -67,7 +67,7 @@ open class MutatorIfElseView: LayoutView {
   {
     super.refreshView(forFlags: flags, animated: animated)
 
-    guard let layout = self.layout else {
+    guard let layout = self.mutatorIfElseLayout else {
       return
     }
 
@@ -79,6 +79,8 @@ open class MutatorIfElseView: LayoutView {
 
       let topPadding = layout.engine.viewUnitFromWorkspaceUnit(4)
       self.popoverButton.contentEdgeInsets = UIEdgeInsetsMake(topPadding, 0, topPadding, 0)
+
+      self.isUserInteractionEnabled = layout.userInteractionEnabled
     }
   }
 
