@@ -230,12 +230,7 @@ extension Block {
       return
     }
 
-    guard let value = xml.value else {
-      bky_print("Skipping setting field for block type '\(block.name)'. " +
-        "Missing value for field:\n\(xml.xmlCompact)")
-      return
-    }
-
+    let value = xml.value ?? ""
     try field.setValueFromSerializedText(value)
   }
 }
