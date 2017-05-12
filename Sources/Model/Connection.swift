@@ -16,19 +16,6 @@
 import Foundation
 
 /**
- Delegate for highlight events that occur on a `Connection`.
-*/
-@objc(BKYConnectionHighlightDelegate)
-public protocol ConnectionHighlightDelegate {
-  /**
-  Event that is called when the highlighted value has changed for a given connection.
-
-  - parameter connection: The connection whose `highlighted` value has changed.
-  */
-  func didChangeHighlight(forConnection connection: Connection)
-}
-
-/**
 Delegate for position events that occur on a `Connection`.
 */
 @objc(BKYConnectionPositionDelegate)
@@ -227,20 +214,8 @@ public final class Connection : NSObject {
     return (self.type == .inputValue || self.type == .nextStatement)
   }
 
-  /// Connection highlight delegate
-  public final weak var highlightDelegate: ConnectionHighlightDelegate?
-
   /// Connection position delegate
   public final weak var positionDelegate: ConnectionPositionDelegate?
-
-  /// Keeps track of all block uuid's that are telling this connection to be 
-  /// highlighted
-  fileprivate var _highlights = Set<String>()
-
-  /// Flag if this connection should be highlighted in the UI
-  public var highlighted: Bool {
-    return !_highlights.isEmpty
-  }
 
   /// This value is `true` if this connection is an "inferior" connection (ie. `.outputValue` or
   /// `.previousStatement`). Otherwise, this value is `false`.
@@ -466,38 +441,6 @@ public final class Connection : NSObject {
     let xDiff = position.x - other.position.x
     let yDiff = position.y - other.position.y
     return sqrt(xDiff * xDiff + yDiff * yDiff)
-  }
-
-  /**
-  Adds a highlight to this connection for a block. If there were no previous highlights for this
-  connection, the `highlighted` value is changed to `true` and its listeners are notified.
-  
-  - parameter block: The given block
-  */
-  public func addHighlightForBlock(_ block: Block) {
-    if !_highlights.contains(block.uuid) {
-      _highlights.insert(block.uuid)
-
-      if _highlights.count == 1 {
-        highlightDelegate?.didChangeHighlight(forConnection: self)
-      }
-    }
-  }
-
-  /**
-  Removes the highlight from this connection for a block. If there are no highlights after this
-  one is removed, the `highlighted` value is changed to `false` and its listeners are notified.
-  
-  - parameter block: The given block
-  */
-  public func removeHighlightForBlock(_ block: Block) {
-    if _highlights.contains(block.uuid) {
-      _highlights.remove(block.uuid)
-
-      if _highlights.count == 0 {
-        highlightDelegate?.didChangeHighlight(forConnection: self)
-      }
-    }
   }
 
   /**

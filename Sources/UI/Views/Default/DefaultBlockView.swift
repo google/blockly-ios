@@ -395,8 +395,7 @@ public final class DefaultBlockView: BlockView {
       return nil
     }
 
-    let hasConnectionHighlight = layout.block.directConnections.filter { $0.highlighted }.count > 0
-    if !hasConnectionHighlight {
+    if !layout.hasHighlightedConnections() {
       return nil
     }
 
@@ -409,7 +408,7 @@ public final class DefaultBlockView: BlockView {
     let path = WorkspaceBezierPath(engine: layout.engine)
 
     for connection in layout.block.directConnections {
-      if !connection.highlighted {
+      if !layout.isConnectionHighlighted(connection) {
         continue
       }
 
