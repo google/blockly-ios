@@ -274,7 +274,7 @@ public final class ToolboxCategoryViewController: UIViewController {
       }
 
       guard let textField = addView?.textFields?[0],
-        let newName = textField.text,
+        let newName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
         FieldVariable.isValidName(newName) else
       {
         self.showAddAlert(error: message(forKey: "BKY_IOS_VARIABLES_EMPTY_NAME_ERROR"))
