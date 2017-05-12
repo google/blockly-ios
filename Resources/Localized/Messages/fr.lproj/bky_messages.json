@@ -20,7 +20,7 @@
   "COLOUR_RGB_GREEN": "vert",
   "COLOUR_RGB_HELPURL": "http://www.december.com/html/spec/colorper.html",
   "COLOUR_RGB_RED": "rouge",
-  "COLOUR_RGB_TITLE": "colorier avec",
+  "COLOUR_RGB_TITLE": "couleur avec",
   "COLOUR_RGB_TOOLTIP": "Cr\u00e9er une couleur avec la quantit\u00e9 sp\u00e9cifi\u00e9e de rouge, vert et bleu. Les valeurs doivent \u00eatre comprises entre 0 et 100.",
   "CONTROLS_FLOW_STATEMENTS_HELPURL": "https://github.com/google/blockly/wiki/Loops#loop-termination-blocks",
   "CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK": "quitter la boucle",
