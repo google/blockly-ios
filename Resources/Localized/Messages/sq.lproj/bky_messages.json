@@ -326,7 +326,7 @@
   "TEXT_CHARAT_TAIL": "",
   "TEXT_CHARAT_TOOLTIP": "Kthe nje shkronje nga nje pozicion i caktuar.",
   "TEXT_COUNT_HELPURL": "https://github.com/google/blockly/wiki/Text#counting-substrings",
-  "TEXT_COUNT_MESSAGE0": "count %1 in %2",
+  "TEXT_COUNT_MESSAGE0": "numro %1 n\u00eb %2",
   "TEXT_COUNT_TOOLTIP": "Count how many times some text occurs within some other text.",
   "TEXT_CREATE_JOIN_ITEM_TOOLTIP": "Shto nje gje ne tekst",
   "TEXT_CREATE_JOIN_TITLE_JOIN": "bashkangjit",

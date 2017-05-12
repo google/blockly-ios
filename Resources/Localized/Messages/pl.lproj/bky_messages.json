@@ -368,7 +368,7 @@
   "TEXT_REPLACE_MESSAGE0": "replace %1 with %2 in %3",
   "TEXT_REPLACE_TOOLTIP": "Replace all occurances of some text within some other text.",
   "TEXT_REVERSE_HELPURL": "https://github.com/google/blockly/wiki/Text#reversing-text",
-  "TEXT_REVERSE_MESSAGE0": "reverse %1",
+  "TEXT_REVERSE_MESSAGE0": "odwr\u00f3\u0107 %1",
   "TEXT_REVERSE_TOOLTIP": "Reverses the order of the characters in the text.",
   "TEXT_TEXT_HELPURL": "https://pl.wikipedia.org/wiki/Tekstowy_typ_danych",
   "TEXT_TEXT_TOOLTIP": "Litera, wyraz lub linia tekstu.",
