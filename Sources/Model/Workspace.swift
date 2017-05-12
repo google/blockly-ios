@@ -184,13 +184,13 @@ open class Workspace : NSObject {
       }
 
       for block in rootBlock.allBlocksForTree() {
-        if let existingBlockUUID = allBlocks[block.uuid] {
+        if allBlocks[block.uuid] != nil {
           throw BlocklyError(.illegalState,
-            "A block cannot be added into the workspace with a uuid ('\(existingBlockUUID)') " +
+            "A block cannot be added into the workspace with a uuid ('\(block.uuid)') " +
             "that is already being used by another block.")
-        } else if let existingBlockUUID = newBlocks[block.uuid] {
+        } else if newBlocks[block.uuid] != nil {
           throw BlocklyError(.illegalArgument,
-            "Two blocks with the same uuid ('\(existingBlockUUID)') cannot be added into the " +
+            "Two blocks with the same uuid ('\(block.uuid)') cannot be added into the " +
             "workspace at the same time.")
         } else if block.shadow && block.topLevel {
           throw BlocklyError(
