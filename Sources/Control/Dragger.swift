@@ -255,10 +255,12 @@ public final class Dragger: NSObject {
 
       // Add the new highlight (if something was found)
       if let blockLayout = drag.blockLayout,
-        let newHighlightedConnection = connectionPair?.target
+        let targetConnection = connectionPair?.target,
+        let targetConnectionBlockLayout = targetConnection.sourceBlock?.layout
       {
-        newHighlightedConnection.addHighlightForBlock(blockLayout.block)
-        drag.highlightedConnection = newHighlightedConnection
+        targetConnectionBlockLayout.addHighlightSource(
+          sourceUUID: blockLayout.uuid, forConnection: targetConnection)
+        drag.highlightedConnection = targetConnection
       }
     }
   }
@@ -269,8 +271,11 @@ public final class Dragger: NSObject {
   - parameter drag: The drag.
   */
   fileprivate func removeHighlightedConnection(forDrag drag: DragGestureData) {
-    if let blockLayout = drag.blockLayout {
-      drag.highlightedConnection?.removeHighlightForBlock(blockLayout.block)
+    if let blockLayout = drag.blockLayout,
+      let highlightedConnection = drag.highlightedConnection,
+      let highlightedConnectionBlockLayout = highlightedConnection.sourceBlock?.layout {
+      highlightedConnectionBlockLayout.removeHighlightSource(
+        sourceUUID: blockLayout.uuid, forConnection: highlightedConnection)
       drag.highlightedConnection = nil
     }
   }
