@@ -168,29 +168,9 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
     self.init(style: .grouped)
     self.mutatorLayout = mutatorLayout
-
-    tableView.addObserver(
-      self, forKeyPath: "contentSize", options: .new, context: &self._kvoContextContentSize)
-  }
-
-  deinit {
-    tableView.removeObserver(self, forKeyPath: "contentSize")
   }
 
   // MARK: - Super
-
-  open override func observeValue(
-    forKeyPath keyPath: String?,
-    of object: Any?,
-    change: [NSKeyValueChangeKey : Any]?,
-    context: UnsafeMutableRawPointer?)
-  {
-    if context == &_kvoContextContentSize {
-      updatePreferredContentSize()
-    } else {
-      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-    }
-  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -279,16 +259,21 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
         withIdentifier: IDENTIFIER_PARAMETER_CELL, for: indexPath) as! ParameterCellView
 
       // Set this controller as the text field delegate
-      cell.textField.font = generalFont
       cell.textField.delegate = self
+      cell.textField.font = generalFont
       cell.textField.addTarget(
         self, action: #selector(updateParameterTextField), for: [.touchCancel, .touchDragOutside])
 
-      // Update text field value
+      // Update text field value, and tag the cell with the parameter UUID that it represents
+      // (so we know which value to update later).
       if indexPath.row < mutatorLayout.parameters.count {
         cell.textField.text = mutatorLayout.parameters[indexPath.row].name
+        cell.textField.placeholder = ""
+        cell.parameterUUID = mutatorLayout.parameters[indexPath.row].uuid
       } else {
         cell.textField.text = ""
+        cell.textField.placeholder = message(forKey: "BKY_IOS_PROCEDURES_ADD_INPUT")
+        cell.parameterUUID = nil // A new parameter is represented with a UUID set to `nil`
       }
 
       return cell
@@ -342,8 +327,6 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
       let parameter = mutatorLayout.parameters.remove(at: sourceIndexPath.row)
       mutatorLayout.parameters.insert(parameter, at: destinationIndexPath.row)
       performMutation()
-
-      tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
     }
   }
 
@@ -362,6 +345,8 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
       if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
         configureParametersHeaderView(headerView)
       }
+
+      updatePreferredContentSize()
     }
   }
 
@@ -438,54 +423,67 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
   }
 
   func updateParameterTextField(_ textField: UITextField) {
-    textField.resignFirstResponder()
+    guard let cell = textField.superview?.superview as? ParameterCellView else {
+      return
+    }
 
-    if let cell = textField.superview?.superview as? UITableViewCell,
-      let indexPath = tableView.indexPath(for: cell),
-      let text = textField.text
-    {
-      if indexPath.row >= mutatorLayout.parameters.count && !text.isEmpty {
-        // Add new parameter
-        mutatorLayout.parameters.append(ProcedureParameter(name: text))
+    let text = textField.text ?? ""
+
+    // Figure out which parameter index this text field is associated with this text field
+    let parameterIndex = cell.parameterUUID == nil ?
+      // If `nil`, this represents a new parameter
+      mutatorLayout.parameters.count :
+      // Find the parameter index with matching UUID
+      (mutatorLayout.parameters.index(where: { $0.uuid == cell.parameterUUID }) ?? -1)
+
+    if parameterIndex >= mutatorLayout.parameters.count && !text.isEmpty {
+      // Add new parameter
+      let newParameter = ProcedureParameter(name: text)
+      mutatorLayout.parameters.append(newParameter)
+      performMutation()
+
+      // Update the cell's UUID
+      cell.parameterUUID = newParameter.uuid
+
+      // Update table
+      let newAddRowIndexPath =
+        IndexPath(row: mutatorLayout.parameters.count, section: SECTION_PARAMETERS)
+      tableView.insertRows(at: [newAddRowIndexPath], with: .none)
+
+      // Reload all rows containing this new parameter (the parameter may have already existed,
+      // so other parameters may have been renamed to match its case sensitivity).
+      let reloadRows = indexPaths(containingParameter: text) + [newAddRowIndexPath]
+      tableView.reloadRows(at: reloadRows, with: .none)
+
+      if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
+        configureParametersHeaderView(headerView)
+      }
+
+      // Scroll the new "add input" row into view.
+      tableView.scrollToRow(at: newAddRowIndexPath, at: .middle, animated: true)
+
+      // Automatically give focus to the "add input" text field.
+      if let cell = self.tableView.cellForRow(at: newAddRowIndexPath) as? ParameterCellView {
+        cell.textField.becomeFirstResponder()
+      }
+    } else if 0 <= parameterIndex && parameterIndex < mutatorLayout.parameters.count {
+      if text.isEmpty {
+        // The user set the parameter to the empty string. Reset it to what it was before editing
+        // began. (If the user's intent was to delete the parameter, they need to use the delete
+        // button.)
+        textField.text = mutatorLayout.parameters[parameterIndex].name
+      } else {
+        // Update the parameter
+        mutatorLayout.parameters[parameterIndex].name = text
         performMutation()
 
-        // Update table
-        let newAddRowIndexPath =
-          IndexPath(row: mutatorLayout.parameters.count, section: SECTION_PARAMETERS)
-        tableView.insertRows(at: [newAddRowIndexPath], with: .automatic)
-
-        // Reload all rows containing this new parameter (the parameter may have already existed,
-        // so other parameters may have been renamed to match its case sensitivity).
-        let reloadRows = indexPaths(containingParameter: text) + [newAddRowIndexPath]
+        // Update all rows with this parameter name and the header title (based on whether
+        // there are duplicates now)
+        let reloadRows = indexPaths(containingParameter: text)
         tableView.reloadRows(at: reloadRows, with: .automatic)
 
         if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
           configureParametersHeaderView(headerView)
-        }
-
-        // Automatically give the next add row the focus
-        if let cell = tableView.cellForRow(at: newAddRowIndexPath) as? ParameterCellView {
-          cell.textField.becomeFirstResponder()
-        }
-      } else if indexPath.row < mutatorLayout.parameters.count {
-        if text.isEmpty {
-          // The user set the parameter to the empty string. Reset it to what it was before editing
-          // began. (If the user's intent was to delete the parameter, they need to use the delete
-          // button.)
-          textField.text = mutatorLayout.parameters[indexPath.row].name
-        } else {
-          // Update the parameter
-          mutatorLayout.parameters[indexPath.row].name = text
-          performMutation()
-
-          // Update all rows with this parameter name and the header title (based on whether
-          // there are duplicates now)
-          let reloadRows = indexPaths(containingParameter: text)
-          tableView.reloadRows(at: reloadRows, with: .automatic)
-
-          if let headerView = tableView.headerView(forSection: SECTION_PARAMETERS) {
-            configureParametersHeaderView(headerView)
-          }
         }
       }
     }
@@ -502,6 +500,16 @@ extension MutatorProcedureDefinitionPopoverController: UITextFieldDelegate {
     return true
   }
 
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    // If the user is adding a new parameter, automatically the text field into the
+    // middle of the table view.
+    if let cell = textField.superview?.superview as? ParameterCellView,
+      let indexPath = tableView.indexPath(for: cell),
+      cell.parameterUUID == nil {
+      tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+    }
+  }
+
   func textFieldDidEndEditing(_ textField: UITextField) {
     updateParameterTextField(textField)
   }
@@ -516,11 +524,10 @@ fileprivate class ParameterCellView: UITableViewCell {
   // MARK: - Properties
 
   /// The text field for entering the parameter
-  lazy var textField: UITextField = {
-    let textField = UITextField()
-    textField.placeholder = message(forKey: "BKY_IOS_PROCEDURES_ADD_INPUT")
-    return textField
-  }()
+  var textField = UITextField()
+
+  /// The parameter UUID this cell represents. If `nil`, this cell represents the "+ add input" row.
+  var parameterUUID: String?
 
   // MARK: - Initializers
 
