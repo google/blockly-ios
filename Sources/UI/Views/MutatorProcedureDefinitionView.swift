@@ -423,7 +423,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
   }
 
   func updateParameterTextField(_ textField: UITextField) {
-    guard let cell = textField.superview?.superview as? ParameterCellView else {
+    guard let cell = textField.bky_firstAncestor(ofType: ParameterCellView.self) else {
       return
     }
 
@@ -486,6 +486,9 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
           configureParametersHeaderView(headerView)
         }
       }
+    } else if parameterIndex < 0 {
+      bky_debugPrint("No associated parameter index could be found for parameter UUID " +
+        "('\(cell.parameterUUID ?? "nil")').")
     }
   }
 }
