@@ -2,3 +2,7 @@ language: objective-c
 osx_image: xcode8.3
 xcode_project:  Samples/BlocklySample/BlocklySample.xcodeproj
 xcode_scheme: BlocklyTests
+
+before_install:
+  - brew update
+  - brew outdated xctool || brew upgrade xctool
