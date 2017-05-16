@@ -84,7 +84,7 @@ public final class EventManager: NSObject {
 
   /**
    Queues an event to be fired in the future (via `firePendingEvents()`). However, this event will
-   not be queued if `self.isEnabled` is set to `false`.
+   not be queued if `self.isEnabled` is set to `false`, or if the event is discardable.
 
    If `event.groupID` is `nil`, it is automatically assigned the value of `self.currentGroupID`,
    by this method.
@@ -92,7 +92,7 @@ public final class EventManager: NSObject {
    - parameter event: The `BlocklyEvent` to queue.
    */
   public func addPendingEvent(_ event: BlocklyEvent) {
-    guard isEnabled else {
+    guard isEnabled && !event.isDiscardable() else {
       return
     }
 
