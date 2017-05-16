@@ -434,7 +434,7 @@ open class LayoutConfig: NSObject {
   public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
     -> CGSize
   {
-    return size(for: key).viewSize
+    return size(for: key, defaultValue: defaultValue).viewSize
   }
 
   /**
@@ -449,7 +449,7 @@ open class LayoutConfig: NSObject {
   public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
     -> WorkspaceSize
   {
-    return size(for: key).workspaceSize
+    return size(for: key, defaultValue: defaultValue).workspaceSize
   }
 
   /**

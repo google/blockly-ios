@@ -358,6 +358,7 @@ open class Layout: NSObject {
   - note: All parent parameters are defined in the method signature so we can eliminate direct
   references to `self.parentLayout` inside this method. This results in better performance.
   */
+  @inline(__always)
   fileprivate final func refreshViewPositionsForTree(
     parentAbsolutePosition: WorkspacePoint,
     parentContentSize: WorkspaceSize,

@@ -46,11 +46,6 @@ open class InputLayout: Layout {
     return parentBlockLayout?.inputLayouts.last == self
   }
 
-  /// Flag for if its parent block renders its inputs inline
-  open var isInline: Bool {
-    return parentBlockLayout?.block.inputsInline ?? false
-  }
-
   // MARK: - Initializers
 
   /**

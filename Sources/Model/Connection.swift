@@ -214,8 +214,15 @@ public final class Connection : NSObject {
     return (self.type == .inputValue || self.type == .nextStatement)
   }
 
+  /// Flag determining if this connection has a value set for `positionDelegate`.
+  /// It is used for performance purposes.
+  private final var _hasPositionDelegate: Bool = false
   /// Connection position delegate
-  public final weak var positionDelegate: ConnectionPositionDelegate?
+  public final weak var positionDelegate: ConnectionPositionDelegate? {
+    didSet {
+      _hasPositionDelegate = (positionDelegate != nil)
+    }
+  }
 
   /// This value is `true` if this connection is an "inferior" connection (ie. `.outputValue` or
   /// `.previousStatement`). Otherwise, this value is `false`.
@@ -460,10 +467,16 @@ public final class Connection : NSObject {
       return
     }
 
-    positionDelegate?.willChangePosition(forConnection: self)
+    if _hasPositionDelegate {
+      positionDelegate?.willChangePosition(forConnection: self)
+    }
+
     self.position.x = newX
     self.position.y = newY
-    positionDelegate?.didChangePosition(forConnection: self)
+
+    if _hasPositionDelegate {
+      positionDelegate?.didChangePosition(forConnection: self)
+    }
   }
 
   // MARK: - Internal - For testing only

@@ -53,7 +53,14 @@ public final class Block : NSObject {
   /// Flag indicating if input connectors should be drawn inside a block (`true`) or
   /// on the edge of the block (`false`)
   public var inputsInline: Bool {
-    didSet { didSetProperty(inputsInline, oldValue) }
+    didSet {
+      if inputsInline == oldValue {
+        return
+      }
+
+      updateInputs()
+      notifyDidUpdateBlock()
+    }
   }
   /// The absolute position of the block, in the Workspace coordinate system
   public var position: WorkspacePoint
@@ -519,6 +526,7 @@ public final class Block : NSObject {
   private func updateInputs() {
     for input in self.inputs {
       input.sourceBlock = self
+      input.inline = inputsInline
 
       for field in input.fields {
         field.editable = editable
