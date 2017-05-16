@@ -111,6 +111,9 @@ public final class Input : NSObject {
   public var visible: Bool = true
   /// The alignment of the input
   public var alignment: Alignment = Alignment.left
+  /// `true` if this input should be drawn inline (ie. inside a block).
+  /// Defaults to `false`.
+  internal var inline: Bool = false
 
   /// The layout associated with this input.
   public weak var layout: InputLayout?

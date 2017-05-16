@@ -36,7 +36,7 @@ public final class ConnectionManager: NSObject {
   public let connectionValidator: ConnectionValidator
 
   /// Dictionary for retrieving a connection's assigned group (keyed by the connection uuid)
-  fileprivate var _groupsByConnection = Dictionary<String, ConnectionManager.Group>()
+  fileprivate var _groupsByConnection = NSMutableDictionary()
 
   /// All groups that have been created by this manager, including `mainGroup`
   fileprivate var _groups = Set<ConnectionManager.Group>()
@@ -125,7 +125,8 @@ public final class ConnectionManager: NSObject {
     _ connection: Connection, assignToGroup group: ConnectionManager.Group? = nil) {
       let newGroup = (group ?? mainGroup)
 
-      if _groupsByConnection[connection.uuid] == newGroup {
+      if let group = _groupsByConnection[connection.uuid] as? ConnectionManager.Group,
+        group == newGroup {
         // Connection is already being tracked by this group, do nothing
         return
       }
@@ -144,8 +145,10 @@ public final class ConnectionManager: NSObject {
   - parameter connection: The connection to remove.
   */
   public func untrackConnection(_ connection: Connection) {
-    _groupsByConnection[connection.uuid]?.untrackConnection(connection)
-    _groupsByConnection[connection.uuid] = nil
+    if let group = _groupsByConnection[connection.uuid] as? ConnectionManager.Group {
+      group.untrackConnection(connection)
+      _groupsByConnection[connection.uuid] = nil
+    }
   }
 
   /**
@@ -287,7 +290,28 @@ extension ConnectionManager {
     /// When the connection group's drag mode has been set to true, it's assumed that all
     /// connections are being moved together as a group. In this case, the group does not
     /// needlessly verify the internal sorted order of its connections.
-    public var dragMode: Bool = false
+    public var dragMode: Bool = false {
+      didSet {
+        if dragMode == oldValue {
+          return
+        }
+
+        // Depending on if the manager is in "drag mode", add or remove it as the
+        // `positionDelegate` (to improve performance).
+        for connection in _previousConnections._connections {
+          connection.positionDelegate = dragMode ? nil : self
+        }
+        for connection in _nextConnections._connections {
+          connection.positionDelegate = dragMode ? nil : self
+        }
+        for connection in _inputConnections._connections {
+          connection.positionDelegate = dragMode ? nil : self
+        }
+        for connection in _outputConnections._connections {
+          connection.positionDelegate = dragMode ? nil : self
+        }
+      }
+    }
 
     /// All connections managed by this group (this list is not sorted)
     internal var allConnections: [Connection] {

@@ -24,35 +24,48 @@ public final class DefaultInputLayout: InputLayout {
 
   // TODO(#34): Consider replacing all connections/relative positions with a ConnectionLayout
 
+  /**
+   For performance reasons, create a variable that can be used to reference a `nil`
+   `Connection`.
+
+   Normally, `_connection` would be defined as an optional variable, but there is an
+   implicit objc-retain/release overhead when using optionals. So instead, `_connection` is defined
+   as a non-optional and assigned to this variable if it is actually `nil`. This reduces
+   retain/release overhead and improves performance.
+   */
+  private static let nilConnection = Connection(type: .outputValue)
+
   /// For performance reasons, keep a strong reference to the input.connection
-  fileprivate var _connection: Connection!
+  fileprivate let _connection: Connection
+
+  /// The notch width that this input should use, in the Workspace coordinate system.
+  private var notchWidth: CGFloat = 0
+
+  /// The notch height that this input should use, in the Workspace coordinate system.
+  private var notchHeight: CGFloat = 0
+
+  /// The puzzle tab height that this input should use, in the Workspace coordinate system.
+  private var puzzleTabHeight: CGFloat = 0
+
+  /// The puzzle tab height that this input should use, in the Workspace coordinate system.
+  private var puzzleTabWidth: CGFloat = 0
 
   internal override var absolutePosition: WorkspacePoint {
     didSet {
-      /// TODO(#29): This is method is eating into performance. During method execution,
-      /// "swift_unknownRetainUnowned", "objc_loadWeakRetained", and "objc_...release" are called
-      /// often and take about 15% of CPU time.
-
-      // Update connection position
-      if _connection == nil {
+      if _connection === DefaultInputLayout.nilConnection {
         return
       }
 
+      // Update connection position
       let connectionPoint: WorkspacePoint
       if input.type == .statement {
         connectionPoint = WorkspacePoint(
-          x: statementIndent + self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) / 2,
-          y: statementRowTopPadding +
-            self.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight))
-      } else if isInline {
+          x: statementIndent + notchWidth / 2, y: statementRowTopPadding + notchHeight)
+      } else if input.inline {
         connectionPoint = WorkspacePoint(
-          x: inlineConnectorPosition.x,
-          y: inlineConnectorPosition.y +
-            self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
+          x: inlineConnectorPosition.x, y: inlineConnectorPosition.y + puzzleTabHeight / 2)
       } else {
-        connectionPoint = WorkspacePoint(
-          x: rightEdge - self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth),
-          y: self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
+        connectionPoint = WorkspacePoint(x: rightEdge - puzzleTabWidth, y: puzzleTabHeight / 2)
       }
 
       _connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
@@ -98,7 +111,7 @@ public final class DefaultInputLayout: InputLayout {
   public var minimalFieldWidthRequired: CGFloat {
     let fieldWidth = fieldLayouts.count > 0 ?
       (fieldLayouts.last!.relativePosition.x + fieldLayouts.last!.totalSize.width) : 0
-    let puzzleTabWidth = (!isInline && input.type == .value) ?
+    let puzzleTabWidth = (!input.inline && input.type == .value) ?
       (self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)) : 0
     // Special case where field padding is added for statements in case no fields were added
     let statementPaddingWidth = (input.type == .statement && fieldLayouts.isEmpty) ?
@@ -125,7 +138,7 @@ public final class DefaultInputLayout: InputLayout {
      `BlocklyError`: Occurs if the `LayoutFactory` cannot build a block.
    */
   public override init(input: Input, engine: LayoutEngine, factory: LayoutFactory) throws {
-    self._connection = input.connection
+    self._connection = input.connection ?? DefaultInputLayout.nilConnection
     try super.init(input: input, engine: engine, factory: factory)
   }
 
@@ -133,6 +146,12 @@ public final class DefaultInputLayout: InputLayout {
 
   public override func performLayout(includeChildren: Bool) {
     resetRenderProperties()
+
+    // Update render values
+    notchWidth = config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
+    notchHeight = config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
+    puzzleTabHeight = config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
+    puzzleTabWidth = config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
 
     // Figure out which block group to render
     let targetBlockGroupLayout = self.blockGroupLayout as BlockGroupLayout
@@ -190,7 +209,7 @@ public final class DefaultInputLayout: InputLayout {
 
       let widthRequired: CGFloat
       var inlineConnectorMaximumYPoint: CGFloat = 0
-      if self.isInline {
+      if input.inline {
         targetBlockGroupLayout.edgeInsets.leading =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
         targetBlockGroupLayout.edgeInsets.top =
@@ -212,8 +231,7 @@ public final class DefaultInputLayout: InputLayout {
         let minimumInlineConnectorSize =
           self.config.workspaceSize(for: DefaultLayoutConfig.MinimumInlineConnectorSize)
         let inlineConnectorWidth = max(targetBlockGroupLayout.contentSize.width,
-          self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) +
-          minimumInlineConnectorSize.width)
+          puzzleTabWidth + minimumInlineConnectorSize.width)
         let inlineConnectorHeight =
           max(targetBlockGroupLayout.contentSize.height, minimumInlineConnectorSize.height)
         self.inlineConnectorSize = WorkspaceSize(width: inlineConnectorWidth,
@@ -225,8 +243,7 @@ public final class DefaultInputLayout: InputLayout {
           targetBlockGroupLayout.edgeInsets.bottom
         widthRequired = self.rightEdge
       } else {
-        self.rightEdge = targetBlockGroupLayout.relativePosition.x +
-          self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
+        self.rightEdge = targetBlockGroupLayout.relativePosition.x + puzzleTabWidth
         widthRequired = max(
           targetBlockGroupLayout.relativePosition.x + targetBlockGroupLayout.totalSize.width,
           self.rightEdge)
@@ -236,7 +253,7 @@ public final class DefaultInputLayout: InputLayout {
         fieldMaximumYPoint,
         inlineConnectorMaximumYPoint,
         targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.totalSize.height,
-        self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight))
+        puzzleTabHeight)
 
       self.contentSize = WorkspaceSize(width: widthRequired, height: heightRequired)
     case .statement:
@@ -261,7 +278,7 @@ public final class DefaultInputLayout: InputLayout {
       // Set statement render properties
       self.statementIndent = fieldXOffset
       self.statementConnectorWidth =
-        self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) +
+        notchWidth +
         self.config.workspaceUnit(for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
       self.rightEdge = statementIndent + statementConnectorWidth
 
@@ -332,7 +349,7 @@ public final class DefaultInputLayout: InputLayout {
     if self.input.type == .statement {
       self.statementIndent += widthDifference
       self.blockGroupLayout.relativePosition.x += widthDifference
-    } else if self.input.type == .value && !self.isInline {
+    } else if self.input.type == .value && !input.inline {
       self.blockGroupLayout.relativePosition.x += widthDifference
     }
   }
