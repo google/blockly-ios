@@ -6,3 +6,6 @@ xcode_scheme: BlocklyTests
 before_install:
   - brew update
   - brew outdated xctool || brew upgrade xctool
+
+script:
+  xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3'
