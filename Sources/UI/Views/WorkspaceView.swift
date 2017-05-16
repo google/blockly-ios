@@ -193,7 +193,8 @@ open class WorkspaceView: LayoutView {
    */
   open func scrollBlockIntoView(_ block: Block, animated: Bool) {
     guard let blockLayout = block.layout,
-      let blockView = ViewManager.shared.findBlockView(forLayout: blockLayout) else
+      let blockView = ViewManager.shared.findBlockView(forLayout: blockLayout),
+      let workspaceLayout = self.workspaceLayout else
     {
       return
     }
@@ -211,16 +212,29 @@ open class WorkspaceView: LayoutView {
     let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
     var contentOffset = scrollView.contentOffset
 
-    // Check right edge
-    if blockViewRect.maxX > scrollViewRect.maxX {
-      contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+
+    if workspaceLayout.engine.rtl {
+      // Check left edge (as long as the block width < visible view width)
+      if blockViewRect.width <= scrollViewRect.width && blockViewRect.minX < scrollViewRect.minX {
+        contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+      }
+      // Check right edge
+      if blockViewRect.maxX > scrollViewRect.maxX {
+        contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+      }
+    } else {
+      // Check right edge (as long as the block width < visible view width)
+      if blockViewRect.width <= scrollViewRect.width && blockViewRect.maxX > scrollViewRect.maxX {
+        contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+      }
+      // Check left edge
+      if blockViewRect.minX < scrollViewRect.minX {
+        contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+      }
     }
-    // Check left edge
-    if blockViewRect.minX < scrollViewRect.minX {
-      contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
-    }
-    // Check bottom edge
-    if blockViewRect.maxY > scrollViewRect.maxY {
+
+    // Check bottom edge (as long as the block height < visible view height)
+    if blockViewRect.height <= scrollViewRect.height && blockViewRect.maxY > scrollViewRect.maxY {
       contentOffset.y += (blockViewRect.maxY - scrollViewRect.maxY)
     }
     // Check top edge
