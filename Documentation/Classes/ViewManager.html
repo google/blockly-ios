@@ -20,7 +20,7 @@
               </div>
             <p>Manages the set <code><a href="../Classes/LayoutView.html">LayoutView</a></code> instances that have been created.</p>
 
-<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/ViewManager.html#/s:ZvC7Blockly11ViewManager14sharedInstanceS0_">ViewManager.sharedInstance</a></code>.</p>
+<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/ViewManager.html#/s:ZvC7Blockly11ViewManager6sharedS0_">ViewManager.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -36,9 +36,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly11ViewManager14sharedInstanceS0_"></a>
-                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly11ViewManager14sharedInstanceS0_">sharedInstance</a></h3>
+                    <a name="/s:ZvC7Blockly11ViewManager6sharedS0_"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly11ViewManager6sharedS0_">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -53,7 +53,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span> <span class="o">=</span> <span class="kt">ViewManager</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">ViewManager</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -144,7 +144,6 @@
                               <td>
                                 <div>
                                   <p>The <code>LayoutView</code> to cache</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -156,7 +155,6 @@
                               <td>
                                 <div>
                                   <p>The <code>Layout</code> associated with the view</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -202,7 +200,6 @@
                               <td>
                                 <div>
                                   <p>The given layout</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -249,7 +246,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                               <td>
                                 <div>
                                   <p>The <code>BlockLayout</code> to look for</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -257,8 +253,8 @@ be found in the cache, <code>nil</code> is returned.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A <code><a href="../Classes/BlockView.html">BlockView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be found.</p>
-
+                        <p>A <code><a href="../Classes/BlockView.html">BlockView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be
+found.</p>
                       </div>
                     </section>
                   </div>
@@ -301,7 +297,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                               <td>
                                 <div>
                                   <p>The <code>FieldLayout</code> to look for</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -309,8 +304,8 @@ be found in the cache, <code>nil</code> is returned.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A <code><a href="../Classes/FieldView.html">FieldView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be found.</p>
-
+                        <p>A <code><a href="../Classes/FieldView.html">FieldView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be
+found.</p>
                       </div>
                     </section>
                   </div>
@@ -353,7 +348,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                               <td>
                                 <div>
                                   <p>The <code>Layout</code> to look for</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -361,8 +355,8 @@ be found in the cache, <code>nil</code> is returned.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A <code><a href="../Classes/LayoutView.html">LayoutView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be found.</p>
-
+                        <p>A <code><a href="../Classes/LayoutView.html">LayoutView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be
+found.</p>
                       </div>
                     </section>
                   </div>
@@ -406,8 +400,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -452,8 +444,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

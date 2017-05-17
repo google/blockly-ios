@@ -14,7 +14,7 @@
             <h1>Move</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Move</span><span class="p">:</span> <span class="kt"><a href="../../Classes/BlocklyEvent.html">BlocklyEvent</a></span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Move</span><span class="p">:</span> <span class="kt"><a href="../../Classes/BlocklyEvent.html">BlocklyEvent</a></span></code></pre>
 
                 </div>
               </div>
@@ -279,7 +279,6 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The ID of the workspace containing the moved blocks.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -291,7 +290,6 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The ID of the root block that will move.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -303,7 +301,6 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The value for <code>self.oldParentID</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -315,7 +312,6 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The value for <code>self.oldInputName</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -327,7 +323,6 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The value for <code>self.oldPosition</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -350,7 +345,6 @@ is connected to a parent block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Constructs a <code>BlocklyEvent.Move</code> from the JSON serialized representation.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown when the JSON could not be parsed into a <code>BlocklyEvent.Move</code> object.
@@ -379,7 +373,63 @@ is connected to a parent block.</p>
                               <td>
                                 <div>
                                   <p>The serialized JSON representation of <code>BlocklyEvent.Move</code>.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FCC7Blockly12BlocklyEvent4MovecFT9workspaceCS_9Workspace5blockCS_5Block_S1_"></a>
+                    <a name="//apple_ref/swift/Method/init(workspace:block:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FCC7Blockly12BlocklyEvent4MovecFT9workspaceCS_9Workspace5blockCS_5Block_S1_">init(workspace:block:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a <code>BlocklyEvent.Move</code> signifying the movement of a block on the workspace. The
+current positional values of the block are recorded as the <q>old</q> values for the event.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">workspace</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Workspace.html">Workspace</a></span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>workspace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The workspace containing the moved blocks.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The root block, while it is still in its original position.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -421,11 +471,6 @@ is connected to a parent block.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A JSON dictionary serialization of the event.</p>
-
-                      </div>
                     </section>
                   </div>
                 </li>
@@ -464,17 +509,11 @@ is connected to a parent block.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The next chronological event that was fired after this event.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>                          </tbody>
                         </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>If the events are compatible, this returns a new <code><a href="../../Classes/BlocklyEvent.html">BlocklyEvent</a></code> that is the result of merging the two events together. Otherwise, <code>nil</code> is returned.</p>
-
                       </div>
                     </section>
                   </div>
@@ -502,10 +541,66 @@ is connected to a parent block.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p><code>true</code> if this event can be discarded, or <code>false</code> otherwise.</p>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Capturing%20State"></a>
+                <a name="//apple_ref/swift/Section/Capturing State" class="dashAnchor"></a>
+                <a href="#/Capturing%20State">
+                  <h2 class="section-name">Capturing State</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FCC7Blockly12BlocklyEvent4Move15recordNewValuesFT8forBlockGSqCS_5Block__T_"></a>
+                    <a name="//apple_ref/swift/Method/recordNewValues(forBlock:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FCC7Blockly12BlocklyEvent4Move15recordNewValuesFT8forBlockGSqCS_5Block__T_">recordNewValues(forBlock:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the event&rsquo;s <q>new</q> values to capture the current state of a given block.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    If the given block is <code>nil</code> or its UUID doesn&rsquo;t match the event&rsquo;s <code><a href="../../Classes/BlocklyEvent.html#/s:vC7Blockly12BlocklyEvent7blockIDGSqSS_">blockID</a></code>, then no
+values are captured.
 
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">recordNewValues</span><span class="p">(</span><span class="n">forBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Block</code> to capture.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -549,8 +644,6 @@ toc:
       path: /blockly/reference/ios/../../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -595,8 +688,6 @@ toc:
       path: /blockly/reference/ios/../../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../../Classes/ConnectionManager.html
     - title: – Group

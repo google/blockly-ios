@@ -18,9 +18,12 @@
 
                 </div>
               </div>
-            <p>Core object that is required by <code><a href="../Classes/Layout.html">Layout</a></code> instances in order to provide:
-- Unit scaling between Blockly&rsquo;s Workspace coordinate system and the UIView coordinate system
-- UI configuration</p>
+            <p>Core object that is required by <code><a href="../Classes/Layout.html">Layout</a></code> instances in order to provide:</p>
+
+<ul>
+<li>Unit scaling between Blockly&rsquo;s Workspace coordinate system and the UIView coordinate system</li>
+<li>UI configuration</li>
+</ul>
 
 <p>All <code><a href="../Classes/Layout.html">Layout</a></code> instances in a single <code><a href="../Classes/Layout.html">Layout</a></code> tree should share the same single instance of
 <code>LayoutEngine</code>. If any of the nodes in a single tree use different instances of <code>LayoutEngine</code>,
@@ -249,8 +252,8 @@ in right-to-left (<code>true</code>) or left-to-right (<code>false</code>)..</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Optional parameter for setting <code>self.config</code>. If no value is specified, a <code>LayoutConfig</code> is created automatically.</p>
-
+                                  <p>Optional parameter for setting <code>self.config</code>. If no value is specified,
+a <code>LayoutConfig</code> is created automatically.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -261,8 +264,8 @@ in right-to-left (<code>true</code>) or left-to-right (<code>false</code>)..</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Optional parameter for setting <code>self.rtl</code>. If no value is specified, <code>self.rtl</code> is automatically set using the system’s layout direction.</p>
-
+                                  <p>Optional parameter for setting <code>self.rtl</code>. If no value is specified, <code>self.rtl</code>
+is automatically set using the system&rsquo;s layout direction.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -273,8 +276,8 @@ in right-to-left (<code>true</code>) or left-to-right (<code>false</code>)..</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The minimum scale for the engine, relative to Workspace coordinate system. Defaults to 0.5.</p>
-
+                                  <p>The minimum scale for the engine, relative to Workspace coordinate system.
+Defaults to 0.5.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -285,8 +288,8 @@ in right-to-left (<code>true</code>) or left-to-right (<code>false</code>)..</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The maximum scale for the engine, relative to Workspace coordinate system. Degaults to 2.0.</p>
-
+                                  <p>The maximum scale for the engine, relative to Workspace coordinate system.
+Degaults to 2.0.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -320,7 +323,6 @@ in right-to-left (<code>true</code>) or left-to-right (<code>false</code>)..</p>
                       <div class="abstract">
                         <p>Using the current <code><a href="../Classes/LayoutEngine.html#/s:vC7Blockly12LayoutEngine5scaleV12CoreGraphics7CGFloat">scale</a></code> value, this method scales a point from the UIView coordinate system to
 the Workspace coordinate system.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This does not translate a UIView point directly into a Workspace point, it only scales the
@@ -351,7 +353,6 @@ calculation would need to be done to get the UIView point&rsquo;s translated Wor
                               <td>
                                 <div>
                                   <p>A point from the UIView coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -360,7 +361,6 @@ calculation would need to be done to get the UIView point&rsquo;s translated Wor
                       <div>
                         <h4>Return Value</h4>
                         <p>A point in the Workspace coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -403,7 +403,6 @@ to the Workspace coordinate system.</p>
                               <td>
                                 <div>
                                   <p>A size from the UIView coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -412,7 +411,6 @@ to the Workspace coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A size in the Workspace coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -455,7 +453,6 @@ system to the Workspace coordinate system.</p>
                               <td>
                                 <div>
                                   <p>A unit value from the UIView coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -464,7 +461,6 @@ system to the Workspace coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A unit value in the Workspace coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -507,7 +503,6 @@ system to the UIView coordinate system.</p>
                               <td>
                                 <div>
                                   <p>A unit value from the Workspace coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -516,7 +511,6 @@ system to the UIView coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A unit value in the UIView coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -559,7 +553,6 @@ coordinate system to the UIView coordinate system.</p>
                               <td>
                                 <div>
                                   <p>A point from the Workspace coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -568,7 +561,6 @@ coordinate system to the UIView coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A point in the UIView coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -611,7 +603,6 @@ system to the UIView coordinate system.</p>
                               <td>
                                 <div>
                                   <p>The x-coordinate of the point</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -623,7 +614,6 @@ system to the UIView coordinate system.</p>
                               <td>
                                 <div>
                                   <p>The y-coordinate of the point</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -632,7 +622,6 @@ system to the UIView coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A point in the UIView coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -675,7 +664,6 @@ system to the UIView coordinate system.</p>
                               <td>
                                 <div>
                                   <p>A size from the Workspace coordinate system.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -684,7 +672,6 @@ system to the UIView coordinate system.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A size in the UIView coordinate system.</p>
-
                       </div>
                     </section>
                   </div>
@@ -728,8 +715,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -774,8 +759,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

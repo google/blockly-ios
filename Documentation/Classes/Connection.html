@@ -491,33 +491,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly10Connection17highlightDelegateXwGSqPS_27ConnectionHighlightDelegate__"></a>
-                    <a name="//apple_ref/swift/Property/highlightDelegate" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly10Connection17highlightDelegateXwGSqPS_27ConnectionHighlightDelegate__">highlightDelegate</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Connection highlight delegate</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">highlightDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ConnectionHighlightDelegate.html">ConnectionHighlightDelegate</a></span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:vC7Blockly10Connection16positionDelegateXwGSqPS_26ConnectionPositionDelegate__"></a>
                     <a name="//apple_ref/swift/Property/positionDelegate" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:vC7Blockly10Connection16positionDelegateXwGSqPS_26ConnectionPositionDelegate__">positionDelegate</a></h3>
@@ -536,33 +509,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">positionDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ConnectionPositionDelegate.html">ConnectionPositionDelegate</a></span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC7Blockly10Connection11highlightedSb"></a>
-                    <a name="//apple_ref/swift/Property/highlighted" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly10Connection11highlightedSb">highlighted</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if this connection should be highlighted in the UI</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">highlighted</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -644,7 +590,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                               <td>
                                 <div>
                                   <p>The <code>ConnectionType</code> of this connection.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -656,7 +601,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                               <td>
                                 <div>
                                   <p>[Optional] The source input for the <code>Connection</code>. Defaults to <code>nil</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -679,7 +623,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Sets <code>self.targetConnection</code> to a given connection, and vice-versa.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the connection could not be made, with error code <code>.ConnectionInvalid</code>
@@ -708,7 +651,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                               <td>
                                 <div>
                                   <p>The other connection</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -731,7 +673,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Sets <code>self.shadowConnection</code> to a given connection, and vice-versa.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the connection could not be made, with error code <code>.ConnectionInvalid</code>
@@ -760,7 +701,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                               <td>
                                 <div>
                                   <p>The other connection</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -862,7 +802,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                               <td>
                                 <div>
                                   <p>The connection to check.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -871,7 +810,6 @@ be valid since they share <q>Integer</q> as a check.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>True if the target can be connected, false otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -914,7 +852,6 @@ reasons.</p>
                               <td>
                                 <div>
                                   <p>The <code>Connection</code> to check compatibility with.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -922,8 +859,8 @@ reasons.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>If the connection is legal, <code>[CheckResult.Value.CanConnect]</code> is returned. Otherwise, a set of all error codes are returned.</p>
-
+                        <p>If the connection is legal, <code>[CheckResult.Value.CanConnect]</code> is returned. Otherwise,
+a set of all error codes are returned.</p>
                       </div>
                     </section>
                   </div>
@@ -966,7 +903,6 @@ reasons.</p>
                               <td>
                                 <div>
                                   <p>The <code>Connection</code> to check compatibility with.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -974,8 +910,8 @@ reasons.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>If the connection is legal, <code>[CheckResult.Value.CanConnect]</code> is returned. Otherwise, a set of all error codes are returned.</p>
-
+                        <p>If the connection is legal, <code>[CheckResult.Value.CanConnect]</code> is returned. Otherwise,
+a set of all error codes are returned.</p>
                       </div>
                     </section>
                   </div>
@@ -1017,7 +953,6 @@ reasons.</p>
                               <td>
                                 <div>
                                   <p>The other <code>Connection</code> to measure the distance to.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1026,101 +961,6 @@ reasons.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The distance between connections.</p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC7Blockly10Connection20addHighlightForBlockFCS_5BlockT_"></a>
-                    <a name="//apple_ref/swift/Method/addHighlightForBlock(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly10Connection20addHighlightForBlockFCS_5BlockT_">addHighlightForBlock(_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Adds a highlight to this connection for a block. If there were no previous highlights for this
-connection, the <code><a href="../Classes/Connection.html#/s:vC7Blockly10Connection11highlightedSb">highlighted</a></code> value is changed to <code>true</code> and its listeners are notified.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addHighlightForBlock</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>block</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given block</p>
-
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC7Blockly10Connection23removeHighlightForBlockFCS_5BlockT_"></a>
-                    <a name="//apple_ref/swift/Method/removeHighlightForBlock(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly10Connection23removeHighlightForBlockFCS_5BlockT_">removeHighlightForBlock(_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Removes the highlight from this connection for a block. If there are no highlights after this
-one is removed, the <code><a href="../Classes/Connection.html#/s:vC7Blockly10Connection11highlightedSb">highlighted</a></code> value is changed to <code>false</code> and its listeners are notified.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeHighlightForBlock</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>block</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given block</p>
-
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -1163,7 +1003,6 @@ one is removed, the <code><a href="../Classes/Connection.html#/s:vC7Blockly10Con
                               <td>
                                 <div>
                                   <p>The position to move to.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1174,8 +1013,8 @@ one is removed, the <code><a href="../Classes/Connection.html#/s:vC7Blockly10Con
                               </td>
                               <td>
                                 <div>
-                                  <p>An additional offset, usually the position of the parent view in the workspace view.</p>
-
+                                  <p>An additional offset, usually the position of the parent view in the workspace
+view.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1223,8 +1062,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -1269,8 +1106,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

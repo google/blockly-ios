@@ -21,7 +21,7 @@
             <p>Manages the registration of fields.</p>
 
 <p>This class is designed as a singleton instance, accessible via
-<code><a href="../../Classes/Field/JSONRegistry.html#/s:ZvCC7Blockly5Field12JSONRegistry14sharedInstanceS1_">Field.JSONRegistry.sharedInstance</a></code>.</p>
+<code><a href="../../Classes/Field/JSONRegistry.html#/s:ZvCC7Blockly5Field12JSONRegistry6sharedS1_">Field.JSONRegistry.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -31,6 +31,43 @@
                 <a name="//apple_ref/swift/Section/Static Properties" class="dashAnchor"></a>
                 <a href="#/Static%20Properties">
                   <h2 class="section-name">Static Properties</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvCC7Blockly5Field12JSONRegistry6sharedS1_"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvCC7Blockly5Field12JSONRegistry6sharedS1_">shared</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Shared instance.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">JSONRegistry</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Closures"></a>
+                <a name="//apple_ref/swift/Section/Closures" class="dashAnchor"></a>
+                <a href="#/Closures">
+                  <h2 class="section-name">Closures</h2>
                 </a>
               </div>
               <ul>
@@ -55,33 +92,6 @@
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">CreationHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">json</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../../Classes/Field.html">Field</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:ZvCC7Blockly5Field12JSONRegistry14sharedInstanceS1_"></a>
-                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvCC7Blockly5Field12JSONRegistry14sharedInstanceS1_">sharedInstance</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Shared instance.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span> <span class="o">=</span> <span class="kt">JSONRegistry</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -135,7 +145,6 @@
                               <td>
                                 <div>
                                   <p>The key for a field type.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -147,7 +156,6 @@
                               <td>
                                 <div>
                                   <p>The <code>CreationHandler</code> to use for this field key.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -193,7 +201,6 @@
                               <td>
                                 <div>
                                   <p>The key for a field type.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -241,8 +248,6 @@ toc:
       path: /blockly/reference/ios/../../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -287,8 +292,6 @@ toc:
       path: /blockly/reference/ios/../../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../../Classes/ConnectionManager.html
     - title: – Group

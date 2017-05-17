@@ -21,7 +21,7 @@
             <p>Factory for creating <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> objects from JSON data.</p>
 
 <p>This class is designed as a singleton instance, accessible via
-<code><a href="../Classes/BlocklyEventFactory.html#/s:ZvC7Blockly19BlocklyEventFactory14sharedInstanceS0_">BlocklyEventFactory.sharedInstance</a></code>.</p>
+<code><a href="../Classes/BlocklyEventFactory.html#/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_">BlocklyEventFactory.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -74,9 +74,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly19BlocklyEventFactory14sharedInstanceS0_"></a>
-                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly19BlocklyEventFactory14sharedInstanceS0_">sharedInstance</a></h3>
+                    <a name="/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -91,7 +91,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span> <span class="o">=</span> <span class="kt">BlocklyEventFactory</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">BlocklyEventFactory</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -147,7 +147,6 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                               <td>
                                 <div>
                                   <p>The <code>BlocklyEvent.EventType</code> that the <code>creator</code> should be mapped to.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -159,7 +158,6 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                               <td>
                                 <div>
                                   <p>The <code>Creator</code> that will be used for <code>eventType</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -205,7 +203,6 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                               <td>
                                 <div>
                                   <p>The <code>BlocklyEvent.EventType</code></p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -230,7 +227,6 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                         <p>Returns a new <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> using given JSON data. The <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> itself is created by
 finding the <code><a href="../Classes/BlocklyEvent.html#/s:C7Blockly12BlocklyEvent9EventType">BlocklyEvent.EventType</a></code> that is associated with <code>json[BlocklyEvent.JSON_TYPE]</code> and
 executing the registered creation closure for that event type.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no registered creation closure could be found for the key or if the
@@ -260,7 +256,6 @@ executing the registered creation closure for that event type.</p>
                               <td>
                                 <div>
                                   <p>The JSON data.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -269,7 +264,6 @@ executing the registered creation closure for that event type.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A new <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> instance.</p>
-
                       </div>
                     </section>
                   </div>
@@ -313,8 +307,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -359,8 +351,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

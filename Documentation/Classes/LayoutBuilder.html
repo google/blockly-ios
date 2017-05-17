@@ -105,7 +105,6 @@
                               <td>
                                 <div>
                                   <p>The <code>LayoutFactory</code> for layout creation.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -139,13 +138,11 @@
                       <div class="abstract">
                         <p>Builds the entire layout tree for <code>self.workspaceLayout</code> based on the current model
 (ie. <code>self.workspaceLayout.workspace</code>).</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the layout tree could not be created for this workspace.
 
 </div>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     To increase performance during initialization, this should only be called after the entire
@@ -179,7 +176,6 @@ workspace model has been constructed.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds the layout tree for a top-level block.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the block is not part of the workspace this builder is associated with,
@@ -210,7 +206,6 @@ if the layout tree could not be created for this block, or if this block is not 
                               <td>
                                 <div>
                                   <p>The top-level block</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -219,7 +214,6 @@ if the layout tree could not be created for this block, or if this block is not 
                       <div>
                         <h4>Return Value</h4>
                         <p>A block group layout for the block, or nil if the block was not a top-level block.</p>
-
                       </div>
                     </section>
                   </div>
@@ -262,7 +256,6 @@ if the layout tree could not be created for this block, or if this block is not 
                               <td>
                                 <div>
                                   <p>The block group layout to build</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -274,7 +267,6 @@ if the layout tree could not be created for this block, or if this block is not 
                               <td>
                                 <div>
                                   <p>The top-level block to use as the first child of <code>blockGroupLayout</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -298,7 +290,6 @@ if the layout tree could not be created for this block, or if this block is not 
                       <div class="abstract">
                         <p>Builds a <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> tree for a given block and assigns it to the block&rsquo;s <code>delegate</code> property.
 This includes all connected blocks.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the layout could not be created for any of the block&rsquo;s inputs.
@@ -326,8 +317,8 @@ This includes all connected blocks.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The block. If no <code>BlockLayout</code> has been associated with the block yet, a new one is created from <code>self.layoutFactory</code>.</p>
-
+                                  <p>The block. If no <code>BlockLayout</code> has been associated with the block yet, a new
+one is created from <code>self.layoutFactory</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -339,7 +330,6 @@ This includes all connected blocks.</p>
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with the returned <code>BlockLayout</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -348,7 +338,6 @@ This includes all connected blocks.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The associated layout for the block.</p>
-
                       </div>
                     </section>
                   </div>
@@ -389,8 +378,13 @@ This includes all connected blocks.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The input. If no <code>InputLayout</code> has been associated with the input yet, a new one is created from <code>self.layoutFactory</code>.</p>
+                                  <p>The input. If no <code>InputLayout</code> has been associated with the input yet, a new
+one is created from <code>self.layoutFactory</code>.
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code>BlocklyError</code>: Thrown if the layout could not be created for any of the input&rsquo;s fields.
 
+</div></p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -402,7 +396,6 @@ This includes all connected blocks.</p>
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with the returned <code>InputLayout</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -411,7 +404,6 @@ This includes all connected blocks.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The associated layout for the input.</p>
-
                       </div>
                     </section>
                   </div>
@@ -430,7 +422,6 @@ This includes all connected blocks.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds the layout for a given field and assigns it to the field&rsquo;s <code>delegate</code> property.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown by <code><a href="../Classes/LayoutBuilder.html#/s:vC7Blockly13LayoutBuilder13layoutFactoryPS_13LayoutFactory_">layoutFactory</a></code> if the layout could not be created for the field.
@@ -458,8 +449,8 @@ This includes all connected blocks.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The field. If no <code>FieldLayout</code> has been associated with the field yet, a new one is created from <code>self.layoutFactory</code>.</p>
-
+                                  <p>The field. If no <code>FieldLayout</code> has been associated with the field yet, a new
+one is created from <code>self.layoutFactory</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -471,7 +462,6 @@ This includes all connected blocks.</p>
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with the returned <code>FieldLayout</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -480,7 +470,6 @@ This includes all connected blocks.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The associated layout for the field.</p>
-
                       </div>
                     </section>
                   </div>
@@ -499,7 +488,6 @@ This includes all connected blocks.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds the layout for a given mutator.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown by <code><a href="../Classes/LayoutBuilder.html#/s:vC7Blockly13LayoutBuilder13layoutFactoryPS_13LayoutFactory_">layoutFactory</a></code> if the layout could not be created for the mutator.
@@ -527,8 +515,8 @@ This includes all connected blocks.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The mutator. If no <code>MutatorLayout</code> has been associated with the mutator yet, a new one is created from <code>self.layoutFactory</code>.</p>
-
+                                  <p>The mutator. If no <code>MutatorLayout</code> has been associated with the mutator yet,
+a new one is created from <code>self.layoutFactory</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -540,7 +528,6 @@ This includes all connected blocks.</p>
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with the returned <code>MutatorLayout</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -549,7 +536,6 @@ This includes all connected blocks.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The associated layout for the field.</p>
-
                       </div>
                     </section>
                   </div>
@@ -593,8 +579,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -639,8 +623,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

@@ -139,7 +139,6 @@
                       <div class="abstract">
                         <p>Adds a given name to the list of names. If the same lowercase version of the name already exists
 in the list, an error is thrown.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown when trying to add a name that already exists.
@@ -168,7 +167,6 @@ in the list, an error is thrown.</p>
                               <td>
                                 <div>
                                   <p>The name to add.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -218,7 +216,6 @@ members with <code>oldName</code>.</p>
                               <td>
                                 <div>
                                   <p>The old name</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -230,7 +227,6 @@ members with <code>oldName</code>.</p>
                               <td>
                                 <div>
                                   <p>The new name</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -238,8 +234,8 @@ members with <code>oldName</code>.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if <code>oldName</code> existed in the list and was renamed to <code>newName</code>. <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if <code>oldName</code> existed in the list and was renamed to <code>newName</code>. <code>false</code>
+otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -261,7 +257,6 @@ members with <code>oldName</code>.</p>
 If the display name does not exist in the list, nothing happens and <code>false</code> is returned.</p>
 
 <p>Here is an example of this behavior:</p>
-
 <pre class="highlight plaintext"><code>nameManager.addName("Foo") // Adds "Foo" to the list with the key name
 nameManager.renameDisplayName("FOO") // Renames "Foo" to "FOO"
 nameManager.renameDisplayName("bar") // This does nothing since "bar" does not exist in the list
@@ -289,7 +284,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                               <td>
                                 <div>
                                   <p>The new display name</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -297,8 +291,8 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if the <code>displayName</code> existed in the list with different case sensitivity and was renamed to <code>displayName</code>. <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if the <code>displayName</code> existed in the list with different case sensitivity and
+was renamed to <code>displayName</code>. <code>false</code> otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -343,7 +337,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                               <td>
                                 <div>
                                   <p>The name to remove.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -352,7 +345,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                       <div>
                         <h4>Return Value</h4>
                         <p><code>true</code> if the name was found and removed. <code>false</code> otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -421,7 +413,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                               <td>
                                 <div>
                                   <p>The <code>String</code> to look up.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -429,8 +420,7 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if a <code>name</code>’s has been added. <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if a <code>name</code>&rsquo;s has been added. <code>false</code> otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -472,7 +462,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                               <td>
                                 <div>
                                   <p>The first name to compare</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -484,7 +473,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                               <td>
                                 <div>
                                   <p>The second name to compare</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -493,7 +481,6 @@ nameManager.renameDisplayName("bar") // This does nothing since "bar" does not e
                       <div>
                         <h4>Return Value</h4>
                         <p><code>true</code> if they are equal, <code>false</code> otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -518,7 +505,6 @@ If the base name is not already unique, this method will add a unique number to 
 name or automatically increment the name&rsquo;s number if its suffix is already a number.</p>
 
 <p>e.g.</p>
-
 <pre class="highlight plaintext"><code>let manager = NameManager()
 manager.generateUniqueName("foo", addToList: true) // Returns "foo"
 manager.generateUniqueName("foo", addToList: true) // Returns "foo2"
@@ -550,7 +536,6 @@ manager.generateUniqueName("Bar10", addToList: true) // Returns "Bar12"
                               <td>
                                 <div>
                                   <p>The name upon which to base the unique name.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -562,7 +547,6 @@ manager.generateUniqueName("Bar10", addToList: true) // Returns "Bar12"
                               <td>
                                 <div>
                                   <p>Whether to add the generated name to the used names list.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -571,7 +555,6 @@ manager.generateUniqueName("Bar10", addToList: true) // Returns "Bar12"
                       <div>
                         <h4>Return Value</h4>
                         <p>A unique name.</p>
-
                       </div>
                     </section>
                   </div>
@@ -615,8 +598,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -661,8 +642,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group
