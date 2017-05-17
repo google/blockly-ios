@@ -12,5 +12,4 @@ matrix:
 
 script:
   xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3' 
-  #if [ $osx_image == 'xcode7.3.1' ];  then xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=9.3' fi;
   
