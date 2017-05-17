@@ -191,7 +191,6 @@ UI on the block.  Actual instances would be <code><a href="../Classes/FieldLabel
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns a copy of this field.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method needs to be implemented by a subclass of <code>Field</code>. Results are undefined if
@@ -211,7 +210,6 @@ a <code>Field</code> subclass does not implement this method.
                       <div>
                         <h4>Return Value</h4>
                         <p>A copy of this field.</p>
-
                       </div>
                     </section>
                   </div>
@@ -230,14 +228,12 @@ a <code>Field</code> subclass does not implement this method.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Sets the native value of this field from a serialized text value.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the serialized text value could not be converted into the field&rsquo;s
 native value.
 
 </div>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method needs to be implemented by a subclass of <code>Field</code>. Results are undefined if
@@ -267,7 +263,6 @@ a <code>Field</code> subclass does not implement this method.
                               <td>
                                 <div>
                                   <p>The serialized text value</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -290,13 +285,11 @@ a <code>Field</code> subclass does not implement this method.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Converts the native value of this field to a serialized text value.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the field&rsquo;s native value could not be serialized into a text value.
 
 </div>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method needs to be implemented by a subclass of <code>Field</code>. Results are undefined if
@@ -316,7 +309,6 @@ a <code>Field</code> subclass does not implement this method.
                       <div>
                         <h4>Return Value</h4>
                         <p>The serialized text value. If the field cannot be serialized, nil is returned instead.</p>
-
                       </div>
                     </section>
                   </div>
@@ -334,9 +326,9 @@ a <code>Field</code> subclass does not implement this method.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly5Field22didSetEditablePropertyuRxs9EquatablerFTRxx_Sb"></a>
-                    <a name="//apple_ref/swift/Method/didSetEditableProperty(_:_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly5Field22didSetEditablePropertyuRxs9EquatablerFTRxx_Sb">didSetEditableProperty(_:_:)</a></h3>
+                    <a name="/s:FC7Blockly5Field14didSetPropertyuRxs9EquatablerFTxx_Sb"></a>
+                    <a name="//apple_ref/swift/Method/didSetProperty(_:_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly5Field14didSetPropertyuRxs9EquatablerFTxx_Sb">didSetProperty(_:_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -347,28 +339,21 @@ a <code>Field</code> subclass does not implement this method.
                         <p>A convenience method that should be called inside the <code>didSet { ... }</code> block of instance
 properties from <code>Field</code> subclasses.</p>
 
-<p>If <code>self.editable == true</code> and <code>editableProperty != oldValue</code>, this method will automatically
-call <code>delegate?.didUpdateField(self)</code>.</p>
+<p>If <code>property != oldValue</code>, this method will automatically call <code><a href="../Classes/Field.html#/s:FC7Blockly5Field20notifyDidUpdateFieldFT_T_">notifyDidUpdateField()</a></code>.
+If <code>property == oldValue</code>, nothing happens.</p>
 
-<p>If <code>self.editable == true</code> and <code>editableProperty == oldValue</code>, nothing happens.</p>
-
-<p>If <code>self.editable == false</code>, this method automatically reverts <code>editableProperty</code> back to
-<code>oldValue</code>.</p>
-
-<p>Usage:
-<code>
-var someInteger: Int {
-  didSet { didSetEditableProperty(&amp;someInteger, oldValue) }
+<p>Usage:</p>
+<pre class="highlight plaintext"><code>var someString: String {
+  didSet { didSetProperty(someString, oldValue) }
 }
-</code></p>
+</code></pre>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="n">didSetEditableProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">editableProperty</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="n">didSetProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -379,13 +364,12 @@ var someInteger: Int {
                             <tr>
                               <td>
                                 <code>
-                                <em>editableProperty</em>
+                                <em>property</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The instance property that had been set</p>
-
+                                  <p>The instance property that had been set.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -396,8 +380,7 @@ var someInteger: Int {
                               </td>
                               <td>
                                 <div>
-                                  <p>The old value of the instance property</p>
-
+                                  <p>The old value of the instance property.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -405,8 +388,7 @@ var someInteger: Int {
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if <code>editableProperty</code> is now different than <code>oldValue</code>, <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if <code>property</code> is now different than <code>oldValue</code>. <code>false</code> otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -414,9 +396,9 @@ var someInteger: Int {
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly5Field22didSetEditablePropertyuRxs9EquatablerFTRGSqx_GSqx__Sb"></a>
-                    <a name="//apple_ref/swift/Method/didSetEditableProperty(_:_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly5Field22didSetEditablePropertyuRxs9EquatablerFTRGSqx_GSqx__Sb">didSetEditableProperty(_:_:)</a></h3>
+                    <a name="/s:FC7Blockly5Field14didSetPropertyuRxs9EquatablerFTGSqx_GSqx__Sb"></a>
+                    <a name="//apple_ref/swift/Method/didSetProperty(_:_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly5Field14didSetPropertyuRxs9EquatablerFTGSqx_GSqx__Sb">didSetProperty(_:_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -427,28 +409,21 @@ var someInteger: Int {
                         <p>A convenience method that should be called inside the <code>didSet { ... }</code> block of instance
 properties from <code>Field</code> subclasses.</p>
 
-<p>If <code>self.editable == true</code> and <code>editableProperty != oldValue</code>, this method will automatically
-call <code>delegate?.didUpdateField(self)</code>.</p>
+<p>If <code>property != oldValue</code>, this method will automatically call <code><a href="../Classes/Field.html#/s:FC7Blockly5Field20notifyDidUpdateFieldFT_T_">notifyDidUpdateField()</a></code>.
+If <code>property == oldValue</code>, nothing happens.</p>
 
-<p>If <code>self.editable == true</code> and <code>editableProperty == oldValue</code>, nothing happens.</p>
-
-<p>If <code>self.editable == false</code>, this method automatically reverts <code>editableProperty</code> back to
-<code>oldValue</code>.</p>
-
-<p>Usage:
-<code>
-var someInteger: Int {
-  didSet { didSetEditableProperty(&amp;someInteger, oldValue) }
+<p>Usage:</p>
+<pre class="highlight plaintext"><code>var someNullableString: String? {
+  didSet { didSetProperty(someNullableString, oldValue) }
 }
-</code></p>
+</code></pre>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="n">didSetEditableProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">editableProperty</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="n">didSetProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -459,13 +434,12 @@ var someInteger: Int {
                             <tr>
                               <td>
                                 <code>
-                                <em>editableProperty</em>
+                                <em>property</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The instance property that had been set</p>
-
+                                  <p>The instance property that had been set.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -476,8 +450,7 @@ var someInteger: Int {
                               </td>
                               <td>
                                 <div>
-                                  <p>The old value of the instance property</p>
-
+                                  <p>The old value of the instance property.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -485,8 +458,7 @@ var someInteger: Int {
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if <code>editableProperty</code> is now different than <code>oldValue</code>, <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if <code>property</code> is now different than <code>oldValue</code>. <code>false</code> otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -537,7 +509,7 @@ var someInteger: Int {
                         <p>Manages the registration of fields.</p>
 
 <p>This class is designed as a singleton instance, accessible via
-<code><a href="../Classes/Field/JSONRegistry.html#/s:ZvCC7Blockly5Field12JSONRegistry14sharedInstanceS1_">Field.JSONRegistry.sharedInstance</a></code>.</p>
+<code><a href="../Classes/Field/JSONRegistry.html#/s:ZvCC7Blockly5Field12JSONRegistry6sharedS1_">Field.JSONRegistry.shared</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -590,8 +562,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -636,8 +606,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

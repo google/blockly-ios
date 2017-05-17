@@ -213,7 +213,6 @@
                               <td>
                                 <div>
                                   <p>The <code>EventType</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -225,7 +224,6 @@
                               <td>
                                 <div>
                                   <p>The ID string of the Blockly workspace.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -236,8 +234,8 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The ID string of the event group. Usually <code>nil</code> for local events (assigned later) and non-<code>nil</code> for remote events.</p>
-
+                                  <p>The ID string of the event group. Usually <code>nil</code> for local events (assigned
+later) and non-<code>nil</code> for remote events.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -248,8 +246,8 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The ID string of the block affected. <code>nil</code> for a few event types (e.g. toolbox category).</p>
-
+                                  <p>The ID string of the block affected. <code>nil</code> for a few event types
+(e.g. toolbox category).</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -272,7 +270,6 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Constructs a <code>BlocklyEvent</code> with base attributes assigned from JSON.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if <code>BlocklyEvent.JSON_WORKSPACE_ID</code> is not specified as a key within the
@@ -302,7 +299,6 @@ given <code>json</code>.
                               <td>
                                 <div>
                                   <p>The type of the event.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -314,7 +310,6 @@ given <code>json</code>.
                               <td>
                                 <div>
                                   <p>The JSON object with event attribute values.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -347,7 +342,6 @@ given <code>json</code>.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns a JSON dictionary serialization of the event.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the event could not be serialized.
@@ -366,7 +360,6 @@ given <code>json</code>.
                       <div>
                         <h4>Return Value</h4>
                         <p>A JSON dictionary serialization of the event.</p>
-
                       </div>
                     </section>
                   </div>
@@ -385,7 +378,6 @@ given <code>json</code>.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calls <code>self.toJSON()</code> and returns a string representation of that JSON dictionary.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the event could not be serialized.
@@ -404,7 +396,6 @@ given <code>json</code>.
                       <div>
                         <h4>Return Value</h4>
                         <p>A JSON string representation of the event.</p>
-
                       </div>
                     </section>
                   </div>
@@ -451,7 +442,6 @@ to specify individual behavior of when the event can be discarded, based on its 
                       <div>
                         <h4>Return Value</h4>
                         <p><code>true</code> if this event can be discarded, or <code>false</code> otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -497,7 +487,6 @@ to specify individual merge behavior with other events.</p>
                               <td>
                                 <div>
                                   <p>The next chronological event that was fired after this event.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -505,8 +494,8 @@ to specify individual merge behavior with other events.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>If the events are compatible, this returns a new <code>BlocklyEvent</code> that is the result of merging the two events together. Otherwise, <code>nil</code> is returned.</p>
-
+                        <p>If the events are compatible, this returns a new <code>BlocklyEvent</code> that is the result
+of merging the two events together. Otherwise, <code>nil</code> is returned.</p>
                       </div>
                     </section>
                   </div>
@@ -660,35 +649,7 @@ using <code>recordNew(forBlock:)</code>.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Move</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:CC7Blockly12BlocklyEvent9BlockMove"></a>
-                    <a name="//apple_ref/swift/Class/BlockMove" class="dashAnchor"></a>
-                    <h3><a class="token" href="../Classes/BlocklyEvent/BlockMove.html">BlockMove</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Subclass of <code><a href="../Classes/BlocklyEvent/Move.html">BlocklyEvent.Move</a></code> that makes it easier to track new values for a block as it moves
-throughout the workspace.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">BlockMove</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span><span class="o">.</span><span class="kt"><a href="../Classes/BlocklyEvent/Move.html">Move</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Move</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span></code></pre>
 
                         </div>
                       </div>
@@ -734,8 +695,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -780,8 +739,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

@@ -21,7 +21,6 @@
             <p>A view that resembles a dropdown. It contains a text field with a dropdown arrow image.</p>
 
 <p>e.g.</p>
-
 <pre class="highlight plaintext"><code> =========
 
 | ITEM  ▼ |
@@ -313,6 +312,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:vC7Blockly12DropdownView22dropDownArrowImageSizeGSqVSC6CGSize_"></a>
+                    <a name="//apple_ref/swift/Property/dropDownArrowImageSize" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly12DropdownView22dropDownArrowImageSizeGSqVSC6CGSize_">dropDownArrowImageSize</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An optional size to use for the drop down arrow view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">dropDownArrowImageSize</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:vC7Blockly12DropdownView8delegateXwGSqPS_20DropdownViewDelegate__"></a>
                     <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:vC7Blockly12DropdownView8delegateXwGSqPS_20DropdownViewDelegate__">delegate</a></h3>
@@ -383,8 +409,8 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>[Optional] If specified, this image is used to populate <code>self.dropDownArrowImage</code>. If nil, <code>DropDownView.defaultDropDownArrowImage()</code> is used instead.</p>
-
+                                  <p>[Optional] If specified, this image is used to populate
+<code>self.dropDownArrowImage</code>. If nil, <code>DropDownView.defaultDropDownArrowImage()</code> is used instead.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -406,9 +432,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZFC7Blockly12DropdownView11measureSizeFT4textSS18dropDownArrowImageGSqCSo7UIImage_8textFontCSo6UIFont11borderWidthV12CoreGraphics7CGFloat17horizontalSpacingS4_15verticalSpacingS4__VSC6CGSize"></a>
-                    <a name="//apple_ref/swift/Method/measureSize(text:dropDownArrowImage:textFont:borderWidth:horizontalSpacing:verticalSpacing:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZFC7Blockly12DropdownView11measureSizeFT4textSS18dropDownArrowImageGSqCSo7UIImage_8textFontCSo6UIFont11borderWidthV12CoreGraphics7CGFloat17horizontalSpacingS4_15verticalSpacingS4__VSC6CGSize">measureSize(text:dropDownArrowImage:textFont:borderWidth:horizontalSpacing:verticalSpacing:)</a></h3>
+                    <a name="/s:ZFC7Blockly12DropdownView11measureSizeFT4textSS22dropDownArrowImageSizeVSC6CGSize8textFontCSo6UIFont11borderWidthV12CoreGraphics7CGFloat17horizontalSpacingS4_15verticalSpacingS4__S1_"></a>
+                    <a name="//apple_ref/swift/Method/measureSize(text:dropDownArrowImageSize:textFont:borderWidth:horizontalSpacing:verticalSpacing:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZFC7Blockly12DropdownView11measureSizeFT4textSS22dropDownArrowImageSizeVSC6CGSize8textFontCSo6UIFont11borderWidthV12CoreGraphics7CGFloat17horizontalSpacingS4_15verticalSpacingS4__S1_">measureSize(text:dropDownArrowImageSize:textFont:borderWidth:horizontalSpacing:verticalSpacing:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -425,8 +451,8 @@ if properties were set that instance.</p>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">measureSize</span><span class="p">(</span>
-    <span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">dropDownArrowImage</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?,</span> <span class="nv">textFont</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">borderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span>
-    <span class="nv">horizontalSpacing</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">verticalSpacing</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span></code></pre>
+    <span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">dropDownArrowImageSize</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="nv">textFont</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">borderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span>
+         <span class="nv">horizontalSpacing</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">verticalSpacing</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span></code></pre>
 
                         </div>
                       </div>
@@ -443,19 +469,17 @@ if properties were set that instance.</p>
                               <td>
                                 <div>
                                   <p>Corresponds to setting <code>dropDownView.text</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
                               <td>
                                 <code>
-                                <em>dropDownArrowImage</em>
+                                <em>dropDownArrowImageSize</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Corresponds to setting <code>dropDownView.dropDownArrowImage</code>.</p>
-
+                                  <p>Corresponds to setting <code>dropDownView.dropDownArrowImageSize</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -467,7 +491,6 @@ if properties were set that instance.</p>
                               <td>
                                 <div>
                                   <p>Corresponds to setting <code>dropDownView.labelFont</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -479,7 +502,6 @@ if properties were set that instance.</p>
                               <td>
                                 <div>
                                   <p>Corresponds to setting <code>dropDownView.borderWidth</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -491,7 +513,6 @@ if properties were set that instance.</p>
                               <td>
                                 <div>
                                   <p>Corresponds to setting <code>dropDownView.horizontalSpacing</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -503,7 +524,6 @@ if properties were set that instance.</p>
                               <td>
                                 <div>
                                   <p>Corresponds to setting <code>dropDownView.verticalSpacing</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -512,7 +532,6 @@ if properties were set that instance.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The required size of the theoretical instance <code>dropDownView</code></p>
-
                       </div>
                     </section>
                   </div>
@@ -544,7 +563,6 @@ if properties were set that instance.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The <code>UIImage</code> containing the default drop down arrow.</p>
-
                       </div>
                     </section>
                   </div>
@@ -588,8 +606,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -634,8 +650,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

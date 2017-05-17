@@ -37,64 +37,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C7Blockly20CodeGeneratorService12ErrorClosure"></a>
-                    <a name="//apple_ref/swift/Alias/ErrorClosure" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:C7Blockly20CodeGeneratorService12ErrorClosure">ErrorClosure</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Closure that is called when an error occurs during a code generation request.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ErrorClosure</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">requestUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>requestUUID</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The UUID of the request.</p>
-
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>error</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A description of the error that occurred.</p>
-
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:C7Blockly20CodeGeneratorService17CompletionClosure"></a>
                     <a name="//apple_ref/swift/Alias/CompletionClosure" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:C7Blockly20CodeGeneratorService17CompletionClosure">CompletionClosure</a></h3>
@@ -129,7 +71,6 @@
                               <td>
                                 <div>
                                   <p>The UUID of the request.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -141,7 +82,62 @@
                               <td>
                                 <div>
                                   <p>The code that was generated.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C7Blockly20CodeGeneratorService12ErrorClosure"></a>
+                    <a name="//apple_ref/swift/Alias/ErrorClosure" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:C7Blockly20CodeGeneratorService12ErrorClosure">ErrorClosure</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Closure that is called when an error occurs during a code generation request.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ErrorClosure</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">requestUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>requestUUID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The UUID of the request.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A description of the error that occurred.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -196,8 +192,14 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Paths to core Blockly JS dependencies, relative to the main resource bundle. These core dependencies will be used when an internal <code>CodeGenerator</code> instance is created. This list must contain the following files:</p>
+                                  <p>Paths to core Blockly JS dependencies, relative to the main
+resource bundle. These core dependencies will be used when an internal <code>CodeGenerator</code>
+instance is created. This list must contain the following files:
 
+<ul>
+<li>Blockly engine (eg. &lsquo;blockly_compressed.js&rsquo;)</li>
+<li>A default list of messages (eg. &#39;msg/js/en.js&rsquo;)</li>
+</ul></p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -242,8 +244,14 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Paths to core Blockly JS dependencies, relative to a given resource <code>bundle</code>. These core dependencies will be used when an internal <code>CodeGenerator</code> instance is created. This list must contain the following files:</p>
+                                  <p>Paths to core Blockly JS dependencies, relative to a given
+resource <code>bundle</code>. These core dependencies will be used when an internal <code>CodeGenerator</code>
+instance is created. This list must contain the following files:
 
+<ul>
+<li>Blockly engine (eg. &lsquo;blockly_compressed.js&rsquo;)</li>
+<li>A default list of messages (eg. &#39;msg/js/en.js&rsquo;)</li>
+</ul></p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -255,7 +263,6 @@
                               <td>
                                 <div>
                                   <p>The resource bundle containing <code>jsCoreDependencies</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -302,7 +309,6 @@
                               <td>
                                 <div>
                                   <p>The <code>CodeGeneratorServiceRequestBuilder</code> that specifies generators.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -314,7 +320,6 @@
                               <td>
                                 <div>
                                   <p><code>true</code> if the Blockly files should be preloaded, <code>false</code> if not.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -336,17 +341,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Begins code generation for a workspace.</p>
-
+                        <p>Requests that code be generated from a given workspace.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     <code>setRequestBuilder(:shouldCache:)</code> must be called prior to calling this method.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if no request builder has not been set prior to calling this method.
+    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if no request builder has not been set prior to calling this method or
+if <code>workspace</code> could not be serialized into XML.
 
 </div>
 
@@ -373,8 +377,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The workspace to generate code for.</p>
-
+                                  <p>The <code>Workspace</code> to generate code for.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -386,7 +389,6 @@
                               <td>
                                 <div>
                                   <p>The <code>CompletionClosure</code> to be called when the code is generated.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -398,11 +400,14 @@
                               <td>
                                 <div>
                                   <p>The <code>ErrorClosure</code> to be called if the code fails to generate.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A UUID representing this particular request.</p>
                       </div>
                     </section>
                   </div>
@@ -420,14 +425,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Begins code generation for a workspace.</p>
-
+                        <p>Requests that code be generated from given workspace XML.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     <code>setRequestBuilder(:shouldCache:)</code> must be called prior to calling this method.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if no request builder has not been set prior to calling this method.
@@ -458,7 +461,6 @@
                               <td>
                                 <div>
                                   <p>The workspace XML to generate code for.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -470,7 +472,6 @@
                               <td>
                                 <div>
                                   <p>The <code>CompletionClosure</code> to be called when the code is generated.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -482,11 +483,14 @@
                               <td>
                                 <div>
                                   <p>The <code>ErrorClosure</code> to be called if the code fails to generate.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A UUID representing this particular request.</p>
                       </div>
                     </section>
                   </div>
@@ -528,7 +532,6 @@
                               <td>
                                 <div>
                                   <p>The <code>CodeGeneratorServiceRequest</code> to cancel.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -603,8 +606,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -649,8 +650,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

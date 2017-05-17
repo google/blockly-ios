@@ -83,7 +83,6 @@ to previously connected connections.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Clears the mapping of inputs and target connections.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called once prior to beginning mutator changes inside a
@@ -119,7 +118,6 @@ modal popover.
                         <p>For each specified input, saves the mapping of the input&rsquo;s name and its current target
 connection. This is to be used in conjunction with
 <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper31reconnectSavedTargetConnectionsFzT8toInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_">reconnectSavedTargetConnections(toInputs:layoutCoordinator:)</a></code>.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called once prior to beginning mutator changes inside a
@@ -149,7 +147,6 @@ modal popover.
                               <td>
                                 <div>
                                   <p>The list of inputs whose target connections should be saved.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -183,13 +180,11 @@ modal popover.
                       <div class="abstract">
                         <p>Disconnects any target blocks connected to a specified list of inputs, iterating through the
 list in reverse order.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called every time before applying a mutation.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if one of the inputs could not be disconnected.
@@ -219,7 +214,6 @@ list in reverse order.</p>
                               <td>
                                 <div>
                                   <p>The inputs whose target connection should be disconnected.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -230,8 +224,8 @@ list in reverse order.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for disconnecting those inputs.</p>
-
+                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for disconnecting those
+inputs.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -255,13 +249,11 @@ list in reverse order.</p>
                       <div class="abstract">
                         <p>Removes from the workspace any shadow blocks connected to a specified list of inputs,
 iterating through the list in reverse order.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called every time before applying a mutation.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if one of the shadow blocks could not be disconnected.
@@ -291,7 +283,6 @@ iterating through the list in reverse order.</p>
                               <td>
                                 <div>
                                   <p>The inputs whose shadow blocks should be removed from the workspace.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -302,8 +293,8 @@ iterating through the list in reverse order.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for removing those shadow blocks.</p>
-
+                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for removing those
+shadow blocks.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -337,7 +328,6 @@ iterating through the list in reverse order.</p>
                       <div class="abstract">
                         <p>For each specified input, reconnects the input to any target connection that was previously saved
 via <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper21saveTargetConnectionsFT10fromInputsGSaCS_5Input__T_">saveTargetConnections(fromInputs:)</a></code>.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called every time after a mutation has been applied.
@@ -367,7 +357,6 @@ via <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper21s
                               <td>
                                 <div>
                                   <p>The list of inputs that should be reconnected to the saved target connection.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -378,8 +367,8 @@ via <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper21s
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for connecting the inputs with the saved target connections.</p>
-
+                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for connecting the inputs
+with the saved target connections.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -427,8 +416,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -473,8 +460,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

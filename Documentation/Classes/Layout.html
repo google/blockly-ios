@@ -368,7 +368,6 @@ view node layout for a Field is a Block, while the parent view node for a Block 
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with this layout.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -402,7 +401,6 @@ view node layout for a Field is a Block, while the parent view node for a Block 
                       <div class="abstract">
                         <p>This method repositions its children and recalculates its <code>contentSize</code> based on the positions
 of its children.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method needs to be implemented by a subclass of <code>Layout</code>.
@@ -430,8 +428,9 @@ of its children.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>A flag indicating whether <code>performLayout(:)</code> should be called on any child layouts, prior to repositioning them. It is the responsibility of subclass implementations to honor this flag.</p>
-
+                                  <p>A flag indicating whether <code>performLayout(:)</code> should be called on any
+child layouts, prior to repositioning them. It is the responsibility of subclass implementations
+to honor this flag.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -545,7 +544,6 @@ each layout in the tree is re-calculated.</p>
                               <td>
                                 <div>
                                   <p><code>LayoutFlag</code> options to send with the change event</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -592,7 +590,6 @@ particular order.</p>
                               <td>
                                 <div>
                                   <p>[Optional] Filters <code>Layout</code> instances by a specific type.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -601,7 +598,6 @@ particular order.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>An array of all <code>Layout</code> instances.</p>
-
                       </div>
                     </section>
                   </div>
@@ -643,7 +639,6 @@ particular order.</p>
                               <td>
                                 <div>
                                   <p>The layout to check.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -652,7 +647,6 @@ particular order.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p><code>true</code> if the given <code>layout</code> is a grandparent of this layout. <code>false</code> otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -674,7 +668,6 @@ particular order.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Executes a given code block, where layout changes made inside this code block are animated.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     If there is an inner call to <code>Layout.doNotAnimate(:)</code> inside the given code block,
@@ -704,7 +697,6 @@ that call will not animate its layout changes.
                               <td>
                                 <div>
                                   <p>The code block to execute, with layout animations enabled.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -727,7 +719,6 @@ that call will not animate its layout changes.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Executes a given code block, where layout changes made inside this code block are not animated.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     If there is an inner call to <code>Layout.animate(:)</code> inside the given code block, that
@@ -757,7 +748,6 @@ call will animate its layout changes.
                               <td>
                                 <div>
                                   <p>The code block to execute, with layout animations disabled.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -833,8 +823,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -879,8 +867,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

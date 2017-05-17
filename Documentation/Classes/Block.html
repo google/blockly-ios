@@ -19,7 +19,6 @@
                 </div>
               </div>
             <p>Class that represents a single block.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     To create a block programmatically, use a <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code>.
@@ -50,9 +49,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A tuple representing a tree of connected blocks where:
-- <code>rootBlock</code> is the root of the tree
-- <code>allBlocks</code> is a list of all connected blocks (including <code>rootBlock</code>).</p>
+                        <p>A tuple representing a tree of connected blocks where:</p>
+
+<ul>
+<li><code>rootBlock</code> is the root of the tree</li>
+<li><code>allBlocks</code> is a list of all connected blocks (including <code>rootBlock</code>).</li>
+</ul>
 
                       </div>
                       <div class="declaration">
@@ -360,8 +362,12 @@ on the edge of the block (<code>false</code>)</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The <code>.PreviousStatement</code> connection for this block
-- note: A block may only have one non-nil <code>self.outputConnection</code> or <code>self.previousConnection</code></p>
+                        <p>The <code>.PreviousStatement</code> connection for this block</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    A block may only have one non-nil <code>self.outputConnection</code> or <code>self.previousConnection</code>
+
+</div>
 
                       </div>
                       <div class="declaration">
@@ -873,7 +879,6 @@ the <code>editable</code> property on all child fields.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A list of all connections directly or indirectly connected to this block.</p>
-
                       </div>
                     </section>
                   </div>
@@ -936,7 +941,6 @@ Nil is returned if any block in the chain has no or multiple input values.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The last input connection in the chain, or nil if none could be found.</p>
-
                       </div>
                     </section>
                   </div>
@@ -969,7 +973,6 @@ to this block, including this block.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A list of all blocks connected to this block, including this block.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1011,7 +1014,6 @@ to this block, including this block.</p>
                               <td>
                                 <div>
                                   <p>The input name</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1020,7 +1022,6 @@ to this block, including this block.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The first input with that name or nil.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1062,7 +1063,6 @@ to this block, including this block.</p>
                               <td>
                                 <div>
                                   <p>The field name</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1071,7 +1071,6 @@ to this block, including this block.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The first field with that name or nil.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1090,7 +1089,6 @@ to this block, including this block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Copies this block and all of the blocks connected to it through its input or next connections.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if copied blocks could not be connected to each other.
@@ -1109,87 +1107,6 @@ to this block, including this block.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/Block.html#/s:C7Blockly5Block9BlockTree">BlockTree</a></code> tuple of the copied block tree.</p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC7Blockly5Block22didSetEditablePropertyuRxs9EquatablerFTRxx_Sb"></a>
-                    <a name="//apple_ref/swift/Method/didSetEditableProperty(_:_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly5Block22didSetEditablePropertyuRxs9EquatablerFTRxx_Sb">didSetEditableProperty(_:_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A convenience method that should be called inside the <code>didSet { ... }</code> block of editable instance
-properties.</p>
-
-<p>If <code>self.editable == true</code> and <code>editableProperty != oldValue</code>, this method will automatically
-call <code>delegate?.didUpdateBlock(self)</code>.</p>
-
-<p>If <code>self.editable == true</code> and <code>editableProperty == oldValue</code>, nothing happens.</p>
-
-<p>If <code>self.editable == false</code>, this method automatically reverts <code>editableProperty</code> back to
-<code>oldValue</code>.</p>
-
-<p>Usage:
-<code>
-var someEditableInteger: Int {
-didSet { didSetEditableProperty(&amp;someEditableInteger, oldValue) }
-}
-</code></p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">didSetEditableProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">editableProperty</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>editableProperty</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The instance property that had been set</p>
-
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>oldValue</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The old value of the instance property</p>
-
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p><code>true</code> if <code>editableProperty</code> is now different than <code>oldValue</code>, <code>false</code> otherwise.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1210,23 +1127,21 @@ didSet { didSetEditableProperty(&amp;someEditableInteger, oldValue) }
                         <p>A convenience method that should be called inside the <code>didSet { ... }</code> block of instance
 properties.</p>
 
-<p>If <code>property != oldValue</code>, this method will automatically call <code>delegate?.didUpdateBlock(self)</code>.
-If <code>editableProperty == oldValue</code>, nothing happens.</p>
+<p>If <code>property != oldValue</code>, this method will automatically call <code><a href="../Classes/Block.html#/s:FC7Blockly5Block20notifyDidUpdateBlockFT_T_">notifyDidUpdateBlock()</a></code>.
+If <code>property == oldValue</code>, nothing happens.</p>
 
-<p>Usage:
-<code>
-var someString: String {
-didSet { didSetProperty(someString, oldValue) }
+<p>Usage:</p>
+<pre class="highlight plaintext"><code>var someString: String {
+  didSet { didSetProperty(someString, oldValue) }
 }
-</code></p>
+</code></pre>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">didSetProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">didSetProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">oldValue</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -1242,8 +1157,7 @@ didSet { didSetProperty(someString, oldValue) }
                               </td>
                               <td>
                                 <div>
-                                  <p>The instance property that had been set</p>
-
+                                  <p>The instance property that had been set.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1254,8 +1168,7 @@ didSet { didSetProperty(someString, oldValue) }
                               </td>
                               <td>
                                 <div>
-                                  <p>The old value of the instance property</p>
-
+                                  <p>The old value of the instance property.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1263,8 +1176,7 @@ didSet { didSetProperty(someString, oldValue) }
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>true</code> if <code>property</code> is now different than <code>oldValue</code>, <code>false</code> otherwise.</p>
-
+                        <p><code>true</code> if <code>property</code> is now different than <code>oldValue</code>. <code>false</code> otherwise.</p>
                       </div>
                     </section>
                   </div>
@@ -1353,7 +1265,6 @@ didSet { didSetProperty(someString, oldValue) }
                               <td>
                                 <div>
                                   <p>The <code>Input</code> to append.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1399,7 +1310,6 @@ didSet { didSetProperty(someString, oldValue) }
                               <td>
                                 <div>
                                   <p>The <code>Input</code> to insert.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1411,7 +1321,6 @@ didSet { didSetProperty(someString, oldValue) }
                               <td>
                                 <div>
                                   <p>The position to insert the input into <code>self.inputs</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1434,14 +1343,12 @@ didSet { didSetProperty(someString, oldValue) }
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Remove an input from the block. If the input doesn&rsquo;t exist, nothing happens.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     The input must be disconnected from any connected shadow and non-shadow blocks prior to
 calling this method or else an error is thrown.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if <code>input</code> has a shadow or non-shadow block still connected to it.
@@ -1470,7 +1377,6 @@ calling this method or else an error is thrown.
                               <td>
                                 <div>
                                   <p>The <code>Input</code> to remove.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1503,7 +1409,6 @@ calling this method or else an error is thrown.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Associates a mutator with this block and immediately calls <code>mutateBlock()</code> on it.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a mutator has already been associated with the block or if
@@ -1533,7 +1438,6 @@ calling this method or else an error is thrown.
                               <td>
                                 <div>
                                   <p>The mutator to associate with the block.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1566,7 +1470,6 @@ calling this method or else an error is thrown.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Creates a new <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code> from a JSON dictionary.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if there is a problem parsing the JSON dictionary (eg. insufficient data,
@@ -1600,7 +1503,6 @@ been defined in <code>json</code>, but no corresponding mapping could be found i
                               <td>
                                 <div>
                                   <p>The JSON dictionary.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1611,8 +1513,9 @@ been defined in <code>json</code>, but no corresponding mapping could be found i
                               </td>
                               <td>
                                 <div>
-                                  <p>Dictionary mapping names to <code>Mutator</code> objects. For any mutator name that has been defined in <code>json</code>, its corresponding mutator in this dictionary is added to the block builder.</p>
-
+                                  <p>Dictionary mapping names to <code>Mutator</code> objects. For any mutator
+name that has been defined in <code>json</code>, its corresponding mutator in this dictionary
+is added to the block builder.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1623,8 +1526,9 @@ been defined in <code>json</code>, but no corresponding mapping could be found i
                               </td>
                               <td>
                                 <div>
-                                  <p>Dictionary mapping names to <code>BlockExtension</code> objects. For any extension name that has been defined in <code>json</code>, its corresponding block extension in this dictionary is added to the block builder.</p>
-
+                                  <p>Dictionary mapping names to <code>BlockExtension</code> objects. For any extension
+name that has been defined in <code>json</code>, its corresponding block extension in this dictionary
+is added to the block builder.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1633,7 +1537,6 @@ been defined in <code>json</code>, but no corresponding mapping could be found i
                       <div>
                         <h4>Return Value</h4>
                         <p>A new block builder.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1662,7 +1565,6 @@ been defined in <code>json</code>, but no corresponding mapping could be found i
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Creates a new tree of blocks from an XML object.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if there is a problem parsing the xml (eg. insufficient data,
@@ -1693,7 +1595,6 @@ malformed data, or contradictory data).
                               <td>
                                 <div>
                                   <p>The XML string representing the block tree.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1705,7 +1606,6 @@ malformed data, or contradictory data).
                               <td>
                                 <div>
                                   <p>The <code>BlockFactory</code> to use to build blocks.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1714,7 +1614,6 @@ malformed data, or contradictory data).
                       <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/Block.html#/s:C7Blockly5Block9BlockTree">BlockTree</a></code> tuple of all blocks that were created.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1733,7 +1632,6 @@ malformed data, or contradictory data).
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Creates a new tree of blocks from an XML object.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if there is a problem parsing the xml (eg. insufficient data,
@@ -1762,8 +1660,7 @@ malformed data, or contradictory data).
                               </td>
                               <td>
                                 <div>
-                                  <p>The element that contains this block’s data.</p>
-
+                                  <p>The element that contains this block&rsquo;s data.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -1775,7 +1672,6 @@ malformed data, or contradictory data).
                               <td>
                                 <div>
                                   <p>The <code>BlockFactory</code> to use to build blocks.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1784,7 +1680,6 @@ malformed data, or contradictory data).
                       <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/Block.html#/s:C7Blockly5Block9BlockTree">BlockTree</a></code> tuple of all blocks that were created.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1813,7 +1708,6 @@ malformed data, or contradictory data).
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns an XML string representing the current state of this block and all of its descendants.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if there was an error serializing this block or any of its descendants.
@@ -1832,7 +1726,6 @@ malformed data, or contradictory data).
                       <div>
                         <h4>Return Value</h4>
                         <p>The XML string.</p>
-
                       </div>
                     </section>
                   </div>
@@ -1876,8 +1769,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -1922,8 +1813,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group
