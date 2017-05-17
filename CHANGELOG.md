@@ -1,3 +1,15 @@
+# [Version 1.0](https://github.com/google/blockly-ios/tree/1.0) (May 2017)
+
+We're happy to announce that we've reached version 1.0 of Blockly iOS!
+
+With this milestone, the project is at a point where all core components of Blockly
+have been implemented on iOS. The API is relatively stable, and major performance
+and memory issues from previous versions have been addressed.
+
+Developers new to Blockly iOS should check out our
+[codelab](https://developers.google.com/blockly/codelab/ios).
+It walks you through the process of creating an iOS app with Blockly.
+
 # [Version 0.7.4](https://github.com/google/blockly-ios/tree/0.7.4) (Apr 2017)
 
 - Updates Cocoapods podspec file to specify AEXML 4.1.0 to accomodate Swift 3.1.
