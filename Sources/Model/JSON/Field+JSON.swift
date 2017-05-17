@@ -65,7 +65,7 @@ extension Field {
   */
   internal static func makeField(json: [String: Any]) throws -> Field? {
     let type = json[PARAMETER_TYPE] as? String ?? ""
-    if let creationHandler = Field.JSONRegistry.sharedInstance[type] {
+    if let creationHandler = Field.JSONRegistry.shared[type] {
       return try creationHandler(json)
     } else {
       return nil
@@ -78,14 +78,14 @@ extension Field {
    Manages the registration of fields.
 
    This class is designed as a singleton instance, accessible via
-   `Field.JSONRegistry.sharedInstance`.
+   `Field.JSONRegistry.shared`.
    */
   @objc(BKYFieldJSONRegistry)
   public final class JSONRegistry: NSObject {
     // MARK: - Static Properties
 
     /// Shared instance.
-    public static let sharedInstance = JSONRegistry()
+    public static let shared = JSONRegistry()
 
     // MARK: - Closures
 
@@ -104,7 +104,7 @@ extension Field {
     // MARK: - Initializers
 
     /**
-     A singleton instance for this class is accessible via `Field.JSONRegistry.sharedInstance.`
+     A singleton instance for this class is accessible via `Field.JSONRegistry.shared.`
      */
     private override init() {
       super.init()

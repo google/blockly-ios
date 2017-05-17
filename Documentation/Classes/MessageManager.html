@@ -24,21 +24,20 @@
 It also allows the ability to store <q>synonym</q> keys, that map back to an existing message key,
 as another way to access an existing message.</p>
 
-<p>Here is an example of <code>MessageManager</code> in use:
-&ldquo;`
-let manager = MessageManager.shared</p>
+<p>Here is an example of <code>MessageManager</code> in use:</p>
+<pre class="highlight plaintext"><code>let manager = MessageManager.shared
 
-<p>// Add a message for <q>LISTS_INLIST</q>
-manager.loadMessages([<q>LISTS_INLIST</q>: <q>in list</q>])</p>
+// Add a message for "LISTS_INLIST"
+manager.loadMessages(["LISTS_INLIST": "in list"])
 
-<p>// Set synonyms of <q>LISTS_INLIST</q>
-manager.loadSynonyms([<q>LISTS_GET_INDEX_INPUT_IN_LIST</q>: <q>LISTS_INLIST</q>])
-manager.loadSynonyms([<q>LISTS_SET_INDEX_INPUT_IN_LIST</q>: <q>LISTS_INLIST</q>])</p>
+// Set synonyms of "LISTS_INLIST"
+manager.loadSynonyms(["LISTS_GET_INDEX_INPUT_IN_LIST": "LISTS_INLIST"])
+manager.loadSynonyms(["LISTS_SET_INDEX_INPUT_IN_LIST": "LISTS_INLIST"])
 
-<p>manager.message(forKey: <q>LISTS_INLIST</q>)                    // Returns <q>in list</q>
-manager.message(forKey: <q>LISTS_GET_INDEX_INPUT_IN_LIST</q>)   // Returns <q>in list</q>
-manager.message(forKey: <q>LISTS_SET_INDEX_INPUT_IN_LIST</q>)   // Returns <q>in list</q>
-&rdquo;`</p>
+manager.message(forKey: "LISTS_INLIST")                    // Returns "in list"
+manager.message(forKey: "LISTS_GET_INDEX_INPUT_IN_LIST")   // Returns "in list"
+manager.message(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
+</code></pre>
 
 <p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/MessageManager.html#/s:ZvC7Blockly14MessageManager6sharedS0_">MessageManager.shared</a></code>.</p>
 
@@ -107,23 +106,20 @@ manager.message(forKey: <q>LISTS_SET_INDEX_INPUT_IN_LIST</q>)   // Returns <q>in
 message key mapped to a message value. When a message is stored, each key is
 automatically prefixed with the <code>prefix</code> parameter passed into the method.</p>
 
-<p>For example, assume a <code>messages.json</code> file that contains the following data:
-<code>
-{
-  &quot;GREETING&quot;: &quot;Welcome&quot;,
-  &quot;TODAY&quot;: &quot;Today&quot;
-}
-</code></p>
+<p>For example, assume a <code>messages.json</code> file that contains the following data:</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"GREETING"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Welcome"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"TODAY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Today"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
-<p>Here&rsquo;s how this file would be loaded and accessed in the manager:
-&ldquo;`
-let manager = MessageManager.shared
-try manager.loadMessages(withPrefix: <q>PREFIX_</q>, jsonPath: <q>messages.json</q>)</p>
+<p>Here&rsquo;s how this file would be loaded and accessed in the manager:</p>
+<pre class="highlight plaintext"><code>let manager = MessageManager.shared
+try manager.loadMessages(withPrefix: "PREFIX_", jsonPath: "messages.json")
 
-<p>manager.message(forKey: <q>PREFIX_GREETING</q>)  // Returns <q>Welcome</q>
-manager.message(forKey: <q>GREETING</q>)         // Returns <code>nil</code> since there is no prefix
-&rdquo;`</p>
-
+manager.message(forKey: "PREFIX_GREETING")  // Returns "Welcome"
+manager.message(forKey: "GREETING")         // Returns `nil` since there is no prefix
+</code></pre>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Message keys are case-insensitive. Any existing message is overwritten by
@@ -154,7 +150,6 @@ any message in the given file with a duplicate key.
                               <td>
                                 <div>
                                   <p>The prefix to automatically add to every message key.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -165,8 +160,8 @@ any message in the given file with a duplicate key.
                               </td>
                               <td>
                                 <div>
-                                  <p>Path to file containing a JSON object of message keys mapped to message values.</p>
-
+                                  <p>Path to file containing a JSON object of message keys mapped to message
+values.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -177,8 +172,8 @@ any message in the given file with a duplicate key.
                               </td>
                               <td>
                                 <div>
-                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>. If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
-
+                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>.
+If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -202,7 +197,6 @@ any message in the given file with a duplicate key.
                       <div class="abstract">
                         <p>Loads messages from a given dictionary, where each pair is a message key mapped
 to a message value.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Message keys are case-insensitive. Any existing message is overwritten by
@@ -232,7 +226,6 @@ any message in the given dictionary with a duplicate key.
                               <td>
                                 <div>
                                   <p>Dictionary of message keys mapped to message values.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -258,38 +251,34 @@ any message in the given dictionary with a duplicate key.
 mapped to a message key. When a synonym is stored, both the synonym key and message
 key are automatically prefixed with the <code>prefix</code> parameter passed into the method.</p>
 
-<p>For example, assume a <code>synonyms.json</code> file that contains the following data:
-<code>
-{
-  &quot;MAIN_SCREEN_TITLE&quot;: &quot;MAIN_TITLE&quot;,
-  &quot;ALTERNATE_SCREEN_TITLE&quot;: &quot;MAIN_TITLE&quot;
-}
-</code></p>
+<p>For example, assume a <code>synonyms.json</code> file that contains the following data:</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"MAIN_SCREEN_TITLE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MAIN_TITLE"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"ALTERNATE_SCREEN_TITLE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MAIN_TITLE"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
-<p>And also a <code>messages.json</code> file that contains the following data:
-<code>
-{
-  &quot;MAIN_TITLE&quot;: &quot;Welcome&quot;,
-}
-</code></p>
+<p>And also a <code>messages.json</code> file that contains the following data:</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"MAIN_TITLE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Welcome"</span><span class="p">,</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
 
-<p>Here&rsquo;s how these files would be loaded and accessed in the manager:
-&ldquo;`
-let manager = MessageManager.shared
-try manager.loadMessages(withPrefix: <q>PREFIX_</q>, jsonPath: <q>messages.json</q>)
-try manager.loadSynonyms(withPrefix: <q>PREFIX_</q>, jsonPath: <q>synonyms.json</q>)</p>
+<p>Here&rsquo;s how these files would be loaded and accessed in the manager:</p>
+<pre class="highlight plaintext"><code>let manager = MessageManager.shared
+try manager.loadMessages(withPrefix: "PREFIX_", jsonPath: "messages.json")
+try manager.loadSynonyms(withPrefix: "PREFIX_", jsonPath: "synonyms.json")
 
-<p>// All of these calls return <q>Welcome</q>
-manager.message(forKey: <q>PREFIX_MAIN_SCREEN_TITLE</q>)
-manager.message(forKey: <q>PREFIX_ALTERNATE_SCREEN_TITLE</q>)
-manager.message(forKey: <q>PREFIX_TITLE</q>)</p>
+// All of these calls return "Welcome"
+manager.message(forKey: "PREFIX_MAIN_SCREEN_TITLE")
+manager.message(forKey: "PREFIX_ALTERNATE_SCREEN_TITLE")
+manager.message(forKey: "PREFIX_TITLE")
 
-<p>// All of these calls return <code>nil</code>
-manager.message(forKey: <q>MAIN_SCREEN_TITLE</q>)
-manager.message(forKey: <q>ALTERNATE_SCREEN_TITLE</q>)
-manager.message(forKey: <q>TITLE</q>)
-&rdquo;`</p>
-
+// All of these calls return `nil`
+manager.message(forKey: "MAIN_SCREEN_TITLE")
+manager.message(forKey: "ALTERNATE_SCREEN_TITLE")
+manager.message(forKey: "TITLE")
+</code></pre>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Synonym keys are case-insensitive. Any existing synonym is overwritten by
@@ -320,7 +309,6 @@ any synonym in the given file with a duplicate key.
                               <td>
                                 <div>
                                   <p>The prefix to automatically add to every synonym key and message key.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -331,8 +319,8 @@ any synonym in the given file with a duplicate key.
                               </td>
                               <td>
                                 <div>
-                                  <p>Path to file containing a JSON object of synonym keys mapped to message keys.</p>
-
+                                  <p>Path to file containing a JSON object of synonym keys mapped to
+message keys.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -343,8 +331,8 @@ any synonym in the given file with a duplicate key.
                               </td>
                               <td>
                                 <div>
-                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>. If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
-
+                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>.
+If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -368,7 +356,6 @@ any synonym in the given file with a duplicate key.
                       <div class="abstract">
                         <p>Loads synonyms from a given dictionary, where each pair is a synonym key mapped to a message
 key.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Synonym keys are case-insensitive. Any existing synonym is overwritten by
@@ -398,7 +385,6 @@ any synonym in the given file with a duplicate key.
                               <td>
                                 <div>
                                   <p>Dictionary of synonym keys mapped to message keys.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -434,7 +420,6 @@ any synonym in the given file with a duplicate key.
 finding the key in the message table first, before looking in the synonym table.
 If no value could be found for the key from either the message table or synonym table,
 then <code>nil</code> is returned.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Key lookups are case-insensitive.
@@ -463,7 +448,6 @@ then <code>nil</code> is returned.</p>
                               <td>
                                 <div>
                                   <p>A message key or synonym key.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -471,8 +455,8 @@ then <code>nil</code> is returned.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>The message for the given <code>key</code>, if it exists in the message table or synonym table. If the <code>key</code> could not be found, then <code>nil</code> is returned.</p>
-
+                        <p>The message for the given <code>key</code>, if it exists in the message table or synonym table.
+If the <code>key</code> could not be found, then <code>nil</code> is returned.</p>
                       </div>
                     </section>
                   </div>
@@ -506,19 +490,17 @@ corresponding messages found inside this instance that use that key.</p>
 <p>Additionally, for any keys that are successfully replaced, this method recursively decodes
 those values, if those values contain references to more keys of the form <q>%{<key>}</q>.</p>
 
-<p>For example:
-<code>
-let messageManager = MessageManager.shared
+<p>For example:</p>
+<pre class="highlight plaintext"><code>let messageManager = MessageManager.shared
 messageManager.loadMessages([
-  &quot;bky_name&quot;: &quot;Blockly&quot;,
-  &quot;bky_description&quot;: &quot;This is the %{bky_name} library.&quot;
+  "bky_name": "Blockly",
+  "bky_description": "This is the %{bky_name} library."
 ])
-messageManager.decodedString(&quot;%{bky_name}&quot;)                     // &quot;Blockly&quot;
-messageManager.decodedString(&quot;%{bky_description}&quot;)              // &quot;This is the Blockly library.&quot;
-messageManager.decodedString(&quot;%{non_existent_message}&quot;)         // &quot;%{non_existent_message}&quot;
-messageManager.decodedString(&quot;Learn to code with #%{bky_name}&quot;) // &quot;Learn to code with #Blockly&quot;
-</code></p>
-
+messageManager.decodedString("%{bky_name}")                     // "Blockly"
+messageManager.decodedString("%{bky_description}")              // "This is the Blockly library."
+messageManager.decodedString("%{non_existent_message}")         // "%{non_existent_message}"
+messageManager.decodedString("Learn to code with #%{bky_name}") // "Learn to code with #Blockly"
+</code></pre>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     Decoding a string with a key inside another key is not supported by this method
@@ -549,7 +531,6 @@ of this cannot be guaranteed.
                               <td>
                                 <div>
                                   <p>The string to decode.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -558,7 +539,6 @@ of this cannot be guaranteed.
                       <div>
                         <h4>Return Value</h4>
                         <p>The decoded version of <code>string</code>.</p>
-
                       </div>
                     </section>
                   </div>
@@ -602,8 +582,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -648,8 +626,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

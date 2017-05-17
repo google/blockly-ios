@@ -374,13 +374,13 @@ open class WorkbenchViewController: UIViewController {
       name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
     // Listen for Blockly events
-    EventManager.sharedInstance.addListener(self)
+    EventManager.shared.addListener(self)
   }
 
   deinit {
     // Unregister all notifications
     NotificationCenter.default.removeObserver(self)
-    EventManager.sharedInstance.removeListener(self)
+    EventManager.shared.removeListener(self)
   }
 
   // MARK: - Super
@@ -490,6 +490,22 @@ open class WorkbenchViewController: UIViewController {
     _toolboxCategoryListViewController.didMove(toParentViewController: self)
     toolboxCategoryViewController.didMove(toParentViewController: self)
 
+    // Update workspace view edge insets to account for control overlays
+    let controlHeight =
+      max(undoButton.image(for: .normal)?.size.height ?? 0,
+          redoButton.image(for: .normal)?.size.height ?? 0,
+          trashCanView.button.image(for: .normal)?.size.height ?? 0)
+    switch style {
+    case .defaultStyle:
+      workspaceView.scrollIntoViewEdgeInsets =
+        EdgeInsets(top: iconPadding, leading: iconPadding, bottom: controlHeight + iconPadding * 2,
+                   trailing: iconPadding)
+    case .alternate:
+      workspaceView.scrollIntoViewEdgeInsets =
+        EdgeInsets(top: controlHeight + iconPadding * 2, leading: iconPadding, bottom: iconPadding,
+                   trailing: iconPadding)
+    }
+
     // Create a default workspace, if one doesn't already exist
     if workspace == nil {
       do {
@@ -564,6 +580,12 @@ open class WorkbenchViewController: UIViewController {
     procedureCoordinator?.syncWithWorkbench(self)
 
     refreshView()
+
+    // Automatically change the viewport to show the top-most block
+    if let topBlock =
+      workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
+      scrollBlockIntoView(blockUUID: topBlock.uuid, animated: false)
+    }
   }
 
   /**
@@ -681,7 +703,7 @@ open class WorkbenchViewController: UIViewController {
     // hierarchy when layouts change, we just need to find the view that was automatically created.
     guard
       let newBlockLayout = newBlock.layout,
-      let newBlockView = ViewManager.sharedInstance.findBlockView(forLayout: newBlockLayout) else
+      let newBlockView = ViewManager.shared.findBlockView(forLayout: newBlockLayout) else
     {
       throw BlocklyError(.viewNotFound, "View could not be located for the copied block")
     }
@@ -946,7 +968,7 @@ extension WorkbenchViewController {
 
     // Fire pending events before listening to events again, in case outside listeners need to
     // update their state from those events.
-    EventManager.sharedInstance.firePendingEvents()
+    EventManager.shared.firePendingEvents()
 
     // Listen to events again
     _recordEvents = true
@@ -974,7 +996,7 @@ extension WorkbenchViewController {
 
     // Fire pending events before listening to events again, in case outside listeners need to
     // update their state from those events.
-    EventManager.sharedInstance.firePendingEvents()
+    EventManager.shared.firePendingEvents()
 
     // Listen to events again
     _recordEvents = true
@@ -1287,7 +1309,7 @@ extension WorkbenchViewController {
     // block. We want to do a deep copy on the root block (not just the current block).
     guard let rootBlockLayout = blockView.blockLayout?.rootBlockGroupLayout?.blockLayouts[0],
       // TODO(#45): This should be copying the root block layout, not the root block view.
-      let rootBlockView = ViewManager.sharedInstance.findBlockView(forLayout: rootBlockLayout)
+      let rootBlockView = ViewManager.shared.findBlockView(forLayout: rootBlockLayout)
       else
     {
       return nil
@@ -1489,7 +1511,12 @@ extension WorkbenchViewController {
         return
     }
 
-    workspaceView.scrollBlockIntoView(block, animated: animated)
+    // Always perform this method at the end of the run loop, in order to ensure views have first
+    // been created/positioned in the scroll view. This fixes a problem where attempting
+    // to scroll blocks into the view, immediately after the workspace has loaded, does not work.
+    DispatchQueue.main.async {
+      self.workspaceView.scrollBlockIntoView(block, animated: animated)
+    }
   }
 }
 
@@ -1515,8 +1542,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     // on-going drags when the screen is rotated).
 
     if touchState == .began {
-      if EventManager.sharedInstance.currentGroupID == nil {
-        EventManager.sharedInstance.pushNewGroup()
+      if EventManager.shared.currentGroupID == nil {
+        EventManager.shared.pushNewGroup()
       }
 
       let inToolbox = gesture.view == toolboxCategoryViewController.view
@@ -1597,12 +1624,12 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
           removeUIStateValue(.trashCanHighlighted)
         }
 
-        EventManager.sharedInstance.popGroup()
+        EventManager.shared.popGroup()
       }
 
       // Always fire pending events after a finger has been lifted. All grouped events will
       // eventually get grouped together regardless if they were fired in batches.
-      EventManager.sharedInstance.firePendingEvents()
+      EventManager.shared.firePendingEvents()
     }
   }
 }

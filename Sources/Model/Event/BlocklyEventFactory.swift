@@ -19,7 +19,7 @@ import Foundation
  Factory for creating `BlocklyEvent` objects from JSON data.
 
  This class is designed as a singleton instance, accessible via
- `BlocklyEventFactory.sharedInstance`.
+ `BlocklyEventFactory.shared`.
  */
 @objc(BKYEventFactory)
 public class BlocklyEventFactory: NSObject {
@@ -32,7 +32,7 @@ public class BlocklyEventFactory: NSObject {
   // MARK: - Properties
 
   /// Shared instance.
-  public static let sharedInstance = BlocklyEventFactory()
+  public static let shared = BlocklyEventFactory()
 
   /// Mapping of event types to creation closures.
   private var _creators = Dictionary<BlocklyEvent.EventType, Creator>()
@@ -40,7 +40,7 @@ public class BlocklyEventFactory: NSObject {
   // MARK: - Initializers
 
   /**
-   A singleton instance for this class is accessible via `BlocklyEventFactory.sharedInstance.`
+   A singleton instance for this class is accessible via `BlocklyEventFactory.shared.`
    */
   private override init() {
     super.init()

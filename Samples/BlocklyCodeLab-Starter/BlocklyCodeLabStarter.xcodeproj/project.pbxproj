@@ -1,0 +1,383 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FA2627AC1EC11655003C3D13 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FA2627A91EC11655003C3D13 /* blockly_web */; };
+		FA2627AD1EC11655003C3D13 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = FA2627AA1EC11655003C3D13 /* Sounds */; };
+		FA2627AE1EC11655003C3D13 /* toolbox.xml in Resources */ = {isa = PBXBuildFile; fileRef = FA2627AB1EC11655003C3D13 /* toolbox.xml */; };
+		FA2627BB1EC11682003C3D13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2627B71EC11682003C3D13 /* LaunchScreen.storyboard */; };
+		FA2627BC1EC11682003C3D13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2627B91EC11682003C3D13 /* Main.storyboard */; };
+		FA2627D31EC116B0003C3D13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627CC1EC116B0003C3D13 /* AppDelegate.swift */; };
+		FA2627D41EC116B0003C3D13 /* ButtonEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627CD1EC116B0003C3D13 /* ButtonEditorViewController.swift */; };
+		FA2627D51EC116B0003C3D13 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627CF1EC116B0003C3D13 /* AudioPlayer.swift */; };
+		FA2627D61EC116B0003C3D13 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D01EC116B0003C3D13 /* FileHelper.swift */; };
+		FA2627D71EC116B0003C3D13 /* MusicMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D11EC116B0003C3D13 /* MusicMaker.swift */; };
+		FA2627D81EC116B0003C3D13 /* MusicMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2627D21EC116B0003C3D13 /* MusicMakerViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA2627901EC11041003C3D13 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FA2627351EC10F17003C3D13 /* BlocklyCodeLabStarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocklyCodeLabStarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA2627A91EC11655003C3D13 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
+		FA2627AA1EC11655003C3D13 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
+		FA2627AB1EC11655003C3D13 /* toolbox.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = toolbox.xml; sourceTree = "<group>"; };
+		FA2627B81EC11682003C3D13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA2627BA1EC11682003C3D13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FA2627CC1EC116B0003C3D13 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA2627CD1EC116B0003C3D13 /* ButtonEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditorViewController.swift; sourceTree = "<group>"; };
+		FA2627CF1EC116B0003C3D13 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		FA2627D01EC116B0003C3D13 /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		FA2627D11EC116B0003C3D13 /* MusicMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMaker.swift; sourceTree = "<group>"; };
+		FA2627D21EC116B0003C3D13 /* MusicMakerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicMakerViewController.swift; sourceTree = "<group>"; };
+		FA2627D91EC1175B003C3D13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlocklyCodeLabStarter/Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA2627321EC10F17003C3D13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA26272C1EC10F17003C3D13 = {
+			isa = PBXGroup;
+			children = (
+				FA2627CB1EC116B0003C3D13 /* Sources */,
+				FA26274A1EC10F67003C3D13 /* Resources */,
+				FA2627361EC10F17003C3D13 /* Products */,
+				FA2627D91EC1175B003C3D13 /* Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		FA2627361EC10F17003C3D13 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627351EC10F17003C3D13 /* BlocklyCodeLabStarter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA26274A1EC10F67003C3D13 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627B61EC11682003C3D13 /* Localized */,
+				FA2627911EC110B5003C3D13 /* Non-Localized */,
+			);
+			name = Resources;
+			path = BlocklyCodeLabStarter/Resources;
+			sourceTree = "<group>";
+		};
+		FA2627911EC110B5003C3D13 /* Non-Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627A91EC11655003C3D13 /* blockly_web */,
+				FA2627AA1EC11655003C3D13 /* Sounds */,
+				FA2627AB1EC11655003C3D13 /* toolbox.xml */,
+			);
+			path = "Non-Localized";
+			sourceTree = "<group>";
+		};
+		FA2627B61EC11682003C3D13 /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627B71EC11682003C3D13 /* LaunchScreen.storyboard */,
+				FA2627B91EC11682003C3D13 /* Main.storyboard */,
+			);
+			path = Localized;
+			sourceTree = "<group>";
+		};
+		FA2627CB1EC116B0003C3D13 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627CE1EC116B0003C3D13 /* Helpers */,
+				FA2627CC1EC116B0003C3D13 /* AppDelegate.swift */,
+				FA2627CD1EC116B0003C3D13 /* ButtonEditorViewController.swift */,
+				FA2627D11EC116B0003C3D13 /* MusicMaker.swift */,
+				FA2627D21EC116B0003C3D13 /* MusicMakerViewController.swift */,
+			);
+			name = Sources;
+			path = BlocklyCodeLabStarter/Sources;
+			sourceTree = "<group>";
+		};
+		FA2627CE1EC116B0003C3D13 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FA2627CF1EC116B0003C3D13 /* AudioPlayer.swift */,
+				FA2627D01EC116B0003C3D13 /* FileHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA2627341EC10F17003C3D13 /* BlocklyCodeLabStarter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA2627471EC10F17003C3D13 /* Build configuration list for PBXNativeTarget "BlocklyCodeLabStarter" */;
+			buildPhases = (
+				FA2627311EC10F17003C3D13 /* Sources */,
+				FA2627321EC10F17003C3D13 /* Frameworks */,
+				FA2627331EC10F17003C3D13 /* Resources */,
+				FA2627901EC11041003C3D13 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlocklyCodeLabStarter;
+			productName = BlocklyCodeLab;
+			productReference = FA2627351EC10F17003C3D13 /* BlocklyCodeLabStarter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA26272D1EC10F17003C3D13 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Google;
+				TargetAttributes = {
+					FA2627341EC10F17003C3D13 = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FA2627301EC10F17003C3D13 /* Build configuration list for PBXProject "BlocklyCodeLabStarter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA26272C1EC10F17003C3D13;
+			productRefGroup = FA2627361EC10F17003C3D13 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA2627341EC10F17003C3D13 /* BlocklyCodeLabStarter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA2627331EC10F17003C3D13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA2627AE1EC11655003C3D13 /* toolbox.xml in Resources */,
+				FA2627BC1EC11682003C3D13 /* Main.storyboard in Resources */,
+				FA2627BB1EC11682003C3D13 /* LaunchScreen.storyboard in Resources */,
+				FA2627AC1EC11655003C3D13 /* blockly_web in Resources */,
+				FA2627AD1EC11655003C3D13 /* Sounds in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA2627311EC10F17003C3D13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA2627D41EC116B0003C3D13 /* ButtonEditorViewController.swift in Sources */,
+				FA2627D31EC116B0003C3D13 /* AppDelegate.swift in Sources */,
+				FA2627D71EC116B0003C3D13 /* MusicMaker.swift in Sources */,
+				FA2627D81EC116B0003C3D13 /* MusicMakerViewController.swift in Sources */,
+				FA2627D51EC116B0003C3D13 /* AudioPlayer.swift in Sources */,
+				FA2627D61EC116B0003C3D13 /* FileHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FA2627B71EC11682003C3D13 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA2627B81EC11682003C3D13 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FA2627B91EC11682003C3D13 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA2627BA1EC11682003C3D13 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FA2627451EC10F17003C3D13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA2627461EC10F17003C3D13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA2627481EC10F17003C3D13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "$(SRCROOT)/BlocklyCodeLabStarter/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLabStarter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		FA2627491EC10F17003C3D13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "$(SRCROOT)/BlocklyCodeLabStarter/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.blockly.BlocklyCodeLabStarter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA2627301EC10F17003C3D13 /* Build configuration list for PBXProject "BlocklyCodeLabStarter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA2627451EC10F17003C3D13 /* Debug */,
+				FA2627461EC10F17003C3D13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA2627471EC10F17003C3D13 /* Build configuration list for PBXNativeTarget "BlocklyCodeLabStarter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA2627481EC10F17003C3D13 /* Debug */,
+				FA2627491EC10F17003C3D13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA26272D1EC10F17003C3D13 /* Project object */;
+}

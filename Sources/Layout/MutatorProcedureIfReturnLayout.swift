@@ -44,11 +44,11 @@ public class MutatorProcedureIfReturnLayout : MutatorLayout {
 
     updateHasReturnValue()
 
-    EventManager.sharedInstance.addListener(self)
+    EventManager.shared.addListener(self)
   }
 
   deinit {
-    EventManager.sharedInstance.removeListener(self)
+    EventManager.shared.removeListener(self)
   }
 
   // MARK: - Super
@@ -151,7 +151,7 @@ extension MutatorProcedureIfReturnLayout: EventManagerListener {
     if layoutCoordinator?.workspaceLayout.workspace.uuid == event.workspaceID &&
       event is BlocklyEvent.Move {
 
-      EventManager.sharedInstance.groupAndFireEvents(groupID: event.groupID) {
+      EventManager.shared.groupAndFireEvents(groupID: event.groupID) {
         // Something has been moved in the workspace, which means a connection may have changed.
         // This block may need to update its if/return mutation if it's changed grandparents.
         updateHasReturnValue()

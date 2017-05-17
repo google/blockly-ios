@@ -19,15 +19,35 @@ import Foundation
  Extends the `UIView` class with convenience functions for Blockly.
  */
 extension UIView {
-  // MARK: - Public
+  // MARK: - Helpers
 
   /**
   Removes all gesture recognizers from the view.
   */
-  public func bky_removeAllGestureRecognizers() {
+  internal func bky_removeAllGestureRecognizers() {
     let gestureRecognizers = (self.gestureRecognizers ?? [])
     for gestureRecognizer in gestureRecognizers {
       removeGestureRecognizer(gestureRecognizer)
     }
   }
+
+  /**
+   Traverses up the view tree and returns the first ancestor that is of a given type.
+
+   - parameter type: The type of `UIView` to find.
+   - returns: The first ancestor of the given `type`, or `nil` if none could be found.
+   */
+  internal final func bky_firstAncestor<T>(ofType type: T.Type? = nil) -> T? where T: UIView {
+    var parent = self.superview
+
+    while parent != nil {
+      if let typedParent = parent as? T {
+        return typedParent
+      }
+      parent = parent?.superview
+    }
+
+    return nil
+  }
+
 }

@@ -65,11 +65,19 @@ public final class DropdownView: UIView {
   }
   /// The horizontal spacing to use for elements within the dropdown
   public var horizontalSpacing = CGFloat(8) {
-    didSet { configureSubviews() }
+    didSet {
+      if horizontalSpacing != oldValue {
+        configureSubviews()
+      }
+    }
   }
   /// The vertical spacing to use for elements within the dropdown
   public var verticalSpacing = CGFloat(4) {
-    didSet { configureSubviews() }
+    didSet {
+      if verticalSpacing != oldValue {
+        configureSubviews()
+      }
+    }
   }
   /// The dropdown border's color
   public var borderColor: CGColor? {
@@ -91,6 +99,14 @@ public final class DropdownView: UIView {
     get { return _dropDownArrow.image }
     set(value) { _dropDownArrow.image = value }
   }
+  /// An optional size to use for the drop down arrow view
+  public var dropDownArrowImageSize: CGSize? {
+    didSet {
+      if dropDownArrowImageSize != oldValue {
+        configureSubviews()
+      }
+    }
+  }
   /// Delegate for receiving events that occur on this dropdown
   public weak var delegate: DropdownViewDelegate?
 
@@ -108,7 +124,7 @@ public final class DropdownView: UIView {
   /// The drop down arrow image beside the text field
   fileprivate let _dropDownArrow: UIImageView = {
     let dropDownArrow = UIImageView(image: nil)
-    dropDownArrow.contentMode = .center
+    dropDownArrow.contentMode = .scaleAspectFit
     return dropDownArrow
   }()
 
@@ -145,7 +161,7 @@ public final class DropdownView: UIView {
    if properties were set that instance.
 
    - parameter text: Corresponds to setting `dropDownView.text`.
-   - parameter dropDownArrowImage: Corresponds to setting `dropDownView.dropDownArrowImage`.
+   - parameter dropDownArrowImageSize: Corresponds to setting `dropDownView.dropDownArrowImageSize`.
    - parameter textFont: Corresponds to setting `dropDownView.labelFont`.
    - parameter borderWidth: Corresponds to setting `dropDownView.borderWidth`.
    - parameter horizontalSpacing: Corresponds to setting `dropDownView.horizontalSpacing`.
@@ -153,14 +169,14 @@ public final class DropdownView: UIView {
    - returns: The required size of the theoretical instance `dropDownView`
    */
   public static func measureSize(
-    text: String, dropDownArrowImage: UIImage?, textFont: UIFont, borderWidth: CGFloat,
-    horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
+    text: String, dropDownArrowImageSize: CGSize, textFont: UIFont, borderWidth: CGFloat,
+         horizontalSpacing: CGFloat, verticalSpacing: CGFloat) -> CGSize
   {
     // Measure text size
     let textSize = text.bky_singleLineSize(forFont: textFont)
 
     // Measure drop down arrow image size
-    let imageSize = (dropDownArrowImage?.size ?? CGSize.zero)
+    let imageSize = dropDownArrowImageSize
 
     // Return size required
     return CGSize(
@@ -180,6 +196,9 @@ public final class DropdownView: UIView {
   // MARK: - Private
 
   private func configureSubviews() {
+    let dropDownArrowImageSize =
+      self.dropDownArrowImageSize ?? dropDownArrowImage?.size ?? CGSize.zero
+
     let views = [
       "label": _label,
       "dropDownArrow": _dropDownArrow,
@@ -188,12 +207,14 @@ public final class DropdownView: UIView {
     let metrics = [
       "xSpacing": horizontalSpacing,
       "ySpacing": verticalSpacing,
+      "dropDownArrowHeight": dropDownArrowImageSize.height,
+      "dropDownArrowWidth": dropDownArrowImageSize.width,
       ]
     let constraints = [
-      "H:|-(xSpacing)-[label]-(xSpacing)-[dropDownArrow]-(xSpacing)-|",
+      "H:|-(xSpacing)-[label]-(xSpacing)-[dropDownArrow(dropDownArrowWidth)]-(xSpacing)-|",
       "H:|[button]|",
       "V:|-(ySpacing)-[label]-(ySpacing)-|",
-      "V:|[dropDownArrow]|",
+      "V:[dropDownArrow(dropDownArrowHeight)]",
       "V:|[button]|",
       ]
 
@@ -204,6 +225,11 @@ public final class DropdownView: UIView {
 
     // Add constraints
     bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
+
+    // Center drop down arrow within superview
+    addConstraint(NSLayoutConstraint(
+      item: self, attribute: .centerY, relatedBy: .equal,
+      toItem: _dropDownArrow, attribute: .centerY, multiplier: 1.0, constant: 0))
   }
 
   private dynamic func didTapButton(_ sender: UIButton) {

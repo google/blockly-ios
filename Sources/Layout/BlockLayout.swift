@@ -140,13 +140,15 @@ open class BlockLayout: Layout {
   open var disabled: Bool {
     get { return block.disabled }
     set {
-      if block.editable {
-        block.disabled = disabled
+      if block.disabled == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
-          EventManager.sharedInstance.addPendingEvent(event)
-        }
+      block.disabled = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.disabledStateEvent(workspace: workspace, block: block)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }
@@ -156,13 +158,15 @@ open class BlockLayout: Layout {
   open var inputsInline: Bool {
     get { return block.inputsInline }
     set {
-      if block.editable && block.inputsInline != newValue {
-        block.inputsInline = newValue
+      if block.inputsInline == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
-          EventManager.sharedInstance.addPendingEvent(event)
-        }
+      block.inputsInline = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.inlineStateEvent(workspace: workspace, block: block)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }
@@ -171,15 +175,17 @@ open class BlockLayout: Layout {
   open var comment: String {
     get { return block.comment }
     set {
-      if block.editable && block.comment != newValue {
-        let oldValue = block.comment
-        block.comment = newValue
+      if block.comment == newValue {
+        return
+      }
 
-        if let workspace = self.workspace {
-          let event = BlocklyEvent.Change.commentTextEvent(
-            workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
-          EventManager.sharedInstance.addPendingEvent(event)
-        }
+      let oldValue = block.comment
+      block.comment = newValue
+
+      if let workspace = self.workspace {
+        let event = BlocklyEvent.Change.commentTextEvent(
+          workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
+        EventManager.shared.addPendingEvent(event)
       }
     }
   }
@@ -188,6 +194,10 @@ open class BlockLayout: Layout {
   fileprivate var workspace: Workspace? {
     return firstAncestor(ofType: WorkspaceLayout.self)?.workspace
   }
+
+  /// Keeps track of all highlighted connection uuid's, and the set of source uuid's that are
+  /// triggering the highlights.
+  fileprivate var _connectionHighlights = [String: Set<String>]()
 
   // MARK: - Initializers
 
@@ -202,17 +212,13 @@ open class BlockLayout: Layout {
     super.init(engine: engine)
 
     block.listeners.add(self)
-
-    for connection in self.block.directConnections {
-      connection.highlightDelegate = self
-    }
   }
 
   deinit {
     block.listeners.remove(self)
   }
 
-  // MARK: - Open
+  // MARK: - Input Layouts
 
   /**
   Appends an inputLayout to `self.inputLayouts` and sets its `parentLayout` to this instance.
@@ -254,6 +260,79 @@ open class BlockLayout: Layout {
     }
   }
 
+  // MARK: - Connection Highlighting
+
+  /**
+   Adds a highlight source to a given connection on this block.
+
+   If there were no previous highlight sources for this connection, a `Flag_UpdateHighlight`
+   change event is triggered in order to update connection highlighting for this block.
+
+   - parameter sourceUUID: A UUID of the source object that is triggering this highlight.
+   Typically, this is the UUID of a `Block` or a `BlockLayout`.
+   - parameter connection: The `Connection`.
+   */
+  public func addHighlightSource(sourceUUID: String, forConnection connection: Connection) {
+    guard connection.sourceBlock == block else {
+      return
+    }
+
+    if _connectionHighlights[connection.uuid] != nil {
+      _connectionHighlights[connection.uuid]?.insert(sourceUUID)
+    } else {
+      _connectionHighlights[connection.uuid] = [sourceUUID]
+      sendChangeEvent(withFlags: BlockLayout.Flag_UpdateConnectionHighlight)
+    }
+  }
+
+  /**
+   Removes a highlight source from a given connection on this block.
+
+   If there are no more highlight sources for the given connection (after this one is removed), a
+   `Flag_UpdateHighlight` change event is triggered in order to update connection highlighting for
+   this block.
+
+   - parameter sourceUUID: The UUID of the source object that originally added itself as a
+   highlight source.
+   - parameter connection: The `Connection`
+   */
+  public func removeHighlightSource(sourceUUID: String, forConnection connection: Connection) {
+    guard connection.sourceBlock == block else {
+      return
+    }
+
+    if var sources = _connectionHighlights[connection.uuid] {
+      sources.remove(sourceUUID)
+
+      if sources.isEmpty {
+        _connectionHighlights[connection.uuid] = nil
+        sendChangeEvent(withFlags: BlockLayout.Flag_UpdateConnectionHighlight)
+      } else {
+        _connectionHighlights[connection.uuid] = sources
+      }
+    }
+  }
+
+  /**
+   Returns if a connection is highlighted on this block.
+
+   - parameter connection: The `Connection` to check.
+   - returns: `true` if the connection has at least one highlight source. `false` otherwise.
+   */
+  public func isConnectionHighlighted(_ connection: Connection) -> Bool {
+    return _connectionHighlights[connection.uuid] != nil
+  }
+
+  /**
+   Returns if there are connections that have been highlighted on this block.
+
+   - returns: `true` if any connections have been highlighted on this block. `false`
+   otherwise.
+   */
+  public func hasHighlightedConnections() -> Bool {
+    return !_connectionHighlights.isEmpty
+  }
+
   // MARK: - Internal
 
   /**
@@ -291,27 +370,10 @@ open class BlockLayout: Layout {
   }
 }
 
-// MARK: - ConnectionHighlightDelegate
-
-extension BlockLayout: ConnectionHighlightDelegate {
-  public func didChangeHighlight(forConnection connection: Connection) {
-    sendChangeEvent(withFlags: BlockLayout.Flag_UpdateConnectionHighlight)
-  }
-}
-
 // MARK: - BlockDelegate
 
 extension BlockLayout: BlockListener {
   public func didUpdateBlock(_ block: Block) {
-    // TODO(#288): Remove highlightDelegate dependency once ConnectionHighlightDelegate
-    // functionality is refactored into this class
-
-    // Update highlight delegates of each connection (since block's directConnections may have
-    // changed due to inputs being added/removed)
-    for connection in block.directConnections {
-      connection.highlightDelegate = self
-    }
-
     // Refresh the block since it's been updated
     sendChangeEvent(withFlags: BlockLayout.Flag_NeedsDisplay)
   }

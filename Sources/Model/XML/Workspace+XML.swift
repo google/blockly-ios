@@ -46,10 +46,14 @@ extension Workspace {
    */
   public func loadBlocks(fromXML xml: AEXMLElement, factory: BlockFactory) throws {
     if let allBlocksXML = xml["block"].all {
+      var blockTrees = Array<Block.BlockTree>()
+
       for blockXML in allBlocksXML {
         let blockTree = try Block.blockTree(fromXML: blockXML, factory: factory)
-        try addBlockTree(blockTree.rootBlock)
+        blockTrees.append(blockTree)
       }
+
+      try addBlockTrees(blockTrees.map({ $0.rootBlock }))
     }
   }
 }

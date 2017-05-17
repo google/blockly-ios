@@ -24,7 +24,7 @@ open class FieldNumberLayout: FieldLayout {
   // MARK: - Properties
 
   /// The target `FieldNumber` to lay out
-  open let fieldNumber: FieldNumber
+  private let fieldNumber: FieldNumber
 
   /// The current text value that should be used to render the `FieldNumber`.
   /// This value is automatically set to `self.fieldNumber.textValue` on initialization and 

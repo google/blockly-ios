@@ -69,11 +69,11 @@ public class ProcedureCoordinator: NSObject {
   public override init() {
     super.init()
 
-    EventManager.sharedInstance.addListener(self)
+    EventManager.shared.addListener(self)
   }
 
   deinit {
-    EventManager.sharedInstance.removeListener(self)
+    EventManager.shared.removeListener(self)
   }
 
   // MARK: - Workbench
@@ -112,7 +112,7 @@ public class ProcedureCoordinator: NSObject {
         if block.isProcedureDefinition {
           trackProcedureDefinitionBlock(block)
         } else if block.isProcedureCaller {
-          trackProcedureCallerBlock(block, autoCreateDefinition: false)
+          trackProcedureCallerBlock(block)
         }
       }
 
@@ -258,16 +258,24 @@ public class ProcedureCoordinator: NSObject {
   }
 
   fileprivate func procedureDefinitionBlock(forCallerBlock callerBlock: Block) -> Block? {
-    return definitionBlocks.first(where: {
-      $0.associatedCallerBlockName == callerBlock.name &&
-      procedureNameManager.namesAreEqual(callerBlock.procedureName, $0.procedureName) &&
-      callerBlock.procedureParameters.map({ $0.name }) == $0.procedureParameters.map({ $0.name })
-    })
+    return definitionBlocks.first(where: { definitionBlock($0, matchesCallerBlock: callerBlock) })
+  }
+
+  fileprivate func definitionBlock(
+    _ definitionBlock: Block, matchesCallerBlock callerBlock: Block) -> Bool {
+    return
+      definitionBlock.isProcedureDefinition &&
+      callerBlock.isProcedureCaller &&
+      definitionBlock.associatedCallerBlockName == callerBlock.name &&
+      procedureNameManager.namesAreEqual(
+        definitionBlock.procedureName, callerBlock.procedureName) &&
+      definitionBlock.procedureParameters.map({ $0.name }) ==
+        callerBlock.procedureParameters.map({ $0.name })
   }
 
   // MARK: - Procedure Caller Methods
 
-  fileprivate func trackProcedureCallerBlock(_ callerBlock: Block, autoCreateDefinition: Bool) {
+  fileprivate func trackProcedureCallerBlock(_ callerBlock: Block) {
     guard callerBlock.isProcedureCaller else {
       return
     }
@@ -279,9 +287,6 @@ public class ProcedureCoordinator: NSObject {
       // Make sure the procedure caller block has the exact same parameters as the definition block,
       // so its parameters' connections are properly preserved on parameter renames/re-orderings
       callerBlock.procedureParameters = definitionBlock.procedureParameters
-    } else if autoCreateDefinition {
-      // Create definition block
-      createProcedureDefinitionBlock(fromCallerBlock: callerBlock)
     }
   }
 
@@ -370,38 +375,54 @@ public class ProcedureCoordinator: NSObject {
 extension ProcedureCoordinator: WorkspaceListener {
   // MARK: - WorkspaceListener Implementation
 
-  public func workspace(_ workspace: Workspace, willAddBlock block: Block) {
-    if block.isProcedureCaller && procedureDefinitionBlock(forCallerBlock: block) == nil {
-      // No procedure block exists for this caller in the workspace.
-      // Automatically create it first before adding in the caller block to the workspace. This
-      // makes sure that events are ordered in such a way that they can be properly undone.
-      createProcedureDefinitionBlock(fromCallerBlock: block)
+  public func workspace(_ workspace: Workspace, willAddBlockTrees blockTrees: [Block]) {
+    // Look at all block trees that are being added to see if any caller blocks need to have 
+    // definitions auto-created for them.
+    let definitionBlocks = blockTrees.filter({ $0.isProcedureDefinition })
+    let callerBlocks =
+      blockTrees.flatMap({ $0.allBlocksForTree() }).filter({ $0.isProcedureCaller })
+
+    for callerBlock in callerBlocks {
+      if procedureDefinitionBlock(forCallerBlock: callerBlock) == nil &&
+        !definitionBlocks.contains(where: { definitionBlock($0, matchesCallerBlock: callerBlock) })
+      {
+        // No procedure block exists for this caller in the workspace.
+        // Automatically create it first before adding in the caller block to the workspace. This
+        // makes sure that events are ordered in such a way that they can be properly undone.
+        createProcedureDefinitionBlock(fromCallerBlock: callerBlock)
+      }
     }
   }
 
-  public func workspace(_ workspace: Workspace, didAddBlock block: Block) {
-    if block.isProcedureDefinition {
-      trackProcedureDefinitionBlock(block)
-    } else if block.isProcedureCaller {
-      trackProcedureCallerBlock(block, autoCreateDefinition: true)
+  public func workspace(_ workspace: Workspace, didAddBlockTrees blockTrees: [Block]) {
+    for block in blockTrees.flatMap({ $0.allBlocksForTree() }) {
+      if block.isProcedureDefinition {
+        trackProcedureDefinitionBlock(block)
+      } else if block.isProcedureCaller {
+        trackProcedureCallerBlock(block)
+      }
     }
   }
 
-  public func workspace(_ workspace: Workspace, willRemoveBlock block: Block) {
-    if block.isProcedureDefinition {
-      // Remove all caller blocks for the definition before removing the definition block. If
-      // the caller blocks are removed after the definition block, then it causes problems undoing
-      // the event stack where a caller block is recreated without any definition block. Reversing
-      // the order fixes this problem.
-      removeProcedureCallerBlocks(forDefinitionBlock: block)
+  public func workspace(_ workspace: Workspace, willRemoveBlockTrees blockTrees: [Block]) {
+    for block in blockTrees {
+      if block.isProcedureDefinition {
+        // Remove all caller blocks for the definition before removing the definition block. If
+        // the caller blocks are removed after the definition block, then it causes problems undoing
+        // the event stack where a caller block is recreated without any definition block. Reversing
+        // the order fixes this problem.
+        removeProcedureCallerBlocks(forDefinitionBlock: block)
+      }
     }
   }
 
-  public func workspace(_ workspace: Workspace, didRemoveBlock block: Block) {
-    if block.isProcedureDefinition {
-      untrackProcedureDefinitionBlock(block)
-    } else if block.isProcedureCaller {
-      untrackProcedureCallerBlock(block)
+  public func workspace(_ workspace: Workspace, didRemoveBlockTrees blockTrees: [Block]) {
+    for block in blockTrees.flatMap({ $0.allBlocksForTree() }) {
+      if block.isProcedureDefinition {
+        untrackProcedureDefinitionBlock(block)
+      } else if block.isProcedureCaller {
+        untrackProcedureCallerBlock(block)
+      }
     }
   }
 }
@@ -434,7 +455,7 @@ extension ProcedureCoordinator: EventManagerListener {
     }
 
     // Add additional events to the existing event group
-    EventManager.sharedInstance.groupAndFireEvents(groupID: fieldEvent.groupID) {
+    EventManager.shared.groupAndFireEvents(groupID: fieldEvent.groupID) {
       if newProcedureName.trimmingCharacters(in: .whitespaces).isEmpty {
         // Procedure names shouldn't be empty. Put it back to what it was
         // originally.
@@ -459,7 +480,7 @@ extension ProcedureCoordinator: EventManagerListener {
     }
 
     // Add additional events to the existing event group
-    EventManager.sharedInstance.groupAndFireEvents(groupID: mutationEvent.groupID) {
+    EventManager.shared.groupAndFireEvents(groupID: mutationEvent.groupID) {
       // A procedure definition block inside the main workspace has been mutated.
       // Update the procedure callers and upsert the variables from this block.
       updateProcedureCallers(oldName: block.procedureName, newName: block.procedureName,

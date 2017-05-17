@@ -20,11 +20,14 @@
               </div>
             <p>Flags for marking which parts of a <code><a href="../Classes/Layout.html">Layout</a></code> that need to be updated by its delegate.</p>
 
-<p>A total of 64 flags can be defined:
-- Common flags are defined by Layout.Flag_*, up to a maximum of 14 flags, which start at the highest
-order bit (ie. 63, 62, etc).
-- Subclasses of <code><a href="../Classes/Layout.html">Layout</a></code> can define up to 50 custom layout flags, which start at the lowest order
-bit (ie. 0, 1, etc).</p>
+<p>A total of 64 flags can be defined:</p>
+
+<ul>
+<li>Common flags are defined by Layout.Flag_*, up to a maximum of 14 flags, which start at the highest
+order bit (ie. 63, 62, etc).</li>
+<li>Subclasses of <code><a href="../Classes/Layout.html">Layout</a></code> can define up to 50 custom layout flags, which start at the lowest order
+bit (ie. 0, 1, etc).</li>
+</ul>
 
           </section>
           <section class="section task-group-section">
@@ -87,7 +90,6 @@ bit (ie. 0, 1, etc).</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Initializer for <code><a href="../Classes/Layout.html">Layout</a></code> subclasses looking to define a custom layout flag.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     An assertion is made in this method that <code>lowestOrderBitIndex &lt; 50</code>.
@@ -115,8 +117,8 @@ bit (ie. 0, 1, etc).</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The bit index to use when defining this layout flag, starting from the lowest order bit.</p>
-
+                                  <p>The bit index to use when defining this layout flag, starting
+from the lowest order bit.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -160,8 +162,7 @@ bit (ie. 0, 1, etc).</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The raw value of the option set to create. Each bit of <code>rawValue</code> potentially represents an element of the option set, though raw values may include bits that are not defined as distinct values of the <code>OptionSet</code> type.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -207,7 +208,6 @@ bit (ie. 0, 1, etc).</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The equivalent of <code>self != LayoutFlag.None</code>.</p>
-
                       </div>
                     </section>
                   </div>
@@ -238,7 +238,6 @@ bit (ie. 0, 1, etc).</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>True if <code>self</code> shares at least one common flag with <code>other</code>.</p>
-
                       </div>
                     </section>
                   </div>
@@ -282,8 +281,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -328,8 +325,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

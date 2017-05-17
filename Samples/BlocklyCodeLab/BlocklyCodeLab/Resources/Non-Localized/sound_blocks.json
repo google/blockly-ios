@@ -1,0 +1,28 @@
+[
+  {
+    "type": "play_sound",
+    "message0": "Play %1",
+    "args0": [{
+      "type": "field_dropdown",
+      "name": "VALUE",
+      "options": [
+        ["Cheer", "Sounds/yeah.mp3"],
+        ["Fart", "Sounds/fart.wav"],
+        ["Horn", "Sounds/horn.wav"],
+        ["Success", "Sounds/success.wav"],
+        ["Whistle", "Sounds/whistle.wav"],
+        ["C4", "Sounds/c4.m4a"],
+        ["D4", "Sounds/d4.m4a"],
+        ["E4", "Sounds/e4.m4a"],
+        ["F4", "Sounds/f4.m4a"],
+        ["G4", "Sounds/g4.m4a"],
+        ["A4", "Sounds/a4.m4a"],
+        ["B4", "Sounds/b4.m4a"],
+        ["C5", "Sounds/c5.m4a"]
+      ]
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 20
+  }
+]

@@ -20,8 +20,7 @@
               </div>
             <p>Manages the use of events across Blockly.</p>
 
-<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager14sharedInstanceS0_">EventManager.sharedInstance</a></code>.</p>
-
+<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager6sharedS0_">EventManager.shared</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This class is not thread-safe and should only be accessed from the main thread.
@@ -42,9 +41,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly12EventManager14sharedInstanceS0_"></a>
-                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly12EventManager14sharedInstanceS0_">sharedInstance</a></h3>
+                    <a name="/s:ZvC7Blockly12EventManager6sharedS0_"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly12EventManager6sharedS0_">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -59,7 +58,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span> <span class="o">=</span> <span class="kt">EventManager</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">EventManager</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -199,7 +198,6 @@ by this method.</p>
                               <td>
                                 <div>
                                   <p>The <code>BlocklyEvent</code> to queue.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -263,7 +261,6 @@ by this method.</p>
 if it is not already assigned to a group ID.</p>
 
 <p>Every call to <code>pushNewGroup()</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/s:FC7Blockly12EventManager8popGroupFT_T_">popGroup()</a></code>.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     It is not recommended to push a new group ID if <code>self.currentGroupID</code> is not <code>nil</code>.
@@ -301,7 +298,6 @@ Doing this will result in an error in debug mode and a warning in release mode.
  assigned to a group ID.</p>
 
 <p>Every call to <code>pushGroup(groupID:)</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/s:FC7Blockly12EventManager8popGroupFT_T_">popGroup()</a></code>.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     It is not recommended to push a group ID that differs from <code>self.currentGroupID</code>,
@@ -332,7 +328,6 @@ mode.
                               <td>
                                 <div>
                                   <p>The groupID to push.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -390,7 +385,6 @@ if it is not already assigned to a group ID.</p>
                       <div class="abstract">
                         <p>Convenience method that starts a new group, executes a given closure, stops the group, and then
 fires all pending events.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method guarantees a group is started, stopped, and all pending events are fired,
@@ -420,8 +414,8 @@ regardless if the given closure throws an error.
                               </td>
                               <td>
                                 <div>
-                                  <p>[Optional] Specifies a group ID to assign to a new group. If <code>nil</code>, a unique UUID is created for the group ID.</p>
-
+                                  <p>[Optional] Specifies a group ID to assign to a new group. If <code>nil</code>, a
+unique UUID is created for the group ID.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -433,7 +427,6 @@ regardless if the given closure throws an error.
                               <td>
                                 <div>
                                   <p>The closure to execute.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -489,7 +482,6 @@ regardless if the given closure throws an error.
                               <td>
                                 <div>
                                   <p>The <code>EventManagerListener</code> to add.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -535,7 +527,6 @@ regardless if the given closure throws an error.
                               <td>
                                 <div>
                                   <p>The <code>EventManagerListener</code> to remove.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -583,8 +574,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -629,8 +618,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

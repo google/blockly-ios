@@ -103,7 +103,7 @@ open class FieldLayout: Layout {
   /**
    Automatically captures a `BlocklyEvent.Change` for `self.field`, based on its state before
    and after running a given closure block. This event is then added to the pending events queue
-   on `EventManager.sharedInstance`.
+   on `EventManager.shared`.
 
    - parameter closure: A closure to execute, that will change the state of `self.field`.
    */
@@ -123,7 +123,7 @@ open class FieldLayout: Layout {
         let event = BlocklyEvent.Change.fieldValueEvent(
           workspace: workspace, block: block, field: field,
           oldValue: anOldValue, newValue: aNewValue)
-        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.shared.addPendingEvent(event)
       }
     } else {
       // Just run update
@@ -132,7 +132,7 @@ open class FieldLayout: Layout {
   }
 }
 
-// MARK: - FieldDelegate implementation
+// MARK: - FieldListener implementation
 
 extension FieldLayout: FieldListener {
   public func didUpdateField(_ field: Field) {

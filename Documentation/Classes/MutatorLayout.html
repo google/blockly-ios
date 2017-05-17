@@ -80,6 +80,33 @@ to this mutator.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly13MutatorLayout22userInteractionEnabledSb"></a>
+                    <a name="//apple_ref/swift/Property/userInteractionEnabled" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly13MutatorLayout22userInteractionEnabledSb">userInteractionEnabled</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Flag determining if user interaction should be enabled for the corresponding view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">userInteractionEnabled</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>            <div class="task-group">
               <div class="task-name-container">
@@ -127,7 +154,6 @@ to this mutator.</p>
                               <td>
                                 <div>
                                   <p>The <code>LayoutEngine</code> to associate with this layout.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -139,7 +165,6 @@ to this mutator.</p>
                               <td>
                                 <div>
                                   <p>The <code>Mutator</code> to associate with this layout.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -175,7 +200,6 @@ to this mutator.</p>
 calling <code>mutator.mutateBlock()</code>.</p>
 
 <p>This is where pre-/post- mutation work should be handled.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method needs to be implemented by a subclass of <code>MutatorLayout</code>.
@@ -208,7 +232,6 @@ calling <code>mutator.mutateBlock()</code>.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Updates the mutator from XML and immediately performs a mutation by calling <code><a href="../Classes/MutatorLayout.html#/s:FC7Blockly13MutatorLayout15performMutationFzT_T_">performMutation()</a></code>.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if the mutation could not be performed.
@@ -237,7 +260,6 @@ calling <code>mutator.mutateBlock()</code>.</p>
                               <td>
                                 <div>
                                   <p>The XML used to update the mutator.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -271,7 +293,7 @@ calling <code>mutator.mutateBlock()</code>.</p>
                       <div class="abstract">
                         <p>Automatically captures a <code><a href="../Classes/BlocklyEvent/Change.html">BlocklyEvent.Change</a></code> for <code>self.mutator</code>, based on its state before
 and after running a given closure block. This event is then added to the pending events queue
-on <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager14sharedInstanceS0_">EventManager.sharedInstance</a></code>.</p>
+on <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager6sharedS0_">EventManager.shared</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -295,7 +317,6 @@ on <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager14sha
                               <td>
                                 <div>
                                   <p>A closure to execute, that will change the state of <code>self.mutator</code>.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -343,8 +364,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -389,8 +408,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

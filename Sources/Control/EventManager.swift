@@ -32,7 +32,7 @@ public protocol EventManagerListener: class {
 /**
  Manages the use of events across Blockly.
 
- This class is designed as a singleton instance, accessible via `EventManager.sharedInstance`.
+ This class is designed as a singleton instance, accessible via `EventManager.shared`.
 
  - note: This class is not thread-safe and should only be accessed from the main thread.
  */
@@ -42,7 +42,7 @@ public final class EventManager: NSObject {
   // MARK: - Properties
 
   /// Shared instance.
-  public static let sharedInstance = EventManager()
+  public static let shared = EventManager()
 
   /// Sequential list of events queued up for firing.
   public private(set) var pendingEvents = [BlocklyEvent]()
@@ -75,7 +75,7 @@ public final class EventManager: NSObject {
   // MARK: - Initializers
 
   /**
-   A singleton instance for this class is accessible via `EventManager.sharedInstance.`
+   A singleton instance for this class is accessible via `EventManager.shared.`
    */
   private override init() {
   }
@@ -84,7 +84,7 @@ public final class EventManager: NSObject {
 
   /**
    Queues an event to be fired in the future (via `firePendingEvents()`). However, this event will
-   not be queued if `self.isEnabled` is set to `false`.
+   not be queued if `self.isEnabled` is set to `false`, or if the event is discardable.
 
    If `event.groupID` is `nil`, it is automatically assigned the value of `self.currentGroupID`,
    by this method.
@@ -92,7 +92,7 @@ public final class EventManager: NSObject {
    - parameter event: The `BlocklyEvent` to queue.
    */
   public func addPendingEvent(_ event: BlocklyEvent) {
-    guard isEnabled else {
+    guard isEnabled && !event.isDiscardable() else {
       return
     }
 

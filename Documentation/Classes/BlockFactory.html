@@ -119,7 +119,6 @@ predefined by the Blockly library.</li>
                       <div class="abstract">
                         <p>Loads block builders from a list of default files containing JSON block definitions. The
 contents of these files are predefined by the Blockly library.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method will overwrite any existing block builders that contain the same name.
@@ -148,7 +147,6 @@ contents of these files are predefined by the Blockly library.</p>
                               <td>
                                 <div>
                                   <p>The list of default block definition files that should be loaded.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -171,13 +169,11 @@ contents of these files are predefined by the Blockly library.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Loads block builders from a list of files containing JSON block definitions.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method will overwrite any existing block builders that contain the same name.
 
 </div>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a JSON file could not be found or read, or if the JSON contains
@@ -207,7 +203,6 @@ invalid block definition(s).
                               <td>
                                 <div>
                                   <p>List of paths to files containing JSON block definitions.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -218,8 +213,8 @@ invalid block definition(s).
                               </td>
                               <td>
                                 <div>
-                                  <p>The bundle containing the JSON paths. If <code>nil</code> is specified, <code>NSBundle.mainBundle()</code> is used by default.</p>
-
+                                  <p>The bundle containing the JSON paths. If <code>nil</code> is specified,
+<code>NSBundle.mainBundle()</code> is used by default.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -242,7 +237,6 @@ invalid block definition(s).
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Sets the block builder to use when making new blocks of a given name.</p>
-
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method automatically sets <code>blockBuilder.name</code> to match the given <code>name</code>.
@@ -271,7 +265,6 @@ invalid block definition(s).
                               <td>
                                 <div>
                                   <p>The <code>BlockBuilder</code> to use.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -283,7 +276,6 @@ invalid block definition(s).
                               <td>
                                 <div>
                                   <p>The block name to associate with this block builder.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -329,7 +321,6 @@ invalid block definition(s).
                               <td>
                                 <div>
                                   <p>The block name to search for the block builder.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -337,8 +328,8 @@ invalid block definition(s).
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>The <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code> matching the given <code>name</code> or <code>nil</code> if no block builder could be found.</p>
-
+                        <p>The <code><a href="../Classes/BlockBuilder.html">BlockBuilder</a></code> matching the given <code>name</code> or <code>nil</code> if no block builder could be
+found.</p>
                       </div>
                     </section>
                   </div>
@@ -383,7 +374,6 @@ loaded from JSON files.</p>
                               <td>
                                 <div>
                                   <p>Dictionary mapping <code>Mutator</code> objects to their mutator name.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -432,7 +422,6 @@ loaded from JSON files.</p>
                               <td>
                                 <div>
                                   <p>Dictionary mapping <code>BlockExtension</code> objects to their extension name.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -455,7 +444,6 @@ loaded from JSON files.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Creates and returns a new <code><a href="../Classes/Block.html">Block</a></code> with the given name.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if the block builder for the given name could not be found or if the
@@ -485,7 +473,6 @@ block builder is missing any required pieces.
                               <td>
                                 <div>
                                   <p>The name of the block to build.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -494,7 +481,6 @@ block builder is missing any required pieces.
                       <div>
                         <h4>Return Value</h4>
                         <p>A new <code><a href="../Classes/Block.html">Block</a></code>.</p>
-
                       </div>
                     </section>
                   </div>
@@ -513,7 +499,6 @@ block builder is missing any required pieces.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Creates and returns a new <code><a href="../Classes/Block.html">Block</a></code> with the given name.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Occurs if the block builder for the given name could not be found or if the
@@ -543,7 +528,6 @@ block builder is missing any required pieces.
                               <td>
                                 <div>
                                   <p>The name of the block to build.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -554,8 +538,8 @@ block builder is missing any required pieces.
                               </td>
                               <td>
                                 <div>
-                                  <p>Specifies whether the resulting block should be a shadow block (<code>true</code>) or a regular block (<code>false</code>).</p>
-
+                                  <p>Specifies whether the resulting block should be a shadow block (<code>true</code>) or a
+regular block (<code>false</code>).</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -566,8 +550,8 @@ block builder is missing any required pieces.
                               </td>
                               <td>
                                 <div>
-                                  <p>[Optional] The uuid to assign the block. If nil, a new uuid is automatically assigned to the block.</p>
-
+                                  <p>[Optional] The uuid to assign the block. If nil, a new uuid is automatically
+assigned to the block.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -576,7 +560,6 @@ block builder is missing any required pieces.
                       <div>
                         <h4>Return Value</h4>
                         <p>A new <code><a href="../Classes/Block.html">Block</a></code>.</p>
-
                       </div>
                     </section>
                   </div>
@@ -620,8 +603,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -666,8 +647,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

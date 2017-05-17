@@ -24,7 +24,7 @@ open class FieldDateLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldDate` that backs this layout
-  open let fieldDate: FieldDate
+  private let fieldDate: FieldDate
 
   /// The value that should be used when rendering this layout
   open var textValue: String {
@@ -67,7 +67,6 @@ open class FieldDateLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()

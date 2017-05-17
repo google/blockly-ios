@@ -40,7 +40,7 @@ public final class FieldDropdown: Field {
 
   /// The currently selected index
   public var selectedIndex: Int {
-    didSet { didSetEditableProperty(&selectedIndex, oldValue) }
+    didSet { didSetProperty(selectedIndex, oldValue) }
   }
 
   /// The option tuple of the currently selected index

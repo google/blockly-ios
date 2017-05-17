@@ -30,6 +30,8 @@ all three platforms to support cross-platform development.
 
 To get started using Blockly for iOS, follow [this guide][4].
 
+To run through an exercise in creating an iOS app with Blockly, see our [codelab][10].
+
 # API Reference
 
 For complete API documentation, visit our [API Reference Page][5].
@@ -62,5 +64,6 @@ Want to contribute? Great! First, read [our guidelines for contributors][9].
 [5]: https://developer.google.com/blockly/reference/ios "Blockly for iOS API Reference Documentation"
 [6]: https://github.com/google/blockly-ios/blob/master/LICENSE "Apache open source license, version 2.0"
 [7]: https://groups.google.com/forum/#!forum/blockly "Blockly developer forum"
-[8]: https://goo.gl/forms/kZTsO9wGLmpoPXC02 "Blockly developer registration form"
+[8]: https://developers.google.com/blockly/registration "Blockly developer registration form"
 [9]: https://github.com/google/blockly-ios/blob/master/CONTRIBUTING.md "Contributor guidelines"
+[10]: https://developers.google.com/blockly/codelab/ios

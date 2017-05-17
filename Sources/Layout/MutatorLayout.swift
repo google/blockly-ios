@@ -29,6 +29,11 @@ open class MutatorLayout: Layout {
   /// to this mutator.
   open weak var layoutCoordinator: WorkspaceLayoutCoordinator?
 
+  /// Flag determining if user interaction should be enabled for the corresponding view.
+  public var userInteractionEnabled: Bool {
+    return mutator.block?.editable ?? false
+  }
+
   // MARK: - Initializers
 
   /**
@@ -74,7 +79,7 @@ open class MutatorLayout: Layout {
   /**
    Automatically captures a `BlocklyEvent.Change` for `self.mutator`, based on its state before
    and after running a given closure block. This event is then added to the pending events queue
-   on `EventManager.sharedInstance`.
+   on `EventManager.shared`.
 
    - parameter closure: A closure to execute, that will change the state of `self.mutator`.
    */
@@ -90,7 +95,7 @@ open class MutatorLayout: Layout {
       if oldValue != newValue {
         let event = BlocklyEvent.Change.mutateEvent(
           workspace: workspace, block: block, oldValue: oldValue, newValue: newValue)
-        EventManager.sharedInstance.addPendingEvent(event)
+        EventManager.shared.addPendingEvent(event)
       }
     } else {
       // Just run closure

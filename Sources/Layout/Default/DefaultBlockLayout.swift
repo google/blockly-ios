@@ -27,14 +27,32 @@ public final class DefaultBlockLayout: BlockLayout {
 
   // TODO(#34): Consider replacing all connections/relative positions with a ConnectionLayout
 
-  /// For performance reasons, keep a strong reference to the block.outputConnection
-  fileprivate var _outputConnection: Connection!
+  /**
+   For performance reasons, create a variable that can be used to reference a `nil`
+   `Connection`.
 
-  /// For performance reasons, keep a strong reference to the block.nextConnection
-  fileprivate var _nextConnection: Connection!
+   Normally, `_outputConnection`, `_nextConnection`, and `_previousConnection` would
+   be defined as optional variables, but there is an implicit objc-retain/release overhead when
+   using optionals. So instead, those variables are defined as non-optionals and assigned to this
+   variable if they are actually `nil`. This reduces retain/release overhead and improves
+   performance.
+   */
+  private static let nilConnection = Connection(type: .outputValue)
 
-  /// For performance reasons, keep a strong reference to the block.previousConnection
-  fileprivate var _previousConnection: Connection!
+  /// For performance reasons, keep a strong reference to `block.outputConnection`.
+  /// If `block.outputConnection` is actually `nil`, this variable references
+  /// `DefaultBlockLayout.nilConnection`.
+  fileprivate let _outputConnection: Connection
+
+  /// For performance reasons, keep a strong reference to `block.nextConnection`.
+  /// If `block.nextConnection` is actually `nil`, this variable references
+  /// `DefaultBlockLayout.nilConnection`.
+  fileprivate let _nextConnection: Connection
+
+  /// For performance reasons, keep a strong reference to `block.previousConnection`.
+  /// If `block.previousConnection` is actually `nil`, this variable references
+  /// `DefaultBlockLayout.nilConnection`.
+  fileprivate let _previousConnection: Connection
 
   /// The relative position of the output connection, expressed as a Workspace coordinate system
   /// unit
@@ -56,17 +74,17 @@ public final class DefaultBlockLayout: BlockLayout {
   internal override var absolutePosition: WorkspacePoint {
     didSet {
       // Update connection positions
-      if _outputConnection != nil {
+      if _outputConnection !== DefaultBlockLayout.nilConnection {
         _outputConnection.moveToPosition(self.absolutePosition,
           withOffset: _outputConnectionRelativePosition)
       }
 
-      if _nextConnection != nil {
+      if _nextConnection !== DefaultBlockLayout.nilConnection {
         _nextConnection.moveToPosition(self.absolutePosition,
           withOffset: _nextConnectionRelativePosition)
       }
 
-      if _previousConnection != nil {
+      if _previousConnection !== DefaultBlockLayout.nilConnection {
         _previousConnection.moveToPosition(self.absolutePosition,
           withOffset: _previousConnectionRelativePosition)
       }
@@ -83,9 +101,9 @@ public final class DefaultBlockLayout: BlockLayout {
    - parameter engine: The `LayoutEngine` to associate with the new layout.
    */
   public override init(block: Block, engine: LayoutEngine) {
-    _outputConnection = block.outputConnection
-    _nextConnection = block.nextConnection
-    _previousConnection = block.previousConnection
+    _outputConnection = block.outputConnection ?? DefaultBlockLayout.nilConnection
+    _nextConnection = block.nextConnection ?? DefaultBlockLayout.nilConnection
+    _previousConnection = block.previousConnection ?? DefaultBlockLayout.nilConnection
     super.init(block: block, engine: engine)
   }
 

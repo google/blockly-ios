@@ -70,9 +70,17 @@ open class FieldVariableView: FieldView {
           fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
         dropDownView.borderCornerRadius =
           fieldVariableLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
+        dropDownView.horizontalSpacing =
+          fieldVariableLayout.config.viewUnit(for: LayoutConfig.InlineXPadding)
+        dropDownView.verticalSpacing =
+          fieldVariableLayout.config.viewUnit(for: LayoutConfig.InlineYPadding)
         dropDownView.textFont = fieldVariableLayout.config.font(for: LayoutConfig.GlobalFont)
         dropDownView.textColor =
           fieldVariableLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
+
+        let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+        let scale = fieldVariableLayout.engine.scale
+        dropDownView.dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
       }
     }
   }
@@ -111,9 +119,12 @@ extension FieldVariableView: FieldLayoutMeasurer {
     let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
     let measureText = fieldVariableLayout.variable
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
+    let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+    let scale = fieldVariableLayout.engine.scale
+    let dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
 
     return DropdownView.measureSize(
-      text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
+      text: measureText, dropDownArrowImageSize: dropDownArrowImageSize,
       textFont: font, borderWidth: borderWidth, horizontalSpacing: xSpacing,
       verticalSpacing: ySpacing)
   }
@@ -129,10 +140,13 @@ extension FieldVariableView: DropdownViewDelegate {
 
     let viewController = DropdownOptionsViewController()
     viewController.delegate = self
-    viewController.textLabelFont =
-      fieldVariableLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
     viewController.textLabelColor =
       fieldVariableLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
+
+    if let fontCreator = fieldVariableLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
+      // Use a scaled font, but don't let the scale go less than 1.0
+      viewController.textLabelFont = fontCreator(max(fieldVariableLayout.engine.scale, 1.0))
+    }
 
     let renameText = message(forKey: "BKY_RENAME_VARIABLE")
     let deleteText = message(forKey: "BKY_DELETE_VARIABLE")
@@ -172,7 +186,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       removeVariable(fieldVariableLayout: fieldVariableLayout)
     } else {
       // Change to a new variable
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         fieldVariableLayout.changeToExistingVariable(value)
       }
     }
@@ -191,9 +205,10 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
     let cancelText = message(forKey: "BKY_IOS_CANCEL")
     let renameText = message(forKey: "BKY_IOS_VARIABLES_RENAME_BUTTON")
     renameView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
-    let renameAlertAction = UIAlertAction(title: renameText, style: .default) { _ in
-      guard let textField = renameView.textFields?[0],
-        let newName = textField.text,
+    let renameAlertAction = UIAlertAction(title: renameText, style: .default) {
+      [weak renameView] _ in
+      guard let textField = renameView?.textFields?[0],
+        let newName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
         fieldVariableLayout.isValidName(newName) else
       {
         self.renameVariable(fieldVariableLayout: fieldVariableLayout,
@@ -201,7 +216,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
         return
       }
 
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         fieldVariableLayout.renameVariable(to: newName)
       }
     }
@@ -219,7 +234,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
   private func removeVariable(fieldVariableLayout: FieldVariableLayout) {
     let variableCount = fieldVariableLayout.numberOfVariableReferences()
     if variableCount == 1 {
-      EventManager.sharedInstance.groupAndFireEvents {
+      EventManager.shared.groupAndFireEvents {
         // If this is the only instance of this variable, remove it.
         fieldVariableLayout.removeVariable()
       }
@@ -233,7 +248,7 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
       let deleteText = message(forKey: "BKY_IOS_VARIABLES_DELETE_BUTTON")
       removeView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
       removeView.addAction(UIAlertAction(title: deleteText, style: .default) { _ in
-        EventManager.sharedInstance.groupAndFireEvents {
+        EventManager.shared.groupAndFireEvents {
           fieldVariableLayout.removeVariable()
         }
       })

@@ -365,7 +365,7 @@
   "TEXT_PROMPT_TYPE_NUMBER": "K\u00e9rj be sz\u00e1mot",
   "TEXT_PROMPT_TYPE_TEXT": "K\u00e9rj be sz\u00f6veget",
   "TEXT_REPLACE_HELPURL": "https://github.com/google/blockly/wiki/Text#replacing-substrings",
-  "TEXT_REPLACE_MESSAGE0": "replace %1 with %2 in %3",
+  "TEXT_REPLACE_MESSAGE0": "%1 cser\u00e9je %2-vel %3-ban",
   "TEXT_REPLACE_TOOLTIP": "Replace all occurances of some text within some other text.",
   "TEXT_REVERSE_HELPURL": "https://github.com/google/blockly/wiki/Text#reversing-text",
   "TEXT_REVERSE_MESSAGE0": "reverse %1",

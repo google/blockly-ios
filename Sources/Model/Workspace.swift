@@ -21,36 +21,36 @@ import Foundation
 @objc(BKYWorkspaceListener)
 public protocol WorkspaceListener: class {
   /**
-   Event that is called when a block will be added to a workspace.
+   Event that is called when a list of block trees will be added to a workspace.
 
-   - parameter workspace: The workspace that will add a block.
-   - parameter block: The block that will be added.
+   - parameter workspace: The workspace that will add a list of block trees.
+   - parameter blockTrees: The list of root blocks that will be added.
    */
-  @objc optional func workspace(_ workspace: Workspace, willAddBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, willAddBlockTrees blockTrees: [Block])
 
   /**
-   Event that is called when a block has been added to a workspace.
+   Event that is called when a list of block trees have been added to a workspace.
 
-   - parameter workspace: The workspace that added a block.
-   - parameter block: The block that was added.
+   - parameter workspace: The workspace that added a list of block trees.
+   - parameter blockTrees: The list of root blocks that have been added.
   */
-  @objc optional func workspace(_ workspace: Workspace, didAddBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, didAddBlockTrees blockTrees: [Block])
 
   /**
-   Event that is called when a block will be removed from a workspace.
+   Event that is called when a list of block trees will be removed from a workspace.
 
-   - parameter workspace: The workspace that will remove a block.
-   - parameter block: The block that will be removed.
+   - parameter workspace: The workspace that will remove a list of block trees.
+   - parameter blockTrees: The list of root blocks that will be removed.
    */
-  @objc optional func workspace(_ workspace: Workspace, willRemoveBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, willRemoveBlockTrees blockTrees: [Block])
 
   /**
-   Event that is called when a block has been removed from a workspace.
+   Event that is called when a list of block trees have been removed from a workspace.
 
-   - parameter workspace: The workspace that removed a block.
-   - parameter block: The block that was removed.
+   - parameter workspace: The workspace that removed a list of block trees.
+   - parameter blockTrees: The list of root blocks that have been removed.
    */
-  @objc optional func workspace(_ workspace: Workspace, didRemoveBlock block: Block)
+  @objc optional func workspace(_ workspace: Workspace, didRemoveBlockTrees blockTrees: [Block])
 }
 
 /**
@@ -157,51 +157,71 @@ open class Workspace : NSObject {
    allowed.
    */
   open func addBlockTree(_ rootBlock: Block) throws {
-    var newBlocks = [Block]()
+    try addBlockTrees([rootBlock])
+  }
 
-    // Gather list of all new blocks and perform state checks.
+  /**
+   Adds a list of blocks and all of their connected blocks to the workspace.
 
-    for block in rootBlock.allBlocksForTree() {
-      if let existingBlock = allBlocks[block.uuid] {
-        if existingBlock == block {
-          // The block is already in the workspace
-          continue
-        } else {
+   - parameter rootBlocks: The list of root blocks to add.
+   - throws:
+   `BlocklyError`: Thrown if one of the blocks uses a uuid that is already being used by another
+   block in the workspace or if adding the new list of blocks would exceed the maximum amount
+   allowed.
+   */
+  open func addBlockTrees(_ rootBlocks: [Block]) throws {
+    var newRootBlocks = [String: Block]()
+    var newBlocks = [String: Block]()
+
+    // Check that all new blocks will not mess up the state of the workspace.
+    for rootBlock in rootBlocks {
+      if containsBlock(rootBlock) {
+        // This root block is already in the workspace. Skip it.
+        continue
+      } else if !rootBlock.topLevel {
+        throw BlocklyError(.illegalArgument,
+          "A non-top level block tree cannot be added to the workspace.")
+      }
+
+      for block in rootBlock.allBlocksForTree() {
+        if allBlocks[block.uuid] != nil {
           throw BlocklyError(.illegalState,
-            "Cannot add a block into the workspace with a uuid that is already being used by " +
-            "another block")
+            "A block cannot be added into the workspace with a uuid ('\(block.uuid)') " +
+            "that is already being used by another block.")
+        } else if newBlocks[block.uuid] != nil {
+          throw BlocklyError(.illegalArgument,
+            "Two blocks with the same uuid ('\(block.uuid)') cannot be added into the " +
+            "workspace at the same time.")
+        } else if block.shadow && block.topLevel {
+          throw BlocklyError(
+            .illegalState, "A shadow block cannot be added to the workspace as a top-level block.")
         }
+
+        newBlocks[block.uuid] = block
       }
 
-      if block.shadow && block.topLevel {
-        throw BlocklyError(
-          .illegalState, "Shadow block cannot be added to the workspace as a top-level block.")
-      }
-
-      newBlocks.append(block)
+      // This block tree passes all checks. Add it to the list.
+      newRootBlocks[rootBlock.uuid] = rootBlock
     }
 
     if let maxBlocks = self.maxBlocks , (allBlocks.count + newBlocks.count) > maxBlocks {
       throw BlocklyError(.workspaceExceedsCapacity,
-        "Adding more blocks would exceed the maximum amount allowed (\(maxBlocks))")
+        "Adding more blocks would exceed the maximum amount allowed (\(maxBlocks)).")
     }
 
     // Fire listeners for all blocks that will be added to the workspace
-    for block in newBlocks {
-      listeners.forEach { $0.workspace?(self, willAddBlock: block) }
-    }
+    let newRootBlockTrees = Array(newRootBlocks.values)
+    listeners.forEach { $0.workspace?(self, willAddBlockTrees: newRootBlockTrees) }
 
     // All checks passed. Add the new blocks to the workspace.
-    for block in newBlocks {
+    for (_, block) in newBlocks {
       block.editable = block.editable && !readOnly
       allBlocks[block.uuid] = block
     }
 
     // Notify delegate for each block addition, now that all of them have been added to the
     // workspace
-    for block in newBlocks {
-      listeners.forEach { $0.workspace?(self, didAddBlock: block) }
-    }
+    listeners.forEach { $0.workspace?(self, didAddBlockTrees: newRootBlockTrees) }
   }
 
   /**
@@ -212,33 +232,37 @@ open class Workspace : NSObject {
    `BlocklyError`: Thrown if the tree of blocks could not be removed from the workspace.
    */
   open func removeBlockTree(_ rootBlock: Block) throws {
-    if (rootBlock.previousConnection?.connected ?? false) ||
-      (rootBlock.outputConnection?.connected ?? false)
-    {
-      throw BlocklyError(.illegalOperation,
-        "The root block must be disconnected from its previous and/or output connections prior " +
-        "to being removed from the workspace")
-    }
+    try removeBlockTrees([rootBlock])
+  }
 
-    var removedBlocks = [Block]()
+  /**
+   Removes a given list of blocks and all of their connected child blocks from the workspace.
 
-    // Figure out which blocks to remove from the workspace and fire listeners
-    for block in rootBlock.allBlocksForTree() {
-      if containsBlock(block) {
-        removedBlocks.append(block)
-        listeners.forEach { $0.workspace?(self, willRemoveBlock: block) }
+   - parameter rootBlocks: The list of root blocks to remove.
+   - throws:
+   `BlocklyError`: Thrown if the list of blocks could not be removed from the workspace.
+   */
+  open func removeBlockTrees(_ rootBlocks: [Block]) throws {
+    for rootBlock in rootBlocks {
+      if !rootBlock.topLevel {
+        throw BlocklyError(.illegalOperation,
+          "A root block must be disconnected from its previous and/or output connections prior " +
+          "to being removed from the workspace.")
       }
     }
 
+    // Fire listeners for block trees that will be removed from the workspace
+    listeners.forEach { $0.workspace?(self, willRemoveBlockTrees: rootBlocks) }
+
     // Remove blocks at the same time
-    for block in removedBlocks {
-      allBlocks[block.uuid] = nil
+    for rootBlock in rootBlocks {
+      for block in rootBlock.allBlocksForTree() {
+        allBlocks[block.uuid] = nil
+      }
     }
 
     // Fire listeners for all blocks that were removed
-    for block in removedBlocks {
-      listeners.forEach { $0.workspace?(self, didRemoveBlock: block) }
-    }
+    listeners.forEach { $0.workspace?(self, didRemoveBlockTrees: rootBlocks) }
   }
 
   /**

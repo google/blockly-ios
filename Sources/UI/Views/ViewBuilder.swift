@@ -166,11 +166,11 @@ extension ViewBuilder: LayoutHierarchyListener {
   public func layout(_ layout: Layout,
     didAdoptChildLayout childLayout: Layout, fromOldParentLayout oldParentLayout: Layout?)
   {
-    guard let parentView = ViewManager.sharedInstance.findView(forLayout: layout) else {
+    guard let parentView = ViewManager.shared.findView(forLayout: layout) else {
       return
     }
 
-    if let childView = ViewManager.sharedInstance.findView(forLayout: childLayout) {
+    if let childView = ViewManager.shared.findView(forLayout: childLayout) {
       // The child view already exists. Simply transfer the child view over to the new parent view.
       parentView.addSubview(childView)
       return
@@ -182,8 +182,8 @@ extension ViewBuilder: LayoutHierarchyListener {
 
   public func layout(_ layout: Layout, didRemoveChildLayout childLayout: Layout) {
     guard
-      let parentView = ViewManager.sharedInstance.findView(forLayout: layout),
-      let childView = ViewManager.sharedInstance.findView(forLayout: childLayout) else
+      let parentView = ViewManager.shared.findView(forLayout: layout),
+      let childView = ViewManager.shared.findView(forLayout: childLayout) else
     {
       return
     }

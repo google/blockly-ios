@@ -24,7 +24,7 @@ public final class FieldInput: Field {
 
   /// The text value for the field
   public var text: String {
-    didSet { didSetEditableProperty(&text, oldValue) }
+    didSet { didSetProperty(text, oldValue) }
   }
 
   // MARK: - Initializers

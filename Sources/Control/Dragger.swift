@@ -89,7 +89,7 @@ public final class Dragger: NSObject {
 
       // Start a move event for this block
       let workspace = workspaceLayoutCoordinator.workspaceLayout.workspace
-      let moveEvent = BlocklyEvent.BlockMove(workspace: workspace, block: block)
+      let moveEvent = BlocklyEvent.Move(workspace: workspace, block: block)
 
       // Keep track of the gesture data for this drag
       let dragGestureData = DragGestureData(
@@ -131,13 +131,13 @@ public final class Dragger: NSObject {
     // Disable event capturing for temporary moves. Only the final position is of importance to us
     // and by disabling this event, we don't generate a lot of potentially unmerge-able events
     // (when multiple blocks are dragged simultaneously).
-    EventManager.sharedInstance.isEnabled = false
+    EventManager.shared.isEnabled = false
 
     // Move to the new position (only update the canvas size at the very end of the drag)
     layout.parentBlockGroupLayout?.move(toWorkspacePosition: position, updateCanvasSize: false)
 
     // Re-enable event capturing.
-    EventManager.sharedInstance.isEnabled = true
+    EventManager.shared.isEnabled = true
 
     // Update the highlighted connection for this drag
     updateHighlightedConnection(forDrag: gestureData)
@@ -160,8 +160,8 @@ public final class Dragger: NSObject {
       // Add move event for the current position of block, since it wasn't being captured
       // while the block was moving.
       if let drag = _dragGestureData[layout.uuid] {
-        drag.moveEvent.recordNewValues()
-        EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+        drag.moveEvent.recordNewValues(forBlock: drag.blockLayout?.block)
+        EventManager.shared.addPendingEvent(drag.moveEvent)
       }
 
       // Remove the highlight for this block
@@ -206,8 +206,8 @@ public final class Dragger: NSObject {
     // Add move event for the current position of block, since it wasn't being captured
     // while the block was moving.
     if let drag = _dragGestureData[layout.uuid] {
-      drag.moveEvent.recordNewValues()
-      EventManager.sharedInstance.addPendingEvent(drag.moveEvent)
+      drag.moveEvent.recordNewValues(forBlock: drag.blockLayout?.block)
+      EventManager.shared.addPendingEvent(drag.moveEvent)
     }
 
     // Remove the highlight for this block
@@ -255,10 +255,12 @@ public final class Dragger: NSObject {
 
       // Add the new highlight (if something was found)
       if let blockLayout = drag.blockLayout,
-        let newHighlightedConnection = connectionPair?.target
+        let targetConnection = connectionPair?.target,
+        let targetConnectionBlockLayout = targetConnection.sourceBlock?.layout
       {
-        newHighlightedConnection.addHighlightForBlock(blockLayout.block)
-        drag.highlightedConnection = newHighlightedConnection
+        targetConnectionBlockLayout.addHighlightSource(
+          sourceUUID: blockLayout.uuid, forConnection: targetConnection)
+        drag.highlightedConnection = targetConnection
       }
     }
   }
@@ -269,8 +271,11 @@ public final class Dragger: NSObject {
   - parameter drag: The drag.
   */
   fileprivate func removeHighlightedConnection(forDrag drag: DragGestureData) {
-    if let blockLayout = drag.blockLayout {
-      drag.highlightedConnection?.removeHighlightForBlock(blockLayout.block)
+    if let blockLayout = drag.blockLayout,
+      let highlightedConnection = drag.highlightedConnection,
+      let highlightedConnectionBlockLayout = highlightedConnection.sourceBlock?.layout {
+      highlightedConnectionBlockLayout.removeHighlightSource(
+        sourceUUID: blockLayout.uuid, forConnection: highlightedConnection)
       drag.highlightedConnection = nil
     }
   }
@@ -311,7 +316,7 @@ private class DragGestureData {
   fileprivate let connectionGroup: ConnectionManager.Group
 
   /// Event capturing the positional movement of a block during the lifespan of the drag.
-  fileprivate let moveEvent: BlocklyEvent.BlockMove
+  fileprivate let moveEvent: BlocklyEvent.Move
 
   /// Stores the current connection that is being highlighted because of this drag gesture
   fileprivate weak var highlightedConnection: Connection?
@@ -320,7 +325,7 @@ private class DragGestureData {
 
   fileprivate init(blockLayout: BlockLayout, blockLayoutStartPosition: WorkspacePoint,
     touchStartPosition: WorkspacePoint, connectionGroup: ConnectionManager.Group,
-    moveEvent: BlocklyEvent.BlockMove) {
+    moveEvent: BlocklyEvent.Move) {
     self.blockLayout = blockLayout
     self.blockLayoutStartPosition = blockLayoutStartPosition
     self.touchStartPosition = touchStartPosition

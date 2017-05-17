@@ -71,9 +71,17 @@ open class FieldDropdownView: FieldView {
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
         dropDownView.borderCornerRadius =
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
+        dropDownView.horizontalSpacing =
+          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.InlineXPadding)
+        dropDownView.verticalSpacing =
+          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.InlineYPadding)
         dropDownView.textFont = fieldDropdownLayout.config.font(for: LayoutConfig.GlobalFont)
         dropDownView.textColor =
           fieldDropdownLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
+
+        let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+        let scale = fieldDropdownLayout.engine.scale
+        dropDownView.dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
       }
     }
   }
@@ -112,9 +120,12 @@ extension FieldDropdownView: FieldLayoutMeasurer {
     let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
     let measureText = (fieldDropdownLayout.selectedOption?.displayName ?? "")
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
+    let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+    let scale = fieldDropdownLayout.engine.scale
+    let dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
 
     return DropdownView.measureSize(
-      text: measureText, dropDownArrowImage: DropdownView.defaultDropDownArrowImage(),
+      text: measureText, dropDownArrowImageSize: dropDownArrowImageSize,
       textFont: font, borderWidth: borderWidth, horizontalSpacing: xSpacing,
       verticalSpacing: ySpacing)
   }
@@ -132,10 +143,13 @@ extension FieldDropdownView: DropdownViewDelegate {
     viewController.delegate = self
     viewController.options = fieldDropdownLayout.options
     viewController.selectedIndex = fieldDropdownLayout.selectedIndex
-    viewController.textLabelFont =
-      fieldDropdownLayout.config.popoverFont(for: LayoutConfig.GlobalFont)
     viewController.textLabelColor =
       fieldDropdownLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
+
+    if let fontCreator = fieldDropdownLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
+      // Use a scaled font, but don't let the scale go less than 1.0
+      viewController.textLabelFont = fontCreator(max(fieldDropdownLayout.engine.scale, 1.0))
+    }
 
     popoverDelegate?
       .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
@@ -148,7 +162,7 @@ extension FieldDropdownView: DropdownOptionsViewControllerDelegate {
   public func dropdownOptionsViewController(
     _ viewController: DropdownOptionsViewController, didSelectOptionIndex optionIndex: Int)
   {
-    EventManager.sharedInstance.groupAndFireEvents {
+    EventManager.shared.groupAndFireEvents {
       fieldDropdownLayout?.updateSelectedIndex(optionIndex)
       popoverDelegate?.layoutView(
         self, requestedToDismissPopoverViewController: viewController, animated: true)

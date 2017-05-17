@@ -243,8 +243,8 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate implementation
 
 extension WorkspaceViewController: UIPopoverPresentationControllerDelegate {
-  public func adaptivePresentationStyle(
-    for controller: UIPresentationController) -> UIModalPresentationStyle
+  public func adaptivePresentationStyle(for controller: UIPresentationController,
+    traitCollection: UITraitCollection) -> UIModalPresentationStyle
   {
     // Force this view controller to always show up in a popover
     return UIModalPresentationStyle.none

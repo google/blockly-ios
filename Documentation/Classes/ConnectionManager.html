@@ -134,7 +134,6 @@ otherwise.</p>
                               <td>
                                 <div>
                                   <p>The <code>ConnectionValidator</code> for block-level validation.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -189,8 +188,9 @@ otherwise.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>If this value is specified, all connections underneath this block’s tree are automatically moved to the newly created connection group. This value is also assigned as the <code>ownerBlock</code> of the connection group.</p>
-
+                                  <p>If this value is specified, all connections underneath this block&rsquo;s tree are
+automatically moved to the newly created connection group. This value is also assigned as the
+<code>ownerBlock</code> of the connection group.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -199,7 +199,6 @@ otherwise.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The newly created connection group</p>
-
                       </div>
                     </section>
                   </div>
@@ -242,7 +241,6 @@ deleted after this operation is completed (unless both groups are the same).</p>
                               <td>
                                 <div>
                                   <p>The group containing the connections to move</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -253,8 +251,8 @@ deleted after this operation is completed (unless both groups are the same).</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The receiving group. If this value is nil, the <code>mainGroup</code> is used by default.</p>
-
+                                  <p>The receiving group. If this value is nil, the <code>mainGroup</code> is used by
+default.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -301,8 +299,8 @@ group.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The connection to add. If the connection was already being tracked, it is simply assigned to <code>group</code>.</p>
-
+                                  <p>The connection to add. If the connection was already being tracked,
+it is simply assigned to <code>group</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -313,8 +311,8 @@ group.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The group to assign this connection to. If none is specified, the connection is assigned to <code>mainGroup</code>.</p>
-
+                                  <p>The group to assign this connection to. If none is specified, the connection
+is assigned to <code>mainGroup</code>.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -360,7 +358,6 @@ group.</p>
                               <td>
                                 <div>
                                   <p>The connection to remove.</p>
-
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -434,8 +431,7 @@ closest to a valid connection on another block.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The group whose <code>ownerBlock</code>’s direct connections to search</p>
-
+                                  <p>The group whose <code>ownerBlock</code>&rsquo;s direct connections to search</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -446,8 +442,8 @@ closest to a valid connection on another block.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>How far out to search for compatible connections, specified as a Workspace coordinate system unit</p>
-
+                                  <p>How far out to search for compatible connections, specified as a Workspace
+coordinate system unit</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -455,8 +451,9 @@ closest to a valid connection on another block.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A connection pair where the <code>pair.moving</code> connection is one on the given block and the <code>pair.target</code> connection is the closest compatible connection. Nil is returned if no suitable connection pair could be found.</p>
-
+                        <p>A connection pair where the <code>pair.moving</code> connection is one on the given block and the
+<code>pair.target</code> connection is the closest compatible connection. Nil is returned if no suitable
+connection pair could be found.</p>
                       </div>
                     </section>
                   </div>
@@ -500,7 +497,6 @@ not currently being dragged. This function is used for bumping so type checking 
                               <td>
                                 <div>
                                   <p>The base connection for the search.</p>
-
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -511,8 +507,8 @@ not currently being dragged. This function is used for bumping so type checking 
                               </td>
                               <td>
                                 <div>
-                                  <p>How far out to search for compatible connections, specified as a Workspace coordinate system unit</p>
-
+                                  <p>How far out to search for compatible connections, specified as a Workspace
+coordinate system unit</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -521,7 +517,6 @@ not currently being dragged. This function is used for bumping so type checking 
                       <div>
                         <h4>Return Value</h4>
                         <p>A list of all nearby compatible connections.</p>
-
                       </div>
                     </section>
                   </div>
@@ -595,8 +590,6 @@ toc:
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Create.html
     - title: – Move
       path: /blockly/reference/ios/../Classes/BlocklyEvent/Move.html
-    - title: – BlockMove
-      path: /blockly/reference/ios/../Classes/BlocklyEvent/BlockMove.html
     - title: BlocklyEventFactory
       path: /blockly/reference/ios/../Classes/BlocklyEventFactory.html
     - title: BlockFactory
@@ -641,8 +634,6 @@ toc:
       path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
-    - title: ConnectionHighlightDelegate
-      path: /blockly/reference/ios/../Protocols/ConnectionHighlightDelegate.html
     - title: ConnectionManager
       path: /blockly/reference/ios/../Classes/ConnectionManager.html
     - title: – Group

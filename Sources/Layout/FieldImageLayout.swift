@@ -24,7 +24,7 @@ open class FieldImageLayout: FieldLayout {
   // MARK: - Properties
 
   /// The `FieldImage` that backs this layout
-  open let fieldImage: FieldImage
+  private let fieldImage: FieldImage
 
   /// The size of the image field, expressed as a Workspace coordinate system size
   open var size: WorkspaceSize {
@@ -47,7 +47,6 @@ open class FieldImageLayout: FieldLayout {
 
   // MARK: - Super
 
-  // TODO(#114): Remove `override` once `FieldLayout` is deleted.
   open override func didUpdateField(_ field: Field) {
     // Perform a layout up the tree
     updateLayoutUpTree()
