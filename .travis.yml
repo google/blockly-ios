@@ -11,6 +11,7 @@ matrix:
 
 
 script:
-  echo "xcode sdk version ${TRAVIS_XCODE_SDK}"
+  echo "xcode sdk version"
+  echo " ${TRAVIS_XCODE_SDK}"
   xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3' 
   
