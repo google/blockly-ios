@@ -1,11 +1,13 @@
 language: objective-c
-xcode_project:  Samples/BlocklySample/BlocklySample.xcodeproj
-xcode_scheme: BlocklyTests
+#xcode_project:  Samples/BlocklySample/BlocklySample.xcodeproj
+#xcode_scheme: BlocklyTests
 
 matrix:
   include:
     - osx_image: xcode8.3
+      objective_c: "stable"
     - osx_image: Xcode 7.3.1
+      objective_c: "stable"
 
 
 script:
