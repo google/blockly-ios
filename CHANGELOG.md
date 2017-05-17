@@ -1,4 +1,4 @@
-# [Version 1.0](https://github.com/google/blockly-ios/tree/1.0) (May 2017)
+# [Version 1.0](https://github.com/google/blockly-ios/tree/1.0.0) (May 2017)
 
 We're happy to announce that we've reached version 1.0 of Blockly iOS!
 
