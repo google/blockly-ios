@@ -10,4 +10,4 @@ matrix:
 
 
 script:
-  xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3'
+  xcodebuild test -project $xcode_project  -scheme $xcode_scheme  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3'
