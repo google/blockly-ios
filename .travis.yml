@@ -5,12 +5,12 @@ language: objective-c
 matrix:
   include:
     - osx_image: xcode8.3
-      objective_c: "stable"
+      objective-c: "stable"
     - osx_image: Xcode 7.3.1
-      objective_c: "stable"
+      objective-c: "stable"
 
 
 script:
-  if [ $osx_image == 'xcode8.3' ];  then xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3' fi;
-  if [ $osx_image == 'xcode7.3.1' ];  then xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=9.3' fi;
+  xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3' 
+  #if [ $osx_image == 'xcode7.3.1' ];  then xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=9.3' fi;
   
