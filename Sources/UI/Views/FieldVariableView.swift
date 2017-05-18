@@ -31,6 +31,7 @@ open class FieldVariableView: FieldView {
   fileprivate lazy var dropDownView: DropdownView = {
     let dropDownView = DropdownView()
     dropDownView.delegate = self
+    dropDownView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     return dropDownView
   }()
 
@@ -40,7 +41,7 @@ open class FieldVariableView: FieldView {
   public required init() {
     super.init(frame: CGRect.zero)
 
-    configureSubviews()
+    addSubview(dropDownView)
   }
 
   /**
@@ -89,18 +90,6 @@ open class FieldVariableView: FieldView {
     super.prepareForReuse()
 
     dropDownView.text = ""
-  }
-
-  // MARK: - Private
-
-  fileprivate func configureSubviews() {
-    let views: [String: UIView] = ["dropDownView": dropDownView]
-    let constraints = [
-      "H:|[dropDownView]|",
-      "V:|[dropDownView]|",
-      ]
-    bky_addSubviews(Array(views.values))
-    bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
   }
 }
 
