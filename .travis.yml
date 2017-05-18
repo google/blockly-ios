@@ -5,4 +5,7 @@ matrix:
       objective-c: "stable"
 
 script:
-  xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests  -destination 'platform=iOS Simulator,name=iPad Air,OS=9.3' 
+  xcodebuild test -project Samples/BlocklySample/BlocklySample.xcodeproj  -scheme BlocklyTests
+                  -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3'
+                  -destination 'platform=iOS Simulator,name=iPad Air,OS=10.3'
+                  -destination 'platform=iOS Simulator,name=iPad Pro (12.9-inch),OS=10.3'
