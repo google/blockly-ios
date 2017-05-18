@@ -211,9 +211,9 @@ public final class DropdownView: UIView {
       "dropDownArrowWidth": dropDownArrowImageSize.width,
       ]
     let constraints = [
-      "H:|-(xSpacing)-[label]-(xSpacing)-[dropDownArrow(dropDownArrowWidth)]-(xSpacing)-|",
+      "H:|-(xSpacing)-[label]",
+      "H:[dropDownArrow(dropDownArrowWidth)]-(xSpacing)-|",
       "H:|[button]|",
-      "V:|-(ySpacing)-[label]-(ySpacing)-|",
       "V:[dropDownArrow(dropDownArrowHeight)]",
       "V:|[button]|",
       ]
@@ -226,7 +226,11 @@ public final class DropdownView: UIView {
     // Add constraints
     bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
-    // Center drop down arrow within superview
+    // Center label and drop down arrow within superview
+    addConstraint(NSLayoutConstraint(
+      item: self, attribute: .centerY, relatedBy: .equal,
+      toItem: _label, attribute: .centerY, multiplier: 1.0, constant: 0))
+
     addConstraint(NSLayoutConstraint(
       item: self, attribute: .centerY, relatedBy: .equal,
       toItem: _dropDownArrow, attribute: .centerY, multiplier: 1.0, constant: 0))
