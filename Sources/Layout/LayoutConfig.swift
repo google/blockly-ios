@@ -53,6 +53,10 @@ open class LayoutConfig: NSObject {
   /// [`Unit`] If necessary, the line stroke width of a field
   public static let FieldLineWidth = LayoutConfig.newPropertyKey()
 
+  /// [`UntypedValue`: `AnglePicker.Options`] The options to use whenever an angle picker is
+  /// displayed.
+  public static let FieldAnglePickerOptions = LayoutConfig.newPropertyKey()
+
   /// [`Unit`] The border width to use when rendering the `FieldColor` button
   public static let FieldColorButtonBorderWidth = LayoutConfig.newPropertyKey()
 
@@ -158,6 +162,9 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `[String]` values
   public private(set) var stringArrays = Dictionary<PropertyKey, [String]>()
 
+  /// Dictionary mapping property keys to `Any` values
+  public private(set) var untypedValues = Dictionary<PropertyKey, Any>()
+
   // MARK: - Initializers
 
   public override init() {
@@ -174,6 +181,9 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
     setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
+
+    setUntypedValue(AnglePicker.Options(), for: LayoutConfig.FieldAnglePickerOptions)
+
     setSize(Size(36, 36), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
 
@@ -526,8 +536,37 @@ open class LayoutConfig: NSObject {
    automatically assigned to `key` and used instead.
    - returns: The `key`'s value
    */
+  @inline(__always)
   public func stringArray(for key: PropertyKey, defaultValue: [String] = []) -> [String] {
     return stringArrays[key] ?? setStringArray(defaultValue, for: key)
+  }
+
+  /**
+   Maps an `Any?` value to a specific `PropertyKey`.
+
+   - note: Retrieving untyped values is slow and should be avoided whenever possible. It should
+   only be done for code that is not performance-reliant.
+   - parameter untypedValue: The `Any?` value.
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.`).
+   - returns: The `Any?` value that was set.
+   */
+  @discardableResult
+  public func setUntypedValue(_ untypedValue: Any?, for key: PropertyKey) -> Any? {
+    untypedValues[key] = untypedValue
+    return untypedValue
+  }
+
+  /**
+   Returns the `Any?` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.VariableBlocks`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value
+   */
+  @inline(__always)
+  public func untypedValue(for key: PropertyKey, defaultValue: Any? = nil) -> Any? {
+    return untypedValues[key] ?? setUntypedValue(defaultValue, for: key)
   }
 
   // MARK: - Update Values

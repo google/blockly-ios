@@ -44,7 +44,7 @@ class FieldJSONTest: XCTestCase {
     }
 
     XCTAssertEqual("FIELD ANGLE", field.name)
-    XCTAssertEqual(160, field.angle)
+    XCTAssertEqual(880, field.angle)
   }
 
   // MARK: - fieldFromJSON - Checkbox
