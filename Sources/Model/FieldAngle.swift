@@ -23,13 +23,20 @@ public final class FieldAngle: Field {
   // MARK: - Properties
 
   /// The current angle stored in this field.
-  public var angle: Int {
+  public var angle: Double {
     didSet {
-      // Normalize the value that was set
-      angle = FieldAngle.normalizeAngle(angle)
       didSetProperty(angle, oldValue)
     }
   }
+
+  /// Number formatter used for serializing the value.
+  fileprivate let _serializedNumberFormatter: NumberFormatter = {
+    // Set the locale of the serialized number formatter to "English".
+    let numberFormatter = NumberFormatter()
+    numberFormatter.locale = Locale(identifier: "en")
+    numberFormatter.minimumIntegerDigits = 1
+    return numberFormatter
+  }()
 
   // MARK: - Initializers
 
@@ -39,9 +46,8 @@ public final class FieldAngle: Field {
    - parameter name: The name of this field.
    - parameter angle: The initial angle for this field.
    */
-  public init(name: String, angle: Int) {
-    self.angle = FieldAngle.normalizeAngle(angle)
-
+  public init(name: String, angle: Double) {
+    self.angle = angle
     super.init(name: name)
   }
 
@@ -52,28 +58,44 @@ public final class FieldAngle: Field {
   }
 
   public override func setValueFromSerializedText(_ text: String) throws {
-    if let angle = Int(text) {
-      self.angle = angle
-    } else {
-      throw BlocklyError(.xmlParsing,
-        "Could not parse '\(text)' into an angle. The value must be a valid integer.")
-    }
+    self.angle = try valueFromText(text, numberFormatter: _serializedNumberFormatter)
   }
 
   public override func serializedText() throws -> String? {
-    return String(self.angle)
+    return _serializedNumberFormatter.string(from: NSNumber(value: angle))
   }
 
-  // MARK: - Internal - For testing only
+  // MARK: - Private
 
-  internal class func normalizeAngle(_ angle: Int) -> Int {
-    var normalizedAngle = angle
-    if normalizedAngle != 360 {
-      normalizedAngle = normalizedAngle % 360
-      if normalizedAngle < 0 {
-        normalizedAngle += 360
-      }
+  /**
+   Parses given text into a `Double` value, using a given `NSNumberFormatter`.
+
+   - parameter text: The text to parse
+   - parameter numberFormatter: The number formatter to parse the text
+   - returns: The parsed value
+   - throws:
+   `BlocklyError`: Thrown if the text value could not be parsed into a valid `Double`.
+   */
+  fileprivate func valueFromText(_ text: String, numberFormatter: NumberFormatter) throws
+    -> Double
+  {
+    let trimmedText =
+      text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+
+    if trimmedText.isEmpty {
+      throw BlocklyError(.illegalArgument,
+        "An empty value cannot be parsed into a number. The value must be a valid number.")
     }
-    return normalizedAngle
+
+    guard let value = numberFormatter.number(from: text)?.doubleValue else {
+      throw BlocklyError(.illegalArgument,
+        "Could not parse value [`\(text)`] into a number. The value must be a valid number.")
+    }
+
+    if !value.isFinite {
+      throw BlocklyError(.illegalArgument, "Value [`\(text)`] cannot be NaN or infinite.")
+    }
+    
+    return value
   }
 }

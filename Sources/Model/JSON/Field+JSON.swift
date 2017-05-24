@@ -117,7 +117,7 @@ extension Field {
         // NOTE: name and angle are declared in their own variables here to get around an
         // Xcode 8.3/Swift 3.1 whole-module-optimization compiler bug.
         let name = (json[PARAMETER_NAME] as? String ?? "NAME")
-        let angle: Int = JSONRegistry.parseInt(json[PARAMETER_ANGLE]) ?? 90
+        let angle = JSONRegistry.parseDouble(json[PARAMETER_ANGLE]) ?? 90
         return FieldAngle(name: name, angle: angle)
       }
 

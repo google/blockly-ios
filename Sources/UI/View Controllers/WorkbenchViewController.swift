@@ -24,8 +24,9 @@ public protocol WorkbenchViewControllerDelegate: class {
   /**
    Event that is called when a `WorkbenchViewController` updates its `state`.
    */
-  func workbenchViewController(_ workbenchViewController: WorkbenchViewController,
-                               didUpdateState state: WorkbenchViewController.UIState)
+  func workbenchViewController(
+    _ workbenchViewController: WorkbenchViewController,
+    didUpdateState state: WorkbenchViewController.UIState)
 }
 
 /**

@@ -26,8 +26,8 @@ public protocol DropdownOptionsViewControllerDelegate: class {
    - parameter viewController: The view controller where this event occurred.
    - parameter optionIndex: The selected option index.
    */
-  func dropdownOptionsViewController(_ viewController: DropdownOptionsViewController,
-    didSelectOptionIndex optionIndex: Int)
+  func dropdownOptionsViewController(
+    _ viewController: DropdownOptionsViewController, didSelectOptionIndex optionIndex: Int)
 }
 
 /**
