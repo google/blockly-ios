@@ -545,7 +545,7 @@ open class LayoutConfig: NSObject {
    Maps an `Any?` value to a specific `PropertyKey`.
 
    - note: Retrieving untyped values is slow and should be avoided whenever possible. It should
-   only be done for code is not performance-reliant.
+   only be done for code that is not performance-reliant.
    - parameter untypedValue: The `Any?` value.
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.`).
    - returns: The `Any?` value that was set.

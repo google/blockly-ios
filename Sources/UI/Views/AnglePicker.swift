@@ -27,10 +27,10 @@ public class AnglePicker: UIControl {
    */
   public struct Options {
     /// The color of the ticks.
-    public var tickColor = ColorHelper.makeColor(rgb: "e57373")
+    public var tickColor = ColorHelper.makeColor(rgb: "81C784")
 
     /// The fill color of the angle.
-    public var angleColor = ColorHelper.makeColor(rgb: "d32f2f")
+    public var angleColor = ColorHelper.makeColor(rgb: "43A047")
 
     /// The fill color of the background circle.
     public var circleColor = ColorHelper.makeColor(rgb: "f5f5f5")

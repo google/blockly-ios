@@ -95,7 +95,7 @@ public final class FieldAngle: Field {
     if !value.isFinite {
       throw BlocklyError(.illegalArgument, "Value [`\(text)`] cannot be NaN or infinite.")
     }
-    
+
     return value
   }
 }
