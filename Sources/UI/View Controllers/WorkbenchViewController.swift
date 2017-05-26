@@ -126,7 +126,7 @@ open class WorkbenchViewController: UIViewController {
   open fileprivate(set) var trashCanView: TrashCanView!
 
   /// The undo button
-  open fileprivate(set) var undoButton: UIButton = {
+  open fileprivate(set) lazy var undoButton: UIButton = {
     let undoButton = UIButton(type: .custom)
     if let image = ImageLoader.loadImage(named: "undo", forClass: WorkbenchViewController.self) {
       undoButton.setImage(image, for: .normal)
@@ -138,7 +138,7 @@ open class WorkbenchViewController: UIViewController {
   }()
 
   /// The redo button
-  open fileprivate(set) var redoButton: UIButton = {
+  open fileprivate(set) lazy var redoButton: UIButton = {
     let redoButton = UIButton(type: .custom)
     if let image = ImageLoader.loadImage(named: "redo", forClass: WorkbenchViewController.self) {
       redoButton.setImage(image, for: .normal)
