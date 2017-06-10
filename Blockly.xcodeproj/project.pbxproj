@@ -109,6 +109,8 @@
 		FA57D5501E3705A20019C29C /* MutatorProcedureCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57D54F1E3705A20019C29C /* MutatorProcedureCaller.swift */; };
 		FA57D5521E370BCE0019C29C /* MutatorProcedureCallerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57D5511E370BCE0019C29C /* MutatorProcedureCallerLayout.swift */; };
 		FA59BC511ED62D6B00EF1646 /* AnglePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA59BC501ED62D6B00EF1646 /* AnglePicker.swift */; };
+		FA59BC531ED62E1400EF1646 /* NumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA59BC521ED62E1400EF1646 /* NumberPad.swift */; };
+		FA59BC551ED6634900EF1646 /* NumberPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA59BC541ED6634900EF1646 /* NumberPadViewController.swift */; };
 		FA5CAA761C03C05B00B1EE2C /* WorkspaceLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */; };
 		FA5CAA7A1C03F86F00B1EE2C /* BlockGroupLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */; };
 		FA5CAA7C1C04152F00B1EE2C /* BlockLayoutTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */; };
@@ -218,6 +220,7 @@
 		FAFAEE631CDAE4DB00698179 /* FieldNumberLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */; };
 		FAFAEE6D1CDBD5AB00698179 /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */; };
 		FAFAEE711CDC0D2F00698179 /* NameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFAEE701CDC0D2F00698179 /* NameManager.swift */; };
+		FAFBFA971EDE449500620DA6 /* UIPopoverPresentationController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFBFA961EDE449500620DA6 /* UIPopoverPresentationController+Helper.swift */; };
 		FAFD37221C8F5C5F00C77049 /* blockly_web in Resources */ = {isa = PBXBuildFile; fileRef = FAFD37211C8F5C5F00C77049 /* blockly_web */; };
 		FAFD373D1C9230FE00C77049 /* CodeGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */; };
 		FAFD37591C93C75A00C77049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD37581C93C75A00C77049 /* WebKit.framework */; };
@@ -394,6 +397,8 @@
 		FA57D54F1E3705A20019C29C /* MutatorProcedureCaller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureCaller.swift; sourceTree = "<group>"; };
 		FA57D5511E370BCE0019C29C /* MutatorProcedureCallerLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorProcedureCallerLayout.swift; sourceTree = "<group>"; };
 		FA59BC501ED62D6B00EF1646 /* AnglePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnglePicker.swift; sourceTree = "<group>"; };
+		FA59BC521ED62E1400EF1646 /* NumberPad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberPad.swift; sourceTree = "<group>"; };
+		FA59BC541ED6634900EF1646 /* NumberPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberPadViewController.swift; sourceTree = "<group>"; };
 		FA5CAA751C03C05B00B1EE2C /* WorkspaceLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA791C03F86F00B1EE2C /* BlockGroupLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockGroupLayoutTest.swift; sourceTree = "<group>"; };
 		FA5CAA7B1C04152F00B1EE2C /* BlockLayoutTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockLayoutTest.swift; sourceTree = "<group>"; };
@@ -502,6 +507,7 @@
 		FAFAEE621CDAE4DB00698179 /* FieldNumberLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldNumberLayout.swift; sourceTree = "<group>"; };
 		FAFAEE6C1CDBD5AB00698179 /* InsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
 		FAFAEE701CDC0D2F00698179 /* NameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameManager.swift; sourceTree = "<group>"; };
+		FAFBFA961EDE449500620DA6 /* UIPopoverPresentationController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+Helper.swift"; sourceTree = "<group>"; };
 		FAFD37211C8F5C5F00C77049 /* blockly_web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blockly_web; sourceTree = "<group>"; };
 		FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorService.swift; sourceTree = "<group>"; };
 		FAFD37581C93C75A00C77049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -733,6 +739,7 @@
 				FAFA81F61E1C513A00BA50E9 /* MutatorIfElseView.swift */,
 				FA56E3661E317C0700A53631 /* MutatorProcedureDefinitionView.swift */,
 				FA56E35E1E298E9C00A53631 /* NumberIncrementerView.swift */,
+				FA59BC521ED62E1400EF1646 /* NumberPad.swift */,
 				FAFD37AA1C9CEC6900C77049 /* TrashCanView.swift */,
 				FA84250F1D3451510092CDDC /* ViewBuilder.swift */,
 				FAD6522D1CB5DDFB00F73F11 /* ViewFactory.swift */,
@@ -916,6 +923,7 @@
 				FAA86FFB1C64272C000C7C61 /* Logging.swift */,
 				FAC92EFD1E835307000AE3E0 /* MessageManager.swift */,
 				FAA86FFC1C64272C000C7C61 /* ObjectPool.swift */,
+				FAFBFA961EDE449500620DA6 /* UIPopoverPresentationController+Helper.swift */,
 				FA5CC1801CE29B6C005C550D /* RangeHelper.swift */,
 				FAFD377F1C9A55F800C77049 /* String+Encoding.swift */,
 				FAA86FFD1C64272C000C7C61 /* String+LayoutHelper.swift */,
@@ -936,6 +944,7 @@
 				FA2F456D1E9D69B60071C1A3 /* AnglePickerViewController.swift */,
 				FAA870151C642805000C7C61 /* DropdownOptionsViewController.swift */,
 				FAA870141C642805000C7C61 /* FieldColorPickerViewController.swift */,
+				FA59BC541ED6634900EF1646 /* NumberPadViewController.swift */,
 				FAFD379C1C9B90B100C77049 /* ToolboxCategoryListViewController.swift */,
 				FA16C2851D407E6500BAAFA2 /* ToolboxCategoryViewController.swift */,
 				FAA870161C642805000C7C61 /* TrashCanViewController.swift */,
@@ -1247,6 +1256,7 @@
 				FAA8700B1C64272C000C7C61 /* String+LayoutHelper.swift in Sources */,
 				FA10E3F51C696A9F0095F088 /* FieldAngleView.swift in Sources */,
 				FA57D5521E370BCE0019C29C /* MutatorProcedureCallerLayout.swift in Sources */,
+				FAFBFA971EDE449500620DA6 /* UIPopoverPresentationController+Helper.swift in Sources */,
 				FA77D3F41D9B8E850014CBC4 /* BlockJSONFile.swift in Sources */,
 				FA56E3611E2F115500A53631 /* MutatorProcedureDefinition.swift in Sources */,
 				FA6232591B708D8E00F1EF42 /* FieldLabel.swift in Sources */,
@@ -1270,6 +1280,7 @@
 				FA27267A1B83C54900777B49 /* BlockLayout.swift in Sources */,
 				30DC64DB1D875C88002D2186 /* BlocklyPanGestureRecognizer.swift in Sources */,
 				FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */,
+				FA59BC531ED62E1400EF1646 /* NumberPad.swift in Sources */,
 				FAFAEE531CDABED400698179 /* FieldNumberView.swift in Sources */,
 				FAA870091C64272C000C7C61 /* Logging.swift in Sources */,
 				FA3FD1551CF7C886005B6D0F /* XMLConstants.swift in Sources */,
@@ -1356,6 +1367,7 @@
 				FAF62A6C1DB6FCB100137B54 /* BundledFile.swift in Sources */,
 				FA57C3A91CCADDC600952BFB /* Toolbox+XML.swift in Sources */,
 				FAFD379D1C9B90B100C77049 /* ToolboxCategoryListViewController.swift in Sources */,
+				FA59BC551ED6634900EF1646 /* NumberPadViewController.swift in Sources */,
 				FAD6524D1CB7211500F73F11 /* DefaultBlockView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
