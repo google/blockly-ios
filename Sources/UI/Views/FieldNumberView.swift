@@ -145,9 +145,12 @@ extension FieldNumberView: UITextFieldDelegate {
     viewController.numberPad.text = textField.text ?? ""
     viewController.numberPad.allowDecimal = !fieldNumberLayout.isInteger
     viewController.numberPad.allowMinusSign = (fieldNumberLayout.minimumValue ?? -1) < 0
-    viewController.numberPad.font =
-      fieldNumberLayout.engine.config.font(for: LayoutConfig.GlobalFont)
     viewController.numberPad.delegate = self
+
+    if let fontCreator = fieldNumberLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
+      // Use the global font, but use a scale of 1.0.
+      viewController.numberPad.font = fontCreator(1.0)
+    }
 
     // Start a new event group for this edit.
     _eventGroupID = UUID().uuidString

@@ -69,7 +69,7 @@ extension UIPopoverPresentationController {
         permittedArrowDirections = .up
         break
       } else if arrowDirection == .right &&
-        (rectRelativeToContainer.minX - arrowSize - contentSize.width) <= containerBounds.minX &&
+        (rectRelativeToContainer.minX - arrowSize - contentSize.width) >= containerBounds.minX &&
         contentSize.height <= containerBounds.height {
         permittedArrowDirections = .right
         break

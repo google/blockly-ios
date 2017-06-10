@@ -245,7 +245,7 @@ public class NumberPad: UIView {
 
       if row == 0 {
         // The first row is special in that the text field should use as much space as possible.
-        let backspaceWidth = rowHeight // * 1.2
+        let backspaceWidth = rowHeight
         textField?.frame =
           CGRect(x: x, y: y, width: bounds.width - backspaceWidth - padding, height: rowHeight)
         x += (textField?.bounds.width ?? 0) + padding
