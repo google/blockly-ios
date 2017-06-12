@@ -291,7 +291,7 @@ public class NumberPad: UIView {
    - parameter button: The button that triggered the event.
    */
   public func didPressButton(_ button: UIButton) {
-    let buttonText: String
+    var buttonText: String?
     if button == button0 {
       buttonText = _localizedNumberFormatter.string(from: 0) ?? "0"
     } else if button == button1 {
@@ -318,11 +318,11 @@ public class NumberPad: UIView {
       buttonText = _localizedNumberFormatter.decimalSeparator
     } else if button == buttonBackspace {
       buttonText = ""
-    } else {
-      buttonText = ""
     }
 
-    handleText(buttonText, replacement: false)
+    if let text = buttonText {
+      handleText(text, replacement: false)
+    }
   }
 
   // MARK: - Text Handling
