@@ -172,14 +172,10 @@ extension FieldNumberView: UITextFieldDelegate {
 
 extension FieldNumberView: UIPopoverPresentationControllerDelegate {
   public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-    guard let fieldNumberLayout = self.fieldNumberLayout else { return }
+    guard let rtl = self.fieldNumberLayout?.engine.rtl else { return }
 
     // Prioritize arrow directions, so it won't obstruct the view of the field
-    if fieldNumberLayout.engine.rtl {
-      popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .left])
-    } else {
-      popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .right])
-    }
+    popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .right], rtl: rtl)
   }
 
   public func popoverPresentationControllerShouldDismissPopover(

@@ -31,8 +31,12 @@ extension UIPopoverPresentationController {
    `UIPopoverPresentationControllerDelegate#prepareForPopoverPresentation(:)` and if
    `presentedViewController.preferredContentSize` is set to a non-zero value.
    - parameter arrowDirections: A list of prioritized `UIPopoverArrowDirection` values.
+   - parameter rtl: If set to `true`, `arrowDirections` is interpreted such that
+   `UIPopoverArrowDirection.left` and `UIPopoverArrowDirection.right` are reversed. Otherwise,
+   `arrowDirections` is interpreted as-is.
    */
-  public func bky_prioritizeArrowDirections(_ arrowDirections: Array<UIPopoverArrowDirection>) {
+  public func bky_prioritizeArrowDirections(
+    _ arrowDirections: Array<UIPopoverArrowDirection>, rtl: Bool) {
     let contentSize = presentedViewController.preferredContentSize
 
     guard let containerView = self.containerView,
@@ -57,7 +61,14 @@ extension UIPopoverPresentationController {
 
     // From the arrow directions, figure out which popover direction would fit inside the
     // container view.
-    for arrowDirection in arrowDirections {
+    for direction in arrowDirections {
+      var arrowDirection = direction
+      if rtl && arrowDirection == .left {
+        arrowDirection = .right
+      } else if rtl && arrowDirection == .right {
+        arrowDirection = .left
+      }
+
       if arrowDirection == .down &&
         (rectRelativeToContainer.minY - arrowSize - contentSize.height) >= containerBounds.minY &&
         contentSize.width <= containerBounds.width  {
