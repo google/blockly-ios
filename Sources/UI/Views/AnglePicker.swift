@@ -97,24 +97,22 @@ public class AnglePicker: UIControl {
   /// Layer for rendering the background circle.
   fileprivate lazy var _backgroundCircleLayer: CAShapeLayer = {
     let layer = CAShapeLayer()
-    layer.shouldRasterize = true
+    layer.allowsEdgeAntialiasing = true
     layer.drawsAsynchronously = true
     layer.fillColor = self.options.circleColor?.cgColor
     layer.strokeColor = nil
     layer.lineWidth = 0
-    layer.allowsEdgeAntialiasing = true
     return layer
   }()
 
   /// Layer for rendering the ticks.
   fileprivate lazy var _tickLayer: CAShapeLayer = {
     let layer = CAShapeLayer()
+    layer.allowsEdgeAntialiasing = true
+    layer.drawsAsynchronously = true
     layer.strokeColor = self.options.tickColor?.cgColor
     layer.fillColor = self.options.tickColor?.cgColor
-    layer.shouldRasterize = true
-    layer.drawsAsynchronously = true
     layer.lineWidth = 2
-    layer.allowsEdgeAntialiasing = true
     return layer
   }()
 
@@ -251,7 +249,12 @@ public class AnglePicker: UIControl {
 
     // Set the path
     _angleLayer.path = anglePath.cgPath
+
+    // Make the line width thicker if it's a 0° angle.
+    _angleLayer.lineWidth = startAngle == endAngle ? 2 : 1
+
     _angleLayer.setNeedsDisplay()
+
     setNeedsDisplay()
   }
 

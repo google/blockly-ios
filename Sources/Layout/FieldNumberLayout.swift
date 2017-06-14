@@ -39,6 +39,21 @@ open class FieldNumberLayout: FieldLayout {
     }
   }
 
+  /// The minimum value of this number field. If `nil`, it is unconstrained by a minimum value.
+  public var minimumValue: Double? {
+    return fieldNumber.minimumValue
+  }
+
+  /// The maximum value of this number field. If `nil`, it is unconstrained by a maximum value.
+  public var maximumValue: Double? {
+    return fieldNumber.maximumValue
+  }
+
+  /// Flag indicating if the number field is constrained to being an integer value.
+  public var isInteger: Bool {
+    return fieldNumber.isInteger
+  }
+
   // MARK: - Initializers
 
   /**

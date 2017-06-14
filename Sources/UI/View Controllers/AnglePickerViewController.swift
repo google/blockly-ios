@@ -49,9 +49,7 @@ public class AnglePickerViewController: UIViewController {
 
   /// Angle picker control.
   public private(set) lazy var anglePicker: AnglePicker = {
-    let frame = CGRect(
-      x: 10, y: 10, width: self.view.bounds.width - 20, height: self.view.bounds.height - 20)
-    let anglePicker = AnglePicker(frame: frame, options: self._anglePickerOptions)
+    let anglePicker = AnglePicker(frame: .zero, options: self._anglePickerOptions)
     anglePicker.angle = self.angle
     anglePicker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     anglePicker.addTarget(self, action: #selector(anglePickerValueChanged(_:)), for: .valueChanged)
@@ -79,13 +77,11 @@ public class AnglePickerViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    anglePicker.frame =
+      CGRect(x: 10, y: 10, width: view.bounds.width - 20, height: view.bounds.height - 20)
     view.addSubview(anglePicker)
-  }
 
-  public override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    preferredContentSize = CGSize(width: 250, height: 250)
+    preferredContentSize = CGSize(width: 200, height: 200)
   }
 
   // MARK: - Private
