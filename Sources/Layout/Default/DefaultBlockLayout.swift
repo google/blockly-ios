@@ -206,7 +206,9 @@ public final class DefaultBlockLayout: BlockLayout {
     // background row based on a new maximum width, and calculate the size needed for this entire
     // BlockLayout.
     let minimalWidthRequired = max(minimalFieldWidthRequired, minimalStatementWidthRequired)
-    for backgroundRow in background.rows {
+    var nextRowPositionY: CGFloat = 0
+    for i in 0 ..< background.rows.count {
+      let backgroundRow = background.rows[i]
       if backgroundRow.layouts.isEmpty {
         continue
       }
@@ -232,6 +234,40 @@ public final class DefaultBlockLayout: BlockLayout {
         }
       }
 
+      // Determine the line height of this background row
+      var lineHeight: CGFloat = 0
+      for layout in backgroundRow.layouts {
+        if let inputLayout = layout as? InputLayout {
+          lineHeight = max(lineHeight, inputLayout.firstLineHeight)
+        } else {
+          lineHeight = max(lineHeight, layout.totalSize.height)
+        }
+      }
+      if i == 0 {
+        firstLineHeight = lineHeight
+      }
+
+      // Vertically align each layout to this line height.
+      let currentRowPositionY = nextRowPositionY
+      for layout in backgroundRow.layouts {
+        if layout.relativePosition.y < currentRowPositionY {
+          // This layout was pushed down from a vertical alignment adjustment from the previous row.
+          // Update it to its new row position.
+          layout.relativePosition.y = currentRowPositionY
+        }
+
+        if let inputLayout = layout as? DefaultInputLayout {
+          inputLayout.verticallyAlignRow(toHeight: lineHeight)
+        } else {
+          layout.relativePosition.y += (lineHeight - layout.totalSize.height) / 2.0
+        }
+
+        // Update what the next row position should be (in case one of the valign operations changed
+        // the layout position).
+        nextRowPositionY =
+          max(nextRowPositionY, layout.relativePosition.y + layout.totalSize.height)
+      }
+
       // Update the background row based on the new max width
       backgroundRow.updateRenderProperties(minimalRowWidth: minimalWidthRequired,
                                            leadingEdgeOffset: outputPuzzleTabXOffset)
@@ -247,6 +283,7 @@ public final class DefaultBlockLayout: BlockLayout {
       emptyRow.middleHeight = config.workspaceUnit(for: LayoutConfig.FieldMinimumHeight)
       emptyRow.bottomPadding = config.workspaceUnit(for: LayoutConfig.InlineYPadding)
       background.appendRow(emptyRow)
+      firstLineHeight = emptyRow.rowHeight
     }
 
     // Update connection relative positions
@@ -265,9 +302,11 @@ public final class DefaultBlockLayout: BlockLayout {
     }
 
     if block.outputConnection != nil {
-      _outputConnectionRelativePosition = WorkspacePoint(
-        x: 0, y: self.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight) / 2)
+      _outputConnectionRelativePosition = WorkspacePoint(x: 0, y: firstLineHeight / 2.0)
     }
+
+    // Update the first line height of the background so it can render the output connector properly
+    background.firstLineHeight = firstLineHeight
 
     // Update the size required for this block
     self.contentSize = requiredContentSize()

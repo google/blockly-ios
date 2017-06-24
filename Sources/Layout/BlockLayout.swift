@@ -136,6 +136,11 @@ open class BlockLayout: Layout {
     return 0
   }
 
+  /// The line height of the first line in the block layout, specified as a Workspace coordinate
+  /// system unit. It is used for vertical alignment purposes and should be updated during
+  /// `performLayout(includeChildren:)`.
+  open var firstLineHeight: CGFloat = 0
+
   /// Flag indicating if this block has had its user interaction disabled.
   open var disabled: Bool {
     get { return block.disabled }

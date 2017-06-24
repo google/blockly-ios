@@ -62,10 +62,9 @@ public final class DefaultInputLayout: InputLayout {
         connectionPoint = WorkspacePoint(
           x: statementIndent + notchWidth / 2, y: statementRowTopPadding + notchHeight)
       } else if input.inline {
-        connectionPoint = WorkspacePoint(
-          x: inlineConnectorPosition.x, y: inlineConnectorPosition.y + puzzleTabHeight / 2)
+        connectionPoint = WorkspacePoint(x: inlineConnectorPosition.x, y: firstLineHeight / 2.0)
       } else {
-        connectionPoint = WorkspacePoint(x: rightEdge - puzzleTabWidth, y: puzzleTabHeight / 2)
+        connectionPoint = WorkspacePoint(x: rightEdge - puzzleTabWidth, y: firstLineHeight / 2.0)
       }
 
       _connection.moveToPosition(self.absolutePosition, withOffset: connectionPoint)
@@ -159,6 +158,7 @@ public final class DefaultInputLayout: InputLayout {
     var fieldXOffset: CGFloat = 0
     var fieldMaximumHeight: CGFloat = 0
     var fieldMaximumYPoint: CGFloat = 0
+    var inlineConnectorMaximumYPoint: CGFloat = 0
 
     // Update relative position/size of fields
     for i in 0 ..< fieldLayouts.count {
@@ -208,7 +208,6 @@ public final class DefaultInputLayout: InputLayout {
       targetBlockGroupLayout.relativePosition.y = 0
 
       let widthRequired: CGFloat
-      var inlineConnectorMaximumYPoint: CGFloat = 0
       if input.inline {
         targetBlockGroupLayout.edgeInsets.leading =
           self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
@@ -312,6 +311,22 @@ public final class DefaultInputLayout: InputLayout {
       let heightRequired = fieldMaximumYPoint
       self.contentSize = WorkspaceSize(width: widthRequired, height: heightRequired)
     }
+
+    // Figure out the height of the first line
+    if let firstBlockLayout = targetBlockGroupLayout.blockLayouts.first {
+      if input.inline {
+        let blockLayoutFirstLine =
+          targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top +
+            firstBlockLayout.firstLineHeight + targetBlockGroupLayout.edgeInsets.bottom
+        firstLineHeight = max(fieldMaximumYPoint, blockLayoutFirstLine)
+      } else {
+        firstLineHeight = max(fieldMaximumYPoint, firstBlockLayout.firstLineHeight)
+      }
+    } else if input.inline {
+      firstLineHeight = max(fieldMaximumYPoint, inlineConnectorMaximumYPoint)
+    } else {
+      firstLineHeight = fieldMaximumYPoint
+    }
   }
 
 
@@ -392,6 +407,46 @@ public final class DefaultInputLayout: InputLayout {
     }
   }
 
+  /**
+   Vertically aligns the first line of content inside the input layout, using a given row height.
+
+   - parameter rowHeight: The height that should be used for the first line of content.
+   */
+  internal func verticallyAlignRow(toHeight rowHeight: CGFloat) {
+    guard rowHeight >= firstLineHeight else { return }
+    
+    firstLineHeight = rowHeight
+
+    // Update all fields to align to this new line height
+    for fieldLayout in fieldLayouts {
+      fieldLayout.relativePosition.y += max((rowHeight - fieldLayout.totalSize.height) / 2.0, 0)
+    }
+
+    if input.type == .value {
+      // Check the block group layout or inline connector to see if they need to adjust to their
+      // positions to match the new line height.
+      var relativePositionDelta: CGFloat = 0
+      if let firstBlockLayout = blockGroupLayout.blockLayouts.first {
+        let blockLayoutFirstLineHeight = blockGroupLayout.edgeInsets.top +
+          firstBlockLayout.firstLineHeight + blockGroupLayout.edgeInsets.bottom
+        relativePositionDelta =
+          (rowHeight - blockLayoutFirstLineHeight) / 2.0 - blockGroupLayout.relativePosition.y
+      } else if input.inline {
+        relativePositionDelta =
+          (rowHeight - inlineConnectorSize.height) / 2.0 - inlineConnectorPosition.y
+      }
+
+      if relativePositionDelta > 0 {
+        blockGroupLayout.relativePosition.y += relativePositionDelta
+        if input.inline {
+          inlineConnectorPosition.y += relativePositionDelta
+        }
+        contentSize =
+          LayoutHelper.sizeThatFitsLayout(blockGroupLayout, fromInitialSize: contentSize)
+      }
+    }
+  }
+
   // MARK: - Private
 
   fileprivate func isLastInputOfBlockRow() -> Bool {
@@ -425,5 +480,6 @@ public final class DefaultInputLayout: InputLayout {
     self.statementRowTopPadding = 0
     self.statementRowBottomPadding = 0
     self.statementMiddleHeight = 0
+    firstLineHeight = 0
   }
 }
