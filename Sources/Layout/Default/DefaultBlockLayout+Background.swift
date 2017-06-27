@@ -137,6 +137,8 @@ extension DefaultBlockLayout {
     public var bottomPadding: CGFloat = 0
 
     /// The height of the middle part of the row, expressed as a Workspace coordinate system value.
+    /// If this row has a value input at the end, the connector should be vertically aligned to
+    /// be in the center of this height.
     public var middleHeight: CGFloat = 0
 
     /// For statement inputs, the relative x-position of where to begin rendering the inner left

@@ -388,7 +388,8 @@ public final class DefaultBlockView: BlockView {
         // Bottom edge
         path.addLineTo(x: -xEdgeWidth, y: 0, relative: true)
         // Start left edge
-        path.addLineTo(x: 0, y: inlineConnector.firstLineHeight - inlineConnector.size.height, relative: true)
+        path.addLineTo(
+          x: 0, y: inlineConnector.firstLineHeight - inlineConnector.size.height, relative: true)
 
         let puzzleLineExtension = (inlineConnector.firstLineHeight - puzzleTabHeight) / 2.0
         path.addLineTo(x: 0, y: -puzzleLineExtension, relative: true)

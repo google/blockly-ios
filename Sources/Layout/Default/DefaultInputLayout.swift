@@ -414,7 +414,7 @@ public final class DefaultInputLayout: InputLayout {
    */
   internal func verticallyAlignRow(toHeight rowHeight: CGFloat) {
     guard rowHeight >= firstLineHeight else { return }
-    
+
     firstLineHeight = rowHeight
 
     // Update all fields to align to this new line height
