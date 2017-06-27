@@ -38,6 +38,11 @@ extension DefaultBlockLayout {
     /// Flag if a output connector should be rendered on the left side of the block
     public fileprivate(set) var outputConnector: Bool = false
 
+    /// The line height for the first line of content inside the block.
+    /// The output connector puzzle tab should be rendered vertically centered relative to this
+    /// height.
+    public internal(set) var firstLineHeight: CGFloat = 0
+
     /// Flag if the block should render a hat
     public fileprivate(set) var startHat: Bool = false
 
@@ -86,6 +91,7 @@ extension DefaultBlockLayout {
           self.squareBottomLeftCorner = true
         }
       }
+      firstLineHeight = layout.firstLineHeight
     }
 
     /**
@@ -131,6 +137,8 @@ extension DefaultBlockLayout {
     public var bottomPadding: CGFloat = 0
 
     /// The height of the middle part of the row, expressed as a Workspace coordinate system value.
+    /// If this row has a value input at the end, the connector should be vertically aligned to
+    /// be in the center of this height.
     public var middleHeight: CGFloat = 0
 
     /// For statement inputs, the relative x-position of where to begin rendering the inner left
@@ -188,7 +196,8 @@ extension DefaultBlockLayout {
           self.rightEdge =
             lastInputLayout.relativePosition.x - leadingEdgeOffset + lastInputLayout.rightEdge
           self.outputConnector = (lastInputLayout.input.connection != nil)
-          self.middleHeight = layouts.map { $0.totalSize.height }.max()!
+          self.middleHeight = layouts.map { ($0 as? InputLayout)?.firstLineHeight ?? 0 }.max()!
+          self.bottomPadding = max(layouts.map { $0.totalSize.height }.max()! - middleHeight, 0)
 
           return
         }
@@ -203,9 +212,13 @@ extension DefaultBlockLayout {
         if let inputLayout = layout as? DefaultInputLayout,
           inputLayout.input.type == .value
         {
+          let firstLineHeight =
+            inputLayout.blockGroupLayout.blockLayouts.first?.firstLineHeight
+            ?? inputLayout.inlineConnectorSize.height
           let inlineConnector = InlineConnector(
             inputLayout.relativePosition + inputLayout.inlineConnectorPosition,
-            inputLayout.inlineConnectorSize)
+            inputLayout.inlineConnectorSize,
+            firstLineHeight)
           self.inlineConnectors.append(inlineConnector)
         }
       }
@@ -239,13 +252,19 @@ extension DefaultBlockLayout {
     /// block.
     public var relativePosition: WorkspacePoint
 
+    /// The line height for the first line of content inside the inline connector.
+    /// The connector's puzzle tab should be rendered vertically centered relative to this height.
+    public var firstLineHeight: CGFloat = 0
+
     /// The size of the inline connector.
     public var size: WorkspaceSize
 
     /// Initializer
-    fileprivate init(_ relativePosition: WorkspacePoint, _ size: WorkspaceSize) {
+    fileprivate init(
+      _ relativePosition: WorkspacePoint, _ size: WorkspaceSize, _ firstLineHeight: CGFloat) {
       self.relativePosition = relativePosition
       self.size = size
+      self.firstLineHeight = firstLineHeight
     }
   }
 }
