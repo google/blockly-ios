@@ -32,3 +32,13 @@ BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat work
   size.viewSize = CGSizeMake(workspaceWidth, workspaceHeight);
   return size;
 }
+
+// MARK: - BKYLayoutConfigEdgeInsets
+
+BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsetsMake(
+  CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
+  BKYLayoutConfigEdgeInsets edgeInsets;
+  edgeInsets.workspaceEdgeInsets = BKYEdgeInsetsMake(top, leading, bottom, trailing);
+  edgeInsets.viewEdgeInsets = BKYEdgeInsetsMake(top, leading, bottom, trailing);
+  return edgeInsets;
+}

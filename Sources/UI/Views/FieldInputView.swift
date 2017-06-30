@@ -85,7 +85,7 @@ open class FieldInputView: FieldView {
         textField.textColor =
           fieldInputLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
-          fieldInputLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+          fieldInputLayout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -136,7 +136,7 @@ extension FieldInputView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldInputLayout.currentTextValue + " "
     let font = fieldInputLayout.config.font(for: LayoutConfig.GlobalFont)
@@ -144,6 +144,8 @@ extension FieldInputView: FieldLayoutMeasurer {
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
   }
 }

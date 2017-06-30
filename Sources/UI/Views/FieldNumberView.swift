@@ -80,7 +80,7 @@ open class FieldNumberView: FieldView {
         textField.font = layout.config.font(for: LayoutConfig.GlobalFont)
         textField.textColor = layout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
-          layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+          layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -122,7 +122,7 @@ extension FieldNumberView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldNumberLayout.currentTextValue + " "
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
@@ -130,6 +130,8 @@ extension FieldNumberView: FieldLayoutMeasurer {
     measureSize.height = measureSize.height + textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
   }
 }

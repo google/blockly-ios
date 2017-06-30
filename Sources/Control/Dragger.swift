@@ -76,8 +76,7 @@ public final class Dragger: NSObject {
         try workspaceLayoutCoordinator.disconnect(outputConnection)
       }
 
-      // Highlight this block
-      layout.highlighted = true
+      // Mark the block group as being dragged.
       layout.rootBlockGroupLayout?.dragging = true
 
       // Bring its block group layout to the front
@@ -164,8 +163,7 @@ public final class Dragger: NSObject {
         EventManager.shared.addPendingEvent(drag.moveEvent)
       }
 
-      // Remove the highlight for this block
-      layout.highlighted = false
+      // Unmark this block group as being dragged.
       layout.rootBlockGroupLayout?.dragging = false
 
       // If this block can be connected to anything, connect it.
