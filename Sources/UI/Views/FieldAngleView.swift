@@ -78,7 +78,7 @@ open class FieldAngleView: FieldView {
         textField.textColor =
           fieldAngleLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
-          fieldAngleLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+          fieldAngleLayout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -137,7 +137,7 @@ extension FieldAngleView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     // Use a minimum size that can at least accomodate 3 digits and °. This is to help ensure that
     //  the angle picker popover doesn't ever accidentally obstruct the view of the text field
@@ -154,6 +154,8 @@ extension FieldAngleView: FieldLayoutMeasurer {
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
   }
 }

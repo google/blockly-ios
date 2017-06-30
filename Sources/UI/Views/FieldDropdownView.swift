@@ -112,10 +112,13 @@ extension FieldDropdownView: FieldLayoutMeasurer {
     let scale = fieldDropdownLayout.engine.scale
     let dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
 
-    return DropdownView.measureSize(
+    var measureSize = DropdownView.measureSize(
       text: measureText, dropDownArrowImageSize: dropDownArrowImageSize,
       textFont: font, borderWidth: borderWidth, horizontalSpacing: xSpacing,
       verticalSpacing: ySpacing)
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return measureSize
   }
 }
 

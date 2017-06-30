@@ -91,6 +91,8 @@ extension FieldLabelView: FieldLayoutMeasurer {
     }
 
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
-    return fieldLabelLayout.text.bky_singleLineSize(forFont: font)
+    var size = fieldLabelLayout.text.bky_singleLineSize(forFont: font)
+    size.height = max(size.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return size
   }
 }

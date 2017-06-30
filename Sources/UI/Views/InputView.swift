@@ -61,6 +61,10 @@ open class InputView: LayoutView {
         // Update the view frame
         self.frame = layout.viewFrame
       }
+
+      // Force the input view to always be drawn behind sibling views (which could be other
+      // blocks).
+      self.superview?.sendSubview(toBack: self)
     }
   }
 

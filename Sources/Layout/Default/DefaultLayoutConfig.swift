@@ -108,7 +108,7 @@ open class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(4), for: DefaultLayoutConfig.NotchHeight)
     setUnit(Unit(10), for: DefaultLayoutConfig.StatementSectionHeight)
     setUnit(Unit(10), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
-    setSize(Size(10, 25), for: DefaultLayoutConfig.MinimumInlineConnectorSize)
+    setSize(Size(width: 12, height: 28), for: DefaultLayoutConfig.MinimumInlineConnectorSize)
 
     setColor(UIColor.darkGray, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
     setColor(UIColor.blue, for: DefaultLayoutConfig.BlockStrokeHighlightColor)
@@ -124,6 +124,6 @@ open class DefaultLayoutConfig: LayoutConfig {
     setFloat(1.2, for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier)
 
     setBool(false, for: DefaultLayoutConfig.BlockStartHat)
-    setSize(Size(100, 15), for: DefaultLayoutConfig.BlockStartHatSize)
+    setSize(Size(width: 100, height: 16), for: DefaultLayoutConfig.BlockStartHatSize)
   }
 }

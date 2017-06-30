@@ -88,6 +88,9 @@ open class LayoutConfig: NSObject {
   /// [`Font`] The default font to use for generic text inside Blockly.
   public static let GlobalFont = LayoutConfig.newPropertyKey()
 
+  /// [`Size`] For mutators, this is the size of the default "settings" button.
+  public static let MutatorButtonSize = LayoutConfig.newPropertyKey()
+
   /// [`Font`] The font to use for title text inside popovers.
   public static let PopoverTitleFont = LayoutConfig.newPropertyKey()
 
@@ -123,6 +126,10 @@ open class LayoutConfig: NSObject {
   /// system and UIView coordinate system.
   public typealias Size = LayoutConfigSize
 
+  /// Struct for representing an `EdgeInsets` value in both the Workspace coordinate system and
+  /// UIView coordinate system.
+  public typealias ScaledEdgeInsets = LayoutConfigEdgeInsets
+
   // MARK: - Properties
 
   // The current scale of all values inside the config
@@ -143,8 +150,8 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `Double` values
   public private(set) var doubles = Dictionary<PropertyKey, Double>()
 
-  /// Dictionary mapping property keys to `EdgeInsets` values
-  public private(set) var edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
+  /// Dictionary mapping property keys to `ScaledEdgeInsets` values
+  public private(set) var edgeInsets = Dictionary<PropertyKey, ScaledEdgeInsets>()
 
   /// Dictionary mapping property keys to `CGFloat` values
   public private(set) var floats = Dictionary<PropertyKey, CGFloat>()
@@ -171,20 +178,20 @@ open class LayoutConfig: NSObject {
     super.init()
 
     // Set default values for base config keys
-    setUnit(Unit(25), for: LayoutConfig.BlockBumpDistance)
-    setUnit(Unit(25), for: LayoutConfig.BlockSnapDistance)
-    setUnit(Unit(10), for: LayoutConfig.InlineXPadding)
-    setUnit(Unit(5), for: LayoutConfig.InlineYPadding)
+    setUnit(Unit(24), for: LayoutConfig.BlockBumpDistance)
+    setUnit(Unit(24), for: LayoutConfig.BlockSnapDistance)
+    setUnit(Unit(8), for: LayoutConfig.InlineXPadding)
+    setUnit(Unit(4), for: LayoutConfig.InlineYPadding)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
-    setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
+    setUnit(Unit(30), for: LayoutConfig.FieldMinimumHeight)
     setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
 
     setUntypedValue(AnglePicker.Options(), for: LayoutConfig.FieldAnglePickerOptions)
 
-    setSize(Size(36, 36), for: LayoutConfig.FieldColorButtonSize)
+    setSize(Size(width: 30, height: 30), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
 
     // Use the default system colors by setting these config values to nil
@@ -193,9 +200,11 @@ open class LayoutConfig: NSObject {
     setColor(.black, for: LayoutConfig.FieldLabelTextColor)
     setColor(.black, for: LayoutConfig.FieldEditableTextColor)
 
-    setEdgeInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
-                  for: LayoutConfig.FieldTextFieldInsetPadding)
+    setScaledEdgeInsets(ScaledEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
+                        for: LayoutConfig.FieldTextFieldInsetPadding)
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
+
+    setSize(Size(width: 30, height: 30), for: LayoutConfig.MutatorButtonSize)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
 
@@ -307,31 +316,67 @@ open class LayoutConfig: NSObject {
   }
 
   /**
-   Maps a `EdgeInsets` value to a specific `PropertyKey`.
+   Maps a `ScaledEdgeInsets` value to a specific `PropertyKey`.
 
-   - parameter edgeInsets: The `EdgeInsets` value
+   - parameter edgeInsets: The `ScaledEdgeInsets` value
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - returns: The `edgeInset` that was set.
+   - returns: The `edgeInsets` value.
    */
   @discardableResult
-  public func setEdgeInsets(_ edgeInsets: EdgeInsets, for key: PropertyKey) -> EdgeInsets {
+  public func setScaledEdgeInsets(_ edgeInsets: ScaledEdgeInsets, for key: PropertyKey)
+    -> ScaledEdgeInsets {
     self.edgeInsets[key] = edgeInsets
     return edgeInsets
   }
 
   /**
-   Returns the `EdgeInsets` value that is mapped to a specific `PropertyKey`.
+   Returns the `ScaledEdgeInsets` value that is mapped to a specific `PropertyKey`.
 
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - parameter defaultValue: [Optional] If no `EdgeInsets` was found for `key`, this value is
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - returns: The `key`'s value
+   - returns: The `key`'s value.
    */
   @inline(__always)
-  public func edgeInsets(for key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
-    -> EdgeInsets
+  public func scaledEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero)
+    -> ScaledEdgeInsets
   {
-    return edgeInsets[key] ?? setEdgeInsets(defaultValue, for: key)
+    return edgeInsets[key] ?? setScaledEdgeInsets(defaultValue, for: key)
+  }
+
+  /**
+   Returns the `viewEdgeInsets` of the `ScaledEdgeInsets` value that is mapped to a specific
+   `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `viewEdgeInsets` of the mapped `ScaledEdgeInsets` value.
+   */
+  @inline(__always)
+  public func viewEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero) -> EdgeInsets
+  {
+    return edgeInsets[key]?.viewEdgeInsets
+      ?? setScaledEdgeInsets(defaultValue, for: key).viewEdgeInsets
+  }
+
+  /**
+   Returns the `workspaceEdgeInsets` of the `ScaledEdgeInsets` value that is mapped to a specific
+   `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `workspaceEdgeInsets` of the mapped `ScaledEdgeInsets` value.
+   */
+  @inline(__always)
+  public func workspaceEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero) -> EdgeInsets
+  {
+    return edgeInsets[key]?.workspaceEdgeInsets
+      ?? setScaledEdgeInsets(defaultValue, for: key).workspaceEdgeInsets
   }
 
   /**
@@ -428,7 +473,7 @@ open class LayoutConfig: NSObject {
    - returns: The mapped `Size` value.
    */
   @inline(__always)
-  public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
+  public func size(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0)) -> Size {
     return sizes[key] ?? setSize(defaultValue, for: key)
   }
 
@@ -441,7 +486,7 @@ open class LayoutConfig: NSObject {
    - returns: The `viewSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0))
     -> CGSize
   {
     return size(for: key, defaultValue: defaultValue).viewSize
@@ -456,7 +501,7 @@ open class LayoutConfig: NSObject {
    - returns: The `workspaceSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0))
     -> WorkspaceSize
   {
     return size(for: key, defaultValue: defaultValue).workspaceSize
@@ -591,6 +636,16 @@ open class LayoutConfig: NSObject {
       sizes[key] = size
     }
 
+    for (key, var scaledEdgeInsets) in edgeInsets {
+      let workspaceEdgeInsets = scaledEdgeInsets.workspaceEdgeInsets
+      scaledEdgeInsets.viewEdgeInsets =
+        EdgeInsets(top: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.top),
+                   leading: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.leading),
+                   bottom: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.bottom),
+                   trailing: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.trailing))
+      edgeInsets[key] = scaledEdgeInsets
+    }
+
     for (_, scaledFont) in _fonts {
       scaledFont.font = scaledFont.creator(_scale)
       scaledFont.popoverFont = scaledFont.creator(_popoverScale)
@@ -614,5 +669,14 @@ extension LayoutConfig {
       self.font = creator(fontScale)
       self.popoverFont = creator(popoverFontScale)
     }
+  }
+}
+
+extension LayoutConfigEdgeInsets {
+  // MARK: - LayoutConfigEdgeInsets Extensions
+
+  /// Returns a `LayoutConfigEdgeInsets` where all values are zeroed out.
+  static var zero: LayoutConfigEdgeInsets {
+    return LayoutConfigEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
   }
 }

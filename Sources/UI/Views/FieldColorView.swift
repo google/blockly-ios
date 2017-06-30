@@ -106,7 +106,9 @@ extension FieldColorView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    return layout.config.viewSize(for: LayoutConfig.FieldColorButtonSize)
+    var size = layout.config.viewSize(for: LayoutConfig.FieldColorButtonSize)
+    size.height = max(size.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return size
   }
 }
 

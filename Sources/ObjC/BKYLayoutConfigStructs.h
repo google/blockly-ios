@@ -14,6 +14,7 @@
  */
 
 #import <CoreGraphics/CoreGraphics.h>
+#import "BKYEdgeInsets.h"
 #import "BKYWorkspaceUnits.h"
 
 // MARK: - BKYLayoutConfigUnit
@@ -62,4 +63,32 @@ typedef struct BKYLayoutConfigSize BKYLayoutConfigSize;
  `workspaceSize`.
  */
 BKYLayoutConfigSize BKYLayoutConfigSizeMake(CGFloat workspaceWidth, CGFloat workspaceHeight)
-  CF_SWIFT_NAME(LayoutConfigSize.init(_:_:));
+  CF_SWIFT_NAME(LayoutConfigSize.init(width:height:));
+
+// MARK: - BKYLayoutConfigEdgeInsets
+
+/// Struct for representing an EdgeInsets value (i.e. width/height) in both the Workspace coordinate
+/// system and UIView coordinate system.
+struct BKYLayoutConfigEdgeInsets {
+  /// The size value specified in the Workspace coordinate system
+  BKYEdgeInsets workspaceEdgeInsets;
+  /// The size value specified in the UIView coordinate system. This value is automatically derived
+  /// from `workspaceUnit` and should not be modified directly.
+  BKYEdgeInsets viewEdgeInsets;
+} CF_SWIFT_NAME(LayoutConfigEdgeInsets);
+typedef struct BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsets;
+
+/**
+ Creates a `BKYLayoutConfigEdgeInsets`, where `workspaceEdgeInsets` is initialized with
+ given edge insets.
+
+ @param top The top value to use for `workspaceEdgeInsets`.
+ @param leading The leading value to use for `workspaceEdgeInsets`.
+ @param bottom The bottom value to use for `workspaceEdgeInsets`.
+ @param trailing The trailing value to use for `workspaceEdgeInsets`.
+ @note `viewEdgeInsets` is automatically initialized to the correct value based on the generated
+ `workspaceEdgeInsets`.
+ */
+BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsetsMake(
+  CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing)
+  CF_SWIFT_NAME(LayoutConfigEdgeInsets.init(top:leading:bottom:trailing:));

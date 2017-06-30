@@ -45,6 +45,7 @@ public final class DefaultBlockView: BlockView {
 
     // Add background layer
     self.layer.addSublayer(_backgroundLayer)
+    _backgroundLayer.zPosition = -1 // Ensure it's drawn behind everything.
   }
 
   /**
@@ -168,6 +169,12 @@ public final class DefaultBlockView: BlockView {
           layout.config.double(for: LayoutConfig.ViewAnimationDuration)
         backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
         backgroundLayer.frame = self.bounds
+
+        if layout.highlighted {
+          // If this block is highlighted, bring it to the top so its highlight layer doesn't get
+          // covered by other sibling blocks.
+          self.superview?.bringSubview(toFront: self)
+        }
       }
 
       if flags.intersectsWith(
@@ -178,6 +185,10 @@ public final class DefaultBlockView: BlockView {
         // Update highlight
         if let path = self.blockHighlightBezierPath() {
           self.addHighlightLayer(withPath: path, animated: animated)
+
+          // Bring this block to the top so its connection highlight doesn't get covered by
+          // sibling blocks.
+          self.superview?.bringSubview(toFront: self)
         } else {
           self.removeHighlightLayer()
         }

@@ -75,6 +75,10 @@ open class MutatorIfElseView: LayoutView {
       if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
         // Update the view frame
         self.frame = layout.viewFrame
+
+        // Force the mutator view to always be drawn behind sibling views (which could be other
+        // blocks).
+        self.superview?.sendSubview(toBack: self)
       }
 
       let topPadding = layout.engine.viewUnitFromWorkspaceUnit(4)
