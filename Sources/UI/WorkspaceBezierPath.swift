@@ -112,7 +112,7 @@ public final class WorkspaceBezierPath: NSObject {
 
       setCurrentWorkspacePoint(
         _layoutEngine.scaledWorkspaceVectorFromViewVector(viewBezierPath.currentPoint),
-        relative: relative)
+        relative: false)
       _reflectionOfLastCurveControlPoint = nil
   }
 

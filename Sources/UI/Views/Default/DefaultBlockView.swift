@@ -261,13 +261,16 @@ public final class DefaultBlockView: BlockView {
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset = background.leadingEdgeXOffset // Note: this is the right edge in RTL
     let topEdgeOffset = background.leadingEdgeYOffset
+    let notchXOffset = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchXOffset)
     let notchWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
     let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
     let startHatSize = layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
+    let cornerRadius = layout.config.workspaceUnit(for: DefaultLayoutConfig.BlockCornerRadius)
+    let topLeftCornerRadius = background.startHat ? 0 : cornerRadius
 
-    path.moveTo(x: xLeftEdgeOffset, y: topEdgeOffset, relative: false)
+    path.moveTo(x: xLeftEdgeOffset + topLeftCornerRadius, y: topEdgeOffset, relative: false)
 
     for i in 0 ..< background.rows.count {
       let row = background.rows[i]
@@ -277,6 +280,7 @@ public final class DefaultBlockView: BlockView {
       if i == 0 {
         if background.previousStatementConnector {
           // Draw previous statement connector
+          path.addLineTo(x: xLeftEdgeOffset + notchXOffset, y: topEdgeOffset, relative: false)
           PathHelper.addNotch(
             toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         } else if background.startHat {
@@ -285,130 +289,174 @@ public final class DefaultBlockView: BlockView {
         }
       }
 
-      path.addLineTo(
-        x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y, relative: false)
+      let rowYOffset = path.currentWorkspacePoint.y
+      let nextRightEdge = xLeftEdgeOffset + row.rightEdge - cornerRadius
+      if nextRightEdge > path.currentWorkspacePoint.x {
+        path.addLineTo(x: nextRightEdge, y: path.currentWorkspacePoint.y, relative: false)
 
-      // Draw top padding
-      let topPadding = row.topPadding + previousBottomPadding
-      if topPadding > 0 {
-        path.addLineTo(x: 0, y: topPadding, relative: true)
+        // Add top-right corner
+        PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
       }
-      previousBottomPadding = 0
 
       // DRAW THE RIGHT EDGES
 
       if row.isStatement {
         // Draw the "C" part of a statement block
 
+        // Draw top padding (which includes the bottom padding from the previous row)
+        let topPadding = row.topPadding + previousBottomPadding - cornerRadius
+        path.addLineTo(x: path.currentWorkspacePoint.x, y: rowYOffset + topPadding, relative: false)
+        previousBottomPadding = 0
+
+        // Bottom-right corner
+        PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
+
         // Inner-ceiling of "C"
         path.addLineTo(
-          x: xLeftEdgeOffset + row.statementIndent + notchWidth,
-          y: path.currentWorkspacePoint.y, relative: false)
+          x: xLeftEdgeOffset + row.statementIndent + notchXOffset + notchWidth,
+          y: path.currentWorkspacePoint.y,
+          relative: false)
 
         // Draw notch
         PathHelper.addNotch(
           toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineTo(
-          x: xLeftEdgeOffset + row.statementIndent, y: path.currentWorkspacePoint.y,
+          x: xLeftEdgeOffset + row.statementIndent + cornerRadius,
+          y: path.currentWorkspacePoint.y,
           relative: false)
 
+        // Add top-left corner
+        PathHelper.addCorner(.topLeft, toPath: path, radius: cornerRadius, clockwise: false)
+
         // Inner-left side of "C"
-        path.addLineTo(x: 0, y: row.middleHeight, relative: true)
+        path.addLineTo(x: 0, y: row.middleHeight - cornerRadius * 2, relative: true)
+
+        // Add bottom-left corner
+        PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: false)
 
         if i == (background.rows.count - 1) {
           // If there is no other row after this, draw the inner-floor of the "C".
           path.addLineTo(
-            x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y,
+            x: xLeftEdgeOffset + row.rightEdge - cornerRadius, y: path.currentWorkspacePoint.y,
             relative: false)
+
+          // Add top-left corner of the bottom part.
+          PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
+
+          // Store bottom padding that will get drawn at the end, but subtract the corner radius
+          // amount that was just drawn for the top-left corner.
+          previousBottomPadding = row.bottomPadding - cornerRadius
         } else {
-          // If there is another row after this, the inner-floor of the "C" is drawn by the
-          // right edge of the next row.
+          // The inner-floor of the "C" is drawn by the right edge of the next row.
+          // Store bottom padding, to draw into the the top padding of the next row.
+          previousBottomPadding = row.bottomPadding
+        }
+      } else {
+        let rightLine = row.middleHeight - (row.outputConnector ? puzzleTabHeight : 0)
+
+        // Draw top portion of the line (which includes the bottom padding from the previous row)
+        path.addLineTo(
+          x: path.currentWorkspacePoint.x,
+          y: rowYOffset + row.topPadding + previousBottomPadding + rightLine / 2.0,
+          relative: false)
+
+        if row.outputConnector {
+          // Draw the puzzle tab
+          PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
+                                  puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         }
 
-        // Statements are different in that its bottom padding is drawn by the top padding in
-        // the next row. Store bottom padding for the next iteration.
-        previousBottomPadding = row.bottomPadding
-      } else if row.outputConnector {
-        // Draw output connector and then the rest of the middle height
-        bky_assert(puzzleTabHeight <= row.middleHeight,
-          message: "Middle height for the block layout is less than the space needed")
-
-        let rightLine = row.middleHeight - puzzleTabHeight
-
-        path.addLineTo(x: 0, y: rightLine / 2.0, relative: true)
-
-        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
-          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
-
-        path.addLineTo(x: 0, y: rightLine / 2.0 + row.bottomPadding, relative: true)
-      } else {
-        // Simply draw the middle height for the vertical edge
-        path.addLineTo(x: 0, y: row.middleHeight + row.bottomPadding, relative: true)
+        // Store bottom padding, to draw into the the top padding of the next row.
+        previousBottomPadding = rightLine / 2.0 + row.bottomPadding
       }
     }
 
-    if previousBottomPadding > 0 {
-      path.addLineTo(x: 0, y: previousBottomPadding, relative: true)
+    // If needed, draw the last remaining bottom line.
+    if previousBottomPadding - cornerRadius > 0 {
+      path.addLineTo(x: 0, y: previousBottomPadding - cornerRadius, relative: true)
     }
+
+    // Add the bottom-right corner of the block
+    PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
 
     // DRAW THE BOTTOM EDGES
 
     if background.nextStatementConnector {
       path.addLineTo(
-        x: xLeftEdgeOffset + notchWidth, y: path.currentWorkspacePoint.y, relative: false)
+        x: xLeftEdgeOffset + notchXOffset + notchWidth,
+        y: path.currentWorkspacePoint.y,
+        relative: false)
       PathHelper.addNotch(
         toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
-    path.addLineTo(x: xLeftEdgeOffset, y: path.currentWorkspacePoint.y, relative: false)
+    path.addLineTo(
+      x: xLeftEdgeOffset + cornerRadius, y: path.currentWorkspacePoint.y, relative: false)
+
+    // ADD BOTTOM LEFT CORNER
+    PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: true)
 
     // DRAW THE LEFT EDGES
 
     if background.outputConnector {
-      let y = max(background.firstLineHeight, puzzleTabHeight) - path.currentWorkspacePoint.y
-      path.addLineTo(x: 0, y: y, relative: true)
-
-      let leftLineExtension = (path.currentWorkspacePoint.y - puzzleTabHeight) / 2.0
+      let leftLineExtension = (background.firstLineHeight - puzzleTabHeight) / 2.0
 
       // Add output connector
-      path.addLineTo(x: 0, y: -leftLineExtension, relative: true)
+      path.addLineTo(
+        x: xLeftEdgeOffset, y: topEdgeOffset + leftLineExtension + puzzleTabHeight, relative: false)
 
       PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
         puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
 
-      path.addLineTo(x: 0, y: -leftLineExtension, relative: true)
+      path.addLineTo(x: 0, y: -(leftLineExtension - topLeftCornerRadius), relative: true)
+    } else {
+      path.addLineTo(x: xLeftEdgeOffset, y: topEdgeOffset + topLeftCornerRadius, relative: false)
     }
+
+    // ADD TOP LEFT CORNER
+    PathHelper.addCorner(.topLeft, toPath: path, radius: topLeftCornerRadius, clockwise: true)
 
     path.closePath()
 
     // DRAW INLINE CONNECTORS
+    let cornerRadiusX2 = cornerRadius * 2.0
     path.viewBezierPath.usesEvenOddFillRule = true
     for backgroundRow in background.rows {
       for inlineConnector in backgroundRow.inlineConnectors {
         path.moveTo(
-          x: inlineConnector.relativePosition.x + puzzleTabWidth,
+          x: inlineConnector.relativePosition.x + puzzleTabWidth + cornerRadius,
           y: inlineConnector.relativePosition.y,
           relative: false)
 
         let xEdgeWidth = inlineConnector.size.width - puzzleTabWidth
         // Top edge
-        path.addLineTo(x: xEdgeWidth, y: 0, relative: true)
+        path.addLineTo(x: xEdgeWidth - cornerRadiusX2, y: 0, relative: true)
+        PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
         // Right edge
-        path.addLineTo(x: 0, y: inlineConnector.size.height, relative: true)
+        path.addLineTo(x: 0, y: inlineConnector.size.height - cornerRadiusX2, relative: true)
+        PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
         // Bottom edge
-        path.addLineTo(x: -xEdgeWidth, y: 0, relative: true)
+        path.addLineTo(x: -(xEdgeWidth - cornerRadiusX2), y: 0, relative: true)
+        PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: true)
         // Start left edge
         path.addLineTo(
-          x: 0, y: inlineConnector.firstLineHeight - inlineConnector.size.height, relative: true)
+          x: path.currentWorkspacePoint.x,
+          y: inlineConnector.relativePosition.y + inlineConnector.firstLineHeight - cornerRadius,
+          relative: false)
 
         let puzzleLineExtension = (inlineConnector.firstLineHeight - puzzleTabHeight) / 2.0
-        path.addLineTo(x: 0, y: -puzzleLineExtension, relative: true)
+        path.addLineTo(
+          x: path.currentWorkspacePoint.x,
+          y: inlineConnector.relativePosition.y + puzzleLineExtension + puzzleTabHeight,
+          relative: false)
         // Puzzle notch
         PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
         // Finish left edge
-        path.addLineTo(x: 0, y: -puzzleLineExtension, relative: true)
+        path.addLineTo(x: 0, y: -(puzzleLineExtension - cornerRadius), relative: true)
+        PathHelper.addCorner(.topLeft, toPath: path, radius: cornerRadius, clockwise: true)
+
       }
     }
 

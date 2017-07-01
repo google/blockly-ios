@@ -138,8 +138,9 @@ public final class DefaultBlockLayout: BlockLayout {
 
     // Account for minimum width of rendering previous/next notches
     if block.previousConnection != nil ||  block.nextConnection != nil {
+      let notchXOffset = config.workspaceUnit(for: DefaultLayoutConfig.NotchXOffset)
       let notchWidth = config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
-      minimalFieldWidthRequired = max(minimalFieldWidthRequired, notchWidth)
+      minimalFieldWidthRequired = max(minimalFieldWidthRequired, notchXOffset + notchWidth)
     }
 
     var layouts: [Layout] = inputLayouts
@@ -288,7 +289,8 @@ public final class DefaultBlockLayout: BlockLayout {
 
     // Update connection relative positions
     let notchXOffset = outputPuzzleTabXOffset +
-      self.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) / 2
+      config.workspaceUnit(for: DefaultLayoutConfig.NotchXOffset) +
+      config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth) / 2
     let notchHeight = self.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
 
     if block.previousConnection != nil {
