@@ -30,6 +30,9 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// [`Unit`] Width of a highlighted line stroke for a block
   public static let BlockLineWidthHighlight = LayoutConfig.newPropertyKey()
 
+  /// [`Unit`] Width of the line stroke for a highlighted connection.
+  public static let BlockConnectionLineWidthHighlight = LayoutConfig.newPropertyKey()
+
   /// [`Unit`] Height of a horizontal puzzle tab
   public static let PuzzleTabHeight = LayoutConfig.newPropertyKey()
 
@@ -63,6 +66,9 @@ open class DefaultLayoutConfig: LayoutConfig {
 
   /// [`UIColor`] The stroke color to use when rendering a disabled block
   public static let BlockStrokeDisabledColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The stroke color to use when rendering a highlighted connection on a block.
+  public static let BlockConnectionHighlightStrokeColor = LayoutConfig.newPropertyKey()
 
   /// [`UIColor`] The fill color to use when rendering a disabled block
   public static let BlockFillDisabledColor = LayoutConfig.newPropertyKey()
@@ -107,6 +113,7 @@ open class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(4), for: DefaultLayoutConfig.BlockCornerRadius)
     setUnit(Unit(1), for: DefaultLayoutConfig.BlockLineWidthRegular)
     setUnit(Unit(3), for: DefaultLayoutConfig.BlockLineWidthHighlight)
+    setUnit(Unit(3), for: DefaultLayoutConfig.BlockConnectionLineWidthHighlight)
     setUnit(Unit(20), for: DefaultLayoutConfig.PuzzleTabHeight)
     setUnit(Unit(8), for: DefaultLayoutConfig.PuzzleTabWidth)
     setUnit(Unit(16), for: DefaultLayoutConfig.NotchXOffset)
@@ -118,6 +125,7 @@ open class DefaultLayoutConfig: LayoutConfig {
 
     setColor(UIColor.darkGray, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
     setColor(UIColor.blue, for: DefaultLayoutConfig.BlockStrokeHighlightColor)
+    setColor(ColorHelper.makeColor(rgb: "304FFE"), for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)
     setColor(ColorHelper.makeColor(rgb: "555555"),
              for: DefaultLayoutConfig.BlockStrokeDisabledColor)
     setColor(ColorHelper.makeColor(rgb: "dddddd"),
