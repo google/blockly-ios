@@ -38,6 +38,10 @@ public final class DefaultInputLayout: InputLayout {
   /// For performance reasons, keep a strong reference to the input.connection
   fileprivate let _connection: Connection
 
+  /// The amount which the notch should be offset from the left edge, in the Workspace
+  // coordinate system.
+  private var notchXOffset: CGFloat = 0
+
   /// The notch width that this input should use, in the Workspace coordinate system.
   private var notchWidth: CGFloat = 0
 
@@ -60,7 +64,8 @@ public final class DefaultInputLayout: InputLayout {
       let connectionPoint: WorkspacePoint
       if input.type == .statement {
         connectionPoint = WorkspacePoint(
-          x: statementIndent + notchWidth / 2, y: statementRowTopPadding + notchHeight)
+          x: statementIndent + notchXOffset + notchWidth / 2,
+          y: statementRowTopPadding + notchHeight)
       } else if input.inline {
         connectionPoint = WorkspacePoint(x: inlineConnectorPosition.x, y: firstLineHeight / 2.0)
       } else {
@@ -147,6 +152,7 @@ public final class DefaultInputLayout: InputLayout {
     resetRenderProperties()
 
     // Update render values
+    notchXOffset = config.workspaceUnit(for: DefaultLayoutConfig.NotchXOffset)
     notchWidth = config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
     notchHeight = config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     puzzleTabHeight = config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
@@ -277,7 +283,7 @@ public final class DefaultInputLayout: InputLayout {
       // Set statement render properties
       self.statementIndent = fieldXOffset
       self.statementConnectorWidth =
-        notchWidth +
+        notchXOffset + notchWidth +
         self.config.workspaceUnit(for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
       self.rightEdge = statementIndent + statementConnectorWidth
 

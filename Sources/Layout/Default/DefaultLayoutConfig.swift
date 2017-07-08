@@ -36,10 +36,15 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// [`Unit`] Width of a horizontal puzzle tab
   public static let PuzzleTabWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] Width of vertical tab (including left margin)
+  /// [`Unit`] The x-offset from which to start drawing the notch, relative to the left edge.
+  /// This value should be greater than or equal to the value specified for
+  /// `DefaultLayoutConfig.BlockCornerRadius`.
+  public static let NotchXOffset = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] The width of the notch (including both diagonal lines and the bottom line).
   public static let NotchWidth = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] Height of vertical tab
+  /// [`Unit`] The height of the notch.
   public static let NotchHeight = LayoutConfig.newPropertyKey()
 
   /// [`Unit`] Vertical space to use for each of the top, middle, and bottom sections of the
@@ -99,15 +104,16 @@ open class DefaultLayoutConfig: LayoutConfig {
     super.init()
 
     // Set default values for known properties
-    setUnit(Unit(8), for: DefaultLayoutConfig.BlockCornerRadius)
+    setUnit(Unit(4), for: DefaultLayoutConfig.BlockCornerRadius)
     setUnit(Unit(1), for: DefaultLayoutConfig.BlockLineWidthRegular)
     setUnit(Unit(3), for: DefaultLayoutConfig.BlockLineWidthHighlight)
     setUnit(Unit(20), for: DefaultLayoutConfig.PuzzleTabHeight)
     setUnit(Unit(8), for: DefaultLayoutConfig.PuzzleTabWidth)
-    setUnit(Unit(30), for: DefaultLayoutConfig.NotchWidth)
+    setUnit(Unit(16), for: DefaultLayoutConfig.NotchXOffset)
+    setUnit(Unit(15), for: DefaultLayoutConfig.NotchWidth)
     setUnit(Unit(4), for: DefaultLayoutConfig.NotchHeight)
-    setUnit(Unit(10), for: DefaultLayoutConfig.StatementSectionHeight)
-    setUnit(Unit(10), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
+    setUnit(Unit(12), for: DefaultLayoutConfig.StatementSectionHeight)
+    setUnit(Unit(12), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
     setSize(Size(width: 12, height: 28), for: DefaultLayoutConfig.MinimumInlineConnectorSize)
 
     setColor(UIColor.darkGray, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
