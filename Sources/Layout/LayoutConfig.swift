@@ -671,12 +671,3 @@ extension LayoutConfig {
     }
   }
 }
-
-extension LayoutConfigEdgeInsets {
-  // MARK: - LayoutConfigEdgeInsets Extensions
-
-  /// Returns a `LayoutConfigEdgeInsets` where all values are zeroed out.
-  static var zero: LayoutConfigEdgeInsets {
-    return LayoutConfigEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-  }
-}
