@@ -113,6 +113,20 @@ open class LayoutView: UIView {
    - parameter code: The code block to run.
    */
   open func runAnimatableCode(_ animated: Bool, code: @escaping () -> Void) {
+    runAnimatableCode(animated, code: code, completion: nil)
+  }
+
+  /**
+   Runs a code block, allowing it to be run immediately or via a preset animation.
+
+   - parameter animated: Flag determining if the `code` should be animated.
+   - parameter code: The code block to run.
+   - parameter completion: The completion block to run after the code block has finished running.
+   This block has no return value and takes a single Boolean argument that indicates whether or not
+   the animations actually finished before the completion handler was called.
+  */
+  open func runAnimatableCode(
+    _ animated: Bool, code: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
     if animated {
       let duration = layout?.config.double(for: LayoutConfig.ViewAnimationDuration) ?? 0
       if duration > 0 {
@@ -121,13 +135,14 @@ open class LayoutView: UIView {
           delay: 0,
           options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut],
           animations: code,
-          completion: nil)
+          completion: completion)
 
         return
       }
     }
 
     code()
+    completion?(true)
   }
 }
 

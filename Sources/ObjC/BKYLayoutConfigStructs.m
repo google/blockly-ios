@@ -42,3 +42,8 @@ BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsetsMake(
   edgeInsets.viewEdgeInsets = BKYEdgeInsetsMake(top, leading, bottom, trailing);
   return edgeInsets;
 }
+
+BKYLayoutConfigEdgeInsets const BKYLayoutConfigEdgeInsetsZero = {
+  .workspaceEdgeInsets = { .top = 0, .leading = 0, .bottom = 0, .trailing = 0 },
+  .viewEdgeInsets = { .top = 0, .leading = 0, .bottom = 0, .trailing = 0 }
+};

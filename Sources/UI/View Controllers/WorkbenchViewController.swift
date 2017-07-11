@@ -128,7 +128,8 @@ open class WorkbenchViewController: UIViewController {
   /// The undo button
   open fileprivate(set) lazy var undoButton: UIButton = {
     let undoButton = UIButton(type: .custom)
-    if let image = ImageLoader.loadImage(named: "undo", forClass: WorkbenchViewController.self) {
+    if let image = ImageLoader.loadImage(
+      named: "undo", forClass: WorkbenchViewController.self, flipForRTL: self.engine.rtl) {
       undoButton.setImage(image, for: .normal)
       undoButton.contentMode = .center
     }
@@ -140,7 +141,8 @@ open class WorkbenchViewController: UIViewController {
   /// The redo button
   open fileprivate(set) lazy var redoButton: UIButton = {
     let redoButton = UIButton(type: .custom)
-    if let image = ImageLoader.loadImage(named: "redo", forClass: WorkbenchViewController.self) {
+    if let image = ImageLoader.loadImage(
+      named: "redo", forClass: WorkbenchViewController.self, flipForRTL: self.engine.rtl) {
       redoButton.setImage(image, for: .normal)
       redoButton.contentMode = .center
     }

@@ -92,3 +92,9 @@ typedef struct BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsets;
 BKYLayoutConfigEdgeInsets BKYLayoutConfigEdgeInsetsMake(
   CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing)
   CF_SWIFT_NAME(LayoutConfigEdgeInsets.init(top:leading:bottom:trailing:));
+
+/**
+ Creates a `BKYLayoutConfigEdgeInsets`, where both workspace and view edge inset values are set to zero.
+ */
+extern BKYLayoutConfigEdgeInsets const BKYLayoutConfigEdgeInsetsZero
+  CF_SWIFT_NAME(LayoutConfigEdgeInsets.zero);
