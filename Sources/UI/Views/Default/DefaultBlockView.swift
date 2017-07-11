@@ -509,7 +509,8 @@ public final class DefaultBlockView: BlockView {
               inputLayout.inlineConnectorSize.height - cornerRadius
           } else {
             lineStartY = inputLayout.relativePosition.y + cornerRadius
-            lineEndY = inputLayout.relativePosition.y + inputLayout.contentSize.height - cornerRadius
+            lineEndY =
+              inputLayout.relativePosition.y + inputLayout.contentSize.height - cornerRadius
           }
         } else if connection.sourceBlock == layout.block && connection.type == .outputValue {
           // Use block size to figure out line extensions
