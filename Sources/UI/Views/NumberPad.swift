@@ -41,6 +41,31 @@ public protocol NumberPadDelegate: class {
  */
 @objc(BKYNumberPad)
 public class NumberPad: UIView {
+  // MARK: - Constants
+
+  /**
+   Options for configuring the behavior of the number pad.
+   */
+  public struct Options {
+    /// The color to use for the backspace button.
+    public var backspaceButtonColor: UIColor = ColorPalette.Green.tint300
+
+    /// The corner radius to use for the non-backspace buttons.
+    public var buttonCornerRadius: CGFloat = 4
+
+    /// The text color to use for non-backspace buttons.
+    public var buttonTextColor: UIColor = ColorPalette.Grey.tint900
+
+    /// The background color to use for non-backspace buttons.
+    public var buttonBackgroundColor: UIColor = ColorPalette.Grey.tint300
+
+    /// The border color to use for non-backspace buttons.
+    public var buttonBorderColor: UIColor = ColorPalette.Grey.tint300
+
+    /// The color to use for the main number text field.
+    public var textFieldColor: UIColor = ColorPalette.Grey.tint900
+  }
+
   // MARK: - Properties
 
   /// Button for the "0" value.
@@ -113,6 +138,7 @@ public class NumberPad: UIView {
     }
   }
 
+  /// The font to use within the number pad.
   public var font: UIFont? {
     didSet {
       if let font = self.font {
@@ -136,6 +162,10 @@ public class NumberPad: UIView {
     }
   }
 
+  /// Configurable options of the number pad.
+  /// - note: These values are not used if a custom UI is provided for this control.
+  public let options: Options
+
   /// Delegate for events that occur on this instance.
   public weak var delegate: NumberPadDelegate?
 
@@ -144,7 +174,8 @@ public class NumberPad: UIView {
 
   // MARK: - Initializers
 
-  public init(frame: CGRect, useDefault: Bool = true) {
+  public init(frame: CGRect, useDefault: Bool = true, options: Options) {
+    self.options = options
     self.isDefault = useDefault
 
     super.init(frame: frame)
@@ -158,6 +189,7 @@ public class NumberPad: UIView {
 
   public required init?(coder aDecoder: NSCoder) {
     self.isDefault = false
+    self.options = Options()
 
     super.init(coder: aDecoder)
 
@@ -189,7 +221,7 @@ public class NumberPad: UIView {
       buttonBackspace?.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
       buttonBackspace?.layer.borderWidth = 0
       buttonBackspace?.sizeToFit()
-      buttonBackspace?.tintColor = ColorHelper.makeColor(rgb: "81C784")
+      buttonBackspace?.tintColor = options.backspaceButtonColor
       buttonBackspace?.backgroundColor = .clear
     }
 
@@ -201,7 +233,7 @@ public class NumberPad: UIView {
     textField.delegate = self
     textField.numberPad = self
     textField.inputView = _dummyKeyboardView  // Prevent keyboard from appearing.
-    textField.layer.cornerRadius = 4.0
+    textField.textColor = options.textFieldColor
 
     if let font = self.font {
       // Use a slightly larger font size for the number.
@@ -276,11 +308,11 @@ public class NumberPad: UIView {
     button.addTarget(self, action: #selector(didPressButton(_:)), for: .touchUpInside)
     button.contentMode = .center
     button.layer.borderWidth = 1.0
-    button.layer.cornerRadius = 4.0
+    button.layer.cornerRadius = options.buttonCornerRadius
     button.titleLabel?.font = self.font
-    button.tintColor = ColorHelper.makeColor(rgb: "212121")
-    button.layer.borderColor = ColorHelper.makeColor(rgb: "E0E0E0")?.cgColor
-    button.backgroundColor = ColorHelper.makeColor(rgb: "E0E0E0")
+    button.tintColor = options.buttonTextColor
+    button.layer.borderColor = options.buttonBorderColor.cgColor
+    button.backgroundColor = options.buttonBackgroundColor
     addSubview(button)
     return button
   }

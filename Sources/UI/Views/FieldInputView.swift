@@ -35,6 +35,7 @@ open class FieldInputView: FieldView {
     textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     textField.keyboardType = .default
     textField.adjustsFontSizeToFitWidth = false
+    textField.textAlignment = .center
     textField
       .addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
@@ -144,6 +145,8 @@ extension FieldInputView: FieldLayoutMeasurer {
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.width =
+      max(measureSize.width, layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMinimumWidth))
     measureSize.height =
       max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize

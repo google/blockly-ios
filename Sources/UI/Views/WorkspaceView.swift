@@ -53,7 +53,7 @@ open class WorkspaceView: LayoutView {
 
   /// The amount of padding to apply to the edges of the workspace canvas, by percentage of view
   /// frame size
-  open var canvasPaddingScale = EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5)
+  open var canvasPaddingScale = EdgeInsets(top: 0.5, leading: 0.2, bottom: 0.95, trailing: 0.9)
 
   /**
   The amount of padding that should be added to the edges when automatically scrolling a

@@ -58,6 +58,18 @@ public class MessageManager: NSObject {
       bky_debugPrint("Could not load default files for MessageManager: \(error)")
     }
 
+    // Change defaults to use material design colours 
+    manager.loadMessages([
+      "BKY_COLOUR_HUE": "#8D6E63", // Brown 400
+      "BKY_LISTS_HUE": "#7E57C2", // Deep Purple 400
+      "BKY_LOGIC_HUE": "#2196F3", // Blue 500
+      "BKY_LOOPS_HUE": "#43A047", // Green 600
+      "BKY_MATH_HUE": "#5C6BC0", // Indigo 400
+      "BKY_PROCEDURES_HUE": "#AB47BC", // Purple 400
+      "BKY_TEXTS_HUE": "#009688", // Teal 500
+      "BKY_VARIABLES_HUE": "#EC407A", // Pink 400
+      ])
+
     return manager
   }()
 

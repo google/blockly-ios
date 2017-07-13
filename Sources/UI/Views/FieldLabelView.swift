@@ -31,6 +31,7 @@ open class FieldLabelView: FieldView {
   fileprivate let label: UILabel = {
     let label = UILabel(frame: CGRect.zero)
     label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    label.lineBreakMode = .byClipping
     return label
   }()
 

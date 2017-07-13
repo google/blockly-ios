@@ -27,13 +27,13 @@ public class AnglePicker: UIControl {
    */
   public struct Options {
     /// The color of the ticks.
-    public var tickColor = ColorHelper.makeColor(rgb: "81C784")
+    public var tickColor: UIColor = ColorPalette.Green.tint300
 
     /// The fill color of the angle.
-    public var angleColor = ColorHelper.makeColor(rgb: "43A047")
+    public var angleColor: UIColor = ColorPalette.Green.tint600
 
     /// The fill color of the background circle.
-    public var circleColor = ColorHelper.makeColor(rgb: "f5f5f5")
+    public var circleColor: UIColor = ColorPalette.Grey.tint100
 
     /// The total number of ticks to render. These ticks act as snappable hotspots, whose
     /// behavior can be configured via `self.snapToThreshold` and `self.snapAwayThreshold`.
@@ -88,8 +88,8 @@ public class AnglePicker: UIControl {
   fileprivate lazy var _angleLayer: CAShapeLayer = {
     let layer = CAShapeLayer()
     layer.allowsEdgeAntialiasing = true
-    layer.fillColor = self.options.angleColor?.cgColor
-    layer.strokeColor = self.options.angleColor?.cgColor
+    layer.fillColor = self.options.angleColor.cgColor
+    layer.strokeColor = self.options.angleColor.cgColor
     layer.lineWidth = 1
     return layer
   }()
@@ -99,7 +99,7 @@ public class AnglePicker: UIControl {
     let layer = CAShapeLayer()
     layer.allowsEdgeAntialiasing = true
     layer.drawsAsynchronously = true
-    layer.fillColor = self.options.circleColor?.cgColor
+    layer.fillColor = self.options.circleColor.cgColor
     layer.strokeColor = nil
     layer.lineWidth = 0
     return layer
@@ -110,8 +110,8 @@ public class AnglePicker: UIControl {
     let layer = CAShapeLayer()
     layer.allowsEdgeAntialiasing = true
     layer.drawsAsynchronously = true
-    layer.strokeColor = self.options.tickColor?.cgColor
-    layer.fillColor = self.options.tickColor?.cgColor
+    layer.strokeColor = self.options.tickColor.cgColor
+    layer.fillColor = self.options.tickColor.cgColor
     layer.lineWidth = 2
     return layer
   }()

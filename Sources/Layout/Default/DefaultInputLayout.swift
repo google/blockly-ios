@@ -157,6 +157,7 @@ public final class DefaultInputLayout: InputLayout {
     notchHeight = config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     puzzleTabHeight = config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
     puzzleTabWidth = config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
+    let lineWidth = config.workspaceUnit(for: DefaultLayoutConfig.BlockLineWidthRegular)
 
     // Figure out which block group to render
     let targetBlockGroupLayout = self.blockGroupLayout as BlockGroupLayout
@@ -207,26 +208,27 @@ public final class DefaultInputLayout: InputLayout {
     // InputLayout.
     switch (self.input.type) {
     case .value:
-      // TODO(#41): Handle stroke widths for the inline connector cut-out
-
       // Position the block group
       targetBlockGroupLayout.relativePosition.x = fieldXOffset
       targetBlockGroupLayout.relativePosition.y = 0
 
       let widthRequired: CGFloat
       if input.inline {
-        targetBlockGroupLayout.edgeInsets.leading =
-          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+        // Don't account for top/bottom line widths, to reduce unnecessary vertical height.
         targetBlockGroupLayout.edgeInsets.top =
-          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineConnectorYPadding)
         targetBlockGroupLayout.edgeInsets.bottom =
-          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineYPadding)
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineConnectorYPadding)
+        targetBlockGroupLayout.edgeInsets.leading =
+          self.config.workspaceUnit(for: DefaultLayoutConfig.InlineConnectorXPadding) + lineWidth
 
         // Add trailing padding if this is the end of the row
         let nextInputLayout = (parentLayout as? BlockLayout)?.inputLayout(after: self)
         if nextInputLayout == nil || nextInputLayout?.input.type == .statement {
           targetBlockGroupLayout.edgeInsets.trailing =
-            config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding)
+            config.workspaceUnit(for: DefaultLayoutConfig.InlineConnectorXPadding) + lineWidth
+        } else {
+          targetBlockGroupLayout.edgeInsets.trailing = lineWidth
         }
 
         self.inlineConnectorPosition = WorkspacePoint(
@@ -234,7 +236,7 @@ public final class DefaultInputLayout: InputLayout {
           y: targetBlockGroupLayout.relativePosition.y + targetBlockGroupLayout.edgeInsets.top)
 
         let minimumInlineConnectorSize =
-          self.config.workspaceSize(for: DefaultLayoutConfig.MinimumInlineConnectorSize)
+          self.config.workspaceSize(for: DefaultLayoutConfig.InlineConnectorMinimumSize)
         let inlineConnectorWidth = max(targetBlockGroupLayout.contentSize.width,
           puzzleTabWidth + minimumInlineConnectorSize.width)
         let inlineConnectorHeight =
@@ -278,7 +280,7 @@ public final class DefaultInputLayout: InputLayout {
       // Make sure there's some space for the statement indent (eg. if there were no fields
       // specified)
       fieldXOffset = max(fieldXOffset,
-        self.config.workspaceUnit(for: DefaultLayoutConfig.InlineXPadding))
+        self.config.workspaceUnit(for: DefaultLayoutConfig.StatementMinimumSectionWidth))
 
       // Set statement render properties
       self.statementIndent = fieldXOffset

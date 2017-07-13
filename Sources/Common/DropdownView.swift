@@ -59,30 +59,28 @@ public final class DropdownView: UIView {
     set(value) { _label.textColor = value }
   }
   /// The background color of the area inside the dropdown
-  public var dropDownBackgroundColor: CGColor? {
-    get { return layer.backgroundColor }
-    set(value) { layer.backgroundColor = value }
+  public var dropDownBackgroundColor: UIColor? {
+    didSet { layer.backgroundColor = dropDownBackgroundColor?.cgColor }
   }
   /// The horizontal spacing to use for elements within the dropdown
-  public var horizontalSpacing = CGFloat(8) {
+  public var horizontalSpacing = CGFloat(6) {
     didSet {
       if horizontalSpacing != oldValue {
-        configureSubviews()
+        setNeedsLayout()
       }
     }
   }
   /// The vertical spacing to use for elements within the dropdown
-  public var verticalSpacing = CGFloat(4) {
+  public var verticalSpacing = CGFloat(2) {
     didSet {
       if verticalSpacing != oldValue {
-        configureSubviews()
+        setNeedsLayout()
       }
     }
   }
   /// The dropdown border's color
-  public var borderColor: CGColor? {
-    get { return layer.borderColor }
-    set(value) { layer.borderColor = value }
+  public var borderColor: UIColor? {
+    didSet(value) { layer.borderColor = borderColor?.cgColor }
   }
   /// The dropdown border's width
   public var borderWidth: CGFloat {
@@ -97,15 +95,23 @@ public final class DropdownView: UIView {
   /// The image to use for the drop down view
   public var dropDownArrowImage: UIImage? {
     get { return _dropDownArrow.image }
-    set(value) { _dropDownArrow.image = value }
+    set(value) {
+      _dropDownArrow.image = value
+      _dropDownArrow.sizeToFit()
+    }
   }
   /// An optional size to use for the drop down arrow view
   public var dropDownArrowImageSize: CGSize? {
     didSet {
       if dropDownArrowImageSize != oldValue {
-        configureSubviews()
+        setNeedsLayout()
       }
     }
+  }
+  /// The tint color to use for the drop down arrow.
+  public var dropDownArrowTintColor: UIColor! {
+    get { return _dropDownArrow.tintColor }
+    set(value) { _dropDownArrow.tintColor = value }
   }
   /// Delegate for receiving events that occur on this dropdown
   public weak var delegate: DropdownViewDelegate?
@@ -117,7 +123,6 @@ public final class DropdownView: UIView {
   fileprivate lazy var _button: UIButton = {
     let button = UIButton(type: .custom)
     button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
-    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return button
   }()
 
@@ -140,10 +145,11 @@ public final class DropdownView: UIView {
     super.init(frame: CGRect.zero)
 
     self.dropDownArrowImage = dropDownArrowImage ?? DropdownView.defaultDropDownArrowImage()
-    borderColor = UIColor.gray.cgColor
-    dropDownBackgroundColor = UIColor.white.cgColor
 
-    configureSubviews()
+    addSubview(_button)
+    addSubview(_dropDownArrow)
+    addSubview(_label)
+    sendSubview(toBack: _button)
   }
 
   /**
@@ -152,6 +158,27 @@ public final class DropdownView: UIView {
    */
   public required init?(coder aDecoder: NSCoder) {
     fatalError("Called unsupported initializer")
+  }
+
+  // MARK: - Super
+
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+
+    let xMargin = horizontalSpacing + borderWidth
+    let dropDownArrowImageSize =
+      self.dropDownArrowImageSize ?? dropDownArrowImage?.size ?? CGSize.zero
+
+    _button.frame = bounds
+
+    _dropDownArrow.frame = CGRect(
+      x: bounds.width - dropDownArrowImageSize.width - xMargin,
+      y: (bounds.height - dropDownArrowImageSize.height) / 2,
+      width: dropDownArrowImageSize.width,
+      height: dropDownArrowImageSize.height)
+
+    _label.sizeToFit()
+    _label.frame.origin = CGPoint(x: xMargin, y: (bounds.height - _label.bounds.height) / 2)
   }
 
   // MARK: - Public
@@ -190,51 +217,20 @@ public final class DropdownView: UIView {
    - returns: The `UIImage` containing the default drop down arrow.
    */
   public static func defaultDropDownArrowImage() -> UIImage? {
-    return ImageLoader.loadImage(named: "arrow_dropdown", forClass: DropdownView.self)
+    return ImageLoader.loadImage(named: "arrow_dropdown", forClass: DropdownView.self)?
+      .withRenderingMode(.alwaysTemplate) // This allows us to tint the image.
+  }
+
+  /**
+   Returns the size to use for the default drop down arrow image.
+
+   - returns: A `CGSize`.
+   */
+  public static func defaultDropDownArrowImageSize() -> CGSize {
+    return CGSize(width: 10, height: 5)
   }
 
   // MARK: - Private
-
-  private func configureSubviews() {
-    let dropDownArrowImageSize =
-      self.dropDownArrowImageSize ?? dropDownArrowImage?.size ?? CGSize.zero
-
-    let views = [
-      "label": _label,
-      "dropDownArrow": _dropDownArrow,
-      "button": _button,
-      ]
-    let metrics = [
-      "xSpacing": horizontalSpacing,
-      "ySpacing": verticalSpacing,
-      "dropDownArrowHeight": dropDownArrowImageSize.height,
-      "dropDownArrowWidth": dropDownArrowImageSize.width,
-      ]
-    let constraints = [
-      "H:|-(xSpacing)-[label]",
-      "H:[dropDownArrow(dropDownArrowWidth)]-(xSpacing)-|",
-      "H:|[button]|",
-      "V:[dropDownArrow(dropDownArrowHeight)]",
-      "V:|[button]|",
-      ]
-
-    // Re-add all views
-    views.forEach({ $1.removeFromSuperview()})
-    bky_addSubviews(Array(views.values))
-    sendSubview(toBack: _button)
-
-    // Add constraints
-    bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
-
-    // Center label and drop down arrow within superview
-    addConstraint(NSLayoutConstraint(
-      item: self, attribute: .centerY, relatedBy: .equal,
-      toItem: _label, attribute: .centerY, multiplier: 1.0, constant: 0))
-
-    addConstraint(NSLayoutConstraint(
-      item: self, attribute: .centerY, relatedBy: .equal,
-      toItem: _dropDownArrow, attribute: .centerY, multiplier: 1.0, constant: 0))
-  }
 
   private dynamic func didTapButton(_ sender: UIButton) {
     delegate?.dropDownDidReceiveTap()

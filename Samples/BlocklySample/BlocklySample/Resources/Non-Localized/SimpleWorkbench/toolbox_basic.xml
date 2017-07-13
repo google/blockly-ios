@@ -61,13 +61,6 @@
     </category>
     <category name="Math" colour="%{BKY_MATH_HUE}">
         <block type="math_number"></block>
-        <block type="math_change">
-            <value name="DELTA">
-                <shadow type="math_number">
-                    <field name="NUM">1</field>
-                </shadow>
-            </value>
-        </block>
         <block type="math_arithmetic">
             <value name="A">
                 <shadow type="math_number">
