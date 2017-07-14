@@ -206,7 +206,7 @@ open class LayoutConfig: NSObject {
     // Set default values for base config keys
     setUnit(Unit(24), for: LayoutConfig.BlockBumpDistance)
     setUnit(Unit(24), for: LayoutConfig.BlockSnapDistance)
-    setUnit(Unit(6), for: LayoutConfig.InlineXPadding)
+    setUnit(Unit(8), for: LayoutConfig.InlineXPadding)
     setUnit(Unit(6), for: LayoutConfig.InlineYPadding)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
@@ -236,7 +236,7 @@ open class LayoutConfig: NSObject {
 
     setScaledEdgeInsets(ScaledEdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6),
                         for: LayoutConfig.FieldTextFieldInsetPadding)
-    setUnit(Unit(30), for: LayoutConfig.FieldTextFieldMinimumWidth)
+    setUnit(Unit(26), for: LayoutConfig.FieldTextFieldMinimumWidth)
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setSize(Size(width: 30, height: 30), for: LayoutConfig.MutatorButtonSize)

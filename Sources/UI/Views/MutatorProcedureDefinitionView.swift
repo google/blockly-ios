@@ -86,7 +86,7 @@ open class MutatorProcedureDefinitionView: LayoutView {
       self.popoverButton.contentEdgeInsets = UIEdgeInsetsMake(topPadding, 0, topPadding, 0)
       self.popoverButton.tintColor =
         layout.config.color(for: DefaultLayoutConfig.MutatorSettingsButtonColor)
-        
+
       self.isUserInteractionEnabled = layout.userInteractionEnabled
     }
   }

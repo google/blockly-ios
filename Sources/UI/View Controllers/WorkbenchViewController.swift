@@ -268,9 +268,11 @@ open class WorkbenchViewController: UIViewController {
   /// Controls logic for dragging blocks around in the workspace
   fileprivate let _dragger = Dragger()
   /// Controller for listing the toolbox categories
-  open fileprivate(set) lazy var toolboxCategoryListViewController: ToolboxCategoryListViewController = {
+  open fileprivate(set) lazy var toolboxCategoryListViewController:
+    ToolboxCategoryListViewController = {
     // Set up toolbox category list view controller
-    let viewController = ToolboxCategoryListViewController(orientation: self.style.toolboxOrientation)
+    let viewController =
+      ToolboxCategoryListViewController(orientation: self.style.toolboxOrientation)
     viewController.delegate = self
     viewController.view.backgroundColor = .white
     return viewController

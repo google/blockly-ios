@@ -110,8 +110,8 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// [`Size`] Minimum size of the inline connector
   public static let InlineConnectorMinimumSize = LayoutConfig.newPropertyKey()
 
-  /// [`Unit`] Horizontal padding around inline connector. For inline connector rendering, this value
-  /// overrides the one specified by the key `LayoutConfig.InlineXPadding`.
+  /// [`Unit`] Horizontal padding around inline connector. For inline connector rendering, this
+  /// value overrides the one specified by the key `LayoutConfig.InlineXPadding`.
   public static let InlineConnectorXPadding = LayoutConfig.newPropertyKey()
 
   /// [`Unit`] Vertical padding around inline connector. For inline connector rendering, this value
@@ -141,7 +141,7 @@ open class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(8), for: DefaultLayoutConfig.StatementMinimumSectionWidth)
     setUnit(Unit(12), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
     setSize(Size(width: 14, height: 28), for: DefaultLayoutConfig.InlineConnectorMinimumSize)
-    setUnit(Unit(6), for: DefaultLayoutConfig.InlineConnectorXPadding)
+    setUnit(Unit(8), for: DefaultLayoutConfig.InlineConnectorXPadding)
     setUnit(Unit(3), for: DefaultLayoutConfig.InlineConnectorYPadding)
 
     setColor(ColorPalette.Grey.tint400, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
