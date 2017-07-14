@@ -20,12 +20,6 @@ import Foundation
  */
 @objc(BKYToolboxCategoryViewController)
 public final class ToolboxCategoryViewController: UIViewController {
-
-  // MARK: - Static Properties
-
-  /// Default background color to use for `view`
-  private static let ViewBackgroundColor = UIColor(white: 0.6, alpha: 0.65)
-
   // MARK: - Properties
 
   /// The toolbox layout to display
@@ -79,13 +73,13 @@ public final class ToolboxCategoryViewController: UIViewController {
   /// The orientation of the toolbox.
   private let orientation: ToolboxCategoryListViewController.Orientation
   /// The button for adding variables to the name manager.
-  private lazy var addVariableButton: UIButton = {
+  public private(set) lazy var addVariableButton: UIButton = {
     let button = UIButton()
     let buttonText = message(forKey: "BKY_IOS_VARIABLES_ADD_VARIABLE")
     button.setTitle(buttonText, for: UIControlState.normal)
-    button.setTitleColor(.white, for: .normal)
-    button.setTitleColor(.gray, for: .highlighted)
-    button.backgroundColor = .darkGray
+    button.setTitleColor(ColorPalette.Grey.tint200, for: .normal)
+    button.setTitleColor(ColorPalette.Grey.tint600, for: .highlighted)
+    button.backgroundColor = ColorPalette.Grey.tint800
     button.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
     button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return button
@@ -117,7 +111,6 @@ public final class ToolboxCategoryViewController: UIViewController {
   open override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = ToolboxCategoryViewController.ViewBackgroundColor
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
     headerView.addSubview(addVariableButton)

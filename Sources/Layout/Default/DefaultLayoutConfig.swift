@@ -54,6 +54,10 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// C-shaped statement input
   public static let StatementSectionHeight = LayoutConfig.newPropertyKey()
 
+  /// [`Unit`] The minimum amount of horizontal space to use for the spine of the C-shaped
+  /// statement input.
+  public static let StatementMinimumSectionWidth = LayoutConfig.newPropertyKey()
+
   /// [`Unit`] The minimum width of the top section of the C-shaped statement input (not
   /// including the statement's notch width).
   public static let StatementMinimumConnectorWidth = LayoutConfig.newPropertyKey()
@@ -72,6 +76,9 @@ open class DefaultLayoutConfig: LayoutConfig {
 
   /// [`UIColor`] The fill color to use when rendering a disabled block
   public static let BlockFillDisabledColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to render above of a block when it is highlighted.
+  public static let BlockMaskHighlightColor = LayoutConfig.newPropertyKey()
 
   /// [`Float`] The default alpha value to use when rendering a block
   public static let BlockDefaultAlpha = LayoutConfig.newPropertyKey()
@@ -101,7 +108,18 @@ open class DefaultLayoutConfig: LayoutConfig {
   public static let BlockStartHatSize = LayoutConfig.newPropertyKey()
 
   /// [`Size`] Minimum size of the inline connector
-  public static let MinimumInlineConnectorSize = LayoutConfig.newPropertyKey()
+  public static let InlineConnectorMinimumSize = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] Horizontal padding around inline connector. For inline connector rendering, this
+  /// value overrides the one specified by the key `LayoutConfig.InlineXPadding`.
+  public static let InlineConnectorXPadding = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] Vertical padding around inline connector. For inline connector rendering, this value
+  /// overrides the one specified by the key `LayoutConfig.InlineYPadding`.
+  public static let InlineConnectorYPadding = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to tint the mutator settings button.
+  public static let MutatorSettingsButtonColor = LayoutConfig.newPropertyKey()
 
   // MARK: - Initializers
 
@@ -112,24 +130,29 @@ open class DefaultLayoutConfig: LayoutConfig {
     // Set default values for known properties
     setUnit(Unit(4), for: DefaultLayoutConfig.BlockCornerRadius)
     setUnit(Unit(1), for: DefaultLayoutConfig.BlockLineWidthRegular)
-    setUnit(Unit(3), for: DefaultLayoutConfig.BlockLineWidthHighlight)
-    setUnit(Unit(3), for: DefaultLayoutConfig.BlockConnectionLineWidthHighlight)
-    setUnit(Unit(20), for: DefaultLayoutConfig.PuzzleTabHeight)
+    setUnit(Unit(4), for: DefaultLayoutConfig.BlockLineWidthHighlight)
+    setUnit(Unit(4), for: DefaultLayoutConfig.BlockConnectionLineWidthHighlight)
+    setUnit(Unit(12), for: DefaultLayoutConfig.PuzzleTabHeight)
     setUnit(Unit(8), for: DefaultLayoutConfig.PuzzleTabWidth)
     setUnit(Unit(16), for: DefaultLayoutConfig.NotchXOffset)
     setUnit(Unit(15), for: DefaultLayoutConfig.NotchWidth)
     setUnit(Unit(4), for: DefaultLayoutConfig.NotchHeight)
     setUnit(Unit(12), for: DefaultLayoutConfig.StatementSectionHeight)
+    setUnit(Unit(8), for: DefaultLayoutConfig.StatementMinimumSectionWidth)
     setUnit(Unit(12), for: DefaultLayoutConfig.StatementMinimumConnectorWidth)
-    setSize(Size(width: 12, height: 28), for: DefaultLayoutConfig.MinimumInlineConnectorSize)
+    setSize(Size(width: 14, height: 28), for: DefaultLayoutConfig.InlineConnectorMinimumSize)
+    setUnit(Unit(8), for: DefaultLayoutConfig.InlineConnectorXPadding)
+    setUnit(Unit(3), for: DefaultLayoutConfig.InlineConnectorYPadding)
 
-    setColor(UIColor.darkGray, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
-    setColor(UIColor.blue, for: DefaultLayoutConfig.BlockStrokeHighlightColor)
-    setColor(ColorHelper.makeColor(rgb: "304FFE"), for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)
-    setColor(ColorHelper.makeColor(rgb: "555555"),
-             for: DefaultLayoutConfig.BlockStrokeDisabledColor)
-    setColor(ColorHelper.makeColor(rgb: "dddddd"),
-             for: DefaultLayoutConfig.BlockFillDisabledColor)
+    setColor(ColorPalette.Grey.tint400, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
+    setColor(ColorPalette.Yellow.tint700.withAlphaComponent(0.95),
+             for: DefaultLayoutConfig.BlockStrokeHighlightColor)
+    setColor(ColorPalette.Grey.tint200.withAlphaComponent(0.25),
+             for: DefaultLayoutConfig.BlockMaskHighlightColor)
+    setColor(ColorPalette.Indigo.accent700,
+             for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)
+    setColor(ColorPalette.Grey.tint700, for: DefaultLayoutConfig.BlockStrokeDisabledColor)
+    setColor(ColorPalette.Grey.tint300, for: DefaultLayoutConfig.BlockFillDisabledColor)
     setFloat(0.7, for: DefaultLayoutConfig.BlockDraggingFillColorAlpha)
     setFloat(0.8, for: DefaultLayoutConfig.BlockDraggingStrokeColorAlpha)
     setFloat(1.0, for: DefaultLayoutConfig.BlockDefaultAlpha)
@@ -139,5 +162,7 @@ open class DefaultLayoutConfig: LayoutConfig {
 
     setBool(false, for: DefaultLayoutConfig.BlockStartHat)
     setSize(Size(width: 100, height: 16), for: DefaultLayoutConfig.BlockStartHatSize)
+
+    setColor(ColorPalette.Grey.tint100, for: DefaultLayoutConfig.MutatorSettingsButtonColor)
   }
 }

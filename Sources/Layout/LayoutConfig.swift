@@ -60,6 +60,9 @@ open class LayoutConfig: NSObject {
   /// [`Unit`] The border width to use when rendering the `FieldColor` button
   public static let FieldColorButtonBorderWidth = LayoutConfig.newPropertyKey()
 
+  /// [`UIColor`] The border color to use when rendering the `FieldColor` button.
+  public static let FieldColorButtonBorderColor = LayoutConfig.newPropertyKey()
+
   /// [`Size`] The button size to use when rendering a `FieldColor`
   public static let FieldColorButtonSize = LayoutConfig.newPropertyKey()
 
@@ -71,15 +74,35 @@ open class LayoutConfig: NSObject {
   /// `nil` means that the system default should be used.
   public static let FieldCheckboxSwitchTintColor = LayoutConfig.newPropertyKey()
 
+  /// [`Unit`] Horizontal spacing inside a dropdown.
+  public static let FieldDropdownXSpacing = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] Vertical spacing inside a dropdown.
+  public static let FieldDropdownYSpacing = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to use for the dropdown background.
+  public static let FieldDropdownBackgroundColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to use for the dropdown border.
+  public static let FieldDropdownBorderColor = LayoutConfig.newPropertyKey()
+
   /// [`UIColor`] The default color for text in field labels.
   public static let FieldLabelTextColor = LayoutConfig.newPropertyKey()
 
   /// [`UIColor`] The default color for editable text in fields.
   public static let FieldEditableTextColor = LayoutConfig.newPropertyKey()
 
+  /// [`UntypedValue`: `NumberPad.Options`] The options to use whenever a number pad is
+  /// displayed.
+  public static let FieldNumberPadOptions = LayoutConfig.newPropertyKey()
+
   /// [`EdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
   /// should be used for each one
   public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] For fields that use a `UITextField`, this is the minimum width that should be
+  /// used for each one.
+  public static let FieldTextFieldMinimumWidth = LayoutConfig.newPropertyKey()
 
   /// [`Unit`] For fields that use a `UITextField`, this is the maximum width that should be
   /// used for each one.
@@ -90,6 +113,9 @@ open class LayoutConfig: NSObject {
 
   /// [`Size`] For mutators, this is the size of the default "settings" button.
   public static let MutatorButtonSize = LayoutConfig.newPropertyKey()
+
+  /// [`Font`] The font to use for label text inside popovers.
+  public static let PopoverLabelFont = LayoutConfig.newPropertyKey()
 
   /// [`Font`] The font to use for title text inside popovers.
   public static let PopoverTitleFont = LayoutConfig.newPropertyKey()
@@ -181,27 +207,36 @@ open class LayoutConfig: NSObject {
     setUnit(Unit(24), for: LayoutConfig.BlockBumpDistance)
     setUnit(Unit(24), for: LayoutConfig.BlockSnapDistance)
     setUnit(Unit(8), for: LayoutConfig.InlineXPadding)
-    setUnit(Unit(4), for: LayoutConfig.InlineYPadding)
+    setUnit(Unit(6), for: LayoutConfig.InlineYPadding)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
     setUnit(Unit(30), for: LayoutConfig.FieldMinimumHeight)
-    setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
+    setUnit(Unit(4), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
 
     setUntypedValue(AnglePicker.Options(), for: LayoutConfig.FieldAnglePickerOptions)
 
     setSize(Size(width: 30, height: 30), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
+    setColor(ColorPalette.Grey.tint100, for: LayoutConfig.FieldColorButtonBorderColor)
 
     // Use the default system colors by setting these config values to nil
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
-    setColor(.black, for: LayoutConfig.FieldLabelTextColor)
-    setColor(.black, for: LayoutConfig.FieldEditableTextColor)
+    setColor(ColorPalette.Grey.tint100, for: LayoutConfig.FieldLabelTextColor)
+    setColor(ColorPalette.Grey.tint800, for: LayoutConfig.FieldEditableTextColor)
 
-    setScaledEdgeInsets(ScaledEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
+    setColor(ColorPalette.Grey.tint50, for: LayoutConfig.FieldDropdownBackgroundColor)
+    setColor(ColorPalette.Grey.tint400, for: LayoutConfig.FieldDropdownBorderColor)
+    setUnit(Unit(6), for: LayoutConfig.FieldDropdownXSpacing)
+    setUnit(Unit(2), for: LayoutConfig.FieldDropdownYSpacing)
+
+    setUntypedValue(NumberPad.Options(), for: LayoutConfig.FieldNumberPadOptions)
+
+    setScaledEdgeInsets(ScaledEdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6),
                         for: LayoutConfig.FieldTextFieldInsetPadding)
+    setUnit(Unit(26), for: LayoutConfig.FieldTextFieldMinimumWidth)
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
 
     setSize(Size(width: 30, height: 30), for: LayoutConfig.MutatorButtonSize)
@@ -212,8 +247,12 @@ open class LayoutConfig: NSObject {
     setStringArray(["variables_set", "math_change"], for: LayoutConfig.UniqueVariableBlocks)
 
     setFontCreator({ scale in
-      return UIFont.systemFont(ofSize: 16 * scale)
+      return UIFont.boldSystemFont(ofSize: 16 * scale)
     }, for: LayoutConfig.GlobalFont)
+
+    setFontCreator({ scale in
+      return UIFont.systemFont(ofSize: 16 * scale)
+    }, for: LayoutConfig.PopoverLabelFont)
 
     setFontCreator({ scale in
       return UIFont.systemFont(ofSize: 13 * scale)

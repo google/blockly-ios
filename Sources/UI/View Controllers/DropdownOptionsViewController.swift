@@ -70,7 +70,7 @@ open class DropdownOptionsViewController: UITableViewController {
   /// The color of the font on each cell
   open var textLabelColor: UIColor? = .black
   /// The maximum size to use when displaying this view controller as a popover
-  open var maximumPopoverSize = CGSize(width: 248, height: 248)
+  open var maximumPopoverSize = CGSize(width: 300, height: 300)
   /// Identifier for reusing cells for this table
   fileprivate let cellReuseIdentifier = "DropdownOptionsViewControllerCell"
   /// The estimated width of the checkmark accessory (this value does not appear to be accessible)

@@ -10,7 +10,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_checkbox_block",
@@ -23,7 +23,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_colour_block",
@@ -36,7 +36,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_date_block",
@@ -49,7 +49,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_dropdown_block",
@@ -71,7 +71,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_input_block",
@@ -84,7 +84,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_image_local_block",
@@ -95,12 +95,12 @@
         "name": "local_camera_image",
         "text": "",
         "src": "camera",
-        "width": 36,
-        "height": 36
+        "width": 30,
+        "height": 30
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_image_web_block",
@@ -116,7 +116,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_label_block",
@@ -129,7 +129,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_number_nonconstrained_block",
@@ -141,7 +141,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_number_integer_block",
@@ -155,7 +155,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_number_currency_block",
@@ -168,7 +168,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_number_constrained_block",
@@ -183,7 +183,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00"
+    "colour": "#EF6C00"
   },
   {
     "type": "field_variable_block",
@@ -196,7 +196,7 @@
       }
     ],
     "output": null,
-    "colour": "#ffff00",
+    "colour": "#EF6C00",
     "tooltip": "Returns the value of this variable.",
     "helpUrl": "https://github.com/google/blockly/wiki/Variables#get"
   }

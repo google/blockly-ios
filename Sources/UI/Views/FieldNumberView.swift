@@ -33,7 +33,7 @@ open class FieldNumberView: FieldView {
     textField.delegate = self
     textField.borderStyle = .roundedRect
     textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-    textField.textAlignment = .right
+    textField.textAlignment = .center
     textField.adjustsFontSizeToFitWidth = false
     return textField
   }()
@@ -130,6 +130,8 @@ extension FieldNumberView: FieldLayoutMeasurer {
     measureSize.height = measureSize.height + textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.width =
+      max(measureSize.width, layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMinimumWidth))
     measureSize.height =
       max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
@@ -143,14 +145,16 @@ extension FieldNumberView: UITextFieldDelegate {
     guard let fieldNumberLayout = self.fieldNumberLayout else { return false }
 
     // Don't actually edit the text field with the keyboard, but show a number pad instead.
-    let viewController = NumberPadViewController()
+    let numberPadOptions = fieldNumberLayout.config.untypedValue(
+      for: LayoutConfig.FieldNumberPadOptions) as? NumberPad.Options
+    let viewController = NumberPadViewController(options: numberPadOptions)
     viewController.numberPad.text = textField.text ?? ""
     viewController.numberPad.allowDecimal = !fieldNumberLayout.isInteger
     viewController.numberPad.allowMinusSign = (fieldNumberLayout.minimumValue ?? -1) < 0
     viewController.numberPad.delegate = self
 
-    if let fontCreator = fieldNumberLayout.config.fontCreator(for: LayoutConfig.GlobalFont) {
-      // Use the global font, but use a scale of 1.0.
+    if let fontCreator = fieldNumberLayout.config.fontCreator(for: LayoutConfig.PopoverLabelFont) {
+      // Use the popover font, but use a scale of 1.0.
       viewController.numberPad.font = fontCreator(1.0)
     }
 
@@ -172,8 +176,11 @@ extension FieldNumberView: UITextFieldDelegate {
   }
 }
 
+// MARK: - UIPopoverPresentationControllerDelegate
+
 extension FieldNumberView: UIPopoverPresentationControllerDelegate {
-  public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
     guard let rtl = self.fieldNumberLayout?.engine.rtl else { return }
 
     // Prioritize arrow directions, so it won't obstruct the view of the field

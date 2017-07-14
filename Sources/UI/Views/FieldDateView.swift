@@ -155,11 +155,13 @@ extension FieldDateView: FieldLayoutMeasurer {
     }
 
     let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
-    let text = fieldDateLayout.textValue
+    let text = fieldDateLayout.textValue + " "
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
     var measureSize = text.bky_singleLineSize(forFont: font)
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width += textPadding.leading + textPadding.trailing
+    measureSize.width =
+      max(measureSize.width, layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMinimumWidth))
     measureSize.height =
       max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize

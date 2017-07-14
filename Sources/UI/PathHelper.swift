@@ -96,11 +96,9 @@ public class PathHelper: NSObject {
 
    Draws:
    ```
-     |
    /\|
    |
    \/|
-     |
    ```
 
    - parameter path: The Bezier path to add to.
@@ -115,11 +113,9 @@ public class PathHelper: NSObject {
     toPath path: WorkspaceBezierPath, drawTopToBottom: Bool, puzzleTabWidth: CGFloat,
     puzzleTabHeight: CGFloat)
   {
-    let verticalLineHeight = puzzleTabHeight * 0.2
-    let roundedHalfPieceHeight = puzzleTabHeight * 0.3
+    let roundedHalfPieceHeight = puzzleTabHeight * 0.5
 
     if drawTopToBottom {
-      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
       path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
                     controlPoint1: WorkspacePoint(x: 0, y: roundedHalfPieceHeight * 1.25),
                     controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
@@ -127,9 +123,7 @@ public class PathHelper: NSObject {
       path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight),
                           controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight * 0.3125),
                           relative: true)
-      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
     } else {
-      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
       path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
                     controlPoint1: WorkspacePoint(x: 0, y: -roundedHalfPieceHeight * 1.25),
                     controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
@@ -137,7 +131,6 @@ public class PathHelper: NSObject {
       path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight),
                           controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight * 0.3125),
                           relative: true)
-      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
     }
   }
 

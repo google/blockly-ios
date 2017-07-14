@@ -24,14 +24,20 @@ public class NumberPadViewController: UIViewController {
 
   /// Number pad control.
   public private(set) lazy var numberPad: NumberPad = {
-    let numberPad = NumberPad(frame: .zero)
+    let numberPad = NumberPad(frame: .zero, options: self._numberPadOptions)
     numberPad.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     return numberPad
   }()
 
+  /// Options used when initializing the number pad.
+  private var _numberPadOptions = NumberPad.Options()
+
   // MARK: - Initializers
 
-  public init() {
+  public init(options: NumberPad.Options? = nil) {
+    if let options = options {
+      _numberPadOptions = options
+    }
     super.init(nibName: nil, bundle: nil)
   }
 

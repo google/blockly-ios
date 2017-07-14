@@ -40,13 +40,23 @@ public final class DefaultBlockView: BlockView {
     return layer
   }()
 
-  /// Layer for rendering the block's highlight overlay
-  fileprivate let _highlightLayer: BezierPathLayer = {
+  /// Layer for rendering the block's connection highlight overlay.
+  fileprivate let _connectionHighlightLayer: BezierPathLayer = {
     var layer = BezierPathLayer()
     layer.lineCap = kCALineCapRound
     layer.fillColor = nil
     // Set z-position so it renders above most other layers (all layers default to 0).
     layer.zPosition = 1
+    return layer
+  }()
+
+  /// Layer for rendering the block's highlight overlay
+  fileprivate let _blockHighlightLayer: BezierPathLayer = {
+    var layer = BezierPathLayer()
+    layer.lineCap = kCALineCapRound
+    layer.fillColor = nil
+    // Set z-position so it renders above most other layers (all layers default to 0).
+    layer.zPosition = 2
     return layer
   }()
 
@@ -61,7 +71,8 @@ public final class DefaultBlockView: BlockView {
 
     // Add background/highlight layers
     layer.addSublayer(_backgroundLayer)
-    layer.addSublayer(_highlightLayer)
+    layer.addSublayer(_connectionHighlightLayer)
+    layer.addSublayer(_blockHighlightLayer)
   }
 
   /**
@@ -156,43 +167,56 @@ public final class DefaultBlockView: BlockView {
         forceBezierPathRedraw
       {
         // Figure out the stroke and fill colors of the block
-        var strokeColor = UIColor.clear
-        var fillColor = UIColor.clear
-
+        var strokeColor: UIColor?
+        var fillColor: UIColor?
         if layout.block.disabled {
-          strokeColor =
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
-          fillColor =
-            layout.config.color(for: DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
+          strokeColor = layout.config.color(for: DefaultLayoutConfig.BlockStrokeDisabledColor)
+          fillColor = layout.config.color(for: DefaultLayoutConfig.BlockFillDisabledColor)
         } else {
-          strokeColor = (layout.highlighted ?
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor) :
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
-            UIColor.clear
+          let defaultStrokeColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDefaultColor) ?? .clear
+          strokeColor = defaultStrokeColor
           fillColor = layout.block.color
 
           if layout.block.shadow {
-            strokeColor = self.shadowColor(forColor: strokeColor, config: layout.config)
-            fillColor = self.shadowColor(forColor: fillColor, config: layout.config)
+            strokeColor = self.shadowColor(forColor: defaultStrokeColor, config: layout.config)
+            fillColor = self.shadowColor(forColor: layout.block.color, config: layout.config)
           }
         }
 
+        // Construct the block's bezier path
+        let blockBezierPath = self.blockBackgroundBezierPath()
+
         // Update the background layer
         let backgroundLayer = self._backgroundLayer
-        backgroundLayer.strokeColor = strokeColor.cgColor
-        backgroundLayer.fillColor = fillColor.cgColor
-        backgroundLayer.lineWidth = layout.highlighted ?
-          layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight) :
+        backgroundLayer.strokeColor = strokeColor?.cgColor
+        backgroundLayer.fillColor = fillColor?.cgColor
+        backgroundLayer.lineWidth =
           layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthRegular)
         backgroundLayer.animationDuration =
           layout.config.double(for: LayoutConfig.ViewAnimationDuration)
-        backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
+        backgroundLayer.setBezierPath(blockBezierPath, animated: animated)
         backgroundLayer.frame = self.bounds
 
+        // Update the block highlight layer
         if layout.highlighted {
+          let blockHighlightLayer = self._blockHighlightLayer
+          blockHighlightLayer.strokeColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor
+          blockHighlightLayer.fillColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockMaskHighlightColor)?.cgColor
+          blockHighlightLayer.lineWidth =
+            layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight)
+          blockHighlightLayer.animationDuration =
+            layout.config.double(for: LayoutConfig.ViewAnimationDuration)
+          blockHighlightLayer.setBezierPath(blockBezierPath, animated: animated)
+          blockHighlightLayer.frame = self.bounds
+
           // If this block is highlighted, bring it to the top so its highlight layer doesn't get
           // covered by other sibling blocks.
           self.superview?.bringSubview(toFront: self)
+        } else {
+          self._blockHighlightLayer.setBezierPath(nil, animated: false)
         }
       }
 
@@ -202,7 +226,7 @@ public final class DefaultBlockView: BlockView {
           BlockLayout.Flag_UpdateConnectionHighlight]) || forceBezierPathRedraw
       {
         // Remove connection highlights (they will be potentially re-added in the completion block).
-        self._highlightLayer.setBezierPath(nil, animated: false)
+        self._connectionHighlightLayer.setBezierPath(nil, animated: false)
       }
 
       // Restore disabled actions to previous value
@@ -214,18 +238,18 @@ public final class DefaultBlockView: BlockView {
       // Decrement the number of blocks that are running the animatable part of the code.
       self.runningRefreshViewCodeCounter -= 1
 
-      // Once all animatable code blocks have finished running, re-add connection highlights (if necessary).
+      // Once all animatable code blocks have finished running, re-add connection highlights,
+      // if necessary.
       if self.runningRefreshViewCodeCounter == 0,
         let path = self.blockHighlightBezierPath() {
         // Configure highlight layer
-        let highlightLayer = self._highlightLayer
-        highlightLayer.lineWidth =
+        let connectionHighlightLayer = self._connectionHighlightLayer
+        connectionHighlightLayer.lineWidth =
           layout.config.viewUnit(for: DefaultLayoutConfig.BlockConnectionLineWidthHighlight)
-        highlightLayer.strokeColor =
+        connectionHighlightLayer.strokeColor =
           layout.config.color(for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)?.cgColor
-          ?? UIColor.clear.cgColor
-        highlightLayer.setBezierPath(path, animated: false)
-        highlightLayer.frame = self.bounds
+        connectionHighlightLayer.setBezierPath(path, animated: false)
+        connectionHighlightLayer.frame = self.bounds
 
         // Bring this block to the top so its connection highlight doesn't get covered by
         // sibling blocks.
@@ -242,7 +266,8 @@ public final class DefaultBlockView: BlockView {
     _disableLayerChangeAnimations = true
 
     _backgroundLayer.setBezierPath(nil, animated: false)
-    _highlightLayer.setBezierPath(nil, animated: false)
+    _connectionHighlightLayer.setBezierPath(nil, animated: false)
+    _blockHighlightLayer.setBezierPath(nil, animated: false)
   }
 
   // MARK: - Private
@@ -590,7 +615,7 @@ public final class DefaultBlockView: BlockView {
   fileprivate func shadowColor(forColor color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
     hsba.saturation *= config.float(for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
-    hsba.brightness = max(
+    hsba.brightness = min(
       hsba.brightness * config.float(for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
     return UIColor(
       hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)

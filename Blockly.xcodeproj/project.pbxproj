@@ -135,6 +135,7 @@
 		FA8425221D35D4140092CDDC /* WorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */; };
 		FA8BD28B1E0E1C690009F24A /* MutatorIfElse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */; };
 		FA8BD28D1E0E204C0009F24A /* MutatorIfElseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */; };
+		FA8E94B21F10655F0016646B /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E94B11F10655F0016646B /* ColorPalette.swift */; };
 		FA99C4021C73DE0600FA5A02 /* Field+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4011C73DE0600FA5A02 /* Field+XML.swift */; };
 		FA99C4041C73DE1800FA5A02 /* Input+XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA99C4031C73DE1800FA5A02 /* Input+XML.swift */; };
 		FA9D2FBB1C11176700D0E528 /* Toolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2FBA1C11176700D0E528 /* Toolbox.swift */; };
@@ -423,6 +424,7 @@
 		FA8425211D35D4140092CDDC /* WorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceViewController.swift; sourceTree = "<group>"; };
 		FA8BD28A1E0E1C690009F24A /* MutatorIfElse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElse.swift; sourceTree = "<group>"; };
 		FA8BD28C1E0E204C0009F24A /* MutatorIfElseLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutatorIfElseLayout.swift; sourceTree = "<group>"; };
+		FA8E94B11F10655F0016646B /* ColorPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		FA99C4011C73DE0600FA5A02 /* Field+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Field+XML.swift"; sourceTree = "<group>"; };
 		FA99C4031C73DE1800FA5A02 /* Input+XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Input+XML.swift"; sourceTree = "<group>"; };
 		FA9D2FBA1C11176700D0E528 /* Toolbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbox.swift; sourceTree = "<group>"; };
@@ -914,6 +916,7 @@
 				FAFD373C1C9230FE00C77049 /* CodeGeneratorService.swift */,
 				FAC6A5701DA61754000B5CD0 /* CodeGeneratorServiceRequestBuilder.swift */,
 				FA57C3911CCADADB00952BFB /* ColorHelper.swift */,
+				FA8E94B11F10655F0016646B /* ColorPalette.swift */,
 				FAA86FF81C64272C000C7C61 /* Dictionary+Helper.swift */,
 				FA1631631CE44285008DDBC8 /* DropdownView.swift */,
 				FAC2AC0D1E496827003DB287 /* EdgeInsets.swift */,
@@ -1321,6 +1324,7 @@
 				FA42D7F51C61B448000C8EB4 /* FieldCheckboxView.swift in Sources */,
 				FAC1D2971BFA7E2E0019CE45 /* InputBuilder.swift in Sources */,
 				FA1039281D936C24005FDF1D /* WorkspaceUnits.swift in Sources */,
+				FA8E94B21F10655F0016646B /* ColorPalette.swift in Sources */,
 				F98FF7E11BB2036A00A4F8E5 /* BlockFactory.swift in Sources */,
 				FAA870191C642805000C7C61 /* DropdownOptionsViewController.swift in Sources */,
 				FA56E3671E317C0700A53631 /* MutatorProcedureDefinitionView.swift in Sources */,

@@ -24,7 +24,7 @@ public final class TrashCanView: UIView {
   // MARK: - Properties
 
   /// The trash can button
-  public let button = UIButton()
+  public let button = UIButton(type: .system)
   /// The desired size of the trash can image
   private var _imageSize: CGSize = CGSize.zero
   /// The height constraint of the trash can button
