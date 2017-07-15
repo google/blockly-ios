@@ -246,6 +246,14 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// Enables or disables the `interactivePopGestureRecognizer` on `self.navigationController` (i.e.
+  /// the backswipe gesture on `UINavigationController`). Defaults to `false`.
+  open var allowInteractivePopGestureRecognizer: Bool = false {
+    didSet {
+      setInteractivePopGestureRecognizerEnabled(allowInteractivePopGestureRecognizer)
+    }
+  }
+
   /// The background color to use for the main workspace.
   public var workspaceBackgroundColor: UIColor? {
     get { return view.backgroundColor }
@@ -562,6 +570,20 @@ open class WorkbenchViewController: UIViewController {
     setTrashCanViewVisible(enableTrashCan)
 
     refreshView()
+  }
+
+  open override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    // Enable/disable the pop gesture recognizer
+    setInteractivePopGestureRecognizerEnabled(allowInteractivePopGestureRecognizer)
+  }
+
+  open override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    // Re-add the pop gesture recognizer, if it existed.
+    setInteractivePopGestureRecognizerEnabled(true)
   }
 
   // MARK: - Public
@@ -1720,5 +1742,25 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     }
 
     return false
+  }
+}
+
+// MARK: - Interactive Pop Gesture Recognizer
+
+extension WorkbenchViewController {
+  fileprivate func setInteractivePopGestureRecognizerEnabled(_ enabled: Bool) {
+    guard let navigationController = self.navigationController,
+      let interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer,
+      let gestureRecognizers = navigationController.view.gestureRecognizers else {
+        return
+    }
+
+    // Add/remove pop gesture recognizer
+    let containsRecognizer = gestureRecognizers.contains(interactivePopGestureRecognizer)
+    if enabled && !containsRecognizer {
+      navigationController.view.addGestureRecognizer(interactivePopGestureRecognizer)
+    } else if !enabled && containsRecognizer {
+      navigationController.view.removeGestureRecognizer(interactivePopGestureRecognizer)
+    }
   }
 }
