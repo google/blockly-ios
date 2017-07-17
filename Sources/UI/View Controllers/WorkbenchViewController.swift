@@ -246,6 +246,11 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// Keeps track of whether `self.navigationController.interactivePopGestureRecognizer` was
+  /// enabled prior to loading this view controller. This value is used for restoring its previous
+  /// state after this view controller has disappeared.
+  fileprivate var _wasInteractivePopGestureRecognizerEnabled: Bool = false
+
   /// Enables or disables the `interactivePopGestureRecognizer` on `self.navigationController` (i.e.
   /// the backswipe gesture on `UINavigationController`). Defaults to `false`.
   open var allowInteractivePopGestureRecognizer: Bool = false {
@@ -582,8 +587,10 @@ open class WorkbenchViewController: UIViewController {
   open override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
-    // Re-add the pop gesture recognizer, if it existed.
-    setInteractivePopGestureRecognizerEnabled(true)
+    // Re-add the pop gesture recognizer, if it existed prior to this view controller appearing.
+    if _wasInteractivePopGestureRecognizerEnabled {
+      setInteractivePopGestureRecognizerEnabled(true)
+    }
   }
 
   // MARK: - Public
@@ -1760,6 +1767,7 @@ extension WorkbenchViewController {
     if enabled && !containsRecognizer {
       navigationController.view.addGestureRecognizer(interactivePopGestureRecognizer)
     } else if !enabled && containsRecognizer {
+      _wasInteractivePopGestureRecognizerEnabled = true
       navigationController.view.removeGestureRecognizer(interactivePopGestureRecognizer)
     }
   }
