@@ -246,6 +246,19 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// Keeps track of whether `self.navigationController.interactivePopGestureRecognizer` was
+  /// enabled prior to loading this view controller. This value is used for restoring its previous
+  /// state after this view controller has disappeared.
+  fileprivate var _wasInteractivePopGestureRecognizerEnabled: Bool = false
+
+  /// Enables or disables the `interactivePopGestureRecognizer` on `self.navigationController` (i.e.
+  /// the backswipe gesture on `UINavigationController`). Defaults to `false`.
+  open var allowInteractivePopGestureRecognizer: Bool = false {
+    didSet {
+      setInteractivePopGestureRecognizerEnabled(allowInteractivePopGestureRecognizer)
+    }
+  }
+
   /// The background color to use for the main workspace.
   public var workspaceBackgroundColor: UIColor? {
     get { return view.backgroundColor }
@@ -562,6 +575,22 @@ open class WorkbenchViewController: UIViewController {
     setTrashCanViewVisible(enableTrashCan)
 
     refreshView()
+  }
+
+  open override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    // Enable/disable the pop gesture recognizer
+    _wasInteractivePopGestureRecognizerEnabled = interactivePopGestureRecognizerEnabled()
+    setInteractivePopGestureRecognizerEnabled(allowInteractivePopGestureRecognizer)
+  }
+
+  open override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    // Set the pop gesture recognizer to the state as it existed prior to this view controller
+    // appearing.
+    setInteractivePopGestureRecognizerEnabled(_wasInteractivePopGestureRecognizerEnabled)
   }
 
   // MARK: - Public
@@ -1720,5 +1749,35 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     }
 
     return false
+  }
+}
+
+// MARK: - Interactive Pop Gesture Recognizer
+
+extension WorkbenchViewController {
+  fileprivate func setInteractivePopGestureRecognizerEnabled(_ enabled: Bool) {
+    guard let navigationController = self.navigationController,
+      let interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer,
+      let gestureRecognizers = navigationController.view.gestureRecognizers else {
+        return
+    }
+
+    // Add/remove pop gesture recognizer
+    let containsRecognizer = gestureRecognizers.contains(interactivePopGestureRecognizer)
+    if enabled && !containsRecognizer {
+      navigationController.view.addGestureRecognizer(interactivePopGestureRecognizer)
+    } else if !enabled && containsRecognizer {
+      navigationController.view.removeGestureRecognizer(interactivePopGestureRecognizer)
+    }
+  }
+
+  fileprivate func interactivePopGestureRecognizerEnabled() -> Bool {
+    guard let navigationController = self.navigationController,
+      let interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer,
+      let gestureRecognizers = navigationController.view.gestureRecognizers else {
+      return false
+    }
+
+    return gestureRecognizers.contains(interactivePopGestureRecognizer)
   }
 }
