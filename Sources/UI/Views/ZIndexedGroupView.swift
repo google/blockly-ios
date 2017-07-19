@@ -50,7 +50,7 @@ public final class ZIndexedGroupView: UIView {
    - parameter event: The event requesting the hit test.
    */
   public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    for target in subviews.lazy.reversed() {
+    for target in subviews.lazy.reversed() { // Reversed to respect z-indexing.
       let pointForTargetView = target.convert(point, from: self)
 
       // If the touch is inside any child of this view, return the hit test for it.
@@ -61,8 +61,9 @@ public final class ZIndexedGroupView: UIView {
       }
     }
 
-    // If none of the children of this view have been hit, continue hit testing as usual.
-    return super.hitTest(point, with: event)
+    // If none of the subviews were hit tested, we don't consider this view as being hit test
+    // (since its just a transparent view).
+    return nil
   }
 
   // MARK: - Public

@@ -215,6 +215,19 @@ public final class Dragger: NSObject {
     clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: nil)
   }
 
+  /**
+   Cancels all existing drags in the workspace.
+   */
+  public func cancelAllDrags() {
+    let drags = Array(_dragGestureData.values)
+
+    for drag in drags {
+      if let blockLayout = drag.blockLayout {
+        cancelDraggingBlockLayout(blockLayout)
+      }
+    }
+  }
+
   // MARK: - Private
 
   /**
