@@ -56,7 +56,7 @@ public final class ToolboxCategoryViewController: UIViewController {
     get { return self.workspaceViewController.delegate }
   }
   /// The scroll view from the toolbox workspace's view controller.
-  public var workspaceScrollView: UIScrollView {
+  public var workspaceScrollView: WorkspaceView.ScrollView {
     return workspaceViewController.workspaceView.scrollView
   }
 

@@ -1726,18 +1726,9 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 extension WorkbenchViewController: UIGestureRecognizerDelegate {
   public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 
-    if workspaceViewController.workspaceView.scrollView.isDragging ||
-      workspaceViewController.workspaceView.scrollView.isDecelerating ||
-      workspaceViewController.workspaceView.scrollView.isZooming ||
-      workspaceViewController.workspaceView.scrollView.isZoomBouncing ||
-      toolboxCategoryViewController.workspaceScrollView.isDragging ||
-      toolboxCategoryViewController.workspaceScrollView.isDecelerating ||
-      toolboxCategoryViewController.workspaceScrollView.isZooming ||
-      toolboxCategoryViewController.workspaceScrollView.isZoomBouncing ||
-      trashCanViewController.workspaceView.scrollView.isDragging ||
-      trashCanViewController.workspaceView.scrollView.isDecelerating ||
-      trashCanViewController.workspaceView.scrollView.isZooming ||
-      trashCanViewController.workspaceView.scrollView.isZoomBouncing {
+    if workspaceViewController.workspaceView.scrollView.isInMotion ||
+      toolboxCategoryViewController.workspaceScrollView.isInMotion ||
+      trashCanViewController.workspaceView.scrollView.isInMotion {
       return false
     }
 

@@ -685,6 +685,12 @@ extension WorkspaceView {
       return view
     }()
 
+    /// Flag indicating if this scroll view is zooming, zoom-bouncing, dragging, or decelerating.
+    /// - note: It does not indicate if this scroll view is currently tracking touches.
+    public var isInMotion: Bool {
+      return isDragging || isDecelerating || isZooming || isZoomBouncing
+    }
+
     // MARK: - Initializers
 
     /**

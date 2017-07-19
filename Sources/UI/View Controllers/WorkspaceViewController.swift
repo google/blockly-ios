@@ -194,12 +194,11 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     requestedToPresentPopoverViewController viewController: UIViewController, fromView: UIView)
     -> Bool
   {
-    guard !workspaceView.scrollView.isDragging && !workspaceView.scrollView.isDecelerating &&
-      !workspaceView.scrollView.isZooming && !workspaceView.scrollView.isZoomBouncing &&
+    guard !workspaceView.scrollView.isInMotion &&
       !(self.presentedViewController?.isBeingPresented ?? false) else
     {
-      // Don't present anything if the scroll view is being dragged, decelerating, zooming, or if
-      // another view controller is being presented
+      // Don't present anything if the scroll view is in motion or if another view controller is
+      // being presented
       return false
     }
 
