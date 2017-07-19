@@ -50,4 +50,22 @@ extension UIView {
     return nil
   }
 
+  /**
+   Returns whether this view is a descendant of a given `UIView`.
+
+   - parameter: The `UIView` to check.
+   - returns: `true` if this view is a descendant of `otherView`. `false` otherwise.
+   */
+  internal final func bky_isDescendant(of otherView: UIView) -> Bool {
+    var parent = self.superview
+
+    while parent != nil {
+      if parent === otherView {
+        return true
+      }
+      parent = parent?.superview
+    }
+
+    return false
+  }
 }

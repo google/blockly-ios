@@ -526,15 +526,7 @@ open class WorkbenchViewController: UIViewController {
 
     let panGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     panGesture.delegate = self
-    workspaceViewController.view.addGestureRecognizer(panGesture)
-
-    let toolboxGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
-    toolboxGesture.delegate = self
-    toolboxCategoryViewController.view.addGestureRecognizer(toolboxGesture)
-
-    let trashGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
-    trashGesture.delegate = self
-    trashCanViewController.view.addGestureRecognizer(trashGesture)
+    view.addGestureRecognizer(panGesture)
 
     // Signify to view controllers that they've been moved to this parent
     workspaceViewController.didMove(toParentViewController: self)
@@ -591,6 +583,9 @@ open class WorkbenchViewController: UIViewController {
     // Set the pop gesture recognizer to the state as it existed prior to this view controller
     // appearing.
     setInteractivePopGestureRecognizerEnabled(_wasInteractivePopGestureRecognizerEnabled)
+
+    // Reset all existing drags.
+    _dragger.cancelAllDrags()
   }
 
   // MARK: - Public
@@ -1614,8 +1609,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         EventManager.shared.pushNewGroup()
       }
 
-      let inToolbox = gesture.view == toolboxCategoryViewController.view
-      let inTrash = gesture.view == trashCanViewController.view
+      let inToolbox = blockView.bky_isDescendant(of: toolboxCategoryViewController.view)
+      let inTrash = blockView.bky_isDescendant(of: trashCanViewController.view)
       // If the touch is in the toolbox, copy the block over to the workspace first.
       if inToolbox {
         guard let newBlock = copyBlockToWorkspace(blockView) else {
@@ -1706,13 +1701,16 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 
 extension WorkbenchViewController: UIGestureRecognizerDelegate {
   public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+
     if let panGestureRecognizer = gestureRecognizer as? BlocklyPanGestureRecognizer,
-      gestureRecognizer.view == toolboxCategoryViewController.view
+      let firstTouch = panGestureRecognizer.firstTouch,
+      let toolboxView = toolboxCategoryViewController.view,
+      toolboxView.bounds.contains(firstTouch.previousLocation(in: toolboxView))
     {
       // For toolbox blocks, only fire the pan gesture if the user is panning in the direction
       // perpendicular to the toolbox scrolling. Otherwise, don't let it fire, so the user can
       // simply continue scrolling the toolbox.
-      let delta = panGestureRecognizer.firstTouchDelta(inView: panGestureRecognizer.view)
+      let delta = panGestureRecognizer.firstTouchDelta(inView: toolboxView)
 
       // Figure out angle of delta vector, relative to the scroll direction
       let radians: CGFloat
