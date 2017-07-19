@@ -42,6 +42,16 @@ open class WorkspaceView: LayoutView {
     return scrollView
   }()
 
+  /// The reference to the drag layer view.
+  private var _dragLayerView: ZIndexedGroupView?
+
+  /// Optional layer used for dragging blocks. When set, block drags are automatically moved to this
+  /// layer instead of the default one provided by `WorkspaceView`.
+  open var dragLayerView: ZIndexedGroupView! {
+    get { return _dragLayerView ?? self.scrollView.containerView }
+    set(value) { _dragLayerView = value }
+  }
+
   /// Flag if the canvas should be padded with extra spaces around its edges via
   /// `self.canvasPadding`. If set to false, the user will only be allowed to scroll the exact
   /// amount needed to view all blocks.
@@ -135,6 +145,8 @@ open class WorkspaceView: LayoutView {
     scrollView.contentSize = CGSize.zero
     scrollView.contentOffset = CGPoint.zero
     scrollView.containerView.frame = CGRect.zero
+
+    updateDragLayerViewFrame()
   }
 
   open override func layoutSubviews() {
@@ -144,26 +156,6 @@ open class WorkspaceView: LayoutView {
   }
 
   // MARK: - Public
-
-  /**
-   Adds a `BlockGroupView` to the workspace's scrollview.
-
-   - parameter blockGroupView: The given `BlockGroupView`
-   */
-  open func addBlockGroupView(_ blockGroupView: BlockGroupView) {
-    scrollView.containerView.upsertView(blockGroupView)
-    blockGroupViews.insert(blockGroupView)
-  }
-
-  /**
-   Removes a given `BlockGroupView` from the workspace's scrollview and recycles it.
-
-   - parameter blockGroupView: The given `BlockGroupView`
-   */
-  open func removeBlockGroupView(_ blockGroupView: BlockGroupView) {
-    blockGroupViews.remove(blockGroupView)
-    blockGroupView.removeFromSuperview()
-  }
 
   /**
    Returns the logical Workspace position of a given `BlockView` based on its position relative
@@ -180,7 +172,7 @@ open class WorkspaceView: LayoutView {
       blockViewPoint = CGPoint(x: blockView.bounds.width, y: 0)
     }
     let workspaceViewPosition =
-      blockView.convert(blockViewPoint, to: scrollView.containerView)
+      blockView.convert(blockViewPoint, to: scrollView)
     return workspacePosition(fromViewPoint: workspaceViewPosition)
   }
 
@@ -248,7 +240,7 @@ open class WorkspaceView: LayoutView {
   }
 
   /**
-  Maps a `UIView` point relative to `self.scrollView.containerView` to a logical Workspace
+  Maps a `UIView` point relative to `self.scrollView` to a logical Workspace
   position.
 
   - parameter point: The `UIView` point
@@ -259,7 +251,7 @@ open class WorkspaceView: LayoutView {
       return WorkspacePoint.zero
     }
 
-    var viewPoint = point
+    var viewPoint = scrollView.convert(point, to: scrollView.containerView)
 
     if workspaceLayout.engine.rtl {
       // In RTL, the workspace position is relative to the top-right corner of
@@ -395,6 +387,8 @@ open class WorkspaceView: LayoutView {
 
     _lastKnownContentOrigin = layout.contentOrigin
 
+    updateDragLayerViewFrame()
+
     // Re-enable `removeExcessScrollSpace()` and call it
     _disableRemoveExcessScrollSpace = false
     removeExcessScrollSpace()
@@ -493,8 +487,26 @@ open class WorkspaceView: LayoutView {
     scrollView.contentSize = contentSize
     scrollView.containerView.frame = containerViewFrame
 
+    updateDragLayerViewFrame()
+
     // Re-enable this method
     _disableRemoveExcessScrollSpace = false
+  }
+
+  /**
+   Block views calculate their workspace coordinates based on their relative location to
+   `scrollView.containerView`. However, block views are temporarily moved to `self.dragLayerView`
+   during drags, which can cause location calculations to be incorrect.
+
+   This method updates `self.dragLayerView.frame` to match `scrollView.containerView.frame`, in
+   order to solve this problem.
+   */
+  fileprivate func updateDragLayerViewFrame() {
+    if let dragLayer = _dragLayerView {
+      let newFrame = scrollView.containerView.convert(
+        scrollView.containerView.bounds, to: dragLayer.superview)
+      dragLayer.frame = newFrame
+    }
   }
 
   /**
@@ -525,6 +537,49 @@ open class WorkspaceView: LayoutView {
   }
 }
 
+// MARK: - Block Group View Management
+
+extension WorkspaceView: BlockGroupViewDelegate {
+  /**
+   Adds a `BlockGroupView` to the workspace's scrollview.
+
+   - parameter blockGroupView: The given `BlockGroupView`
+   */
+  open func addBlockGroupView(_ blockGroupView: BlockGroupView) {
+    blockGroupView.delegate = self
+    upsertBlockGroupView(blockGroupView)
+    blockGroupViews.insert(blockGroupView)
+  }
+
+  /**
+   Removes a given `BlockGroupView` from the workspace's scrollview and recycles it.
+
+   - parameter blockGroupView: The given `BlockGroupView`
+   */
+  open func removeBlockGroupView(_ blockGroupView: BlockGroupView) {
+    blockGroupView.delegate = nil
+    blockGroupViews.remove(blockGroupView)
+    blockGroupView.removeFromSuperview()
+  }
+
+  /**
+   Upserts a given `BlockGroupView` to either `self.scrollView.containerView` or
+   `self.dragLayerView`, depending on if its being dragged.
+
+   - parameter blockGroupView: The `BlockGroupView` to upsert.
+   */
+  internal func upsertBlockGroupView(_ blockGroupView: BlockGroupView) {
+    if blockGroupView.dragging && blockGroupView.superview != dragLayerView {
+      dragLayerView.upsertView(blockGroupView)
+    } else if !blockGroupView.dragging && blockGroupView.superview != scrollView.containerView {
+      scrollView.containerView.upsertView(blockGroupView)
+    }
+  }
+
+  open func blockGroupViewDidUpdateDragging(_ blockGroupView: BlockGroupView) {
+    upsertBlockGroupView(blockGroupView)
+  }
+}
 
 // MARK: - UIScrollViewDelegate Implementation
 
@@ -607,6 +662,12 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     return pinchCenter - scrollView.contentOffset
   }
+
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    // Scrolling the workspace updates the `scrollView.containerView.frame`. We need to update
+    // the drag layer to match its new coordinates.
+    updateDragLayerViewFrame()
+  }
 }
 
 // MARK: - WorkspaceView.ScrollView Class
@@ -618,7 +679,7 @@ extension WorkspaceView {
   @objc(BKYWorkspaceScrollView)
   open class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
-    open var containerView: ZIndexedGroupView = {
+    fileprivate var containerView: ZIndexedGroupView = {
       let view = ZIndexedGroupView(frame: CGRect.zero)
       view.autoresizesSubviews = false
       return view

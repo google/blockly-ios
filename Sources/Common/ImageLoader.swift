@@ -27,29 +27,17 @@ public final class ImageLoader: NSObject {
 
    - parameter imageName: The name of the image in a bundle's asset catalog.
    - parameter anyClass: The class that is requesting the image.
-   - parameter flipForRTL: `true` if the image should be flipped on the Y-axis for RTL purposes.
-   `false` if the image should not be flipped.
    - returns: The image, either from the main application bundle or the default bundle for the
    given class.
    - note: Images are loaded via UIImage(imageNamed:), which means they are cached in the system
    by default after they are loaded.
    */
-  public class func loadImage(
-    named imageName: String, forClass anyClass: AnyClass, flipForRTL: Bool = false) -> UIImage? {
-    var returnImage: UIImage?
+  public class func loadImage(named imageName: String, forClass anyClass: AnyClass) -> UIImage? {
     if let image = UIImage(named: imageName) {
-      returnImage = image
+      return image
     } else {
       let bundle = Bundle(for: anyClass)
-      returnImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)
-    }
-
-    if flipForRTL,
-      let cgImage = returnImage?.cgImage,
-      let scale = returnImage?.scale {
-      return UIImage(cgImage: cgImage, scale: scale, orientation: .upMirrored)
-    } else {
-      return returnImage
+      return UIImage(named: imageName, in: bundle, compatibleWith: nil)
     }
   }
 }

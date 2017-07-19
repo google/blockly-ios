@@ -112,8 +112,13 @@ open class WorkbenchViewController: UIViewController {
   /// The main workspace view controller
   open fileprivate(set) var workspaceViewController: WorkspaceViewController! {
     didSet {
-      oldValue?.delegate = nil
+      if let previous = oldValue {
+        previous.delegate = nil
+        previous.workspaceView.dragLayerView = nil
+      }
+
       workspaceViewController?.delegate = self
+      workspaceViewController?.workspaceView.dragLayerView = workspaceDragLayerView
     }
   }
 
@@ -121,6 +126,9 @@ open class WorkbenchViewController: UIViewController {
   fileprivate var workspaceView: WorkspaceView! {
     return workspaceViewController.workspaceView
   }
+
+  /// Layer that temporarily holds blocks when they are dragged.
+  fileprivate let workspaceDragLayerView = ZIndexedGroupView(frame: .zero)
 
   /// The trash can view.
   open fileprivate(set) lazy var trashCanView: TrashCanView = {
@@ -136,11 +144,15 @@ open class WorkbenchViewController: UIViewController {
   open fileprivate(set) lazy var undoButton: UIButton = {
     let undoButton = UIButton(type: .system)
     if let image = ImageLoader.loadImage(
-      named: "undo", forClass: WorkbenchViewController.self, flipForRTL: self.engine.rtl) {
+      named: "undo", forClass: WorkbenchViewController.self) {
       undoButton.setImage(image, for: .normal)
       undoButton.imageView?.contentMode = .scaleAspectFit
       undoButton.contentHorizontalAlignment = .fill
       undoButton.contentVerticalAlignment = .fill
+      if self.engine.rtl {
+        // Flip the image horizontally for RTL
+        undoButton.transform = CGAffineTransform(scaleX: -1, y: 1)
+      }
     }
     undoButton.addTarget(self, action: #selector(didTapUndoButton(_:)), for: .touchUpInside)
     undoButton.isEnabled = false
@@ -151,12 +163,16 @@ open class WorkbenchViewController: UIViewController {
   open fileprivate(set) lazy var redoButton: UIButton = {
     let redoButton = UIButton(type: .system)
     if let image = ImageLoader.loadImage(
-      named: "redo", forClass: WorkbenchViewController.self, flipForRTL: self.engine.rtl) {
+      named: "redo", forClass: WorkbenchViewController.self) {
       redoButton.setImage(image, for: .normal)
       redoButton.contentMode = .center
       redoButton.imageView?.contentMode = .scaleAspectFit
       redoButton.contentHorizontalAlignment = .fill
       redoButton.contentVerticalAlignment = .fill
+      if self.engine.rtl {
+        // Flip the image horizontally for RTL
+        redoButton.transform = CGAffineTransform(scaleX: -1, y: 1)
+      }
     }
     redoButton.addTarget(self, action: #selector(didTapRedoButton(_:)), for: .touchUpInside)
     redoButton.isEnabled = false
@@ -430,8 +446,9 @@ open class WorkbenchViewController: UIViewController {
   open override func loadView() {
     super.loadView()
 
-    self.view.autoresizesSubviews = true
-    self.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    view.clipsToBounds = true
+    view.autoresizesSubviews = true
+    view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
     // Add child view controllers
     addChildViewController(workspaceViewController)
@@ -518,12 +535,19 @@ open class WorkbenchViewController: UIViewController {
       ]
     }
 
-    self.view.bky_addSubviews(Array(views.values))
-    self.view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
+    // Add subviews and constraints
+    view.bky_addSubviews(Array(views.values))
+    view.addSubview(workspaceDragLayerView)
+    view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
 
-    self.view.bringSubview(toFront: toolboxCategoryViewController.view)
-    self.view.sendSubview(toBack: workspaceViewController.view)
+    // Order the subviews from back to front
+    view.sendSubview(toBack: workspaceViewController.view)
+    view.bringSubview(toFront: toolboxCategoryViewController.view)
+    view.bringSubview(toFront: workspaceDragLayerView)
+    view.bringSubview(toFront: toolboxCategoryListViewController.view)
 
+    // Attach the block pan gesture recognizer to the entire view (so it can block out any other
+    // once touches once its gesture state turns to `.began`).
     let panGesture = BlocklyPanGestureRecognizer(targetDelegate: self)
     panGesture.delegate = self
     view.addGestureRecognizer(panGesture)
@@ -1598,7 +1622,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
     }
 
     var blockView = block
-    let touchPosition = touch.location(in: workspaceView.scrollView.containerView)
+    let touchPosition = touch.location(in: workspaceView.scrollView)
     let workspacePosition = workspaceView.workspacePosition(fromViewPoint: touchPosition)
 
     // TODO(#44): Handle screen rotations (either lock the screen during drags or stop any
@@ -1655,7 +1679,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 
     if touchState == .ended {
       let touchTouchingTrashCan = isTouchTouchingTrashCan(touchPosition,
-        fromView: workspaceView.scrollView.containerView)
+        fromView: workspaceView.scrollView)
       if touchTouchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
         _dragger.cancelDraggingBlockLayout(blockLayout)
@@ -1701,6 +1725,21 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 
 extension WorkbenchViewController: UIGestureRecognizerDelegate {
   public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+
+    if workspaceViewController.workspaceView.scrollView.isDragging ||
+      workspaceViewController.workspaceView.scrollView.isDecelerating ||
+      workspaceViewController.workspaceView.scrollView.isZooming ||
+      workspaceViewController.workspaceView.scrollView.isZoomBouncing ||
+      toolboxCategoryViewController.workspaceScrollView.isDragging ||
+      toolboxCategoryViewController.workspaceScrollView.isDecelerating ||
+      toolboxCategoryViewController.workspaceScrollView.isZooming ||
+      toolboxCategoryViewController.workspaceScrollView.isZoomBouncing ||
+      trashCanViewController.workspaceView.scrollView.isDragging ||
+      trashCanViewController.workspaceView.scrollView.isDecelerating ||
+      trashCanViewController.workspaceView.scrollView.isZooming ||
+      trashCanViewController.workspaceView.scrollView.isZoomBouncing {
+      return false
+    }
 
     if let panGestureRecognizer = gestureRecognizer as? BlocklyPanGestureRecognizer,
       let firstTouch = panGestureRecognizer.firstTouch,

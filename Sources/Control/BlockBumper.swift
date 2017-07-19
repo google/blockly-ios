@@ -50,7 +50,8 @@ open class BlockBumper: NSObject {
     _ impingingConnection: Connection, awayFromConnection stationaryConnection: Connection)
   {
     guard let blockLayout = impingingConnection.sourceBlock?.layout,
-      let blockGroupLayout = blockLayout.rootBlockGroupLayout else {
+      let blockGroupLayout = blockLayout.rootBlockGroupLayout,
+      !blockGroupLayout.dragging else {
       return
     }
 
