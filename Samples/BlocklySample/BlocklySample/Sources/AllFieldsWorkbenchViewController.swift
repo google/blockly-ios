@@ -60,7 +60,7 @@ class AllFieldsWorkbenchViewController: WorkbenchViewController {
     let toolbox = Toolbox()
     let blocksCategory =
       toolbox.addCategory(
-        name: "Blocks", color: ColorPalette.Orange.tint800, icon: UIImage(named: "icon_block"))
+        name: "Blocks", color: ColorPalette.orange.tint800, icon: UIImage(named: "icon_block"))
 
     // Add all field blocks to the "Blocks" category
     let blockNames = [
