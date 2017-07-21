@@ -1,4 +1,12 @@
 toc:
+  - title: AnglePicker
+    path: /blockly/reference/ios/Classes/AnglePicker
+  - title: – Options
+    path: /blockly/reference/ios/Classes/AnglePicker/Options
+  - title: AnglePickerViewController
+    path: /blockly/reference/ios/Classes/AnglePickerViewController
+  - title: AnglePickerViewControllerDelegate
+    path: /blockly/reference/ios/Protocols/AnglePickerViewControllerDelegate
   - title: Array
     path: /blockly/reference/ios/Extensions/Array
   - title: BezierPathLayer
@@ -63,6 +71,8 @@ toc:
     path: /blockly/reference/ios/Classes/CodeGeneratorServiceRequestBuilder
   - title: ColorHelper
     path: /blockly/reference/ios/Classes/ColorHelper
+  - title: ColorPalette
+    path: /blockly/reference/ios/Classes/ColorPalette
   - title: Connection
     path: /blockly/reference/ios/Classes/Connection
   - title: – ConnectionType
@@ -261,6 +271,8 @@ toc:
     path: /blockly/reference/ios/Classes/MutatorProcedureIfReturnLayout
   - title: PathHelper
     path: /blockly/reference/ios/Classes/PathHelper
+  - title: – Corner
+    path: /blockly/reference/ios/Classes/PathHelper/Corner
   - title: ProcedureCoordinator
     path: /blockly/reference/ios/Classes/ProcedureCoordinator
   - title: ProcedureParameter
@@ -269,6 +281,16 @@ toc:
     path: /blockly/reference/ios/Classes/NameManager
   - title: NameManagerListener
     path: /blockly/reference/ios/Protocols/NameManagerListener
+  - title: NumberPad
+    path: /blockly/reference/ios/Classes/NumberPad
+  - title: – Options
+    path: /blockly/reference/ios/Classes/NumberPad/Options
+  - title: NumberPadDelegate
+    path: /blockly/reference/ios/Protocols/NumberPadDelegate
+  - title: NumberPadTextField
+    path: /blockly/reference/ios/iOS
+  - title: NumberPadViewController
+    path: /blockly/reference/ios/Classes/NumberPadViewController
   - title: ObjectPool
     path: /blockly/reference/ios/Classes/ObjectPool
   - title: Recyclable

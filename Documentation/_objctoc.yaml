@@ -11,6 +11,12 @@ toc:
     path: /blockly/reference/ios/iOS
   - title: BKYEdgeInsetsZero
     path: /blockly/reference/ios/iOS
+  - title: BKYLayoutConfigEdgeInsets
+    path: /blockly/reference/ios/Structs/BKYLayoutConfigEdgeInsets
+  - title: BKYLayoutConfigEdgeInsetsMake
+    path: /blockly/reference/ios/iOS
+  - title: BKYLayoutConfigEdgeInsetsZero
+    path: /blockly/reference/ios/iOS
   - title: BKYLayoutConfigSize
     path: /blockly/reference/ios/Structs/BKYLayoutConfigSize
   - title: BKYLayoutConfigSizeMake

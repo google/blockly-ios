@@ -24,6 +24,43 @@
           <section class="section task-group-section">
             <div class="task-group">
               <div class="task-name-container">
+                <a name="/Constants"></a>
+                <a name="//apple_ref/swift/Section/Constants" class="dashAnchor"></a>
+                <a href="#/Constants">
+                  <h2 class="section-name">Constants</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC7Blockly10PathHelper6Corner"></a>
+                    <a name="//apple_ref/swift/Enum/Corner" class="dashAnchor"></a>
+                    <h3><a class="token" href="../Classes/PathHelper/Corner.html">Corner</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Representation of a block&rsquo;s corners.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Corner</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
                 <a name="/Public"></a>
                 <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
                 <a href="#/Public">
@@ -47,8 +84,7 @@
                         <p>Adds the path for drawing a next/previous notch.</p>
 
 <p>Draws:</p>
-<pre class="highlight plaintext"><code>--
-\_/
+<pre class="highlight plaintext"><code>\_/
 </code></pre>
 
                       </div>
@@ -188,11 +224,9 @@ unit.</p>
                         <p>Adds the path for drawing a horizontal puzzle tab.</p>
 
 <p>Draws:</p>
-<pre class="highlight plaintext"><code>|
-/\|
+<pre class="highlight plaintext"><code>/\|
 |
 \/|
-|
 </code></pre>
 
                       </div>
@@ -324,9 +358,9 @@ system unit.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZFC7Blockly10PathHelper16addTopLeftCornerFT6toPathCS_19WorkspaceBezierPath17blockCornerRadiusV12CoreGraphics7CGFloat_T_"></a>
-                    <a name="//apple_ref/swift/Method/addTopLeftCorner(toPath:blockCornerRadius:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZFC7Blockly10PathHelper16addTopLeftCornerFT6toPathCS_19WorkspaceBezierPath17blockCornerRadiusV12CoreGraphics7CGFloat_T_">addTopLeftCorner(toPath:blockCornerRadius:)</a></h3>
+                    <a name="/s:ZFC7Blockly10PathHelper9addCornerFTOS0_6Corner6toPathCS_19WorkspaceBezierPath6radiusV12CoreGraphics7CGFloat9clockwiseSb_T_"></a>
+                    <a name="//apple_ref/swift/Method/addCorner(_:toPath:radius:clockwise:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZFC7Blockly10PathHelper9addCornerFTOS0_6Corner6toPathCS_19WorkspaceBezierPath6radiusV12CoreGraphics7CGFloat9clockwiseSb_T_">addCorner(_:toPath:radius:clockwise:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -334,20 +368,15 @@ system unit.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adds the path for drawing the rounded top-left corner.</p>
-
-<p>Draws:</p>
-<pre class="highlight plaintext"><code>--
-/
-|
-</code></pre>
+                        <p>Adds the path for drawing a rounded corner.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">addTopLeftCorner</span><span class="p">(</span><span class="n">toPath</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceBezierPath.html">WorkspaceBezierPath</a></span><span class="p">,</span> <span class="nv">blockCornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">addCorner</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">corner</span><span class="p">:</span> <span class="kt"><a href="../Classes/PathHelper/Corner.html">Corner</a></span><span class="p">,</span> <span class="n">toPath</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceBezierPath.html">WorkspaceBezierPath</a></span><span class="p">,</span> <span class="nv">radius</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">,</span> <span class="nv">clockwise</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -356,6 +385,17 @@ system unit.</p>
                         <table class="graybox">
                           <tbody>
                             <tr>
+                              <td>
+                                <code>
+                                <em>corner</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Corner</code> to draw.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
                               <td>
                                 <code>
                                 <em>path</em>
@@ -369,13 +409,24 @@ system unit.</p>
                             </tr>                            <tr>
                               <td>
                                 <code>
-                                <em>blockCornerRadius</em>
+                                <em>radius</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The block&rsquo;s corner radius, specified as a Workspace coordinate
-system unit.</p>
+                                  <p>The radius of the corner, specified as a Workspace coordinate system unit.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>clockwise</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><code>true</code> if the corner should be drawn clockwise. <code>false</code> if the corner
+should be drawn counter-clockwise.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -400,7 +451,7 @@ system unit.</p>
                         <p>Adds the path for drawing a hat.</p>
 
 <p>Draws:</p>
-<pre class="highlight plaintext"><code>---
+<pre class="highlight plaintext"><code> ---
 /   \
 </code></pre>
 
@@ -458,6 +509,14 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: AnglePicker
+      path: /blockly/reference/ios/../Classes/AnglePicker.html
+    - title: – Options
+      path: /blockly/reference/ios/../Classes/AnglePicker/Options.html
+    - title: AnglePickerViewController
+      path: /blockly/reference/ios/../Classes/AnglePickerViewController.html
+    - title: AnglePickerViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/AnglePickerViewControllerDelegate.html
     - title: Array
       path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
@@ -522,6 +581,8 @@ toc:
       path: /blockly/reference/ios/../Classes/CodeGeneratorServiceRequestBuilder.html
     - title: ColorHelper
       path: /blockly/reference/ios/../Classes/ColorHelper.html
+    - title: ColorPalette
+      path: /blockly/reference/ios/../Classes/ColorPalette.html
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
@@ -720,6 +781,8 @@ toc:
       path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturnLayout.html
     - title: PathHelper
       path: /blockly/reference/ios/../Classes/PathHelper.html
+    - title: – Corner
+      path: /blockly/reference/ios/../Classes/PathHelper/Corner.html
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
@@ -728,6 +791,16 @@ toc:
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
+    - title: NumberPad
+      path: /blockly/reference/ios/../Classes/NumberPad.html
+    - title: – Options
+      path: /blockly/reference/ios/../Classes/NumberPad/Options.html
+    - title: NumberPadDelegate
+      path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
+    - title: NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+    - title: NumberPadViewController
+      path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
     - title: Recyclable
