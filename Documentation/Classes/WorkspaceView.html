@@ -115,6 +115,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:vC7Blockly13WorkspaceView13dragLayerViewGSQCS_17ZIndexedGroupView_"></a>
+                    <a name="//apple_ref/swift/Property/dragLayerView" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly13WorkspaceView13dragLayerViewGSQCS_17ZIndexedGroupView_">dragLayerView</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Optional layer used for dragging blocks. When set, block drags are automatically moved to this
+layer instead of the default one provided by <code>WorkspaceView</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">dragLayerView</span><span class="p">:</span> <span class="kt"><a href="../Classes/ZIndexedGroupView.html">ZIndexedGroupView</a></span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:vC7Blockly13WorkspaceView18allowCanvasPaddingSb"></a>
                     <a name="//apple_ref/swift/Property/allowCanvasPadding" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:vC7Blockly13WorkspaceView18allowCanvasPaddingSb">allowCanvasPadding</a></h3>
@@ -162,7 +190,7 @@ frame size</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">canvasPaddingScale</span> <span class="o">=</span> <span class="kt">EdgeInsets</span><span class="p">(</span><span class="nv">top</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nv">leading</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nv">bottom</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nv">trailing</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">canvasPaddingScale</span> <span class="o">=</span> <span class="kt">EdgeInsets</span><span class="p">(</span><span class="nv">top</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nv">leading</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="nv">bottom</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span> <span class="nv">trailing</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -340,96 +368,6 @@ frame size</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13WorkspaceView17addBlockGroupViewFCS_14BlockGroupViewT_"></a>
-                    <a name="//apple_ref/swift/Method/addBlockGroupView(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView17addBlockGroupViewFCS_14BlockGroupViewT_">addBlockGroupView(_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Adds a <code><a href="../Classes/BlockGroupView.html">BlockGroupView</a></code> to the workspace&rsquo;s scrollview.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">addBlockGroupView</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockGroupView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockGroupView.html">BlockGroupView</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>blockGroupView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given <code>BlockGroupView</code></p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC7Blockly13WorkspaceView20removeBlockGroupViewFCS_14BlockGroupViewT_"></a>
-                    <a name="//apple_ref/swift/Method/removeBlockGroupView(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView20removeBlockGroupViewFCS_14BlockGroupViewT_">removeBlockGroupView(_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Removes a given <code><a href="../Classes/BlockGroupView.html">BlockGroupView</a></code> from the workspace&rsquo;s scrollview and recycles it.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">removeBlockGroupView</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockGroupView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockGroupView.html">BlockGroupView</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>blockGroupView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given <code>BlockGroupView</code></p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:FC7Blockly13WorkspaceView17workspacePositionFT13fromBlockViewCSo6UIView_VSC14WorkspacePoint"></a>
                     <a name="//apple_ref/swift/Method/workspacePosition(fromBlockView:)" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView17workspacePositionFT13fromBlockViewCSo6UIView_VSC14WorkspacePoint">workspacePosition(fromBlockView:)</a></h3>
@@ -551,7 +489,7 @@ to this <code>WorkspaceView</code>.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Maps a <code>UIView</code> point relative to <code>self.scrollView.containerView</code> to a logical Workspace
+                        <p>Maps a <code>UIView</code> point relative to <code>self.scrollView</code> to a logical Workspace
 position.</p>
 
                       </div>
@@ -584,6 +522,125 @@ position.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>The corresponding <code>WorkspacePoint</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly13WorkspaceView17addBlockGroupViewFCS_14BlockGroupViewT_"></a>
+                    <a name="//apple_ref/swift/Method/addBlockGroupView(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView17addBlockGroupViewFCS_14BlockGroupViewT_">addBlockGroupView(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a <code><a href="../Classes/BlockGroupView.html">BlockGroupView</a></code> to the workspace&rsquo;s scrollview.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">addBlockGroupView</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockGroupView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockGroupView.html">BlockGroupView</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>blockGroupView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The given <code>BlockGroupView</code></p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly13WorkspaceView20removeBlockGroupViewFCS_14BlockGroupViewT_"></a>
+                    <a name="//apple_ref/swift/Method/removeBlockGroupView(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView20removeBlockGroupViewFCS_14BlockGroupViewT_">removeBlockGroupView(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a given <code><a href="../Classes/BlockGroupView.html">BlockGroupView</a></code> from the workspace&rsquo;s scrollview and recycles it.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">removeBlockGroupView</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockGroupView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockGroupView.html">BlockGroupView</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>blockGroupView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The given <code>BlockGroupView</code></p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP7Blockly22BlockGroupViewDelegate31blockGroupViewDidUpdateDraggingFCS_14BlockGroupViewT_"></a>
+                    <a name="//apple_ref/swift/Method/blockGroupViewDidUpdateDragging(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FP7Blockly22BlockGroupViewDelegate31blockGroupViewDidUpdateDraggingFCS_14BlockGroupViewT_">blockGroupViewDidUpdateDragging(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">blockGroupViewDidUpdateDragging</span><span class="p">(</span><span class="n">_</span> <span class="nv">blockGroupView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockGroupView.html">BlockGroupView</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -631,6 +688,14 @@ toc:
 - title: iOS
   path: /blockly/reference/ios/../iOS
   section:
+    - title: AnglePicker
+      path: /blockly/reference/ios/../Classes/AnglePicker.html
+    - title: – Options
+      path: /blockly/reference/ios/../Classes/AnglePicker/Options.html
+    - title: AnglePickerViewController
+      path: /blockly/reference/ios/../Classes/AnglePickerViewController.html
+    - title: AnglePickerViewControllerDelegate
+      path: /blockly/reference/ios/../Protocols/AnglePickerViewControllerDelegate.html
     - title: Array
       path: /blockly/reference/ios/../Extensions/Array.html
     - title: BezierPathLayer
@@ -695,6 +760,8 @@ toc:
       path: /blockly/reference/ios/../Classes/CodeGeneratorServiceRequestBuilder.html
     - title: ColorHelper
       path: /blockly/reference/ios/../Classes/ColorHelper.html
+    - title: ColorPalette
+      path: /blockly/reference/ios/../Classes/ColorPalette.html
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
@@ -893,6 +960,8 @@ toc:
       path: /blockly/reference/ios/../Classes/MutatorProcedureIfReturnLayout.html
     - title: PathHelper
       path: /blockly/reference/ios/../Classes/PathHelper.html
+    - title: – Corner
+      path: /blockly/reference/ios/../Classes/PathHelper/Corner.html
     - title: ProcedureCoordinator
       path: /blockly/reference/ios/../Classes/ProcedureCoordinator.html
     - title: ProcedureParameter
@@ -901,6 +970,16 @@ toc:
       path: /blockly/reference/ios/../Classes/NameManager.html
     - title: NameManagerListener
       path: /blockly/reference/ios/../Protocols/NameManagerListener.html
+    - title: NumberPad
+      path: /blockly/reference/ios/../Classes/NumberPad.html
+    - title: – Options
+      path: /blockly/reference/ios/../Classes/NumberPad/Options.html
+    - title: NumberPadDelegate
+      path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
+    - title: NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+    - title: NumberPadViewController
+      path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
       path: /blockly/reference/ios/../Classes/ObjectPool.html
     - title: Recyclable
