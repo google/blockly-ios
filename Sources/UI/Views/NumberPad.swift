@@ -48,22 +48,22 @@ public class NumberPad: UIView {
    */
   public struct Options {
     /// The color to use for the backspace button.
-    public var backspaceButtonColor: UIColor = ColorPalette.Green.tint300
+    public var backspaceButtonColor: UIColor = ColorPalette.green.tint300
 
     /// The corner radius to use for the non-backspace buttons.
     public var buttonCornerRadius: CGFloat = 4
 
     /// The text color to use for non-backspace buttons.
-    public var buttonTextColor: UIColor = ColorPalette.Grey.tint900
+    public var buttonTextColor: UIColor = ColorPalette.grey.tint900
 
     /// The background color to use for non-backspace buttons.
-    public var buttonBackgroundColor: UIColor = ColorPalette.Grey.tint300
+    public var buttonBackgroundColor: UIColor = ColorPalette.grey.tint300
 
     /// The border color to use for non-backspace buttons.
-    public var buttonBorderColor: UIColor = ColorPalette.Grey.tint300
+    public var buttonBorderColor: UIColor = ColorPalette.grey.tint300
 
     /// The color to use for the main number text field.
-    public var textFieldColor: UIColor = ColorPalette.Grey.tint900
+    public var textFieldColor: UIColor = ColorPalette.grey.tint900
   }
 
   // MARK: - Properties

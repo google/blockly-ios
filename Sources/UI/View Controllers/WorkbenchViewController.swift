@@ -136,7 +136,7 @@ open class WorkbenchViewController: UIViewController {
     let trashCanView = TrashCanView(imageNamed: "trash_can")
     trashCanView.button
       .addTarget(self, action: #selector(didTapTrashCan(_:)), for: .touchUpInside)
-    trashCanView.tintColor = ColorPalette.Grey.tint800
+    trashCanView.tintColor = ColorPalette.grey.tint800
     return trashCanView
   }()
 
@@ -408,17 +408,17 @@ open class WorkbenchViewController: UIViewController {
     workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
 
     // Set default styles
-    workspaceBackgroundColor = ColorPalette.Grey.tint50
-    undoButton.tintColor = ColorPalette.Grey.tint800
-    redoButton.tintColor = ColorPalette.Grey.tint800
+    workspaceBackgroundColor = ColorPalette.grey.tint50
+    undoButton.tintColor = ColorPalette.grey.tint800
+    redoButton.tintColor = ColorPalette.grey.tint800
     toolboxCategoryListViewController.categoryFont = UIFont.systemFont(ofSize: 16)
-    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.Grey.tint900
-    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.Grey.tint300
-    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.Grey.tint100
+    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.grey.tint900
+    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.grey.tint300
+    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.grey.tint100
     toolboxCategoryViewController.view.backgroundColor =
-      ColorPalette.Grey.tint300.withAlphaComponent(0.75)
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
     trashCanViewController.view.backgroundColor =
-      ColorPalette.Grey.tint300.withAlphaComponent(0.75)
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
 
     // Synchronize the procedure coordinator
     procedureCoordinator?.syncWithWorkbench(self)

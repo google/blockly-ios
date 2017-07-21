@@ -144,15 +144,15 @@ open class DefaultLayoutConfig: LayoutConfig {
     setUnit(Unit(8), for: DefaultLayoutConfig.InlineConnectorXPadding)
     setUnit(Unit(3), for: DefaultLayoutConfig.InlineConnectorYPadding)
 
-    setColor(ColorPalette.Grey.tint400, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
-    setColor(ColorPalette.Yellow.tint700.withAlphaComponent(0.95),
+    setColor(ColorPalette.grey.tint400, for: DefaultLayoutConfig.BlockStrokeDefaultColor)
+    setColor(ColorPalette.yellow.tint700.withAlphaComponent(0.95),
              for: DefaultLayoutConfig.BlockStrokeHighlightColor)
-    setColor(ColorPalette.Grey.tint200.withAlphaComponent(0.25),
+    setColor(ColorPalette.grey.tint200.withAlphaComponent(0.25),
              for: DefaultLayoutConfig.BlockMaskHighlightColor)
-    setColor(ColorPalette.Indigo.accent700,
+    setColor(ColorPalette.indigo.accent700,
              for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)
-    setColor(ColorPalette.Grey.tint700, for: DefaultLayoutConfig.BlockStrokeDisabledColor)
-    setColor(ColorPalette.Grey.tint300, for: DefaultLayoutConfig.BlockFillDisabledColor)
+    setColor(ColorPalette.grey.tint700, for: DefaultLayoutConfig.BlockStrokeDisabledColor)
+    setColor(ColorPalette.grey.tint300, for: DefaultLayoutConfig.BlockFillDisabledColor)
     setFloat(0.7, for: DefaultLayoutConfig.BlockDraggingFillColorAlpha)
     setFloat(0.8, for: DefaultLayoutConfig.BlockDraggingStrokeColorAlpha)
     setFloat(1.0, for: DefaultLayoutConfig.BlockDefaultAlpha)
@@ -163,6 +163,6 @@ open class DefaultLayoutConfig: LayoutConfig {
     setBool(false, for: DefaultLayoutConfig.BlockStartHat)
     setSize(Size(width: 100, height: 16), for: DefaultLayoutConfig.BlockStartHatSize)
 
-    setColor(ColorPalette.Grey.tint100, for: DefaultLayoutConfig.MutatorSettingsButtonColor)
+    setColor(ColorPalette.grey.tint100, for: DefaultLayoutConfig.MutatorSettingsButtonColor)
   }
 }

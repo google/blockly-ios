@@ -90,7 +90,7 @@ public final class ColorPalette {
   // MARK: - Material Design Palettes
 
   /// The red palette.
-  public static let Red = ColorPalette(
+  public static let red = ColorPalette(
     tint50: makeColor(rgb: "FFEBEE"),
     tint100: makeColor(rgb: "FFCDD2"),
     tint200: makeColor(rgb: "EF9A9A"),
@@ -107,7 +107,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "D50000"))
 
   /// The pink palette.
-  public static let Pink = ColorPalette(
+  public static let pink = ColorPalette(
     tint50: makeColor(rgb: "FCE4EC"),
     tint100: makeColor(rgb: "F8BBD0"),
     tint200: makeColor(rgb: "F48FB1"),
@@ -124,7 +124,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "C51162"))
 
   /// The purple palette.
-  public static let Purple = ColorPalette(
+  public static let purple = ColorPalette(
     tint50: makeColor(rgb: "F3E5F5"),
     tint100: makeColor(rgb: "E1BEE7"),
     tint200: makeColor(rgb: "CE93D8"),
@@ -141,7 +141,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "AA00FF"))
 
   /// The deep purple palette.
-  public static let DeepPurple = ColorPalette(
+  public static let deepPurple = ColorPalette(
     tint50: makeColor(rgb: "EDE7F6"),
     tint100: makeColor(rgb: "D1C4E9"),
     tint200: makeColor(rgb: "B39DDB"),
@@ -158,7 +158,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "6200EA"))
 
   /// The indigo palette.
-  public static let Indigo = ColorPalette(
+  public static let indigo = ColorPalette(
     tint50: makeColor(rgb: "E8EAF6"),
     tint100: makeColor(rgb: "C5CAE9"),
     tint200: makeColor(rgb: "9FA8DA"),
@@ -175,7 +175,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "304FFE"))
 
   /// The blue palette.
-  public static let Blue = ColorPalette(
+  public static let blue = ColorPalette(
     tint50: makeColor(rgb: "E3F2FD"),
     tint100: makeColor(rgb: "BBDEFB"),
     tint200: makeColor(rgb: "90CAF9"),
@@ -192,7 +192,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "2962FF"))
 
   /// The light blue palette.
-  public static let LightBlue = ColorPalette(
+  public static let lightBlue = ColorPalette(
     tint50: makeColor(rgb: "E1F5FE"),
     tint100: makeColor(rgb: "B3E5FC"),
     tint200: makeColor(rgb: "81D4FA"),
@@ -209,7 +209,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "0091EA"))
 
   /// The cyan palette.
-  public static let Cyan = ColorPalette(
+  public static let cyan = ColorPalette(
     tint50: makeColor(rgb: "E0F7FA"),
     tint100: makeColor(rgb: "B2EBF2"),
     tint200: makeColor(rgb: "80DEEA"),
@@ -226,7 +226,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "00B8D4"))
 
   /// The teal palette.
-  public static let Teal = ColorPalette(
+  public static let teal = ColorPalette(
     tint50: makeColor(rgb: "E0F2F1"),
     tint100: makeColor(rgb: "B2DFDB"),
     tint200: makeColor(rgb: "80CBC4"),
@@ -243,7 +243,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "00BFA5"))
 
   /// The green palette.
-  public static let Green = ColorPalette(
+  public static let green = ColorPalette(
     tint50: makeColor(rgb: "E8F5E9"),
     tint100: makeColor(rgb: "C8E6C9"),
     tint200: makeColor(rgb: "A5D6A7"),
@@ -260,7 +260,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "00C853"))
 
   /// The light green palette.
-  public static let LightGreen = ColorPalette(
+  public static let lightGreen = ColorPalette(
     tint50: makeColor(rgb: "F1F8E9"),
     tint100: makeColor(rgb: "DCEDC8"),
     tint200: makeColor(rgb: "C5E1A5"),
@@ -277,7 +277,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "64DD17"))
 
   /// The lime palette.
-  public static let Lime = ColorPalette(
+  public static let lime = ColorPalette(
     tint50: makeColor(rgb: "F9FBE7"),
     tint100: makeColor(rgb: "F0F4C3"),
     tint200: makeColor(rgb: "E6EE9C"),
@@ -294,7 +294,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "AEEA00"))
 
   /// The yellow palette.
-  public static let Yellow = ColorPalette(
+  public static let yellow = ColorPalette(
     tint50: makeColor(rgb: "FFFDE7"),
     tint100: makeColor(rgb: "FFF9C4"),
     tint200: makeColor(rgb: "FFF59D"),
@@ -311,7 +311,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "FFD600"))
 
   /// The amber palette.
-  public static let Amber = ColorPalette(
+  public static let amber = ColorPalette(
     tint50: makeColor(rgb: "FFF8E1"),
     tint100: makeColor(rgb: "FFECB3"),
     tint200: makeColor(rgb: "FFE082"),
@@ -328,7 +328,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "FFAB00"))
 
   /// The orange palette.
-  public static let Orange = ColorPalette(
+  public static let orange = ColorPalette(
     tint50: makeColor(rgb: "FFF3E0"),
     tint100: makeColor(rgb: "FFE0B2"),
     tint200: makeColor(rgb: "FFCC80"),
@@ -345,7 +345,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "FF6D00"))
 
   /// The deep orange palette.
-  public static let DeepOrange = ColorPalette(
+  public static let deepOrange = ColorPalette(
     tint50: makeColor(rgb: "FBE9E7"),
     tint100: makeColor(rgb: "FFCCBC"),
     tint200: makeColor(rgb: "FFAB91"),
@@ -362,7 +362,7 @@ public final class ColorPalette {
     accent700: makeColor(rgb: "DD2C00"))
 
   /// The brown palette.
-  public static let Brown = ColorPalette(
+  public static let brown = ColorPalette(
     tint50: makeColor(rgb: "EFEBE9"),
     tint100: makeColor(rgb: "D7CCC8"),
     tint200: makeColor(rgb: "BCAAA4"),
@@ -375,7 +375,7 @@ public final class ColorPalette {
     tint900: makeColor(rgb: "3E2723"))
 
   /// The grey palette.
-  public static let Grey = ColorPalette(
+  public static let grey = ColorPalette(
     tint50: makeColor(rgb: "FAFAFA"),
     tint100: makeColor(rgb: "F5F5F5"),
     tint200: makeColor(rgb: "EEEEEE"),
@@ -388,7 +388,7 @@ public final class ColorPalette {
     tint900: makeColor(rgb: "212121"))
 
   /// The blue grey palette.
-  public static let BlueGrey = ColorPalette(
+  public static let blueGrey = ColorPalette(
     tint50: makeColor(rgb: "ECEFF1"),
     tint100: makeColor(rgb: "CFD8DC"),
     tint200: makeColor(rgb: "B0BEC5"),

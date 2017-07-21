@@ -77,9 +77,9 @@ public final class ToolboxCategoryViewController: UIViewController {
     let button = UIButton()
     let buttonText = message(forKey: "BKY_IOS_VARIABLES_ADD_VARIABLE")
     button.setTitle(buttonText, for: UIControlState.normal)
-    button.setTitleColor(ColorPalette.Grey.tint200, for: .normal)
-    button.setTitleColor(ColorPalette.Grey.tint600, for: .highlighted)
-    button.backgroundColor = ColorPalette.Grey.tint800
+    button.setTitleColor(ColorPalette.grey.tint200, for: .normal)
+    button.setTitleColor(ColorPalette.grey.tint600, for: .highlighted)
+    button.backgroundColor = ColorPalette.grey.tint800
     button.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
     button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     return button

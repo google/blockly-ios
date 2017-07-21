@@ -219,16 +219,16 @@ open class LayoutConfig: NSObject {
 
     setSize(Size(width: 30, height: 30), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
-    setColor(ColorPalette.Grey.tint100, for: LayoutConfig.FieldColorButtonBorderColor)
+    setColor(ColorPalette.grey.tint100, for: LayoutConfig.FieldColorButtonBorderColor)
 
     // Use the default system colors by setting these config values to nil
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
-    setColor(ColorPalette.Grey.tint100, for: LayoutConfig.FieldLabelTextColor)
-    setColor(ColorPalette.Grey.tint800, for: LayoutConfig.FieldEditableTextColor)
+    setColor(ColorPalette.grey.tint100, for: LayoutConfig.FieldLabelTextColor)
+    setColor(ColorPalette.grey.tint800, for: LayoutConfig.FieldEditableTextColor)
 
-    setColor(ColorPalette.Grey.tint50, for: LayoutConfig.FieldDropdownBackgroundColor)
-    setColor(ColorPalette.Grey.tint400, for: LayoutConfig.FieldDropdownBorderColor)
+    setColor(ColorPalette.grey.tint50, for: LayoutConfig.FieldDropdownBackgroundColor)
+    setColor(ColorPalette.grey.tint400, for: LayoutConfig.FieldDropdownBorderColor)
     setUnit(Unit(6), for: LayoutConfig.FieldDropdownXSpacing)
     setUnit(Unit(2), for: LayoutConfig.FieldDropdownYSpacing)
 

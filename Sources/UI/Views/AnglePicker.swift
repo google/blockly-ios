@@ -27,13 +27,13 @@ public class AnglePicker: UIControl {
    */
   public struct Options {
     /// The color of the ticks.
-    public var tickColor: UIColor = ColorPalette.Green.tint300
+    public var tickColor: UIColor = ColorPalette.green.tint300
 
     /// The fill color of the angle.
-    public var angleColor: UIColor = ColorPalette.Green.tint600
+    public var angleColor: UIColor = ColorPalette.green.tint600
 
     /// The fill color of the background circle.
-    public var circleColor: UIColor = ColorPalette.Grey.tint100
+    public var circleColor: UIColor = ColorPalette.grey.tint100
 
     /// The total number of ticks to render. These ticks act as snappable hotspots, whose
     /// behavior can be configured via `self.snapToThreshold` and `self.snapAwayThreshold`.
