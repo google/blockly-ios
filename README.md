@@ -8,8 +8,7 @@ Blockly for iOS is a developer preview of Blockly's editor library that is:
 - Built for native iOS performance and easier integration in iOS apps
 - Written in Swift, with backwards compatibility for Objective-C projects
 
-![Blockly Turtle demo running on an iPad.](http://google.github.io/blockly-ios/screenshot.png
-    "Blockly Turtle demo running on an iPad.")
+<img src="http://google.github.io/blockly-ios/demo.gif" alt="Blockly demo" width="700px" height="494px" />
 
 # Requirements
 
