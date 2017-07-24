@@ -1,7 +1,7 @@
 # Blockly for iOS
 
 [Blockly][1] is a library for building drag-and-drop visual editors for
-JavaScript, Python, Lua, and many other programming languages.
+JavaScript, Python, Lua, and several other programming languages.
 
 Blockly for iOS is similar to its web counterpart in terms of API, but is:
 
