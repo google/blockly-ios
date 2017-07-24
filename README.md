@@ -1,19 +1,18 @@
 # Blockly for iOS
 
 [Blockly][1] is a library for building drag-and-drop visual editors for
-JavaScript, Lua, and other programming languages.
+JavaScript, Python, Lua, and several other programming languages.
 
-Blockly for iOS is a developer preview of Blockly's editor library that is:
+Blockly for iOS is similar to its web counterpart in terms of API, but is:
 
-- Built for native iOS performance and easier integration in iOS apps
+- Optimized for native iOS performance and easier integration in iOS apps
 - Written in Swift, with backwards compatibility for Objective-C projects
+- Designed with better touch support, such as custom input controls and
+multi-touch
 
-![Blockly Turtle demo running on an iPad.](http://google.github.io/blockly-ios/screenshot.png
-    "Blockly Turtle demo running on an iPad.")
+Here is a demo of using Blockly for iOS to program a "turtle":
 
-# Requirements
-
-Supports devices running **iOS 8.0 or above**.
+<img src="http://google.github.io/blockly-ios/demo.gif" alt="Blockly demo" width="700px" height="494px" />
 
 # Features
 
@@ -25,6 +24,10 @@ Blockly for iOS includes:
 
 The Blockly team is actively working on achieving feature parity across
 all three platforms to support cross-platform development.
+
+# Requirements
+
+Supports devices running **iOS 8.0 or above**.
 
 # Get Started
 
