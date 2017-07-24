@@ -27,31 +27,19 @@ open class FieldAngleView: FieldView {
     return layout as? FieldAngleLayout
   }
 
-  /// The text field to render
-  open fileprivate(set) lazy var textField: InsetTextField = {
+  /// The text field that displays the angle.
+  public fileprivate(set) lazy var textField: InsetTextField = {
     let textField = InsetTextField(frame: self.bounds)
+    textField.frame = self.bounds
     textField.delegate = self
     textField.borderStyle = .roundedRect
     textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-    textField.keyboardType = .numbersAndPunctuation
-    textField.textAlignment = .right
-    textField.inputAccessoryView = self.toolbar
+    textField.textAlignment = .center
     return textField
   }()
 
-  /// A toolbar that appears above the input keyboard
-  open fileprivate(set) lazy var toolbar: UIToolbar = {
-    let toolbar = UIToolbar()
-    toolbar.barStyle = .default
-    toolbar.isTranslucent = true
-    toolbar.items = [
-      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .done, target: self,
-        action: #selector(didTapDoneButton(_:)))
-    ]
-    toolbar.sizeToFit() // This is important or else the bar won't render!
-    return toolbar
-  }()
+  /// Group ID to use when grouping events together.
+  fileprivate var _eventGroupID: String?
 
   // MARK: - Initializers
 
@@ -86,12 +74,11 @@ open class FieldAngleView: FieldView {
         self.updateTextFieldFromLayout()
 
         let textField = self.textField
-        textField.text = fieldAngleLayout.textValue
         textField.font = fieldAngleLayout.config.font(for: LayoutConfig.GlobalFont)
         textField.textColor =
           fieldAngleLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
-          fieldAngleLayout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+          fieldAngleLayout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -110,51 +97,36 @@ open class FieldAngleView: FieldView {
       textField.text = text
     }
   }
-
-  fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
-    // Stop editing the text field
-    textField.resignFirstResponder()
-  }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension FieldAngleView: UITextFieldDelegate {
-  public func textField(_ textField: UITextField,
-    shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
-  {
-    if string != "" && string != "-" && Int(string) == nil {
-      // Don't allow non-integer/"-" characters
+  public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    guard let fieldAngleLayout = self.fieldAngleLayout else {
       return false
     }
-    return true
-  }
 
-  public func textFieldDidBeginEditing(_ textField: UITextField) {
-    // Temporarily remove any non-number characters from the text
-    let invalidCharacters = CharacterSet.decimalDigits.inverted
-    textField.text = textField.text?.bky_removingOccurrences(ofCharacterSet: invalidCharacters)
-  }
+    // Don't actually edit the text field with the keyboard, but show the angle picker instead.
+    let pickerOptions = fieldAngleLayout.config.untypedValue(
+      for: LayoutConfig.FieldAnglePickerOptions) as? AnglePicker.Options
+    let viewController = AnglePickerViewController(options: pickerOptions)
+    viewController.delegate = self
+    viewController.angle = fieldAngleLayout.angle
 
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    // Group and fire with any existing group. This solves an edge-case problem where dragging a
-    // block while editing a text field could simultaneously start two new event groups (one for
-    // the drag gesture and the other for ending text field editing). To prevent this from
-    // happening, this method simply appends to any existing one instead (if it exists).
-    let eventManager = EventManager.shared
-    eventManager.groupAndFireEvents(groupID: eventManager.currentGroupID) {
-      // Only commit the change after the user has finished editing the field
-      fieldAngleLayout?.updateAngle(fromText: (textField.text ?? ""))
+    // Start a new event group for this edit.
+    _eventGroupID = UUID().uuidString
 
-      // Update the text from the layout
-      updateTextFieldFromLayout()
-    }
-  }
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
 
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    // This will dismiss the keyboard
-    textField.resignFirstResponder()
-    return true
+    // Set the delegate so we can prioritize arrow directions
+    viewController.popoverPresentationController?.delegate = self
+
+    // Hide keyboard
+    endEditing(true)
+
+    return false
   }
 }
 
@@ -162,21 +134,50 @@ extension FieldAngleView: UITextFieldDelegate {
 
 extension FieldAngleView: FieldLayoutMeasurer {
   public static func measureLayout(_ layout: FieldLayout, scale: CGFloat) -> CGSize {
-    if !(layout is FieldAngleLayout) {
+    guard let fieldAngleLayout = layout as? FieldAngleLayout else {
       bky_assertionFailure("`layout` is of type `\(type(of: layout))`. " +
         "Expected type `FieldAngleLayout`.")
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
-    // Use a size that can accomodate 3 digits and °.
-    let measureText = "000°"
+    let text = fieldAngleLayout.textValue + " "
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
-    var measureSize = measureText.bky_singleLineSize(forFont: font)
+    var measureSize = text.bky_singleLineSize(forFont: font)
     measureSize.height += textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.width =
+      max(measureSize.width, layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMinimumWidth))
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
+  }
+}
+
+// MARK: - AnglePickerViewControllerDelegate
+
+extension FieldAngleView: AnglePickerViewControllerDelegate {
+  public func anglePickerViewController(
+    _ viewController: AnglePickerViewController, didUpdateAngle angle: Double) {
+    EventManager.shared.groupAndFireEvents(groupID: _eventGroupID) {
+      fieldAngleLayout?.updateAngle(angle)
+
+      // Update the text from the layout
+      updateTextFieldFromLayout()
+    }
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension FieldAngleView: UIPopoverPresentationControllerDelegate {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    guard let rtl = self.fieldAngleLayout?.engine.rtl else { return }
+
+    // Prioritize arrow directions, so it won't obstruct the view of the field
+    popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .right], rtl: rtl)
   }
 }

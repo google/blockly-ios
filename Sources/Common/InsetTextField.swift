@@ -43,7 +43,7 @@ open class InsetTextField: UITextField {
    - returns: The `CGRect` including the padding.
    */
   open override func textRect(forBounds bounds: CGRect) -> CGRect {
-    return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
+    return textAlignment == .center ? bounds : UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 
   /**
@@ -53,6 +53,6 @@ open class InsetTextField: UITextField {
    - returns: The `CGRect` including the padding.
    */
   open override func editingRect(forBounds bounds: CGRect) -> CGRect {
-    return UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
+    return textAlignment == .center ? bounds : UIEdgeInsetsInsetRect(bounds, _uiEdgeInsetPadding)
   }
 }

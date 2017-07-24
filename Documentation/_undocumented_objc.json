@@ -9,15 +9,22 @@
     },
     {
       "file": "/Users/vicng/Github/blockly/ios/Sources/ObjC/BKYLayoutConfigStructs.h",
-      "line": 30,
+      "line": 31,
       "symbol": "BKYLayoutConfigUnit",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
       "warning": "undocumented"
     },
     {
       "file": "/Users/vicng/Github/blockly/ios/Sources/ObjC/BKYLayoutConfigStructs.h",
-      "line": 53,
+      "line": 54,
       "symbol": "BKYLayoutConfigSize",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/vicng/Github/blockly/ios/Sources/ObjC/BKYLayoutConfigStructs.h",
+      "line": 79,
+      "symbol": "BKYLayoutConfigEdgeInsets",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
       "warning": "undocumented"
     },

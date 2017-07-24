@@ -31,7 +31,7 @@ open class MutatorIfElseView: LayoutView {
 
   /// A button for opening the popover settings
   open fileprivate(set) lazy var popoverButton: UIButton = {
-    let button = UIButton(type: .custom)
+    let button = UIButton(type: .system)
     button.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     if let image = ImageLoader.loadImage(named: "settings", forClass: MutatorIfElseView.self) {
       button.setImage(image, for: .normal)
@@ -75,10 +75,16 @@ open class MutatorIfElseView: LayoutView {
       if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
         // Update the view frame
         self.frame = layout.viewFrame
+
+        // Force the mutator view to always be drawn behind sibling views (which could be other
+        // blocks).
+        self.superview?.sendSubview(toBack: self)
       }
 
       let topPadding = layout.engine.viewUnitFromWorkspaceUnit(4)
       self.popoverButton.contentEdgeInsets = UIEdgeInsetsMake(topPadding, 0, topPadding, 0)
+      self.popoverButton.tintColor =
+        layout.config.color(for: DefaultLayoutConfig.MutatorSettingsButtonColor)
 
       self.isUserInteractionEnabled = layout.userInteractionEnabled
     }
@@ -107,9 +113,20 @@ open class MutatorIfElseView: LayoutView {
                                 requestedToPresentPopoverViewController: viewController,
                                 fromView: popoverButton)
 
-    // Set the arrow direction of the popover to be down/right/left, so it won't
-    // obstruct the view of the block
-    viewController.popoverPresentationController?.permittedArrowDirections = [.down, .right, .left]
+    // Set the delegate so we can prioritize arrow directions
+    viewController.popoverPresentationController?.delegate = self
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension MutatorIfElseView: UIPopoverPresentationControllerDelegate {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    guard let rtl = self.mutatorIfElseLayout?.engine.rtl else { return }
+
+    // Prioritize arrow directions, so it won't obstruct the view of the block
+    popoverPresentationController.bky_prioritizeArrowDirections([.down, .right, .left], rtl: rtl)
   }
 }
 

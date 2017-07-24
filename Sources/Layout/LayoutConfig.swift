@@ -53,8 +53,15 @@ open class LayoutConfig: NSObject {
   /// [`Unit`] If necessary, the line stroke width of a field
   public static let FieldLineWidth = LayoutConfig.newPropertyKey()
 
+  /// [`UntypedValue`: `AnglePicker.Options`] The options to use whenever an angle picker is
+  /// displayed.
+  public static let FieldAnglePickerOptions = LayoutConfig.newPropertyKey()
+
   /// [`Unit`] The border width to use when rendering the `FieldColor` button
   public static let FieldColorButtonBorderWidth = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The border color to use when rendering the `FieldColor` button.
+  public static let FieldColorButtonBorderColor = LayoutConfig.newPropertyKey()
 
   /// [`Size`] The button size to use when rendering a `FieldColor`
   public static let FieldColorButtonSize = LayoutConfig.newPropertyKey()
@@ -67,15 +74,35 @@ open class LayoutConfig: NSObject {
   /// `nil` means that the system default should be used.
   public static let FieldCheckboxSwitchTintColor = LayoutConfig.newPropertyKey()
 
+  /// [`Unit`] Horizontal spacing inside a dropdown.
+  public static let FieldDropdownXSpacing = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] Vertical spacing inside a dropdown.
+  public static let FieldDropdownYSpacing = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to use for the dropdown background.
+  public static let FieldDropdownBackgroundColor = LayoutConfig.newPropertyKey()
+
+  /// [`UIColor`] The color to use for the dropdown border.
+  public static let FieldDropdownBorderColor = LayoutConfig.newPropertyKey()
+
   /// [`UIColor`] The default color for text in field labels.
   public static let FieldLabelTextColor = LayoutConfig.newPropertyKey()
 
   /// [`UIColor`] The default color for editable text in fields.
   public static let FieldEditableTextColor = LayoutConfig.newPropertyKey()
 
+  /// [`UntypedValue`: `NumberPad.Options`] The options to use whenever a number pad is
+  /// displayed.
+  public static let FieldNumberPadOptions = LayoutConfig.newPropertyKey()
+
   /// [`EdgeInsets`] For fields that use an `InsetTextField`, this is the `insetPadding` that
   /// should be used for each one
   public static let FieldTextFieldInsetPadding = LayoutConfig.newPropertyKey()
+
+  /// [`Unit`] For fields that use a `UITextField`, this is the minimum width that should be
+  /// used for each one.
+  public static let FieldTextFieldMinimumWidth = LayoutConfig.newPropertyKey()
 
   /// [`Unit`] For fields that use a `UITextField`, this is the maximum width that should be
   /// used for each one.
@@ -83,6 +110,12 @@ open class LayoutConfig: NSObject {
 
   /// [`Font`] The default font to use for generic text inside Blockly.
   public static let GlobalFont = LayoutConfig.newPropertyKey()
+
+  /// [`Size`] For mutators, this is the size of the default "settings" button.
+  public static let MutatorButtonSize = LayoutConfig.newPropertyKey()
+
+  /// [`Font`] The font to use for label text inside popovers.
+  public static let PopoverLabelFont = LayoutConfig.newPropertyKey()
 
   /// [`Font`] The font to use for title text inside popovers.
   public static let PopoverTitleFont = LayoutConfig.newPropertyKey()
@@ -119,6 +152,10 @@ open class LayoutConfig: NSObject {
   /// system and UIView coordinate system.
   public typealias Size = LayoutConfigSize
 
+  /// Struct for representing an `EdgeInsets` value in both the Workspace coordinate system and
+  /// UIView coordinate system.
+  public typealias ScaledEdgeInsets = LayoutConfigEdgeInsets
+
   // MARK: - Properties
 
   // The current scale of all values inside the config
@@ -139,8 +176,8 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `Double` values
   public private(set) var doubles = Dictionary<PropertyKey, Double>()
 
-  /// Dictionary mapping property keys to `EdgeInsets` values
-  public private(set) var edgeInsets = Dictionary<PropertyKey, EdgeInsets>()
+  /// Dictionary mapping property keys to `ScaledEdgeInsets` values
+  public private(set) var edgeInsets = Dictionary<PropertyKey, ScaledEdgeInsets>()
 
   /// Dictionary mapping property keys to `CGFloat` values
   public private(set) var floats = Dictionary<PropertyKey, CGFloat>()
@@ -158,34 +195,51 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `[String]` values
   public private(set) var stringArrays = Dictionary<PropertyKey, [String]>()
 
+  /// Dictionary mapping property keys to `Any` values
+  public private(set) var untypedValues = Dictionary<PropertyKey, Any>()
+
   // MARK: - Initializers
 
   public override init() {
     super.init()
 
     // Set default values for base config keys
-    setUnit(Unit(25), for: LayoutConfig.BlockBumpDistance)
-    setUnit(Unit(25), for: LayoutConfig.BlockSnapDistance)
-    setUnit(Unit(10), for: LayoutConfig.InlineXPadding)
-    setUnit(Unit(5), for: LayoutConfig.InlineYPadding)
+    setUnit(Unit(24), for: LayoutConfig.BlockBumpDistance)
+    setUnit(Unit(24), for: LayoutConfig.BlockSnapDistance)
+    setUnit(Unit(8), for: LayoutConfig.InlineXPadding)
+    setUnit(Unit(6), for: LayoutConfig.InlineYPadding)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowXSeparatorSpace)
     setUnit(Unit(10), for: LayoutConfig.WorkspaceFlowYSeparatorSpace)
 
-    setUnit(Unit(18), for: LayoutConfig.FieldMinimumHeight)
-    setUnit(Unit(5), for: LayoutConfig.FieldCornerRadius)
+    setUnit(Unit(30), for: LayoutConfig.FieldMinimumHeight)
+    setUnit(Unit(4), for: LayoutConfig.FieldCornerRadius)
     setUnit(Unit(1), for: LayoutConfig.FieldLineWidth)
-    setSize(Size(36, 36), for: LayoutConfig.FieldColorButtonSize)
+
+    setUntypedValue(AnglePicker.Options(), for: LayoutConfig.FieldAnglePickerOptions)
+
+    setSize(Size(width: 30, height: 30), for: LayoutConfig.FieldColorButtonSize)
     setUnit(Unit(2), for: LayoutConfig.FieldColorButtonBorderWidth)
+    setColor(ColorPalette.grey.tint100, for: LayoutConfig.FieldColorButtonBorderColor)
 
     // Use the default system colors by setting these config values to nil
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchOnTintColor)
     setColor(nil, for: LayoutConfig.FieldCheckboxSwitchTintColor)
-    setColor(.black, for: LayoutConfig.FieldLabelTextColor)
-    setColor(.black, for: LayoutConfig.FieldEditableTextColor)
+    setColor(ColorPalette.grey.tint100, for: LayoutConfig.FieldLabelTextColor)
+    setColor(ColorPalette.grey.tint800, for: LayoutConfig.FieldEditableTextColor)
 
-    setEdgeInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8),
-                  for: LayoutConfig.FieldTextFieldInsetPadding)
+    setColor(ColorPalette.grey.tint50, for: LayoutConfig.FieldDropdownBackgroundColor)
+    setColor(ColorPalette.grey.tint400, for: LayoutConfig.FieldDropdownBorderColor)
+    setUnit(Unit(6), for: LayoutConfig.FieldDropdownXSpacing)
+    setUnit(Unit(2), for: LayoutConfig.FieldDropdownYSpacing)
+
+    setUntypedValue(NumberPad.Options(), for: LayoutConfig.FieldNumberPadOptions)
+
+    setScaledEdgeInsets(ScaledEdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6),
+                        for: LayoutConfig.FieldTextFieldInsetPadding)
+    setUnit(Unit(26), for: LayoutConfig.FieldTextFieldMinimumWidth)
     setUnit(Unit(300), for: LayoutConfig.FieldTextFieldMaximumWidth)
+
+    setSize(Size(width: 30, height: 30), for: LayoutConfig.MutatorButtonSize)
 
     setDouble(0.3, for: LayoutConfig.ViewAnimationDuration)
 
@@ -193,8 +247,12 @@ open class LayoutConfig: NSObject {
     setStringArray(["variables_set", "math_change"], for: LayoutConfig.UniqueVariableBlocks)
 
     setFontCreator({ scale in
-      return UIFont.systemFont(ofSize: 16 * scale)
+      return UIFont.boldSystemFont(ofSize: 16 * scale)
     }, for: LayoutConfig.GlobalFont)
+
+    setFontCreator({ scale in
+      return UIFont.systemFont(ofSize: 16 * scale)
+    }, for: LayoutConfig.PopoverLabelFont)
 
     setFontCreator({ scale in
       return UIFont.systemFont(ofSize: 13 * scale)
@@ -297,31 +355,67 @@ open class LayoutConfig: NSObject {
   }
 
   /**
-   Maps a `EdgeInsets` value to a specific `PropertyKey`.
+   Maps a `ScaledEdgeInsets` value to a specific `PropertyKey`.
 
-   - parameter edgeInsets: The `EdgeInsets` value
+   - parameter edgeInsets: The `ScaledEdgeInsets` value
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - returns: The `edgeInset` that was set.
+   - returns: The `edgeInsets` value.
    */
   @discardableResult
-  public func setEdgeInsets(_ edgeInsets: EdgeInsets, for key: PropertyKey) -> EdgeInsets {
+  public func setScaledEdgeInsets(_ edgeInsets: ScaledEdgeInsets, for key: PropertyKey)
+    -> ScaledEdgeInsets {
     self.edgeInsets[key] = edgeInsets
     return edgeInsets
   }
 
   /**
-   Returns the `EdgeInsets` value that is mapped to a specific `PropertyKey`.
+   Returns the `ScaledEdgeInsets` value that is mapped to a specific `PropertyKey`.
 
    - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
-   - parameter defaultValue: [Optional] If no `EdgeInsets` was found for `key`, this value is
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
    automatically assigned to `key` and used instead.
-   - returns: The `key`'s value
+   - returns: The `key`'s value.
    */
   @inline(__always)
-  public func edgeInsets(for key: PropertyKey, defaultValue: EdgeInsets = EdgeInsets())
-    -> EdgeInsets
+  public func scaledEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero)
+    -> ScaledEdgeInsets
   {
-    return edgeInsets[key] ?? setEdgeInsets(defaultValue, for: key)
+    return edgeInsets[key] ?? setScaledEdgeInsets(defaultValue, for: key)
+  }
+
+  /**
+   Returns the `viewEdgeInsets` of the `ScaledEdgeInsets` value that is mapped to a specific
+   `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `viewEdgeInsets` of the mapped `ScaledEdgeInsets` value.
+   */
+  @inline(__always)
+  public func viewEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero) -> EdgeInsets
+  {
+    return edgeInsets[key]?.viewEdgeInsets
+      ?? setScaledEdgeInsets(defaultValue, for: key).viewEdgeInsets
+  }
+
+  /**
+   Returns the `workspaceEdgeInsets` of the `ScaledEdgeInsets` value that is mapped to a specific
+   `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.FieldTextFieldInsetPadding`)
+   - parameter defaultValue: [Optional] If no `ScaledEdgeInsets` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `workspaceEdgeInsets` of the mapped `ScaledEdgeInsets` value.
+   */
+  @inline(__always)
+  public func workspaceEdgeInsets(
+    for key: PropertyKey, defaultValue: ScaledEdgeInsets = ScaledEdgeInsets.zero) -> EdgeInsets
+  {
+    return edgeInsets[key]?.workspaceEdgeInsets
+      ?? setScaledEdgeInsets(defaultValue, for: key).workspaceEdgeInsets
   }
 
   /**
@@ -418,7 +512,7 @@ open class LayoutConfig: NSObject {
    - returns: The mapped `Size` value.
    */
   @inline(__always)
-  public func size(for key: PropertyKey, defaultValue: Size = Size(0, 0)) -> Size {
+  public func size(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0)) -> Size {
     return sizes[key] ?? setSize(defaultValue, for: key)
   }
 
@@ -431,7 +525,7 @@ open class LayoutConfig: NSObject {
    - returns: The `viewSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+  public func viewSize(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0))
     -> CGSize
   {
     return size(for: key, defaultValue: defaultValue).viewSize
@@ -446,7 +540,7 @@ open class LayoutConfig: NSObject {
    - returns: The `workspaceSize` of the mapped `Size` value.
    */
   @inline(__always)
-  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(0, 0))
+  public func workspaceSize(for key: PropertyKey, defaultValue: Size = Size(width: 0, height: 0))
     -> WorkspaceSize
   {
     return size(for: key, defaultValue: defaultValue).workspaceSize
@@ -526,8 +620,37 @@ open class LayoutConfig: NSObject {
    automatically assigned to `key` and used instead.
    - returns: The `key`'s value
    */
+  @inline(__always)
   public func stringArray(for key: PropertyKey, defaultValue: [String] = []) -> [String] {
     return stringArrays[key] ?? setStringArray(defaultValue, for: key)
+  }
+
+  /**
+   Maps an `Any?` value to a specific `PropertyKey`.
+
+   - note: Retrieving untyped values is slow and should be avoided whenever possible. It should
+   only be done for code that is not performance-reliant.
+   - parameter untypedValue: The `Any?` value.
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.`).
+   - returns: The `Any?` value that was set.
+   */
+  @discardableResult
+  public func setUntypedValue(_ untypedValue: Any?, for key: PropertyKey) -> Any? {
+    untypedValues[key] = untypedValue
+    return untypedValue
+  }
+
+  /**
+   Returns the `Any?` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `LayoutConfig.VariableBlocks`)
+   - parameter defaultValue: [Optional] If no value was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value
+   */
+  @inline(__always)
+  public func untypedValue(for key: PropertyKey, defaultValue: Any? = nil) -> Any? {
+    return untypedValues[key] ?? setUntypedValue(defaultValue, for: key)
   }
 
   // MARK: - Update Values
@@ -550,6 +673,16 @@ open class LayoutConfig: NSObject {
     for (key, var size) in sizes {
       size.viewSize = engine.viewSizeFromWorkspaceSize(size.workspaceSize)
       sizes[key] = size
+    }
+
+    for (key, var scaledEdgeInsets) in edgeInsets {
+      let workspaceEdgeInsets = scaledEdgeInsets.workspaceEdgeInsets
+      scaledEdgeInsets.viewEdgeInsets =
+        EdgeInsets(top: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.top),
+                   leading: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.leading),
+                   bottom: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.bottom),
+                   trailing: engine.viewUnitFromWorkspaceUnit(workspaceEdgeInsets.trailing))
+      edgeInsets[key] = scaledEdgeInsets
     }
 
     for (_, scaledFont) in _fonts {

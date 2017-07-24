@@ -23,38 +23,26 @@ open class FieldNumberView: FieldView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `FieldNumberLayout`
-  open var fieldNumberLayout: FieldNumberLayout? {
+  fileprivate var fieldNumberLayout: FieldNumberLayout? {
     return layout as? FieldNumberLayout
   }
 
-  /// The text field to render
-  open fileprivate(set) lazy var textField: InsetTextField = {
+  /// The text field that displays the number.
+  public fileprivate(set) lazy var textField: InsetTextField = {
     let textField = InsetTextField(frame: CGRect.zero)
     textField.delegate = self
     textField.borderStyle = .roundedRect
     textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-    textField.keyboardType = .numbersAndPunctuation
-    textField.textAlignment = .right
-    textField.inputAccessoryView = self.toolbar
+    textField.textAlignment = .center
     textField.adjustsFontSizeToFitWidth = false
-    textField
-      .addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     return textField
   }()
 
-  /// A toolbar that appears above the input keyboard
-  open fileprivate(set) lazy var toolbar: UIToolbar = {
-    let toolbar = UIToolbar()
-    toolbar.barStyle = .default
-    toolbar.isTranslucent = true
-    toolbar.items = [
-      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-      UIBarButtonItem(barButtonSystemItem: .done, target: self,
-        action: #selector(didTapDoneButton(_:)))
-    ]
-    toolbar.sizeToFit() // This is important or else the bar won't render!
-    return toolbar
-  }()
+  /// Group ID to use when grouping events together.
+  fileprivate var _eventGroupID: String?
+
+  /// The number pad view controller being presented in a popover.
+  fileprivate weak var numberPadViewController: NumberPadViewController?
 
   // MARK: - Initializers
 
@@ -86,13 +74,13 @@ open class FieldNumberView: FieldView {
 
     runAnimatableCode(animated) {
       if flags.intersectsWith(Layout.Flag_NeedsDisplay) {
-        self.updateTextFieldFromFieldNumber()
+        self.updateTextFieldFromLayout()
 
         let textField = self.textField
         textField.font = layout.config.font(for: LayoutConfig.GlobalFont)
         textField.textColor = layout.config.color(for: LayoutConfig.FieldEditableTextColor)
         textField.insetPadding =
-          layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+          layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
       }
     }
   }
@@ -100,69 +88,27 @@ open class FieldNumberView: FieldView {
   open override func prepareForReuse() {
     super.prepareForReuse()
 
-    self.frame = CGRect.zero
-    self.textField.text = ""
+    textField.text = ""
   }
 
   // MARK: - Private
 
-  fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
-    // Stop editing the text field
-    textField.resignFirstResponder()
-  }
-
-  fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
-    // Remove whitespace
-    textField.text = textField.text?.replacingOccurrences(of: " ", with: "")
-
-    // Update the text value of fieldNumberLayout, but don't actually change its value yet
-    fieldNumberLayout?.currentTextValue = (textField.text ?? "")
-  }
-
-  fileprivate func updateTextFieldFromFieldNumber() {
+  fileprivate func updateTextFieldFromLayout() {
     let text = fieldNumberLayout?.currentTextValue ?? ""
     if textField.text != text {
       textField.text = text
     }
   }
-}
 
-// MARK: - UITextFieldDelegate implementation
+  fileprivate func commitUpdate() {
+    guard let fieldNumberLayout = self.fieldNumberLayout else { return }
 
-extension FieldNumberView: UITextFieldDelegate {
-  public func textField(
-    _ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-    replacementString string: String) -> Bool
-  {
-    if string.isEmpty {
-      // Always allow deletions
-      return true
-    } else {
-      // Don't allow extra whitespace
-      return !string.trimmingCharacters(
-        in: CharacterSet.whitespacesAndNewlines).isEmpty
-    }
-  }
-
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    // Group and fire with any existing group. This solves an edge-case problem where dragging a
-    // block while editing a text field could simultaneously start two new event groups (one for
-    // the drag gesture and the other for ending text field editing). To prevent this from
-    // happening, this method simply appends to any existing one instead (if it exists).
-    let eventManager = EventManager.shared
-    eventManager.groupAndFireEvents(groupID: eventManager.currentGroupID) {
-      // Only commit the change after the user has finished editing the field
-      fieldNumberLayout?.setValueFromLocalizedText(self.textField.text ?? "")
+    EventManager.shared.groupAndFireEvents(groupID: _eventGroupID) {
+      fieldNumberLayout.setValueFromLocalizedText(fieldNumberLayout.currentTextValue)
 
       // Update the text field based on the current fieldNumber
-      updateTextFieldFromFieldNumber()
+      updateTextFieldFromLayout()
     }
-  }
-
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    // This will dismiss the keyboard
-    textField.resignFirstResponder()
-    return true
   }
 }
 
@@ -176,7 +122,7 @@ extension FieldNumberView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    let textPadding = layout.config.edgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
+    let textPadding = layout.config.viewEdgeInsets(for: LayoutConfig.FieldTextFieldInsetPadding)
     let maxWidth = layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMaximumWidth)
     let measureText = fieldNumberLayout.currentTextValue + " "
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
@@ -184,6 +130,95 @@ extension FieldNumberView: FieldLayoutMeasurer {
     measureSize.height = measureSize.height + textPadding.top + textPadding.bottom
     measureSize.width =
       min(measureSize.width + textPadding.leading + textPadding.trailing, maxWidth)
+    measureSize.width =
+      max(measureSize.width, layout.config.viewUnit(for: LayoutConfig.FieldTextFieldMinimumWidth))
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
     return measureSize
+  }
+}
+
+// MARK: - UITextFieldDelegate implementation
+
+extension FieldNumberView: UITextFieldDelegate {
+  public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    guard let fieldNumberLayout = self.fieldNumberLayout else { return false }
+
+    // Don't actually edit the text field with the keyboard, but show a number pad instead.
+    let numberPadOptions = fieldNumberLayout.config.untypedValue(
+      for: LayoutConfig.FieldNumberPadOptions) as? NumberPad.Options
+    let viewController = NumberPadViewController(options: numberPadOptions)
+    viewController.numberPad.text = textField.text ?? ""
+    viewController.numberPad.allowDecimal = !fieldNumberLayout.isInteger
+    viewController.numberPad.allowMinusSign = (fieldNumberLayout.minimumValue ?? -1) < 0
+    viewController.numberPad.delegate = self
+
+    if let fontCreator = fieldNumberLayout.config.fontCreator(for: LayoutConfig.PopoverLabelFont) {
+      // Use the popover font, but use a scale of 1.0.
+      viewController.numberPad.font = fontCreator(1.0)
+    }
+
+    // Start a new event group for this edit.
+    _eventGroupID = UUID().uuidString
+
+    popoverDelegate?
+      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
+
+    // Set the delegate so we can prioritize arrow directions
+    viewController.popoverPresentationController?.delegate = self
+
+    self.numberPadViewController = viewController
+
+    // Hide keyboard
+    endEditing(true)
+
+    return false
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension FieldNumberView: UIPopoverPresentationControllerDelegate {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    guard let rtl = self.fieldNumberLayout?.engine.rtl else { return }
+
+    // Prioritize arrow directions, so it won't obstruct the view of the field
+    popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .right], rtl: rtl)
+  }
+
+  public func popoverPresentationControllerShouldDismissPopover(
+    _ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+
+    // Commit the change right before the popover is being dismissed (as opposed to after, which
+    // causes a visual delay).
+    commitUpdate()
+
+    numberPadViewController = nil
+
+    // Always allow the dismissal of the popover.
+    return true
+  }
+}
+
+// MARK: - NumberPadViewControllerDelegate
+
+extension FieldNumberView: NumberPadDelegate {
+  public func numberPad(_ numberPad: NumberPad, didChangeText text: String) {
+    // Update the current text value, but don't commit anything yet.
+    fieldNumberLayout?.currentTextValue = text
+    updateTextFieldFromLayout()
+  }
+
+  public func numberPadDidPressReturnKey(_ numberPad: NumberPad) {
+    // Commit update
+    commitUpdate()
+
+    // Dismiss the popover
+    if let numberPadViewController = self.numberPadViewController {
+      popoverDelegate?.layoutView(
+        self, requestedToDismissPopoverViewController: numberPadViewController, animated: true)
+      self.numberPadViewController = nil
+    }
   }
 }

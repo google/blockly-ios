@@ -26,8 +26,8 @@ public protocol FieldColorPickerViewControllerDelegate: class {
    - parameter viewController: The view controller where this event occurred.
    - parameter color: The selected color.
    */
-  func fieldColorPickerViewController(_ viewController: FieldColorPickerViewController,
-    didPickColor color: UIColor)
+  func fieldColorPickerViewController(
+    _ viewController: FieldColorPickerViewController, didPickColor color: UIColor)
 }
 
 /**

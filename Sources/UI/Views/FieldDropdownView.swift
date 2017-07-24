@@ -31,6 +31,7 @@ open class FieldDropdownView: FieldView {
   fileprivate lazy var dropDownView: DropdownView = {
     let dropDownView = DropdownView()
     dropDownView.delegate = self
+    dropDownView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     return dropDownView
   }()
 
@@ -40,8 +41,7 @@ open class FieldDropdownView: FieldView {
   public required init() {
     super.init(frame: CGRect.zero)
 
-    // Add subviews
-    configureSubviews()
+    addSubview(dropDownView)
   }
 
   /**
@@ -72,16 +72,22 @@ open class FieldDropdownView: FieldView {
         dropDownView.borderCornerRadius =
           fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
         dropDownView.horizontalSpacing =
-          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.InlineXPadding)
+          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldDropdownXSpacing)
         dropDownView.verticalSpacing =
-          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.InlineYPadding)
+          fieldDropdownLayout.config.viewUnit(for: LayoutConfig.FieldDropdownYSpacing)
         dropDownView.textFont = fieldDropdownLayout.config.font(for: LayoutConfig.GlobalFont)
         dropDownView.textColor =
           fieldDropdownLayout.config.color(for: LayoutConfig.FieldEditableTextColor)
+        dropDownView.dropDownArrowTintColor = dropDownView.textColor
+        dropDownView.dropDownBackgroundColor =
+          fieldDropdownLayout.config.color(for: LayoutConfig.FieldDropdownBackgroundColor)
+        dropDownView.borderColor =
+          fieldDropdownLayout.config.color(for: LayoutConfig.FieldDropdownBorderColor)
 
-        let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+        let size = DropdownView.defaultDropDownArrowImageSize()
         let scale = fieldDropdownLayout.engine.scale
-        dropDownView.dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
+        dropDownView.dropDownArrowImageSize =
+          CGSize(width: size.width * scale, height: size.height * scale)
       }
     }
   }
@@ -90,18 +96,6 @@ open class FieldDropdownView: FieldView {
     super.prepareForReuse()
 
     dropDownView.text = ""
-  }
-
-  // MARK: - Private
-
-  fileprivate func configureSubviews() {
-    let views: [String: UIView] = ["dropDownView": dropDownView]
-    let constraints = [
-      "H:|[dropDownView]|",
-      "V:|[dropDownView]|",
-    ]
-    bky_addSubviews(Array(views.values))
-    bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
   }
 }
 
@@ -116,18 +110,21 @@ extension FieldDropdownView: FieldLayoutMeasurer {
     }
 
     let borderWidth = layout.config.viewUnit(for: LayoutConfig.FieldLineWidth)
-    let xSpacing = layout.config.viewUnit(for: LayoutConfig.InlineXPadding)
-    let ySpacing = layout.config.viewUnit(for: LayoutConfig.InlineYPadding)
+    let xSpacing = layout.config.viewUnit(for: LayoutConfig.FieldDropdownXSpacing)
+    let ySpacing = layout.config.viewUnit(for: LayoutConfig.FieldDropdownYSpacing)
     let measureText = (fieldDropdownLayout.selectedOption?.displayName ?? "")
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
-    let size = DropdownView.defaultDropDownArrowImage()?.size ?? CGSize.zero
+    let size = DropdownView.defaultDropDownArrowImageSize()
     let scale = fieldDropdownLayout.engine.scale
     let dropDownArrowImageSize = CGSize(width: size.width * scale, height: size.height * scale)
 
-    return DropdownView.measureSize(
+    var measureSize = DropdownView.measureSize(
       text: measureText, dropDownArrowImageSize: dropDownArrowImageSize,
       textFont: font, borderWidth: borderWidth, horizontalSpacing: xSpacing,
       verticalSpacing: ySpacing)
+    measureSize.height =
+      max(measureSize.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return measureSize
   }
 }
 
@@ -153,6 +150,22 @@ extension FieldDropdownView: DropdownViewDelegate {
 
     popoverDelegate?
       .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
+
+    // Set the delegate so we can prioritize arrow directions
+    viewController.popoverPresentationController?.delegate = self
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension FieldDropdownView: UIPopoverPresentationControllerDelegate {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    guard let rtl = self.fieldDropdownLayout?.engine.rtl else { return }
+
+    // Prioritize arrow directions so the popover opens in a way more consistent with other field
+    // popovers.
+    popoverPresentationController.bky_prioritizeArrowDirections([.up, .down, .left], rtl: rtl)
   }
 }
 

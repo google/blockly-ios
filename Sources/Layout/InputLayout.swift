@@ -36,6 +36,11 @@ open class InputLayout: Layout {
   /// The corresponding layouts for `self.input.fields[]`
   public fileprivate(set) final var fieldLayouts = [FieldLayout]()
 
+  /// The line height of the first line in the input layout, specified as a Workspace coordinate
+  /// system unit. It is used for vertical alignment purposes and should be updated during
+  /// `performLayout(includeChildren:)`.
+  open var firstLineHeight: CGFloat = 0
+
   /// Flag for if this input is the first child in its parent's block layout
   open var isFirstChild: Bool {
     return parentBlockLayout?.inputLayouts.first == self

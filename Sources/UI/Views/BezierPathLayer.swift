@@ -33,7 +33,7 @@ open class BezierPathLayer: CAShapeLayer {
   /// Default initializer for bezier path layer.
   public override init() {
     super.init()
-    self.fillRule = kCAFillRuleEvenOdd
+    commonInit()
   }
 
   /**
@@ -43,7 +43,7 @@ open class BezierPathLayer: CAShapeLayer {
    */
   public override init(layer: Any) {
     super.init(layer: layer)
-    self.fillRule = kCAFillRuleEvenOdd
+    commonInit()
   }
 
   /**
@@ -52,7 +52,12 @@ open class BezierPathLayer: CAShapeLayer {
    */
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    self.fillRule = kCAFillRuleEvenOdd
+    commonInit()
+  }
+
+  private func commonInit() {
+    fillRule = kCAFillRuleEvenOdd
+    drawsAsynchronously = true
   }
 
   // MARK: - Public

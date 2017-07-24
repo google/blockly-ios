@@ -20,6 +20,22 @@ import Foundation
  */
 @objc(BKYPathHelper)
 public class PathHelper: NSObject {
+  // MARK: - Constants
+
+  /**
+   Representation of a block's corners.
+   */
+  public enum Corner {
+    /// The bottom-left corner of the block.
+    case bottomLeft
+    /// The bottom-right corner of the block.
+    case bottomRight
+    /// The top-left corner of the block.
+    case topLeft
+    /// The top-right corner of the block.
+    case topRight
+  }
+
   // MARK: - Public
 
   /**
@@ -27,7 +43,6 @@ public class PathHelper: NSObject {
 
    Draws:
    ```
-   --
    \_/
    ```
 
@@ -43,15 +58,13 @@ public class PathHelper: NSObject {
     notchHeight: CGFloat)
   {
     if drawLeftToRight {
-      path.addLineTo(x: notchWidth - 15, y: 0, relative: true)
-      path.addLineTo(x: 6, y: notchHeight, relative: true)
-      path.addLineTo(x: 3, y: 0, relative: true)
-      path.addLineTo(x: 6, y: -notchHeight, relative: true)
+      path.addLineTo(x: notchWidth * 0.4, y: notchHeight, relative: true)
+      path.addLineTo(x: notchWidth * 0.2, y: 0, relative: true)
+      path.addLineTo(x: notchWidth * 0.4, y: -notchHeight, relative: true)
     } else {
-      path.addLineTo(x: -6, y: notchHeight, relative: true)
-      path.addLineTo(x: -3, y: 0, relative: true)
-      path.addLineTo(x: -6, y: -notchHeight, relative: true)
-      path.addLineTo(x: -(notchWidth - 15), y: 0, relative: true)
+      path.addLineTo(x: -notchWidth * 0.4, y: notchHeight, relative: true)
+      path.addLineTo(x: -notchWidth * 0.2, y: 0, relative: true)
+      path.addLineTo(x: -notchWidth * 0.4, y: -notchHeight, relative: true)
     }
   }
 
@@ -83,11 +96,9 @@ public class PathHelper: NSObject {
 
    Draws:
    ```
-   |
    /\|
    |
    \/|
-   |
    ```
 
    - parameter path: The Bezier path to add to.
@@ -102,11 +113,9 @@ public class PathHelper: NSObject {
     toPath path: WorkspaceBezierPath, drawTopToBottom: Bool, puzzleTabWidth: CGFloat,
     puzzleTabHeight: CGFloat)
   {
-    let verticalLineHeight = puzzleTabHeight * 0.2
-    let roundedHalfPieceHeight = puzzleTabHeight * 0.3
+    let roundedHalfPieceHeight = puzzleTabHeight * 0.5
 
     if drawTopToBottom {
-      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
       path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
                     controlPoint1: WorkspacePoint(x: 0, y: roundedHalfPieceHeight * 1.25),
                     controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
@@ -114,9 +123,7 @@ public class PathHelper: NSObject {
       path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight),
                           controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight * 0.3125),
                           relative: true)
-      path.addLineTo(x: 0, y: verticalLineHeight, relative: true)
     } else {
-      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
       path.addCurve(to: WorkspacePoint(x: -puzzleTabWidth, y: -roundedHalfPieceHeight),
                     controlPoint1: WorkspacePoint(x: 0, y: -roundedHalfPieceHeight * 1.25),
                     controlPoint2: WorkspacePoint(x: -puzzleTabWidth, y: roundedHalfPieceHeight),
@@ -124,7 +131,6 @@ public class PathHelper: NSObject {
       path.addSmoothCurve(to: WorkspacePoint(x: puzzleTabWidth, y: -roundedHalfPieceHeight),
                           controlPoint2: WorkspacePoint(x: puzzleTabWidth, y: roundedHalfPieceHeight * 0.3125),
                           relative: true)
-      path.addLineTo(x: 0, y: -verticalLineHeight, relative: true)
     }
   }
 
@@ -142,24 +148,41 @@ public class PathHelper: NSObject {
   }
 
   /**
-   Adds the path for drawing the rounded top-left corner.
+   Adds the path for drawing a rounded corner.
 
-   Draws:
-   ```
-   --
-   /
-   |
-   ```
-
+   - parameter corner: The `Corner` to draw.
    - parameter path: The Bezier path.
-   - parameter blockCornerRadius: The block's corner radius, specified as a Workspace coordinate
-   system unit.
+   - parameter radius: The radius of the corner, specified as a Workspace coordinate system unit.
+   - parameter clockwise: `true` if the corner should be drawn clockwise. `false` if the corner
+   should be drawn counter-clockwise.
    */
-  public static func addTopLeftCorner(toPath path: WorkspaceBezierPath, blockCornerRadius: CGFloat)
-  {
-    path.addArc(withCenter: WorkspacePoint(x: blockCornerRadius, y: 0),
-                radius: blockCornerRadius, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 1.5,
-                clockwise: true, relative: true)
+  public static func addCorner(
+    _ corner: Corner, toPath path: WorkspaceBezierPath, radius: CGFloat, clockwise: Bool) {
+    guard radius > 0 else { return }
+
+    var arc: (centerX: CGFloat, centerY: CGFloat, startAngle: CGFloat, endAngle: CGFloat)
+    switch (corner, clockwise) {
+    case (.bottomLeft, true):
+      arc = (centerX: 0, centerY: -radius, startAngle: CGFloat.pi * 0.5, endAngle: CGFloat.pi)
+    case (.bottomLeft, false):
+      arc = (centerX: radius, centerY: 0, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 0.5)
+    case (.bottomRight, true):
+      arc = (centerX: -radius, centerY: 0, startAngle: 0, endAngle: CGFloat.pi * 0.5)
+    case (.bottomRight, false):
+      arc = (centerX: 0, centerY: -radius, startAngle: CGFloat.pi * 0.5, endAngle: 0)
+    case (.topLeft, true):
+      arc = (centerX: radius, centerY: 0, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 1.5)
+    case (.topLeft, false):
+      arc = (centerX: 0, centerY: radius, startAngle: CGFloat.pi * 1.5, endAngle: CGFloat.pi)
+    case (.topRight, true):
+      arc = (centerX: 0, centerY: radius, startAngle: CGFloat.pi * 1.5, endAngle: 0)
+    case (.topRight, false):
+      arc = (centerX: -radius, centerY: 0, startAngle: 0, endAngle: CGFloat.pi * 1.5)
+    }
+
+    path.addArc(withCenter: WorkspacePoint(x: arc.centerX, y: arc.centerY),
+                radius: radius, startAngle: arc.startAngle, endAngle: arc.endAngle,
+                clockwise: clockwise, relative: true)
   }
 
   /**
@@ -167,7 +190,7 @@ public class PathHelper: NSObject {
 
    Draws:
    ```
-   ---
+    ---
    /   \
    ```
 

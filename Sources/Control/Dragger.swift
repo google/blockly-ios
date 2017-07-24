@@ -76,8 +76,7 @@ public final class Dragger: NSObject {
         try workspaceLayoutCoordinator.disconnect(outputConnection)
       }
 
-      // Highlight this block
-      layout.highlighted = true
+      // Mark the block group as being dragged.
       layout.rootBlockGroupLayout?.dragging = true
 
       // Bring its block group layout to the front
@@ -164,8 +163,7 @@ public final class Dragger: NSObject {
         EventManager.shared.addPendingEvent(drag.moveEvent)
       }
 
-      // Remove the highlight for this block
-      layout.highlighted = false
+      // Unmark this block group as being dragged.
       layout.rootBlockGroupLayout?.dragging = false
 
       // If this block can be connected to anything, connect it.
@@ -215,6 +213,19 @@ public final class Dragger: NSObject {
     layout.rootBlockGroupLayout?.dragging = false
 
     clearGestureData(forUUID: layout.uuid, moveConnectionsToGroup: nil)
+  }
+
+  /**
+   Cancels all existing drags in the workspace.
+   */
+  public func cancelAllDrags() {
+    let drags = Array(_dragGestureData.values)
+
+    for drag in drags {
+      if let blockLayout = drag.blockLayout {
+        cancelDraggingBlockLayout(blockLayout)
+      }
+    }
   }
 
   // MARK: - Private

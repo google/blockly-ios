@@ -79,6 +79,11 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   /// An ordered list of blocks being dragged by the recognizer.
   private var _blocks = [BlockView]()
 
+  /// Returns the first touch that's been captured by this gesture recognizer, if it exists.
+  open var firstTouch: UITouch? {
+    return !_touches.isEmpty ? _touches[0] : nil
+  }
+
   // TODO(#176): Replace maximumTouches
 
   /// Maximum number of touches handled by the recognizer
@@ -296,10 +301,17 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    */
   open func firstTouchDelta(inView view: UIView?) -> CGPoint {
     if _touches.count > 0 {
-      let currentPosition = _touches[0].location(in: view)
-      let previousPosition = _touches[0].previousLocation(in: view)
+      if #available(iOS 9.1, *) {
+        let currentPosition = _touches[0].preciseLocation(in: view)
+        let previousPosition = _touches[0].precisePreviousLocation(in: view)
 
-      return currentPosition - previousPosition
+        return currentPosition - previousPosition
+      } else {
+        let currentPosition = _touches[0].location(in: view)
+        let previousPosition = _touches[0].previousLocation(in: view)
+
+        return currentPosition - previousPosition
+      }
     }
 
     return CGPoint.zero
@@ -339,24 +351,24 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
   // MARK: - Private
 
   /**
-   Utility function for finding the first ancestor that is a `BlockView`.
+   Utility function for finding the first ancestor that is a draggable `BlockView`.
 
    - parameter view: The view to find an ancestor of
-   - returns: The first ancestor of the `UIView` that is a `BlockView`
+   - returns: The first ancestor of the `UIView` that is a draggable `BlockView`.
    */
   private func owningBlockView(_ view: UIView?) -> BlockView? {
     var currentView = view
-    while !(currentView is BlockView) {
-      currentView = currentView?.superview
-      if currentView == nil {
-        return nil
+
+    while currentView != nil && currentView != self.view {
+      if let blockView = currentView as? BlockView,
+        let blockLayout = blockView.blockLayout,
+        blockLayout == blockLayout.draggableBlockLayout {
+        return blockView
       }
 
-      if currentView == self.view {
-        return nil
-      }
+      currentView = currentView?.superview
     }
 
-    return currentView as? BlockView
+    return nil
   }
 }

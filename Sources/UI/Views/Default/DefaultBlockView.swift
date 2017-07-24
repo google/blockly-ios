@@ -32,10 +32,36 @@ public final class DefaultBlockView: BlockView {
   fileprivate var _disableLayerChangeAnimations: Bool = true
 
   /// Layer for rendering the block's background
-  fileprivate let _backgroundLayer = BezierPathLayer()
+  fileprivate let _backgroundLayer: BezierPathLayer = {
+    var layer = BezierPathLayer()
+    layer.lineCap = kCALineCapRound
+    // Set z-position so it renders below most other layers (all layers default to 0).
+    layer.zPosition = -1
+    return layer
+  }()
+
+  /// Layer for rendering the block's connection highlight overlay.
+  fileprivate let _connectionHighlightLayer: BezierPathLayer = {
+    var layer = BezierPathLayer()
+    layer.lineCap = kCALineCapRound
+    layer.fillColor = nil
+    // Set z-position so it renders above most other layers (all layers default to 0).
+    layer.zPosition = 1
+    return layer
+  }()
 
   /// Layer for rendering the block's highlight overlay
-  fileprivate var _highlightLayer: BezierPathLayer?
+  fileprivate let _blockHighlightLayer: BezierPathLayer = {
+    var layer = BezierPathLayer()
+    layer.lineCap = kCALineCapRound
+    layer.fillColor = nil
+    // Set z-position so it renders above most other layers (all layers default to 0).
+    layer.zPosition = 2
+    return layer
+  }()
+
+  /// Number of animations that are currently running `refreshView(forFlags:animated:)`.
+  private var runningRefreshViewCodeCounter = 0
 
   // MARK: - Initializers
 
@@ -43,8 +69,10 @@ public final class DefaultBlockView: BlockView {
   public required init() {
     super.init()
 
-    // Add background layer
-    self.layer.addSublayer(_backgroundLayer)
+    // Add background/highlight layers
+    layer.addSublayer(_backgroundLayer)
+    layer.addSublayer(_connectionHighlightLayer)
+    layer.addSublayer(_blockHighlightLayer)
   }
 
   /**
@@ -91,7 +119,10 @@ public final class DefaultBlockView: BlockView {
       return
     }
 
-    runAnimatableCode(animated) {
+    runAnimatableCode(animated, code: {
+      // Increment the number of blocks that are running this animation part of the code.
+      self.runningRefreshViewCodeCounter += 1
+
       // Note: This code isn't wrapped inside an explicit CATransaction since that will render the
       // changes immediately. The problem with this is that all other views use the implicit
       // CATransaction that is created for every run loop. If we use a different CATransaction,
@@ -136,51 +167,66 @@ public final class DefaultBlockView: BlockView {
         forceBezierPathRedraw
       {
         // Figure out the stroke and fill colors of the block
-        var strokeColor = UIColor.clear
-        var fillColor = UIColor.clear
-
+        var strokeColor: UIColor?
+        var fillColor: UIColor?
         if layout.block.disabled {
-          strokeColor =
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDisabledColor) ?? strokeColor
-          fillColor =
-            layout.config.color(for: DefaultLayoutConfig.BlockFillDisabledColor) ?? fillColor
+          strokeColor = layout.config.color(for: DefaultLayoutConfig.BlockStrokeDisabledColor)
+          fillColor = layout.config.color(for: DefaultLayoutConfig.BlockFillDisabledColor)
         } else {
-          strokeColor = (layout.highlighted ?
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor) :
-            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDefaultColor)) ??
-            UIColor.clear
+          let defaultStrokeColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeDefaultColor) ?? .clear
+          strokeColor = defaultStrokeColor
           fillColor = layout.block.color
 
           if layout.block.shadow {
-            strokeColor = self.shadowColor(forColor: strokeColor, config: layout.config)
-            fillColor = self.shadowColor(forColor: fillColor, config: layout.config)
+            strokeColor = self.shadowColor(forColor: defaultStrokeColor, config: layout.config)
+            fillColor = self.shadowColor(forColor: layout.block.color, config: layout.config)
           }
         }
 
+        // Construct the block's bezier path
+        let blockBezierPath = self.blockBackgroundBezierPath()
+
         // Update the background layer
         let backgroundLayer = self._backgroundLayer
-        backgroundLayer.strokeColor = strokeColor.cgColor
-        backgroundLayer.fillColor = fillColor.cgColor
-        backgroundLayer.lineWidth = layout.highlighted ?
-          layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight) :
+        backgroundLayer.strokeColor = strokeColor?.cgColor
+        backgroundLayer.fillColor = fillColor?.cgColor
+        backgroundLayer.lineWidth =
           layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthRegular)
         backgroundLayer.animationDuration =
           layout.config.double(for: LayoutConfig.ViewAnimationDuration)
-        backgroundLayer.setBezierPath(self.blockBackgroundBezierPath(), animated: animated)
+        backgroundLayer.setBezierPath(blockBezierPath, animated: animated)
         backgroundLayer.frame = self.bounds
+
+        // Update the block highlight layer
+        if layout.highlighted {
+          let blockHighlightLayer = self._blockHighlightLayer
+          blockHighlightLayer.strokeColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor
+          blockHighlightLayer.fillColor =
+            layout.config.color(for: DefaultLayoutConfig.BlockMaskHighlightColor)?.cgColor
+          blockHighlightLayer.lineWidth =
+            layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight)
+          blockHighlightLayer.animationDuration =
+            layout.config.double(for: LayoutConfig.ViewAnimationDuration)
+          blockHighlightLayer.setBezierPath(blockBezierPath, animated: animated)
+          blockHighlightLayer.frame = self.bounds
+
+          // If this block is highlighted, bring it to the top so its highlight layer doesn't get
+          // covered by other sibling blocks.
+          self.superview?.bringSubview(toFront: self)
+        } else {
+          self._blockHighlightLayer.setBezierPath(nil, animated: false)
+        }
       }
 
-      if flags.intersectsWith(
-        [BlockLayout.Flag_NeedsDisplay,
+      if flags.intersectsWith([
+          BlockLayout.Flag_NeedsDisplay,
           BlockLayout.Flag_UpdateHighlight,
           BlockLayout.Flag_UpdateConnectionHighlight]) || forceBezierPathRedraw
       {
-        // Update highlight
-        if let path = self.blockHighlightBezierPath() {
-          self.addHighlightLayer(withPath: path, animated: animated)
-        } else {
-          self.removeHighlightLayer()
-        }
+        // Remove connection highlights (they will be potentially re-added in the completion block).
+        self._connectionHighlightLayer.setBezierPath(nil, animated: false)
       }
 
       // Restore disabled actions to previous value
@@ -188,7 +234,28 @@ public final class DefaultBlockView: BlockView {
 
       // Re-enable layer animations for any future changes
       self._disableLayerChangeAnimations = false
-    }
+    }, completion: { _ in
+      // Decrement the number of blocks that are running the animatable part of the code.
+      self.runningRefreshViewCodeCounter -= 1
+
+      // Once all animatable code blocks have finished running, re-add connection highlights,
+      // if necessary.
+      if self.runningRefreshViewCodeCounter == 0,
+        let path = self.blockHighlightBezierPath() {
+        // Configure highlight layer
+        let connectionHighlightLayer = self._connectionHighlightLayer
+        connectionHighlightLayer.lineWidth =
+          layout.config.viewUnit(for: DefaultLayoutConfig.BlockConnectionLineWidthHighlight)
+        connectionHighlightLayer.strokeColor =
+          layout.config.color(for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)?.cgColor
+        connectionHighlightLayer.setBezierPath(path, animated: false)
+        connectionHighlightLayer.frame = self.bounds
+
+        // Bring this block to the top so its connection highlight doesn't get covered by
+        // sibling blocks.
+        self.superview?.bringSubview(toFront: self)
+      }
+    })
   }
 
   open override func prepareForReuse() {
@@ -199,46 +266,11 @@ public final class DefaultBlockView: BlockView {
     _disableLayerChangeAnimations = true
 
     _backgroundLayer.setBezierPath(nil, animated: false)
-    removeHighlightLayer()
+    _connectionHighlightLayer.setBezierPath(nil, animated: false)
+    _blockHighlightLayer.setBezierPath(nil, animated: false)
   }
 
   // MARK: - Private
-
-  fileprivate func addHighlightLayer(withPath path: UIBezierPath, animated: Bool) {
-    guard let layout = self.defaultBlockLayout else {
-      return
-    }
-
-    // TODO(#170): Connection highlights need to be animated into position. Currently, they always
-    // just appear in their final destination position.
-
-    // Use existing _highlightLayer or create a new one
-    let highlightLayer = _highlightLayer ?? BezierPathLayer()
-    layer.addSublayer(highlightLayer)
-    _highlightLayer = highlightLayer
-
-    // Configure highlight
-    highlightLayer.lineWidth =
-      layout.config.viewUnit(for: DefaultLayoutConfig.BlockLineWidthHighlight)
-    highlightLayer.strokeColor =
-      layout.config.color(for: DefaultLayoutConfig.BlockStrokeHighlightColor)?.cgColor ??
-      UIColor.clear.cgColor
-    highlightLayer.fillColor = nil
-    // TODO(#41): The highlight view frame needs to be larger than this view since it uses a
-    // larger line width
-    // Set the zPosition to 1 so it's higher than most other layers (all layers default to 0)
-    highlightLayer.zPosition = 1
-    highlightLayer.animationDuration = layout.config.double(for: LayoutConfig.ViewAnimationDuration)
-    highlightLayer.setBezierPath(path, animated: animated)
-    highlightLayer.frame = bounds
-  }
-
-  fileprivate func removeHighlightLayer() {
-    if let highlightLayer = _highlightLayer {
-      highlightLayer.removeFromSuperlayer()
-      _highlightLayer = nil
-    }
-  }
 
   fileprivate func blockBackgroundBezierPath() -> UIBezierPath? {
     guard let layout = self.defaultBlockLayout else {
@@ -250,13 +282,16 @@ public final class DefaultBlockView: BlockView {
     var previousBottomPadding: CGFloat = 0
     let xLeftEdgeOffset = background.leadingEdgeXOffset // Note: this is the right edge in RTL
     let topEdgeOffset = background.leadingEdgeYOffset
+    let notchXOffset = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchXOffset)
     let notchWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchWidth)
     let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
     let startHatSize = layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
+    let cornerRadius = layout.config.workspaceUnit(for: DefaultLayoutConfig.BlockCornerRadius)
+    let topLeftCornerRadius = background.startHat ? 0 : cornerRadius
 
-    path.moveTo(x: xLeftEdgeOffset, y: topEdgeOffset, relative: false)
+    path.moveTo(x: xLeftEdgeOffset + topLeftCornerRadius, y: topEdgeOffset, relative: false)
 
     for i in 0 ..< background.rows.count {
       let row = background.rows[i]
@@ -266,6 +301,7 @@ public final class DefaultBlockView: BlockView {
       if i == 0 {
         if background.previousStatementConnector {
           // Draw previous statement connector
+          path.addLineTo(x: xLeftEdgeOffset + notchXOffset, y: topEdgeOffset, relative: false)
           PathHelper.addNotch(
             toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
         } else if background.startHat {
@@ -274,13 +310,13 @@ public final class DefaultBlockView: BlockView {
         }
       }
 
-      path.addLineTo(
-        x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y, relative: false)
+      let rowYOffset = path.currentWorkspacePoint.y
+      let nextRightEdge = xLeftEdgeOffset + row.rightEdge - cornerRadius
+      if nextRightEdge > path.currentWorkspacePoint.x {
+        path.addLineTo(x: nextRightEdge, y: path.currentWorkspacePoint.y, relative: false)
 
-      // Draw top padding
-      let topPadding = row.topPadding + previousBottomPadding
-      if topPadding > 0 {
-        path.addLineTo(x: 0, y: topPadding, relative: true)
+        // Add top-right corner
+        PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
       }
 
       // DRAW THE RIGHT EDGES
@@ -288,97 +324,159 @@ public final class DefaultBlockView: BlockView {
       if row.isStatement {
         // Draw the "C" part of a statement block
 
+        // Draw top padding (which includes the bottom padding from the previous row)
+        let topPadding = row.topPadding + previousBottomPadding - cornerRadius
+        path.addLineTo(x: path.currentWorkspacePoint.x, y: rowYOffset + topPadding, relative: false)
+        previousBottomPadding = 0
+
+        // Bottom-right corner
+        PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
+
         // Inner-ceiling of "C"
         path.addLineTo(
-          x: xLeftEdgeOffset + row.statementIndent + notchWidth,
-          y: path.currentWorkspacePoint.y, relative: false)
+          x: xLeftEdgeOffset + row.statementIndent + notchXOffset + notchWidth,
+          y: path.currentWorkspacePoint.y,
+          relative: false)
 
         // Draw notch
         PathHelper.addNotch(
           toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
 
         path.addLineTo(
-          x: xLeftEdgeOffset + row.statementIndent, y: path.currentWorkspacePoint.y,
+          x: xLeftEdgeOffset + row.statementIndent + cornerRadius,
+          y: path.currentWorkspacePoint.y,
           relative: false)
 
+        // Add top-left corner
+        PathHelper.addCorner(.topLeft, toPath: path, radius: cornerRadius, clockwise: false)
+
         // Inner-left side of "C"
-        path.addLineTo(x: 0, y: row.middleHeight, relative: true)
+        path.addLineTo(x: 0, y: row.middleHeight - cornerRadius * 2, relative: true)
+
+        // Add bottom-left corner
+        PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: false)
 
         if i == (background.rows.count - 1) {
           // If there is no other row after this, draw the inner-floor of the "C".
           path.addLineTo(
-            x: xLeftEdgeOffset + row.rightEdge, y: path.currentWorkspacePoint.y,
+            x: xLeftEdgeOffset + row.rightEdge - cornerRadius, y: path.currentWorkspacePoint.y,
             relative: false)
+
+          // Add top-left corner of the bottom part.
+          PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
+
+          // Store bottom padding that will get drawn at the end, but subtract the corner radius
+          // amount that was just drawn for the top-left corner.
+          previousBottomPadding = row.bottomPadding - cornerRadius
         } else {
-          // If there is another row after this, the inner-floor of the "C" is drawn by the
-          // right edge of the next row.
+          // The inner-floor of the "C" is drawn by the right edge of the next row.
+          // Store bottom padding, to draw into the the top padding of the next row.
+          previousBottomPadding = row.bottomPadding
         }
-      } else if row.outputConnector {
-        // Draw output connector and then the rest of the middle height
-        let startingY = path.currentWorkspacePoint.y
-        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
-          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
-        let restOfVerticalEdge = startingY + row.middleHeight - path.currentWorkspacePoint.y
-        bky_assert(restOfVerticalEdge >= 0,
-          message: "Middle height for the block layout is less than the space needed")
-        path.addLineTo(x: 0, y: restOfVerticalEdge, relative: true)
       } else {
-        // Simply draw the middle height for the vertical edge
-        path.addLineTo(x: 0, y: row.middleHeight, relative: true)
+        let rightLine = row.middleHeight - (row.outputConnector ? puzzleTabHeight : 0)
+
+        // Draw top portion of the line (which includes the bottom padding from the previous row)
+        path.addLineTo(
+          x: path.currentWorkspacePoint.x,
+          y: rowYOffset + row.topPadding + previousBottomPadding + rightLine / 2.0,
+          relative: false)
+
+        if row.outputConnector {
+          // Draw the puzzle tab
+          PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
+                                  puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
+        }
+
+        // Store bottom padding, to draw into the the top padding of the next row.
+        previousBottomPadding = rightLine / 2.0 + row.bottomPadding
       }
-
-      // Store bottom padding (to draw into the the top padding of the next row)
-      previousBottomPadding = row.bottomPadding
     }
 
-    if previousBottomPadding > 0 {
-      path.addLineTo(x: 0, y: previousBottomPadding, relative: true)
+    // If needed, draw the last remaining bottom line.
+    if previousBottomPadding - cornerRadius > 0 {
+      path.addLineTo(x: 0, y: previousBottomPadding - cornerRadius, relative: true)
     }
+
+    // Add the bottom-right corner of the block
+    PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
 
     // DRAW THE BOTTOM EDGES
 
     if background.nextStatementConnector {
       path.addLineTo(
-        x: xLeftEdgeOffset + notchWidth, y: path.currentWorkspacePoint.y, relative: false)
+        x: xLeftEdgeOffset + notchXOffset + notchWidth,
+        y: path.currentWorkspacePoint.y,
+        relative: false)
       PathHelper.addNotch(
         toPath: path, drawLeftToRight: false, notchWidth: notchWidth, notchHeight: notchHeight)
     }
 
-    path.addLineTo(x: xLeftEdgeOffset, y: path.currentWorkspacePoint.y, relative: false)
+    path.addLineTo(
+      x: xLeftEdgeOffset + cornerRadius, y: path.currentWorkspacePoint.y, relative: false)
+
+    // ADD BOTTOM LEFT CORNER
+    PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: true)
 
     // DRAW THE LEFT EDGES
 
     if background.outputConnector {
+      let leftLineExtension = (background.firstLineHeight - puzzleTabHeight) / 2.0
+
       // Add output connector
-      path.addLineTo(x: 0, y: puzzleTabHeight - path.currentWorkspacePoint.y, relative: true)
+      path.addLineTo(
+        x: xLeftEdgeOffset, y: topEdgeOffset + leftLineExtension + puzzleTabHeight, relative: false)
 
       PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
         puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
+
+      path.addLineTo(x: 0, y: -(leftLineExtension - topLeftCornerRadius), relative: true)
+    } else {
+      path.addLineTo(x: xLeftEdgeOffset, y: topEdgeOffset + topLeftCornerRadius, relative: false)
     }
+
+    // ADD TOP LEFT CORNER
+    PathHelper.addCorner(.topLeft, toPath: path, radius: topLeftCornerRadius, clockwise: true)
 
     path.closePath()
 
     // DRAW INLINE CONNECTORS
+    let cornerRadiusX2 = cornerRadius * 2.0
     path.viewBezierPath.usesEvenOddFillRule = true
     for backgroundRow in background.rows {
       for inlineConnector in backgroundRow.inlineConnectors {
         path.moveTo(
-          x: inlineConnector.relativePosition.x + puzzleTabWidth,
+          x: inlineConnector.relativePosition.x + puzzleTabWidth + cornerRadius,
           y: inlineConnector.relativePosition.y,
           relative: false)
 
         let xEdgeWidth = inlineConnector.size.width - puzzleTabWidth
         // Top edge
-        path.addLineTo(x: xEdgeWidth, y: 0, relative: true)
+        path.addLineTo(x: xEdgeWidth - cornerRadiusX2, y: 0, relative: true)
+        PathHelper.addCorner(.topRight, toPath: path, radius: cornerRadius, clockwise: true)
         // Right edge
-        path.addLineTo(x: 0, y: inlineConnector.size.height, relative: true)
+        path.addLineTo(x: 0, y: inlineConnector.size.height - cornerRadiusX2, relative: true)
+        PathHelper.addCorner(.bottomRight, toPath: path, radius: cornerRadius, clockwise: true)
         // Bottom edge
-        path.addLineTo(x: -xEdgeWidth, y: 0, relative: true)
-        // Left edge
-        path.addLineTo(x: 0, y: -(inlineConnector.size.height - puzzleTabHeight), relative: true)
+        path.addLineTo(x: -(xEdgeWidth - cornerRadiusX2), y: 0, relative: true)
+        PathHelper.addCorner(.bottomLeft, toPath: path, radius: cornerRadius, clockwise: true)
+        // Start left edge
+        path.addLineTo(
+          x: path.currentWorkspacePoint.x,
+          y: inlineConnector.relativePosition.y + inlineConnector.firstLineHeight - cornerRadius,
+          relative: false)
+
+        let puzzleLineExtension = (inlineConnector.firstLineHeight - puzzleTabHeight) / 2.0
+        path.addLineTo(
+          x: path.currentWorkspacePoint.x,
+          y: inlineConnector.relativePosition.y + puzzleLineExtension + puzzleTabHeight,
+          relative: false)
         // Puzzle notch
         PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: false,
           puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
+        // Finish left edge
+        path.addLineTo(x: 0, y: -(puzzleLineExtension - cornerRadius), relative: true)
+        PathHelper.addCorner(.topLeft, toPath: path, radius: cornerRadius, clockwise: true)
       }
     }
 
@@ -403,6 +501,9 @@ public final class DefaultBlockView: BlockView {
     let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
+    let cornerRadius = layout.config.workspaceUnit(for: DefaultLayoutConfig.BlockCornerRadius)
+    let xLeftEdgeOffset = layout.background.leadingEdgeXOffset
+    let topEdgeOffset = layout.background.leadingEdgeYOffset
 
     // Build path for each highlighted connection
     let path = WorkspaceBezierPath(engine: layout.engine)
@@ -417,22 +518,82 @@ public final class DefaultBlockView: BlockView {
       // Highlight specific connection
       switch connection.type {
       case .inputValue, .outputValue:
-        // The connection point is set to the apex of the puzzle tab's curve. Move the point before
-        // drawing it.
-        path.move(to: connectionRelativePosition +
-          WorkspacePoint(x: puzzleTabWidth, y: -puzzleTabHeight / 2),
-          relative: false)
-        PathHelper.addPuzzleTab(toPath: path, drawTopToBottom: true,
-          puzzleTabWidth: puzzleTabWidth, puzzleTabHeight: puzzleTabHeight)
-        break
+        // The connection is in the shape of the puzzle tab. Figure out the starting draw position.
+        let connectionStartPosition = WorkspacePoint(
+          x: connectionRelativePosition.x + puzzleTabWidth,
+          y: connectionRelativePosition.y - puzzleTabHeight / 2)
+        var lineStartY = connectionStartPosition.y
+        var lineEndY = connectionStartPosition.y + puzzleTabHeight
+
+        // Figure out if there can be line extensions drawn on the top and bottom of the puzzle tab.
+        if connection.type == .inputValue,
+          let inputLayout = connection.sourceInput?.layout as? DefaultInputLayout {
+          if layout.inputsInline {
+            lineStartY = inputLayout.inlineConnectorPosition.y + cornerRadius
+            lineEndY = inputLayout.inlineConnectorPosition.y +
+              inputLayout.inlineConnectorSize.height - cornerRadius
+          } else {
+            lineStartY = inputLayout.relativePosition.y + cornerRadius
+            lineEndY =
+              inputLayout.relativePosition.y + inputLayout.contentSize.height - cornerRadius
+          }
+        } else if connection.sourceBlock == layout.block && connection.type == .outputValue {
+          // Use block size to figure out line extensions
+          lineStartY = topEdgeOffset + cornerRadius
+          lineEndY = topEdgeOffset + layout.contentSize.height - cornerRadius
+        }
+
+        // Draw top line extension, puzzle tab, and then bottom line extension.
+        path.move(to: WorkspacePoint(x: connectionStartPosition.x, y: lineStartY), relative: false)
+        path.addLine(to: connectionStartPosition, relative: false)
+        PathHelper.addPuzzleTab(
+          toPath: path,
+          drawTopToBottom: true,
+          puzzleTabWidth: puzzleTabWidth,
+          puzzleTabHeight: puzzleTabHeight)
+        path.addLineTo(x: path.currentWorkspacePoint.x, y: lineEndY, relative: false)
+
       case .previousStatement, .nextStatement:
-        // The connection point is set to the bottom of the notch. Move the point before drawing it.
-        path.move(to: connectionRelativePosition -
-          WorkspacePoint(x: notchWidth / 2, y: notchHeight),
-          relative: false)
+        // The connection is in the shape of a notch. Figure out the starting draw position.
+        let connectionStartPosition = WorkspacePoint(
+          x: connectionRelativePosition.x - notchWidth / 2,
+          y: connectionRelativePosition.y - notchHeight)
+        var lineStartX = connectionStartPosition.x
+        var lineEndX = connectionStartPosition.x + puzzleTabWidth
+
+        // Figure out if there can be line extensions drawn to the left and right of the notch.
+        if let inputLayout = connection.sourceInput?.layout as? DefaultInputLayout,
+          let rowIndex = layout.background.rows.index(where: { $0.layouts.contains(inputLayout) }) {
+          // Use input row information to figure out line extensions
+          let backgroundRow = layout.background.rows[rowIndex]
+
+          lineStartX = xLeftEdgeOffset + backgroundRow.statementIndent + cornerRadius
+          lineEndX = backgroundRow.rightEdge - cornerRadius
+
+          if connection.type == .nextStatement && rowIndex > 0 {
+            // For next statements, their top edge is the maximum of the previous row's right edge
+            // and its own row's right edge.
+            lineEndX = max(lineEndX, layout.background.rows[rowIndex - 1].rightEdge - cornerRadius)
+          }
+        } else if connection.sourceBlock == layout.block {
+          // Use block information to figure out line extensions
+          lineStartX = xLeftEdgeOffset + cornerRadius
+
+          if connection.type == .previousStatement,
+            let firstBackgroundRow = layout.background.rows.first {
+            lineEndX = firstBackgroundRow.rightEdge - cornerRadius
+          } else if connection.type == .nextStatement,
+            let lastBackgroundRow = layout.background.rows.last {
+            lineEndX = lastBackgroundRow.rightEdge - cornerRadius
+          }
+        }
+
+        // Draw left line extension, notch, and then right line extension.
+        path.move(to: WorkspacePoint(x: lineStartX, y: connectionStartPosition.y), relative: false)
+        path.addLine(to: connectionStartPosition, relative: false)
         PathHelper.addNotch(
           toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
-        break
+        path.addLineTo(x: lineEndX, y: path.currentWorkspacePoint.y, relative: false)
       }
     }
 
@@ -454,7 +615,7 @@ public final class DefaultBlockView: BlockView {
   fileprivate func shadowColor(forColor color: UIColor, config: LayoutConfig) -> UIColor {
     var hsba = color.bky_hsba()
     hsba.saturation *= config.float(for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
-    hsba.brightness = max(
+    hsba.brightness = min(
       hsba.brightness * config.float(for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier), 1)
     return UIColor(
       hue: hsba.hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)

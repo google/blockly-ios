@@ -102,5 +102,3 @@ Blockly.JavaScript['turtle_colour'] = function(block) {
   return 'Turtle.penColour(' + colour + ', \'block_id_' +
       block.id + '\');\n';
 };
-
-Blockly.JavaScript['turtle_repeat_internal'] = Blockly.JavaScript['controls_repeat'];

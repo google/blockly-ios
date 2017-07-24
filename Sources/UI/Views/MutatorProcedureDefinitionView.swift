@@ -31,7 +31,7 @@ open class MutatorProcedureDefinitionView: LayoutView {
 
   /// A button for opening the popover settings
   open fileprivate(set) lazy var popoverButton: UIButton = {
-    let button = UIButton(type: .custom)
+    let button = UIButton(type: .system)
     button.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     if let image = ImageLoader.loadImage(named: "settings",
                                          forClass: MutatorProcedureDefinitionView.self) {
@@ -76,10 +76,16 @@ open class MutatorProcedureDefinitionView: LayoutView {
       if flags.intersectsWith([Layout.Flag_NeedsDisplay, Layout.Flag_UpdateViewFrame]) {
         // Update the view frame
         self.frame = layout.viewFrame
+
+        // Force the mutator view to always be drawn behind sibling views (which could be other
+        // blocks).
+        self.superview?.sendSubview(toBack: self)
       }
 
       let topPadding = layout.engine.viewUnitFromWorkspaceUnit(4)
       self.popoverButton.contentEdgeInsets = UIEdgeInsetsMake(topPadding, 0, topPadding, 0)
+      self.popoverButton.tintColor =
+        layout.config.color(for: DefaultLayoutConfig.MutatorSettingsButtonColor)
 
       self.isUserInteractionEnabled = layout.userInteractionEnabled
     }
@@ -106,9 +112,20 @@ open class MutatorProcedureDefinitionView: LayoutView {
                                 requestedToPresentPopoverViewController: viewController,
                                 fromView: popoverButton)
 
-    // Set the arrow direction of the popover to be up/down/right, so it won't
-    // obstruct the view of the parameters
-    viewController.popoverPresentationController?.permittedArrowDirections = [.up, .down, .right]
+    // Set the delegate so we can prioritize arrow directions
+    viewController.popoverPresentationController?.delegate = self
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension MutatorProcedureDefinitionView: UIPopoverPresentationControllerDelegate {
+  public func prepareForPopoverPresentation(
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    guard let rtl = self.mutatorProcedureDefinitionLayout?.engine.rtl else { return }
+
+    // Prioritize arrow directions, so it won't obstruct the view of the parameters
+    popoverPresentationController.bky_prioritizeArrowDirections([.down, .up, .right], rtl: rtl)
   }
 }
 
@@ -140,7 +157,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
   /// The font to use for general text in this popup
   private var generalFont: UIFont {
-    return mutatorLayout.engine.config.popoverFont(for: LayoutConfig.GlobalFont)
+    return mutatorLayout.engine.config.popoverFont(for: LayoutConfig.PopoverLabelFont)
   }
 
   /// The font to use for titles in this popup

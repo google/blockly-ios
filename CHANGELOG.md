@@ -1,3 +1,18 @@
+# [Version 1.1](https://github.com/google/blockly-ios/tree/1.1) (July 2017)
+
+This version packs our biggest UI update thus far! Many changes were made to make
+Blockly iOS look and feel more modern. These changes include:
+- Custom popovers for entering a number and for picking an angle
+- A fresh coat of paint to the UI that uses Material Design colors
+- Automatic vertical alignment of fields and inputs
+- Rounded block corners
+- More consistent sizing and spacing for all blocks
+- Changing block dragging so that it appears above all other layers
+- Better visibility when highlighting connections between blocks
+- Improved style configuration -- more style options have been added to
+`LayoutConfig` and `DefaultLayoutConfig`
+- Other minor UI fixes to improve usability
+
 # [Version 1.0](https://github.com/google/blockly-ios/tree/1.0.0) (May 2017)
 
 We're happy to announce that we've reached version 1.0 of Blockly iOS!

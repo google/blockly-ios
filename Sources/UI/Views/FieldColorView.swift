@@ -32,7 +32,6 @@ open class FieldColorView: FieldView {
     let button = UIButton(type: .custom)
     button.frame = self.bounds
     button.clipsToBounds = true
-    button.layer.borderColor = UIColor.white.cgColor
     button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
     return button
@@ -74,6 +73,8 @@ open class FieldColorView: FieldView {
         button.layer.cornerRadius =
           fieldColorLayout.config.viewUnit(for: LayoutConfig.FieldCornerRadius)
         button.backgroundColor = fieldColorLayout.color
+        button.layer.borderColor =
+          fieldColorLayout.config.color(for: LayoutConfig.FieldColorButtonBorderColor)?.cgColor
       }
     }
   }
@@ -106,7 +107,9 @@ extension FieldColorView: FieldLayoutMeasurer {
       return CGSize.zero
     }
 
-    return layout.config.viewSize(for: LayoutConfig.FieldColorButtonSize)
+    var size = layout.config.viewSize(for: LayoutConfig.FieldColorButtonSize)
+    size.height = max(size.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return size
   }
 }
 

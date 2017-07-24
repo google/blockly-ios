@@ -479,12 +479,20 @@ open class WorkspaceLayoutCoordinator: NSObject {
       (aConnection.sourceInput?.layout?.blockGroupLayout ?? // For input values or statements
         aConnection.sourceBlock?.layout?.parentBlockGroupLayout) // For a block's next statement
     {
-      Layout.doNotAnimate {
-        blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
-        blockGroupLayout.performLayout(includeChildren: true)
-        blockGroupLayout.refreshViewPositionsForTree()
-      }
+      // Lay out and position the shadow block group at its new parent block group's absolute
+      // position. The reason for is so that the shadow block group animates more smoothly into
+      // when it's adopted by its new parent block group.
+      // NOTE: This still isn't perfect as it should ideally animate from the previous connector
+      // location to its new connector location.
+      shadowBlockGroupLayout.relativePosition.x = blockGroupLayout.absolutePosition.x
+      shadowBlockGroupLayout.relativePosition.y = blockGroupLayout.absolutePosition.y
+      shadowBlockGroupLayout.performLayout(includeChildren: true)
+      shadowBlockGroupLayout.refreshViewPositionsForTree()
 
+      // Add the shadow block group to the block group layout, and update all positions.
+      blockGroupLayout.appendBlockLayouts(shadowBlockLayouts, updateLayout: true)
+      blockGroupLayout.performLayout(includeChildren: false)
+      blockGroupLayout.refreshViewPositionsForTree()
       blockGroupLayout.updateLayoutUpTree()
     }
 

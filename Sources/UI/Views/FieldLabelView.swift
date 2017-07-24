@@ -31,6 +31,7 @@ open class FieldLabelView: FieldView {
   fileprivate let label: UILabel = {
     let label = UILabel(frame: CGRect.zero)
     label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    label.lineBreakMode = .byClipping
     return label
   }()
 
@@ -91,6 +92,8 @@ extension FieldLabelView: FieldLayoutMeasurer {
     }
 
     let font = layout.config.font(for: LayoutConfig.GlobalFont)
-    return fieldLabelLayout.text.bky_singleLineSize(forFont: font)
+    var size = fieldLabelLayout.text.bky_singleLineSize(forFont: font)
+    size.height = max(size.height, layout.config.viewUnit(for: LayoutConfig.FieldMinimumHeight))
+    return size
   }
 }

@@ -28,8 +28,21 @@ open class FieldAngleLayout: FieldLayout {
 
   /// The text value that should be used when rendering this layout
   open var textValue: String {
-    return String(fieldAngle.angle) + "°"
+    return (_localizedNumberFormatter.string(for: fieldAngle.angle) ?? "") + "°"
   }
+
+  /// The angle value.
+  public var angle: Double {
+    return fieldAngle.angle
+  }
+
+  /// Number formatter used for outputting the value as localized text
+  fileprivate let _localizedNumberFormatter: NumberFormatter = {
+    // Note: `self._localizedNumberFormatter` is already set to the default locale.
+    let numberFormatter = NumberFormatter()
+    numberFormatter.minimumIntegerDigits = 1
+    return numberFormatter
+  }()
 
   // MARK: - Initializers
 
@@ -61,12 +74,10 @@ open class FieldAngleLayout: FieldLayout {
    - parameter text: A valid integer that will be used to update `self.fieldAngle`. If this value
    is not a valid integer, `self.fieldAngle` is not updated.
    */
-  open func updateAngle(fromText text: String) {
-    if let newAngle = Int(text) { // Only update it if it's a valid value
-      captureChangeEvent {
-        // Setting to a new angle automatically fires a listener to update the layout
-        fieldAngle.angle = newAngle
-      }
+  open func updateAngle(_ angle: Double) {
+    captureChangeEvent {
+      // Setting to a new angle automatically fires a listener to update the layout
+      fieldAngle.angle = angle
     }
   }
 }

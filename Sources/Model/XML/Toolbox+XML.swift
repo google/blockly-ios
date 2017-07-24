@@ -129,7 +129,7 @@ extension Toolbox {
     {
       // TODO(#101): Localize "Blocks"
       let categoryName = "Blocks"
-      let color = ColorHelper.makeColor(hue: 160)
+      let color = ColorPalette.green.tint600
       let category = toolbox.addCategory(name: categoryName, color: color, icon: nil)
 
       for blockNode in toolboxNode.children {

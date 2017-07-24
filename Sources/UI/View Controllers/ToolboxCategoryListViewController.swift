@@ -88,6 +88,18 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
     }
   }
 
+  /// The font to use for the category cell.
+  public var categoryFont = UIFont.systemFont(ofSize: 16)
+
+  /// The text color to use for a selected category.
+  public var selectedCategoryTextColor: UIColor?
+
+  /// The background color to use for an unselected category.
+  public var unselectedCategoryBackgroundColor: UIColor?
+
+  /// The text color to use for an unselected category.
+  public var unselectedCategoryTextColor: UIColor?
+
   /// Delegate for handling category selection events
   public weak var delegate: ToolboxCategoryListViewControllerDelegate?
 
@@ -130,7 +142,7 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
       return
     }
 
-    collectionView.backgroundColor = UIColor.white
+    collectionView.backgroundColor = .clear
     collectionView.register(ToolboxCategoryListViewCell.self,
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
     collectionView.showsVerticalScrollIndicator = false
@@ -169,12 +181,16 @@ public final class ToolboxCategoryListViewController: UICollectionViewController
   public override func collectionView(_ collectionView: UICollectionView,
     cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
   {
-      let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier,
-        for: indexPath) as! ToolboxCategoryListViewCell
-      cell.loadCategory(category(forIndexPath: indexPath), orientation: orientation)
-      cell.isSelected = (selectedCategory == cell.category)
-      return cell
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier,
+      for: indexPath) as! ToolboxCategoryListViewCell
+    cell.nameLabel.font = categoryFont
+    cell.selectedTextColor = selectedCategoryTextColor
+    cell.unselectedTextColor = unselectedCategoryTextColor
+    cell.unselectedBackgroundColor = unselectedCategoryBackgroundColor
+    cell.loadCategory(category(forIndexPath: indexPath), orientation: orientation)
+    cell.isSelected = (selectedCategory == cell.category)
+    return cell
   }
 
   // MARK: - UICollectionViewDelegate overrides
@@ -227,7 +243,8 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
     sizeForItemAt indexPath: IndexPath) -> CGSize
   {
     let indexedCategory = category(forIndexPath: indexPath)
-    let size = ToolboxCategoryListViewCell.sizeRequired(forCategory: indexedCategory)
+    let size = ToolboxCategoryListViewCell.sizeRequired(
+      forCategory: indexedCategory, font: categoryFont)
 
     // Flip width/height for the vertical orientation (its contents are actually rotated 90 degrees)
     return (orientation == .vertical) ? CGSize(width: size.height, height: size.width) : size
@@ -255,11 +272,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   let rotationView = UIView()
 
   /// Label for the category name
-  let nameLabel: UILabel = {
-    let view = UILabel()
-    view.font = ToolboxCategoryListViewCell.fontForNameLabel()
-    return view
-  }()
+  let nameLabel = UILabel()
 
   /// Image for the category icon
   let iconView: UIImageView = {
@@ -271,10 +284,14 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
   /// View representing the category's color
   let colorTagView = UIView()
 
+  var selectedTextColor: UIColor?
+  var unselectedBackgroundColor: UIColor?
+  var unselectedTextColor: UIColor?
+
   override var isSelected: Bool {
     didSet {
-      self.backgroundColor = isSelected ?
-        category?.color.withAlphaComponent(0.6) : UIColor(white: 0.6, alpha: 1.0)
+      backgroundColor = isSelected ? category?.color : unselectedBackgroundColor
+      nameLabel.textColor = isSelected ? selectedTextColor : unselectedTextColor
     }
   }
 
@@ -360,7 +377,7 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     }
     colorTagView.backgroundColor = category.color
 
-    let size = ToolboxCategoryListViewCell.sizeRequired(forCategory: category)
+    let size = ToolboxCategoryListViewCell.sizeRequired(forCategory: category, font: nameLabel.font)
     rotationView.center = self.contentView.center // We need the rotation to occur in the center
     rotationView.bounds = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
@@ -373,19 +390,15 @@ private class ToolboxCategoryListViewCell: UICollectionViewCell {
     }
   }
 
-  static func sizeRequired(forCategory category: Toolbox.Category) -> CGSize {
+  static func sizeRequired(forCategory category: Toolbox.Category, font: UIFont) -> CGSize {
     let size: CGSize
     if let icon = category.icon {
       size = CGSize(width: max(icon.size.width, IconSize.width),
                     height: max(icon.size.height, IconSize.height))
     } else {
-      size = category.name.bky_singleLineSize(forFont: fontForNameLabel())
+      size = category.name.bky_singleLineSize(forFont: font)
     }
 
     return CGSize(width: size.width + LabelInsets.left + LabelInsets.right, height: CellHeight)
-  }
-
-  static func fontForNameLabel() -> UIFont {
-    return UIFont.systemFont(ofSize: 16)
   }
 }
