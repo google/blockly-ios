@@ -542,6 +542,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Order the subviews from back to front
     view.sendSubview(toBack: workspaceViewController.view)
+    view.bringSubview(toFront: trashCanViewController.view)
     view.bringSubview(toFront: toolboxCategoryViewController.view)
     view.bringSubview(toFront: workspaceDragLayerView)
     view.bringSubview(toFront: toolboxCategoryListViewController.view)
@@ -920,8 +921,9 @@ extension WorkbenchViewController {
       self.view.endEditing(true)
     }
 
-    if !state.intersectsWith(.presentingPopover) && self.presentedViewController != nil {
-      dismiss(animated: animated, completion: nil)
+    if !state.intersectsWith(.presentingPopover),
+      let presentedViewController = self.presentedViewController {
+      presentedViewController.dismiss(animated: animated, completion: nil)
     }
 
     // Always show undo/redo except when blocks are being dragged, text fields are being edited,
