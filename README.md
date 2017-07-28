@@ -12,7 +12,7 @@ multi-touch
 
 Here is a demo of using Blockly for iOS to program a "turtle":
 
-<img src="http://google.github.io/blockly-ios/demo.gif" alt="Blockly demo" width="700px" height="494px" />
+<img src="https://google.github.io/blockly-ios/demo.gif" alt="Blockly demo" width="700px" height="494px" />
 
 # Features
 
