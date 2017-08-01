@@ -339,6 +339,18 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// The pan gesture recognizer attached to the main workspace.
+  public var workspacePanGesetureRecognizer: UIPanGestureRecognizer! {
+    return workspaceViewController.workspaceView.scrollView.panGestureRecognizer
+  }
+
+  /// The tap gesture recognizer attached to the main workspace.
+  public private(set) lazy var workspaceTapGestureRecognizer: UITapGestureRecognizer = {
+    let tapGesture =
+      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
+    return tapGesture
+  }()
+
   // MARK: - Initializers
 
   /**
@@ -403,9 +415,8 @@ open class WorkbenchViewController: UIViewController {
     workspaceViewController.workspaceView.allowZoom = true
     workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
-    let tapGesture =
-      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
-    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
+      workspaceTapGestureRecognizer)
 
     // Set default styles
     workspaceBackgroundColor = ColorPalette.grey.tint50
@@ -730,11 +741,21 @@ open class WorkbenchViewController: UIViewController {
 
   // MARK: - Private
 
-  fileprivate dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
+  /**
+   Method called by a gesture recognizer when the main workspace area has been panned.
+
+   - parameter gesture: The `UIPanGestureRecognizer` that fired the method.
+   */
+  private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
     addUIStateValue(.didPanWorkspace)
   }
 
-  fileprivate dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
+  /**
+   Method called by a gesture recognizer when the main workspace area has been tapped.
+
+   - parameter gesture: The `UITapGestureRecognizer` that fired the method.
+   */
+  private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
     addUIStateValue(.didTapWorkspace)
   }
 
@@ -1343,7 +1364,7 @@ extension WorkbenchViewController {
 // MARK: - WorkspaceViewControllerDelegate
 
 extension WorkbenchViewController: WorkspaceViewControllerDelegate {
-  public func workspaceViewController(
+  open func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
@@ -1352,7 +1373,7 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     }
   }
 
-  public func workspaceViewController(
+  open func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
   {
     if workspaceViewController == self.workspaceViewController {
@@ -1361,32 +1382,22 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
     }
   }
 
-  public func workspaceViewController(
+  open func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
   {
     addUIStateValue(.presentingPopover)
   }
 
-  public func workspaceViewControllerDismissedViewController(
+  open func workspaceViewControllerDismissedViewController(
     _ workspaceViewController: WorkspaceViewController)
   {
     removeUIStateValue(.presentingPopover)
   }
 }
 
-// MARK: - Toolbox Gesture Tracking
+// MARK: - Block Copying
 
 extension WorkbenchViewController {
-  /**
-   Removes all gesture recognizers from a block view that is part of a workspace flyout (ie. trash
-   can or toolbox).
-
-   - parameter blockView: A given block view.
-   */
-  fileprivate func removeGestureTrackingForWorkspaceFolderBlockView(_ blockView: BlockView) {
-    blockView.bky_removeAllGestureRecognizers()
-  }
-
   /**
    Copies the specified block from a flyout (trash/toolbox) to the workspace.
 
@@ -1446,16 +1457,15 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController {
   /**
-   Adds pan and tap gesture recognizers to a block view.
+   Adds custom gesture recognizers to a block view. It is automatically called by
+   `WorkbenchViewController` when a block view is added to the workspace.
+
+   Subclasses may override this to add custom gesture tracking to a block view.
+   The default implementation does nothing.
 
    - parameter blockView: A given block view.
    */
-  fileprivate func addGestureTracking(forBlockView blockView: BlockView) {
-    blockView.bky_removeAllGestureRecognizers()
-
-    let tapGesture =
-      UITapGestureRecognizer(target: self, action: #selector(didRecognizeWorkspaceTapGesture(_:)))
-    blockView.addGestureRecognizer(tapGesture)
+  open func addGestureTracking(forBlockView blockView: BlockView) {
   }
 
   /**
@@ -1463,18 +1473,12 @@ extension WorkbenchViewController {
 
    - parameter blockView: A given block view.
    */
-  fileprivate func removeGestureTracking(forBlockView blockView: BlockView) {
+  open func removeGestureTracking(forBlockView blockView: BlockView) {
     blockView.bky_removeAllGestureRecognizers()
 
     if let blockLayout = blockView.blockLayout {
       _dragger.cancelDraggingBlockLayout(blockLayout)
     }
-  }
-
-  /**
-   Tap gesture event handler for a block view inside `self.workspaceView`.
-   */
-  fileprivate dynamic func didRecognizeWorkspaceTapGesture(_ gesture: UITapGestureRecognizer) {
   }
 }
 
@@ -1615,7 +1619,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
   /**
    Pan gesture event handler for a block view inside `self.workspaceView`.
    */
-  public func blocklyPanGestureRecognizer(
+  open func blocklyPanGestureRecognizer(
     _ gesture: BlocklyPanGestureRecognizer, didTouchBlock block: BlockView,
     touch: UITouch, touchState: BlocklyPanGestureRecognizer.TouchState)
   {
@@ -1702,10 +1706,6 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         _dragger.finishDraggingBlockLayout(blockLayout)
       }
 
-      // HACK: Re-add gesture tracking for the block view, as there is a problem re-recognizing
-      // them when dragging multiple blocks simultaneously
-      addGestureTracking(forBlockView: blockView)
-
       if _dragger.numberOfActiveDrags == 0 {
         // Update the UI state
         removeUIStateValue(.draggingBlock)
@@ -1726,7 +1726,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 // MARK: - UIGestureRecognizerDelegate
 
 extension WorkbenchViewController: UIGestureRecognizerDelegate {
-  public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+  open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 
     if workspaceViewController.workspaceView.scrollView.isInMotion ||
       toolboxCategoryViewController.workspaceScrollView.isInMotion ||
@@ -1765,7 +1765,7 @@ extension WorkbenchViewController: UIGestureRecognizerDelegate {
     return true
   }
 
-  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+  open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
     shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool
   {
     let scrollView = workspaceViewController.workspaceView.scrollView
