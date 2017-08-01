@@ -758,7 +758,7 @@ open class WorkbenchViewController: UIViewController {
   private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
     addUIStateValue(.didTapWorkspace)
   }
-  
+
   /**
    Updates the trash can and toolbox so the user may only interact with block groups that
    would not exceed the workspace's remaining capacity.
