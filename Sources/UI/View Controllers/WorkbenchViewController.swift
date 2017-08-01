@@ -339,6 +339,18 @@ open class WorkbenchViewController: UIViewController {
     }
   }
 
+  /// The pan gesture recognizer attached to the main workspace.
+  public var workspacePanGesetureRecognizer: UIPanGestureRecognizer! {
+    return workspaceViewController.workspaceView.scrollView.panGestureRecognizer
+  }
+
+  /// The tap gesture recognizer attached to the main workspace.
+  public private(set) lazy var workspaceTapGestureRecognizer: UITapGestureRecognizer = {
+    let tapGesture =
+      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
+    return tapGesture
+  }()
+
   // MARK: - Initializers
 
   /**
@@ -403,9 +415,8 @@ open class WorkbenchViewController: UIViewController {
     workspaceViewController.workspaceView.allowZoom = true
     workspaceViewController.workspaceView.scrollView.panGestureRecognizer
       .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
-    let tapGesture =
-      UITapGestureRecognizer(target: self, action: #selector(didTapWorkspaceView(_:)))
-    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(tapGesture)
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
+      workspaceTapGestureRecognizer)
 
     // Set default styles
     workspaceBackgroundColor = ColorPalette.grey.tint50
@@ -728,12 +739,14 @@ open class WorkbenchViewController: UIViewController {
     updateWorkspaceCapacity()
   }
 
+  // MARK: - Private
+
   /**
    Method called by a gesture recognizer when the main workspace area has been panned.
 
    - parameter gesture: The `UIPanGestureRecognizer` that fired the method.
    */
-  open func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
+  private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
     addUIStateValue(.didPanWorkspace)
   }
 
@@ -742,12 +755,10 @@ open class WorkbenchViewController: UIViewController {
 
    - parameter gesture: The `UITapGestureRecognizer` that fired the method.
    */
-  open func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
+  private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
     addUIStateValue(.didTapWorkspace)
   }
-
-  // MARK: - Private
-
+  
   /**
    Updates the trash can and toolbox so the user may only interact with block groups that
    would not exceed the workspace's remaining capacity.
@@ -1503,13 +1514,13 @@ extension WorkbenchViewController {
 // MARK: - ToolboxCategoryListViewControllerDelegate implementation
 
 extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
-  open func toolboxCategoryListViewController(
+  public func toolboxCategoryListViewController(
     _ controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
   {
     addUIStateValue(.categoryOpen, animated: true)
   }
 
-  open func toolboxCategoryListViewControllerDidDeselectCategory(
+  public func toolboxCategoryListViewControllerDidDeselectCategory(
     _ controller: ToolboxCategoryListViewController)
   {
     removeUIStateValue(.categoryOpen, animated: true)
