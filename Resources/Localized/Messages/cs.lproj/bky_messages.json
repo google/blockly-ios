@@ -133,7 +133,7 @@
   "LISTS_LENGTH_TITLE": "d\u00e9lka %1",
   "LISTS_LENGTH_TOOLTIP": "Vrac\u00ed po\u010det polo\u017eek v seznamu.",
   "LISTS_REPEAT_HELPURL": "https://github.com/google/blockly/wiki/Lists#create-list-with",
-  "LISTS_REPEAT_TITLE": "vytvo\u0159 seznam s polo\u017ekou %1 opakovanou %1 kr\u00e1t",
+  "LISTS_REPEAT_TITLE": "vytvo\u0159 seznam s polo\u017ekou %1 opakovanou %2 kr\u00e1t",
   "LISTS_REPEAT_TOOLTIP": "Vytv\u00e1\u0159\u00ed seznam obsahuj\u00edc\u00ed danou hodnotu n-kr\u00e1t.",
   "LISTS_REVERSE_HELPURL": "https://github.com/google/blockly/wiki/Lists#reversing-a-list",
   "LISTS_REVERSE_MESSAGE0": "reverse %1",
