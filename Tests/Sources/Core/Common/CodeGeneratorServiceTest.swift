@@ -77,8 +77,6 @@ class CodeGeneratorServiceTest: XCTestCase {
     builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
 
-    let abc = ""
-
     // Execute request
     let _ = BKYAssertDoesNotThrow {
       try _codeGeneratorService.generateCode(
