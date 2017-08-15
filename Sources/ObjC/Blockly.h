@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#import <WebKit/WebKit.h>
 #import <UIKit/UIKit.h>
 
 //! Project version number for Blockly.
