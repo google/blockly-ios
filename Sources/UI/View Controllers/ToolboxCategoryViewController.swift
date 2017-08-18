@@ -353,13 +353,9 @@ public final class ToolboxCategoryViewController: UIViewController {
       for blockName in variableBlocks {
         let variableBlocks =
           variableCoordinator.workspaceLayout.workspace.allVariableBlocks(forName: variable)
-        for block in variableBlocks {
-          if block.name == blockName {
-            continue
-          }
-        }
 
-        if let block = try makeVariableBlock(name: blockName, variable: variable) {
+        if !variableBlocks.contains(where: { $0.name == blockName }),
+          let block = try makeVariableBlock(name: blockName, variable: variable) {
           try variableCoordinator.addBlockTree(block)
         }
       }
