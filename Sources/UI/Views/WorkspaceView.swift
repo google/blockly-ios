@@ -22,6 +22,23 @@ View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
 open class WorkspaceView: LayoutView {
+
+  // MARK: - Constants
+
+  /// Locations used for automatically moving the viewport.
+  public enum ViewportLocation {
+    /// The center of the workspace view.
+    case center
+    /// The top-leading corner of the workspace view.
+    case topLeading
+    /// The top-trailing corner of the workspace view.
+    case topTrailing
+    /// The bottom-leading corner of the workspace view.
+    case bottomLeading
+    /// The bottom-trailing corner of the workspace view.
+    case bottomTrailing
+  }
+
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `WorkspaceLayout`
@@ -204,7 +221,6 @@ open class WorkspaceView: LayoutView {
     let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
     var contentOffset = scrollView.contentOffset
 
-
     if workspaceLayout.engine.rtl {
       // Check left edge (as long as the block width < visible view width)
       if blockViewRect.width <= scrollViewRect.width && blockViewRect.minX < scrollViewRect.minX {
@@ -237,6 +253,51 @@ open class WorkspaceView: LayoutView {
     if scrollView.contentOffset != contentOffset {
       scrollView.setContentOffset(contentOffset, animated: animated)
     }
+  }
+
+  /**
+   Moves the content offset of the workspace's scroll view to a specific location in the workspace.
+
+   - parameter location: The `ViewportLocation` to move to.
+   - note: See `scrollIntoViewEdgeInsets`.
+   */
+  open func setViewport(to location: ViewportLocation, animated: Bool) {
+    guard let workspaceLayout = self.workspaceLayout else {
+      return
+    }
+
+    var contentOffset = CGPoint.zero
+
+    // Calculate X coordinate
+    let useLeadingEdge = (location == .bottomLeading || location == .topLeading)
+    let useTrailingEdge = (location == .bottomTrailing || location == .topTrailing)
+    let rtl = workspaceLayout.engine.rtl
+
+    if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
+      // Use left edge
+      contentOffset.x = scrollView.containerView.frame.minX - scrollIntoViewEdgeInsets.left
+    } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
+      // Use right edge
+      contentOffset.x = scrollView.containerView.frame.maxX + scrollIntoViewEdgeInsets.right -
+        scrollView.bounds.width
+    } else if location == .center {
+      contentOffset.x = scrollView.containerView.center.x - (scrollView.bounds.width / 2)
+    }
+
+    // Calculate Y coordinate
+    switch location {
+    case .topLeading, .topTrailing:
+      // Top edge
+      contentOffset.y = scrollView.containerView.frame.minY - scrollIntoViewEdgeInsets.top
+    case .bottomLeading, .bottomTrailing:
+      // Bottom edge
+      contentOffset.y = scrollView.containerView.frame.maxY + scrollIntoViewEdgeInsets.bottom -
+        scrollView.bounds.height
+    case .center:
+      contentOffset.y = scrollView.containerView.center.y - (scrollView.bounds.height / 2)
+    }
+
+    scrollView.setContentOffset(contentOffset, animated: animated)
   }
 
   /**
