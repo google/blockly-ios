@@ -683,7 +683,7 @@ open class WorkbenchViewController: UIViewController {
     // Automatically change the viewport to show the top-most block
     if let topBlock =
       workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
-      scrollBlockIntoView(blockUUID: topBlock.uuid, animated: false)
+      scrollBlockIntoView(blockUUID: topBlock.uuid, location: .topLeading, animated: false)
     }
   }
 
@@ -1599,7 +1599,17 @@ extension WorkbenchViewController {
 // MARK: - Scrolling
 
 extension WorkbenchViewController {
-  public func scrollBlockIntoView(blockUUID: String, animated: Bool) {
+  /**
+   Automatically adjusts the workspace's scroll view to bring a given `Block` into view.
+
+   - parameter block: The `Block` to bring into view.
+   - parameter location: The area of the screen where the block should appear. If `.anywhere`
+   is specified, the viewport is changed the minimal amount necessary to bring the block
+   into view.
+   - parameter animated: Flag determining if this scroll view adjustment should be animated.
+   */
+  public func scrollBlockIntoView(
+    blockUUID: String, location: WorkspaceView.Location = .anywhere, animated: Bool) {
     guard let block = workspace?.allBlocks[blockUUID] else {
         return
     }
@@ -1608,7 +1618,7 @@ extension WorkbenchViewController {
     // been created/positioned in the scroll view. This fixes a problem where attempting
     // to scroll blocks into the view, immediately after the workspace has loaded, does not work.
     DispatchQueue.main.async {
-      self.workspaceView.scrollBlockIntoView(block, animated: animated)
+      self.workspaceView.scrollBlockIntoView(block, location: location, animated: animated)
     }
   }
 }

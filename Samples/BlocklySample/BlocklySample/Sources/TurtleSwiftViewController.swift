@@ -347,7 +347,8 @@ extension TurtleSwiftViewController: WKScriptMessageHandler {
             _lastHighlightedBlockUUID = blockID
           }
           if _allowScrollingToBlockView {
-            _workbenchViewController.scrollBlockIntoView(blockUUID: blockID, animated: true)
+            _workbenchViewController
+              .scrollBlockIntoView(blockUUID: blockID, location: .anywhere, animated: true)
           }
         }
       case "unhighlightLastBlock":

@@ -367,7 +367,10 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
         _lastHighlightedBlockUUID = blockID;
       }
       if (_allowScrollingToBlockView) {
-        [_workbenchViewController scrollBlockIntoViewWithBlockUUID:blockID animated:true];
+        [_workbenchViewController
+          scrollBlockIntoViewWithBlockUUID:blockID
+                                  location:BKYWorkspaceViewLocationAnywhere
+                                  animated:true];
         _lastHighlightedBlockUUID = blockID;
       }
     }
