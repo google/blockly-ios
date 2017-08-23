@@ -46,11 +46,11 @@ open class WorkspaceLayoutCoordinator: NSObject {
 
       oldValue?.listeners.remove(self)
 
-      workspaceLayout.blockGroupLayouts.forEach {
-        $0.blockLayouts.forEach { removeNameManager(fromBlockLayout: $0) }
+      workspaceLayout.flattenedLayoutTree(ofType: BlockLayout.self).forEach {
+        removeNameManager(fromBlockLayout: $0)
       }
-      workspaceLayout.blockGroupLayouts.forEach {
-        $0.blockLayouts.forEach { addNameManager(variableNameManager, toBlockLayout: $0) }
+      workspaceLayout.flattenedLayoutTree(ofType: BlockLayout.self).forEach {
+        addNameManager(variableNameManager, toBlockLayout: $0)
       }
 
       variableNameManager?.listeners.add(self)
