@@ -17,7 +17,7 @@
 
 #import <Blockly/Blockly.h>
 #import <Blockly/Blockly-Swift.h>
-
+#import "BlocklySample-Swift.h"
 
 // MARK: - ScriptMessageHandler Class
 
@@ -220,10 +220,18 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   self.codeText.superview.layer.borderWidth = 1;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+
+  [self loadWorkspace];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
 
   [_codeGeneratorService cancelAllRequests];
+
+  [self saveWorkspace];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -242,6 +250,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 }
 
 - (IBAction)didPressPlayButton:(UIButton *)sender {
+  [self saveWorkspace];
+
   if (self.currentlyRunning) {
     if (_currentRequestUUID == nil) {
       NSLog(@"Error: The current request UUID is nil.");
@@ -350,6 +360,44 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   self.codeText.text = [NSString stringWithFormat:format,
     self.codeText.text,
     [NSString stringWithFormat:@"[%@] %@", [_dateFormatter stringFromDate:[NSDate date]], text]];
+}
+
+// MARK: - Load/Save Workspace
+
+- (void)saveWorkspace {
+  BKYWorkspace *workspace = self.workbenchViewController.workspace;
+
+  NSError* error = nil;
+  NSString* xml = [workspace toXMLWithError:&error];
+
+  if ([self handleError:error]) {
+    return;
+  }
+
+  [FileHelper saveContents:xml to:@"turtle_objc_workspace.xml"];
+}
+
+- (void)loadWorkspace {
+  NSString *xml = [FileHelper loadContentsOf:@"turtle_objc_workspace.xml"];
+
+  if (xml != nil) {
+    NSError* error = nil;
+
+    BKYWorkspace *workspace = [[BKYWorkspace alloc] init];
+    [workspace loadBlocksFromXMLString:xml
+                               factory:self.workbenchViewController.blockFactory
+                                 error:&error];
+
+    if ([self handleError:error]) {
+      return;
+    }
+
+    [self.workbenchViewController loadWorkspace:workspace error:&error];
+
+    if ([self handleError:error]) {
+      return;
+    }
+  }
 }
 
 // MARK: - WKScriptMessageHandler implementation
