@@ -211,5 +211,18 @@
     "colour": "%{BKY_COLOUR_HUE}",
     "tooltip": "",
     "blockFactoryUrl": "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wkz8h4"
+  },
+  {
+    "type": "angle_picker",
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "field_angle",
+        "name": "NUM"
+      }
+    ],
+    "output": "Number",
+    "colour": "#009688",
+    "tooltip": ""
   }
 ]
