@@ -19,7 +19,7 @@ import Foundation
  Helper for loading and saving files to the user document directory.
  */
 @objc
-public class FileHelper: NSObject {
+class FileHelper: NSObject {
   /**
    Loads the contents of a given file.
 
@@ -64,7 +64,6 @@ public class FileHelper: NSObject {
       // Write to file
       do {
         try contents.write(to: url, atomically: false, encoding: .utf8)
-        print("Saved \(file).")
       } catch let error {
         print("Couldn't save file \(file): \(error)")
       }
