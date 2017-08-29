@@ -61,11 +61,8 @@ class LayoutTest: XCTestCase {
     }
   }
 
-  func flattenedLayoutTree_ByTypeFound() {
-    guard let block = BKYAssertDoesNotThrow({ try BlockBuilder(name: "test").makeBlock() }) else {
-      XCTFail("Could not build block")
-      return
-    }
+  func testFlattenedLayoutTree_ByTypeFoundParentLevel() throws {
+    let block = try BlockBuilder(name: "test").makeBlock()
     let grandParentLayout = BlockLayout(block: block, engine: layoutEngine)
     let parentLayout = Layout(engine: layoutEngine)
     let childLayout = Layout(engine: layoutEngine)
@@ -73,7 +70,7 @@ class LayoutTest: XCTestCase {
     grandParentLayout.adoptChildLayout(parentLayout)
     parentLayout.adoptChildLayout(childLayout)
 
-    let flattenedTree = parentLayout.flattenedLayoutTree(ofType: BlockLayout.self)
+    let flattenedTree = grandParentLayout.flattenedLayoutTree(ofType: BlockLayout.self)
 
     XCTAssertEqual(1, flattenedTree.count)
 
@@ -82,7 +79,25 @@ class LayoutTest: XCTestCase {
     }
   }
 
-  func flattenedLayoutTree_ByTypeNoneFound() {
+  func testFlattenedLayoutTree_ByTypeFoundChildLevel() throws {
+    let block = try BlockBuilder(name: "test").makeBlock()
+    let grandParentLayout = Layout(engine: layoutEngine)
+    let parentLayout = Layout(engine: layoutEngine)
+    let childLayout = BlockLayout(block: block, engine: layoutEngine)
+
+    grandParentLayout.adoptChildLayout(parentLayout)
+    parentLayout.adoptChildLayout(childLayout)
+
+    let flattenedTree = grandParentLayout.flattenedLayoutTree(ofType: BlockLayout.self)
+
+    XCTAssertEqual(1, flattenedTree.count)
+
+    if flattenedTree.count == 1 {
+      XCTAssertTrue(flattenedTree.contains(childLayout))
+    }
+  }
+
+  func testFlattenedLayoutTree_ByTypeNoneFound() {
     let layout = Layout(engine: layoutEngine)
 
     let flattenedTree = layout.flattenedLayoutTree(ofType: FieldLayout.self)

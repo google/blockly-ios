@@ -442,6 +442,9 @@ open class WorkbenchViewController: UIViewController {
       self, selector: #selector(keyboardWillHideNotification(_:)),
       name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
+    // Clear out any pending events first. We only care about events moving forward.
+    EventManager.shared.firePendingEvents()
+
     // Listen for Blockly events
     EventManager.shared.addListener(self)
   }
@@ -449,7 +452,11 @@ open class WorkbenchViewController: UIViewController {
   deinit {
     // Unregister all notifications
     NotificationCenter.default.removeObserver(self)
+
+    // Unregister as a listener for the EventManager, and fire any pending events to
+    // effectively clear out events created by this workbench.
     EventManager.shared.removeListener(self)
+    EventManager.shared.firePendingEvents()
   }
 
   // MARK: - Super
@@ -685,6 +692,9 @@ open class WorkbenchViewController: UIViewController {
       workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
       scrollBlockIntoView(blockUUID: topBlock.uuid, location: .topLeading, animated: false)
     }
+
+    // Fire any events that were created as a result of loading a new workspace.
+    EventManager.shared.firePendingEvents()
   }
 
   /**
@@ -718,6 +728,9 @@ open class WorkbenchViewController: UIViewController {
     procedureCoordinator?.syncWithWorkbench(self)
 
     refreshView()
+
+    // Fire any events that were created as a result of loading a new toolbox.
+    EventManager.shared.firePendingEvents()
   }
 
   /**

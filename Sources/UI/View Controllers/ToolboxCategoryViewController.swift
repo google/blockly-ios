@@ -282,7 +282,9 @@ public final class ToolboxCategoryViewController: UIViewController {
       }
 
       do {
-        try variableNameManager.addName(newName)
+        try EventManager.shared.groupAndFireEvents {
+          try variableNameManager.addName(newName)
+        }
       } catch {
         bky_assertionFailure(
           "Tried to create an invalid variable without proper error handling: \(error)")

@@ -218,14 +218,20 @@ open class Layout: NSObject {
    */
   public final func flattenedLayoutTree<T>(ofType type: T.Type? = nil) -> [T] where T: Layout {
     var allLayouts = [T]()
+    var layoutsToProcess = [Layout]()
 
-    if let layout = self as? T {
-      allLayouts.append(layout)
+    layoutsToProcess.append(self)
+
+    while !layoutsToProcess.isEmpty {
+      let layout = layoutsToProcess.removeLast()
+
+      if let typedLayout = layout as? T {
+        allLayouts.append(typedLayout)
+      }
+
+      layoutsToProcess.append(contentsOf: layout.childLayouts)
     }
 
-    for layout in childLayouts {
-      allLayouts.append(contentsOf: layout.flattenedLayoutTree(ofType: type))
-    }
     return allLayouts
   }
 
