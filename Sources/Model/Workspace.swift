@@ -324,6 +324,7 @@ open class Workspace : NSObject {
 
       for block in blocks {
         block.disabled = deactivated
+        block.editable = !deactivated && !readOnly
         block.movable = !deactivated
       }
     }

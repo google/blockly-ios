@@ -129,7 +129,8 @@ public final class Block : NSObject {
   public var movable: Bool {
     didSet { didSetProperty(movable, oldValue) }
   }
-  /// Flag indicating if this block has had its user interaction disabled
+  /// Flag indicating if this block is disabled, which means it will be excluded from code
+  /// generation.
   public var disabled: Bool  {
     didSet { didSetProperty(disabled, oldValue) }
   }

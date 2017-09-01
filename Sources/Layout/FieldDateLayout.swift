@@ -65,13 +65,6 @@ open class FieldDateLayout: FieldLayout {
     super.init(field: fieldDate, engine: engine, measurer: measurer)
   }
 
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
-
   // MARK: - Public
 
   /**
@@ -81,9 +74,13 @@ open class FieldDateLayout: FieldLayout {
    - parameter date: The value used to update `self.fieldDate`.
    */
   open func updateDate(_ date: Date) {
+    guard fieldDate.date != date else { return }
+
     captureChangeEvent {
-      // Setting to a new date automatically fires a listener to update the layout
       fieldDate.date = date
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }

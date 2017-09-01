@@ -58,13 +58,6 @@ open class FieldAngleLayout: FieldLayout {
     super.init(field: fieldAngle, engine: engine, measurer: measurer)
   }
 
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
-
   // MARK: - Public
 
   /**
@@ -75,9 +68,13 @@ open class FieldAngleLayout: FieldLayout {
    is not a valid integer, `self.fieldAngle` is not updated.
    */
   open func updateAngle(_ angle: Double) {
+    guard fieldAngle.angle != angle else { return }
+
     captureChangeEvent {
-      // Setting to a new angle automatically fires a listener to update the layout
       fieldAngle.angle = angle
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }

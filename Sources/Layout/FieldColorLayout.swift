@@ -45,13 +45,6 @@ open class FieldColorLayout: FieldLayout {
     super.init(field: fieldColor, engine: engine, measurer: measurer)
   }
 
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
-
   // MARK: - Public
 
   /**
@@ -61,9 +54,13 @@ open class FieldColorLayout: FieldLayout {
    - parameter color: The value used to update `self.fieldColor`.
    */
   open func updateColor(_ color: UIColor) {
+    guard fieldColor.color != color else { return }
+
     captureChangeEvent {
-      // Setting to a new color automatically fires a listener to update the layout
       fieldColor.color = color
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }

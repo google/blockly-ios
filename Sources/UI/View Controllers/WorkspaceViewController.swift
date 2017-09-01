@@ -175,13 +175,18 @@ extension WorkspaceViewController: ViewBuilderDelegate {
     // TODO(#120): This delegate only exists right now so `WorkbenchViewController` can attach
     // gesture recognizers on the BlockView. Refactor this so the gesture recognizers are managed
     // in this view controller.
-    if let blockView = childView as? BlockView {
-      delegate?.workspaceViewController(self, didRemoveBlockView: blockView)
-    }
+    var removedViews = [childView]
+    while let removedView = removedViews.popLast() {
+      removedViews.append(contentsOf: removedView.subviews)
 
-    if let layoutView = childView as? LayoutView, layoutView.popoverDelegate === self {
-      // Unassign this view controller as the layout view's delegate
-      layoutView.popoverDelegate = nil
+      if let blockView = removedView as? BlockView {
+        delegate?.workspaceViewController(self, didRemoveBlockView: blockView)
+      }
+
+      if let layoutView = removedView as? LayoutView, layoutView.popoverDelegate === self {
+        // Unassign this view controller as the layout view's delegate
+        layoutView.popoverDelegate = nil
+      }
     }
   }
 }

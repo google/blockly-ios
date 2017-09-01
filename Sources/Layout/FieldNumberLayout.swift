@@ -75,8 +75,7 @@ open class FieldNumberLayout: FieldLayout {
     // Update current text value to match the field now
     currentTextValue = fieldNumber.textValue
 
-    // Perform a layout up the tree
-    updateLayoutUpTree()
+    super.didUpdateField(field)
   }
 
   // MARK: - Public
@@ -89,9 +88,11 @@ open class FieldNumberLayout: FieldLayout {
     captureChangeEvent {
       fieldNumber.setValueFromLocalizedText(text)
 
-      // Update `currentTextValue` to match the current localized text value of `fieldNumber`,
-      // which will automatically update the corresponding view, if necessary.
+      // Update `currentTextValue` to match the current localized text value of `fieldNumber`.
       currentTextValue = fieldNumber.textValue
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }
