@@ -44,11 +44,4 @@ open class FieldLabelLayout: FieldLayout {
     self.fieldLabel = fieldLabel
     super.init(field: fieldLabel, engine: engine, measurer: measurer)
   }
-
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
 }

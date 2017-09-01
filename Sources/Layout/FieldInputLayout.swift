@@ -60,8 +60,7 @@ open class FieldInputLayout: FieldLayout {
     // Update current text value to match the field now
     currentTextValue = fieldInput.text
 
-    // Perform a layout up the tree
-    updateLayoutUpTree()
+    super.didUpdateField(field)
   }
 
   // MARK: - Public
@@ -74,9 +73,11 @@ open class FieldInputLayout: FieldLayout {
    */
   open func updateText(_ text: String) {
     captureChangeEvent {
-      // Setting to new text automatically fires a listener to update the layout
       fieldInput.text = text
       currentTextValue = fieldInput.text
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }

@@ -96,6 +96,9 @@ open class FieldLayout: Layout {
     try captureChangeEvent {
       try field.setValueFromSerializedText(text)
     }
+
+    // Perform layout update since the field may need to be resized to reflect its new value.
+    updateLayoutUpTree()
   }
 
   // MARK: - Change Events
@@ -136,7 +139,7 @@ open class FieldLayout: Layout {
 
 extension FieldLayout: FieldListener {
   public func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
+    // Refresh the field since it's been updated
+    sendChangeEvent(withFlags: Layout.Flag_NeedsDisplay)
   }
 }

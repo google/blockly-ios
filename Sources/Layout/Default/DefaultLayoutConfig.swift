@@ -152,7 +152,7 @@ open class DefaultLayoutConfig: LayoutConfig {
     setColor(ColorPalette.indigo.accent700,
              for: DefaultLayoutConfig.BlockConnectionHighlightStrokeColor)
     setColor(ColorPalette.grey.tint700, for: DefaultLayoutConfig.BlockStrokeDisabledColor)
-    setColor(ColorPalette.grey.tint300, for: DefaultLayoutConfig.BlockFillDisabledColor)
+    setColor(ColorPalette.grey.tint400, for: DefaultLayoutConfig.BlockFillDisabledColor)
     setFloat(0.7, for: DefaultLayoutConfig.BlockDraggingFillColorAlpha)
     setFloat(0.8, for: DefaultLayoutConfig.BlockDraggingStrokeColorAlpha)
     setFloat(1.0, for: DefaultLayoutConfig.BlockDefaultAlpha)
