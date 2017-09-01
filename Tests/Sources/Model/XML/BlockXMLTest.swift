@@ -303,6 +303,77 @@ class BlockXMLTest: XCTestCase {
     XCTAssertEqual("dummy_mutator_xml_id", (block?.rootBlock.mutator as? DummyMutator)?.id)
   }
 
+  func testParseXML_BlockDeletableTrue() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_DELETABLE_TRUE, factory)?.rootBlock {
+      XCTAssertEqual(true, rootBlock.deletable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockDeletableFalse() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_DELETABLE_FALSE, factory)?.rootBlock {
+      XCTAssertEqual(false, rootBlock.deletable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockMovableTrue() throws {
+    if let rootBlock = parseBlockFromXML(BlockTestStrings.BLOCK_MOVABLE_TRUE, factory)?.rootBlock {
+      XCTAssertEqual(true, rootBlock.movable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockMovableFalse() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_MOVABLE_FALSE, factory)?.rootBlock {
+      XCTAssertEqual(false, rootBlock.movable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockEditableTrue() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_EDITABLE_TRUE, factory)?.rootBlock {
+      XCTAssertEqual(true, rootBlock.editable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockEditableFalse() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_EDITABLE_FALSE, factory)?.rootBlock {
+      XCTAssertEqual(false, rootBlock.editable)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockDisabledTrue() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_DISABLED_TRUE, factory)?.rootBlock {
+      XCTAssertEqual(true, rootBlock.disabled)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
+  func testParseXML_BlockDisabledFalse() throws {
+    if let rootBlock =
+      parseBlockFromXML(BlockTestStrings.BLOCK_DISABLED_FALSE, factory)?.rootBlock {
+      XCTAssertEqual(false, rootBlock.disabled)
+    } else {
+      XCTFail("Block tree was not parsed")
+    }
+  }
+
   // MARK: - XML Serialization Tests
 
   func testSerializeXML_SimpleBlockWithPosition() {
@@ -1223,6 +1294,115 @@ class BlockXMLTest: XCTestCase {
       XCTAssertEqual("a_dummy_mutator_id", mutationXML.attributes["id"])
       XCTAssertEqual(0, mutationXML.children.count)
     }
+  }
+
+  func testParseXML_BlockUndeletable() throws {
+    let block = try factory.makeBlock(name: "empty_block", shadow: false)
+    block.deletable = false
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" deletable=\"false\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("false", xml.attributes["deletable"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_BlockImmovable() throws {
+    let block = try factory.makeBlock(name: "empty_block", shadow: false)
+    block.movable = false
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" movable=\"false\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("false", xml.attributes["movable"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_BlockUneditable() throws {
+    let block = try factory.makeBlock(name: "empty_block", shadow: false)
+    block.editable = false
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" movable=\"false\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("false", xml.attributes["editable"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_BlockDisabled() throws {
+    let block = try factory.makeBlock(name: "empty_block", shadow: false)
+    block.disabled = true
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" disabled=\"true\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("true", xml.attributes["disabled"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_InputsInlineSame() throws {
+    let builder = BlockBuilder(name: "empty_block")
+    builder.inputsInline = false
+
+    let block = try builder.makeBlock()
+
+    // 'inline' should not appear as an attribute here, because it did not differ after block
+    // creation.
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 1)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertNil(xml.attributes["inline"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_InputsInlineDifferent1() throws {
+    let builder = BlockBuilder(name: "empty_block")
+    builder.inputsInline = false
+
+    let block = try builder.makeBlock()
+    block.inputsInline = true
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" inline=\"true\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("true", xml.attributes["inline"])
+    XCTAssertEqual(0, xml.children.count)
+  }
+
+  func testParseXML_InputsInlineDifferent2() throws {
+    let builder = BlockBuilder(name: "empty_block")
+    builder.inputsInline = true
+
+    let block = try builder.makeBlock()
+    block.inputsInline = false
+
+    // This is the xml we expect from `block`:
+    // <block type=\"empty_block\" inline=\"false\" />
+    let xml = try block.toXMLElement()
+    XCTAssertEqual("block", xml.name)
+    XCTAssertTrue(xml.attributes.count >= 2)
+    XCTAssertEqual("empty_block", xml.attributes["type"])
+    XCTAssertEqual("false", xml.attributes["inline"])
+    XCTAssertEqual(0, xml.children.count)
   }
 
   // MARK: - Helper methods

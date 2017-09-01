@@ -50,6 +50,8 @@ public final class Block : NSObject {
   public let uuid: String
   /// The type name of this block
   public let name: String
+  /// The initial value of `inputsInline`.
+  internal let initialInputsInlineValue: Bool
   /// Flag indicating if input connectors should be drawn inside a block (`true`) or
   /// on the edge of the block (`false`)
   public var inputsInline: Bool {
@@ -168,16 +170,31 @@ public final class Block : NSObject {
   // MARK: - Initializers
 
   internal init(
-    uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
-    position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
-    deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?,
+    uuid: String?,
+    name: String,
+    color: UIColor,
+    inputs: [Input] = [],
+    inputsInline: Bool,
+    position: WorkspacePoint,
+    shadow: Bool,
+    tooltip: String,
+    comment: String,
+    helpURL: String,
+    deletable: Bool,
+    movable: Bool,
+    disabled: Bool,
+    editable: Bool,
+    outputConnection: Connection?,
+    previousConnection: Connection?,
+    nextConnection: Connection?,
+    mutator: Mutator?,
     extensions: [BlockExtension]) throws
   {
     self.uuid = uuid ?? UUID().uuidString
     self.name = name
     self.color = color
     self.inputs = inputs
+    self.initialInputsInlineValue = inputsInline
     self.inputsInline = inputsInline
     self.position = position
     self.shadow = shadow
