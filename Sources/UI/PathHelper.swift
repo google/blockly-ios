@@ -186,7 +186,7 @@ public class PathHelper: NSObject {
   }
 
   /**
-   Adds the path for drawing a hat.
+   Adds the path for drawing a hat in the style of a cap.
 
    Draws:
    ```
@@ -197,7 +197,7 @@ public class PathHelper: NSObject {
    - parameter path: The Bezier path.
    - parameter hatSize: The size of the hat, specified as a Workspace coordinate system size.
    */
-  public static func addHat(toPath path: WorkspaceBezierPath, hatSize: WorkspaceSize)
+  public static func addHatCap(toPath path: WorkspaceBezierPath, hatSize: WorkspaceSize)
   {
     path.addCurve(to: WorkspacePoint(x: hatSize.width, y: 0),
                   controlPoint1: WorkspacePoint(x: hatSize.width * 0.3, y: -hatSize.height),

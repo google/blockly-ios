@@ -100,12 +100,13 @@ open class DefaultLayoutConfig: LayoutConfig {
   /// colors
   public static let BlockShadowBrightnessMultiplier = LayoutConfig.newPropertyKey()
 
-  /// [`Bool`] Flag indicating if blocks with no output or previous connection should be
-  /// rendered with a "hat".
-  public static let BlockStartHat = LayoutConfig.newPropertyKey()
+  /// [`String`] Default value for how blocks with no output or previous connection should be
+  /// rendered with a "hat". This value should correspond to a value of type `Block.Style.HatType`
+  /// (eg. `Block.Style.hatCap` or `Block.Style.hatNone`).
+  public static let BlockHat = LayoutConfig.newPropertyKey()
 
-  /// [`Size`] The size to use when rendering a "start hat".
-  public static let BlockStartHatSize = LayoutConfig.newPropertyKey()
+  /// [`Size`] The size to use when rendering a "hat" of type `Block.Style.cap`.
+  public static let BlockHatCapSize = LayoutConfig.newPropertyKey()
 
   /// [`Size`] Minimum size of the inline connector
   public static let InlineConnectorMinimumSize = LayoutConfig.newPropertyKey()
@@ -160,8 +161,8 @@ open class DefaultLayoutConfig: LayoutConfig {
     setFloat(0.4, for: DefaultLayoutConfig.BlockShadowSaturationMultiplier)
     setFloat(1.2, for: DefaultLayoutConfig.BlockShadowBrightnessMultiplier)
 
-    setBool(false, for: DefaultLayoutConfig.BlockStartHat)
-    setSize(Size(width: 100, height: 16), for: DefaultLayoutConfig.BlockStartHatSize)
+    setString(Block.Style.hatNone, for: DefaultLayoutConfig.BlockHat)
+    setSize(Size(width: 100, height: 16), for: DefaultLayoutConfig.BlockHatCapSize)
 
     setColor(ColorPalette.grey.tint100, for: DefaultLayoutConfig.MutatorSettingsButtonColor)
   }

@@ -161,6 +161,10 @@ class BlockJSONTest: XCTestCase {
     XCTAssertEqual(Input.InputType.dummy, input2.type)
     XCTAssertEqual("DUMMY INPUT", input2.name)
     XCTAssertEqual(0, input2.fields.count)
+
+    // -- Style --
+    XCTAssertNotNil(block.style.hat)
+    XCTAssertEqual(Block.Style.hatCap, block.style.hat)
   }
 
   // MARK: - tokenizedString

@@ -287,9 +287,9 @@ public final class DefaultBlockView: BlockView {
     let notchHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.NotchHeight)
     let puzzleTabWidth = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth)
     let puzzleTabHeight = layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabHeight)
-    let startHatSize = layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
+    let capHatSize = layout.config.workspaceSize(for: DefaultLayoutConfig.BlockHatCapSize)
     let cornerRadius = layout.config.workspaceUnit(for: DefaultLayoutConfig.BlockCornerRadius)
-    let topLeftCornerRadius = background.startHat ? 0 : cornerRadius
+    let topLeftCornerRadius = (background.hat == Block.Style.hatCap) ? 0 : cornerRadius
 
     path.moveTo(x: xLeftEdgeOffset + topLeftCornerRadius, y: topEdgeOffset, relative: false)
 
@@ -304,9 +304,9 @@ public final class DefaultBlockView: BlockView {
           path.addLineTo(x: xLeftEdgeOffset + notchXOffset, y: topEdgeOffset, relative: false)
           PathHelper.addNotch(
             toPath: path, drawLeftToRight: true, notchWidth: notchWidth, notchHeight: notchHeight)
-        } else if background.startHat {
-          // Draw hat for the block
-          PathHelper.addHat(toPath: path, hatSize: startHatSize)
+        } else if background.hat == Block.Style.hatCap {
+          // Draw a cap on top of the block
+          PathHelper.addHatCap(toPath: path, hatSize: capHatSize)
         }
       }
 

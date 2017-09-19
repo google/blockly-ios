@@ -126,7 +126,7 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     let testBundle = Bundle(for: type(of: self))
 
-    for _ in 0 ..< 30 {
+    for _ in 0 ..< 10 {
       // Set up timeout expectation
       let expectation = self.expectation(description: "Code Generation")
 
