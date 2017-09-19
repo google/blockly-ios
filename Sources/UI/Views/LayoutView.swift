@@ -36,12 +36,15 @@ public protocol LayoutPopoverDelegate {
    - parameter layoutView: The `LayoutView` that made the request
    - parameter viewController: The `UIViewController` to present
    - parameter fromView: The `UIView` where the popover should pop up from
+   - parameter presentationDelegate: A `UIPopoverPresentationControllerDelegate` that should
+   be notified when presentation events are fired.
    - returns: `true` if the `viewController` was presented. `false` otherwise.
    */
   @discardableResult
   func layoutView(_ layoutView: LayoutView,
                  requestedToPresentPopoverViewController viewController: UIViewController,
-                 fromView: UIView) -> Bool
+                 fromView: UIView,
+                 presentationDelegate: UIPopoverPresentationControllerDelegate?) -> Bool
 
   /**
    Event is called when a layout view requests to dismiss a view controller.
