@@ -56,6 +56,8 @@ public final class BlockBuilder: NSObject {
   public var mutator: Mutator? = nil
   /// Specifies extensions that should be run on the block during initialization. Defaults to `[]`.
   public var extensions = [BlockExtension]()
+  /// Specifies the style of the block.
+  public var style = Block.Style()
 
   // These values are publicly mutable in `Block`
 
@@ -116,6 +118,8 @@ public final class BlockBuilder: NSObject {
     previousConnectionEnabled = block.previousConnection != nil ? true : false
     previousConnectionTypeChecks = block.previousConnection?.typeChecks
 
+    style = block.style.copy() as? Block.Style ?? Block.Style()
+
     inputBuilders.append(contentsOf: block.inputs.map({ InputBuilder(input: $0) }))
   }
 
@@ -166,6 +170,7 @@ public final class BlockBuilder: NSObject {
       previousConnection!.typeChecks = previousConnectionTypeChecks
     }
     let inputs = inputBuilders.map({ $0.makeInput() })
+    let styleCopy = style.copy() as? Block.Style ?? Block.Style()
     let mutatorCopy = mutator?.copyMutator()
 
     let block = try Block(
@@ -186,6 +191,7 @@ public final class BlockBuilder: NSObject {
       outputConnection: outputConnection,
       previousConnection: previousConnection,
       nextConnection: nextConnection,
+      style: styleCopy,
       mutator: mutatorCopy,
       extensions: extensions)
 

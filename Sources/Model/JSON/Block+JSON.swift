@@ -31,6 +31,8 @@ extension Block {
   fileprivate static let PARAMETER_NEXT_STATEMENT = "nextStatement"
   fileprivate static let PARAMETER_OUTPUT = "output"
   fileprivate static let PARAMETER_PREVIOUS_STATEMENT = "previousStatement"
+  fileprivate static let PARAMETER_STYLE = "style"
+  fileprivate static let PARAMETER_STYLE_HAT = "hat"
   fileprivate static let PARAMETER_TOOLTIP = "tooltip"
   fileprivate static let PARAMETER_TYPE = "type"
   fileprivate static let MESSAGE_PARAMETER_ALT = "alt"
@@ -114,6 +116,11 @@ extension Block {
     }
     if let helpURL = decodedJSONValue(json[PARAMETER_HELP_URL]) as? String {
       builder.helpURL = helpURL
+    }
+    if let style = json[PARAMETER_STYLE] as? [String: Any] {
+      if let hat = decodedJSONValue(style[PARAMETER_STYLE_HAT]) as? String {
+        builder.style.hat = hat
+      }
     }
     if let mutator = json[PARAMETER_MUTATOR] as? String {
       if let blockMutator = mutators[mutator] {

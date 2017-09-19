@@ -43,8 +43,8 @@ extension DefaultBlockLayout {
     /// height.
     public internal(set) var firstLineHeight: CGFloat = 0
 
-    /// Flag if the block should render a hat
-    public fileprivate(set) var startHat: Bool = false
+    /// The hat the block should render.
+    public fileprivate(set) var hat: Block.Style.HatType = Block.Style.hatNone
 
     /// The position of the block's leading X edge offset, specified as a Workspace coordinate
     /// system unit, relative to its entire bounding box.
@@ -69,12 +69,17 @@ extension DefaultBlockLayout {
       self.outputConnector = (layout.block.outputConnection != nil)
       self.previousStatementConnector = (layout.block.previousConnection != nil)
       self.nextStatementConnector = (layout.block.nextConnection != nil)
-      self.startHat = !previousStatementConnector && !outputConnector &&
-        layout.config.bool(for: DefaultLayoutConfig.BlockStartHat)
+
+      if !previousStatementConnector && !outputConnector {
+        self.hat = layout.block.style.hat ?? layout.config.string(for: DefaultLayoutConfig.BlockHat)
+      } else {
+        self.hat = Block.Style.hatNone
+      }
+
       self.leadingEdgeXOffset = outputConnector ?
         layout.config.workspaceUnit(for: DefaultLayoutConfig.PuzzleTabWidth) : 0
-      self.leadingEdgeYOffset = startHat ?
-        layout.config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize).height : 0
+      self.leadingEdgeYOffset = (hat == Block.Style.hatCap) ?
+        layout.config.workspaceSize(for: DefaultLayoutConfig.BlockHatCapSize).height : 0
 
       if layout.block.outputConnection != nil {
         self.squareTopLeftCorner = true

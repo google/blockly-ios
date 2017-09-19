@@ -55,6 +55,9 @@
       "name": "DUMMY INPUT"
     }
   ],
+  "style": {
+    "hat": "cap"
+  },
   "colour": 135,
   "output": ["Number", "String"],
   "tooltip": "Click me",
