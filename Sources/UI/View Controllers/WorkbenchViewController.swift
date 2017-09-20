@@ -1378,8 +1378,8 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   open func workspaceViewController(
-    _ workspaceViewController: WorkspaceViewController, didAddBlockView blockView: BlockView)
-  {
+    _ workspaceViewController: WorkspaceViewController,
+    didAddBlockView blockView: BlockView) {
     if workspaceViewController == self.workspaceViewController {
       addGestureTracking(forBlockView: blockView)
       updateWorkspaceCapacity()
@@ -1387,8 +1387,8 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   }
 
   open func workspaceViewController(
-    _ workspaceViewController: WorkspaceViewController, didRemoveBlockView blockView: BlockView)
-  {
+    _ workspaceViewController: WorkspaceViewController,
+    didRemoveBlockView blockView: BlockView) {
     if workspaceViewController == self.workspaceViewController {
       removeGestureTracking(forBlockView: blockView)
       updateWorkspaceCapacity()
@@ -1396,14 +1396,13 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   }
 
   open func workspaceViewController(
-    _ workspaceViewController: WorkspaceViewController, willPresentViewController: UIViewController)
-  {
+    _ workspaceViewController: WorkspaceViewController,
+    willPresentViewController viewController: UIViewController) {
     addUIStateValue(.presentingPopover)
   }
 
   open func workspaceViewControllerDismissedViewController(
-    _ workspaceViewController: WorkspaceViewController)
-  {
+    _ workspaceViewController: WorkspaceViewController) {
     removeUIStateValue(.presentingPopover)
   }
 }

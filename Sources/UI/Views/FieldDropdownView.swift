@@ -148,11 +148,10 @@ extension FieldDropdownView: DropdownViewDelegate {
       viewController.textLabelFont = fontCreator(max(fieldDropdownLayout.engine.scale, 1.0))
     }
 
-    popoverDelegate?
-      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
-
-    // Set the delegate so we can prioritize arrow directions
-    viewController.popoverPresentationController?.delegate = self
+    popoverDelegate?.layoutView(self,
+                                requestedToPresentPopoverViewController: viewController,
+                                fromView: self,
+                                presentationDelegate: self)
   }
 }
 

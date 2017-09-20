@@ -117,11 +117,10 @@ extension FieldAngleView: UITextFieldDelegate {
     // Start a new event group for this edit.
     _eventGroupID = UUID().uuidString
 
-    popoverDelegate?
-      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
-
-    // Set the delegate so we can prioritize arrow directions
-    viewController.popoverPresentationController?.delegate = self
+    popoverDelegate?.layoutView(self,
+                                requestedToPresentPopoverViewController: viewController,
+                                fromView: self,
+                                presentationDelegate: self)
 
     // Hide keyboard
     endEditing(true)
