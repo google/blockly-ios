@@ -239,7 +239,7 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     _ layoutView: LayoutView, requestedToPresentViewController viewController: UIViewController)
   {
     self.presentationDelegate = nil
-    
+
     delegate?.workspaceViewController(self, willPresentViewController: viewController)
 
     present(viewController, animated: true, completion: nil)
