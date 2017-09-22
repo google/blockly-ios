@@ -1,3 +1,27 @@
+# [Version 1.1.2](https://github.com/google/blockly-ios/tree/1.1.2) (Sep 2017)
+
+Updates:
+- Allows disabled blocks to be dragged on the workspace
+- Adds serialization for Block properties editable, deletable, movable, disabled,
+and inputsInline
+
+Fixes:
+- Fixes code generator for iOS 11 so it sends the initial codegen request on the
+main thread
+- Fixes names of two codelab sounds
+- Fixes bug where popover delegates were being overriden, which caused undo/redo
+buttons to stay disabled after popover dismissal
+- Fixes bug where non-top-level variables didn't always show up in the variable
+drop-down picker
+- Fixes FieldLayout from implicitly updating the layout tree on model changes,
+and made it update explicitly.
+- Fixes ViewBuilder bug where it would recycle views prior to calling a delegate
+method that inspected view hierarchy
+- Fixes WorkspaceViewController bug where the didRemoveBlockView() delegate method
+wasn't being fired
+- Fixes bug where the same variable block can be created multiple times
+- Fixes Obj-C compilation error where WebKit protocol can't be found
+
 # [Version 1.1.1](https://github.com/google/blockly-ios/tree/1.1.1) (July 2017)
 
 - Fixes bug where dismissing a popover could dismiss `WorkbenchViewController`.
