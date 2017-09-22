@@ -11,18 +11,109 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Background</h1>
+            <h1>Style</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Background</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kt">Style</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSCopying</span></code></pre>
 
                 </div>
               </div>
-            <p>Information for rendering the background of a <code><a href="../../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a></code>.</p>
+            <p>Specifies any styles that should be applied to the block during rendering.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Constants"></a>
+                <a name="//apple_ref/swift/Section/Constants" class="dashAnchor"></a>
+                <a href="#/Constants">
+                  <h2 class="section-name">Constants</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:CC7Blockly5Block5Style7HatType"></a>
+                    <a name="//apple_ref/swift/Alias/HatType" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:CC7Blockly5Block5Style7HatType">HatType</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Underlying value of <code>HatType</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">HatType</span> <span class="o">=</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvCC7Blockly5Block5Style7hatNoneSS"></a>
+                    <a name="//apple_ref/swift/Variable/hatNone" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvCC7Blockly5Block5Style7hatNoneSS">hatNone</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constant value for rendering a hat with a flat top.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">hatNone</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block/Style.html#/s:CC7Blockly5Block5Style7HatType">HatType</a></span> <span class="o">=</span> <span class="s">"none"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvCC7Blockly5Block5Style6hatCapSS"></a>
+                    <a name="//apple_ref/swift/Variable/hatCap" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvCC7Blockly5Block5Style6hatCapSS">hatCap</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constant value for rendering a hat with a half-rounded top and horizontal base.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">hatCap</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block/Style.html#/s:CC7Blockly5Block5Style7HatType">HatType</a></span> <span class="o">=</span> <span class="s">"cap"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Properties"></a>
                 <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
@@ -34,9 +125,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background19squareTopLeftCornerSb"></a>
-                    <a name="//apple_ref/swift/Property/squareTopLeftCorner" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background19squareTopLeftCornerSb">squareTopLeftCorner</a></h3>
+                    <a name="/s:vCC7Blockly5Block5Style5blockXwGSqS0__"></a>
+                    <a name="//apple_ref/swift/Property/block" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vCC7Blockly5Block5Style5blockXwGSqS0__">block</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -44,14 +135,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Flag if the top-left corner should be square.</p>
+                        <p>The block that this style is attached to.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">squareTopLeftCorner</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -61,146 +152,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background22squareBottomLeftCornerSb"></a>
-                    <a name="//apple_ref/swift/Property/squareBottomLeftCorner" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background22squareBottomLeftCornerSb">squareBottomLeftCorner</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if the bottom-left corner should be rounded</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">squareBottomLeftCorner</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background26previousStatementConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/previousStatementConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background26previousStatementConnectorSb">previousStatementConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a previous statement connector should be rendered at the top of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">previousStatementConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background22nextStatementConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/nextStatementConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background22nextStatementConnectorSb">nextStatementConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a next statement connector should be rendered at the bottom of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">nextStatementConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background15outputConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/outputConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background15outputConnectorSb">outputConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a output connector should be rendered on the left side of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">outputConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background15firstLineHeightV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/firstLineHeight" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background15firstLineHeightV12CoreGraphics7CGFloat">firstLineHeight</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The line height for the first line of content inside the block.
-The output connector puzzle tab should be rendered vertically centered relative to this
-height.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">internal(set)</span> <span class="k">var</span> <span class="nv">firstLineHeight</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background3hatSS"></a>
+                    <a name="/s:vCC7Blockly5Block5Style3hatGSqSS_"></a>
                     <a name="//apple_ref/swift/Property/hat" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background3hatSS">hat</a></h3>
+                    <h3><a class="token" href="#/s:vCC7Blockly5Block5Style3hatGSqSS_">hat</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -208,225 +162,15 @@ height.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The hat the block should render.</p>
+                        <p>Specifies the type of hat to render on top of the block. This value is only applied to the
+block if it has no previous or output connections.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">hat</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="o">.</span><span class="kt">Style</span><span class="o">.</span><span class="kt">HatType</span> <span class="o">=</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="o">.</span><span class="kt">Style</span><span class="o">.</span><span class="n">hatNone</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeXOffsetV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/leadingEdgeXOffset" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeXOffsetV12CoreGraphics7CGFloat">leadingEdgeXOffset</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The position of the block&rsquo;s leading X edge offset, specified as a Workspace coordinate
-system unit, relative to its entire bounding box.
-(e.g. In LTR, this is the X offset of the block&rsquo;s left edge.)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">leadingEdgeXOffset</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeYOffsetV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/leadingEdgeYOffset" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeYOffsetV12CoreGraphics7CGFloat">leadingEdgeYOffset</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The position of the block&rsquo;s top Y edge offset, specified as a Workspace coordinate
-system unit.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">leadingEdgeYOffset</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_"></a>
-                    <a name="//apple_ref/swift/Property/rows" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The rows for this block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">rows</span> <span class="o">=</span> <span class="p">[</span><span class="kt"><a href="../../Classes/DefaultBlockLayout/BackgroundRow.html">BackgroundRow</a></span><span class="p">]()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Public"></a>
-                <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
-                <a href="#/Public">
-                  <h2 class="section-name">Public</h2>
-                </a>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background22updateRenderPropertiesFT15fromBlockLayoutS0__T_"></a>
-                    <a name="//apple_ref/swift/Method/updateRenderProperties(fromBlockLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background22updateRenderPropertiesFT15fromBlockLayoutS0__T_">updateRenderProperties(fromBlockLayout:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Updates all render properties from a given block layout.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateRenderProperties</span><span class="p">(</span><span class="n">fromBlockLayout</span> <span class="nv">layout</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The block layout.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background9appendRowFCS0_13BackgroundRowT_"></a>
-                    <a name="//apple_ref/swift/Method/appendRow(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background9appendRowFCS0_13BackgroundRowT_">appendRow(_:)</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Append a new row to <code><a href="../../Classes/DefaultBlockLayout/Background.html#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></code>.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">appendRow</span><span class="p">(</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DefaultBlockLayout/BackgroundRow.html">BackgroundRow</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>row</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The row to append.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background13removeAllRowsFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/removeAllRows()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background13removeAllRowsFT_T_">removeAllRows()</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Removes all items inside <code><a href="../../Classes/DefaultBlockLayout/Background.html#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></code>.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeAllRows</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hat</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block/Style.html#/s:CC7Blockly5Block5Style7HatType">HatType</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>

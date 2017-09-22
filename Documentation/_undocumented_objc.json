@@ -44,14 +44,14 @@
     },
     {
       "file": "/Users/vicng/Github/blockly/ios/Sources/ObjC/Blockly.h",
-      "line": 19,
+      "line": 20,
       "symbol": "BlocklyVersionNumber",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/vicng/Github/blockly/ios/Sources/ObjC/Blockly.h",
-      "line": 22,
+      "line": 23,
       "symbol": "BlocklyVersionString",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"

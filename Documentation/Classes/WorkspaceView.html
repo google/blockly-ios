@@ -24,6 +24,43 @@
           <section class="section task-group-section">
             <div class="task-group">
               <div class="task-name-container">
+                <a name="/Constants"></a>
+                <a name="//apple_ref/swift/Section/Constants" class="dashAnchor"></a>
+                <a href="#/Constants">
+                  <h2 class="section-name">Constants</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC7Blockly13WorkspaceView8Location"></a>
+                    <a name="//apple_ref/swift/Enum/Location" class="dashAnchor"></a>
+                    <h3><a class="token" href="../Classes/WorkspaceView/Location.html">Location</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Value representing a location within the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Location</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
                 <a name="/Properties"></a>
                 <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
                 <a href="#/Properties">
@@ -418,9 +455,9 @@ to this <code>WorkspaceView</code>.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13WorkspaceView19scrollBlockIntoViewFTCS_5Block8animatedSb_T_"></a>
-                    <a name="//apple_ref/swift/Method/scrollBlockIntoView(_:animated:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView19scrollBlockIntoViewFTCS_5Block8animatedSb_T_">scrollBlockIntoView(_:animated:)</a></h3>
+                    <a name="/s:FC7Blockly13WorkspaceView19scrollBlockIntoViewFTCS_5Block8locationOS0_8Location8animatedSb_T_"></a>
+                    <a name="//apple_ref/swift/Method/scrollBlockIntoView(_:location:animated:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly13WorkspaceView19scrollBlockIntoViewFTCS_5Block8locationOS0_8Location8animatedSb_T_">scrollBlockIntoView(_:location:animated:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -440,7 +477,7 @@ to this <code>WorkspaceView</code>.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">scrollBlockIntoView</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">scrollBlockIntoView</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">,</span> <span class="nv">location</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceView/Location.html">Location</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">anywhere</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -456,7 +493,20 @@ to this <code>WorkspaceView</code>.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>Block</code> to bring into view</p>
+                                  <p>The <code>Block</code> to bring into view.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>location</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The area of the screen where the block should appear. If <code>.anywhere</code>
+is specified, the viewport is changed the minimal amount necessary to bring the block
+into view.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -702,6 +752,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
       path: /blockly/reference/ios/../Classes/Block.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/Block/Style.html
     - title: BlockBuilder
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
@@ -1046,6 +1098,8 @@ toc:
       path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
     - title: WorkspaceView
       path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – Location
+      path: /blockly/reference/ios/../Classes/WorkspaceView/Location.html
     - title: – ScrollView
       path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
     - title: WorkspaceViewController

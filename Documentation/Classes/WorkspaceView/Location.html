@@ -11,32 +11,25 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Background</h1>
+            <h1>Location</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Background</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Location</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                 </div>
               </div>
-            <p>Information for rendering the background of a <code><a href="../../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a></code>.</p>
+            <p>Value representing a location within the workspace view.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Properties"></a>
-                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
-                <a href="#/Properties">
-                  <h2 class="section-name">Properties</h2>
-                </a>
-              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background19squareTopLeftCornerSb"></a>
-                    <a name="//apple_ref/swift/Property/squareTopLeftCorner" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background19squareTopLeftCornerSb">squareTopLeftCorner</a></h3>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location8anywhereFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/anywhere" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location8anywhereFMS1_S1_">anywhere</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -44,262 +37,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Flag if the top-left corner should be square.</p>
+                        <p>Represents no specific location in the workspace view.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">squareTopLeftCorner</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background22squareBottomLeftCornerSb"></a>
-                    <a name="//apple_ref/swift/Property/squareBottomLeftCorner" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background22squareBottomLeftCornerSb">squareBottomLeftCorner</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if the bottom-left corner should be rounded</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">squareBottomLeftCorner</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background26previousStatementConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/previousStatementConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background26previousStatementConnectorSb">previousStatementConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a previous statement connector should be rendered at the top of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">previousStatementConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background22nextStatementConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/nextStatementConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background22nextStatementConnectorSb">nextStatementConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a next statement connector should be rendered at the bottom of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">nextStatementConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background15outputConnectorSb"></a>
-                    <a name="//apple_ref/swift/Property/outputConnector" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background15outputConnectorSb">outputConnector</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Flag if a output connector should be rendered on the left side of the block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">outputConnector</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background15firstLineHeightV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/firstLineHeight" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background15firstLineHeightV12CoreGraphics7CGFloat">firstLineHeight</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The line height for the first line of content inside the block.
-The output connector puzzle tab should be rendered vertically centered relative to this
-height.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">internal(set)</span> <span class="k">var</span> <span class="nv">firstLineHeight</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background3hatSS"></a>
-                    <a name="//apple_ref/swift/Property/hat" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background3hatSS">hat</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The hat the block should render.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">hat</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="o">.</span><span class="kt">Style</span><span class="o">.</span><span class="kt">HatType</span> <span class="o">=</span> <span class="kt"><a href="../../Classes/Block.html">Block</a></span><span class="o">.</span><span class="kt">Style</span><span class="o">.</span><span class="n">hatNone</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeXOffsetV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/leadingEdgeXOffset" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeXOffsetV12CoreGraphics7CGFloat">leadingEdgeXOffset</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The position of the block&rsquo;s leading X edge offset, specified as a Workspace coordinate
-system unit, relative to its entire bounding box.
-(e.g. In LTR, this is the X offset of the block&rsquo;s left edge.)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">leadingEdgeXOffset</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeYOffsetV12CoreGraphics7CGFloat"></a>
-                    <a name="//apple_ref/swift/Property/leadingEdgeYOffset" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background18leadingEdgeYOffsetV12CoreGraphics7CGFloat">leadingEdgeYOffset</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The position of the block&rsquo;s top Y edge offset, specified as a Workspace coordinate
-system unit.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">leadingEdgeYOffset</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_"></a>
-                    <a name="//apple_ref/swift/Property/rows" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></h3>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The rows for this block</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="objc">
-                          <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">rows</span> <span class="o">=</span> <span class="p">[</span><span class="kt"><a href="../../Classes/DefaultBlockLayout/BackgroundRow.html">BackgroundRow</a></span><span class="p">]()</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">anywhere</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
 
                         </div>
                       </div>
@@ -308,20 +53,13 @@ system unit.</p>
                 </li>
               </ul>
             </div>            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Public"></a>
-                <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
-                <a href="#/Public">
-                  <h2 class="section-name">Public</h2>
-                </a>
-              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background22updateRenderPropertiesFT15fromBlockLayoutS0__T_"></a>
-                    <a name="//apple_ref/swift/Method/updateRenderProperties(fromBlockLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background22updateRenderPropertiesFT15fromBlockLayoutS0__T_">updateRenderProperties(fromBlockLayout:)</a></h3>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location10topLeadingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/topLeading" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location10topLeadingFMS1_S1_">topLeading</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -329,44 +67,29 @@ system unit.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Updates all render properties from a given block layout.</p>
+                        <p>The top-leading corner of the workspace view.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateRenderProperties</span><span class="p">(</span><span class="n">fromBlockLayout</span> <span class="nv">layout</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DefaultBlockLayout.html">DefaultBlockLayout</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">topLeading</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The block layout.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background9appendRowFCS0_13BackgroundRowT_"></a>
-                    <a name="//apple_ref/swift/Method/appendRow(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background9appendRowFCS0_13BackgroundRowT_">appendRow(_:)</a></h3>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location9topCenterFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/topCenter" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location9topCenterFMS1_S1_">topCenter</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -374,44 +97,29 @@ system unit.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Append a new row to <code><a href="../../Classes/DefaultBlockLayout/Background.html#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></code>.</p>
+                        <p>The top-center area of the workspace view.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">appendRow</span><span class="p">(</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DefaultBlockLayout/BackgroundRow.html">BackgroundRow</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">topCenter</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>row</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The row to append.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FCC7Blockly18DefaultBlockLayout10Background13removeAllRowsFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/removeAllRows()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FCC7Blockly18DefaultBlockLayout10Background13removeAllRowsFT_T_">removeAllRows()</a></h3>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location11topTrailingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/topTrailing" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location11topTrailingFMS1_S1_">topTrailing</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -419,14 +127,194 @@ system unit.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Removes all items inside <code><a href="../../Classes/DefaultBlockLayout/Background.html#/s:vCC7Blockly18DefaultBlockLayout10Background4rowsGSaCS0_13BackgroundRow_">rows</a></code>.</p>
+                        <p>The top-trailing corner of the workspace view.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeAllRows</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">topTrailing</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location13middleLeadingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/middleLeading" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location13middleLeadingFMS1_S1_">middleLeading</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The middle-leading area of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">middleLeading</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location6centerFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/center" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location6centerFMS1_S1_">center</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The center of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">center</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location14middleTrailingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/middleTrailing" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location14middleTrailingFMS1_S1_">middleTrailing</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The middle-trailing area of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">middleTrailing</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location13bottomLeadingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/bottomLeading" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location13bottomLeadingFMS1_S1_">bottomLeading</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The bottom-leading corner of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">bottomLeading</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location12bottomCenterFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/bottomCenter" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location12bottomCenterFMS1_S1_">bottomCenter</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The bottom-center area of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">bottomCenter</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC7Blockly13WorkspaceView8Location14bottomTrailingFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/bottomTrailing" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FOC7Blockly13WorkspaceView8Location14bottomTrailingFMS1_S1_">bottomTrailing</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The bottom-trailing corner of the workspace view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">bottomTrailing</span></code></pre>
 
                         </div>
                       </div>
