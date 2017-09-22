@@ -1319,6 +1319,33 @@ UIView coordinate system.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:vC7Blockly12LayoutConfig7stringsGVs10DictionarySiSS_"></a>
+                    <a name="//apple_ref/swift/Property/strings" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly12LayoutConfig7stringsGVs10DictionarySiSS_">strings</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dictionary mapping property keys to <code>String</code> values</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">strings</span> <span class="o">=</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:vC7Blockly12LayoutConfig13untypedValuesGVs10DictionarySiP__"></a>
                     <a name="//apple_ref/swift/Property/untypedValues" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:vC7Blockly12LayoutConfig13untypedValuesGVs10DictionarySiP__">untypedValues</a></h3>
@@ -1437,7 +1464,7 @@ UIView coordinate system.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>PropertyKey</code> (e.g. <code>DefaultLayoutConfig.BlockStartHat</code>)</p>
+                                  <p>The <code>PropertyKey</code>.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -1486,7 +1513,7 @@ UIView coordinate system.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>PropertyKey</code> (e.g. <code>DefaultLayoutConfig.BlockStartHat</code>)</p>
+                                  <p>The <code>PropertyKey</code>.</p>
                                 </div>
                               </td>
                             </tr>                            <tr>
@@ -2944,6 +2971,127 @@ automatically assigned to <code>key</code> and used instead.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC7Blockly12LayoutConfig9setStringFTSS3forSi_SS"></a>
+                    <a name="//apple_ref/swift/Method/setString(_:for:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12LayoutConfig9setStringFTSS3forSi_SS">setString(_:for:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Maps a <code>String</code> value to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setString</span><span class="p">(</span><span class="n">_</span> <span class="nv">stringValue</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>stringValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>String</code> value.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>DefaultLayoutConfig.BlockHat</code>).</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>String</code> that was set.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly12LayoutConfig6stringFT3forSi12defaultValueSS_SS"></a>
+                    <a name="//apple_ref/swift/Method/string(for:defaultValue:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly12LayoutConfig6stringFT3forSi12defaultValueSS_SS">string(for:defaultValue:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the <code>String</code> value that is mapped to a specific <code><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">string</span><span class="p">(</span><span class="k">for</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutConfig.html#/s:C7Blockly12LayoutConfig11PropertyKey">PropertyKey</a></span><span class="p">,</span> <span class="n">defaultValue</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>PropertyKey</code> (e.g. <code>DefaultLayoutConfig.BlockHat</code>).</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultValue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[Optional] If no <code>String</code> was found for <code>key</code>, this value is
+automatically assigned to <code>key</code> and used instead.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>key</code>&rsquo;s value.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC7Blockly12LayoutConfig15setUntypedValueFTGSqP__3forSi_GSqP__"></a>
                     <a name="//apple_ref/swift/Method/setUntypedValue(_:for:)" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:FC7Blockly12LayoutConfig15setUntypedValueFTGSqP__3forSi_GSqP__">setUntypedValue(_:for:)</a></h3>
@@ -3151,6 +3299,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
       path: /blockly/reference/ios/../Classes/Block.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/Block/Style.html
     - title: BlockBuilder
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
@@ -3495,6 +3645,8 @@ toc:
       path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
     - title: WorkspaceView
       path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – Location
+      path: /blockly/reference/ios/../Classes/WorkspaceView/Location.html
     - title: – ScrollView
       path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
     - title: WorkspaceViewController

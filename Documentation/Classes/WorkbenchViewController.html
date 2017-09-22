@@ -784,6 +784,60 @@ By default, this value is set to <code>false</code>.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController30workspacePanGesetureRecognizerGSQCSo22UIPanGestureRecognizer_"></a>
+                    <a name="//apple_ref/swift/Property/workspacePanGesetureRecognizer" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController30workspacePanGesetureRecognizerGSQCSo22UIPanGestureRecognizer_">workspacePanGesetureRecognizer</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The pan gesture recognizer attached to the main workspace.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">workspacePanGesetureRecognizer</span><span class="p">:</span> <span class="kt">UIPanGestureRecognizer</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly23WorkbenchViewController29workspaceTapGestureRecognizerCSo22UITapGestureRecognizer"></a>
+                    <a name="//apple_ref/swift/Property/workspaceTapGestureRecognizer" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly23WorkbenchViewController29workspaceTapGestureRecognizerCSo22UITapGestureRecognizer">workspaceTapGestureRecognizer</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The tap gesture recognizer attached to the main workspace.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">workspaceTapGestureRecognizer</span><span class="p">:</span> <span class="kt">UITapGestureRecognizer</span> <span class="o">=</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>            <div class="task-group">
               <div class="task-name-container">
@@ -1557,8 +1611,9 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="n">didAddBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span>
+    <span class="n">didAddBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1613,8 +1668,9 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="n">didRemoveBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span>
+    <span class="n">didRemoveBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1669,8 +1725,9 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span> <span class="nv">willPresentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">workspaceViewController</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">,</span>
+    <span class="n">willPresentViewController</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1692,7 +1749,7 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                             </tr>                            <tr>
                               <td>
                                 <code>
-                                <em>willPresentViewController</em>
+                                <em>viewController</em>
                                 </code>
                               </td>
                               <td>
@@ -1725,7 +1782,7 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">workspaceViewControllerDismissedViewController</span><span class="p">(</span>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">workspaceViewControllerDismissedViewController</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">workspaceViewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceViewController.html">WorkspaceViewController</a></span><span class="p">)</span></code></pre>
 
                         </div>
@@ -1840,6 +1897,103 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                               <td>
                                 <div>
                                   <p>The <code>BlockView</code> to remove.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly23WorkbenchViewController18addGestureTrackingFT12forBlockViewCS_9BlockView_T_"></a>
+                    <a name="//apple_ref/swift/Method/addGestureTracking(forBlockView:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController18addGestureTrackingFT12forBlockViewCS_9BlockView_T_">addGestureTracking(forBlockView:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds custom gesture recognizers to a block view. It is automatically called by
+<code>WorkbenchViewController</code> when a block view is added to the workspace.</p>
+
+<p>Subclasses may override this to add custom gesture tracking to a block view.
+The default implementation does nothing.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">addGestureTracking</span><span class="p">(</span><span class="n">forBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>blockView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A given block view.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Blockly23WorkbenchViewController21removeGestureTrackingFT12forBlockViewCS_9BlockView_T_"></a>
+                    <a name="//apple_ref/swift/Method/removeGestureTracking(forBlockView:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController21removeGestureTrackingFT12forBlockViewCS_9BlockView_T_">removeGestureTracking(forBlockView:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes all gesture recognizers and any on-going gesture data from a block view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">removeGestureTracking</span><span class="p">(</span><span class="n">forBlockView</span> <span class="nv">blockView</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>blockView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A given block view.</p>
                                 </div>
                               </td>
                             </tr>                          </tbody>
@@ -2017,6 +2171,79 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC7Blockly23WorkbenchViewController19scrollBlockIntoViewFT9blockUUIDSS8locationOCS_13WorkspaceView8Location8animatedSb_T_"></a>
+                    <a name="//apple_ref/swift/Method/scrollBlockIntoView(blockUUID:location:animated:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController19scrollBlockIntoViewFT9blockUUIDSS8locationOCS_13WorkspaceView8Location8animatedSb_T_">scrollBlockIntoView(blockUUID:location:animated:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Automatically adjusts the workspace&rsquo;s scroll view to bring a given <code><a href="../Classes/Block.html">Block</a></code> into view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scrollBlockIntoView</span><span class="p">(</span>
+    <span class="nv">blockUUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">location</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceView.html">WorkspaceView</a></span><span class="o">.</span><span class="kt">Location</span> <span class="o">=</span> <span class="o">.</span><span class="n">anywhere</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Block</code> to bring into view.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>location</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The area of the screen where the block should appear. If <code>.anywhere</code>
+is specified, the viewport is changed the minimal amount necessary to bring the block
+into view.</p>
+                                </div>
+                              </td>
+                            </tr>                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Flag determining if this scroll view adjustment should be animated.</p>
+                                </div>
+                              </td>
+                            </tr>                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_10TouchState_T_"></a>
                     <a name="//apple_ref/swift/Method/blocklyPanGestureRecognizer(_:didTouchBlock:touch:touchState:)" class="dashAnchor"></a>
                     <h3><a class="token" href="#/s:FC7Blockly23WorkbenchViewController27blocklyPanGestureRecognizerFTCS_27BlocklyPanGestureRecognizer13didTouchBlockCS_9BlockView5touchCSo7UITouch10touchStateOS1_10TouchState_T_">blocklyPanGestureRecognizer(_:didTouchBlock:touch:touchState:)</a></h3>
@@ -2034,7 +2261,7 @@ operations) or run backward (<code>false</code> for undo operations).</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">blocklyPanGestureRecognizer</span><span class="p">(</span>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">blocklyPanGestureRecognizer</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">gesture</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a></span><span class="p">,</span> <span class="n">didTouchBlock</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockView.html">BlockView</a></span><span class="p">,</span>
     <span class="nv">touch</span><span class="p">:</span> <span class="kt">UITouch</span><span class="p">,</span> <span class="nv">touchState</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyPanGestureRecognizer.html">BlocklyPanGestureRecognizer</a></span><span class="o">.</span><span class="kt">TouchState</span><span class="p">)</span></code></pre>
 
@@ -2070,6 +2297,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
       path: /blockly/reference/ios/../Classes/Block.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/Block/Style.html
     - title: BlockBuilder
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
@@ -2414,6 +2643,8 @@ toc:
       path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
     - title: WorkspaceView
       path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – Location
+      path: /blockly/reference/ios/../Classes/WorkspaceView/Location.html
     - title: – ScrollView
       path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
     - title: WorkspaceViewController
