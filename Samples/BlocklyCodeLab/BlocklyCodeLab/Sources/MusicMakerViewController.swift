@@ -92,7 +92,7 @@ class MusicMakerViewController: UIViewController {
       } else {
         self.instructions.text = ""
         self.instructions.alpha = 0
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor =
           UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
       }
     }
