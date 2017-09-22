@@ -67,7 +67,7 @@ public final class CodeGenerator: NSObject {
 
   // MARK: - Closures
 
-  public typealias LoadCompletionClosure = (Void) -> Void
+  public typealias LoadCompletionClosure = () -> Void
   public typealias LoadFailureClosure = (_ error: String) -> Void
   public typealias CompletionClosure = (_ code: String) -> Void
   public typealias ErrorClosure = (_ error: String) -> Void
@@ -205,11 +205,14 @@ public final class CodeGenerator: NSObject {
       "CodeGeneratorBridge.generateCodeForWorkspace(" +
         "\"\(trimmedXML.bky_escapedJavaScriptParameter())\", \(self.jsGeneratorObject))"
 
-    self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
-      if let error = error {
-        self.codeGenerationFailed("An error occurred generating code: \(error)")
-      }
-    })
+    DispatchQueue.main.async {
+      // As of iOS 11, this call needs to be made from the main thread.
+      self.webView.evaluateJavaScript(js, completionHandler: { (_, error) -> Void in
+        if let error = error {
+          self.codeGenerationFailed("An error occurred generating code: \(error)")
+        }
+      })
+    }
   }
 
   // MARK: - Private

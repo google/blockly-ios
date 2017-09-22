@@ -146,6 +146,18 @@ class BlockTestStrings {
   static let COMMENT_GOOD = "<comment pinned=\"true\" h=\"80\" w=\"160\">Calm</comment>"
   static let COMMENT_NO_TEXT = "<comment pinned=\"true\" h=\"80\" w=\"160\"></comment>"
 
+  static let BLOCK_DELETABLE_TRUE = "<block type=\"frankenblock\" deletable=\"true\"></block>"
+  static let BLOCK_DELETABLE_FALSE = "<block type=\"frankenblock\" deletable=\"false\"></block>"
+
+  static let BLOCK_MOVABLE_TRUE = "<block type=\"frankenblock\" movable=\"true\"></block>"
+  static let BLOCK_MOVABLE_FALSE = "<block type=\"frankenblock\" movable=\"false\"></block>"
+
+  static let BLOCK_EDITABLE_TRUE = "<block type=\"frankenblock\" editable=\"true\"></block>"
+  static let BLOCK_EDITABLE_FALSE = "<block type=\"frankenblock\" editable=\"false\"></block>"
+
+  static let BLOCK_DISABLED_TRUE = "<block type=\"frankenblock\" disabled=\"true\"></block>"
+  static let BLOCK_DISABLED_FALSE = "<block type=\"frankenblock\" disabled=\"false\"></block>"
+
   static let FRANKENBLOCK_DEFAULT_VALUES_START =
   "<field name=\"text_input\">something</field>" +
   "<field name=\"checkbox\">true</field>"

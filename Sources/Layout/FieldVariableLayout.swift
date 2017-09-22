@@ -101,8 +101,7 @@ open class FieldVariableLayout: FieldLayout {
       }
     }
 
-    // Perform a layout up the tree
-    updateLayoutUpTree()
+    super.didUpdateField(field)
   }
 
   // MARK: - Public
@@ -131,6 +130,9 @@ open class FieldVariableLayout: FieldLayout {
           bky_assertionFailure("Could not change to variable: \(error)")
         }
       }
+
+      // Perform a layout up the tree
+      updateLayoutUpTree()
     }
   }
 
@@ -149,6 +151,9 @@ open class FieldVariableLayout: FieldLayout {
       }
     }
     nameManager?.renameName(oldName, to: newName)
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 
   /**

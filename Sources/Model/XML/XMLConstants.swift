@@ -25,6 +25,11 @@ internal class XMLConstants: NSObject {
   static let TAG_NEXT_STATEMENT = "next"
   static let TAG_FIELD = "field"
   static let TAG_COMMENT = "comment"
+  static let TAG_INPUTS_INLINE = "inline"
+  static let TAG_DISABLED = "disabled"
+  static let TAG_EDITABLE = "editable"
+  static let TAG_DELETABLE = "deletable"
+  static let TAG_MOVABLE = "movable"
 
   static let ATTRIBUTE_ID = "id"
   static let ATTRIBUTE_TYPE = "type"

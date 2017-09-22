@@ -282,7 +282,9 @@ public final class ToolboxCategoryViewController: UIViewController {
       }
 
       do {
-        try variableNameManager.addName(newName)
+        try EventManager.shared.groupAndFireEvents {
+          try variableNameManager.addName(newName)
+        }
       } catch {
         bky_assertionFailure(
           "Tried to create an invalid variable without proper error handling: \(error)")
@@ -353,13 +355,9 @@ public final class ToolboxCategoryViewController: UIViewController {
       for blockName in variableBlocks {
         let variableBlocks =
           variableCoordinator.workspaceLayout.workspace.allVariableBlocks(forName: variable)
-        for block in variableBlocks {
-          if block.name == blockName {
-            continue
-          }
-        }
 
-        if let block = try makeVariableBlock(name: blockName, variable: variable) {
+        if !variableBlocks.contains(where: { $0.name == blockName }),
+          let block = try makeVariableBlock(name: blockName, variable: variable) {
           try variableCoordinator.addBlockTree(block)
         }
       }

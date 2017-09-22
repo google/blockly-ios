@@ -692,7 +692,8 @@ on the edge of the block (<code>false</code>)</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Flag indicating if this block has had its user interaction disabled</p>
+                        <p>Flag indicating if this block is disabled, which means it will be excluded from code
+generation.</p>
 
                       </div>
                       <div class="declaration">
@@ -782,6 +783,33 @@ the <code>editable</code> property on all child fields.</p>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">topLevel</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Blockly5Block5styleCS0_5Style"></a>
+                    <a name="//apple_ref/swift/Property/style" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:vC7Blockly5Block5styleCS0_5Style">style</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The style that should be applied to the block during rendering.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block/Style.html">Style</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1449,6 +1477,43 @@ calling this method or else an error is thrown.
               </ul>
             </div>            <div class="task-group">
               <div class="task-name-container">
+                <a name="/Block.Style%20Class"></a>
+                <a name="//apple_ref/swift/Section/Block.Style Class" class="dashAnchor"></a>
+                <a href="#/Block.Style%20Class">
+                  <h2 class="section-name">Block.Style Class</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:CC7Blockly5Block5Style"></a>
+                    <a name="//apple_ref/swift/Class/Style" class="dashAnchor"></a>
+                    <h3><a class="token" href="../Classes/Block/Style.html">Style</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Specifies any styles that should be applied to the block during rendering.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kt">Style</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSCopying</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
                 <a name="/Public2"></a>
                 <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
                 <a href="#/Public2">
@@ -1757,6 +1822,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
       path: /blockly/reference/ios/../Classes/Block.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/Block/Style.html
     - title: BlockBuilder
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
@@ -2101,6 +2168,8 @@ toc:
       path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
     - title: WorkspaceView
       path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – Location
+      path: /blockly/reference/ios/../Classes/WorkspaceView/Location.html
     - title: – ScrollView
       path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
     - title: WorkspaceViewController

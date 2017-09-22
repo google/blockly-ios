@@ -22,6 +22,34 @@ View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
 open class WorkspaceView: LayoutView {
+
+  // MARK: - Constants
+
+  /// Value representing a location within the workspace view.
+  @objc(BKYWorkspaceViewLocation)
+  public enum Location: Int {
+    /// Represents no specific location in the workspace view.
+    case anywhere = 0
+    /// The top-leading corner of the workspace view.
+    case topLeading
+    /// The top-center area of the workspace view.
+    case topCenter
+    /// The top-trailing corner of the workspace view.
+    case topTrailing
+    /// The middle-leading area of the workspace view.
+    case middleLeading
+    /// The center of the workspace view.
+    case center
+    /// The middle-trailing area of the workspace view.
+    case middleTrailing
+    /// The bottom-leading corner of the workspace view.
+    case bottomLeading
+    /// The bottom-center area of the workspace view.
+    case bottomCenter
+    /// The bottom-trailing corner of the workspace view.
+    case bottomTrailing
+  }
+
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `WorkspaceLayout`
@@ -179,11 +207,14 @@ open class WorkspaceView: LayoutView {
   /**
    Automatically adjusts the workspace's scroll view to bring a given `Block` into view.
 
-   - parameter block: The `Block` to bring into view
+   - parameter block: The `Block` to bring into view.
+   - parameter location: The area of the screen where the block should appear. If `.anywhere`
+   is specified, the viewport is changed the minimal amount necessary to bring the block
+   into view.
    - parameter animated: Flag determining if this scroll view adjustment should be animated.
    - note: See `scrollIntoViewEdgeInsets`.
    */
-  open func scrollBlockIntoView(_ block: Block, animated: Bool) {
+  open func scrollBlockIntoView(_ block: Block, location: Location = .anywhere, animated: Bool) {
     guard let blockLayout = block.layout,
       let blockView = ViewManager.shared.findBlockView(forLayout: blockLayout),
       let workspaceLayout = self.workspaceLayout else
@@ -191,51 +222,127 @@ open class WorkspaceView: LayoutView {
       return
     }
 
-    var scrollViewRect =
-      CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y,
-             width: scrollView.bounds.width, height: scrollView.bounds.height)
-
-    // Force the blockView to be inset within the scroll view rectangle
-    scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
-    scrollViewRect.size.width -= scrollIntoViewEdgeInsets.left + scrollIntoViewEdgeInsets.right
-    scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
-    scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
-
-    let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
     var contentOffset = scrollView.contentOffset
+    let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
 
+    if location == .anywhere {
+      // No location was specified. Just scroll the block so it's barely in view, relative to its
+      // current position.
+      var scrollViewRect =
+        CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y,
+               width: scrollView.bounds.width, height: scrollView.bounds.height)
 
-    if workspaceLayout.engine.rtl {
-      // Check left edge (as long as the block width < visible view width)
-      if blockViewRect.width <= scrollViewRect.width && blockViewRect.minX < scrollViewRect.minX {
-        contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+      // Force the blockView to be inset within the scroll view rectangle
+      scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
+      scrollViewRect.size.width -= scrollIntoViewEdgeInsets.left + scrollIntoViewEdgeInsets.right
+      scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
+      scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
+
+      if workspaceLayout.engine.rtl {
+        // Check left edge (as long as the block width < visible view width)
+        if blockViewRect.width <= scrollViewRect.width && blockViewRect.minX < scrollViewRect.minX {
+          contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+        }
+        // Check right edge
+        if blockViewRect.maxX > scrollViewRect.maxX {
+          contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+        }
+      } else {
+        // Check right edge (as long as the block width < visible view width)
+        if blockViewRect.width <= scrollViewRect.width && blockViewRect.maxX > scrollViewRect.maxX {
+          contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+        }
+        // Check left edge
+        if blockViewRect.minX < scrollViewRect.minX {
+          contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+        }
       }
-      // Check right edge
-      if blockViewRect.maxX > scrollViewRect.maxX {
-        contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+
+      // Check bottom edge (as long as the block height < visible view height)
+      if blockViewRect.height <= scrollViewRect.height && blockViewRect.maxY > scrollViewRect.maxY {
+        contentOffset.y += (blockViewRect.maxY - scrollViewRect.maxY)
+      }
+      // Check top edge
+      if blockViewRect.minY < scrollViewRect.minY {
+        contentOffset.y -= (scrollViewRect.minY - blockViewRect.minY)
       }
     } else {
-      // Check right edge (as long as the block width < visible view width)
-      if blockViewRect.width <= scrollViewRect.width && blockViewRect.maxX > scrollViewRect.maxX {
-        contentOffset.x += (blockViewRect.maxX - scrollViewRect.maxX)
+      // Calculate X coordinate
+      let useLeadingEdge =
+        (location == .bottomLeading || location == .middleLeading || location == .topLeading)
+      let useHorizontalCenter =
+        (location == .topCenter || location == .center || location == .bottomCenter)
+      let useTrailingEdge =
+        (location == .bottomTrailing || location == .middleTrailing || location == .topTrailing)
+      let rtl = workspaceLayout.engine.rtl
+
+      if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
+        // Use left edge
+        contentOffset.x = blockViewRect.minX - scrollIntoViewEdgeInsets.left
+      } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
+        // Use right edge
+        contentOffset.x =
+          blockViewRect.maxX + scrollIntoViewEdgeInsets.right - scrollView.bounds.width
+      } else if useHorizontalCenter {
+        contentOffset.x = blockViewRect.midX - (scrollView.bounds.width / 2)
       }
-      // Check left edge
-      if blockViewRect.minX < scrollViewRect.minX {
-        contentOffset.x -= (scrollViewRect.minX - blockViewRect.minX)
+
+      // Calculate Y coordinate
+      switch location {
+      case .topLeading, .topCenter, .topTrailing:
+        // Top edge
+        contentOffset.y = blockViewRect.minY - scrollIntoViewEdgeInsets.top
+      case .bottomLeading, .bottomCenter, .bottomTrailing:
+        // Bottom edge
+        contentOffset.y =
+          blockViewRect.maxY + scrollIntoViewEdgeInsets.bottom - scrollView.bounds.height
+      case .middleLeading, .center, .middleTrailing:
+        // Middle
+        contentOffset.y = blockViewRect.midY - (scrollView.bounds.height / 2)
+      case .anywhere:
+        // Already handled outside of this.
+        break
       }
     }
 
-    // Check bottom edge (as long as the block height < visible view height)
-    if blockViewRect.height <= scrollViewRect.height && blockViewRect.maxY > scrollViewRect.maxY {
-      contentOffset.y += (blockViewRect.maxY - scrollViewRect.maxY)
-    }
-    // Check top edge
-    if blockViewRect.minY < scrollViewRect.minY {
-      contentOffset.y -= (scrollViewRect.minY - blockViewRect.minY)
-    }
-
+    // Finally, update the scroll view
     if scrollView.contentOffset != contentOffset {
-      scrollView.setContentOffset(contentOffset, animated: animated)
+      // The new content offset may require the content size to expand and
+      // the container frame to change.
+      var contentSize = scrollView.contentSize
+      var containerViewFrame = scrollView.containerView.frame
+      if contentOffset.x < 0 {
+        contentSize.width += -contentOffset.x
+        containerViewFrame.origin.x += -contentOffset.x
+        contentOffset.x = 0
+      } else if contentOffset.x + scrollView.bounds.size.width > contentSize.width {
+        contentSize.width += contentOffset.x + scrollView.bounds.size.width - contentSize.width
+      }
+
+      if contentOffset.y < 0 {
+        contentSize.height += -contentOffset.y
+        containerViewFrame.origin.y += -contentOffset.y
+        contentOffset.y = 0
+      } else if contentOffset.y + scrollView.bounds.size.height > contentSize.height {
+        contentSize.height += contentOffset.y + scrollView.bounds.size.height - contentSize.height
+      }
+
+      runAnimatableCode(animated) {
+        self._disableRemoveExcessScrollSpace = true
+
+        if self.scrollView.contentSize != contentSize {
+          self.scrollView.contentSize = contentSize
+        }
+        if self.scrollView.containerView.frame != containerViewFrame {
+          self.scrollView.containerView.frame = containerViewFrame
+        }
+        // Now we can safely set the content offset.
+        self.scrollView.setContentOffset(contentOffset, animated: animated)
+
+        self.updateDragLayerViewFrame()
+
+        self._disableRemoveExcessScrollSpace = false
+      }
     }
   }
 

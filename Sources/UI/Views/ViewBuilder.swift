@@ -152,12 +152,18 @@ open class ViewBuilder: NSObject {
       let blockGroupView = childView as? BlockGroupView
     {
       workspaceView.removeBlockGroupView(blockGroupView)
-      viewFactory.recycleViewTree(blockGroupView)
       delegate?.viewBuilder(self, didRemoveChild: childView, fromParent: parentView)
+
+      // Recycle the view tree after calling the delegate method. This allows the delegate method
+      // to perform any necessary clean-up prior to deconstructing the view tree.
+      viewFactory.recycleViewTree(blockGroupView)
     } else if childView.superview == parentView {
       childView.removeFromSuperview()
-      viewFactory.recycleViewTree(childView)
       delegate?.viewBuilder(self, didRemoveChild: childView, fromParent: parentView)
+
+      // Recycle the view tree after calling the delegate method. This allows the delegate method
+      // to perform any necessary clean-up prior to deconstructing the view tree.
+      viewFactory.recycleViewTree(childView)
     }
   }
 }

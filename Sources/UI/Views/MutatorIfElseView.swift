@@ -111,10 +111,8 @@ open class MutatorIfElseView: LayoutView {
 
     popoverDelegate?.layoutView(self,
                                 requestedToPresentPopoverViewController: viewController,
-                                fromView: popoverButton)
-
-    // Set the delegate so we can prioritize arrow directions
-    viewController.popoverPresentationController?.delegate = self
+                                fromView: popoverButton,
+                                presentationDelegate: self)
   }
 }
 

@@ -689,9 +689,9 @@ colors</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly19DefaultLayoutConfig13BlockStartHatSi"></a>
-                    <a name="//apple_ref/swift/Variable/BlockStartHat" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly19DefaultLayoutConfig13BlockStartHatSi">BlockStartHat</a></h3>
+                    <a name="/s:ZvC7Blockly19DefaultLayoutConfig8BlockHatSi"></a>
+                    <a name="//apple_ref/swift/Variable/BlockHat" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly19DefaultLayoutConfig8BlockHatSi">BlockHat</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -699,15 +699,16 @@ colors</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[<code>Bool</code>] Flag indicating if blocks with no output or previous connection should be
-rendered with a <q>hat</q>.</p>
+                        <p>[<code>String</code>] Default value for how blocks with no output or previous connection should be
+rendered with a <q>hat</q>. This value should correspond to a value of type <code><a href="../Classes/Block/Style.html#/s:CC7Blockly5Block5Style7HatType">Block.Style.HatType</a></code>
+(eg. <code><a href="../Classes/Block/Style.html#/s:ZvCC7Blockly5Block5Style6hatCapSS">Block.Style.hatCap</a></code> or <code><a href="../Classes/Block/Style.html#/s:ZvCC7Blockly5Block5Style7hatNoneSS">Block.Style.hatNone</a></code>).</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockStartHat</span> <span class="o">=</span> <span class="kt"><a href="../Classes/LayoutConfig.html">LayoutConfig</a></span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockHat</span> <span class="o">=</span> <span class="kt"><a href="../Classes/LayoutConfig.html">LayoutConfig</a></span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -717,9 +718,9 @@ rendered with a <q>hat</q>.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly19DefaultLayoutConfig17BlockStartHatSizeSi"></a>
-                    <a name="//apple_ref/swift/Variable/BlockStartHatSize" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly19DefaultLayoutConfig17BlockStartHatSizeSi">BlockStartHatSize</a></h3>
+                    <a name="/s:ZvC7Blockly19DefaultLayoutConfig15BlockHatCapSizeSi"></a>
+                    <a name="//apple_ref/swift/Variable/BlockHatCapSize" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:ZvC7Blockly19DefaultLayoutConfig15BlockHatCapSizeSi">BlockHatCapSize</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -727,14 +728,14 @@ rendered with a <q>hat</q>.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[<code>Size</code>] The size to use when rendering a <q>start hat</q>.</p>
+                        <p>[<code>Size</code>] The size to use when rendering a <q>hat</q> of type <code>Block.Style.cap</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockStartHatSize</span> <span class="o">=</span> <span class="kt"><a href="../Classes/LayoutConfig.html">LayoutConfig</a></span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">BlockHatCapSize</span> <span class="o">=</span> <span class="kt"><a href="../Classes/LayoutConfig.html">LayoutConfig</a></span><span class="o">.</span><span class="nf">newPropertyKey</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -915,6 +916,8 @@ toc:
       path: /blockly/reference/ios/../Classes/BezierPathLayer.html
     - title: Block
       path: /blockly/reference/ios/../Classes/Block.html
+    - title: – Style
+      path: /blockly/reference/ios/../Classes/Block/Style.html
     - title: BlockBuilder
       path: /blockly/reference/ios/../Classes/BlockBuilder.html
     - title: BlockBumper
@@ -1259,6 +1262,8 @@ toc:
       path: /blockly/reference/ios/../Extensions/WorkspaceSize.html
     - title: WorkspaceView
       path: /blockly/reference/ios/../Classes/WorkspaceView.html
+    - title: – Location
+      path: /blockly/reference/ios/../Classes/WorkspaceView/Location.html
     - title: – ScrollView
       path: /blockly/reference/ios/../Classes/WorkspaceView/ScrollView.html
     - title: WorkspaceViewController

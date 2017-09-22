@@ -195,6 +195,9 @@ open class LayoutConfig: NSObject {
   /// Dictionary mapping property keys to `[String]` values
   public private(set) var stringArrays = Dictionary<PropertyKey, [String]>()
 
+  /// Dictionary mapping property keys to `String` values
+  public private(set) var strings = Dictionary<PropertyKey, String>()
+
   /// Dictionary mapping property keys to `Any` values
   public private(set) var untypedValues = Dictionary<PropertyKey, Any>()
 
@@ -280,7 +283,7 @@ open class LayoutConfig: NSObject {
    Maps a `Bool` value to a specific `PropertyKey`.
 
    - parameter boolValue: The `Bool` value
-   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockStartHat`)
+   - parameter key: The `PropertyKey`.
    - returns: The `Bool` that was set.
    */
   @discardableResult
@@ -292,7 +295,7 @@ open class LayoutConfig: NSObject {
   /**
    Returns the `Bool` value that is mapped to a specific `PropertyKey`.
 
-   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockStartHat`)
+   - parameter key: The `PropertyKey`.
    - parameter defaultValue: [Optional] If no `Bool` was found for `key`, this value is
    automatically assigned to `key` and used instead.
    - returns: The `key`'s value
@@ -623,6 +626,33 @@ open class LayoutConfig: NSObject {
   @inline(__always)
   public func stringArray(for key: PropertyKey, defaultValue: [String] = []) -> [String] {
     return stringArrays[key] ?? setStringArray(defaultValue, for: key)
+  }
+
+  /**
+   Maps a `String` value to a specific `PropertyKey`.
+
+   - parameter stringValue: The `String` value.
+   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockHat`).
+   - returns: The `String` that was set.
+   */
+  @discardableResult
+  public func setString(_ stringValue: String, for key: PropertyKey) -> String {
+    strings[key] = stringValue
+    return stringValue
+  }
+
+
+  /**
+   Returns the `String` value that is mapped to a specific `PropertyKey`.
+
+   - parameter key: The `PropertyKey` (e.g. `DefaultLayoutConfig.BlockHat`).
+   - parameter defaultValue: [Optional] If no `String` was found for `key`, this value is
+   automatically assigned to `key` and used instead.
+   - returns: The `key`'s value.
+   */
+  @inline(__always)
+  public func string(for key: PropertyKey, defaultValue: String = "") -> String {
+    return strings[key] ?? setString(defaultValue, for: key)
   }
 
   /**

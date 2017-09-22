@@ -13,6 +13,8 @@ toc:
     path: /blockly/reference/ios/Classes/BezierPathLayer
   - title: Block
     path: /blockly/reference/ios/Classes/Block
+  - title: – Style
+    path: /blockly/reference/ios/Classes/Block/Style
   - title: BlockBuilder
     path: /blockly/reference/ios/Classes/BlockBuilder
   - title: BlockBumper
@@ -357,6 +359,8 @@ toc:
     path: /blockly/reference/ios/Extensions/WorkspaceSize
   - title: WorkspaceView
     path: /blockly/reference/ios/Classes/WorkspaceView
+  - title: – Location
+    path: /blockly/reference/ios/Classes/WorkspaceView/Location
   - title: – ScrollView
     path: /blockly/reference/ios/Classes/WorkspaceView/ScrollView
   - title: WorkspaceViewController

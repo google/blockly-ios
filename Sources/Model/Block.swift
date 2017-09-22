@@ -50,6 +50,8 @@ public final class Block : NSObject {
   public let uuid: String
   /// The type name of this block
   public let name: String
+  /// The initial value of `inputsInline`.
+  internal let initialInputsInlineValue: Bool
   /// Flag indicating if input connectors should be drawn inside a block (`true`) or
   /// on the edge of the block (`false`)
   public var inputsInline: Bool {
@@ -129,7 +131,8 @@ public final class Block : NSObject {
   public var movable: Bool {
     didSet { didSetProperty(movable, oldValue) }
   }
-  /// Flag indicating if this block has had its user interaction disabled
+  /// Flag indicating if this block is disabled, which means it will be excluded from code
+  /// generation.
   public var disabled: Bool  {
     didSet { didSetProperty(disabled, oldValue) }
   }
@@ -158,6 +161,19 @@ public final class Block : NSObject {
       outputConnection?.shadowConnection == nil
   }
 
+  /// The style that should be applied to the block during rendering.
+  public var style: Style {
+    didSet {
+      if style == oldValue {
+        return
+      }
+
+      oldValue.block = nil
+      style.block = self
+      notifyDidUpdateBlock()
+    }
+  }
+
   /// Listeners for events that occur on this block.
   public var listeners = WeakSet<BlockListener>()
 
@@ -167,16 +183,32 @@ public final class Block : NSObject {
   // MARK: - Initializers
 
   internal init(
-    uuid: String?, name: String, color: UIColor, inputs: [Input] = [], inputsInline: Bool,
-    position: WorkspacePoint, shadow: Bool, tooltip: String, comment: String, helpURL: String,
-    deletable: Bool, movable: Bool, disabled: Bool, editable: Bool, outputConnection: Connection?,
-    previousConnection: Connection?, nextConnection: Connection?, mutator: Mutator?,
+    uuid: String?,
+    name: String,
+    color: UIColor,
+    inputs: [Input] = [],
+    inputsInline: Bool,
+    position: WorkspacePoint,
+    shadow: Bool,
+    tooltip: String,
+    comment: String,
+    helpURL: String,
+    deletable: Bool,
+    movable: Bool,
+    disabled: Bool,
+    editable: Bool,
+    outputConnection: Connection?,
+    previousConnection: Connection?,
+    nextConnection: Connection?,
+    style: Style,
+    mutator: Mutator?,
     extensions: [BlockExtension]) throws
   {
     self.uuid = uuid ?? UUID().uuidString
     self.name = name
     self.color = color
     self.inputs = inputs
+    self.initialInputsInlineValue = inputsInline
     self.inputsInline = inputsInline
     self.position = position
     self.shadow = shadow
@@ -190,6 +222,7 @@ public final class Block : NSObject {
     self.movable = movable
     self.disabled = disabled
     self.editable = editable
+    self.style = style
 
     super.init()
 
@@ -578,5 +611,52 @@ public final class Block : NSObject {
     self.mutator = mutator
     mutator.block = self
     try mutator.mutateBlock()
+  }
+
+  // MARK: - Block.Style Class
+
+  /**
+   Specifies any styles that should be applied to the block during rendering.
+   */
+  @objc(BKYBlockStyle)
+  open class Style: NSObject, NSCopying {
+    // MARK: - Constants
+
+    /// Underlying value of `HatType`.
+    public typealias HatType = String
+    /// Constant value for rendering a hat with a flat top.
+    public static let hatNone: HatType = "none"
+    /// Constant value for rendering a hat with a half-rounded top and horizontal base.
+    public static let hatCap: HatType = "cap"
+
+    // MARK: - Properties
+
+    /// The block that this style is attached to.
+    public weak var block: Block?
+
+    /// Specifies the type of hat to render on top of the block. This value is only applied to the
+    /// block if it has no previous or output connections.
+    public var hat: HatType? {
+      didSet {
+        if hat == oldValue {
+          return
+        }
+        block?.notifyDidUpdateBlock()
+      }
+    }
+
+    // MARK: - Initializers
+
+    public required override init() {
+      super.init()
+    }
+
+    // MARK: - NSCopying Implementation
+
+    public func copy(with zone: NSZone? = nil) -> Any {
+      let copy = type(of: self).init()
+      copy.hat = hat
+      return copy
+    }
   }
 }

@@ -188,10 +188,18 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    loadWorkspace()
+  }
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
     _codeGeneratorService.cancelAllRequests()
+
+    saveWorkspace()
   }
 
   override var prefersStatusBarHidden : Bool {
@@ -202,6 +210,8 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
 
   @IBAction internal dynamic func didPressPlay(_ button: UIButton) {
     do {
+      saveWorkspace()
+
       if _currentlyRunning {
         if (_currentRequestUUID != "") {
           guard let uuid = _currentRequestUUID else {
@@ -301,6 +311,33 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     self.codeText.text = (self.codeText.text ?? "") +
       "[\(_dateFormatter.string(from: Date()))] \(trimmedText)\n"
   }
+
+  // MARK: - Load/Save Workspace
+
+  fileprivate func saveWorkspace() {
+    guard let workspace = _workbenchViewController.workspace else {
+      return
+    }
+
+    do {
+      let xml = try workspace.toXML()
+      FileHelper.saveContents(xml, to: "turtle_swift_workspace.xml")
+    } catch let error {
+      print("Could not save workspace to disk: \(error)")
+    }
+  }
+
+  fileprivate func loadWorkspace() {
+    if let xml = FileHelper.loadContents(of: "turtle_swift_workspace.xml") {
+      do {
+        let workspace = Workspace()
+        try workspace.loadBlocks(fromXMLString: xml, factory: _workbenchViewController.blockFactory)
+        try _workbenchViewController.loadWorkspace(workspace)
+      } catch let error {
+        print("Could not load workspace from disk: \(error)")
+      }
+    }
+  }
 }
 
 /**
@@ -308,7 +345,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
  intermediary object here to act as a delegate so we can more easily break a potential retain cycle
  between WKUserContentController and TurtleSwiftViewController.
  */
-class ScriptMessageHandler : NSObject, WKScriptMessageHandler {
+fileprivate class ScriptMessageHandler : NSObject, WKScriptMessageHandler {
   weak var delegate : WKScriptMessageHandler?
 
   init(_ delegate: WKScriptMessageHandler) {
@@ -347,7 +384,8 @@ extension TurtleSwiftViewController: WKScriptMessageHandler {
             _lastHighlightedBlockUUID = blockID
           }
           if _allowScrollingToBlockView {
-            _workbenchViewController.scrollBlockIntoView(blockUUID: blockID, animated: true)
+            _workbenchViewController
+              .scrollBlockIntoView(blockUUID: blockID, location: .anywhere, animated: true)
           }
         }
       case "unhighlightLastBlock":

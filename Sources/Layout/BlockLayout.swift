@@ -125,9 +125,9 @@ open class BlockLayout: Layout {
     }
   }
 
-  /// Flag determining if user interaction should be enabled for the corresponding view
+  /// Flag determining if user interaction should be enabled for the corresponding view.
   open var userInteractionEnabled: Bool {
-    return !block.disabled
+    return true
   }
 
   /// The position of the block's leading edge X offset, specified as a Workspace coordinate
@@ -141,7 +141,8 @@ open class BlockLayout: Layout {
   /// `performLayout(includeChildren:)`.
   open var firstLineHeight: CGFloat = 0
 
-  /// Flag indicating if this block has had its user interaction disabled.
+  /// Flag indicating if this block is disabled, which means it will be excluded from code
+  /// generation.
   open var disabled: Bool {
     get { return block.disabled }
     set {

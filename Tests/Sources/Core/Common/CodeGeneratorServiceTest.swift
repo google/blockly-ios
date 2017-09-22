@@ -77,8 +77,6 @@ class CodeGeneratorServiceTest: XCTestCase {
     builder.addJSONBlockDefinitionFiles(fromDefaultFiles: .allDefault)
     _codeGeneratorService.setRequestBuilder(builder, shouldCache: false)
 
-    let abc = ""
-
     // Execute request
     let _ = BKYAssertDoesNotThrow {
       try _codeGeneratorService.generateCode(
@@ -128,7 +126,7 @@ class CodeGeneratorServiceTest: XCTestCase {
 
     let testBundle = Bundle(for: type(of: self))
 
-    for _ in 0 ..< 30 {
+    for _ in 0 ..< 10 {
       // Set up timeout expectation
       let expectation = self.expectation(description: "Code Generation")
 

@@ -47,13 +47,6 @@ open class FieldCheckboxLayout: FieldLayout {
     super.init(field: fieldCheckbox, engine: engine, measurer: measurer)
   }
 
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
-
   // MARK: - Public
 
   /**
@@ -63,9 +56,13 @@ open class FieldCheckboxLayout: FieldLayout {
    - parameter checked: The value used to update `self.fieldCheckbox`.
    */
   open func updateCheckbox(_ checked: Bool) {
+    guard fieldCheckbox.checked != checked else { return }
+
     captureChangeEvent {
-      // Setting to a new checkbox value automatically fires a listener to update the layout
       fieldCheckbox.checked = checked
     }
+
+    // Perform a layout up the tree
+    updateLayoutUpTree()
   }
 }

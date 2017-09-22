@@ -157,11 +157,11 @@ extension FieldVariableView: DropdownViewDelegate {
     viewController.options = options
     viewController.selectedIndex =
       options.index { $0.value == fieldVariableLayout.variable } ?? -1
-    popoverDelegate?
-      .layoutView(self, requestedToPresentPopoverViewController: viewController, fromView: self)
 
-    // Set the delegate so we can prioritize arrow directions
-    viewController.popoverPresentationController?.delegate = self
+    popoverDelegate?.layoutView(self,
+                                requestedToPresentPopoverViewController: viewController,
+                                fromView: self,
+                                presentationDelegate: self)
   }
 }
 
@@ -220,15 +220,25 @@ extension FieldVariableView: DropdownOptionsViewControllerDelegate {
     let renameText = message(forKey: "BKY_IOS_VARIABLES_RENAME_BUTTON")
     renameView.addAction(UIAlertAction(title: cancelText, style: .default, handler: nil))
     let renameAlertAction = UIAlertAction(title: renameText, style: .default) {
-      [weak renameView] _ in
-      guard let textField = renameView?.textFields?[0],
+      [weak renameView, weak self] _ in
+      guard let renameView = renameView,
+        let variableView = self else {
+          return
+      }
+      guard let textField = renameView.textFields?[0],
         let newName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
         fieldVariableLayout.isValidName(newName) else
       {
-        self.renameVariable(fieldVariableLayout: fieldVariableLayout,
+        variableView.renameVariable(fieldVariableLayout: fieldVariableLayout,
                             error: message(forKey: "BKY_IOS_VARIABLES_EMPTY_NAME_ERROR"))
         return
       }
+
+      // We call this to balance out the presentation call, allowing the workspace
+      // to perform any necessary state cleanup.
+      variableView.popoverDelegate?.layoutView(variableView,
+                                               requestedToDismissPopoverViewController: renameView,
+                                               animated: false)
 
       EventManager.shared.groupAndFireEvents {
         fieldVariableLayout.renameVariable(to: newName)

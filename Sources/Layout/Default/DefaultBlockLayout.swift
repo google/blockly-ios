@@ -129,9 +129,9 @@ public final class DefaultBlockLayout: BlockLayout {
     self.background.updateRenderProperties(fromBlockLayout: self)
     self.background.removeAllRows()
 
-    // Account for sizing if a start hat needs to be rendered
-    if background.startHat {
-      let blockHatSize = config.workspaceSize(for: DefaultLayoutConfig.BlockStartHatSize)
+    // Account for sizing if a cap hat needs to be rendered
+    if background.hat == Block.Style.hatCap {
+      let blockHatSize = config.workspaceSize(for: DefaultLayoutConfig.BlockHatCapSize)
       currentLineHeight += blockHatSize.height
       minimalFieldWidthRequired = max(minimalFieldWidthRequired, blockHatSize.width)
     }

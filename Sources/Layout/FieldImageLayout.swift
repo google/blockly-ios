@@ -45,13 +45,6 @@ open class FieldImageLayout: FieldLayout {
     super.init(field: fieldImage, engine: engine, measurer: measurer)
   }
 
-  // MARK: - Super
-
-  open override func didUpdateField(_ field: Field) {
-    // Perform a layout up the tree
-    updateLayoutUpTree()
-  }
-
   // MARK: - Public
 
   /**
