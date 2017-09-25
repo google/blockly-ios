@@ -147,9 +147,12 @@ class BlockBuilderTest: XCTestCase {
     fields = [
       FieldAngle(name: "angle", angle: 90),
       FieldColor(name: "color", color: UIColor.magenta),
-      FieldImage(name: "no name",
+      FieldImage(
+        name: "no name",
         imageLocation: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-        size: WorkspaceSize(width: 15, height: 20), altText: "*")
+        size: WorkspaceSize(width: 15, height: 20),
+        altText: "*",
+        flipRtl: false)
     ]
     inputBuilder.appendFields(fields)
     bob.inputBuilders.append(inputBuilder)

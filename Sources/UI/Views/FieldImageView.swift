@@ -33,6 +33,7 @@ open class FieldImageView: FieldView {
     imageView.frame = self.bounds
     imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     imageView.contentMode = .scaleAspectFill
+    imageView.clipsToBounds = true
     return imageView
   }()
 
@@ -69,6 +70,10 @@ open class FieldImageView: FieldView {
         fieldImageLayout.loadImage(completion: { (image) in
           self.imageView.image = image
         })
+
+        self.imageView.transform = fieldImageLayout.flipRtl
+          ? CGAffineTransform(scaleX: -1, y: 1)
+          : CGAffineTransform.identity
       }
     }
   }

@@ -40,6 +40,10 @@ public final class FieldImage: Field {
   public var altText: String {
     didSet { didSetProperty(altText, oldValue) }
   }
+  /// Flag determining if this image should be flipped horizontally in RTL rendering.
+  public var flipRtl: Bool {
+    didSet { didSetProperty(flipRtl, oldValue) }
+  }
 
   // MARK: - Initializers
 
@@ -51,12 +55,15 @@ public final class FieldImage: Field {
      local image resource, either as an image asset name or a location relative to the main resource
      bundle of the app. As a fallback, this can specify the location of a URL web image to fetch.
    - parameter altText: The alt text for this field.
+   - parameter flipRtl: Flag determining if this image should be flipped horizontally in RTL
+   rendering.
    */
   public init(
-    name: String, imageLocation: String, size: WorkspaceSize, altText: String) {
+    name: String, imageLocation: String, size: WorkspaceSize, altText: String, flipRtl: Bool) {
       self.imageLocation = imageLocation
       self.size = size
       self.altText = altText
+      self.flipRtl = flipRtl
 
       super.init(name: name)
   }
@@ -64,7 +71,12 @@ public final class FieldImage: Field {
   // MARK: - Super
 
   public override func copyField() -> Field {
-    return FieldImage(name: name, imageLocation: imageLocation, size: size, altText: altText)
+    return FieldImage(
+      name: name,
+      imageLocation: imageLocation,
+      size: size,
+      altText: altText,
+      flipRtl: flipRtl)
   }
 
   public override func setValueFromSerializedText(_ text: String) throws {

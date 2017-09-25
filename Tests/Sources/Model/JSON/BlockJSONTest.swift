@@ -64,6 +64,7 @@ class BlockJSONTest: XCTestCase {
     XCTAssertEqual(100, fieldImage.size.width)
     XCTAssertEqual(100, fieldImage.size.height)
     XCTAssertEqual("Cool Dance!", fieldImage.altText)
+    XCTAssertEqual(true, fieldImage.flipRtl)
 
     // Variable
     guard let fieldVariable = input0.fields[1] as? FieldVariable else {

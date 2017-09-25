@@ -31,6 +31,11 @@ open class FieldImageLayout: FieldLayout {
     return fieldImage.size
   }
 
+  /// Flag determining if this image should be flipped horizontally in RTL rendering.
+  open var flipRtl: Bool {
+    return fieldImage.flipRtl
+  }
+
   // MARK: - Initializers
 
   /**

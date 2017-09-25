@@ -7,7 +7,8 @@
       "src": "http://33.media.tumblr.com/tumblr_lhtb1e4oc11qhp8pjo1_400.gif",
       "width": 100,
       "height": 100,
-      "alt": "Cool Dance!"
+      "alt": "Cool Dance!",
+      "flipRtl": true
     },
     {
       "type": "field_variable",
