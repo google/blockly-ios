@@ -68,7 +68,9 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
       /// Specifies an individual touch has just changed on a `BlockView`
       changed,
       /// Specifies an individual touch has just ended on a `BlockView`
-      ended
+      ended,
+      /// Specifies an individual touch has been cancelled on a `BlockView`.
+      cancelled
   }
 
   // MARK: - Properties
@@ -117,6 +119,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    */
   open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
     super.touchesBegan(touches, with:event)
+
     for touch in touches {
       let location = touch.location(in: view)
 
@@ -153,6 +156,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    */
   open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
     super.touchesMoved(touches, with:event)
+
     // If the gesture has yet to start, check if it should start.
     if state == .possible {
       for touch in touches {
@@ -162,12 +166,13 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
         let previousPosition = touch.previousLocation(in: view)
         let distance = hypotf(Float(previousPosition.x - touchPosition.x),
                               Float(previousPosition.y - touchPosition.y))
-        // If the distance is sufficient, begin the gesture.
+
         if distance > minimumPanDistance {
+          // The distance is sufficient, begin the gesture.
           state = .began
           break
-        // If not, check the next touch to see if it should begin the gesture.
         } else {
+          // Check the next touch to see if it should begin the gesture.
           continue
         }
       }
@@ -176,10 +181,10 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
       if state == .possible {
         return
       }
-    // Set the state to changed, so anything listening to the standard gesture recognizer can
-    // listen to standard gesture events. Note UIGestureRecognizer requires setting the state to
-    // changed even if it's already there, to fire the correct delegates.
     } else if state == .began || state == .changed {
+      // Set the state to changed, so anything listening to the standard gesture recognizer can
+      // listen to standard gesture events. Note UIGestureRecognizer requires setting the state to
+      // changed even if it's already there, to fire the correct delegates.
       state = .changed
     }
 
@@ -224,6 +229,7 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    */
   open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
     super.touchesEnded(touches, with:event)
+
     for touch in touches {
       if let index = _touches.index(of: touch) {
         let block = _blocks[index]
@@ -249,10 +255,10 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
 
     if _touches.count == 0 {
       if state == .changed {
-        // If the gesture succeeded, end the gesture.
+        // The gesture succeeded, end the gesture.
         state = .ended
       } else {
-        // If the gesture never began, cancel the gesture.
+        // The gesture never began, cancel the gesture.
         state = .cancelled
       }
     }
@@ -263,9 +269,19 @@ open class BlocklyPanGestureRecognizer: UIGestureRecognizer {
    */
   open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
     super.touchesCancelled(touches, with: event)
+
     for touch in touches {
       if let index = _touches.index(of: touch) {
         _touches.remove(at: index)
+
+        // If the gesture recognizer has started recognizing touches, fire delegate to notify
+        // of touches being cancelled.
+        if state == .began || state == .changed {
+          targetDelegate?.blocklyPanGestureRecognizer(self,
+                                                      didTouchBlock: _blocks[index],
+                                                      touch: touch,
+                                                      touchState: .cancelled)
+        }
         _blocks.remove(at: index)
       }
     }

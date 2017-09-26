@@ -956,7 +956,8 @@ extension WorkbenchViewController {
     }
 
     if !state.intersectsWith(.presentingPopover),
-      let presentedViewController = self.presentedViewController {
+      let presentedViewController = self.presentedViewController,
+      !presentedViewController.isBeingDismissed {
       presentedViewController.dismiss(animated: animated, completion: nil)
     }
 
@@ -1705,10 +1706,10 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
       }
     }
 
-    if touchState == .ended {
+    if (touchState == .ended || touchState == .cancelled) && _dragger.numberOfActiveDrags > 0 {
       let touchTouchingTrashCan = isTouchTouchingTrashCan(touchPosition,
         fromView: workspaceView.scrollView)
-      if touchTouchingTrashCan && blockLayout.block.deletable {
+      if touchState == .ended && touchTouchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
         _dragger.cancelDraggingBlockLayout(blockLayout)
 
