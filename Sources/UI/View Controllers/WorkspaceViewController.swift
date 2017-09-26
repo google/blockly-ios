@@ -215,7 +215,8 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
       return false
     }
 
-    if let presentedViewController = self.presentedViewController {
+    if let presentedViewController = self.presentedViewController,
+      !presentedViewController.isBeingDismissed {
       // Dismiss any other view controller that's being presented
       presentedViewController.dismiss(animated: true, completion: nil)
     }
@@ -249,7 +250,9 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     _ layoutView: LayoutView,
     requestedToDismissPopoverViewController viewController: UIViewController,
     animated: Bool) {
-    viewController.dismiss(animated: animated, completion: nil)
+    if !viewController.isBeingDismissed {
+      viewController.dismiss(animated: animated, completion: nil)
+    }
 
     presentationDelegate = nil
 
