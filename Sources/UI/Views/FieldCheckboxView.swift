@@ -21,7 +21,7 @@ import Foundation
  Because there is no native checkbox on iOS, this is implemented using a `UISwitch`.
  */
 @objc(BKYFieldCheckboxView)
-open class FieldCheckboxView: FieldView {
+@objcMembers open class FieldCheckboxView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldCheckboxLayout`
@@ -97,7 +97,7 @@ open class FieldCheckboxView: FieldView {
 
   // MARK: - Private
 
-  fileprivate dynamic func switchValueDidChange(_ sender: UISwitch) {
+  @objc fileprivate dynamic func switchValueDidChange(_ sender: UISwitch) {
     EventManager.shared.groupAndFireEvents {
       fieldCheckboxLayout?.updateCheckbox(switchButton.isOn)
     }

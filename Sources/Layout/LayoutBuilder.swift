@@ -19,7 +19,7 @@ import Foundation
 Class for building a `Layout` hierarchy from a model object.
 */
 @objc(BKYLayoutBuilder)
-open class LayoutBuilder: NSObject {
+@objcMembers open class LayoutBuilder: NSObject {
   // MARK: - Properties
 
   /// Factory responsible for creating new `Layout` instances

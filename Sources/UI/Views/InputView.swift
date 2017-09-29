@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `InputLayout`.
  */
 @objc(BKYInputView)
-open class InputView: LayoutView {
+@objcMembers open class InputView: LayoutView {
 
   // MARK: - Properties
 

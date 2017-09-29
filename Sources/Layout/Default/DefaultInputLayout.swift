@@ -19,7 +19,7 @@ import UIKit
  A default implementation of `InputLayout`.
  */
 @objc(BKYDefaultInputLayout)
-public final class DefaultInputLayout: InputLayout {
+@objcMembers public final class DefaultInputLayout: InputLayout {
   // MARK: - Properties
 
   // TODO(#34): Consider replacing all connections/relative positions with a ConnectionLayout

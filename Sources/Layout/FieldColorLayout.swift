@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldColor`-based `Layout`.
  */
 @objc(BKYFieldColorLayout)
-open class FieldColorLayout: FieldLayout {
+@objcMembers open class FieldColorLayout: FieldLayout {
 
   // MARK: - Properties
 

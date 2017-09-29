@@ -35,7 +35,7 @@ import WebKit
  handles these problems.
  */
 @objc(BKYCodeGenerator)
-public final class CodeGenerator: NSObject {
+@objcMembers public final class CodeGenerator: NSObject {
 
   // MARK: - Static Properties
 

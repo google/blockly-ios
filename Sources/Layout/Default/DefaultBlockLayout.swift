@@ -19,7 +19,7 @@ import Foundation
  A default implementation of `BlockLayout`.
  */
 @objc(BKYDefaultBlockLayout)
-public final class DefaultBlockLayout: BlockLayout {
+@objcMembers public final class DefaultBlockLayout: BlockLayout {
   // MARK: - Properties
 
   /// The information for rendering the background for this block.

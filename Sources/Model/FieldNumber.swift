@@ -31,7 +31,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
  Text field for inputting a number value.
  */
 @objc(BKYFieldNumber)
-public final class FieldNumber: Field {
+@objcMembers public final class FieldNumber: Field {
   // MARK: - Static Properties
 
   /// The maximum number of digits allowed after the decimal place

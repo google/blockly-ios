@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldLabel`-based `Layout`.
  */
 @objc(BKYFieldLabelLayout)
-open class FieldLabelLayout: FieldLayout {
+@objcMembers open class FieldLabelLayout: FieldLayout {
 
   // MARK: - Properties
 

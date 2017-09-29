@@ -19,7 +19,7 @@ import Foundation
  Abstract view for rendering a `BlockLayout`.
  */
 @objc(BKYBlockView)
-open class BlockView: LayoutView {
+@objcMembers open class BlockView: LayoutView {
   // MARK: - Properties
 
   /// Layout object to render

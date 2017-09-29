@@ -66,7 +66,7 @@ a UI view can simply access the property `viewFrame` to determine its "UIView co
 position and size.
 */
 @objc(BKYLayout)
-open class Layout: NSObject {
+@objcMembers open class Layout: NSObject {
   // MARK: - Static Properties
 
   /// Flag that should be used when the layout's entire display needs to be updated from the UI side

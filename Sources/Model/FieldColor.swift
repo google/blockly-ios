@@ -19,7 +19,7 @@ import Foundation
 An input field for a color value.
 */
 @objc(BKYFieldColor)
-public final class FieldColor: Field {
+@objcMembers public final class FieldColor: Field {
   // MARK: - Properties
 
   /// The `UIColor` of this field.

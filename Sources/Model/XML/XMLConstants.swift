@@ -17,7 +17,7 @@
  List of all tags and attributes used for XML parsing/serialization.
  */
 @objc(BKYXMLConstants)
-internal class XMLConstants: NSObject {
+@objcMembers internal class XMLConstants: NSObject {
   static let TAG_BLOCK = "block"
   static let TAG_SHADOW = "shadow"
   static let TAG_INPUT_VALUE = "value"

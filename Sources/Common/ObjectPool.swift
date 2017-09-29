@@ -36,7 +36,7 @@ public protocol Recyclable: class {
 Handles the management of recyclable objects.
 */
 @objc(BKYObjectPool)
-public final class ObjectPool: NSObject {
+@objcMembers public final class ObjectPool: NSObject {
   // MARK: - Properties
 
   /// Keeps track of all recycled objects. Objects of the same type are keyed by their class name

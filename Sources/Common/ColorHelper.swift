@@ -19,7 +19,7 @@ import Foundation
  Utility class for creating `UIColor` instances.
  */
 @objc(BKYColorHelper)
-public class ColorHelper: NSObject {
+@objcMembers public class ColorHelper: NSObject {
   /**
    Parses a RGB string and returns its corresponding color.
 

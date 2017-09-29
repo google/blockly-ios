@@ -19,7 +19,7 @@ import Foundation
  Abstract view for rendering a `FieldLayout`.
  */
 @objc(BKYFieldView)
-open class FieldView: LayoutView {
+@objcMembers open class FieldView: LayoutView {
 
   // MARK: - Properties
 

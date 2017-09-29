@@ -19,7 +19,7 @@ import Foundation
  Stores information on how to render and position a `Workspace` on-screen.
  */
 @objc(BKYWorkspaceLayout)
-open class WorkspaceLayout: Layout {
+@objcMembers open class WorkspaceLayout: Layout {
   // MARK: - Static Properties
 
   /// Flag that should be used when the canvas size of the workspace has been updated.

@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldColorLayout`.
  */
 @objc(BKYFieldColorView)
-open class FieldColorView: FieldView {
+@objcMembers open class FieldColorView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldColorLayout`
@@ -87,7 +87,7 @@ open class FieldColorView: FieldView {
 
   // MARK: - Private
 
-  fileprivate dynamic func didTapButton(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapButton(_ sender: UIButton) {
     // Show the color picker
     let viewController = FieldColorPickerViewController()
     viewController.color = fieldColorLayout?.color

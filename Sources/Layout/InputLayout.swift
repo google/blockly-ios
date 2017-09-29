@@ -19,7 +19,7 @@ import UIKit
  Abstract class for storing information on how to render and position an `Input` on-screen.
  */
 @objc(BKYInputLayout)
-open class InputLayout: Layout {
+@objcMembers open class InputLayout: Layout {
   // MARK: - Properties
 
   /// The target `Input` to layout

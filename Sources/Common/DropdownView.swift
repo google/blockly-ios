@@ -40,7 +40,7 @@ public protocol DropdownViewDelegate: class {
  ```
  */
 @objc(BKYDropdownView)
-public final class DropdownView: UIView {
+@objcMembers public final class DropdownView: UIView {
   // MARK: - Properties
 
   /// The current text of the dropdown
@@ -232,7 +232,7 @@ public final class DropdownView: UIView {
 
   // MARK: - Private
 
-  private dynamic func didTapButton(_ sender: UIButton) {
+  @objc private dynamic func didTapButton(_ sender: UIButton) {
     delegate?.dropDownDidReceiveTap()
   }
 }

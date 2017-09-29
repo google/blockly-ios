@@ -63,7 +63,7 @@ public protocol NameManagerListener {
  Any names added to this manager are done so without case sensitivity.
  */
 @objc(BKYNameManager)
-public final class NameManager: NSObject {
+@objcMembers public final class NameManager: NSObject {
   // MARK: - Static Properties
 
   /// Regular expression pattern with two groups.  The first lazily looks for any sequence of

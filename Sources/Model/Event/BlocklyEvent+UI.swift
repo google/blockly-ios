@@ -21,7 +21,7 @@ extension BlocklyEvent {
    the toolbox or trash, and changing toolbox categories.
    */
   @objc(BKYEventUI)
-  public final class UI: BlocklyEvent {
+  @objcMembers public final class UI: BlocklyEvent {
 
     // MARK: - Constants
 

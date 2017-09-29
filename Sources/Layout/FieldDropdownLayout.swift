@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldDropdown`-based `Layout`.
  */
 @objc(BKYFieldDropdownLayout)
-open class FieldDropdownLayout: FieldLayout {
+@objcMembers open class FieldDropdownLayout: FieldLayout {
 
   // MARK: - Properties
 

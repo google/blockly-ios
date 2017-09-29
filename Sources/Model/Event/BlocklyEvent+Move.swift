@@ -24,7 +24,7 @@ extension BlocklyEvent {
    using `recordNew(forBlock:)`.
    */
   @objc(BKYEventMove)
-  public final class Move: BlocklyEvent {
+  @objcMembers public final class Move: BlocklyEvent {
 
     // MARK: - Properties
 

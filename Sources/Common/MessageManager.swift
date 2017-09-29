@@ -41,7 +41,7 @@ import Foundation
  This class is designed as a singleton instance, accessible via `MessageManager.shared`.
  */
 @objc(BKYMessageManager)
-public class MessageManager: NSObject {
+@objcMembers public class MessageManager: NSObject {
   // MARK: - Properties
 
   /// Shared instance.

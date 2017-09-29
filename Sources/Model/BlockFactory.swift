@@ -26,7 +26,7 @@ import Foundation
  - Manually creating a `BlockBuilder` for a specific block name and assigning it to the factory.
  */
 @objc(BKYBlockFactory)
-public class BlockFactory : NSObject {
+@objcMembers public class BlockFactory : NSObject {
 
   // MARK: - Properties
 

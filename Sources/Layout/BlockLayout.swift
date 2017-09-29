@@ -21,7 +21,7 @@ import Foundation
  Abstract class for storing information on how to render and position a `Block` on-screen.
  */
 @objc(BKYBlockLayout)
-open class BlockLayout: Layout {
+@objcMembers open class BlockLayout: Layout {
   // MARK: - Static Properties
 
   /// Flag that should be used when `self.highlighted` has been updated

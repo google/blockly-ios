@@ -19,7 +19,7 @@ import Foundation
 An editable text field.
 */
 @objc(BKYFieldInput)
-public final class FieldInput: Field {
+@objcMembers public final class FieldInput: Field {
   // MARK: - Properties
 
   /// The text value for the field

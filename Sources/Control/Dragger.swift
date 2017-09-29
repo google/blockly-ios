@@ -19,7 +19,7 @@ import Foundation
 Controller for dragging blocks around in the workspace.
 */
 @objc(BKYDragger)
-public final class Dragger: NSObject {
+@objcMembers public final class Dragger: NSObject {
   // MARK: - Properties
 
   /// The workspace layout where blocks are being dragged

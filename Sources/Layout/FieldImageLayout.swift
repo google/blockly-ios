@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldImage`-based `Layout`.
  */
 @objc(BKYFieldImageLayout)
-open class FieldImageLayout: FieldLayout {
+@objcMembers open class FieldImageLayout: FieldLayout {
 
   // MARK: - Properties
 

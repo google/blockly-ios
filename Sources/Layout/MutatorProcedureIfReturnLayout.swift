@@ -20,7 +20,7 @@ import Foundation
  Associated layout class for `MutatorProcedureIfReturn`.
  */
 @objc(BKYMutatorProcedureIfReturnLayout)
-public class MutatorProcedureIfReturnLayout : MutatorLayout {
+@objcMembers public class MutatorProcedureIfReturnLayout : MutatorLayout {
 
   // MARK: - Properties
 

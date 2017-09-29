@@ -24,7 +24,7 @@ Under the hood, this class uses a `UIBezierPath` object, but it has added the fo
 - adds SVG-equivalent methods for "smooth curveto" and "smooth quadratic curveto"
 */
 @objc(BKYWorkspaceBezierPath)
-public final class WorkspaceBezierPath: NSObject {
+@objcMembers public final class WorkspaceBezierPath: NSObject {
   // MARK: - Properties
 
   /// The translated bezier path in the UIView coordinate system.

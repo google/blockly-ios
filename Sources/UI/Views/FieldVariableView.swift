@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldVariableLayout`.
  */
 @objc(BKYFieldVariableView)
-open class FieldVariableView: FieldView {
+@objcMembers open class FieldVariableView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldVariableLayout`
