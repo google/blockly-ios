@@ -91,10 +91,10 @@ class FieldJSONTest: XCTestCase {
     var blue:CGFloat = 0
     var alpha:CGFloat = 0
     field.color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-    XCTAssertEqualWithAccuracy(Float(0.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(255.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(170.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(1.0), Float(alpha), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(0.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(255.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(170.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(1.0), Float(alpha), accuracy: TestConstants.ACCURACY_F)
   }
 
   // MARK: - fieldFromJSON - Date

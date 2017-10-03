@@ -18,8 +18,7 @@ import Foundation
 /**
  Helper for loading and saving files to the user document directory.
  */
-@objc
-class FileHelper: NSObject {
+@objc @objcMembers class FileHelper: NSObject {
   /**
    Loads the contents of a given file.
 

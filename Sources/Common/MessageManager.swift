@@ -306,14 +306,14 @@ import Foundation
     for match in matches.reversed() {
       guard
         match.numberOfRanges == 2,
-        match.rangeAt(1).location != NSNotFound, // The first capture group is what contains the key
+        match.range(at: 1).location != NSNotFound, // The first capture group is what contains the key
         let matchRange = bky_rangeFromNSRange(match.range, forString: returnValue),
-        let keyRange = bky_rangeFromNSRange(match.rangeAt(1), forString: returnValue) else {
+        let keyRange = bky_rangeFromNSRange(match.range(at: 1), forString: returnValue) else {
           continue
       }
 
       // Found a key, try to find a message for it.
-      let key = returnValue.substring(with: keyRange)
+      let key = String(returnValue[keyRange])
 
       if let message = self.message(forKey: key) {
         // A message was found for the key. The message itself may contain more key references,

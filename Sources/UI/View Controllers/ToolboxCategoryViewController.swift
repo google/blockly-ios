@@ -131,9 +131,9 @@ import Foundation
         "V:|[footerView]|"
       ]
 
-      footerView.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
+      footerView.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
       _headerConstraint = headerView.bky_addWidthConstraint(0,
-        priority: UILayoutPriorityRequired)
+        priority: UILayoutPriority.required)
     case .vertical:
       constraints = [
         "V:|[headerView][workspaceView][footerView]|",
@@ -142,9 +142,9 @@ import Foundation
         "H:|[footerView]|"
       ]
 
-      footerView.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
+      footerView.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
       _headerConstraint = headerView.bky_addHeightConstraint(0,
-        priority: UILayoutPriorityRequired)
+        priority: UILayoutPriority.required)
     }
 
     view.bky_addSubviews(Array(views.values))
@@ -152,8 +152,8 @@ import Foundation
 
     // Add low priority size constraints. This allows this view to automatically resize itself
     // if no other higher priority size constraints have been set elsewhere.
-    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
-    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
+    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
+    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
 
     view.setNeedsUpdateConstraints()
     workspaceViewController.workspaceView.setNeedsUpdateConstraints()
