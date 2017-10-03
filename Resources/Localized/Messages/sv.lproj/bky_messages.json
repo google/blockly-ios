@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Skapa 'h\u00e4mta %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "G\u00f6r s\u00e5 att den h\u00e4r variabeln blir lika med inputen.",
-  "VARIABLE_ALREADY_EXISTS": "En variabel som heter \"%1\" finns redan."
+  "VARIABLE_ALREADY_EXISTS": "En variabel som heter \"%1\" finns redan.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "En variabel med namnet \"%1\" finns redan f\u00f6r en annan variabeln av typen \"%2\"."
 }

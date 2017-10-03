@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Krijo 'merr %1",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Vendos kete variable te jete e barabarte me te dhenat ne hyrje.",
-  "VARIABLE_ALREADY_EXISTS": "Nj\u00eb variab\u00ebl e quajtur '%1' tashm\u00eb ekziston."
+  "VARIABLE_ALREADY_EXISTS": "Nj\u00eb variab\u00ebl e quajtur '%1' tashm\u00eb ekziston.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

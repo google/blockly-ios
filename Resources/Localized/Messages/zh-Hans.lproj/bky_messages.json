@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "\u521b\u5efa\u201c\u83b7\u5f97%1\u201d",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "\u8bbe\u7f6e\u6b64\u53d8\u91cf\uff0c\u4ee5\u4f7f\u5b83\u548c\u8f93\u5165\u503c\u76f8\u7b49\u3002",
-  "VARIABLE_ALREADY_EXISTS": "\u5df2\u5b58\u5728\u540d\u4e3a\u201c%1\u201d\u7684\u53d8\u91cf\u3002"
+  "VARIABLE_ALREADY_EXISTS": "\u5df2\u5b58\u5728\u540d\u4e3a\u201c%1\u201d\u7684\u53d8\u91cf\u3002",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "\u540d\u53eb\u201c%1\u201d\u7684\u53d8\u91cf\u5df2\u5b58\u5728\uff0c\u4f46\u4f5c\u4e3a\u53e6\u4e00\u4e2a\u53d8\u91cf\u7c7b\u578b\u201c%2\u201d\u5b58\u5728\u3002"
 }

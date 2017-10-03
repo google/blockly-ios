@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Tekita '\u201e%1\u201c v\u00e4\u00e4rtus' plokk",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "M\u00e4\u00e4rab selle muutuja v\u00e4\u00e4rtuse v\u00f5rdseks sisendi v\u00e4\u00e4rtusega.",
-  "VARIABLE_ALREADY_EXISTS": "'%1'-nimeline muutuja on juba olemas."
+  "VARIABLE_ALREADY_EXISTS": "'%1'-nimeline muutuja on juba olemas.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }
