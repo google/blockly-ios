@@ -20,7 +20,7 @@ extension BlocklyEvent {
    Event fired when a block is removed from the workspace.
    */
   @objc(BKYEventDelete)
-  public final class Delete: BlocklyEvent {
+  @objcMembers public final class Delete: BlocklyEvent {
 
     // MARK: - Properties
 

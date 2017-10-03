@@ -19,10 +19,10 @@ import Foundation
  Subclass of Workspace that should be used to populate a `WorkspaceFlowLayout`.
  */
 @objc(BKYWorkspaceFlow)
-open class WorkspaceFlow: Workspace {
+@objcMembers open class WorkspaceFlow: Workspace {
   /// Defines information on how each item should be laid out in the layout.
   @objc(BKYWorkspaceFlowItem)
-  public class Item: NSObject {
+  @objcMembers public class Item: NSObject {
     /// The root block for this item.
     public fileprivate(set) var rootBlock: Block?
     /// The gap between the previous item and this one.

@@ -19,7 +19,7 @@ import Foundation
  Builder for creating `Block` instances.
  */
 @objc(BKYBlockBuilder)
-public final class BlockBuilder: NSObject {
+@objcMembers public final class BlockBuilder: NSObject {
   // MARK: - Static Properties
   private static let CONFLICTING_CONNECTIONS_ERROR =
    "Block cannot have both an output and a either a previous or next statement."

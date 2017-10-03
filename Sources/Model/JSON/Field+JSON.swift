@@ -82,7 +82,7 @@ extension Field {
    `Field.JSONRegistry.shared`.
    */
   @objc(BKYFieldJSONRegistry)
-  public final class JSONRegistry: NSObject {
+  @objcMembers public final class JSONRegistry: NSObject {
     // MARK: - Static Properties
 
     /// Shared instance.

@@ -22,7 +22,7 @@ import Foundation
  `BlocklyEventFactory.shared`.
  */
 @objc(BKYEventFactory)
-public class BlocklyEventFactory: NSObject {
+@objcMembers public class BlocklyEventFactory: NSObject {
 
   // MARK: - Closures
 

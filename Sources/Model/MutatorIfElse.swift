@@ -20,7 +20,7 @@ import Foundation
  A mutator for dynamically adding "else-if" and "else" statements to an "if" block.
  */
 @objc(BKYMutatorIfElse)
-public class MutatorIfElse: NSObject {
+@objcMembers public class MutatorIfElse: NSObject {
   // MARK: - Properties
 
   /// The target block that will be mutated

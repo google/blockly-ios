@@ -20,7 +20,7 @@ import Foundation
  Builder for making `CodeGeneratorServiceRequest` instances.
  */
 @objc(BKYCodeGeneratorServiceRequestBuilder)
-open class CodeGeneratorServiceRequestBuilder: NSObject {
+@objcMembers open class CodeGeneratorServiceRequestBuilder: NSObject {
   // MARK: - Properties
 
   /// The name of the JS object that should be used for each request (e.g. 'Blockly.Python')

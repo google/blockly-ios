@@ -19,7 +19,7 @@ import Foundation
  A view for displaying the blocks inside of a `Toolbox.Category`.
  */
 @objc(BKYToolboxCategoryViewController)
-public final class ToolboxCategoryViewController: UIViewController {
+@objcMembers public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Properties
 
   /// The toolbox layout to display

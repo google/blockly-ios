@@ -20,7 +20,7 @@ import QuartzCore
  UI Control that is used for picking an angle from a clock-like dial.
  */
 @objc(BKYAnglePicker)
-public class AnglePicker: UIControl {
+@objcMembers public class AnglePicker: UIControl {
 
   /**
    Options for configuring the behavior of the angle picker.

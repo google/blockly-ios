@@ -39,7 +39,7 @@ public protocol ConnectionPositionDelegate {
 Component used to create a connection between two `Block` instances.
 */
 @objc(BKYConnection)
-public final class Connection : NSObject {
+@objcMembers public final class Connection : NSObject {
   // MARK: - Static Properties
 
   // NOTE: If OPPOSITE_TYPES is updated, also update ConnectionManager's matchingLists and

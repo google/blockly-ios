@@ -20,7 +20,7 @@ import Foundation
  A mutator for dynamically modifying the properties of a "procedure" definition block.
  */
 @objc(BKYMutatorProcedureDefinition)
-public class MutatorProcedureDefinition: NSObject {
+@objcMembers public class MutatorProcedureDefinition: NSObject {
   // MARK: - Properties
 
   /// The target block that will be mutated

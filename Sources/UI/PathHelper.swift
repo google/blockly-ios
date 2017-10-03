@@ -19,7 +19,7 @@ import Foundation
  Helper for drawing different shapes inside a `WorkspaceBezierPath`.
  */
 @objc(BKYPathHelper)
-public class PathHelper: NSObject {
+@objcMembers public class PathHelper: NSObject {
   // MARK: - Constants
 
   /**

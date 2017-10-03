@@ -21,7 +21,7 @@ import Foundation
 View for rendering a `WorkspaceLayout`.
 */
 @objc(BKYWorkspaceView)
-open class WorkspaceView: LayoutView {
+@objcMembers open class WorkspaceView: LayoutView {
 
   // MARK: - Constants
 
@@ -784,7 +784,7 @@ extension WorkspaceView {
    The scroll view used by `WorkspaceView`.
    */
   @objc(BKYWorkspaceScrollView)
-  open class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
+  @objcMembers open class ScrollView: UIScrollView, UIGestureRecognizerDelegate {
     /// View which holds all content in the Workspace
     fileprivate var containerView: ZIndexedGroupView = {
       let view = ZIndexedGroupView(frame: CGRect.zero)

@@ -20,7 +20,7 @@ import Foundation
  View for rendering a `FieldDateLayout`.
  */
 @objc(BKYFieldDateView)
-open class FieldDateView: FieldView {
+@objcMembers open class FieldDateView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldDateLayout`
@@ -114,14 +114,14 @@ open class FieldDateView: FieldView {
 
   // MARK: - Private
 
-  fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
+  @objc fileprivate dynamic func didTapDoneButton(_ sender: UITextField) {
     updateDateFromDatePicker()
 
     // Stop editing the text field
     textField.resignFirstResponder()
   }
 
-  fileprivate dynamic func datePickerDidChange(_ sender: UIDatePicker) {
+  @objc fileprivate dynamic func datePickerDidChange(_ sender: UIDatePicker) {
     // Immediately update the date when the date picker changes
     updateDateFromDatePicker()
   }

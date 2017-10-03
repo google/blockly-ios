@@ -20,7 +20,7 @@ import Foundation
  UICollectionViewFlowLayout).
  */
 @objc(BKYWorkspaceFlowLayout)
-public final class WorkspaceFlowLayout: WorkspaceLayout {
+@objcMembers public final class WorkspaceFlowLayout: WorkspaceLayout {
 
   // MARK: -  Constants
 

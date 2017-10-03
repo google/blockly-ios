@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldInputLayout`.
  */
 @objc(BKYFieldInputView)
-open class FieldInputView: FieldView {
+@objcMembers open class FieldInputView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldInputLayout`
@@ -99,7 +99,7 @@ open class FieldInputView: FieldView {
 
   // MARK: - Private
 
-  fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
+  @objc fileprivate dynamic func textFieldDidChange(_ sender: UITextField) {
     // Update the current text value, but don't commit the new text value yet
     fieldInputLayout?.currentTextValue = self.textField.text ?? ""
   }

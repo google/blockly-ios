@@ -19,7 +19,7 @@ import Foundation
 View for rendering a `FieldLabelLayout`.
 */
 @objc(BKYFieldLabelView)
-open class FieldLabelView: FieldView {
+@objcMembers open class FieldLabelView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldLabelLayout`

@@ -26,7 +26,7 @@ import JavaScriptCore
 /**
  Class exposed to a JS context.
  */
-@objc class MusicMaker: NSObject, MusicMakerJSExports {
+@objc @objcMembers class MusicMaker: NSObject, MusicMakerJSExports {
   /// Keeps track of all sounds currently being played.
   private static var audioPlayers = Set<AudioPlayer>()
 

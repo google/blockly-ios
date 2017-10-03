@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldCheckbox`-based `Layout`.
  */
 @objc(BKYFieldCheckboxLayout)
-open class FieldCheckboxLayout: FieldLayout {
+@objcMembers open class FieldCheckboxLayout: FieldLayout {
 
   // MARK: - Properties
 

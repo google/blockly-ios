@@ -19,7 +19,7 @@ import Foundation
  An image field used for titles, labels, etc.
  */
 @objc(BKYFieldImage)
-public final class FieldImage: Field {
+@objcMembers public final class FieldImage: Field {
   // MARK: - Properties
 
   /// The `WorkspaceSize` of this field.

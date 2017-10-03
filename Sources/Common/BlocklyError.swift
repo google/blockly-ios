@@ -20,7 +20,7 @@ import AEXML
  General error class for all Blockly errors.
  */
 @objc(BKYBlocklyError)
-public final class BlocklyError: NSError {
+@objcMembers public final class BlocklyError: NSError {
   // MARK: - Static Properties
 
   /// Domain to use when throwing an error from this class

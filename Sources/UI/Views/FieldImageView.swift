@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldImageLayout`.
  */
 @objc(BKYFieldImageView)
-open class FieldImageView: FieldView {
+@objcMembers open class FieldImageView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldImageLayout`

@@ -20,7 +20,7 @@ import Foundation
  the validator that is used by the `ConnectionManager`.
  */
 @objc(BKYDefaultConnectionValidator)
-open class DefaultConnectionValidator : NSObject, ConnectionValidator {
+@objcMembers open class DefaultConnectionValidator : NSObject, ConnectionValidator {
 
   public final func canConnect(
     _ moving: Connection, toConnection candidate: Connection) -> Bool

@@ -19,7 +19,7 @@ import Foundation
  Object responsible for bumping blocks away from each other.
  */
 @objc(BKYBlockBumper)
-open class BlockBumper: NSObject {
+@objcMembers open class BlockBumper: NSObject {
   // MARK: - Properties
 
   /// The workspace layout coordinator where blocks are being bumped

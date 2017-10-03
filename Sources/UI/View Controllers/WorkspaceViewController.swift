@@ -72,7 +72,7 @@ public protocol WorkspaceViewControllerDelegate {
  View controller for managing a workspace.
  */
 @objc(BKYWorkspaceViewController)
-open class WorkspaceViewController: UIViewController {
+@objcMembers open class WorkspaceViewController: UIViewController {
 
   /// The workspace layout coordinator this view controller operates on
   open fileprivate(set) var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?

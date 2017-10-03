@@ -21,7 +21,7 @@ import Foundation
  maintaining the block layout hierarchy.
  */
 @objc(BKYMutatorLayout)
-open class MutatorLayout: Layout {
+@objcMembers open class MutatorLayout: Layout {
   /// The target `Mutator` to layout
   public final let mutator: Mutator
 

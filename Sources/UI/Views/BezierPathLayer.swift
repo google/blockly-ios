@@ -19,7 +19,7 @@ import Foundation
 Layer used to draw a `UIBezierPath`.
 */
 @objc(BKYBezierPathLayer)
-open class BezierPathLayer: CAShapeLayer {
+@objcMembers open class BezierPathLayer: CAShapeLayer {
   // MARK: - Properties
 
   /// The bezier path to draw

@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldAngleLayout`.
  */
 @objc(BKYFieldAngleView)
-open class FieldAngleView: FieldView {
+@objcMembers open class FieldAngleView: FieldView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `FieldAngleLayout`

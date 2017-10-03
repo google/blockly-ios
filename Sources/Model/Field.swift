@@ -33,7 +33,7 @@ Input field.  Used for editable titles, variables, etc. This is an abstract clas
 UI on the block.  Actual instances would be `FieldLabel`, `FieldDropdown`, etc.
 */
 @objc(BKYField)
-open class Field: NSObject {
+@objcMembers open class Field: NSObject {
   // MARK: - Properties
 
   /// The name of the field

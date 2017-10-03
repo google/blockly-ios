@@ -59,7 +59,7 @@ extension WorkbenchViewControllerUIState {
  View controller for editing a workspace.
  */
 @objc(BKYWorkbenchViewController)
-open class WorkbenchViewController: UIViewController {
+@objcMembers open class WorkbenchViewController: UIViewController {
 
   // MARK: - Constants
 
@@ -759,7 +759,7 @@ open class WorkbenchViewController: UIViewController {
 
    - parameter gesture: The `UIPanGestureRecognizer` that fired the method.
    */
-  private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
+  @objc private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
     addUIStateValue(.didPanWorkspace)
   }
 
@@ -768,7 +768,7 @@ open class WorkbenchViewController: UIViewController {
 
    - parameter gesture: The `UITapGestureRecognizer` that fired the method.
    */
-  private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
+  @objc private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
     addUIStateValue(.didTapWorkspace)
   }
 

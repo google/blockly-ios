@@ -34,7 +34,7 @@ public protocol DropdownOptionsViewControllerDelegate: class {
  View controller for selecting an option from inside a dropdown.
  */
 @objc(BKYDropdownOptionsViewController)
-open class DropdownOptionsViewController: UITableViewController {
+@objcMembers open class DropdownOptionsViewController: UITableViewController {
 
   // MARK: - Tuples
 

@@ -19,7 +19,7 @@ import Foundation
  Handles the creation of recyclable views.
  */
 @objc(BKYViewFactory)
-open class ViewFactory: NSObject {
+@objcMembers open class ViewFactory: NSObject {
 
   // MARK: - Properties
 

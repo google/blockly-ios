@@ -19,7 +19,7 @@ import Foundation
  Helper class for loading images.
  */
 @objc(BKYImageLoader)
-public final class ImageLoader: NSObject {
+@objcMembers public final class ImageLoader: NSObject {
   /**
    Returns an image with a given name in the main application bundle. As a fallback, it returns
    the image inside the associated bundle for the given class (typically, this will be the

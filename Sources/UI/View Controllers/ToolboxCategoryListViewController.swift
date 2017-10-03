@@ -41,7 +41,7 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
  A view for displaying a vertical list of categories from a `Toolbox`.
  */
 @objc(BKYToolboxCategoryListViewController)
-public final class ToolboxCategoryListViewController: UICollectionViewController {
+@objcMembers public final class ToolboxCategoryListViewController: UICollectionViewController {
 
   // MARK: - Constants
 
@@ -257,7 +257,7 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
  An individual cell category list view cell.
 */
 @objc(BKYToolboxCategoryListViewCell)
-private class ToolboxCategoryListViewCell: UICollectionViewCell {
+@objcMembers private class ToolboxCategoryListViewCell: UICollectionViewCell {
   static let ReusableCellIdentifier = "ToolboxCategoryListViewCell"
 
   static let ColorTagViewHeight = CGFloat(8)

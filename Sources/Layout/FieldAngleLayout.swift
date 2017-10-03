@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldAngle`-based `Layout`.
  */
 @objc(BKYFieldAngleLayout)
-open class FieldAngleLayout: FieldLayout {
+@objcMembers open class FieldAngleLayout: FieldLayout {
 
   // MARK: - Properties
 

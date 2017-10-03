@@ -34,7 +34,7 @@ public protocol BlockListener: class {
  - note: To create a block programmatically, use a `BlockBuilder`.
  */
 @objc(BKYBlock)
-public final class Block : NSObject {
+@objcMembers public final class Block : NSObject {
   // MARK: - Tuples
 
   /**
@@ -619,7 +619,7 @@ public final class Block : NSObject {
    Specifies any styles that should be applied to the block during rendering.
    */
   @objc(BKYBlockStyle)
-  open class Style: NSObject, NSCopying {
+  @objcMembers open class Style: NSObject, NSCopying {
     // MARK: - Constants
 
     /// Underlying value of `HatType`.

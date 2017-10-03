@@ -20,7 +20,7 @@ import Foundation
  `InputBuilder`
 */
 @objc(BKYInput)
-public final class Input : NSObject {
+@objcMembers public final class Input : NSObject {
   // MARK: - Constants
 
   /** Represents types of inputs. */

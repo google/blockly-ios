@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldVariable`-based `Layout`.
  */
 @objc(BKYFieldVariableLayout)
-open class FieldVariableLayout: FieldLayout {
+@objcMembers open class FieldVariableLayout: FieldLayout {
 
   // MARK: - Tuples
 

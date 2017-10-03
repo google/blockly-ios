@@ -40,7 +40,7 @@ public protocol NumberPadDelegate: class {
  UI control for typing numbers.
  */
 @objc(BKYNumberPad)
-public class NumberPad: UIView {
+@objcMembers public class NumberPad: UIView {
   // MARK: - Constants
 
   /**

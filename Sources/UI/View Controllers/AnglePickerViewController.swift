@@ -34,7 +34,7 @@ public protocol AnglePickerViewControllerDelegate: class {
  View controller for selecting an angle.
  */
 @objc(BKYAnglePickerViewController)
-public class AnglePickerViewController: UIViewController {
+@objcMembers public class AnglePickerViewController: UIViewController {
   // MARK: - Properties
 
   /// The current angle value.
@@ -86,7 +86,7 @@ public class AnglePickerViewController: UIViewController {
 
   // MARK: - Private
 
-  private dynamic func anglePickerValueChanged(_ anglePicker: AnglePicker) {
+  @objc private dynamic func anglePickerValueChanged(_ anglePicker: AnglePicker) {
     angle = anglePicker.angle
 
     delegate?.anglePickerViewController(self, didUpdateAngle: angle)

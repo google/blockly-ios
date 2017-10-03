@@ -21,7 +21,7 @@ extension BlocklyEvent {
    and next blocks.
    */
   @objc(BKYEventCreate)
-  public final class Create: BlocklyEvent {
+  @objcMembers public final class Create: BlocklyEvent {
 
     // MARK: - Properties
 

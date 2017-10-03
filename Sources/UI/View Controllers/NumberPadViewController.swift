@@ -19,7 +19,7 @@ import Foundation
  View controller for inputting a number.
  */
 @objc(BKYNumberPadViewController)
-public class NumberPadViewController: UIViewController {
+@objcMembers public class NumberPadViewController: UIViewController {
   // MARK: - Properties
 
   /// Number pad control.

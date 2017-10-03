@@ -19,7 +19,7 @@ import Foundation
 An input field for picking a date.
 */
 @objc(BKYFieldDate)
-public final class FieldDate: Field {
+@objcMembers public final class FieldDate: Field {
   /// The date format to use for serialization purposes
   fileprivate static let DATE_FORMAT = "yyyy-MM-dd"
 

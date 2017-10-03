@@ -20,7 +20,7 @@ Controller for `Connection` instances, where connections can be separated into g
 `ConnectionManager.Group`).
 */
 @objc(BKYConnectionManager)
-public final class ConnectionManager: NSObject {
+@objcMembers public final class ConnectionManager: NSObject {
   // MARK: - Tuples
 
   public typealias ConnectionPair =
@@ -274,7 +274,7 @@ extension ConnectionManager {
   Manages a specific set of `Connection` instances.
   */
   @objc(BKYConnectionManagerGroup)
-  public final class Group: NSObject, ConnectionPositionDelegate {
+  @objcMembers public final class Group: NSObject, ConnectionPositionDelegate {
 
     // MARK: - Properties
     fileprivate weak var ownerBlock: Block?

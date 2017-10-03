@@ -37,7 +37,7 @@ public protocol EventManagerListener: class {
  - note: This class is not thread-safe and should only be accessed from the main thread.
  */
 @objc(BKYEventManager)
-public final class EventManager: NSObject {
+@objcMembers public final class EventManager: NSObject {
 
   // MARK: - Properties
 

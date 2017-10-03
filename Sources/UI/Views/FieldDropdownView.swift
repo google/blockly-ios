@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldDropdownLayout`.
  */
 @objc(BKYFieldDropdownView)
-open class FieldDropdownView: FieldView {
+@objcMembers open class FieldDropdownView: FieldView {
   // MARK: - Properties
 
   /// Convenience property for accessing `self.layout` as a `FieldDropdownLayout`

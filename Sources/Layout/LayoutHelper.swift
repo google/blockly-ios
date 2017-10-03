@@ -19,7 +19,7 @@ import Foundation
 Helper class for doing layout calculatinos.
 */
 @objc(BKYLayoutHelper)
-internal class LayoutHelper: NSObject {
+@objcMembers internal class LayoutHelper: NSObject {
 
   /**
   Ensure the given layout will fit within a given size, increasing the size if necessary.

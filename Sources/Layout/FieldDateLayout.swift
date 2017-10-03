@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldDate`-based `Layout`.
  */
 @objc(BKYFieldDateLayout)
-open class FieldDateLayout: FieldLayout {
+@objcMembers open class FieldDateLayout: FieldLayout {
 
   // MARK: - Properties
 
