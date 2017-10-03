@@ -51,12 +51,12 @@ class ColorHelperTest: XCTestCase {
     var actualAlpha:CGFloat = 0
 
     color.getRed(&actualRed, green: &actualGreen, blue: &actualBlue, alpha: &actualAlpha)
-    XCTAssertEqualWithAccuracy(Float(Double(red)/255.0), Float(actualRed),
+    XCTAssertEqual(Float(Double(red)/255.0), Float(actualRed),
       accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(Double(green)/255.0), Float(actualGreen),
+    XCTAssertEqual(Float(Double(green)/255.0), Float(actualGreen),
       accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(Double(blue)/255.0), Float(actualBlue),
+    XCTAssertEqual(Float(Double(blue)/255.0), Float(actualBlue),
       accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(alpha, Float(actualAlpha), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(alpha, Float(actualAlpha), accuracy: TestConstants.ACCURACY_F)
   }
 }

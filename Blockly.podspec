@@ -56,8 +56,8 @@ Pod::Spec.new do |s|
       'SWIFT_OPTIMIZATION_LEVEL' => '-Owholemodule',
       'SWIFT_OPTIMIZATION_LEVEL[config=Debug]' => '-Onone',
 
-      # Let Xcode know Blockly uses Swift 3.1 syntax
-      'SWIFT_VERSION' => '3.1',
+      # Let Xcode know Blockly uses Swift 4.0 syntax
+      'SWIFT_VERSION' => '4.0',
 
       # Add DEBUG compiler flag for debug builds
       'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG',

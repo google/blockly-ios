@@ -437,7 +437,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     }
   }
 
-  func updateParameterTextField(_ textField: UITextField) {
+  @objc func updateParameterTextField(_ textField: UITextField) {
     guard let cell = textField.bky_firstAncestor(ofType: ParameterCellView.self) else {
       return
     }

@@ -292,15 +292,15 @@ public protocol NameManagerListener {
       if let match = _regex.firstMatch(
         in: name, options: [], range: NSMakeRange(0, name.utf16.count))
         , match.numberOfRanges == 3 &&
-          match.rangeAt(1).location != NSNotFound &&
-          match.rangeAt(2).location != NSNotFound
+          match.range(at: 1).location != NSNotFound &&
+          match.range(at: 2).location != NSNotFound
       {
-        if let textRange = bky_rangeFromNSRange(match.rangeAt(1), forString: name),
-          let numberRange = bky_rangeFromNSRange(match.rangeAt(2), forString: name),
-          let number = Int(name.substring(with: numberRange))
+        if let textRange = bky_rangeFromNSRange(match.range(at: 1), forString: name),
+          let numberRange = bky_rangeFromNSRange(match.range(at: 2), forString: name),
+          let number = Int(String(name[numberRange]))
         {
           // `name` ends in a number. Use that (number + 1) as the variable counter
-          baseName = name.substring(with: textRange)
+          baseName = String(name[textRange])
           variableCount = number + 1
         }
       }

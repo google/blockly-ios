@@ -76,7 +76,7 @@ extension Toolbox {
       if let colorString = categoryNode.attributes["colour"] {
         let decodedColor = MessageManager.shared.decodedString(colorString)
         if let colorHue = NumberFormatter().number(from: decodedColor) {
-          color = ColorHelper.makeColor(hue: CGFloat(colorHue))
+          color = ColorHelper.makeColor(hue: CGFloat(truncating: colorHue))
         } else if let aColor = ColorHelper.makeColor(rgb: decodedColor) {
           color = aColor
         } else {
@@ -157,7 +157,7 @@ extension Toolbox {
       if let gapString = childNode.attributes["gap"],
         let gap = NumberFormatter().number(from: gapString)
       {
-        category.addGap(CGFloat(gap))
+        category.addGap(CGFloat(truncating: gap))
       } else {
         category.addGap()
       }

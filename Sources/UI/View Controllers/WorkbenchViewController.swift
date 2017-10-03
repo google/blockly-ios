@@ -689,7 +689,7 @@ extension WorkbenchViewControllerUIState {
 
     // Automatically change the viewport to show the top-most block
     if let topBlock =
-      workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
+      workspace.topLevelBlocks().sorted(by: { $0.position.y <= $1.position.y }).first {
       scrollBlockIntoView(blockUUID: topBlock.uuid, location: .topLeading, animated: false)
     }
 
@@ -978,7 +978,7 @@ extension WorkbenchViewController {
 
    - parameter sender: The trash can button that sent the event.
    */
-  fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
       addUIStateValue(.trashCanOpen)
@@ -1070,7 +1070,7 @@ extension WorkbenchViewController {
     }
   }
 
-  fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
     guard !_undoStack.isEmpty else {
       return
     }
@@ -1098,7 +1098,7 @@ extension WorkbenchViewController {
     _recordEvents = true
   }
 
-  fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
     guard !_redoStack.isEmpty else {
       return
     }
@@ -1498,7 +1498,7 @@ extension WorkbenchViewController {
 // MARK: - UIKeyboard notifications
 
 extension WorkbenchViewController {
-  fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
+  @objc fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
     addUIStateValue(.editingTextField)
 
     if let keyboardEndSize =
@@ -1515,7 +1515,7 @@ extension WorkbenchViewController {
     }
   }
 
-  fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
+  @objc fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
     removeUIStateValue(.editingTextField)
 
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)

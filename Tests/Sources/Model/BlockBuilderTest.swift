@@ -68,7 +68,7 @@ class BlockBuilderTest: XCTestCase {
   internal func validate(frankenblock block: Block) {
     XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
-    XCTAssertEqualWithAccuracy(
+    XCTAssertEqual(
       CGFloat(20.0 / 360.0), block.color.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual("http://www.example.com", block.helpURL)
     XCTAssertEqual("a tooltip", block.tooltip)

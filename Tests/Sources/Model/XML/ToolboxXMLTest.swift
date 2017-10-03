@@ -70,7 +70,7 @@ class ToolboxXMLTest: XCTestCase {
 
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual("abc", toolbox.categories[0].name)
-    XCTAssertEqualWithAccuracy(0.5, toolbox.categories[0].color.bky_hsba().hue,
+    XCTAssertEqual(0.5, toolbox.categories[0].color.bky_hsba().hue,
       accuracy: TestConstants.ACCURACY_CGF)
   }
 
@@ -87,10 +87,10 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqual(1, toolbox.categories.count)
     XCTAssertEqual("abc", toolbox.categories[0].name)
     let rgba = toolbox.categories[0].color.bky_rgba()
-    XCTAssertEqualWithAccuracy(1.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(1.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
   }
 
   func testParseXML_EmptyCategoriesUsingMessages() {
@@ -116,19 +116,19 @@ class ToolboxXMLTest: XCTestCase {
     XCTAssertEqual(2, toolbox.categories.count)
     XCTAssertEqual("Empty category", toolbox.categories[0].name)
     let rgba = toolbox.categories[0].color.bky_rgba()
-    XCTAssertEqualWithAccuracy(0.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(1.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(1.0, rgba.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(1.0, rgba.alpha, accuracy: TestConstants.ACCURACY_CGF)
 
     // Since no messages exist for the keys in the second category, the name should be the
     // original key and the colour should be black.
     XCTAssertEqual("%{NO_CATEGORY_KEY}", toolbox.categories[1].name)
     let rgba2 = toolbox.categories[1].color.bky_rgba()
-    XCTAssertEqualWithAccuracy(0.0, rgba2.red, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba2.green, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba2.blue, accuracy: TestConstants.ACCURACY_CGF)
-    XCTAssertEqualWithAccuracy(0.0, rgba2.alpha, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba2.red, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba2.green, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba2.blue, accuracy: TestConstants.ACCURACY_CGF)
+    XCTAssertEqual(0.0, rgba2.alpha, accuracy: TestConstants.ACCURACY_CGF)
   }
   
   func testParseXML_TwoCategory() {
