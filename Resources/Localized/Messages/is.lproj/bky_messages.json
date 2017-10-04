@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "B\u00faa til 's\u00e6kja %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Stillir \u00feessa breytu \u00e1 innihald inntaksins.",
-  "VARIABLE_ALREADY_EXISTS": "A variable named '%1' already exists."
+  "VARIABLE_ALREADY_EXISTS": "A variable named '%1' already exists.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

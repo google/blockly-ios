@@ -1,5 +1,5 @@
 {
-  "ADD_COMMENT": "\ub313\uae00 \ucd94\uac00",
+  "ADD_COMMENT": "\uba54\ubaa8 \ucd94\uac00",
   "CANNOT_DELETE_VARIABLE_PROCEDURE": "'%2' \ud568\uc218 \uc815\uc758\uc758 \uc77c\ubd80\uc774\uae30 \ub54c\ubb38\uc5d0 '%1' \ubcc0\uc218\ub97c \uc0ad\uc81c\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4",
   "CHANGE_VALUE_TITLE": "\uac12 \ubc14\uafb8\uae30:",
   "CLEAN_UP": "\ube14\ub85d \uc815\ub9ac",
@@ -60,7 +60,7 @@
   "DELETE_VARIABLE_CONFIRMATION": "'%2' \ubcc0\uc218\uc5d0\uc11c %1\uc744(\ub97c) \uc0ad\uc81c\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?",
   "DELETE_X_BLOCKS": "\ube14\ub85d %1\uac1c \uc0ad\uc81c",
   "DISABLE_BLOCK": "\ube14\ub85d \ube44\ud65c\uc131\ud654",
-  "DUPLICATE_BLOCK": "\uc911\ubcf5\ub428",
+  "DUPLICATE_BLOCK": "\ubcf5\uc81c",
   "ENABLE_BLOCK": "\ube14\ub85d \ud65c\uc131\ud654",
   "EXPAND_ALL": "\ube14\ub85d \ud655\uc7a5",
   "EXPAND_BLOCK": "\ube14\ub85d \ud655\uc7a5",
@@ -303,7 +303,7 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "\ud568\uc218\uc5d0 \uac12\uc744 \ub354\ud569\ub2c8\ub2e4.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "\ub9e4\uac1c \ubcc0\uc218\ub4e4",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "\uc774 \ud568\uc218\ub97c \ucd94\uac00, \uc0ad\uc81c, \ud639\uc740 \uc7ac\uc815\ub82c\ud569\ub2c8\ub2e4.",
-  "PROCEDURE_ALREADY_EXISTS": "A procedure named '%1' already exists.",
+  "PROCEDURE_ALREADY_EXISTS": "'%1' \ud568\uc218\ub294 \uc774\ubbf8 \uc874\uc7ac\ud569\ub2c8\ub2e4.",
   "REDO": "\ub2e4\uc2dc \uc2e4\ud589",
   "REMOVE_COMMENT": "\ub0b4\uc6a9 \uc81c\uac70",
   "RENAME_VARIABLE": "\ubcc0\uc218 \uc774\ub984 \ubc14\uafb8\uae30:",
@@ -323,7 +323,7 @@
   "TEXT_CHARAT_LAST": "\uc5d0\uc11c, \ub9c8\uc9c0\ub9c9 \ubb38\uc790 \uc5bb\uae30",
   "TEXT_CHARAT_RANDOM": "\uc5d0\uc11c, \ub79c\ub364\ud558\uac8c \ud55c \ubb38\uc790 \uc5bb\uae30",
   "TEXT_CHARAT_TAIL": "",
-  "TEXT_CHARAT_TITLE": "in text %1 %2",
+  "TEXT_CHARAT_TITLE": "\ud14d\uc2a4\ud2b8 %1 %2\uc5d0\uc11c",
   "TEXT_CHARAT_TOOLTIP": "\ud2b9\uc815 \ubc88\uc9f8 \uc704\uce58\uc5d0\uc11c, \ubb38\uc790\ub97c \uc5bb\uc5b4\ub0b4 \ub3cc\ub824\uc90d\ub2c8\ub2e4.",
   "TEXT_COUNT_HELPURL": "https://github.com/google/blockly/wiki/Text#counting-substrings",
   "TEXT_COUNT_MESSAGE0": "count %1 in %2",
@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "'%1 \uac12 \uc77d\uae30' \ube14\ub7ed \uc0dd\uc131",
   "VARIABLES_SET_HELPURL": "https://ko.wikipedia.org/wiki/%EB%B3%80%EC%88%98_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)",
   "VARIABLES_SET_TOOLTIP": "\ubcc0\uc218\uc758 \uac12\uc744 \uc785\ub825\ud55c \uac12\uc73c\ub85c \ubcc0\uacbd\ud574 \uc90d\ub2c8\ub2e4.",
-  "VARIABLE_ALREADY_EXISTS": "'%1' \ubcc0\uc218\ub294 \uc774\ubbf8 \uc874\uc7ac\ud569\ub2c8\ub2e4."
+  "VARIABLE_ALREADY_EXISTS": "'%1' \ubcc0\uc218\ub294 \uc774\ubbf8 \uc874\uc7ac\ud569\ub2c8\ub2e4.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "'%1' \ubcc0\uc218\ub294 '%2' \uc720\ud615\uc758 \ub2e4\ub978 \ubcc0\uc218\uc5d0 \ub300\ud574 \uc774\ubbf8 \uc874\uc7ac\ud569\ub2c8\ub2e4."
 }

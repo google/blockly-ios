@@ -27,7 +27,7 @@
   "CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE": "continuar con la siguiente iteraci\u00f3n del bucle",
   "CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK": "Romper el bucle que lo contiene.",
   "CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE": "Saltar el resto de este bucle, y continuar con la siguiente iteraci\u00f3n.",
-  "CONTROLS_FLOW_STATEMENTS_WARNING": "ADVERTENCIA: Este bloque puede usarse s\u00f3lo dentro de un bucle.",
+  "CONTROLS_FLOW_STATEMENTS_WARNING": "Atenci\u00f3n: este bloque puede usarse solamente dentro de un bucle.",
   "CONTROLS_FOREACH_HELPURL": "https://es.wikipedia.org/wiki/Foreach",
   "CONTROLS_FOREACH_TITLE": "para cada elemento %1 en la lista %2",
   "CONTROLS_FOREACH_TOOLTIP": "Para cada elemento en una lista, establecer la variable '%1' al elemento y luego hacer algunas declaraciones.",
@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Crear 'obtener %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Establece esta variable para que sea igual a la entrada.",
-  "VARIABLE_ALREADY_EXISTS": "Ya existe una variable llamada \"%1\"."
+  "VARIABLE_ALREADY_EXISTS": "Ya existe una variable llamada \"%1\".",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Ya existe una variable nombrada \"%1\" para otra variable del tipo \"%2\"."
 }

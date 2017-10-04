@@ -454,6 +454,7 @@
 		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FAB921391F844F6A007328BB /* kab */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = kab; path = kab.lproj/bky_messages.json; sourceTree = "<group>"; };
 		FABDB1931E4D40F600F92DAC /* BlockExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockExtension.swift; sourceTree = "<group>"; };
 		FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorLayout.swift; sourceTree = "<group>"; };
 		FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateLayout.swift; sourceTree = "<group>"; };
@@ -1158,6 +1159,7 @@
 				"zh-Hant",
 				be,
 				lrc,
+				kab,
 			);
 			mainGroup = FA548BFB1B630BAC008BC59C;
 			productRefGroup = FA548C061B630BAC008BC59C /* Products */;
@@ -1480,6 +1482,7 @@
 				FA5164F61E959913005CAA23 /* vi */,
 				FA5164F71E959913005CAA23 /* zh-Hans */,
 				FA5164F81E959914005CAA23 /* zh-Hant */,
+				FAB921391F844F6A007328BB /* kab */,
 			);
 			name = bky_messages.json;
 			sourceTree = "<group>";

@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Kroui\u00f1 'kaout %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Termena\u00f1 a ra argemm-ma\u00f1 evit ma vo par da dalvoudenn ar moned.",
-  "VARIABLE_ALREADY_EXISTS": "Un argemm anvet '%1' zo anezha\u00f1 dija."
+  "VARIABLE_ALREADY_EXISTS": "Un argemm anvet '%1' zo anezha\u00f1 dija.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Un argemenn anvet '%1' zo c'hoazh evit un argemenn all eus ar seurt '%2'."
 }

@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Izveidot '\u0146em %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Pie\u0161\u0137irt main\u012bgajam v\u0113rt\u012bbu.",
-  "VARIABLE_ALREADY_EXISTS": "Main\u012bgais '%1' jau eksist\u0113."
+  "VARIABLE_ALREADY_EXISTS": "Main\u012bgais '%1' jau eksist\u0113.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

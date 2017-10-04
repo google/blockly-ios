@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "'%1 \u09a8\u09bf\u09a8' \u09a4\u09c8\u09b0\u09bf \u0995\u09b0\u09c1\u09a8",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Sets this variable to be equal to the input.",
-  "VARIABLE_ALREADY_EXISTS": "A variable named '%1' already exists."
+  "VARIABLE_ALREADY_EXISTS": "A variable named '%1' already exists.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

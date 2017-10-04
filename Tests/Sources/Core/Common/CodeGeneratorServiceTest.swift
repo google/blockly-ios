@@ -91,8 +91,8 @@ class CodeGeneratorServiceTest: XCTestCase {
       })
     }
 
-    // Wait 10s for code generation to finish
-    waitForExpectations(timeout: 10.0, handler: { error in
+    // Wait 30s for code generation to finish
+    waitForExpectations(timeout: 30.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
@@ -151,8 +151,8 @@ class CodeGeneratorServiceTest: XCTestCase {
       }
     }
 
-    // Wait 100s for code generation to finish
-    waitForExpectations(timeout: 100.0, handler: { error in
+    // Wait 300s for code generation to finish
+    waitForExpectations(timeout: 300.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
@@ -214,8 +214,8 @@ class CodeGeneratorServiceTest: XCTestCase {
         })
     }
 
-    // Wait 10s for code generation to finish
-    waitForExpectations(timeout: 10.0, handler: { error in
+    // Wait 30s for code generation to finish
+    waitForExpectations(timeout: 30.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
@@ -282,8 +282,8 @@ class CodeGeneratorServiceTest: XCTestCase {
       })
     }
 
-    // Wait 10s for code generation to finish
-    waitForExpectations(timeout: 10.0, handler: { error in
+    // Wait 30s for code generation to finish
+    waitForExpectations(timeout: 30.0, handler: { error in
       if let error = error {
         XCTFail("Code generation timed out: \(error)")
       }
