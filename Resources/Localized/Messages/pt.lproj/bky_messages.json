@@ -32,7 +32,7 @@
   "CONTROLS_FOREACH_TITLE": "para cada item %1 na lista %2",
   "CONTROLS_FOREACH_TOOLTIP": "Para cada item numa lista, define a vari\u00e1vel \"%1\" para o item e ent\u00e3o faz algumas instru\u00e7\u00f5es.",
   "CONTROLS_FOR_HELPURL": "https://github.com/google/blockly/wiki/Loops#count-with",
-  "CONTROLS_FOR_TITLE": "contar com %1 de %2 at\u00e9 %3 de %3 em %4",
+  "CONTROLS_FOR_TITLE": "contar com %1 de %2 at\u00e9 %3 por %4",
   "CONTROLS_FOR_TOOLTIP": "Faz com que a vari\u00e1vel \"%1\" assuma os valores desde o n\u00famero inicial at\u00e9 ao n\u00famero final, contando de acordo com o intervalo especificado e executa os blocos especificados.",
   "CONTROLS_IF_ELSEIF_TOOLTIP": "Acrescente uma condi\u00e7\u00e3o ao bloco se.",
   "CONTROLS_IF_ELSE_TOOLTIP": "Acrescente uma condi\u00e7\u00e3o de excepa\u00e7\u00e3o final para o bloco se.",

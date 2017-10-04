@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
-# Updates JSON message files for all supported languages in Blockly iOS,
-# using the master branch of the Blockly web repo as the source.
+# Downloads all localized message files from the Blockly web repo and
+# updates the corresponding JSON message files in Blockly iOS.
 #
-# NOTE: This method requires that `git` be installed on your machine.
+# NOTE: `git` needs to be installed for this script to run.
 #
 # Usage:
 # python update_i18n_messages.py
@@ -23,6 +23,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import json
 import shutil
 import sys
@@ -116,21 +117,28 @@ def mapped_language_code(language_code):
   return language_code
 
 if __name__ == '__main__':
-  if len(sys.argv) != 1:
-    print """[ERROR] Wrong number of arguments passed into script.
-Usage: python {0}""".format(sys.argv[0])
-    sys.exit(1)
+  script_description = """
+Downloads all localized message files from the Blockly web repo and
+updates the corresponding JSON message files in Blockly iOS.
+(NOTE: `git` needs to be installed for this script to run.)"""
+
+  # Parse command-line args
+  parser = argparse.ArgumentParser(description=script_description)
+  parser.add_argument("--branch",
+    help="The git branch to use from the Blockly web repo. Defaults to 'master'.",
+    default="master")
+  args = parser.parse_args()
 
   script_dir = path.dirname(path.realpath(sys.argv[0]))
   blockly_ios_root = path.realpath(path.join(script_dir, ".."))
-  
+
   # Create temp dir
   temp_dir = path.realpath(path.join(script_dir, "temp"))
   if (path.exists(temp_dir)):
     shutil.rmtree(temp_dir)
 
   # Clone master branch of blockly
-  git_clone(temp_dir, "https://github.com/google/blockly.git", "--branch master --depth 1")
+  git_clone(temp_dir, "https://github.com/google/blockly.git", "--branch " + args.branch + " --depth 1")
   blockly_web_root = path.join(temp_dir, "blockly")
 
   # Update i18n messages with the cloned repo

@@ -133,7 +133,7 @@
   "LISTS_LENGTH_TITLE": "hirder %1",
   "LISTS_LENGTH_TOOLTIP": "Distrei\u00f1 hirder ul listenn.",
   "LISTS_REPEAT_HELPURL": "https://github.com/google/blockly/wiki/Lists#create-list-with",
-  "LISTS_REPEAT_TITLE": "Kroui\u00f1 ul listenn gant an elfenn %1 arreet div wech",
+  "LISTS_REPEAT_TITLE": "Kroui\u00f1 ul listenn gant an elfenn %1 arreet %2 div wech",
   "LISTS_REPEAT_TOOLTIP": "Kroui\u00f1 ul listenn a c'hoarvez eus an dalvoudenn roet arreet an niver a wech meneget",
   "LISTS_REVERSE_HELPURL": "https://github.com/google/blockly/wiki/Lists#reversing-a-list",
   "LISTS_REVERSE_MESSAGE0": "eilpenna\u00f1 %1",
