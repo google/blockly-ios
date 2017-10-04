@@ -325,6 +325,18 @@ import Foundation
 
     return returnValue
   }
+
+  // MARK: - Resetting State
+
+  /**
+   Removes all messages and synonyms from the manager.
+
+   - note: This should only be used for testing purposes.
+   */
+  internal func _clear() {
+    _messages.removeAll()
+    _synonyms.removeAll()
+  }
 }
 
 fileprivate extension String {
