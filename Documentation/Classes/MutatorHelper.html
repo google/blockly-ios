@@ -14,7 +14,7 @@
             <h1>MutatorHelper</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MutatorHelper</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">MutatorHelper</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
@@ -34,9 +34,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly13MutatorHelper22savedTargetConnectionsGCSo10NSMapTableCSo8NSStringCS_10Connection_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(py)savedTargetConnections"></a>
                     <a name="//apple_ref/swift/Property/savedTargetConnections" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly13MutatorHelper22savedTargetConnectionsGCSo10NSMapTableCSo8NSStringCS_10Connection_">savedTargetConnections</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(py)savedTargetConnections">savedTargetConnections</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -72,9 +72,9 @@ to previously connected connections.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13MutatorHelper27clearSavedTargetConnectionsFT_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)clearSavedTargetConnections"></a>
                     <a name="//apple_ref/swift/Method/clearSavedTargetConnections()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13MutatorHelper27clearSavedTargetConnectionsFT_T_">clearSavedTargetConnections()</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)clearSavedTargetConnections">clearSavedTargetConnections()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -105,9 +105,9 @@ modal popover.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13MutatorHelper21saveTargetConnectionsFT10fromInputsGSaCS_5Input__T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)saveTargetConnectionsFromInputs:"></a>
                     <a name="//apple_ref/swift/Method/saveTargetConnections(fromInputs:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13MutatorHelper21saveTargetConnectionsFT10fromInputsGSaCS_5Input__T_">saveTargetConnections(fromInputs:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)saveTargetConnectionsFromInputs:">saveTargetConnections(fromInputs:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -117,7 +117,7 @@ modal popover.
                       <div class="abstract">
                         <p>For each specified input, saves the mapping of the input&rsquo;s name and its current target
 connection. This is to be used in conjunction with
-<code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper31reconnectSavedTargetConnectionsFzT8toInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_">reconnectSavedTargetConnections(toInputs:layoutCoordinator:)</a></code>.</p>
+<code><a href="../Classes/MutatorHelper.html#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)reconnectSavedTargetConnectionsToInputs:layoutCoordinator:error:">reconnectSavedTargetConnections(toInputs:layoutCoordinator:)</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called once prior to beginning mutator changes inside a
@@ -133,24 +133,6 @@ modal popover.
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">saveTargetConnections</span><span class="p">(</span><span class="n">fromInputs</span> <span class="nv">inputs</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/Input.html">Input</a></span><span class="p">])</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>inputs</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The list of inputs whose target connections should be saved.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -168,9 +150,9 @@ modal popover.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13MutatorHelper35disconnectConnectionsInReverseOrderFzT10fromInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)disconnectConnectionsInReverseOrderFromInputs:layoutCoordinator:error:"></a>
                     <a name="//apple_ref/swift/Method/disconnectConnectionsInReverseOrder(fromInputs:layoutCoordinator:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13MutatorHelper35disconnectConnectionsInReverseOrderFzT10fromInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_">disconnectConnectionsInReverseOrder(fromInputs:layoutCoordinator:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)disconnectConnectionsInReverseOrderFromInputs:layoutCoordinator:error:">disconnectConnectionsInReverseOrder(fromInputs:layoutCoordinator:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -201,45 +183,15 @@ list in reverse order.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>inputs</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The inputs whose target connection should be disconnected.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutCoordinator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for disconnecting those
-inputs.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13MutatorHelper32removeShadowBlocksInReverseOrderFzT10fromInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)removeShadowBlocksInReverseOrderFromInputs:layoutCoordinator:error:"></a>
                     <a name="//apple_ref/swift/Method/removeShadowBlocksInReverseOrder(fromInputs:layoutCoordinator:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13MutatorHelper32removeShadowBlocksInReverseOrderFzT10fromInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_">removeShadowBlocksInReverseOrder(fromInputs:layoutCoordinator:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)removeShadowBlocksInReverseOrderFromInputs:layoutCoordinator:error:">removeShadowBlocksInReverseOrder(fromInputs:layoutCoordinator:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -270,36 +222,6 @@ iterating through the list in reverse order.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>inputs</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The inputs whose shadow blocks should be removed from the workspace.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutCoordinator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for removing those
-shadow blocks.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
@@ -316,9 +238,9 @@ shadow blocks.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly13MutatorHelper31reconnectSavedTargetConnectionsFzT8toInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)reconnectSavedTargetConnectionsToInputs:layoutCoordinator:error:"></a>
                     <a name="//apple_ref/swift/Method/reconnectSavedTargetConnections(toInputs:layoutCoordinator:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly13MutatorHelper31reconnectSavedTargetConnectionsFzT8toInputsGSaCS_5Input_17layoutCoordinatorCS_26WorkspaceLayoutCoordinator_T_">reconnectSavedTargetConnections(toInputs:layoutCoordinator:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)reconnectSavedTargetConnectionsToInputs:layoutCoordinator:error:">reconnectSavedTargetConnections(toInputs:layoutCoordinator:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -327,7 +249,7 @@ shadow blocks.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>For each specified input, reconnects the input to any target connection that was previously saved
-via <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper21saveTargetConnectionsFT10fromInputsGSaCS_5Input__T_">saveTargetConnections(fromInputs:)</a></code>.</p>
+via <code><a href="../Classes/MutatorHelper.html#/c:@M@Blockly@objc(cs)BKYMutatorHelper(im)saveTargetConnectionsFromInputs:">saveTargetConnections(fromInputs:)</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This method is typically called every time after a mutation has been applied.
@@ -343,36 +265,6 @@ via <code><a href="../Classes/MutatorHelper.html#/s:FC7Blockly13MutatorHelper21s
     <span class="n">toInputs</span> <span class="nv">inputs</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/Input.html">Input</a></span><span class="p">],</span> <span class="nv">layoutCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceLayoutCoordinator.html">WorkspaceLayoutCoordinator</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>inputs</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The list of inputs that should be reconnected to the saved target connection.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutCoordinator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>WorkspaceLayoutCoordinator</code> used for connecting the inputs
-with the saved target connections.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -443,21 +335,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -469,7 +361,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -681,7 +573,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -697,7 +589,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -721,7 +613,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -729,7 +621,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -737,7 +629,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

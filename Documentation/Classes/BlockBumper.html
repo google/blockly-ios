@@ -14,7 +14,7 @@
             <h1>BlockBumper</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kt">BlockBumper</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="n">open</span> <span class="kd">class</span> <span class="kt">BlockBumper</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
@@ -34,9 +34,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly11BlockBumper26workspaceLayoutCoordinatorXwGSqCS_26WorkspaceLayoutCoordinator_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYBlockBumper(py)workspaceLayoutCoordinator"></a>
                     <a name="//apple_ref/swift/Property/workspaceLayoutCoordinator" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly11BlockBumper26workspaceLayoutCoordinatorXwGSqCS_26WorkspaceLayoutCoordinator_">workspaceLayoutCoordinator</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYBlockBumper(py)workspaceLayoutCoordinator">workspaceLayoutCoordinator</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -71,9 +71,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11BlockBumper27bumpBlockLayoutOfConnectionFTCS_10Connection18awayFromConnectionS1__T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYBlockBumper(im)bumpBlockLayoutOfConnection:awayFromConnection:"></a>
                     <a name="//apple_ref/swift/Method/bumpBlockLayoutOfConnection(_:awayFromConnection:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11BlockBumper27bumpBlockLayoutOfConnectionFTCS_10Connection18awayFromConnectionS1__T_">bumpBlockLayoutOfConnection(_:awayFromConnection:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYBlockBumper(im)bumpBlockLayoutOfConnection:awayFromConnection:">bumpBlockLayoutOfConnection(_:awayFromConnection:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -93,45 +93,15 @@
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>impingingConnection</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The connection of the block being bumped away.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>stationaryConnection</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The connection that is being used as the source location for
-the bump.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11BlockBumper13bumpNeighborsFT13ofBlockLayoutCS_11BlockLayout16alwaysBumpOthersSb_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYBlockBumper(im)bumpNeighborsOfBlockLayout:alwaysBumpOthers:"></a>
                     <a name="//apple_ref/swift/Method/bumpNeighbors(ofBlockLayout:alwaysBumpOthers:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11BlockBumper13bumpNeighborsFT13ofBlockLayoutCS_11BlockLayout16alwaysBumpOthersSb_T_">bumpNeighbors(ofBlockLayout:alwaysBumpOthers:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYBlockBumper(im)bumpNeighborsOfBlockLayout:alwaysBumpOthers:">bumpNeighbors(ofBlockLayout:alwaysBumpOthers:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -150,37 +120,6 @@ connected to the given block layout.</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">bumpNeighbors</span><span class="p">(</span><span class="n">ofBlockLayout</span> <span class="nv">blockLayout</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlockLayout.html">BlockLayout</a></span><span class="p">,</span> <span class="nv">alwaysBumpOthers</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>blockLayout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>BlockLayout</code> to bump others away from.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>alwaysBumpOthers</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>[Optional] When set to <code>true</code>, <code>blockLayout</code> will always bump other
-block groups instead of its own. When set to <code>false</code>, <code>blockLayout</code>&rsquo;s own block group may be
-bumped. This value defaults to <code>false</code>.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -251,21 +190,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -277,7 +216,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -489,7 +428,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -505,7 +444,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -529,7 +468,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -537,7 +476,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -545,7 +484,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator
