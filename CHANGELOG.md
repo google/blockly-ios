@@ -1,3 +1,18 @@
+# [Version 1.1.3](https://github.com/google/blockly-ios/tree/1.1.3) (Oct 2017)
+
+Updates:
+- Updates the library to use Swift 4 syntax. This requires that developers
+update to use Xcode 9.
+- Adds `flipRtl` property to FieldImage, allowing images to be flipped in RTL
+rendering
+- Updates i18n messages and compiled version of Web Blockly to latest October
+release.
+
+Fixes:
+- Fixes bug where cancelled touches weren't being handled inside
+WorkbenchViewController, which caused state problems
+- Fixes bug where popovers could be overdismissed
+
 # [Version 1.1.2](https://github.com/google/blockly-ios/tree/1.1.2) (Sep 2017)
 
 Updates:
