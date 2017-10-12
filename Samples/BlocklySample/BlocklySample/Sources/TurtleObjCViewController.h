@@ -18,7 +18,8 @@
 
 #import "TurtleViewControllerInterface.h"
 
-@interface TurtleObjCViewController: UIViewController <TurtleViewControllerInterface>
+@interface TurtleObjCViewController: UIViewController
+  <TurtleViewControllerInterface, WKNavigationDelegate>
 
 /// The parent view for `self.webView`.
 @property (weak, nonatomic) IBOutlet UIView *webViewContainer;
