@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Erzeuge \"Lese %1\"",
   "VARIABLES_SET_HELPURL": "https://de.wikipedia.org/wiki/Variable_%28Programmierung%29",
   "VARIABLES_SET_TOOLTIP": "Setzt den Wert einer Variable.",
-  "VARIABLE_ALREADY_EXISTS": "Eine Variable namens \u201e%1\u201c ist bereits vorhanden."
+  "VARIABLE_ALREADY_EXISTS": "Eine Variable namens \u201e%1\u201c ist bereits vorhanden.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Eine Variable namens \u201e%1\u201c ist bereits f\u00fcr eine andere Variable des Typs \u201e%2\u201c vorhanden."
 }

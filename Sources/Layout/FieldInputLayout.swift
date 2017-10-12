@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldInput`-based `Layout`.
  */
 @objc(BKYFieldInputLayout)
-open class FieldInputLayout: FieldLayout {
+@objcMembers open class FieldInputLayout: FieldLayout {
 
   // MARK: - Properties
 

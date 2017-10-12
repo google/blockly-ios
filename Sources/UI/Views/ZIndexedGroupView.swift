@@ -35,7 +35,7 @@ public protocol ZIndexedView {
  `ZIndexedView` will result in an app crash.
  */
 @objc(BKYZIndexedGroupView)
-public final class ZIndexedGroupView: UIView {
+@objcMembers public final class ZIndexedGroupView: UIView {
   // MARK: - Properties
 
   /// The highest z-index `UIView` that has been added to this group

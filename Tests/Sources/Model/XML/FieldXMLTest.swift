@@ -88,8 +88,12 @@ class FieldXMLTest: XCTestCase {
   }
 
   func testSerializeXML_FieldImage() {
-    let field =
-      FieldImage(name: "a_field", imageLocation: "some_image.png", size: WorkspaceSize.zero, altText: "")
+    let field = FieldImage(
+      name: "a_field",
+      imageLocation: "some_image.png",
+      size: WorkspaceSize.zero,
+      altText: "",
+      flipRtl: false)
     let fieldXML = BKYAssertDoesNotThrow { try field.toXMLElement() }
 
     // Expected: nil

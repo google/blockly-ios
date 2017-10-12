@@ -63,7 +63,7 @@ public protocol NameManagerListener {
  Any names added to this manager are done so without case sensitivity.
  */
 @objc(BKYNameManager)
-public final class NameManager: NSObject {
+@objcMembers public final class NameManager: NSObject {
   // MARK: - Static Properties
 
   /// Regular expression pattern with two groups.  The first lazily looks for any sequence of
@@ -292,15 +292,15 @@ public final class NameManager: NSObject {
       if let match = _regex.firstMatch(
         in: name, options: [], range: NSMakeRange(0, name.utf16.count))
         , match.numberOfRanges == 3 &&
-          match.rangeAt(1).location != NSNotFound &&
-          match.rangeAt(2).location != NSNotFound
+          match.range(at: 1).location != NSNotFound &&
+          match.range(at: 2).location != NSNotFound
       {
-        if let textRange = bky_rangeFromNSRange(match.rangeAt(1), forString: name),
-          let numberRange = bky_rangeFromNSRange(match.rangeAt(2), forString: name),
-          let number = Int(name.substring(with: numberRange))
+        if let textRange = bky_rangeFromNSRange(match.range(at: 1), forString: name),
+          let numberRange = bky_rangeFromNSRange(match.range(at: 2), forString: name),
+          let number = Int(String(name[numberRange]))
         {
           // `name` ends in a number. Use that (number + 1) as the variable counter
-          baseName = name.substring(with: textRange)
+          baseName = String(name[textRange])
           variableCount = number + 1
         }
       }

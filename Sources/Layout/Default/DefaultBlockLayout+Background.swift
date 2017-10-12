@@ -20,7 +20,7 @@ extension DefaultBlockLayout {
   Information for rendering the background of a `DefaultBlockLayout`.
   */
   @objc(BKYDefaultBlockLayoutBackground)
-  public final class Background: NSObject {
+  @objcMembers public final class Background: NSObject {
     // MARK: - Properties
 
     /// Flag if the top-left corner should be square.
@@ -120,7 +120,7 @@ extension DefaultBlockLayout {
   Information for rendering a row inside a block.
   */
   @objc(BKYBlockLayoutBackgroundRow)
-  public final class BackgroundRow: NSObject {
+  @objcMembers public final class BackgroundRow: NSObject {
     // MARK: - Properties
 
     /// Flag if a output connector should be rendered on the right side of the row

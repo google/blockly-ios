@@ -21,7 +21,7 @@ import Foundation
  A default implementation of `LayoutFactory`.
  */
 @objc(BKYDefaultLayoutFactory)
-open class DefaultLayoutFactory: NSObject {
+@objcMembers open class DefaultLayoutFactory: NSObject {
   // MARK: - Closures
 
   /// Closure for returning a `FieldLayout` from a given `Field` and `LayoutEngine`

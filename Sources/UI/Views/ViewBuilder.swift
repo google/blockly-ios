@@ -48,7 +48,7 @@ public protocol ViewBuilderDelegate {
 /**
  Class for maintaining the `View` hierarchy from a `Layout` hierarchy.
  */
-@objc(BKYViewBuilder)
+@objcMembers @objc(BKYViewBuilder)
 open class ViewBuilder: NSObject {
   // MARK: - Properties
 

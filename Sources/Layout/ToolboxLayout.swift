@@ -22,7 +22,7 @@ import Foundation
  - note: The `Toolbox` itself does not have an associated `Layout` instance.
  */
 @objc(BKYToolboxLayout)
-open class ToolboxLayout: NSObject {
+@objcMembers open class ToolboxLayout: NSObject {
 
   // MARK: - Properties
 

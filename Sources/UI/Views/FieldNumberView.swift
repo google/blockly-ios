@@ -19,7 +19,7 @@ import Foundation
  View for rendering a `FieldNumber`.
  */
 @objc(BKYFieldNumberView)
-open class FieldNumberView: FieldView {
+@objcMembers open class FieldNumberView: FieldView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `FieldNumberLayout`

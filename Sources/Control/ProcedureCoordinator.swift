@@ -21,7 +21,7 @@ import Foundation
  Coordinates the logic of all procedure blocks inside a `WorkbenchViewController`.
  */
 @objc(BKYProcedureCoordinator)
-public class ProcedureCoordinator: NSObject {
+@objcMembers public class ProcedureCoordinator: NSObject {
 
   // MARK: - Properties
 

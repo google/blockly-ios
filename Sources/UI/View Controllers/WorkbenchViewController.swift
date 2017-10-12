@@ -59,7 +59,7 @@ extension WorkbenchViewControllerUIState {
  View controller for editing a workspace.
  */
 @objc(BKYWorkbenchViewController)
-open class WorkbenchViewController: UIViewController {
+@objcMembers open class WorkbenchViewController: UIViewController {
 
   // MARK: - Constants
 
@@ -689,7 +689,7 @@ open class WorkbenchViewController: UIViewController {
 
     // Automatically change the viewport to show the top-most block
     if let topBlock =
-      workspace.topLevelBlocks().sorted(by: { $0.0.position.y <= $0.1.position.y }).first {
+      workspace.topLevelBlocks().sorted(by: { $0.position.y <= $1.position.y }).first {
       scrollBlockIntoView(blockUUID: topBlock.uuid, location: .topLeading, animated: false)
     }
 
@@ -759,7 +759,7 @@ open class WorkbenchViewController: UIViewController {
 
    - parameter gesture: The `UIPanGestureRecognizer` that fired the method.
    */
-  private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
+  @objc private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
     addUIStateValue(.didPanWorkspace)
   }
 
@@ -768,7 +768,7 @@ open class WorkbenchViewController: UIViewController {
 
    - parameter gesture: The `UITapGestureRecognizer` that fired the method.
    */
-  private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
+  @objc private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
     addUIStateValue(.didTapWorkspace)
   }
 
@@ -956,7 +956,8 @@ extension WorkbenchViewController {
     }
 
     if !state.intersectsWith(.presentingPopover),
-      let presentedViewController = self.presentedViewController {
+      let presentedViewController = self.presentedViewController,
+      !presentedViewController.isBeingDismissed {
       presentedViewController.dismiss(animated: animated, completion: nil)
     }
 
@@ -977,7 +978,7 @@ extension WorkbenchViewController {
 
    - parameter sender: The trash can button that sent the event.
    */
-  fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
       addUIStateValue(.trashCanOpen)
@@ -1069,7 +1070,7 @@ extension WorkbenchViewController {
     }
   }
 
-  fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
     guard !_undoStack.isEmpty else {
       return
     }
@@ -1097,7 +1098,7 @@ extension WorkbenchViewController {
     _recordEvents = true
   }
 
-  fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
+  @objc fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
     guard !_redoStack.isEmpty else {
       return
     }
@@ -1497,7 +1498,7 @@ extension WorkbenchViewController {
 // MARK: - UIKeyboard notifications
 
 extension WorkbenchViewController {
-  fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
+  @objc fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
     addUIStateValue(.editingTextField)
 
     if let keyboardEndSize =
@@ -1514,7 +1515,7 @@ extension WorkbenchViewController {
     }
   }
 
-  fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
+  @objc fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
     removeUIStateValue(.editingTextField)
 
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
@@ -1705,10 +1706,10 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
       }
     }
 
-    if touchState == .ended {
+    if (touchState == .ended || touchState == .cancelled) && _dragger.numberOfActiveDrags > 0 {
       let touchTouchingTrashCan = isTouchTouchingTrashCan(touchPosition,
         fromView: workspaceView.scrollView)
-      if touchTouchingTrashCan && blockLayout.block.deletable {
+      if touchState == .ended && touchTouchingTrashCan && blockLayout.block.deletable {
         // This block is being "deleted" -- cancel the drag and copy the block into the trash can
         _dragger.cancelDraggingBlockLayout(blockLayout)
 

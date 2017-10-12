@@ -40,7 +40,7 @@ public protocol BlockExtension: class {
  Wraps extension code in a closure so it can be executed on a `Block` during its initialization.
  */
 @objc(BKYBlockExtensionClosure)
-public final class BlockExtensionClosure: NSObject, BlockExtension {
+@objcMembers public final class BlockExtensionClosure: NSObject, BlockExtension {
   // MARK: - Properties
 
   /// The closure that is executed by this extension during `Block` initialization.

@@ -77,7 +77,7 @@ extension Block {
       let x = formatter.number(from: xString),
       let y = formatter.number(from: yString)
     {
-      block.position = WorkspacePoint(x: CGFloat(x), y: CGFloat(y))
+      block.position = WorkspacePoint(x: CGFloat(truncating: x), y: CGFloat(truncating: y))
     }
 
     if let disabled = xml.attributes[XMLConstants.TAG_DISABLED] {

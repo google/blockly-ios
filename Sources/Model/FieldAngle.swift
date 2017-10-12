@@ -19,7 +19,7 @@ import Foundation
 An input field for a 0 to 360 angle.
 */
 @objc(BKYFieldAngle)
-public final class FieldAngle: Field {
+@objcMembers public final class FieldAngle: Field {
   // MARK: - Properties
 
   /// The current angle stored in this field.

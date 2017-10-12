@@ -19,7 +19,7 @@ import Foundation
  A default implementation of `BlockView`.
  */
 @objc(BKYDefaultBlockView)
-public final class DefaultBlockView: BlockView {
+@objcMembers public final class DefaultBlockView: BlockView {
 
   // MARK: - Properties
 

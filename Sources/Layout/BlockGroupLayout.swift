@@ -20,7 +20,7 @@ import Foundation
  `Block` objects (ie. those that are connecting via previous/next connections).
  */
 @objc(BKYBlockGroupLayout)
-open class BlockGroupLayout: Layout {
+@objcMembers open class BlockGroupLayout: Layout {
   // MARK: - Properties
 
   /// Flag that should be used when `self.zIndex` has been updated

@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
-# Updates JSON message files for all supported languages in Blockly iOS,
-# using a local Blockly web repo as the source.
+# Downloads all localized message files from the Blockly web repo and
+# updates the corresponding JSON message files in Blockly iOS.
+#
+# NOTE: `git` needs to be installed for this script to run.
 #
 # Usage:
-# python update_i18n_messages.py "<path-to-web-blockly>"
+# python update_i18n_messages.py
 #
 # Copyright 2017 Google Inc.
 # https://developers.google.com/blockly/
@@ -21,13 +23,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import json
+import shutil
 import sys
 from common import InputError
+from common import git_clone
 from common import read_json_file
 from os import path
 from os import walk
-from shutil import copyfile
 
 def update_i18n_messages(blockly_ios_root, blockly_web_root):
   """Updates JSON message files for all supported languages in Blockly iOS,
@@ -38,7 +42,7 @@ def update_i18n_messages(blockly_ios_root, blockly_web_root):
     blockly_web_root: Root directory of the Blockly web repo.
   """
 
-  ios_messages_dir =path.realpath(
+  ios_messages_dir = path.realpath(
     path.join(blockly_ios_root, "Resources/Localized/Messages"))
   web_json_dir = path.realpath(path.join(blockly_web_root, "msg/json"))
   ios_constants_file_name = "bky_constants.json"
@@ -46,10 +50,10 @@ def update_i18n_messages(blockly_ios_root, blockly_web_root):
   ios_synonyms_file_name = "bky_synonyms.json"
 
   # Copy constants and synonyms directly from web repo to iOS dir
-  copyfile(
+  shutil.copyfile(
     path.join(web_json_dir, "constants.json"),
     path.join(ios_messages_dir, ios_constants_file_name))
-  copyfile(
+  shutil.copyfile(
     path.join(web_json_dir, "synonyms.json"),
     path.join(ios_messages_dir, ios_synonyms_file_name))
 
@@ -75,7 +79,7 @@ def update_i18n_messages(blockly_ios_root, blockly_web_root):
     language_code = mapped_language_code(json_file.replace(".json", ""))
     ios_language_dir = path.join(ios_messages_dir, language_code + ".lproj")
 
-    if language_code in ["ba", "bcc", "diq", "hrx", "ia", "lki", "oc",
+    if language_code in ["ab", "ba", "bcc", "diq", "hrx", "ia", "lki", "oc",
     "pms", "sc", "sd", "shn", "tcy", "tl", "tlh"]:
       print """Skipping "{0}", which is an unsupported language code \
 in iOS.""".format(language_code)
@@ -113,13 +117,32 @@ def mapped_language_code(language_code):
   return language_code
 
 if __name__ == '__main__':
-  if len(sys.argv) != 2:
-    print """[ERROR] Wrong number of arguments passed into script.
-Usage: python {0} "<path-to-blockly>\"""".format(sys.argv[0])
-    sys.exit(1)
+  script_description = """
+Downloads all localized message files from the Blockly web repo and
+updates the corresponding JSON message files in Blockly iOS.
+(NOTE: `git` needs to be installed for this script to run.)"""
+
+  # Parse command-line args
+  parser = argparse.ArgumentParser(description=script_description)
+  parser.add_argument("--branch",
+    help="The git branch to use from the Blockly web repo. Defaults to 'master'.",
+    default="master")
+  args = parser.parse_args()
 
   script_dir = path.dirname(path.realpath(sys.argv[0]))
   blockly_ios_root = path.realpath(path.join(script_dir, ".."))
-  blockly_web_root = sys.argv[1]
 
+  # Create temp dir
+  temp_dir = path.realpath(path.join(script_dir, "temp"))
+  if (path.exists(temp_dir)):
+    shutil.rmtree(temp_dir)
+
+  # Clone master branch of blockly
+  git_clone(temp_dir, "https://github.com/google/blockly.git", "--branch " + args.branch + " --depth 1")
+  blockly_web_root = path.join(temp_dir, "blockly")
+
+  # Update i18n messages with the cloned repo
   update_i18n_messages(blockly_ios_root, blockly_web_root)
+
+  # Clean up temp dir
+  shutil.rmtree(temp_dir)

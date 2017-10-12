@@ -14,13 +14,13 @@
             <h1>EventManager</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">EventManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">EventManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
             <p>Manages the use of events across Blockly.</p>
 
-<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/EventManager.html#/s:ZvC7Blockly12EventManager6sharedS0_">EventManager.shared</a></code>.</p>
+<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/EventManager.html#/c:@M@Blockly@objc(cs)BKYEventManager(cpy)shared">EventManager.shared</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     This class is not thread-safe and should only be accessed from the main thread.
@@ -41,9 +41,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly12EventManager6sharedS0_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(cpy)shared"></a>
                     <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly12EventManager6sharedS0_">shared</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(cpy)shared">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -68,9 +68,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly12EventManager13pendingEventsGSaCS_12BlocklyEvent_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(py)pendingEvents"></a>
                     <a name="//apple_ref/swift/Property/pendingEvents" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly12EventManager13pendingEventsGSaCS_12BlocklyEvent_">pendingEvents</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(py)pendingEvents">pendingEvents</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -95,9 +95,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly12EventManager9isEnabledSb"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(py)isEnabled"></a>
                     <a name="//apple_ref/swift/Property/isEnabled" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly12EventManager9isEnabledSb">isEnabled</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(py)isEnabled">isEnabled</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -123,9 +123,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly12EventManager14currentGroupIDGSqSS_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(py)currentGroupID"></a>
                     <a name="//apple_ref/swift/Property/currentGroupID" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly12EventManager14currentGroupIDGSqSS_">currentGroupID</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(py)currentGroupID">currentGroupID</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -160,9 +160,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager15addPendingEventFCS_12BlocklyEventT_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)addPendingEvent:"></a>
                     <a name="//apple_ref/swift/Method/addPendingEvent(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager15addPendingEventFCS_12BlocklyEventT_">addPendingEvent(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)addPendingEvent:">addPendingEvent(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -170,7 +170,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Queues an event to be fired in the future (via <code><a href="../Classes/EventManager.html#/s:FC7Blockly12EventManager17firePendingEventsFT_T_">firePendingEvents()</a></code>). However, this event will
+                        <p>Queues an event to be fired in the future (via <code><a href="../Classes/EventManager.html#/c:@M@Blockly@objc(cs)BKYEventManager(im)firePendingEvents">firePendingEvents()</a></code>). However, this event will
 not be queued if <code>self.isEnabled</code> is set to <code>false</code>, or if the event is discardable.</p>
 
 <p>If <code>event.groupID</code> is <code>nil</code>, it is automatically assigned the value of <code>self.currentGroupID</code>,
@@ -185,33 +185,15 @@ by this method.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>event</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>BlocklyEvent</code> to queue.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager17firePendingEventsFT_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)firePendingEvents"></a>
                     <a name="//apple_ref/swift/Method/firePendingEvents()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager17firePendingEventsFT_T_">firePendingEvents()</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)firePendingEvents">firePendingEvents()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -246,9 +228,9 @@ by this method.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager12pushNewGroupFT_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)pushNewGroup"></a>
                     <a name="//apple_ref/swift/Method/pushNewGroup()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager12pushNewGroupFT_T_">pushNewGroup()</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)pushNewGroup">pushNewGroup()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -260,7 +242,7 @@ by this method.</p>
 <code>self.currentGroupID</code>. Each new pending event will automatically be assigned to this group ID,
 if it is not already assigned to a group ID.</p>
 
-<p>Every call to <code>pushNewGroup()</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/s:FC7Blockly12EventManager8popGroupFT_T_">popGroup()</a></code>.</p>
+<p>Every call to <code>pushNewGroup()</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/c:@M@Blockly@objc(cs)BKYEventManager(im)popGroup">popGroup()</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     It is not recommended to push a new group ID if <code>self.currentGroupID</code> is not <code>nil</code>.
@@ -283,9 +265,9 @@ Doing this will result in an error in debug mode and a warning in release mode.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager9pushGroupFT7groupIDSS_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)pushGroupWithGroupID:"></a>
                     <a name="//apple_ref/swift/Method/pushGroup(groupID:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager9pushGroupFT7groupIDSS_T_">pushGroup(groupID:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)pushGroupWithGroupID:">pushGroup(groupID:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -297,7 +279,7 @@ Doing this will result in an error in debug mode and a warning in release mode.
  Each new pending event will automatically be assigned to this group ID, if it is not already
  assigned to a group ID.</p>
 
-<p>Every call to <code>pushGroup(groupID:)</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/s:FC7Blockly12EventManager8popGroupFT_T_">popGroup()</a></code>.</p>
+<p>Every call to <code>pushGroup(groupID:)</code> needs to be balanced by a future call to <code><a href="../Classes/EventManager.html#/c:@M@Blockly@objc(cs)BKYEventManager(im)popGroup">popGroup()</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     It is not recommended to push a group ID that differs from <code>self.currentGroupID</code>,
@@ -315,33 +297,15 @@ mode.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>groupID</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The groupID to push.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager8popGroupFT_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)popGroup"></a>
                     <a name="//apple_ref/swift/Method/popGroup()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager8popGroupFT_T_">popGroup()</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)popGroup">popGroup()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -373,9 +337,9 @@ if it is not already assigned to a group ID.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager18groupAndFireEventsFzT7groupIDGSqSS_10forClosureFzT_T__T_"></a>
+                    <a name="/s:7Blockly12EventManagerC18groupAndFireEventsySSSg0D2ID_yyKc10forClosuretKF"></a>
                     <a name="//apple_ref/swift/Method/groupAndFireEvents(groupID:forClosure:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager18groupAndFireEventsFzT7groupIDGSqSS_10forClosureFzT_T__T_">groupAndFireEvents(groupID:forClosure:)</a></h3>
+                    <h3><a class="token" href="#/s:7Blockly12EventManagerC18groupAndFireEventsySSSg0D2ID_yyKc10forClosuretKF">groupAndFireEvents(groupID:forClosure:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -402,36 +366,6 @@ regardless if the given closure throws an error.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>groupID</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>[Optional] Specifies a group ID to assign to a new group. If <code>nil</code>, a
-unique UUID is created for the group ID.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>closure</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The closure to execute.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
@@ -448,9 +382,9 @@ unique UUID is created for the group ID.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager11addListenerFPS_20EventManagerListener_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)addListener:"></a>
                     <a name="//apple_ref/swift/Method/addListener(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager11addListenerFPS_20EventManagerListener_T_">addListener(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)addListener:">addListener(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -469,33 +403,15 @@ unique UUID is created for the group ID.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>listener</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>EventManagerListener</code> to add.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly12EventManager14removeListenerFPS_20EventManagerListener_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventManager(im)removeListener:"></a>
                     <a name="//apple_ref/swift/Method/removeListener(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly12EventManager14removeListenerFPS_20EventManagerListener_T_">removeListener(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventManager(im)removeListener:">removeListener(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -513,24 +429,6 @@ unique UUID is created for the group ID.</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeListener</span><span class="p">(</span><span class="n">_</span> <span class="nv">listener</span><span class="p">:</span> <span class="kt"><a href="../Protocols/EventManagerListener.html">EventManagerListener</a></span><span class="p">)</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>listener</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>EventManagerListener</code> to remove.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -601,21 +499,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -627,7 +525,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -839,7 +737,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -855,7 +753,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -879,7 +777,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -887,7 +785,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -895,7 +793,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

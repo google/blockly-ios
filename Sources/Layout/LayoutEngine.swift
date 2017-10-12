@@ -25,7 +25,7 @@ import Foundation
  unexpected results may occur.
  */
 @objc(BKYLayoutEngine)
-open class LayoutEngine: NSObject {
+@objcMembers open class LayoutEngine: NSObject {
 
   // MARK: - Properties
 

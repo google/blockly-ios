@@ -18,7 +18,7 @@ import Foundation
  Stores config properties specific to the default layout.
  */
 @objc(BKYDefaultLayoutConfig)
-open class DefaultLayoutConfig: LayoutConfig {
+@objcMembers open class DefaultLayoutConfig: LayoutConfig {
   // MARK: - Properties
 
   /// [`Unit`] Rounded corner radius of a block

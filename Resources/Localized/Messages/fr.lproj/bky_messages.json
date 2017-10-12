@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "Cr\u00e9er 'obtenir %1'",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Fixe cette variable pour qu\u2019elle soit \u00e9gale \u00e0 la valeur de l\u2019entr\u00e9e.",
-  "VARIABLE_ALREADY_EXISTS": "Une variable appel\u00e9e '%1' existe d\u00e9j\u00e0."
+  "VARIABLE_ALREADY_EXISTS": "Une variable appel\u00e9e '%1' existe d\u00e9j\u00e0.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Une variable nomm\u00e9e '%1' existe d\u00e9j\u00e0 pour une autre variable de type '%2'."
 }

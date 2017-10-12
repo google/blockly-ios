@@ -165,6 +165,11 @@
 		FAB31CE21C571F730071EBF8 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB31CE11C571F730071EBF8 /* FieldView.swift */; };
 		FAB551AC1BD5A06F00EFB09E /* LayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */; };
 		FAB67C6D1BFDB75900E75453 /* BezierPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */; };
+		FAB9213A1F845C47007328BB /* bky_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5164C41E959913005CAA23 /* bky_messages.json */; };
+		FAB9213E1F845E2F007328BB /* LocalizedMessagesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB9213D1F845E2F007328BB /* LocalizedMessagesTest.swift */; };
+		FAB921401F845F31007328BB /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB9213F1F845F31007328BB /* TestError.swift */; };
+		FAB921411F84658C007328BB /* bky_constants.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165061E959A09005CAA23 /* bky_constants.json */; };
+		FAB921421F846591007328BB /* bky_synonyms.json in Resources */ = {isa = PBXBuildFile; fileRef = FA5165071E959A09005CAA23 /* bky_synonyms.json */; };
 		FABDB1941E4D40F600F92DAC /* BlockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABDB1931E4D40F600F92DAC /* BlockExtension.swift */; };
 		FAC034EC1D51482B0017C1C8 /* FieldColorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */; };
 		FAC034F61D5159FE0017C1C8 /* FieldDateLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */; };
@@ -454,6 +459,9 @@
 		FAB31CE11C571F730071EBF8 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FAB551AB1BD5A06F00EFB09E /* LayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutView.swift; sourceTree = "<group>"; };
 		FAB67C6C1BFDB75900E75453 /* BezierPathLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPathLayer.swift; sourceTree = "<group>"; };
+		FAB921391F844F6A007328BB /* kab */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = kab; path = kab.lproj/bky_messages.json; sourceTree = "<group>"; };
+		FAB9213D1F845E2F007328BB /* LocalizedMessagesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedMessagesTest.swift; sourceTree = "<group>"; };
+		FAB9213F1F845F31007328BB /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		FABDB1931E4D40F600F92DAC /* BlockExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockExtension.swift; sourceTree = "<group>"; };
 		FAC034EB1D51482B0017C1C8 /* FieldColorLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldColorLayout.swift; sourceTree = "<group>"; };
 		FAC034F51D5159FE0017C1C8 /* FieldDateLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldDateLayout.swift; sourceTree = "<group>"; };
@@ -653,6 +661,7 @@
 				FA3786A21BFFDD69009D18DF /* Layout */,
 				FAFA71641DF64CD5008247FD /* TestObjects */,
 				FA4BB40C1B744A8E000980E9 /* TestConstants.swift */,
+				FAB9213F1F845F31007328BB /* TestError.swift */,
 				FAFAEE3A1CDA81F500698179 /* XCTestCase+Helper.swift */,
 			);
 			path = Sources;
@@ -699,6 +708,7 @@
 			children = (
 				FA7097B71C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift */,
 				FA4BB4B11B754D87000980E9 /* ColorHelperTest.swift */,
+				FAB9213D1F845E2F007328BB /* LocalizedMessagesTest.swift */,
 				FA0D8C0F1E8C46B900C87C56 /* MessageManagerTest.swift */,
 				FA2726A11B8C331C00777B49 /* ObjectPoolTest.swift */,
 			);
@@ -1088,12 +1098,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Google Inc.";
 				TargetAttributes = {
 					FA548C041B630BAC008BC59C = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					FA548C0F1B630BAD008BC59C = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -1158,6 +1168,7 @@
 				"zh-Hant",
 				be,
 				lrc,
+				kab,
 			);
 			mainGroup = FA548BFB1B630BAC008BC59C;
 			productRefGroup = FA548C061B630BAC008BC59C /* Products */;
@@ -1188,6 +1199,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAB921411F84658C007328BB /* bky_constants.json in Resources */,
+				FAB9213A1F845C47007328BB /* bky_messages.json in Resources */,
+				FAB921421F846591007328BB /* bky_synonyms.json in Resources */,
 				FA4D54D71C6BFAFE00F95084 /* xml_parsing_test.json in Resources */,
 				FA0D8C161E8C4BB800C87C56 /* i18n_synonyms1.json in Resources */,
 				FADF97381D9C84270067C425 /* code_generator_generators.js in Resources */,
@@ -1385,6 +1399,7 @@
 				FA4BB40F1B744A8E000980E9 /* InputJSONTest.swift in Sources */,
 				FA57C39D1CCADD2E00952BFB /* ToolboxXMLTest.swift in Sources */,
 				FA4EE3D31BFE9016000C621F /* BlockTest.swift in Sources */,
+				FAB9213E1F845E2F007328BB /* LocalizedMessagesTest.swift in Sources */,
 				FA4BB40E1B744A8E000980E9 /* FieldJSONTest.swift in Sources */,
 				FA3786A71C00093B009D18DF /* ConnectionManagerTest.swift in Sources */,
 				FA4BB40D1B744A8E000980E9 /* BlockJSONTest.swift in Sources */,
@@ -1394,6 +1409,7 @@
 				FA3786A41BFFDF08009D18DF /* LayoutBuilderTest.swift in Sources */,
 				3059336F1DEE70930064B9F2 /* FieldVariableTest.swift in Sources */,
 				FA2726A21B8C331C00777B49 /* ObjectPoolTest.swift in Sources */,
+				FAB921401F845F31007328BB /* TestError.swift in Sources */,
 				FA3FD1461CF3CFBE005B6D0F /* WorkspaceTest.swift in Sources */,
 				FA7097B81C8F5AAE0011CF5C /* CodeGeneratorServiceTest.swift in Sources */,
 				FA6086001C6D7049003B6076 /* WorkspaceXMLTest.swift in Sources */,
@@ -1480,6 +1496,7 @@
 				FA5164F61E959913005CAA23 /* vi */,
 				FA5164F71E959913005CAA23 /* zh-Hans */,
 				FA5164F81E959914005CAA23 /* zh-Hant */,
+				FAB921391F844F6A007328BB /* kab */,
 			);
 			name = bky_messages.json;
 			sourceTree = "<group>";
@@ -1496,14 +1513,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1548,14 +1571,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1606,7 +1635,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1632,7 +1661,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1650,7 +1679,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1663,7 +1692,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.blockly.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

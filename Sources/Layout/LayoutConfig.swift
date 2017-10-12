@@ -19,7 +19,7 @@ import Foundation
  UI configuration for all layout elements.
  */
 @objc(BKYLayoutConfig)
-open class LayoutConfig: NSObject {
+@objcMembers open class LayoutConfig: NSObject {
   // MARK: - Static Properties
 
   /// Total number of `PropertyKey` values that have been created via `newPropertyKey()`.

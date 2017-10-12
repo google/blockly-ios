@@ -37,7 +37,7 @@ class BlockJSONTest: XCTestCase {
     }
 
     XCTAssertEqual("block_id_1", block.name)
-    XCTAssertEqualWithAccuracy(
+    XCTAssertEqual(
       CGFloat(135.0 / 360.0), block.color.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual(true, block.inputsInline)
     XCTAssertEqual("Click me", block.tooltip)
@@ -64,6 +64,7 @@ class BlockJSONTest: XCTestCase {
     XCTAssertEqual(100, fieldImage.size.width)
     XCTAssertEqual(100, fieldImage.size.height)
     XCTAssertEqual("Cool Dance!", fieldImage.altText)
+    XCTAssertEqual(true, fieldImage.flipRtl)
 
     // Variable
     guard let fieldVariable = input0.fields[1] as? FieldVariable else {
@@ -84,10 +85,10 @@ class BlockJSONTest: XCTestCase {
     var blue:CGFloat = 0
     var alpha:CGFloat = 0
     fieldColor.color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-    XCTAssertEqualWithAccuracy(Float(3.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(154.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(223.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)
-    XCTAssertEqualWithAccuracy(Float(1.0), Float(alpha), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(3.0/255.0), Float(red), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(154.0/255.0), Float(green), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(223.0/255.0), Float(blue), accuracy: TestConstants.ACCURACY_F)
+    XCTAssertEqual(Float(1.0), Float(alpha), accuracy: TestConstants.ACCURACY_F)
 
     // Angle
     guard let fieldAngle = input0.fields[3] as? FieldAngle else {

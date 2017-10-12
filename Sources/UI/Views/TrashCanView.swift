@@ -19,7 +19,7 @@ import Foundation
  An area containing a button for an animatable trash can.
  */
 @objc(BKYTrashCanView)
-public final class TrashCanView: UIView {
+@objcMembers public final class TrashCanView: UIView {
 
   // MARK: - Properties
 

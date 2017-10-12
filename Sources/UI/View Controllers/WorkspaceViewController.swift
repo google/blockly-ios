@@ -72,7 +72,7 @@ public protocol WorkspaceViewControllerDelegate {
  View controller for managing a workspace.
  */
 @objc(BKYWorkspaceViewController)
-open class WorkspaceViewController: UIViewController {
+@objcMembers open class WorkspaceViewController: UIViewController {
 
   /// The workspace layout coordinator this view controller operates on
   open fileprivate(set) var workspaceLayoutCoordinator: WorkspaceLayoutCoordinator?
@@ -215,7 +215,8 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
       return false
     }
 
-    if let presentedViewController = self.presentedViewController {
+    if let presentedViewController = self.presentedViewController,
+      !presentedViewController.isBeingDismissed {
       // Dismiss any other view controller that's being presented
       presentedViewController.dismiss(animated: true, completion: nil)
     }
@@ -249,7 +250,9 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     _ layoutView: LayoutView,
     requestedToDismissPopoverViewController viewController: UIViewController,
     animated: Bool) {
-    viewController.dismiss(animated: animated, completion: nil)
+    if !viewController.isBeingDismissed {
+      viewController.dismiss(animated: animated, completion: nil)
+    }
 
     presentationDelegate = nil
 

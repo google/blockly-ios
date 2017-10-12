@@ -21,7 +21,7 @@ import Foundation
  This class is designed as a singleton instance, accessible via `ViewManager.shared`.
  */
 @objc(BKYViewManager)
-public final class ViewManager: NSObject {
+@objcMembers public final class ViewManager: NSObject {
   // MARK: - Static Properties
 
   /// Shared instance.

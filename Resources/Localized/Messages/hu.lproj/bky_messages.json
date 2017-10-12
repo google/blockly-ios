@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "K\u00e9sz\u00edts \"%1\"",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "A v\u00e1ltoz\u00f3nak adhatunk \u00e9rt\u00e9ket.",
-  "VARIABLE_ALREADY_EXISTS": "A(z) \u201e%1\u201d nev\u0171 v\u00e1ltoz\u00f3 m\u00e1r l\u00e9tezik."
+  "VARIABLE_ALREADY_EXISTS": "A(z) \u201e%1\u201d nev\u0171 v\u00e1ltoz\u00f3 m\u00e1r l\u00e9tezik.",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

@@ -21,7 +21,7 @@ import Foundation
  View for rendering a `MutatorProcedureDefinition`.
  */
 @objc(MutatorProcedureDefinitionView)
-open class MutatorProcedureDefinitionView: LayoutView {
+@objcMembers open class MutatorProcedureDefinitionView: LayoutView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `MutatorProcedureDefinitionLayout`
@@ -98,7 +98,7 @@ open class MutatorProcedureDefinitionView: LayoutView {
 
   // MARK: - Private
 
-  private dynamic func openPopover(_ sender: UIButton) {
+  @objc private dynamic func openPopover(_ sender: UIButton) {
     guard let mutatorLayout = self.mutatorProcedureDefinitionLayout else {
       return
     }
@@ -428,7 +428,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     }
   }
 
-  dynamic func updateAllowStatements() {
+  @objc dynamic func updateAllowStatements() {
     if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: SECTION_OTHER_OPTIONS)),
       let accessoryView = cell.accessoryView as? UISwitch
     {
@@ -437,7 +437,7 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     }
   }
 
-  func updateParameterTextField(_ textField: UITextField) {
+  @objc func updateParameterTextField(_ textField: UITextField) {
     guard let cell = textField.bky_firstAncestor(ofType: ParameterCellView.self) else {
       return
     }

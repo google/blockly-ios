@@ -28,7 +28,7 @@ extension XCTestCase {
    - parameter expression: The throwable expression
    */
   func BKYAssertThrow<T: NSError>(
-    _ message: String? = nil, file: String = #file, line: UInt = #line, errorType: T.Type,
+    _ message: String? = nil, file: String = #file, line: Int = #line, errorType: T.Type,
     expression: () throws -> Void)
   {
     do {
@@ -60,7 +60,7 @@ extension XCTestCase {
    - returns: The return value of the expression or `nil` if the expression could not be evaluated.
    */
   func BKYAssertDoesNotThrow<T>(
-    message: String? = nil, file: String = #file, line: UInt = #line,
+    message: String? = nil, file: String = #file, line: Int = #line,
     _ expression: () throws -> T?) -> T?
   {
     do {
@@ -79,7 +79,7 @@ extension XCTestCase {
   {
     let conciseFunctionName: String
     if let range = function.range(of: "(") {
-      conciseFunctionName = function.substring(to: range.lowerBound)
+      conciseFunctionName = String(function[..<range.lowerBound])
     } else {
       conciseFunctionName = function
     }

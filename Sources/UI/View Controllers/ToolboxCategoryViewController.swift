@@ -19,7 +19,7 @@ import Foundation
  A view for displaying the blocks inside of a `Toolbox.Category`.
  */
 @objc(BKYToolboxCategoryViewController)
-public final class ToolboxCategoryViewController: UIViewController {
+@objcMembers public final class ToolboxCategoryViewController: UIViewController {
   // MARK: - Properties
 
   /// The toolbox layout to display
@@ -131,9 +131,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         "V:|[footerView]|"
       ]
 
-      footerView.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
+      footerView.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
       _headerConstraint = headerView.bky_addWidthConstraint(0,
-        priority: UILayoutPriorityRequired)
+        priority: UILayoutPriority.required)
     case .vertical:
       constraints = [
         "V:|[headerView][workspaceView][footerView]|",
@@ -142,9 +142,9 @@ public final class ToolboxCategoryViewController: UIViewController {
         "H:|[footerView]|"
       ]
 
-      footerView.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
+      footerView.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
       _headerConstraint = headerView.bky_addHeightConstraint(0,
-        priority: UILayoutPriorityRequired)
+        priority: UILayoutPriority.required)
     }
 
     view.bky_addSubviews(Array(views.values))
@@ -152,8 +152,8 @@ public final class ToolboxCategoryViewController: UIViewController {
 
     // Add low priority size constraints. This allows this view to automatically resize itself
     // if no other higher priority size constraints have been set elsewhere.
-    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriorityDefaultLow)
-    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriorityDefaultLow)
+    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
+    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
 
     view.setNeedsUpdateConstraints()
     workspaceViewController.workspaceView.setNeedsUpdateConstraints()

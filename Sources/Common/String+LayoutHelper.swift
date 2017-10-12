@@ -30,7 +30,7 @@ extension String {
    - returns: The size required to render the string.
    */
   public func bky_multiLineSizeWithAttributes(
-    _ attributes: [String : Any]?, constrainedToWidth width: CGFloat) -> CGSize
+    _ attributes: [NSAttributedStringKey : Any]?, constrainedToWidth width: CGFloat) -> CGSize
   {
     let boundingBox = self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)),
       options: NSStringDrawingOptions.usesLineFragmentOrigin,
@@ -51,7 +51,7 @@ extension String {
   */
   public func bky_multiLineSize(forFont font: UIFont, constrainedToWidth width: CGFloat) -> CGSize
   {
-    let attributes = [NSFontAttributeName: font]
+    let attributes = [NSAttributedStringKey.font: font]
     return self.bky_multiLineSizeWithAttributes(attributes, constrainedToWidth: width)
   }
 
@@ -63,7 +63,7 @@ extension String {
    - returns: The size required to render the string.
    */
   public func bky_singleLineSize(forFont font: UIFont) -> CGSize {
-    let attributes = [NSFontAttributeName: font]
+    let attributes = [NSAttributedStringKey.font: font]
     let boundingBox = self.boundingRect(
       with: CGSize(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)),
       options: NSStringDrawingOptions.usesLineFragmentOrigin,

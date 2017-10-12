@@ -93,7 +93,7 @@ extension UIView {
    */
   @discardableResult
   internal func bky_addWidthConstraint(
-    _ width: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+    _ width: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint
   {
     let constraint =
       NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil,
@@ -114,7 +114,7 @@ extension UIView {
    */
   @discardableResult
   internal func bky_addHeightConstraint(
-    _ height: CGFloat, priority: UILayoutPriority = UILayoutPriorityRequired) -> NSLayoutConstraint
+    _ height: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint
   {
     let constraint =
       NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil,

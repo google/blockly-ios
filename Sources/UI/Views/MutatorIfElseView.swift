@@ -21,7 +21,7 @@ import Foundation
  View for rendering a `MutatorIfElse`.
  */
 @objc(BKYMutatorIfElseView)
-open class MutatorIfElseView: LayoutView {
+@objcMembers open class MutatorIfElseView: LayoutView {
   // MARK: - Properties
 
   /// Convenience property accessing `self.layout` as `MutatorIfElseLayout`
@@ -97,7 +97,7 @@ open class MutatorIfElseView: LayoutView {
 
   // MARK: - Private
 
-  private dynamic func openPopover(_ sender: UIButton) {
+  @objc private dynamic func openPopover(_ sender: UIButton) {
     guard let mutatorIfElseLayout = self.mutatorIfElseLayout else {
       return
     }
@@ -216,7 +216,7 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
 
   // MARK: - Else Mutation
 
-  fileprivate dynamic func updateElseCount() {
+  @objc fileprivate dynamic func updateElseCount() {
     if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
       let accessoryView = cell.accessoryView as? UISwitch
     {

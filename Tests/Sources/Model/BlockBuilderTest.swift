@@ -68,7 +68,7 @@ class BlockBuilderTest: XCTestCase {
   internal func validate(frankenblock block: Block) {
     XCTAssertEqual("frankenblock", block.name)
     XCTAssertEqual(3, block.inputs.count)
-    XCTAssertEqualWithAccuracy(
+    XCTAssertEqual(
       CGFloat(20.0 / 360.0), block.color.bky_hsba().hue, accuracy: TestConstants.ACCURACY_CGF)
     XCTAssertEqual("http://www.example.com", block.helpURL)
     XCTAssertEqual("a tooltip", block.tooltip)
@@ -147,9 +147,12 @@ class BlockBuilderTest: XCTestCase {
     fields = [
       FieldAngle(name: "angle", angle: 90),
       FieldColor(name: "color", color: UIColor.magenta),
-      FieldImage(name: "no name",
+      FieldImage(
+        name: "no name",
         imageLocation: "https://www.gstatic.com/codesite/ph/images/star_on.gif",
-        size: WorkspaceSize(width: 15, height: 20), altText: "*")
+        size: WorkspaceSize(width: 15, height: 20),
+        altText: "*",
+        flipRtl: false)
     ]
     inputBuilder.appendFields(fields)
     bob.inputBuilders.append(inputBuilder)

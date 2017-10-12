@@ -19,7 +19,7 @@ import Foundation
  Helper class for transitioning between block mutation changes.
  */
 @objc(BKYMutatorHelper)
-public class MutatorHelper: NSObject {
+@objcMembers public class MutatorHelper: NSObject {
   // MARK: - Properties
 
   /// Table that maps input names to a target connection. This is used for reconnecting inputs

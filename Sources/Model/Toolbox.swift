@@ -22,7 +22,7 @@ import Foundation
  workspace.
  */
 @objc(BKYToolbox)
-open class Toolbox: NSObject {
+@objcMembers open class Toolbox: NSObject {
 
   // MARK: - Properties
 
@@ -77,7 +77,7 @@ extension Toolbox {
    Groups a collection of blocks together, for use in a `Toolbox`.
    */
   @objc(BKYToolboxCategory)
-  open class Category: WorkspaceFlow {
+  @objcMembers open class Category: WorkspaceFlow {
 
     // MARK: - Constants
 

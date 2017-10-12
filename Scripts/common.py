@@ -21,6 +21,7 @@ import codecs
 import json
 import os
 from datetime import datetime
+import urllib2
 
 class InputError(Exception):
     """Exception raised for errors in the input.
@@ -62,3 +63,17 @@ def read_json_file(filename):
   except ValueError, e:
     print('Error reading ' + filename)
     raise InputError(filename, str(e))
+
+def git_clone(localFolder, repo, options):
+  """Clones a git repo using "git clone".
+  NOTE: This method requires that "git" be installed on the user's machine.
+
+  Args:
+    localFolder: The local folder where the repo should be cloned.
+    repo: The remote path to the git repo.
+    options: Options to pass into the "git clone" command.
+  """
+  if (not os.path.exists(localFolder)):
+    os.makedirs(localFolder)
+  os.chdir(localFolder)
+  os.system("git clone " + repo + " " + options)

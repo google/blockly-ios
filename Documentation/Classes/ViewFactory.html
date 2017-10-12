@@ -14,7 +14,7 @@
             <h1>ViewFactory</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kt">ViewFactory</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="n">open</span> <span class="kd">class</span> <span class="kt">ViewFactory</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
@@ -34,9 +34,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactorycFT_S0_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewFactory(im)init"></a>
                     <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactorycFT_S0_">init()</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewFactory(im)init">init()</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -71,9 +71,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactory8makeViewFzT6layoutCS_6Layout_CS_10LayoutView"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewFactory(im)makeViewWithLayout:error:"></a>
                     <a name="//apple_ref/swift/Method/makeView(layout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactory8makeViewFzT6layoutCS_6Layout_CS_10LayoutView">makeView(layout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewFactory(im)makeViewWithLayout:error:">makeView(layout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -98,24 +98,6 @@
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given <code>Layout</code></p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/LayoutView.html">LayoutView</a></code> with the given layout assigned to it</p>
                       </div>
@@ -125,9 +107,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactory18registerLayoutTypeFTMCS_6Layout12withViewTypeMCS_10LayoutView_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewFactory(im)registerLayoutType:withViewType:"></a>
                     <a name="//apple_ref/swift/Method/registerLayoutType(_:withViewType:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactory18registerLayoutTypeFTMCS_6Layout12withViewTypeMCS_10LayoutView_T_">registerLayoutType(_:withViewType:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewFactory(im)registerLayoutType:withViewType:">registerLayoutType(_:withViewType:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -147,45 +129,15 @@
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>Layout.Type</code> key</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>viewType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A view type that is a subclass of <code>LayoutView</code> that conforms to
-<code>Recyclable</code></p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactory4viewuRxCSo6UIViewrFT7forTypeMx_x"></a>
+                    <a name="/s:7Blockly11ViewFactoryC4viewxxm7forType_tSo6UIViewCRbzlF"></a>
                     <a name="//apple_ref/swift/Method/view(forType:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactory4viewuRxCSo6UIViewrFT7forTypeMx_x">view(forType:)</a></h3>
+                    <h3><a class="token" href="#/s:7Blockly11ViewFactoryC4viewxxm7forType_tSo6UIViewCRbzlF">view(forType:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -212,24 +164,6 @@ If not, a new view of the given type is instantiated.</p>
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>type</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The type of <code>UIView</code> object to retrieve.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
                         <p>An object of the given <code>type</code>.</p>
                       </div>
@@ -239,9 +173,9 @@ If not, a new view of the given type is instantiated.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactory11recycleViewFCSo6UIViewT_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewFactory(im)recycleView:"></a>
                     <a name="//apple_ref/swift/Method/recycleView(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactory11recycleViewFCSo6UIViewT_">recycleView(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewFactory(im)recycleView:">recycleView(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -261,33 +195,15 @@ for re-use later. Otherwise, nothing happens.</p>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>view</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The view to recycle.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewFactory15recycleViewTreeFCSo6UIViewT_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewFactory(im)recycleViewTree:"></a>
                     <a name="//apple_ref/swift/Method/recycleViewTree(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewFactory15recycleViewTreeFCSo6UIViewT_">recycleViewTree(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewFactory(im)recycleViewTree:">recycleViewTree(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -306,24 +222,6 @@ to the protocol <code><a href="../Protocols/Recyclable.html">Recyclable</a></cod
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">recycleViewTree</span><span class="p">(</span><span class="n">_</span> <span class="nv">rootView</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>rootView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The root view to begin the recycling process.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -394,21 +292,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -420,7 +318,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -632,7 +530,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -648,7 +546,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -672,7 +570,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -680,7 +578,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -688,7 +586,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

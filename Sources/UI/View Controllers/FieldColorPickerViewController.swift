@@ -34,7 +34,7 @@ public protocol FieldColorPickerViewControllerDelegate: class {
  View controller for selecting a color for a `FieldColor`.
  */
 @objc(BKYFieldColorPickerViewController)
-open class FieldColorPickerViewController: UICollectionViewController {
+@objcMembers open class FieldColorPickerViewController: UICollectionViewController {
   // MARK: - Properties
 
   /// Array of colors for a simple-grid color picker.

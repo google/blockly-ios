@@ -20,7 +20,7 @@ extension BlocklyEvent {
    Event fired when a property of a block changes.
    */
   @objc(BKYEventChange)
-  public final class Change: BlocklyEvent {
+  @objcMembers public final class Change: BlocklyEvent {
 
     // MARK: - Constants
 

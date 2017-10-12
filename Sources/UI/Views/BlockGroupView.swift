@@ -30,7 +30,7 @@ protocol BlockGroupViewDelegate: class {
  View for rendering a `BlockGroupLayout`.
  */
 @objc(BKYBlockGroupView)
-open class BlockGroupView: LayoutView, ZIndexedView {
+@objcMembers open class BlockGroupView: LayoutView, ZIndexedView {
 
   // MARK: - Properties
 

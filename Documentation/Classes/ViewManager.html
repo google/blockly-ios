@@ -14,13 +14,13 @@
             <h1>ViewManager</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ViewManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ViewManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
             <p>Manages the set <code><a href="../Classes/LayoutView.html">LayoutView</a></code> instances that have been created.</p>
 
-<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/ViewManager.html#/s:ZvC7Blockly11ViewManager6sharedS0_">ViewManager.shared</a></code>.</p>
+<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/ViewManager.html#/c:@M@Blockly@objc(cs)BKYViewManager(cpy)shared">ViewManager.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -36,9 +36,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly11ViewManager6sharedS0_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(cpy)shared"></a>
                     <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly11ViewManager6sharedS0_">shared</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(cpy)shared">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -73,9 +73,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Blockly11ViewManager5viewsGCSo10NSMapTableCSo8NSStringCS_10LayoutView_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(py)views"></a>
                     <a name="//apple_ref/swift/Property/views" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:vC7Blockly11ViewManager5viewsGCSo10NSMapTableCSo8NSStringCS_10LayoutView_">views</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(py)views">views</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -110,9 +110,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewManager9cacheViewFTCS_10LayoutView9forLayoutCS_6Layout_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(im)cacheView:forLayout:"></a>
                     <a name="//apple_ref/swift/Method/cacheView(_:forLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewManager9cacheViewFTCS_10LayoutView9forLayoutCS_6Layout_T_">cacheView(_:forLayout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(im)cacheView:forLayout:">cacheView(_:forLayout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -131,44 +131,15 @@
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>LayoutView</code> to cache</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>Layout</code> associated with the view</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewManager11uncacheViewFT9forLayoutCS_6Layout_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(im)uncacheViewForLayout:"></a>
                     <a name="//apple_ref/swift/Method/uncacheView(forLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewManager11uncacheViewFT9forLayoutCS_6Layout_T_">uncacheView(forLayout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(im)uncacheViewForLayout:">uncacheView(forLayout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -187,33 +158,15 @@
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The given layout</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewManager13findBlockViewFT9forLayoutCS_11BlockLayout_GSqCS_9BlockView_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(im)findBlockViewForLayout:"></a>
                     <a name="//apple_ref/swift/Method/findBlockView(forLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewManager13findBlockViewFT9forLayoutCS_11BlockLayout_GSqCS_9BlockView_">findBlockView(forLayout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(im)findBlockViewForLayout:">findBlockView(forLayout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -234,24 +187,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>BlockLayout</code> to look for</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/BlockView.html">BlockView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be
 found.</p>
@@ -262,9 +197,9 @@ found.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewManager13findFieldViewFT9forLayoutCS_11FieldLayout_GSqCS_9FieldView_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(im)findFieldViewForLayout:"></a>
                     <a name="//apple_ref/swift/Method/findFieldView(forLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewManager13findFieldViewFT9forLayoutCS_11FieldLayout_GSqCS_9FieldView_">findFieldView(forLayout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(im)findFieldViewForLayout:">findFieldView(forLayout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -285,24 +220,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>FieldLayout</code> to look for</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
                         <p>A <code><a href="../Classes/FieldView.html">FieldView</a></code> with the given layout assigned to it, or <code>nil</code> if no view could be
 found.</p>
@@ -313,9 +230,9 @@ found.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly11ViewManager8findViewFT9forLayoutCS_6Layout_GSqCS_10LayoutView_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYViewManager(im)findViewForLayout:"></a>
                     <a name="//apple_ref/swift/Method/findView(forLayout:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly11ViewManager8findViewFT9forLayoutCS_6Layout_GSqCS_10LayoutView_">findView(forLayout:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYViewManager(im)findViewForLayout:">findView(forLayout:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -334,24 +251,6 @@ be found in the cache, <code>nil</code> is returned.</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">findView</span><span class="p">(</span><span class="n">forLayout</span> <span class="nv">layout</span><span class="p">:</span> <span class="kt"><a href="../Classes/Layout.html">Layout</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LayoutView.html">LayoutView</a></span><span class="p">?</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layout</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>Layout</code> to look for</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                       <div>
                         <h4>Return Value</h4>
@@ -427,21 +326,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -453,7 +352,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -665,7 +564,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -681,7 +580,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -705,7 +604,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -713,7 +612,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -721,7 +620,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

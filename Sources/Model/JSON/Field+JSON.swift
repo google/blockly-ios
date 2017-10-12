@@ -41,6 +41,7 @@ extension Field {
   fileprivate static let PARAMETER_DATE = "date"
   fileprivate static let PARAMETER_HEIGHT = "height"
   fileprivate static let PARAMETER_IMAGE_URL = "src"
+  fileprivate static let PARAMETER_IMAGE_FLIP_RTL = "flipRtl"
   fileprivate static let PARAMETER_MINIMUM_VALUE = "min"
   fileprivate static let PARAMETER_MAXIMUM_VALUE = "max"
   fileprivate static let PARAMETER_NAME = "name"
@@ -81,7 +82,7 @@ extension Field {
    `Field.JSONRegistry.shared`.
    */
   @objc(BKYFieldJSONRegistry)
-  public final class JSONRegistry: NSObject {
+  @objcMembers public final class JSONRegistry: NSObject {
     // MARK: - Static Properties
 
     /// Shared instance.
@@ -181,7 +182,8 @@ extension Field {
           size: WorkspaceSize(
             width: CGFloat((json[PARAMETER_WIDTH] as? Int) ?? 15),
             height: CGFloat((json[PARAMETER_HEIGHT] as? Int) ?? 15)),
-          altText: (Block.decodedJSONValue(json[PARAMETER_ALT_TEXT]) as? String ?? "*"))
+          altText: (Block.decodedJSONValue(json[PARAMETER_ALT_TEXT]) as? String ?? "*"),
+          flipRtl: (json[PARAMETER_IMAGE_FLIP_RTL] as? Bool ?? false))
       }
 
       // Input

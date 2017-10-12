@@ -14,14 +14,14 @@
             <h1>BlocklyEventFactory</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">BlocklyEventFactory</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">BlocklyEventFactory</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
             <p>Factory for creating <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> objects from JSON data.</p>
 
 <p>This class is designed as a singleton instance, accessible via
-<code><a href="../Classes/BlocklyEventFactory.html#/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_">BlocklyEventFactory.shared</a></code>.</p>
+<code><a href="../Classes/BlocklyEventFactory.html#/c:@M@Blockly@objc(cs)BKYEventFactory(cpy)shared">BlocklyEventFactory.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -37,9 +37,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C7Blockly19BlocklyEventFactory7Creator"></a>
+                    <a name="/s:7Blockly0A12EventFactoryC7Creatora"></a>
                     <a name="//apple_ref/swift/Alias/Creator" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:C7Blockly19BlocklyEventFactory7Creator">Creator</a></h3>
+                    <h3><a class="token" href="#/s:7Blockly0A12EventFactoryC7Creatora">Creator</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -74,9 +74,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventFactory(cpy)shared"></a>
                     <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly19BlocklyEventFactory6sharedS0_">shared</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventFactory(cpy)shared">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -111,9 +111,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly19BlocklyEventFactory15registerCreatorFT12forEventTypeSS7creatorFzGVs10DictionarySSP__CS_12BlocklyEvent_T_"></a>
+                    <a name="/s:7Blockly0A12EventFactoryC15registerCreatorySS03forB4Type_AA0aB0Cs10DictionaryVySSypGKc7creatortF"></a>
                     <a name="//apple_ref/swift/Method/registerCreator(forEventType:creator:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly19BlocklyEventFactory15registerCreatorFT12forEventTypeSS7creatorFzGVs10DictionarySSP__CS_12BlocklyEvent_T_">registerCreator(forEventType:creator:)</a></h3>
+                    <h3><a class="token" href="#/s:7Blockly0A12EventFactoryC15registerCreatorySS03forB4Type_AA0aB0Cs10DictionaryVySSypGKc7creatortF">registerCreator(forEventType:creator:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -122,7 +122,7 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Registers a creation closure to use for a given event type, when a new <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code>
-instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:FC7Blockly19BlocklyEventFactory16makeBlocklyEventFzT8fromJSONGVs10DictionarySSP___CS_12BlocklyEvent">makeBlocklyEvent(fromJSON:)</a></code>.</p>
+instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/c:@M@Blockly@objc(cs)BKYEventFactory(im)makeBlocklyEventFromJSON:error:">makeBlocklyEvent(fromJSON:)</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -130,38 +130,9 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerCreator</span><span class="p">(</span>
-    <span class="n">forEventType</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span><span class="o">.</span><span class="kt">EventType</span><span class="p">,</span> <span class="nv">creator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/BlocklyEventFactory.html#/s:C7Blockly19BlocklyEventFactory7Creator">Creator</a></span><span class="p">)</span></code></pre>
+    <span class="n">forEventType</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span><span class="o">.</span><span class="kt">EventType</span><span class="p">,</span> <span class="nv">creator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/BlocklyEventFactory.html#/s:7Blockly0A12EventFactoryC7Creatora">Creator</a></span><span class="p">)</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>eventType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>BlocklyEvent.EventType</code> that the <code>creator</code> should be mapped to.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>creator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>Creator</code> that will be used for <code>eventType</code>.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -169,9 +140,9 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly19BlocklyEventFactory17unregisterCreatorFT12forEventTypeSS_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventFactory(im)unregisterCreatorForEventType:"></a>
                     <a name="//apple_ref/swift/Method/unregisterCreator(forEventType:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly19BlocklyEventFactory17unregisterCreatorFT12forEventTypeSS_T_">unregisterCreator(forEventType:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventFactory(im)unregisterCreatorForEventType:">unregisterCreator(forEventType:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,33 +161,15 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>eventType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>BlocklyEvent.EventType</code></p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly19BlocklyEventFactory16makeBlocklyEventFzT8fromJSONGVs10DictionarySSP___CS_12BlocklyEvent"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYEventFactory(im)makeBlocklyEventFromJSON:error:"></a>
                     <a name="//apple_ref/swift/Method/makeBlocklyEvent(fromJSON:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly19BlocklyEventFactory16makeBlocklyEventFzT8fromJSONGVs10DictionarySSP___CS_12BlocklyEvent">makeBlocklyEvent(fromJSON:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYEventFactory(im)makeBlocklyEventFromJSON:error:">makeBlocklyEvent(fromJSON:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -225,7 +178,7 @@ instance is requested via <code><a href="../Classes/BlocklyEventFactory.html#/s:
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns a new <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> using given JSON data. The <code><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></code> itself is created by
-finding the <code><a href="../Classes/BlocklyEvent.html#/s:C7Blockly12BlocklyEvent9EventType">BlocklyEvent.EventType</a></code> that is associated with <code>json[BlocklyEvent.JSON_TYPE]</code> and
+finding the <code><a href="../Classes/BlocklyEvent.html#/s:7Blockly0A5EventC0B4Typea">BlocklyEvent.EventType</a></code> that is associated with <code>json[BlocklyEvent.JSON_TYPE]</code> and
 executing the registered creation closure for that event type.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -242,24 +195,6 @@ executing the registered creation closure for that event type.</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeBlocklyEvent</span><span class="p">(</span><span class="n">fromJSON</span> <span class="nv">json</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlocklyEvent.html">BlocklyEvent</a></span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>json</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The JSON data.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                       <div>
                         <h4>Return Value</h4>
@@ -334,21 +269,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -360,7 +295,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -572,7 +507,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -588,7 +523,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -612,7 +547,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -620,7 +555,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -628,7 +563,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

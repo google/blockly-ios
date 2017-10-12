@@ -19,7 +19,7 @@ import Foundation
 Builder for creating `Input` instances.
 */
 @objc(BKYInputBuilder)
-public final class InputBuilder: NSObject {
+@objcMembers public final class InputBuilder: NSObject {
   // MARK: - Properties
 
   /// The type (value, statement, dummy) of the `Input`.

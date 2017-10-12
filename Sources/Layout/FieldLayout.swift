@@ -34,7 +34,7 @@ public protocol FieldLayoutMeasurer {
 Abstract class for a `Field`-based `Layout`.
 */
 @objc(BKYFieldLayout)
-open class FieldLayout: Layout {
+@objcMembers open class FieldLayout: Layout {
   // MARK: - Properties
 
   /// Object responsible for measuring the layout of this object.

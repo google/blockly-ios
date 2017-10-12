@@ -119,11 +119,11 @@ internal class IntegerIncrementerView: UIView {
 
   // MARK: - User Interaction
 
-  private dynamic func decrementValue() {
+  @objc private dynamic func decrementValue() {
     value -= 1
   }
 
-  private dynamic func incrementValue() {
+  @objc private dynamic func incrementValue() {
     value += 1
   }
 

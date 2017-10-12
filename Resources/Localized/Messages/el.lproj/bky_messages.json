@@ -68,15 +68,15 @@
   "HELP": "\u0392\u03bf\u03ae\u03b8\u03b5\u03b9\u03b1",
   "INLINE_INPUTS": "\u0395\u03c3\u03c9\u03c4\u03b5\u03c1\u03b9\u03ba\u03ad\u03c2 \u0395\u03af\u03c3\u03bf\u03b4\u03bf\u03b9",
   "IOS_CANCEL": "Cancel",
-  "IOS_ERROR": "Error",
-  "IOS_OK": "OK",
+  "IOS_ERROR": "\u03a3\u03c6\u03ac\u03bb\u03bc\u03b1",
+  "IOS_OK": "\u039f\u039a",
   "IOS_PROCEDURES_ADD_INPUT": "+ Add Input",
   "IOS_PROCEDURES_ALLOW_STATEMENTS": "Allow statements",
   "IOS_PROCEDURES_DUPLICATE_INPUTS_ERROR": "This function has duplicate inputs.",
   "IOS_PROCEDURES_INPUTS": "INPUTS",
-  "IOS_VARIABLES_ADD_BUTTON": "Add",
+  "IOS_VARIABLES_ADD_BUTTON": "\u03a0\u03c1\u03bf\u03c3\u03b8\u03ae\u03ba\u03b7",
   "IOS_VARIABLES_ADD_VARIABLE": "+ Add Variable",
-  "IOS_VARIABLES_DELETE_BUTTON": "Delete",
+  "IOS_VARIABLES_DELETE_BUTTON": "\u0394\u03b9\u03b1\u03b3\u03c1\u03b1\u03c6\u03ae",
   "IOS_VARIABLES_EMPTY_NAME_ERROR": "You can't use an empty variable name.",
   "IOS_VARIABLES_RENAME_BUTTON": "Rename",
   "IOS_VARIABLES_VARIABLE_NAME": "Variable name",
@@ -386,5 +386,6 @@
   "VARIABLES_SET_CREATE_GET": "\u0394\u03b7\u03bc\u03b9\u03bf\u03cd\u03c1\u03b3\u03b7\u03c3\u03b5 \u00ab\u03c0\u03ac\u03c1\u03b5 %1\u00bb",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "\u039f\u03c1\u03af\u03b6\u03b5\u03b9 \u03b1\u03c5\u03c4\u03ae \u03c4\u03b7 \u03bc\u03b5\u03c4\u03b1\u03b2\u03bb\u03b7\u03c4\u03ae \u03bd\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03af\u03c3\u03b7 \u03bc\u03b5 \u03c4\u03b7\u03bd \u03b5\u03af\u03c3\u03bf\u03b4\u03bf.",
-  "VARIABLE_ALREADY_EXISTS": "A variable named '%1' already exists."
+  "VARIABLE_ALREADY_EXISTS": "\u0397 \u03bc\u03b5\u03c4\u03b1\u03b2\u03bb\u03b7\u03c4\u03ae \u03bc\u03b5 \u03c4\u03bf \u03cc\u03bd\u03bf\u03bc\u03b1 \"%1\" \u03c5\u03c0\u03ac\u03c1\u03c7\u03b5\u03b9 \u03ae\u03b4\u03b7",
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
 }

@@ -19,7 +19,7 @@ import Foundation
  A default implementation of `BlockGroupLayout`.
  */
 @objc(BKYDefaultBlockGroupLayout)
-public final class DefaultBlockGroupLayout: BlockGroupLayout {
+@objcMembers public final class DefaultBlockGroupLayout: BlockGroupLayout {
   // MARK: - Super
 
   public override func performLayout(includeChildren: Bool) {

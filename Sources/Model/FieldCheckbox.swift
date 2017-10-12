@@ -19,7 +19,7 @@ import Foundation
 An input field for a checkbox.
 */
 @objc(BKYFieldCheckbox)
-public final class FieldCheckbox: Field {
+@objcMembers public final class FieldCheckbox: Field {
   // MARK: - Properties
 
   /// `true` if the checkbox field is checked, `false` if it is not.

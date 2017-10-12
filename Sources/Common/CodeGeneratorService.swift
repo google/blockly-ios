@@ -24,7 +24,7 @@ import Foundation
  https://developers.google.com/blockly/guides/configure/ios/code-generators
  */
 @objc(BKYCodeGeneratorService)
-public final class CodeGeneratorService: NSObject {
+@objcMembers public final class CodeGeneratorService: NSObject {
   // MARK: - Closures
 
   /**

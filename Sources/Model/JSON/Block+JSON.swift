@@ -75,7 +75,7 @@ extension Block {
       builder.color = ColorHelper.makeColor(hue: colorHue)
     } else if let colorString = decodedColor as? String {
       if let colorHue = NumberFormatter().number(from: colorString) {
-        builder.color = ColorHelper.makeColor(hue: CGFloat(colorHue))
+        builder.color = ColorHelper.makeColor(hue: CGFloat(truncating: colorHue))
       } else if let color = ColorHelper.makeColor(rgb: colorString) {
         builder.color = color
       }

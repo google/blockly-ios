@@ -14,7 +14,7 @@
             <h1>MessageManager</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MessageManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">MessageManager</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
@@ -39,7 +39,7 @@ manager.message(forKey: "LISTS_GET_INDEX_INPUT_IN_LIST")   // Returns "in list"
 manager.message(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
 </code></pre>
 
-<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/MessageManager.html#/s:ZvC7Blockly14MessageManager6sharedS0_">MessageManager.shared</a></code>.</p>
+<p>This class is designed as a singleton instance, accessible via <code><a href="../Classes/MessageManager.html#/c:@M@Blockly@objc(cs)BKYMessageManager(cpy)shared">MessageManager.shared</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -55,9 +55,9 @@ manager.message(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZvC7Blockly14MessageManager6sharedS0_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(cpy)shared"></a>
                     <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:ZvC7Blockly14MessageManager6sharedS0_">shared</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(cpy)shared">shared</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -92,9 +92,9 @@ manager.message(forKey: "LISTS_SET_INDEX_INPUT_IN_LIST")   // Returns "in list"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager12loadMessagesFzT10withPrefixSS8jsonPathSS6bundleGSqCSo6Bundle__T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadMessagesWithPrefix:jsonPath:bundle:error:"></a>
                     <a name="//apple_ref/swift/Method/loadMessages(withPrefix:jsonPath:bundle:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager12loadMessagesFzT10withPrefixSS8jsonPathSS6bundleGSqCSo6Bundle__T_">loadMessages(withPrefix:jsonPath:bundle:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadMessagesWithPrefix:jsonPath:bundle:error:">loadMessages(withPrefix:jsonPath:bundle:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -137,57 +137,15 @@ any message in the given file with a duplicate key.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>prefix</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The prefix to automatically add to every message key.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>jsonPath</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Path to file containing a JSON object of message keys mapped to message
-values.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>bundle</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>.
-If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager12loadMessagesFGVs10DictionarySSSS_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadMessages:"></a>
                     <a name="//apple_ref/swift/Method/loadMessages(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager12loadMessagesFGVs10DictionarySSSS_T_">loadMessages(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadMessages:">loadMessages(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -213,33 +171,15 @@ any message in the given dictionary with a duplicate key.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>messages</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Dictionary of message keys mapped to message values.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager12loadSynonymsFzT10withPrefixSS8jsonPathSS6bundleGSqCSo6Bundle__T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadSynonymsWithPrefix:jsonPath:bundle:error:"></a>
                     <a name="//apple_ref/swift/Method/loadSynonyms(withPrefix:jsonPath:bundle:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager12loadSynonymsFzT10withPrefixSS8jsonPathSS6bundleGSqCSo6Bundle__T_">loadSynonyms(withPrefix:jsonPath:bundle:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadSynonymsWithPrefix:jsonPath:bundle:error:">loadSynonyms(withPrefix:jsonPath:bundle:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -296,57 +236,15 @@ any synonym in the given file with a duplicate key.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>prefix</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The prefix to automatically add to every synonym key and message key.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>jsonPath</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Path to file containing a JSON object of synonym keys mapped to
-message keys.</p>
-                                </div>
-                              </td>
-                            </tr>                            <tr>
-                              <td>
-                                <code>
-                                <em>bundle</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>[Optional] If specified, the bundle to use when locating <code>jsonPath</code>.
-If <code>nil</code> is specified (the default value), <code>Bundle.main</code> is used.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager12loadSynonymsFGVs10DictionarySSSS_T_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadSynonyms:"></a>
                     <a name="//apple_ref/swift/Method/loadSynonyms(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager12loadSynonymsFGVs10DictionarySSSS_T_">loadSynonyms(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)loadSynonyms:">loadSynonyms(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -372,24 +270,6 @@ any synonym in the given file with a duplicate key.
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>synonyms</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Dictionary of synonym keys mapped to message keys.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
                     </section>
                   </div>
                 </li>
@@ -406,9 +286,9 @@ any synonym in the given file with a duplicate key.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager7messageFT6forKeySS_GSqSS_"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)messageForKey:"></a>
                     <a name="//apple_ref/swift/Method/message(forKey:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager7messageFT6forKeySS_GSqSS_">message(forKey:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)messageForKey:">message(forKey:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -436,24 +316,6 @@ then <code>nil</code> is returned.</p>
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>key</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A message key or synonym key.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
                         <p>The message for the given <code>key</code>, if it exists in the message table or synonym table.
 If the <code>key</code> could not be found, then <code>nil</code> is returned.</p>
@@ -474,9 +336,9 @@ If the <code>key</code> could not be found, then <code>nil</code> is returned.</
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Blockly14MessageManager13decodedStringFSSSS"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYMessageManager(im)decodedString:"></a>
                     <a name="//apple_ref/swift/Method/decodedString(_:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:FC7Blockly14MessageManager13decodedStringFSSSS">decodedString(_:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYMessageManager(im)decodedString:">decodedString(_:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -517,24 +379,6 @@ of this cannot be guaranteed.
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">decodedString</span><span class="p">(</span><span class="n">_</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>string</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The string to decode.</p>
-                                </div>
-                              </td>
-                            </tr>                          </tbody>
-                        </table>
                       </div>
                       <div>
                         <h4>Return Value</h4>
@@ -609,21 +453,21 @@ toc:
     - title: BlocklyError
       path: /blockly/reference/ios/../Classes/BlocklyError.html
     - title: – Code
-      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:OC7Blockly12BlocklyError4Code
+      path: /blockly/reference/ios/../Classes/BlocklyError.html#/s:7Blockly0A5ErrorC4CodeO
     - title: BlocklyPanGestureRecognizer
       path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html
     - title: – TouchState
-      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:OC7Blockly27BlocklyPanGestureRecognizer10TouchState
+      path: /blockly/reference/ios/../Classes/BlocklyPanGestureRecognizer.html#/s:7Blockly0A20PanGestureRecognizerC10TouchStateO
     - title: BlocklyPanGestureRecognizerDelegate
       path: /blockly/reference/ios/../Protocols/BlocklyPanGestureRecognizerDelegate.html
     - title: BlockView
       path: /blockly/reference/ios/../Classes/BlockView.html
     - title: BundledFile
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFile
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly11BundledFilea
     - title: CodeGenerator
       path: /blockly/reference/ios/../Classes/CodeGenerator.html
     - title: – State
-      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:OC7Blockly13CodeGenerator5State
+      path: /blockly/reference/ios/../Classes/CodeGenerator.html#/s:7Blockly13CodeGeneratorC5StateO
     - title: CodeGeneratorService
       path: /blockly/reference/ios/../Classes/CodeGeneratorService.html
     - title: CodeGeneratorServiceRequestBuilder
@@ -635,7 +479,7 @@ toc:
     - title: Connection
       path: /blockly/reference/ios/../Classes/Connection.html
     - title: – ConnectionType
-      path: /blockly/reference/ios/../Classes/Connection.html#/s:OC7Blockly10Connection14ConnectionType
+      path: /blockly/reference/ios/../Classes/Connection.html#/s:7Blockly10ConnectionC0B4TypeO
     - title: – CheckResult
       path: /blockly/reference/ios/../Classes/Connection/CheckResult.html
     - title: ConnectionManager
@@ -847,7 +691,7 @@ toc:
     - title: NumberPadDelegate
       path: /blockly/reference/ios/../Protocols/NumberPadDelegate.html
     - title: NumberPadTextField
-      path: /blockly/reference/ios/../iOS.html#/s:C7Blockly18NumberPadTextField
+      path: /blockly/reference/ios/../iOS.html#/c:@M@Blockly@objc(cs)NumberPadTextField
     - title: NumberPadViewController
       path: /blockly/reference/ios/../Classes/NumberPadViewController.html
     - title: ObjectPool
@@ -863,7 +707,7 @@ toc:
     - title: ToolboxCategoryListViewController
       path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html
     - title: – Orientation
-      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:OC7Blockly33ToolboxCategoryListViewController11Orientation
+      path: /blockly/reference/ios/../Classes/ToolboxCategoryListViewController.html#/s:7Blockly33ToolboxCategoryListViewControllerC11OrientationO
     - title: ToolboxCategoryListViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/ToolboxCategoryListViewControllerDelegate.html
     - title: ToolboxCategoryViewController
@@ -887,7 +731,7 @@ toc:
     - title: WorkbenchViewController
       path: /blockly/reference/ios/../Classes/WorkbenchViewController.html
     - title: – Style
-      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:OC7Blockly23WorkbenchViewController5Style
+      path: /blockly/reference/ios/../Classes/WorkbenchViewController.html#/s:7Blockly23WorkbenchViewControllerC5StyleO
     - title: WorkbenchViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkbenchViewControllerDelegate.html
     - title: Workspace
@@ -895,7 +739,7 @@ toc:
     - title: WorkspaceBezierPath
       path: /blockly/reference/ios/../Classes/WorkspaceBezierPath.html
     - title: WorkspaceEdgeInsets
-      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsets
+      path: /blockly/reference/ios/../iOS.html#/s:7Blockly19WorkspaceEdgeInsetsa
     - title: WorkspaceFlow
       path: /blockly/reference/ios/../Classes/WorkspaceFlow.html
     - title: – Item
@@ -903,7 +747,7 @@ toc:
     - title: WorkspaceFlowLayout
       path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html
     - title: – LayoutDirection
-      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:OC7Blockly19WorkspaceFlowLayout15LayoutDirection
+      path: /blockly/reference/ios/../Classes/WorkspaceFlowLayout.html#/s:7Blockly19WorkspaceFlowLayoutC0D9DirectionO
     - title: WorkspaceLayout
       path: /blockly/reference/ios/../Classes/WorkspaceLayout.html
     - title: WorkspaceLayoutCoordinator

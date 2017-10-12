@@ -21,7 +21,7 @@ import Foundation
  remains in-sync.
  */
 @objc(BKYWorkspaceLayoutCoordinator)
-open class WorkspaceLayoutCoordinator: NSObject {
+@objcMembers open class WorkspaceLayoutCoordinator: NSObject {
   // MARK: - Properties
 
   /// The workspace layout whose layout hierarchy is being managed by this object

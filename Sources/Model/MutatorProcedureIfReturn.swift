@@ -21,7 +21,7 @@ import Foundation
  of a procedure definition block).
  */
 @objc(BKYMutatorProcedureIfReturn)
-public class MutatorProcedureIfReturn: NSObject {
+@objcMembers public class MutatorProcedureIfReturn: NSObject {
   // MARK: - Properties
 
   /// The target block that will be mutated

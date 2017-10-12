@@ -19,7 +19,7 @@ import Foundation
  Class for a `FieldNumber`-based `Layout`.
  */
 @objc(BKYFieldNumberLayout)
-open class FieldNumberLayout: FieldLayout {
+@objcMembers open class FieldNumberLayout: FieldLayout {
 
   // MARK: - Properties
 

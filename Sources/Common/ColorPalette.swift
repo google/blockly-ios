@@ -20,7 +20,7 @@ import Foundation
  palette](https://material.io/guidelines/style/color.html#color-color-tool).
  */
 @objc(BKYColorPalette)
-public final class ColorPalette: NSObject {
+@objcMembers public final class ColorPalette: NSObject {
   // MARK: - Properties
 
   /// The 50 tint color, the lightest tint of the palette.
