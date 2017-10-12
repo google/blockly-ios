@@ -24,8 +24,10 @@
  */
 var Turtle = {};
 
-Turtle.HEIGHT = 400;
-Turtle.WIDTH = 400;
+Turtle.DEFAULT_WIDTH = 400;
+Turtle.DEFAULT_HEIGHT = 400;
+Turtle.WIDTH = Turtle.DEFAULT_WIDTH;
+Turtle.HEIGHT = Turtle.DEFAULT_HEIGHT;
 
 /**
  * PID of animation task currently executing.
@@ -58,6 +60,12 @@ Turtle.init = function() {
 
 window.addEventListener('load', Turtle.init);
 
+Turtle.setBounds = function(width, height) {
+  Turtle.DEFAULT_WIDTH = width;
+  Turtle.DEFAULT_HEIGHT = height;
+  Turtle.reset();
+}
+
 /**
  * Reset the turtle to the start position, clear the display, and kill any
  * pending tasks.
@@ -65,15 +73,21 @@ window.addEventListener('load', Turtle.init);
 Turtle.reset = function() {
   Turtle._unhighlightLastBlock()
 
-  // Starting location and heading of the turtle.
-  Turtle.x = Turtle.HEIGHT / 2;
-  Turtle.y = Turtle.WIDTH / 2;
+  // Starting location and heading of the turtle and canvas.
+  Turtle.WIDTH = Turtle.DEFAULT_WIDTH;
+  Turtle.HEIGHT = Turtle.DEFAULT_HEIGHT;
+  Turtle.x = Turtle.WIDTH / 2;
+  Turtle.y = Turtle.HEIGHT / 2;
+
   Turtle.heading = 0;
   Turtle.penDownValue = true;
   Turtle.visible = true;
 
   // Clear the display.
-  Turtle.ctxScratch.canvas.width = Turtle.ctxScratch.canvas.width;
+  Turtle.ctxScratch.canvas.width = Turtle.WIDTH;
+  Turtle.ctxScratch.canvas.height = Turtle.HEIGHT;
+  Turtle.ctxDisplay.canvas.width = Turtle.WIDTH;
+  Turtle.ctxDisplay.canvas.height = Turtle.HEIGHT;
   Turtle.ctxScratch.strokeStyle = '#000000';
   Turtle.ctxScratch.fillStyle = '#000000';
   Turtle.ctxScratch.lineWidth = 1;
@@ -152,6 +166,10 @@ Turtle.execute = function(code) {
   Turtle.ticks = 1000000;
   /// TODO(#268): Replace Turtle with a version that uses JS Interpreter
   window.LoopTrap = 1000;
+
+  Turtle.fakeX = Turtle.WIDTH / 2;
+  Turtle.fakeY = Turtle.HEIGHT / 2;
+  Turtle.fakeHeading = 0;
 
   try {
     eval(code);
@@ -267,22 +285,60 @@ Turtle.step = function(command, values) {
   }
 };
 
+// Canvas measurement
+
+// Fake all of the moves, and resize the canvas so the turtle fits in the canvas when it draws.
+Turtle.measureCanvasMove = function(distance) {
+  var xDelta = distance * Math.sin(2 * Math.PI * Turtle.fakeHeading / 360);
+  var yDelta = distance * Math.cos(2 * Math.PI * Turtle.fakeHeading / 360);
+  Turtle.fakeX += xDelta;
+  Turtle.fakeY -= yDelta;
+  if (Turtle.fakeX > Turtle.WIDTH || Turtle.fakeX < 0) {
+    if (Turtle.fakeX < 0) {
+      Turtle.x -= xDelta;
+    }
+    Turtle.WIDTH = Turtle.WIDTH + Math.abs(xDelta);
+    Turtle.ctxScratch.canvas.width = Turtle.WIDTH;
+    Turtle.ctxDisplay.canvas.width = Turtle.WIDTH;
+  }
+  if (Turtle.fakeY > Turtle.HEIGHT || Turtle.fakeY < 0) {
+    if (Turtle.fakeY < 0) {
+      Turtle.y += yDelta;
+    }
+    Turtle.HEIGHT = Turtle.HEIGHT + Math.abs(yDelta);
+    Turtle.ctxScratch.canvas.height = Turtle.HEIGHT;
+    Turtle.ctxDisplay.canvas.height = Turtle.HEIGHT;
+  }
+}
+
+Turtle.measureCanvasRotation = function(angle) {
+  Turtle.fakeHeading += angle;
+  Turtle.fakeHeading %= 360;
+  if (Turtle.fakeHeading < 0) {
+    Turtle.fakeHeading += 360;
+  }
+}
+
 // Turtle API.
 
 Turtle.moveForward = function(distance, id) {
   Turtle.log.push(['FD', distance, id]);
+  Turtle.measureCanvasMove(distance);
 };
 
 Turtle.moveBackward = function(distance, id) {
   Turtle.log.push(['FD', -distance, id]);
+  Turtle.measureCanvasMove(-distance);
 };
 
 Turtle.turnRight = function(angle, id) {
   Turtle.log.push(['RT', angle, id]);
+  Turtle.measureCanvasRotation(angle);
 };
 
 Turtle.turnLeft = function(angle, id) {
   Turtle.log.push(['RT', -angle, id]);
+  Turtle.measureCanvasRotation(-angle);
 };
 
 Turtle.penUp = function(id) {

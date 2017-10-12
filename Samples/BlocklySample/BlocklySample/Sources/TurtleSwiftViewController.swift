@@ -20,7 +20,8 @@ import WebKit
 /**
  Demo app for using blocks to move a cute little turtle.
  */
-class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface {
+class TurtleSwiftViewController: UIViewController,
+    TurtleViewControllerInterface, WKNavigationDelegate {
   // MARK: - Static Properties
   /// The callback name to access this object from the JS code.
   /// See "turtle/turtle.js" for an example of its usage.
@@ -170,6 +171,7 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     _webView = WKWebView(frame: webViewContainer.bounds, configuration: configuration)
     _webView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     _webView.translatesAutoresizingMaskIntoConstraints = true
+    _webView.navigationDelegate = self
     webViewContainer.autoresizesSubviews = true
     webViewContainer.addSubview(_webView)
 
@@ -186,6 +188,12 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     codeText.superview?.layer.borderColor = UIColor.lightGray.cgColor
     codeText.superview?.layer.borderWidth = 1
     _dateFormatter.dateFormat = "HH:mm:ss.SSS"
+  }
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    let width = webView.bounds.width
+    let height = webView.bounds.height
+    webView.evaluateJavaScript("Turtle.setBounds(\(width), \(height));")
   }
 
   override func viewWillAppear(_ animated: Bool) {
