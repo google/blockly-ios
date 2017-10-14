@@ -74,7 +74,7 @@ class MusicMakerViewController: UIViewController {
 
   // MARK: - User Interaction Handlers
 
-  private dynamic func toggleEditing(_ sender: UIButton) {
+  @objc private dynamic func toggleEditing(_ sender: UIButton) {
     setEditing(!isEditing, animated: true)
     updateState(animated: true)
   }

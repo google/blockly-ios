@@ -474,10 +474,8 @@ extension WorkbenchViewControllerUIState {
     addChildViewController(toolboxCategoryListViewController)
     addChildViewController(toolboxCategoryViewController)
 
-    // Set up auto-layout constraints
-    let undoRedoButtonSize = CGSize(width: 36, height: 36)
-    let iconPadding = CGFloat(25)
-    let views: [String: UIView] = [
+    // Add views
+    let views: [String: Any] = [
       "toolboxCategoriesListView": toolboxCategoryListViewController.view,
       "toolboxCategoryView": toolboxCategoryViewController.view,
       "workspaceView": workspaceViewController.view,
@@ -485,14 +483,29 @@ extension WorkbenchViewControllerUIState {
       "trashCanFolderView": trashCanViewController.view,
       "undoButton": undoButton,
       "redoButton": redoButton,
+      "topGuide": topLayoutGuide,
+      "bottomGuide": bottomLayoutGuide
     ]
+    let onlyViews = Array(views.values).filter({ $0 is UIView }) as! [UIView]
+    view.bky_addSubviews(onlyViews)
+    view.addSubview(workspaceDragLayerView)
+
+    // Order the subviews from back to front
+    view.sendSubview(toBack: workspaceViewController.view)
+    view.bringSubview(toFront: trashCanViewController.view)
+    view.bringSubview(toFront: toolboxCategoryViewController.view)
+    view.bringSubview(toFront: workspaceDragLayerView)
+    view.bringSubview(toFront: toolboxCategoryListViewController.view)
+
+    // Set up auto-layout constraints
+    let undoRedoButtonSize = CGSize(width: 36, height: 36)
+    let iconPadding = CGFloat(25)
     let metrics = [
       "iconPadding": iconPadding,
       "undoRedoButtonWidth": undoRedoButtonSize.width,
       "undoRedoButtonHeight": undoRedoButtonSize.height
     ]
-    let constraints: [String]
-
+    var constraints = [String]()
     if style == .alternate {
       // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the top-trailing corner.
@@ -506,22 +519,37 @@ extension WorkbenchViewControllerUIState {
         // Position the toolbox category view above the list view
         "H:|[toolboxCategoryView]|",
         "V:[toolboxCategoryView][toolboxCategoriesListView]",
-        // Position the undo/redo buttons along the top-leading margin
+        // Position the undo/redo buttons along the top-leading margin (horizontal part handled
+        // below).
         "H:[undoButton(undoRedoButtonWidth)]",
         "V:[undoButton(undoRedoButtonHeight)]",
         "H:[redoButton(undoRedoButtonWidth)]",
         "V:[redoButton(undoRedoButtonHeight)]",
-        "H:|-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
-        "V:|-(iconPadding)-[undoButton]",
-        "V:|-(iconPadding)-[redoButton]",
-        // Position the trash can button along the top-trailing margin
-        "H:[trashCanView]|",
-        "V:|[trashCanView]",
+        "H:[undoButton]-(iconPadding)-[redoButton]",
+        "V:[topGuide]-(iconPadding)-[undoButton]",
+        "V:[topGuide]-(iconPadding)-[redoButton]",
+        // Position the trash can button along the top-trailing margin (horizontal part handled
+        // below).
+        "V:[topGuide][trashCanView]",
         // Position the trash can folder view on the trailing edge of the view, between the toolbox
         // category view and trash can button
         "H:[trashCanFolderView]|",
         "V:[trashCanView]-(iconPadding)-[trashCanFolderView]-[toolboxCategoryView]",
       ]
+
+      // If possible, create horizontal constraints that respect the safe area. If not, default
+      // to using the superview's leading/trailing margins.
+      if #available(iOS 11.0, *) {
+        undoButton.leadingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: iconPadding).isActive = true
+        trashCanView.trailingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      } else {
+        constraints.append(contentsOf: [
+          "H:|-(iconPadding)-[undoButton]",
+          "H:[trashCanView]|"
+        ])
+      }
     } else {
       // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the bottom-trailing corner.
@@ -541,29 +569,31 @@ extension WorkbenchViewControllerUIState {
         "H:[redoButton(undoRedoButtonWidth)]",
         "V:[redoButton(undoRedoButtonHeight)]",
         "H:[toolboxCategoriesListView]-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
-        "V:[undoButton]-(iconPadding)-|",
-        "V:[redoButton]-(iconPadding)-|",
-        // Position the trash can button along the bottom-trailing margin
-        "H:[trashCanView]|",
-        "V:[trashCanView]|",
+        "V:[undoButton]-(iconPadding)-[bottomGuide]",
+        "V:[redoButton]-(iconPadding)-[bottomGuide]",
+        // Position the trash can button along the bottom-trailing margin (horizontal part handled
+        // below).
+        "V:[trashCanView][bottomGuide]",
         // Position the trash can folder view on the bottom of the view, between the toolbox
         // category view and trash can button
         "H:[toolboxCategoryView]-[trashCanFolderView]-(iconPadding)-[trashCanView]",
         "V:[trashCanFolderView]|",
       ]
+
+      // If possible, create horizontal constraints that respect the safe area. If not, default
+      // to using the superview's leading/trailing margins.
+      if #available(iOS 11.0, *) {
+        trashCanView.trailingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      } else {
+        constraints.append(contentsOf: [
+          "H:[trashCanView]|"
+        ])
+      }
     }
 
-    // Add subviews and constraints
-    view.bky_addSubviews(Array(views.values))
-    view.addSubview(workspaceDragLayerView)
+    // Add constraints
     view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
-
-    // Order the subviews from back to front
-    view.sendSubview(toBack: workspaceViewController.view)
-    view.bringSubview(toFront: trashCanViewController.view)
-    view.bringSubview(toFront: toolboxCategoryViewController.view)
-    view.bringSubview(toFront: workspaceDragLayerView)
-    view.bringSubview(toFront: toolboxCategoryListViewController.view)
 
     // Attach the block pan gesture recognizer to the entire view (so it can block out any other
     // once touches once its gesture state turns to `.began`).

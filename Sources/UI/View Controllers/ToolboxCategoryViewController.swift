@@ -111,6 +111,11 @@ import Foundation
   open override func viewDidLoad() {
     super.viewDidLoad()
 
+    if #available(iOS 11.0, *) {
+      // Always respect the safe area.
+      workspaceScrollView.contentInsetAdjustmentBehavior = .always
+    }
+
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
     headerView.addSubview(addVariableButton)

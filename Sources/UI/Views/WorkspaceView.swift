@@ -171,8 +171,15 @@ View for rendering a `WorkspaceLayout`.
     }
 
     scrollView.contentSize = CGSize.zero
-    scrollView.contentOffset = CGPoint.zero
     scrollView.containerView.frame = CGRect.zero
+
+    // Reset content offset to "zero". In iOS 11, we need to account for the safe area.
+    if #available(iOS 11.0, *) {
+      scrollView.contentOffset = CGPoint(x: -scrollView.adjustedContentInset.left,
+                                         y: -scrollView.adjustedContentInset.top)
+    } else {
+      scrollView.contentOffset = CGPoint.zero
+    }
 
     updateDragLayerViewFrame()
   }
