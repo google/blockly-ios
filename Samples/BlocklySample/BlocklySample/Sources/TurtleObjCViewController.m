@@ -206,6 +206,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
                                 configuration:configuration];
   _webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   _webView.translatesAutoresizingMaskIntoConstraints = true;
+  _webView.navigationDelegate = self;
   self.webViewContainer.autoresizesSubviews = true;
   [self.webViewContainer addSubview:_webView];
 
@@ -218,6 +219,12 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   _webView.layer.borderWidth = 1;
   self.codeText.superview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
   self.codeText.superview.layer.borderWidth = 1;
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+  float width = webView.bounds.size.width;
+  float height = webView.bounds.size.height;
+  [webView evaluateJavaScript:@"Turtle.setBounds(\(width), \(height));" completionHandler:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
