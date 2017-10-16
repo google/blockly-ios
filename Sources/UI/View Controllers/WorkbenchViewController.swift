@@ -475,7 +475,7 @@ extension WorkbenchViewControllerUIState {
     addChildViewController(toolboxCategoryViewController)
 
     // Add views
-    let views: [String: Any] = [
+    let viewInfo: [String: Any] = [
       "toolboxCategoriesListView": toolboxCategoryListViewController.view,
       "toolboxCategoryView": toolboxCategoryViewController.view,
       "workspaceView": workspaceViewController.view,
@@ -486,7 +486,7 @@ extension WorkbenchViewControllerUIState {
       "topGuide": topLayoutGuide,
       "bottomGuide": bottomLayoutGuide
     ]
-    let onlyViews = Array(views.values).filter({ $0 is UIView }) as! [UIView]
+    let onlyViews = Array(viewInfo.values).filter({ $0 is UIView }) as! [UIView]
     view.bky_addSubviews(onlyViews)
     view.addSubview(workspaceDragLayerView)
 
@@ -593,7 +593,7 @@ extension WorkbenchViewControllerUIState {
     }
 
     // Add constraints
-    view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
+    view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: viewInfo)
 
     // Attach the block pan gesture recognizer to the entire view (so it can block out any other
     // once touches once its gesture state turns to `.began`).
