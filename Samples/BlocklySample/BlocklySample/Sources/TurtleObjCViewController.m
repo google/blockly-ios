@@ -241,10 +241,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   [self saveWorkspace];
 }
 
-- (BOOL)prefersStatusBarHidden {
-  return YES;
-}
-
 // MARK: - Private
 
 - (BOOL)handleError:(NSError *)error {

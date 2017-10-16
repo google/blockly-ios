@@ -203,10 +203,6 @@ class TurtleSwiftViewController: UIViewController, TurtleViewControllerInterface
     saveWorkspace()
   }
 
-  override var prefersStatusBarHidden : Bool {
-    return true
-  }
-
   // MARK: - Private
 
   @IBAction internal dynamic func didPressPlay(_ button: UIButton) {
