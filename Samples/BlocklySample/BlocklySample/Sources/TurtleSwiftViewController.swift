@@ -392,6 +392,11 @@ extension TurtleSwiftViewController: WKScriptMessageHandler {
         }
       case "finishExecution":
         self.resetRequests()
+      case "scrollTo":
+        if let x = dictionary["x"] as? CGFloat,
+           let y = dictionary["y"] as? CGFloat {
+          _webView.scrollView.contentOffset = CGPoint(x: x, y: y)
+        }
       default:
         print("Unrecognized method")
     }

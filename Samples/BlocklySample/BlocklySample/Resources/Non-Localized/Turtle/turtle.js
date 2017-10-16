@@ -190,6 +190,9 @@ Turtle.execute = function(code) {
     }
   }
 
+  Turtle._scrollTo(Turtle.startingX - Turtle.DEFAULT_WIDTH / 2,
+                   Turtle.startingY - Turtle.DEFAULT_HEIGHT / 2);
+
   Turtle.x = Turtle.startingX;
   Turtle.y = Turtle.startingY;
 
@@ -406,4 +409,10 @@ Turtle._finishExecution = function() {
   // Send callback message to iOS to finish execution
   window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
     { method: "finishExecution" });
+}
+
+Turtle._scrollTo = function(x, y) {
+  // Send callback message to iOS to center on the turtle
+  window.webkit.messageHandlers.TurtleViewControllerCallback.postMessage(
+    { method: "scrollTo", x: x, y: y });
 }
