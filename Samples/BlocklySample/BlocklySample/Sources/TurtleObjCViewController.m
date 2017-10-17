@@ -224,7 +224,8 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
   float width = webView.bounds.size.width;
   float height = webView.bounds.size.height;
-  [webView evaluateJavaScript:@"Turtle.setBounds(\(width), \(height));" completionHandler:nil];
+  [webView evaluateJavaScript:
+    [NSString stringWithFormat:@"Turtle.setBounds(%f, %f);", width, height] completionHandler:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -433,6 +434,10 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     }
   } else if ([method isEqualToString:@"finishExecution"]) {
     [self resetRequests];
+  } else if ([method isEqualToString:@"scrollTo"]) {
+    CGFloat x = (CGFloat) [dictionary[@"x"] doubleValue];
+    CGFloat y = (CGFloat) [dictionary[@"y"] doubleValue];
+    [_webView.scrollView setContentOffset:CGPointMake(x, y)];
   } else {
     NSLog(@"Unrecognized method");
   }
