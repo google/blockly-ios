@@ -168,9 +168,6 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
     return mutatorLayout.engine.config.popoverFont(for: LayoutConfig.PopoverSubtitleFont)
   }
 
-  /// Pointer used for distinguishing changes in `tableView.contentSize`
-  private var _kvoContextContentSize = 0
-
   // MARK: - Initializers
 
   convenience init(mutatorLayout: MutatorProcedureDefinitionLayout) {
@@ -183,22 +180,29 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
 
     self.init(style: .grouped)
     self.mutatorLayout = mutatorLayout
-  }
 
-  // MARK: - Super
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
+    // Register custom cells
     tableView.setEditing(true, animated: false)
-    tableView.rowHeight = UITableViewAutomaticDimension
-    tableView.estimatedRowHeight = 44 * mutatorLayout.engine.popoverScale
     tableView.register(ParameterCellView.self,
                        forCellReuseIdentifier: IDENTIFIER_PARAMETER_CELL)
     tableView.register(UITableViewHeaderFooterView.self,
                        forHeaderFooterViewReuseIdentifier: IDENTIFIER_PARAMETER_HEADER)
+
+    // Set all estimated heights to 0 so that `tableView.contentSize` is calculated properly
+    // instead of using estimated values.
+    tableView.estimatedRowHeight = 0
+    tableView.estimatedSectionHeaderHeight = 0
+    tableView.estimatedSectionFooterHeight = 0
+
+    // Load data immediately
+    tableView.reloadData()
+
+    // Set the preferred content size immediately so that the correct popover arrow direction
+    // can be determined by the instantiator of this object.
     updatePreferredContentSize()
   }
+
+  // MARK: - Super
 
   override func numberOfSections(in tableView: UITableView) -> Int {
     // If the mutator returns a value, then it can toggle its "allow statements" option. A new
@@ -368,9 +372,8 @@ fileprivate class MutatorProcedureDefinitionPopoverController: UITableViewContro
   // MARK: - Update state
 
   func updatePreferredContentSize() {
-    // Update preferred content size
-    self.presentingViewController?.presentedViewController?.preferredContentSize =
-      CGSize(width: 300, height: tableView.contentSize.height)
+    // Set `preferredContentSize` using the correct value of `tableView.contentSize`.
+    preferredContentSize = CGSize(width: 300, height: tableView.contentSize.height)
   }
 
   func configureParametersHeaderView(_ headerView: UITableViewHeaderFooterView) {

@@ -104,7 +104,6 @@ import Foundation
 
     let viewController =
       MutatorIfElseViewPopoverController(mutatorIfElseLayout: mutatorIfElseLayout)
-    viewController.preferredContentSize = CGSize(width: 220, height: 100)
 
     // Preserve the current input connections so that subsequent mutations don't disconnect them
     mutatorIfElseLayout.preserveCurrentInputConnections()
@@ -151,15 +150,24 @@ fileprivate class MutatorIfElseViewPopoverController: UITableViewController {
 
     self.init(style: .plain)
     self.mutatorIfElseLayout = mutatorIfElseLayout
+
+    // Set all estimated heights to 0 so that `tableView.contentSize` is calculated properly
+    // instead of using estimated values.
+    tableView.estimatedRowHeight = 0
+    tableView.estimatedSectionHeaderHeight = 0
+    tableView.estimatedSectionFooterHeight = 0
+
+    tableView.allowsSelection = false
+
+    // Load data immediately
+    tableView.reloadData()
+
+    // Set the preferred content size immediately so that the correct popover arrow direction
+    // can be determined by the instantiator of this object.
+    preferredContentSize = CGSize(width: 220, height: tableView.contentSize.height)
   }
 
   // MARK: - Super
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    tableView.allowsSelection = false
-  }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 2
