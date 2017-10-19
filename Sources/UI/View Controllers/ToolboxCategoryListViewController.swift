@@ -179,10 +179,7 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 
     // We need to observe whenever the bounds of the collection view changes so we can update the
     // size of the tabs.
-    view.addObserver(self,
-                     forKeyPath: "bounds",
-                     options: NSKeyValueObservingOptions.new,
-                     context: &_kvoContextBounds)
+    view.addObserver(self, forKeyPath: "bounds", options: .new, context: &_kvoContextBounds)
   }
 
   open override func observeValue(
@@ -299,9 +296,9 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
     // degrees). Note that the width (in vertical orientation) or height (in horizontal
     // orientation) is maximized for the collection view size.
     if orientation == .vertical {
-      return CGSize(width: collectionView.bounds.size.width, height: size.width)
+      return CGSize(width: collectionView.bounds.width, height: size.width)
     } else {
-      return CGSize(width: size.width, height: collectionView.bounds.size.height)
+      return CGSize(width: size.width, height: collectionView.bounds.height)
     }
   }
 }
