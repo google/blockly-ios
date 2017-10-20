@@ -231,6 +231,18 @@ View for rendering a `WorkspaceLayout`.
 
     var contentOffset = scrollView.contentOffset
     let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
+    var scrollAreaInsets = UIEdgeInsets(top: scrollIntoViewEdgeInsets.top,
+                                        left: scrollIntoViewEdgeInsets.left,
+                                        bottom: scrollIntoViewEdgeInsets.bottom,
+                                        right: scrollIntoViewEdgeInsets.right)
+
+    // Make sure the insets accounts for the safe area
+    if #available(iOS 11.0, *) {
+      scrollAreaInsets.left += scrollView.safeAreaInsets.left
+      scrollAreaInsets.right += scrollView.safeAreaInsets.right
+      scrollAreaInsets.top += scrollView.safeAreaInsets.top
+      scrollAreaInsets.bottom += scrollView.safeAreaInsets.bottom
+    }
 
     if location == .anywhere {
       // No location was specified. Just scroll the block so it's barely in view, relative to its
@@ -240,10 +252,10 @@ View for rendering a `WorkspaceLayout`.
                width: scrollView.bounds.width, height: scrollView.bounds.height)
 
       // Force the blockView to be inset within the scroll view rectangle
-      scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
-      scrollViewRect.size.width -= scrollIntoViewEdgeInsets.left + scrollIntoViewEdgeInsets.right
-      scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
-      scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
+      scrollViewRect.origin.x += scrollAreaInsets.left
+      scrollViewRect.size.width -= scrollAreaInsets.left + scrollAreaInsets.right
+      scrollViewRect.origin.y += scrollAreaInsets.top
+      scrollViewRect.size.height -= scrollAreaInsets.top + scrollAreaInsets.bottom
 
       if workspaceLayout.engine.rtl {
         // Check left edge (as long as the block width < visible view width)
@@ -285,11 +297,11 @@ View for rendering a `WorkspaceLayout`.
 
       if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
         // Use left edge
-        contentOffset.x = blockViewRect.minX - scrollIntoViewEdgeInsets.left
+        contentOffset.x = blockViewRect.minX - scrollAreaInsets.left
       } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
         // Use right edge
         contentOffset.x =
-          blockViewRect.maxX + scrollIntoViewEdgeInsets.right - scrollView.bounds.width
+          blockViewRect.maxX + scrollAreaInsets.right - scrollView.bounds.width
       } else if useHorizontalCenter {
         contentOffset.x = blockViewRect.midX - (scrollView.bounds.width / 2)
       }
@@ -298,11 +310,11 @@ View for rendering a `WorkspaceLayout`.
       switch location {
       case .topLeading, .topCenter, .topTrailing:
         // Top edge
-        contentOffset.y = blockViewRect.minY - scrollIntoViewEdgeInsets.top
+        contentOffset.y = blockViewRect.minY - scrollAreaInsets.top
       case .bottomLeading, .bottomCenter, .bottomTrailing:
         // Bottom edge
         contentOffset.y =
-          blockViewRect.maxY + scrollIntoViewEdgeInsets.bottom - scrollView.bounds.height
+          blockViewRect.maxY + scrollAreaInsets.bottom - scrollView.bounds.height
       case .middleLeading, .center, .middleTrailing:
         // Middle
         contentOffset.y = blockViewRect.midY - (scrollView.bounds.height / 2)
