@@ -314,7 +314,7 @@ import Foundation
             // Remove from toolbox
             try toolboxCoordinator.removeBlockTree(callerBlock)
           } else if let workspaceCoordinator =
-            workbench?.workspaceViewController?.workspaceLayoutCoordinator,
+            workbench?.workspaceViewController.workspaceLayoutCoordinator,
             workspaceCoordinator.workspaceLayout.workspace.containsBlock(callerBlock)
           {
             // Remove from main workspace
