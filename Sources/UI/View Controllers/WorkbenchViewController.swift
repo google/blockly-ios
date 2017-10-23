@@ -110,20 +110,22 @@ extension WorkbenchViewControllerUIState {
   // MARK: - Properties
 
   /// The main workspace view controller
-  open fileprivate(set) var workspaceViewController: WorkspaceViewController! {
-    didSet {
-      if let previous = oldValue {
-        previous.delegate = nil
-        previous.workspaceView.dragLayerView = nil
-      }
-
-      workspaceViewController?.delegate = self
-      workspaceViewController?.workspaceView.dragLayerView = workspaceDragLayerView
-    }
-  }
+  public private(set) lazy var workspaceViewController: WorkspaceViewController = {
+    // Create main workspace view
+    let workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.delegate = self
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
+    workspaceViewController.workspaceView.allowZoom = true
+    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
+      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
+      workspaceTapGestureRecognizer)
+    workspaceViewController.workspaceView.dragLayerView = workspaceDragLayerView
+    return workspaceViewController
+  }()
 
   /// A convenience property to `workspaceViewController.workspaceView`
-  fileprivate var workspaceView: WorkspaceView! {
+  fileprivate var workspaceView: WorkspaceView {
     return workspaceViewController.workspaceView
   }
 
@@ -368,7 +370,6 @@ extension WorkbenchViewControllerUIState {
     self.variableNameManager = NameManager()
     self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
-    commonInit()
   }
 
   /**
@@ -395,7 +396,6 @@ extension WorkbenchViewControllerUIState {
     self.variableNameManager = variableNameManager
     self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
-    commonInit()
   }
 
   /**
@@ -406,47 +406,6 @@ extension WorkbenchViewControllerUIState {
     // TODO(#52): Support the ability to create view controllers from XIBs.
     // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
     fatalError("Called unsupported initializer")
-  }
-
-  fileprivate func commonInit() {
-    // Create main workspace view
-    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
-    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
-    workspaceViewController.workspaceView.allowZoom = true
-    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
-      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
-    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
-      workspaceTapGestureRecognizer)
-
-    // Set default styles
-    workspaceBackgroundColor = ColorPalette.grey.tint50
-    undoButton.tintColor = ColorPalette.grey.tint800
-    redoButton.tintColor = ColorPalette.grey.tint800
-    toolboxCategoryListViewController.categoryFont = UIFont.systemFont(ofSize: 16)
-    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.grey.tint900
-    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.grey.tint300
-    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.grey.tint100
-    toolboxCategoryViewController.view.backgroundColor =
-      ColorPalette.grey.tint300.withAlphaComponent(0.75)
-    trashCanViewController.view.backgroundColor =
-      ColorPalette.grey.tint300.withAlphaComponent(0.75)
-
-    // Synchronize the procedure coordinator
-    procedureCoordinator?.syncWithWorkbench(self)
-
-    // Register for keyboard notifications
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(keyboardWillShowNotification(_:)),
-      name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(keyboardWillHideNotification(_:)),
-      name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
-    // Clear out any pending events first. We only care about events moving forward.
-    EventManager.shared.firePendingEvents()
-
-    // Listen for Blockly events
-    EventManager.shared.addListener(self)
   }
 
   deinit {
@@ -463,6 +422,22 @@ extension WorkbenchViewControllerUIState {
 
   open override func loadView() {
     super.loadView()
+
+    // Set default styles
+    workspaceBackgroundColor = ColorPalette.grey.tint50
+    undoButton.tintColor = ColorPalette.grey.tint800
+    redoButton.tintColor = ColorPalette.grey.tint800
+    toolboxCategoryListViewController.categoryFont = UIFont.systemFont(ofSize: 16)
+    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.grey.tint900
+    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.grey.tint300
+    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.grey.tint100
+    toolboxCategoryViewController.view.backgroundColor =
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
+    trashCanViewController.view.backgroundColor =
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
+
+    // Synchronize the procedure coordinator
+    procedureCoordinator?.syncWithWorkbench(self)
 
     view.clipsToBounds = true
     view.autoresizesSubviews = true
@@ -631,6 +606,20 @@ extension WorkbenchViewControllerUIState {
         bky_print("Could not create a default workspace: \(error)")
       }
     }
+
+    // Register for keyboard notifications
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(keyboardWillShowNotification(_:)),
+      name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(keyboardWillHideNotification(_:)),
+      name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+    // Clear out any pending events first. We only care about events moving forward.
+    EventManager.shared.firePendingEvents()
+
+    // Listen for Blockly events
+    EventManager.shared.addListener(self)
   }
 
   open override func viewDidLoad() {
@@ -768,7 +757,7 @@ extension WorkbenchViewControllerUIState {
    */
   open func refreshView() {
     do {
-      try workspaceViewController?.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
+      try workspaceViewController.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
     } catch let error {
       bky_assertionFailure("Could not load workspace layout: \(error)")
     }
@@ -968,11 +957,10 @@ extension WorkbenchViewController {
 
     trashCanView.setHighlighted(state.intersectsWith(.trashCanHighlighted), animated: animated)
 
-    if let selectedCategory = toolboxCategoryListViewController.selectedCategory
-      , state.intersectsWith(.categoryOpen)
-    {
+    if let selectedCategory = toolboxCategoryListViewController.selectedCategory,
+      state.intersectsWith(.categoryOpen) {
       // Show the toolbox category
-      toolboxCategoryViewController.showCategory(selectedCategory, animated: true)
+      toolboxCategoryViewController.showCategory(selectedCategory, animated: animated)
     } else {
       // Hide the toolbox category
       toolboxCategoryViewController.hideCategory(animated: animated)
@@ -1701,6 +1689,10 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         }
         gesture.replaceBlock(block, with: newBlock)
         blockView = newBlock
+
+        if !toolboxDrawerStaysOpen {
+          removeUIStateValue(.categoryOpen, animated: false)
+        }
       } else if inTrash {
         let oldBlock = blockView
 

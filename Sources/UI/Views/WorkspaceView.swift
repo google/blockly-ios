@@ -366,6 +366,82 @@ View for rendering a `WorkspaceLayout`.
   }
 
   /**
+   Sets the content offset of the workspace's scroll view so that a specific location in the
+   workspace is visible.
+
+   - parameter location: The `Location` that should be made visible. If `.anywhere` is specified,
+   this method does nothing.
+   */
+  open func setViewport(to location: Location, animated: Bool) {
+    guard let workspaceLayout = self.workspaceLayout, location != .anywhere else {
+      return
+    }
+
+    var contentOffset = CGPoint.zero
+    var scrollAreaInsets = UIEdgeInsets.zero
+
+    // Make sure the insets accounts for the safe area
+    if #available(iOS 11.0, *) {
+      scrollAreaInsets.left += scrollView.safeAreaInsets.left
+      scrollAreaInsets.right += scrollView.safeAreaInsets.right
+      scrollAreaInsets.top += scrollView.safeAreaInsets.top
+      scrollAreaInsets.bottom += scrollView.safeAreaInsets.bottom
+    }
+
+    // Calculate X coordinate
+    let useLeadingEdge =
+      (location == .bottomLeading || location == .middleLeading || location == .topLeading)
+    let useTrailingEdge =
+      (location == .bottomTrailing || location == .middleTrailing || location == .topTrailing)
+    let useCenter =
+      (location == .topCenter || location == .center || location == .bottomCenter)
+    let rtl = workspaceLayout.engine.rtl
+
+    if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
+      // Use left edge
+      contentOffset.x = scrollView.containerView.frame.minX - scrollAreaInsets.left
+    } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
+      // Use right edge
+      contentOffset.x =
+        scrollView.containerView.frame.maxX + scrollAreaInsets.right - scrollView.bounds.width
+    } else if useCenter {
+      contentOffset.x = scrollView.containerView.center.x - (scrollView.bounds.width / 2)
+    }
+
+    // Calculate Y coordinate
+    switch location {
+    case .topLeading, .topCenter, .topTrailing:
+      // Top edge
+      contentOffset.y = scrollView.containerView.frame.minY - scrollAreaInsets.top
+    case .bottomLeading, .bottomCenter, .bottomTrailing:
+      // Bottom edge
+      contentOffset.y =
+        scrollView.containerView.frame.maxY + scrollAreaInsets.bottom - scrollView.bounds.height
+    case .middleLeading, .center, .middleTrailing:
+      // Middle
+      contentOffset.y = scrollView.containerView.center.y - (scrollView.bounds.height / 2)
+    case .anywhere:
+      break
+    }
+
+    // Make sure the content offset is not too negative (this would cause unnecesary scrolling
+    // immediately after it is set). Therefore, we must ensure that the
+    // content offset >= scroll area insets.
+    contentOffset.x = max(contentOffset.x, -scrollAreaInsets.left)
+    contentOffset.y = max(contentOffset.y, -scrollAreaInsets.top)
+
+    if contentOffset != scrollView.contentOffset {
+      // Finally, set the content offset.
+      runAnimatableCode(animated) {
+        self._disableRemoveExcessScrollSpace = true
+        self.scrollView.setContentOffset(contentOffset, animated: animated)
+        self.updateDragLayerViewFrame()
+        self._disableRemoveExcessScrollSpace = false
+      }
+    }
+  }
+
+  /**
   Maps a `UIView` point relative to `self.scrollView` to a logical Workspace
   position.
 

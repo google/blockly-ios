@@ -81,6 +81,10 @@ import Foundation
     button.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.minimumContentEdgeInsets = UIEdgeInsets(top: 16, left: 12, bottom: 16, right: 12)
+
+    // If the button shrinks, the label inside it doesn't always get hidden, so the quick fix is to
+    // clip to bounds.
+    button.clipsToBounds = true
     return button
   }()
 
@@ -159,11 +163,10 @@ import Foundation
     // Add optional, high priority size constraints. By making them optional, it allows:
     // 1) this view to still automatically resize itself
     // 2) other higher priority constraints to change its size
-    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultHigh)
-    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultHigh)
+    _widthConstraint = view.bky_addWidthConstraint(0, priority: .defaultHigh)
+    _heightConstraint = view.bky_addHeightConstraint(0, priority: .defaultHigh)
 
-    view.setNeedsUpdateConstraints()
-    workspaceViewController.workspaceView.setNeedsUpdateConstraints()
+    view.setNeedsLayout()
   }
 
   // MARK: - Public
@@ -238,6 +241,9 @@ import Foundation
       addVariableButton.removeFromSuperview()
       view.layoutIfNeeded()
     }
+
+    // Update the toolbox viewport so it shows the beginning of the category.
+    workspaceViewController.workspaceView.setViewport(to: .topLeading, animated: false)
 
     updateSize(animated: animated)
   }
