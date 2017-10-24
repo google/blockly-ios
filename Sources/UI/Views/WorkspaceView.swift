@@ -528,25 +528,17 @@ View for rendering a `WorkspaceLayout`.
 
     // Update the content size of the scroll view.
     if layout.engine.rtl {
-      var oldContainerFrame = scrollView.containerView.frame
-
-      if oldContainerFrame.width < 1 && oldContainerFrame.height < 1 {
-        // If the container view size was previously (0, 0), it was never actually positioned.
-        // For the sake of calculation purposes below, it is assumed that
-        // `scrollView.containerView` is always anchored to the top-right corner. Therefore, we
-        // simply set the `oldContainerFrame.origin.x` to the right edge of the scrollView's
-        // bounds.
-        oldContainerFrame.origin.x =
-          scrollView.bounds.width - (allowCanvasPadding ? canvasPadding.leading : 0)
-      }
+      let oldContainerFrame = scrollView.containerView.frame
 
       // Position the contentView relative to the top-right corner
       let containerOrigin = CGPoint(
-        x: newContentSize.width - containerViewSize.width
-          - contentPadding.leading, y: contentPadding.top)
+        x: newContentSize.width - containerViewSize.width - contentPadding.leading,
+        y: contentPadding.top)
       scrollView.containerView.frame = CGRect(
-        x: containerOrigin.x, y: containerOrigin.y,
-        width: containerViewSize.width, height: containerViewSize.height)
+        x: containerOrigin.x,
+        y: containerOrigin.y,
+        width: containerViewSize.width,
+        height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't
       // appear that viewport has jumped to a new location
@@ -563,8 +555,10 @@ View for rendering a `WorkspaceLayout`.
       let containerOrigin = CGPoint(x: contentPadding.leading, y: contentPadding.top)
       let oldContainerFrame = scrollView.containerView.frame
       scrollView.containerView.frame = CGRect(
-        x: containerOrigin.x, y: containerOrigin.y,
-        width: containerViewSize.width, height: containerViewSize.height)
+        x: containerOrigin.x,
+        y: containerOrigin.y,
+        width: containerViewSize.width,
+        height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't appear
       // that viewport has jumped to a new location
