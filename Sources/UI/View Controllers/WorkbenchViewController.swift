@@ -1702,6 +1702,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         gesture.replaceBlock(block, with: newBlock)
         blockView = newBlock
         removeBlockFromTrash(oldBlock)
+
+        removeUIStateValue(.trashCanOpen, animated: false)
       }
 
       guard let blockLayout = blockView.blockLayout?.draggableBlockLayout else {
