@@ -82,7 +82,8 @@ View for rendering a `WorkspaceLayout`.
 
   /// Flag if the canvas should be padded with extra spaces around its edges via
   /// `self.canvasPadding`. If set to false, the user will only be allowed to scroll the exact
-  /// amount needed to view all blocks.
+  /// amount needed to view all blocks. Note that padding is only added if there is at least one
+  /// block in the workspace.
   open var allowCanvasPadding: Bool = true {
     didSet {
       updateCanvasSizeFromLayout()
@@ -502,21 +503,24 @@ View for rendering a `WorkspaceLayout`.
 
     let canvasPadding = self.canvasPadding()
 
-    // Calculate the extra padding to add around the content
+    // Calculate the extra padding to add around the content (it's only added if there is at least
+    // one block in the workspace).
     var contentPadding = EdgeInsets.zero
-    if allowCanvasPadding {
-      // Content padding must be at least two full screen sizes in all directions or else
-      // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
-      // moved from higher value coordinates to lower value ones) or grows in the negative
-      // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
-      contentPadding.top = scrollView.bounds.height + canvasPadding.top
-      contentPadding.leading = scrollView.bounds.width + canvasPadding.leading
-      contentPadding.bottom = scrollView.bounds.height + canvasPadding.bottom
-      contentPadding.trailing = scrollView.bounds.width + canvasPadding.trailing
-    } else if layout.engine.rtl {
-      // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
-      // sure that content appears right-aligned.
-      contentPadding.trailing = max(scrollView.bounds.width - containerViewSize.width, 0)
+    if layout.blockGroupLayouts.count > 0 {
+      if allowCanvasPadding {
+        // Content padding must be at least two full screen sizes in all directions or else
+        // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
+        // moved from higher value coordinates to lower value ones) or grows in the negative
+        // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
+        contentPadding.top = scrollView.bounds.height + canvasPadding.top
+        contentPadding.leading = scrollView.bounds.width + canvasPadding.leading
+        contentPadding.bottom = scrollView.bounds.height + canvasPadding.bottom
+        contentPadding.trailing = scrollView.bounds.width + canvasPadding.trailing
+      } else if layout.engine.rtl {
+        // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
+        // sure that content appears right-aligned.
+        contentPadding.trailing = max(scrollView.bounds.width - containerViewSize.width, 0)
+      }
     }
 
     // Figure out the value that will be used for `scrollView.contentSize`

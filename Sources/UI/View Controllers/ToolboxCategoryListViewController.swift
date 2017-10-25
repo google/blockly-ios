@@ -149,6 +149,11 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 
     guard let collectionView = self.collectionView else { return }
 
+    if #available (iOS 11.0, *) {
+      // Always auto-adjust for the safe area in the scrollable direction.
+      collectionView.contentInsetAdjustmentBehavior = .scrollableAxes
+    }
+
     collectionView.backgroundColor = .clear
     collectionView.register(ToolboxCategoryListViewCell.self,
       forCellWithReuseIdentifier: ToolboxCategoryListViewCell.ReusableCellIdentifier)
@@ -499,11 +504,16 @@ extension ToolboxCategoryListViewController: UICollectionViewDelegateFlowLayout 
 
 extension ToolboxCategoryListViewController {
   /**
-   Custom `UICollectionViewFlowLayout` in order to force the layout to be invalidated when the
-   collection view's bounds changes.
+   Custom `UICollectionViewFlowLayout` in order to:
+   - force the layout to be invalidated when the collection view's bounds changes
+   - flip its fill mode in RTL when the layout is horizontal
    */
   class FlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+      return true
+    }
+
+    override var flipsHorizontallyInOppositeLayoutDirection: Bool {
       return true
     }
   }
