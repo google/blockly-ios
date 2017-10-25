@@ -111,6 +111,9 @@ View for rendering a `WorkspaceLayout`.
   /// The offset between the zoom offset and the center of the zoom pinch
   fileprivate var _zoomPinchOffset: CGPoint = CGPoint.zero
 
+  /// Keeps track of the initial scale of the scroll view before the zoom begins.
+  fileprivate var _zoomInitialScale: CGFloat = 1
+
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   fileprivate var _disableRemoveExcessScrollSpace = false
 
@@ -801,13 +804,16 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.showsHorizontalScrollIndicator = false
 
     // Save the offset of the zoom pinch from the content's offset, so we can zoom on the pinch.
-    _zoomPinchOffset =  offsetOfPinch(scrollView, withView: scrollView.containerView)
+    _zoomPinchOffset = offsetOfPinch(scrollView, withView: scrollView.containerView)
     var offset = scrollView.contentOffset + _zoomPinchOffset
     offset.x = offset.x * scrollView.zoomScale
     offset.y = offset.y * scrollView.zoomScale
 
     // Save the contentOffset + the offset from the pinch, so we can zoom on the pinch point.
     _zoomBeginOffset = offset
+
+    // Keep track of the initial scale so we can fix the "jumping" problem in RTL.
+    _zoomInitialScale = scrollView.zoomScale
   }
 
   public func scrollViewDidZoom(_ zoomScrollView: UIScrollView) {
@@ -827,7 +833,12 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     // Scale the content by the zoom level, and reset the zoom. Also, save the current offset, since
     // changing the zoomScale resets the contentOffset, which causes an apparent jump.
-    let resetOffset = scrollView.contentOffset
+    var resetOffset = scrollView.contentOffset
+    if workspaceLayout.engine.rtl {
+      // In RTL, we need to account for the scaled change in width or else jumping will occur.
+      resetOffset.x -=
+        (self.scrollView.containerView.frame.width * (scale - _zoomInitialScale) / scale)
+    }
     scrollView.zoomScale = 1
     scrollView.contentOffset = resetOffset
     scrollView.minimumZoomScale /= scale
