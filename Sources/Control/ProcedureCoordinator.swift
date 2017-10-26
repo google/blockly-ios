@@ -381,29 +381,22 @@ import Foundation
     guard block.isIfReturn else { return }
 
     ifReturnBlocks.remove(block)
-
-    // If it's being moved to the trash can, we want to re-enable the if-return block (which will
-    // happen on validation).
-    validateIfReturnBlock(block)
   }
 
   fileprivate func validateIfReturnBlock(_ block: Block) {
+    // We only care about if-return blocks that are in the main workspace
     guard block.isIfReturn,
       let blockLayout = block.layout,
-      let rootBlock = blockLayout.rootBlockGroupLayout?.blockLayouts[0].block else {
+      let rootBlock = blockLayout.rootBlockGroupLayout?.blockLayouts[0].block,
+      let workspace = workbench?.workspace,
+      workspace.containsBlock(block) else {
       return
     }
 
-    if workbench?.workspace?.containsBlock(block) ?? false {
-      // Disable this if-return block if it's in the main workspace and isn't connected to a
-      // procedure definition block.
-      blockLayout.disabled =
-        rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN &&
-        rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_RETURN
-    } else {
-      // Enable by default
-      blockLayout.disabled = false
-    }
+    // Disable this if-return block if it isn't connected to a procedure definition block.
+    blockLayout.disabled =
+      rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN &&
+      rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_RETURN
   }
 
   // MARK: - Helpers
