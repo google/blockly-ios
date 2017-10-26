@@ -30,7 +30,7 @@ class WorkspaceLayoutCoordinatorTest: XCTestCase {
     }
     _workspaceLayoutCoordinator = BKYAssertDoesNotThrow {
       let workspaceLayout = WorkspaceLayout(workspace: Workspace(), engine: DefaultLayoutEngine())
-      let layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+      let layoutBuilder = LayoutBuilder(layoutFactory: LayoutFactory())
       return try WorkspaceLayoutCoordinator(workspaceLayout: workspaceLayout,
                                             layoutBuilder: layoutBuilder,
                                             connectionManager: ConnectionManager())
