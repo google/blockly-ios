@@ -33,6 +33,8 @@ import Foundation
   public static let BLOCK_CALLER_NO_RETURN = "procedures_callnoreturn"
   /// Block name for the procedure caller with a return value
   public static let BLOCK_CALLER_RETURN = "procedures_callreturn"
+  /// Block name for the "if-return" block.
+  public static let BLOCK_IF_RETURN = "procedures_ifreturn"
 
   /// The workbench that this coordinator is synchronized with
   public private(set) weak var workbench: WorkbenchViewController? {
@@ -58,6 +60,9 @@ import Foundation
 
   /// Set of all procedure caller blocks in both the main workspace and toolbox.
   fileprivate var callerBlocks = WeakSet<Block>()
+
+  /// Set of all if-return blocks in the main workspace.
+  fileprivate var ifReturnBlocks = WeakSet<Block>()
 
   /// Map of block uuid's to their procedure definition name. This is used when a procedure
   /// definition block is renamed and the coordinator needs to rename all existing caller blocks
@@ -99,6 +104,7 @@ import Foundation
     // Remove cache of definition and caller blocks
     definitionBlocks.removeAll()
     callerBlocks.removeAll()
+    ifReturnBlocks.removeAll()
     blockProcedureNames.removeAll()
 
     // Set to the new workbench
@@ -107,12 +113,14 @@ import Foundation
     if let workspace = workbench?.workspace,
       workbench?.toolbox != nil
     {
-      // Track all definition/caller blocks in the workspace
+      // Track all relevant procedure blocks in the workspace
       for (_, block) in workspace.allBlocks {
         if block.isProcedureDefinition {
           trackProcedureDefinitionBlock(block)
         } else if block.isProcedureCaller {
           trackProcedureCallerBlock(block)
+        } else if block.isIfReturn {
+          trackIfReturnBlock(block, validate: true)
         }
       }
 
@@ -357,6 +365,40 @@ import Foundation
     }
   }
 
+  // MARK: - If-Return Methods
+
+  fileprivate func trackIfReturnBlock(_ block: Block, validate: Bool) {
+    guard block.isIfReturn else { return }
+
+    ifReturnBlocks.add(block)
+
+    if validate {
+      validateIfReturnBlock(block)
+    }
+  }
+
+  fileprivate func untrackIfReturnBlock(_ block: Block) {
+    guard block.isIfReturn else { return }
+
+    ifReturnBlocks.remove(block)
+  }
+
+  fileprivate func validateIfReturnBlock(_ block: Block) {
+    // We only care about if-return blocks that are in the main workspace
+    guard block.isIfReturn,
+      let blockLayout = block.layout,
+      let rootBlock = blockLayout.rootBlockGroupLayout?.blockLayouts[0].block,
+      let workspace = workbench?.workspace,
+      workspace.containsBlock(block) else {
+      return
+    }
+
+    // Disable this if-return block if it isn't connected to a procedure definition block.
+    blockLayout.disabled =
+      rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_NO_RETURN &&
+      rootBlock.name != ProcedureCoordinator.BLOCK_DEFINITION_RETURN
+  }
+
   // MARK: - Helpers
 
   fileprivate func firstToolboxProcedureLayoutCoordinator() -> WorkspaceLayoutCoordinator? {
@@ -400,6 +442,11 @@ extension ProcedureCoordinator: WorkspaceListener {
         trackProcedureDefinitionBlock(block)
       } else if block.isProcedureCaller {
         trackProcedureCallerBlock(block)
+      } else if block.isIfReturn {
+        // Don't immediately validate the block, since it's usually an orphan at this point,
+        // and will cause the block to appear disabled. A create/move event will occur
+        // after this add so it will be validated shortly thereafter.
+        trackIfReturnBlock(block, validate: false)
       }
     }
   }
@@ -422,6 +469,8 @@ extension ProcedureCoordinator: WorkspaceListener {
         untrackProcedureDefinitionBlock(block)
       } else if block.isProcedureCaller {
         untrackProcedureCallerBlock(block)
+      } else if block.isIfReturn {
+        untrackIfReturnBlock(block)
       }
     }
   }
@@ -438,6 +487,10 @@ extension ProcedureCoordinator: EventManagerListener {
     } else if let mutationEvent = event as? BlocklyEvent.Change,
       mutationEvent.element == .mutate {
       processMutationChangeEvent(mutationEvent)
+    } else if let createEvent = event as? BlocklyEvent.Create {
+      processCreateEvent(createEvent)
+    } else if let moveEvent = event as? BlocklyEvent.Move {
+      processMoveEvent(moveEvent)
     }
   }
 
@@ -486,6 +539,38 @@ extension ProcedureCoordinator: EventManagerListener {
       updateProcedureCallers(oldName: block.procedureName, newName: block.procedureName,
                              parameters: block.procedureParameters)
       upsertVariables(fromDefinitionBlock: block)
+    }
+  }
+
+  private func processCreateEvent(_ createEvent: BlocklyEvent.Create) {
+    // We only care about create events that happen in the main workspace.
+    guard let workspace = workbench?.workspace,
+      workspace.uuid == createEvent.workspaceID else {
+      return
+    }
+
+    // Validate any if-return blocks that were created from this event.
+    EventManager.shared.groupAndFireEvents(groupID: createEvent.groupID) {
+      for blockID in createEvent.blockIDs {
+        if let block = workspace.allBlocks[blockID], block.isIfReturn {
+          validateIfReturnBlock(block)
+        }
+      }
+    }
+  }
+
+  private func processMoveEvent(_ moveEvent: BlocklyEvent.Move) {
+    // We only care about move events that happen in the main workspace.
+    guard workbench?.workspace?.uuid == moveEvent.workspaceID else { return }
+
+    // Something has been moved in the workspace, which means an if-return block may have changed
+    // grandparents. Re-validate all if-return blocks (this is faster than traversing the
+    // block tree(s) affected by the move event, since the total number of if-return blocks is
+    // likely to be very few).
+    EventManager.shared.groupAndFireEvents(groupID: moveEvent.groupID) {
+      for block in self.ifReturnBlocks {
+        validateIfReturnBlock(block)
+      }
     }
   }
 }
@@ -567,6 +652,10 @@ fileprivate extension Block {
   var isProcedureCaller: Bool {
     return name == ProcedureCoordinator.BLOCK_CALLER_NO_RETURN ||
       name == ProcedureCoordinator.BLOCK_CALLER_RETURN
+  }
+
+  var isIfReturn: Bool {
+    return name == ProcedureCoordinator.BLOCK_IF_RETURN
   }
 
   var procedureDefinitionNameInput: FieldInput? {

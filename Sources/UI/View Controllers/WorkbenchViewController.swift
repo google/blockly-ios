@@ -1743,6 +1743,12 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
           var allBlocksToRemove = blockLayout.block.allBlocksForTree()
 
           try _workspaceLayoutCoordinator?.removeBlockTree(blockLayout.block)
+
+          // Enable the entire block tree, before adding it to the trash can.
+          for block in blockLayout.block.allBlocksForTree() {
+            block.disabled = false
+          }
+
           try trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(blockLayout.block)
 
           allBlocksToRemove.removeAll()
