@@ -28,7 +28,7 @@ class LayoutBuilderTest: XCTestCase {
     super.setUp()
 
     _workspaceLayout = WorkspaceLayout(workspace: Workspace(), engine: DefaultLayoutEngine())
-    _layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+    _layoutBuilder = LayoutBuilder(layoutFactory: LayoutFactory())
     _blockFactory = BlockFactory()
     BKYAssertDoesNotThrow {
       try _blockFactory.load(fromJSONPaths: ["all_test_blocks.json"],

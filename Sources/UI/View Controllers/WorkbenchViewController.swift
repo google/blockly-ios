@@ -364,7 +364,7 @@ extension WorkbenchViewControllerUIState {
   public init(style: Style) {
     self.style = style
     self.engine = DefaultLayoutEngine()
-    self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+    self.layoutBuilder = LayoutBuilder(layoutFactory: LayoutFactory())
     self.blockFactory = BlockFactory()
     self.viewFactory = ViewFactory()
     self.variableNameManager = NameManager()
