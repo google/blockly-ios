@@ -192,7 +192,8 @@ layer instead of the default one provided by <code>WorkspaceView</code>.</p>
                       <div class="abstract">
                         <p>Flag if the canvas should be padded with extra spaces around its edges via
 <code>self.canvasPadding</code>. If set to false, the user will only be allowed to scroll the exact
-amount needed to view all blocks.</p>
+amount needed to view all blocks. Note that padding is only added if there is at least one
+block in the workspace.</p>
 
                       </div>
                       <div class="declaration">
@@ -431,6 +432,34 @@ to this <code>WorkspaceView</code>.</p>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
                           <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">scrollBlockIntoView</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">,</span> <span class="nv">location</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceView/Location.html">Location</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">anywhere</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockly@objc(cs)BKYWorkspaceView(im)setViewportTo:animated:"></a>
+                    <a name="//apple_ref/swift/Method/setViewport(to:animated:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYWorkspaceView(im)setViewportTo:animated:">setViewport(to:animated:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the content offset of the workspace&rsquo;s scroll view so that a specific location in the
+workspace is visible.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">setViewport</span><span class="p">(</span><span class="n">to</span> <span class="nv">location</span><span class="p">:</span> <span class="kt"><a href="../Classes/WorkspaceView/Location.html">Location</a></span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -705,8 +734,6 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutConfig.html
     - title: DefaultLayoutEngine
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
-    - title: DefaultLayoutFactory
-      path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
     - title: Dictionary
       path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
@@ -830,7 +857,7 @@ toc:
     - title: LayoutEngine
       path: /blockly/reference/ios/../Classes/LayoutEngine.html
     - title: LayoutFactory
-      path: /blockly/reference/ios/../Protocols/LayoutFactory.html
+      path: /blockly/reference/ios/../Classes/LayoutFactory.html
     - title: LayoutFlag
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
