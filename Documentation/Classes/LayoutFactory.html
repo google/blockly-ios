@@ -14,22 +14,147 @@
             <h1>LayoutFactory</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">LayoutFactory</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="n">open</span> <span class="kd">class</span> <span class="kt">LayoutFactory</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol defining a factory responsible for returning new <code><a href="../Classes/Layout.html">Layout</a></code> instances.</p>
+            <p>Factory responsible for returning new <code><a href="../Classes/Layout.html">Layout</a></code> instances based on a corresponding model object.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Closures"></a>
+                <a name="//apple_ref/swift/Section/Closures" class="dashAnchor"></a>
+                <a href="#/Closures">
+                  <h2 class="section-name">Closures</h2>
+                </a>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Blockly13LayoutFactoryP09makeBlockB0AA0eB0CAA0E0C5block_AA0B6EngineC6enginetKF"></a>
+                    <a name="/s:7Blockly13LayoutFactoryC05BlockB7Creatora"></a>
+                    <a name="//apple_ref/swift/Alias/BlockLayoutCreator" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC05BlockB7Creatora">BlockLayoutCreator</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Closure for returning a <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> from a given <code><a href="../Classes/Block.html">Block</a></code> and <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">BlockLayoutCreator</span> <span class="o">=</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC010BlockGroupB7Creatora"></a>
+                    <a name="//apple_ref/swift/Alias/BlockGroupLayoutCreator" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC010BlockGroupB7Creatora">BlockGroupLayoutCreator</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Closure for returning a <code><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></code> from a given <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">BlockGroupLayoutCreator</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC05FieldB7Creatora"></a>
+                    <a name="//apple_ref/swift/Alias/FieldLayoutCreator" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC05FieldB7Creatora">FieldLayoutCreator</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Closure for returning a <code><a href="../Classes/FieldLayout.html">FieldLayout</a></code> from a given <code><a href="../Classes/Field.html">Field</a></code> and <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">FieldLayoutCreator</span> <span class="o">=</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC07MutatorB7Creatora"></a>
+                    <a name="//apple_ref/swift/Alias/MutatorLayoutCreator" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC07MutatorB7Creatora">MutatorLayoutCreator</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Closure for returning a <code><a href="../Classes/MutatorLayout.html">MutatorLayout</a></code> from a given <code><a href="../Protocols/Mutator.html">Mutator</a></code> and <code><a href="../Classes/LayoutEngine.html">LayoutEngine</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">MutatorLayoutCreator</span> <span class="o">=</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Layout%20Makers"></a>
+                <a name="//apple_ref/swift/Section/Layout Makers" class="dashAnchor"></a>
+                <a href="#/Layout%20Makers">
+                  <h2 class="section-name">Layout Makers</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockLayoutWithBlock:engine:error:"></a>
                     <a name="//apple_ref/swift/Method/makeBlockLayout(block:engine:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryP09makeBlockB0AA0eB0CAA0E0C5block_AA0B6EngineC6enginetKF">makeBlockLayout(block:engine:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockLayoutWithBlock:engine:error:">makeBlockLayout(block:engine:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -38,9 +163,14 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds and returns a <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> for a given block and layout engine.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    See <code>registerBlockLayoutCreator(_)</code> for more information.
+
+</div>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no suitable <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> could be found for the <code>block</code>.
+    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a new <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> could not be created for <code>block</code>.
 
 </div>
 
@@ -49,14 +179,13 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">makeBlockLayout</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockLayout.html">BlockLayout</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeBlockLayout</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Block.html">Block</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockLayout.html">BlockLayout</a></span></code></pre>
 
                         </div>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A new <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> instance or nil, if either <code>workspace.layout</code> is nil or no
-suitable layout could be found for the block.</p>
+                        <p>A new <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> instance.</p>
                       </div>
                     </section>
                   </div>
@@ -64,9 +193,9 @@ suitable layout could be found for the block.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Blockly13LayoutFactoryP014makeBlockGroupB0AA0efB0CAA0B6EngineC6engine_tKF"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockGroupLayoutWithEngine:error:"></a>
                     <a name="//apple_ref/swift/Method/makeBlockGroupLayout(engine:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryP014makeBlockGroupB0AA0efB0CAA0B6EngineC6engine_tKF">makeBlockGroupLayout(engine:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockGroupLayoutWithEngine:error:">makeBlockGroupLayout(engine:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -75,9 +204,14 @@ suitable layout could be found for the block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds and returns a <code><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></code> for a given layout engine.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    See <code>registerBlockGroupLayoutCreator(_)</code> for more information.
+
+</div>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no suitable <code><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></code> could be found.
+    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a new <code><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></code> could not be created.
 
 </div>
 
@@ -86,7 +220,7 @@ suitable layout could be found for the block.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">makeBlockGroupLayout</span><span class="p">(</span><span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeBlockGroupLayout</span><span class="p">(</span><span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></span></code></pre>
 
                         </div>
                       </div>
@@ -100,9 +234,9 @@ suitable layout could be found for the block.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Blockly13LayoutFactoryP09makeInputB0AA0eB0CAA0E0C5input_AA0B6EngineC6enginetKF"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeInputLayoutWithInput:engine:error:"></a>
                     <a name="//apple_ref/swift/Method/makeInputLayout(input:engine:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryP09makeInputB0AA0eB0CAA0E0C5input_AA0B6EngineC6enginetKF">makeInputLayout(input:engine:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeInputLayoutWithInput:engine:error:">makeInputLayout(input:engine:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -111,9 +245,14 @@ suitable layout could be found for the block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds and returns an <code><a href="../Classes/InputLayout.html">InputLayout</a></code> for a given input and layout engine.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    See <code>registerInputLayoutCreator(_)</code> for more information.
+
+</div>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no suitable <code><a href="../Classes/InputLayout.html">InputLayout</a></code> could be found for the <code>input</code>.
+    <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if a new <code><a href="../Classes/InputLayout.html">InputLayout</a></code> could not be created for <code>input</code>.
 
 </div>
 
@@ -122,7 +261,7 @@ suitable layout could be found for the block.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">makeInputLayout</span><span class="p">(</span><span class="nv">input</span><span class="p">:</span> <span class="kt"><a href="../Classes/Input.html">Input</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/InputLayout.html">InputLayout</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeInputLayout</span><span class="p">(</span><span class="nv">input</span><span class="p">:</span> <span class="kt"><a href="../Classes/Input.html">Input</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/InputLayout.html">InputLayout</a></span></code></pre>
 
                         </div>
                       </div>
@@ -136,9 +275,9 @@ suitable layout could be found for the block.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Blockly13LayoutFactoryP09makeFieldB0AA0eB0CAA0E0C5field_AA0B6EngineC6enginetKF"></a>
+                    <a name="/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeFieldLayoutWithField:engine:error:"></a>
                     <a name="//apple_ref/swift/Method/makeFieldLayout(field:engine:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryP09makeFieldB0AA0eB0CAA0E0C5field_AA0B6EngineC6enginetKF">makeFieldLayout(field:engine:)</a></h3>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeFieldLayoutWithField:engine:error:">makeFieldLayout(field:engine:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -147,6 +286,11 @@ suitable layout could be found for the block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds and returns a <code><a href="../Classes/FieldLayout.html">FieldLayout</a></code> for a given field and layout engine.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    See <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC013registerFieldB7CreatoryAA0E0Cm7forType_AA0eB0CAF_AA0B6EngineCtKc06layoutF0tF">registerFieldLayoutCreator(forType:layoutCreator:)</a></code> for more information.
+
+</div>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no suitable <code><a href="../Classes/FieldLayout.html">FieldLayout</a></code> could be found for the <code>field</code>.
@@ -158,7 +302,7 @@ suitable layout could be found for the block.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">makeFieldLayout</span><span class="p">(</span><span class="nv">field</span><span class="p">:</span> <span class="kt"><a href="../Classes/Field.html">Field</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/FieldLayout.html">FieldLayout</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeFieldLayout</span><span class="p">(</span><span class="nv">field</span><span class="p">:</span> <span class="kt"><a href="../Classes/Field.html">Field</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/FieldLayout.html">FieldLayout</a></span></code></pre>
 
                         </div>
                       </div>
@@ -172,9 +316,9 @@ suitable layout could be found for the block.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Blockly13LayoutFactoryP011makeMutatorB0AA0eB0CAA0E0_p7mutator_AA0B6EngineC6enginetKF"></a>
+                    <a name="/s:7Blockly13LayoutFactoryC011makeMutatorB0AA0eB0CAA0E0_p7mutator_AA0B6EngineC6enginetKF"></a>
                     <a name="//apple_ref/swift/Method/makeMutatorLayout(mutator:engine:)" class="dashAnchor"></a>
-                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryP011makeMutatorB0AA0eB0CAA0E0_p7mutator_AA0B6EngineC6enginetKF">makeMutatorLayout(mutator:engine:)</a></h3>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC011makeMutatorB0AA0eB0CAA0E0_p7mutator_AA0B6EngineC6enginetKF">makeMutatorLayout(mutator:engine:)</a></h3>
                     </code>
                   </div>
                   <div class="height-container">
@@ -183,6 +327,11 @@ suitable layout could be found for the block.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Builds and returns a <code><a href="../Classes/MutatorLayout.html">MutatorLayout</a></code> for a given mutator and layout engine.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    See <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC015registerMutatorB7CreatoryAA0E0_pXp7forType_AA0eB0CAaE_p_AA0B6EngineCtKc06layoutF0tF">registerMutatorLayoutCreator(forType:layoutCreator:)</a></code> for more information.
+
+</div>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <code><a href="../Classes/BlocklyError.html">BlocklyError</a></code>: Thrown if no suitable <code><a href="../Classes/MutatorLayout.html">MutatorLayout</a></code> could be found for the <code>mutator</code>.
@@ -194,13 +343,165 @@ suitable layout could be found for the block.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">makeMutatorLayout</span><span class="p">(</span><span class="nv">mutator</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/MutatorLayout.html">MutatorLayout</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">makeMutatorLayout</span><span class="p">(</span><span class="nv">mutator</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="p">,</span> <span class="nv">engine</span><span class="p">:</span> <span class="kt"><a href="../Classes/LayoutEngine.html">LayoutEngine</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/MutatorLayout.html">MutatorLayout</a></span></code></pre>
 
                         </div>
                       </div>
                       <div>
                         <h4>Return Value</h4>
                         <p>A new <code><a href="../Classes/MutatorLayout.html">MutatorLayout</a></code> instance.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Registering%20Layout%20Creators"></a>
+                <a name="//apple_ref/swift/Section/Registering Layout Creators" class="dashAnchor"></a>
+                <a href="#/Registering%20Layout%20Creators">
+                  <h2 class="section-name">Registering Layout Creators</h2>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC013registerBlockB7CreatoryAA0eB0CAA0E0C_AA0B6EngineCtKcF"></a>
+                    <a name="//apple_ref/swift/Method/registerBlockLayoutCreator(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC013registerBlockB7CreatoryAA0eB0CAA0E0C_AA0B6EngineCtKcF">registerBlockLayoutCreator(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers the <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC05BlockB7Creatora">BlockLayoutCreator</a></code> to use when a new <code><a href="../Classes/BlockLayout.html">BlockLayout</a></code> instance is requested via
+<code><a href="../Classes/LayoutFactory.html#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockLayoutWithBlock:engine:error:">makeBlockLayout(block:engine:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerBlockLayoutCreator</span><span class="p">(</span><span class="n">_</span> <span class="nv">layoutCreator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC05BlockB7Creatora">BlockLayoutCreator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC018registerBlockGroupB7CreatoryAA0efB0CAA0B6EngineCKcF"></a>
+                    <a name="//apple_ref/swift/Method/registerBlockGroupLayoutCreator(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC018registerBlockGroupB7CreatoryAA0efB0CAA0B6EngineCKcF">registerBlockGroupLayoutCreator(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers the <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC010BlockGroupB7Creatora">BlockGroupLayoutCreator</a></code> to use when a new <code><a href="../Classes/BlockGroupLayout.html">BlockGroupLayout</a></code> instance is
+requested via <code><a href="../Classes/LayoutFactory.html#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeBlockGroupLayoutWithEngine:error:">makeBlockGroupLayout(engine:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerBlockGroupLayoutCreator</span><span class="p">(</span><span class="n">_</span> <span class="nv">layoutCreator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC010BlockGroupB7Creatora">BlockGroupLayoutCreator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC013registerInputB7CreatoryAA0eB0CAA0E0C_AA0B6EngineCACtKcF"></a>
+                    <a name="//apple_ref/swift/Method/registerInputLayoutCreator(_:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC013registerInputB7CreatoryAA0eB0CAA0E0C_AA0B6EngineCACtKcF">registerInputLayoutCreator(_:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers the <code>InputLayoutCreator</code> to use when a new <code><a href="../Classes/InputLayout.html">InputLayout</a></code> instance is requested via
+<code><a href="../Classes/LayoutFactory.html#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeInputLayoutWithInput:engine:error:">makeInputLayout(input:engine:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerInputLayoutCreator</span><span class="p">(</span><span class="n">_</span> <span class="nv">layoutCreator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">InputLayoutCreator</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC013registerFieldB7CreatoryAA0E0Cm7forType_AA0eB0CAF_AA0B6EngineCtKc06layoutF0tF"></a>
+                    <a name="//apple_ref/swift/Method/registerFieldLayoutCreator(forType:layoutCreator:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC013registerFieldB7CreatoryAA0E0Cm7forType_AA0eB0CAF_AA0B6EngineCtKc06layoutF0tF">registerFieldLayoutCreator(forType:layoutCreator:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers the <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC05FieldB7Creatora">FieldLayoutCreator</a></code> to use for a given field type, when a new <code><a href="../Classes/FieldLayout.html">FieldLayout</a></code>
+instance is requested via <code><a href="../Classes/LayoutFactory.html#/c:@M@Blockly@objc(cs)BKYLayoutFactory(im)makeFieldLayoutWithField:engine:error:">makeFieldLayout(field:engine:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerFieldLayoutCreator</span><span class="p">(</span>
+    <span class="n">forType</span> <span class="nv">fieldType</span><span class="p">:</span> <span class="kt"><a href="../Classes/Field.html">Field</a></span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">layoutCreator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC05FieldB7Creatora">FieldLayoutCreator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Blockly13LayoutFactoryC015registerMutatorB7CreatoryAA0E0_pXp7forType_AA0eB0CAaE_p_AA0B6EngineCtKc06layoutF0tF"></a>
+                    <a name="//apple_ref/swift/Method/registerMutatorLayoutCreator(forType:layoutCreator:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/s:7Blockly13LayoutFactoryC015registerMutatorB7CreatoryAA0E0_pXp7forType_AA0eB0CAaE_p_AA0B6EngineCtKc06layoutF0tF">registerMutatorLayoutCreator(forType:layoutCreator:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers the <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC07MutatorB7Creatora">MutatorLayoutCreator</a></code> to use for a given mutator type, when a new <code><a href="../Classes/MutatorLayout.html">MutatorLayout</a></code>
+instance is requested via <code><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC011makeMutatorB0AA0eB0CAA0E0_p7mutator_AA0B6EngineC6enginetKF">makeMutatorLayout(mutator:engine:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">registerMutatorLayoutCreator</span><span class="p">(</span>
+    <span class="n">forType</span> <span class="nv">mutatorType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Mutator.html">Mutator</a></span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">layoutCreator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/LayoutFactory.html#/s:7Blockly13LayoutFactoryC07MutatorB7Creatora">MutatorLayoutCreator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -328,8 +629,6 @@ toc:
       path: /blockly/reference/ios/../Classes/DefaultLayoutConfig.html
     - title: DefaultLayoutEngine
       path: /blockly/reference/ios/../Classes/DefaultLayoutEngine.html
-    - title: DefaultLayoutFactory
-      path: /blockly/reference/ios/../Classes/DefaultLayoutFactory.html
     - title: Dictionary
       path: /blockly/reference/ios/../Extensions/Dictionary.html
     - title: Dragger
@@ -453,7 +752,7 @@ toc:
     - title: LayoutEngine
       path: /blockly/reference/ios/../Classes/LayoutEngine.html
     - title: LayoutFactory
-      path: /blockly/reference/ios/../Protocols/LayoutFactory.html
+      path: /blockly/reference/ios/../Classes/LayoutFactory.html
     - title: LayoutFlag
       path: /blockly/reference/ios/../Structs/LayoutFlag.html
     - title: LayoutHierarchyListener
