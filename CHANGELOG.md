@@ -1,3 +1,27 @@
+# [Version 1.2](https://github.com/google/blockly-ios/tree/1.2) (Oct 2017)
+
+Additions:
+- The UI now respects the iOS 11 "safe area" so that all visible content and
+touch areas are displayed within the safe area. Currently, this only affects
+apps running on iPhone X, since its defined safe area doesn't fully conform
+to its screen dimensions.
+- Adds method to `WorkspaceView`, to set the viewport to a reveal a specific
+location.
+
+Updates:
+- Changes `LayoutFactory` to be a class instead of a protocol.
+- Removes `DefaultLayoutFactory` and refactors its functionality into
+`LayoutFactory`.
+- Fixes "if-return" block to automatically disable itself if it isn't connected
+to a procedure definition block.
+- Fixes Turtle demo so it is zoomable and so it no longer allows the turtle to
+run off-screen.
+- Fixes bug in RTL where zooming caused the viewport to jump to a different
+location.
+- Fixes bug in RTL where dragging the first block onto an empty canvas caused
+the block to temporarily flash at a different location.
+- Fixes WorkspaceView from adding extra canvas padding to an empty workspace.
+
 # [Version 1.1.3](https://github.com/google/blockly-ios/tree/1.1.3) (Oct 2017)
 
 Updates:
