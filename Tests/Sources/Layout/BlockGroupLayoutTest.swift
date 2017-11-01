@@ -27,7 +27,7 @@ class BlockGroupLayoutTest: XCTestCase {
 
   override func setUp() {
     let workspace = Workspace()
-    _layoutFactory = DefaultLayoutFactory()
+    _layoutFactory = LayoutFactory()
     _workspaceLayout = WorkspaceLayout(workspace: workspace, engine: DefaultLayoutEngine())
     _layoutBuilder = LayoutBuilder(layoutFactory: _layoutFactory)
     _blockFactory = BlockFactory()

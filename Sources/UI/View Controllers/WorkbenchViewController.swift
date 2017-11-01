@@ -110,20 +110,22 @@ extension WorkbenchViewControllerUIState {
   // MARK: - Properties
 
   /// The main workspace view controller
-  open fileprivate(set) var workspaceViewController: WorkspaceViewController! {
-    didSet {
-      if let previous = oldValue {
-        previous.delegate = nil
-        previous.workspaceView.dragLayerView = nil
-      }
-
-      workspaceViewController?.delegate = self
-      workspaceViewController?.workspaceView.dragLayerView = workspaceDragLayerView
-    }
-  }
+  public private(set) lazy var workspaceViewController: WorkspaceViewController = {
+    // Create main workspace view
+    let workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
+    workspaceViewController.delegate = self
+    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
+    workspaceViewController.workspaceView.allowZoom = true
+    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
+      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
+    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
+      workspaceTapGestureRecognizer)
+    workspaceViewController.workspaceView.dragLayerView = workspaceDragLayerView
+    return workspaceViewController
+  }()
 
   /// A convenience property to `workspaceViewController.workspaceView`
-  fileprivate var workspaceView: WorkspaceView! {
+  fileprivate var workspaceView: WorkspaceView {
     return workspaceViewController.workspaceView
   }
 
@@ -362,13 +364,12 @@ extension WorkbenchViewControllerUIState {
   public init(style: Style) {
     self.style = style
     self.engine = DefaultLayoutEngine()
-    self.layoutBuilder = LayoutBuilder(layoutFactory: DefaultLayoutFactory())
+    self.layoutBuilder = LayoutBuilder(layoutFactory: LayoutFactory())
     self.blockFactory = BlockFactory()
     self.viewFactory = ViewFactory()
     self.variableNameManager = NameManager()
     self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
-    commonInit()
   }
 
   /**
@@ -395,7 +396,6 @@ extension WorkbenchViewControllerUIState {
     self.variableNameManager = variableNameManager
     self.procedureCoordinator = ProcedureCoordinator()
     super.init(nibName: nil, bundle: nil)
-    commonInit()
   }
 
   /**
@@ -406,47 +406,6 @@ extension WorkbenchViewControllerUIState {
     // TODO(#52): Support the ability to create view controllers from XIBs.
     // Note: Both the layoutEngine and layoutBuilder need to be initialized somehow.
     fatalError("Called unsupported initializer")
-  }
-
-  fileprivate func commonInit() {
-    // Create main workspace view
-    workspaceViewController = WorkspaceViewController(viewFactory: viewFactory)
-    workspaceViewController.workspaceLayoutCoordinator?.variableNameManager = variableNameManager
-    workspaceViewController.workspaceView.allowZoom = true
-    workspaceViewController.workspaceView.scrollView.panGestureRecognizer
-      .addTarget(self, action: #selector(didPanWorkspaceView(_:)))
-    workspaceViewController.workspaceView.scrollView.addGestureRecognizer(
-      workspaceTapGestureRecognizer)
-
-    // Set default styles
-    workspaceBackgroundColor = ColorPalette.grey.tint50
-    undoButton.tintColor = ColorPalette.grey.tint800
-    redoButton.tintColor = ColorPalette.grey.tint800
-    toolboxCategoryListViewController.categoryFont = UIFont.systemFont(ofSize: 16)
-    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.grey.tint900
-    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.grey.tint300
-    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.grey.tint100
-    toolboxCategoryViewController.view.backgroundColor =
-      ColorPalette.grey.tint300.withAlphaComponent(0.75)
-    trashCanViewController.view.backgroundColor =
-      ColorPalette.grey.tint300.withAlphaComponent(0.75)
-
-    // Synchronize the procedure coordinator
-    procedureCoordinator?.syncWithWorkbench(self)
-
-    // Register for keyboard notifications
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(keyboardWillShowNotification(_:)),
-      name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(keyboardWillHideNotification(_:)),
-      name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
-    // Clear out any pending events first. We only care about events moving forward.
-    EventManager.shared.firePendingEvents()
-
-    // Listen for Blockly events
-    EventManager.shared.addListener(self)
   }
 
   deinit {
@@ -464,6 +423,22 @@ extension WorkbenchViewControllerUIState {
   open override func loadView() {
     super.loadView()
 
+    // Set default styles
+    workspaceBackgroundColor = ColorPalette.grey.tint50
+    undoButton.tintColor = ColorPalette.grey.tint800
+    redoButton.tintColor = ColorPalette.grey.tint800
+    toolboxCategoryListViewController.categoryFont = UIFont.systemFont(ofSize: 16)
+    toolboxCategoryListViewController.unselectedCategoryTextColor = ColorPalette.grey.tint900
+    toolboxCategoryListViewController.unselectedCategoryBackgroundColor = ColorPalette.grey.tint300
+    toolboxCategoryListViewController.selectedCategoryTextColor = ColorPalette.grey.tint100
+    toolboxCategoryViewController.view.backgroundColor =
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
+    trashCanViewController.view.backgroundColor =
+      ColorPalette.grey.tint300.withAlphaComponent(0.75)
+
+    // Synchronize the procedure coordinator
+    procedureCoordinator?.syncWithWorkbench(self)
+
     view.clipsToBounds = true
     view.autoresizesSubviews = true
     view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -474,10 +449,8 @@ extension WorkbenchViewControllerUIState {
     addChildViewController(toolboxCategoryListViewController)
     addChildViewController(toolboxCategoryViewController)
 
-    // Set up auto-layout constraints
-    let undoRedoButtonSize = CGSize(width: 36, height: 36)
-    let iconPadding = CGFloat(25)
-    let views: [String: UIView] = [
+    // Add views
+    let viewInfo: [String: Any] = [
       "toolboxCategoriesListView": toolboxCategoryListViewController.view,
       "toolboxCategoryView": toolboxCategoryViewController.view,
       "workspaceView": workspaceViewController.view,
@@ -485,14 +458,29 @@ extension WorkbenchViewControllerUIState {
       "trashCanFolderView": trashCanViewController.view,
       "undoButton": undoButton,
       "redoButton": redoButton,
+      "topGuide": topLayoutGuide,
+      "bottomGuide": bottomLayoutGuide
     ]
+    let onlyViews = Array(viewInfo.values).filter({ $0 is UIView }) as! [UIView]
+    view.bky_addSubviews(onlyViews)
+    view.addSubview(workspaceDragLayerView)
+
+    // Order the subviews from back to front
+    view.sendSubview(toBack: workspaceViewController.view)
+    view.bringSubview(toFront: trashCanViewController.view)
+    view.bringSubview(toFront: toolboxCategoryViewController.view)
+    view.bringSubview(toFront: workspaceDragLayerView)
+    view.bringSubview(toFront: toolboxCategoryListViewController.view)
+
+    // Set up auto-layout constraints
+    let undoRedoButtonSize = CGSize(width: 36, height: 36)
+    let iconPadding = CGFloat(25)
     let metrics = [
       "iconPadding": iconPadding,
       "undoRedoButtonWidth": undoRedoButtonSize.width,
       "undoRedoButtonHeight": undoRedoButtonSize.height
     ]
-    let constraints: [String]
-
+    var constraints = [String]()
     if style == .alternate {
       // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the top-trailing corner.
@@ -506,22 +494,37 @@ extension WorkbenchViewControllerUIState {
         // Position the toolbox category view above the list view
         "H:|[toolboxCategoryView]|",
         "V:[toolboxCategoryView][toolboxCategoriesListView]",
-        // Position the undo/redo buttons along the top-leading margin
+        // Position the undo/redo buttons along the top-leading margin (horizontal part handled
+        // below).
         "H:[undoButton(undoRedoButtonWidth)]",
         "V:[undoButton(undoRedoButtonHeight)]",
         "H:[redoButton(undoRedoButtonWidth)]",
         "V:[redoButton(undoRedoButtonHeight)]",
-        "H:|-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
-        "V:|-(iconPadding)-[undoButton]",
-        "V:|-(iconPadding)-[redoButton]",
-        // Position the trash can button along the top-trailing margin
-        "H:[trashCanView]|",
-        "V:|[trashCanView]",
+        "H:[undoButton]-(iconPadding)-[redoButton]",
+        "V:[topGuide]-(iconPadding)-[undoButton]",
+        "V:[topGuide]-(iconPadding)-[redoButton]",
+        // Position the trash can button along the top-trailing margin (horizontal part handled
+        // below).
+        "V:[topGuide][trashCanView]",
         // Position the trash can folder view on the trailing edge of the view, between the toolbox
         // category view and trash can button
         "H:[trashCanFolderView]|",
         "V:[trashCanView]-(iconPadding)-[trashCanFolderView]-[toolboxCategoryView]",
       ]
+
+      // If possible, create horizontal constraints that respect the safe area. If not, default
+      // to using the superview's leading/trailing margins.
+      if #available(iOS 11.0, *) {
+        undoButton.leadingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: iconPadding).isActive = true
+        trashCanView.trailingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      } else {
+        constraints.append(contentsOf: [
+          "H:|-(iconPadding)-[undoButton]",
+          "H:[trashCanView]|"
+        ])
+      }
     } else {
       // Position the button inside the trashCanView to be `(iconPadding, iconPadding)`
       // away from the bottom-trailing corner.
@@ -541,29 +544,31 @@ extension WorkbenchViewControllerUIState {
         "H:[redoButton(undoRedoButtonWidth)]",
         "V:[redoButton(undoRedoButtonHeight)]",
         "H:[toolboxCategoriesListView]-(iconPadding)-[undoButton]-(iconPadding)-[redoButton]",
-        "V:[undoButton]-(iconPadding)-|",
-        "V:[redoButton]-(iconPadding)-|",
-        // Position the trash can button along the bottom-trailing margin
-        "H:[trashCanView]|",
-        "V:[trashCanView]|",
+        "V:[undoButton]-(iconPadding)-[bottomGuide]",
+        "V:[redoButton]-(iconPadding)-[bottomGuide]",
+        // Position the trash can button along the bottom-trailing margin (horizontal part handled
+        // below).
+        "V:[trashCanView][bottomGuide]",
         // Position the trash can folder view on the bottom of the view, between the toolbox
         // category view and trash can button
         "H:[toolboxCategoryView]-[trashCanFolderView]-(iconPadding)-[trashCanView]",
         "V:[trashCanFolderView]|",
       ]
+
+      // If possible, create horizontal constraints that respect the safe area. If not, default
+      // to using the superview's leading/trailing margins.
+      if #available(iOS 11.0, *) {
+        trashCanView.trailingAnchor.constraint(
+          equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      } else {
+        constraints.append(contentsOf: [
+          "H:[trashCanView]|"
+        ])
+      }
     }
 
-    // Add subviews and constraints
-    view.bky_addSubviews(Array(views.values))
-    view.addSubview(workspaceDragLayerView)
-    view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: views)
-
-    // Order the subviews from back to front
-    view.sendSubview(toBack: workspaceViewController.view)
-    view.bringSubview(toFront: trashCanViewController.view)
-    view.bringSubview(toFront: toolboxCategoryViewController.view)
-    view.bringSubview(toFront: workspaceDragLayerView)
-    view.bringSubview(toFront: toolboxCategoryListViewController.view)
+    // Add constraints
+    view.bky_addVisualFormatConstraints(constraints, metrics: metrics, views: viewInfo)
 
     // Attach the block pan gesture recognizer to the entire view (so it can block out any other
     // once touches once its gesture state turns to `.began`).
@@ -601,6 +606,20 @@ extension WorkbenchViewControllerUIState {
         bky_print("Could not create a default workspace: \(error)")
       }
     }
+
+    // Register for keyboard notifications
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(keyboardWillShowNotification(_:)),
+      name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(keyboardWillHideNotification(_:)),
+      name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+    // Clear out any pending events first. We only care about events moving forward.
+    EventManager.shared.firePendingEvents()
+
+    // Listen for Blockly events
+    EventManager.shared.addListener(self)
   }
 
   open override func viewDidLoad() {
@@ -738,7 +757,7 @@ extension WorkbenchViewControllerUIState {
    */
   open func refreshView() {
     do {
-      try workspaceViewController?.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
+      try workspaceViewController.loadWorkspaceLayoutCoordinator(_workspaceLayoutCoordinator)
     } catch let error {
       bky_assertionFailure("Could not load workspace layout: \(error)")
     }
@@ -938,11 +957,10 @@ extension WorkbenchViewController {
 
     trashCanView.setHighlighted(state.intersectsWith(.trashCanHighlighted), animated: animated)
 
-    if let selectedCategory = toolboxCategoryListViewController.selectedCategory
-      , state.intersectsWith(.categoryOpen)
-    {
+    if let selectedCategory = toolboxCategoryListViewController.selectedCategory,
+      state.intersectsWith(.categoryOpen) {
       // Show the toolbox category
-      toolboxCategoryViewController.showCategory(selectedCategory, animated: true)
+      toolboxCategoryViewController.showCategory(selectedCategory, animated: animated)
     } else {
       // Hide the toolbox category
       toolboxCategoryViewController.hideCategory(animated: animated)
@@ -1671,6 +1689,10 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         }
         gesture.replaceBlock(block, with: newBlock)
         blockView = newBlock
+
+        if !toolboxDrawerStaysOpen {
+          removeUIStateValue(.categoryOpen, animated: false)
+        }
       } else if inTrash {
         let oldBlock = blockView
 
@@ -1680,6 +1702,8 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         gesture.replaceBlock(block, with: newBlock)
         blockView = newBlock
         removeBlockFromTrash(oldBlock)
+
+        removeUIStateValue(.trashCanOpen, animated: false)
       }
 
       guard let blockLayout = blockView.blockLayout?.draggableBlockLayout else {
@@ -1719,6 +1743,12 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
           var allBlocksToRemove = blockLayout.block.allBlocksForTree()
 
           try _workspaceLayoutCoordinator?.removeBlockTree(blockLayout.block)
+
+          // Enable the entire block tree, before adding it to the trash can.
+          for block in blockLayout.block.allBlocksForTree() {
+            block.disabled = false
+          }
+
           try trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(blockLayout.block)
 
           allBlocksToRemove.removeAll()

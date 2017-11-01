@@ -206,6 +206,7 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
                                 configuration:configuration];
   _webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   _webView.translatesAutoresizingMaskIntoConstraints = true;
+  _webView.navigationDelegate = self;
   self.webViewContainer.autoresizesSubviews = true;
   [self.webViewContainer addSubview:_webView];
 
@@ -220,6 +221,13 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   self.codeText.superview.layer.borderWidth = 1;
 }
 
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+  float width = webView.bounds.size.width;
+  float height = webView.bounds.size.height;
+  [webView evaluateJavaScript:
+    [NSString stringWithFormat:@"Turtle.setBounds(%f, %f);", width, height] completionHandler:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
@@ -232,10 +240,6 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
   [_codeGeneratorService cancelAllRequests];
 
   [self saveWorkspace];
-}
-
-- (BOOL)prefersStatusBarHidden {
-  return YES;
 }
 
 // MARK: - Private
@@ -430,6 +434,10 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
     }
   } else if ([method isEqualToString:@"finishExecution"]) {
     [self resetRequests];
+  } else if ([method isEqualToString:@"scrollTo"]) {
+    CGFloat x = (CGFloat) [dictionary[@"x"] doubleValue];
+    CGFloat y = (CGFloat) [dictionary[@"y"] doubleValue];
+    [_webView.scrollView setContentOffset:CGPointMake(x, y)];
   } else {
     NSLog(@"Unrecognized method");
   }

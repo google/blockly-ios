@@ -82,7 +82,8 @@ View for rendering a `WorkspaceLayout`.
 
   /// Flag if the canvas should be padded with extra spaces around its edges via
   /// `self.canvasPadding`. If set to false, the user will only be allowed to scroll the exact
-  /// amount needed to view all blocks.
+  /// amount needed to view all blocks. Note that padding is only added if there is at least one
+  /// block in the workspace.
   open var allowCanvasPadding: Bool = true {
     didSet {
       updateCanvasSizeFromLayout()
@@ -110,6 +111,9 @@ View for rendering a `WorkspaceLayout`.
 
   /// The offset between the zoom offset and the center of the zoom pinch
   fileprivate var _zoomPinchOffset: CGPoint = CGPoint.zero
+
+  /// Keeps track of the initial scale of the scroll view before the zoom begins.
+  fileprivate var _zoomInitialScale: CGFloat = 1
 
   /// Flag for disabling inadvertent calls to `removeExcessScrollSpace()`
   fileprivate var _disableRemoveExcessScrollSpace = false
@@ -171,8 +175,15 @@ View for rendering a `WorkspaceLayout`.
     }
 
     scrollView.contentSize = CGSize.zero
-    scrollView.contentOffset = CGPoint.zero
     scrollView.containerView.frame = CGRect.zero
+
+    // Reset content offset to "zero". In iOS 11, we need to account for the safe area.
+    if #available(iOS 11.0, *) {
+      scrollView.contentOffset = CGPoint(x: -scrollView.adjustedContentInset.left,
+                                         y: -scrollView.adjustedContentInset.top)
+    } else {
+      scrollView.contentOffset = CGPoint.zero
+    }
 
     updateDragLayerViewFrame()
   }
@@ -224,6 +235,18 @@ View for rendering a `WorkspaceLayout`.
 
     var contentOffset = scrollView.contentOffset
     let blockViewRect = blockView.convert(blockView.bounds, to: scrollView)
+    var scrollAreaInsets = UIEdgeInsets(top: scrollIntoViewEdgeInsets.top,
+                                        left: scrollIntoViewEdgeInsets.left,
+                                        bottom: scrollIntoViewEdgeInsets.bottom,
+                                        right: scrollIntoViewEdgeInsets.right)
+
+    // Make sure the insets accounts for the safe area
+    if #available(iOS 11.0, *) {
+      scrollAreaInsets.left += scrollView.safeAreaInsets.left
+      scrollAreaInsets.right += scrollView.safeAreaInsets.right
+      scrollAreaInsets.top += scrollView.safeAreaInsets.top
+      scrollAreaInsets.bottom += scrollView.safeAreaInsets.bottom
+    }
 
     if location == .anywhere {
       // No location was specified. Just scroll the block so it's barely in view, relative to its
@@ -233,10 +256,10 @@ View for rendering a `WorkspaceLayout`.
                width: scrollView.bounds.width, height: scrollView.bounds.height)
 
       // Force the blockView to be inset within the scroll view rectangle
-      scrollViewRect.origin.x += scrollIntoViewEdgeInsets.left
-      scrollViewRect.size.width -= scrollIntoViewEdgeInsets.left + scrollIntoViewEdgeInsets.right
-      scrollViewRect.origin.y += scrollIntoViewEdgeInsets.top
-      scrollViewRect.size.height -= scrollIntoViewEdgeInsets.top + scrollIntoViewEdgeInsets.bottom
+      scrollViewRect.origin.x += scrollAreaInsets.left
+      scrollViewRect.size.width -= scrollAreaInsets.left + scrollAreaInsets.right
+      scrollViewRect.origin.y += scrollAreaInsets.top
+      scrollViewRect.size.height -= scrollAreaInsets.top + scrollAreaInsets.bottom
 
       if workspaceLayout.engine.rtl {
         // Check left edge (as long as the block width < visible view width)
@@ -278,11 +301,11 @@ View for rendering a `WorkspaceLayout`.
 
       if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
         // Use left edge
-        contentOffset.x = blockViewRect.minX - scrollIntoViewEdgeInsets.left
+        contentOffset.x = blockViewRect.minX - scrollAreaInsets.left
       } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
         // Use right edge
         contentOffset.x =
-          blockViewRect.maxX + scrollIntoViewEdgeInsets.right - scrollView.bounds.width
+          blockViewRect.maxX + scrollAreaInsets.right - scrollView.bounds.width
       } else if useHorizontalCenter {
         contentOffset.x = blockViewRect.midX - (scrollView.bounds.width / 2)
       }
@@ -291,11 +314,11 @@ View for rendering a `WorkspaceLayout`.
       switch location {
       case .topLeading, .topCenter, .topTrailing:
         // Top edge
-        contentOffset.y = blockViewRect.minY - scrollIntoViewEdgeInsets.top
+        contentOffset.y = blockViewRect.minY - scrollAreaInsets.top
       case .bottomLeading, .bottomCenter, .bottomTrailing:
         // Bottom edge
         contentOffset.y =
-          blockViewRect.maxY + scrollIntoViewEdgeInsets.bottom - scrollView.bounds.height
+          blockViewRect.maxY + scrollAreaInsets.bottom - scrollView.bounds.height
       case .middleLeading, .center, .middleTrailing:
         // Middle
         contentOffset.y = blockViewRect.midY - (scrollView.bounds.height / 2)
@@ -341,6 +364,82 @@ View for rendering a `WorkspaceLayout`.
 
         self.updateDragLayerViewFrame()
 
+        self._disableRemoveExcessScrollSpace = false
+      }
+    }
+  }
+
+  /**
+   Sets the content offset of the workspace's scroll view so that a specific location in the
+   workspace is visible.
+
+   - parameter location: The `Location` that should be made visible. If `.anywhere` is specified,
+   this method does nothing.
+   */
+  open func setViewport(to location: Location, animated: Bool) {
+    guard let workspaceLayout = self.workspaceLayout, location != .anywhere else {
+      return
+    }
+
+    var contentOffset = CGPoint.zero
+    var scrollAreaInsets = UIEdgeInsets.zero
+
+    // Make sure the insets accounts for the safe area
+    if #available(iOS 11.0, *) {
+      scrollAreaInsets.left += scrollView.safeAreaInsets.left
+      scrollAreaInsets.right += scrollView.safeAreaInsets.right
+      scrollAreaInsets.top += scrollView.safeAreaInsets.top
+      scrollAreaInsets.bottom += scrollView.safeAreaInsets.bottom
+    }
+
+    // Calculate X coordinate
+    let useLeadingEdge =
+      (location == .bottomLeading || location == .middleLeading || location == .topLeading)
+    let useTrailingEdge =
+      (location == .bottomTrailing || location == .middleTrailing || location == .topTrailing)
+    let useCenter =
+      (location == .topCenter || location == .center || location == .bottomCenter)
+    let rtl = workspaceLayout.engine.rtl
+
+    if (useLeadingEdge && !rtl) || (useTrailingEdge && rtl) {
+      // Use left edge
+      contentOffset.x = scrollView.containerView.frame.minX - scrollAreaInsets.left
+    } else if (useLeadingEdge && rtl) || (useTrailingEdge && !rtl) {
+      // Use right edge
+      contentOffset.x =
+        scrollView.containerView.frame.maxX + scrollAreaInsets.right - scrollView.bounds.width
+    } else if useCenter {
+      contentOffset.x = scrollView.containerView.center.x - (scrollView.bounds.width / 2)
+    }
+
+    // Calculate Y coordinate
+    switch location {
+    case .topLeading, .topCenter, .topTrailing:
+      // Top edge
+      contentOffset.y = scrollView.containerView.frame.minY - scrollAreaInsets.top
+    case .bottomLeading, .bottomCenter, .bottomTrailing:
+      // Bottom edge
+      contentOffset.y =
+        scrollView.containerView.frame.maxY + scrollAreaInsets.bottom - scrollView.bounds.height
+    case .middleLeading, .center, .middleTrailing:
+      // Middle
+      contentOffset.y = scrollView.containerView.center.y - (scrollView.bounds.height / 2)
+    case .anywhere:
+      break
+    }
+
+    // Make sure the content offset is not too negative (this would cause unnecesary scrolling
+    // immediately after it is set). Therefore, we must ensure that the
+    // content offset >= scroll area insets.
+    contentOffset.x = max(contentOffset.x, -scrollAreaInsets.left)
+    contentOffset.y = max(contentOffset.y, -scrollAreaInsets.top)
+
+    if contentOffset != scrollView.contentOffset {
+      // Finally, set the content offset.
+      runAnimatableCode(animated) {
+        self._disableRemoveExcessScrollSpace = true
+        self.scrollView.setContentOffset(contentOffset, animated: animated)
+        self.updateDragLayerViewFrame()
         self._disableRemoveExcessScrollSpace = false
       }
     }
@@ -407,21 +506,24 @@ View for rendering a `WorkspaceLayout`.
 
     let canvasPadding = self.canvasPadding()
 
-    // Calculate the extra padding to add around the content
+    // Calculate the extra padding to add around the content (it's only added if there is at least
+    // one block in the workspace).
     var contentPadding = EdgeInsets.zero
-    if allowCanvasPadding {
-      // Content padding must be at least two full screen sizes in all directions or else
-      // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
-      // moved from higher value coordinates to lower value ones) or grows in the negative
-      // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
-      contentPadding.top = scrollView.bounds.height + canvasPadding.top
-      contentPadding.leading = scrollView.bounds.width + canvasPadding.leading
-      contentPadding.bottom = scrollView.bounds.height + canvasPadding.bottom
-      contentPadding.trailing = scrollView.bounds.width + canvasPadding.trailing
-    } else if layout.engine.rtl {
-      // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
-      // sure that content appears right-aligned.
-      contentPadding.trailing = max(scrollView.bounds.width - containerViewSize.width, 0)
+    if layout.blockGroupLayouts.count > 0 {
+      if allowCanvasPadding {
+        // Content padding must be at least two full screen sizes in all directions or else
+        // blocks will appear to jump whenever the total canvas size shrinks (eg. after blocks are
+        // moved from higher value coordinates to lower value ones) or grows in the negative
+        // direction. Any unnecessary padding is removed at the end in `removeExcessScrollSpace()`.
+        contentPadding.top = scrollView.bounds.height + canvasPadding.top
+        contentPadding.leading = scrollView.bounds.width + canvasPadding.leading
+        contentPadding.bottom = scrollView.bounds.height + canvasPadding.bottom
+        contentPadding.trailing = scrollView.bounds.width + canvasPadding.trailing
+      } else if layout.engine.rtl {
+        // In RTL, the canvas width needs to completely fill the entire scroll view frame to make
+        // sure that content appears right-aligned.
+        contentPadding.trailing = max(scrollView.bounds.width - containerViewSize.width, 0)
+      }
     }
 
     // Figure out the value that will be used for `scrollView.contentSize`
@@ -433,25 +535,17 @@ View for rendering a `WorkspaceLayout`.
 
     // Update the content size of the scroll view.
     if layout.engine.rtl {
-      var oldContainerFrame = scrollView.containerView.frame
-
-      if oldContainerFrame.width < 1 && oldContainerFrame.height < 1 {
-        // If the container view size was previously (0, 0), it was never actually positioned.
-        // For the sake of calculation purposes below, it is assumed that
-        // `scrollView.containerView` is always anchored to the top-right corner. Therefore, we
-        // simply set the `oldContainerFrame.origin.x` to the right edge of the scrollView's
-        // bounds.
-        oldContainerFrame.origin.x =
-          scrollView.bounds.width - (allowCanvasPadding ? canvasPadding.leading : 0)
-      }
+      let oldContainerFrame = scrollView.containerView.frame
 
       // Position the contentView relative to the top-right corner
       let containerOrigin = CGPoint(
-        x: newContentSize.width - containerViewSize.width
-          - contentPadding.leading, y: contentPadding.top)
+        x: newContentSize.width - containerViewSize.width - contentPadding.leading,
+        y: contentPadding.top)
       scrollView.containerView.frame = CGRect(
-        x: containerOrigin.x, y: containerOrigin.y,
-        width: containerViewSize.width, height: containerViewSize.height)
+        x: containerOrigin.x,
+        y: containerOrigin.y,
+        width: containerViewSize.width,
+        height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't
       // appear that viewport has jumped to a new location
@@ -468,8 +562,10 @@ View for rendering a `WorkspaceLayout`.
       let containerOrigin = CGPoint(x: contentPadding.leading, y: contentPadding.top)
       let oldContainerFrame = scrollView.containerView.frame
       scrollView.containerView.frame = CGRect(
-        x: containerOrigin.x, y: containerOrigin.y,
-        width: containerViewSize.width, height: containerViewSize.height)
+        x: containerOrigin.x,
+        y: containerOrigin.y,
+        width: containerViewSize.width,
+        height: containerViewSize.height)
 
       // The content offset must be adjusted based on the new content origin, so it doesn't appear
       // that viewport has jumped to a new location
@@ -712,13 +808,16 @@ extension WorkspaceView: UIScrollViewDelegate {
     scrollView.showsHorizontalScrollIndicator = false
 
     // Save the offset of the zoom pinch from the content's offset, so we can zoom on the pinch.
-    _zoomPinchOffset =  offsetOfPinch(scrollView, withView: scrollView.containerView)
+    _zoomPinchOffset = offsetOfPinch(scrollView, withView: scrollView.containerView)
     var offset = scrollView.contentOffset + _zoomPinchOffset
     offset.x = offset.x * scrollView.zoomScale
     offset.y = offset.y * scrollView.zoomScale
 
     // Save the contentOffset + the offset from the pinch, so we can zoom on the pinch point.
     _zoomBeginOffset = offset
+
+    // Keep track of the initial scale so we can fix the "jumping" problem in RTL.
+    _zoomInitialScale = scrollView.zoomScale
   }
 
   public func scrollViewDidZoom(_ zoomScrollView: UIScrollView) {
@@ -738,7 +837,12 @@ extension WorkspaceView: UIScrollViewDelegate {
 
     // Scale the content by the zoom level, and reset the zoom. Also, save the current offset, since
     // changing the zoomScale resets the contentOffset, which causes an apparent jump.
-    let resetOffset = scrollView.contentOffset
+    var resetOffset = scrollView.contentOffset
+    if workspaceLayout.engine.rtl {
+      // In RTL, we need to account for the scaled change in width or else jumping will occur.
+      resetOffset.x -=
+        (self.scrollView.containerView.frame.width * (scale - _zoomInitialScale) / scale)
+    }
     scrollView.zoomScale = 1
     scrollView.contentOffset = resetOffset
     scrollView.minimumZoomScale /= scale

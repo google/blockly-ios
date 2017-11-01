@@ -139,16 +139,16 @@ public protocol DropdownOptionsViewControllerDelegate: class {
   // MARK: - Private
 
   fileprivate func calculatePreferredContentSize() {
-    var preferredContentSize = CGSize.zero
+    var contentSize = CGSize.zero
 
     for i in 0 ..< options.count {
       let cellSize = cellSizeForRow(i, constrainedToWidth: maximumPopoverSize.width)
-      preferredContentSize.height =
-        min(preferredContentSize.height + cellSize.height, maximumPopoverSize.height)
-      preferredContentSize.width = max(preferredContentSize.width, cellSize.width)
+      contentSize.height =
+        min(contentSize.height + cellSize.height, maximumPopoverSize.height)
+      contentSize.width = max(contentSize.width, cellSize.width)
     }
 
-    self.preferredContentSize = preferredContentSize
+    preferredContentSize = contentSize
   }
 
   fileprivate func cellSizeForRow(_ row: Int, constrainedToWidth width: CGFloat) -> CGSize {

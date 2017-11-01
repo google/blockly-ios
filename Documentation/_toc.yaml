@@ -109,8 +109,6 @@ toc:
     path: /blockly/reference/ios/Classes/DefaultLayoutConfig
   - title: DefaultLayoutEngine
     path: /blockly/reference/ios/Classes/DefaultLayoutEngine
-  - title: DefaultLayoutFactory
-    path: /blockly/reference/ios/Classes/DefaultLayoutFactory
   - title: Dictionary
     path: /blockly/reference/ios/Extensions/Dictionary
   - title: Dragger
@@ -234,7 +232,7 @@ toc:
   - title: LayoutEngine
     path: /blockly/reference/ios/Classes/LayoutEngine
   - title: LayoutFactory
-    path: /blockly/reference/ios/Protocols/LayoutFactory
+    path: /blockly/reference/ios/Classes/LayoutFactory
   - title: LayoutFlag
     path: /blockly/reference/ios/Structs/LayoutFlag
   - title: LayoutHierarchyListener

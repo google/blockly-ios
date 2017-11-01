@@ -42,10 +42,6 @@ class SimpleWorkbenchViewController: WorkbenchViewController {
     loadToolbox()
   }
 
-  override var prefersStatusBarHidden : Bool {
-    return true
-  }
-
   // MARK: - Private
 
   private func loadBlockFactory() {

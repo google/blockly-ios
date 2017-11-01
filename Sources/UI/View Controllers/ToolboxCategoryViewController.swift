@@ -68,20 +68,23 @@ import Foundation
   private var _widthConstraint: NSLayoutConstraint!
   /// Height constraint for this view.
   private var _heightConstraint: NSLayoutConstraint!
-  /// Constraint of the button's height or width, depending on orientation.
-  private var _headerConstraint: NSLayoutConstraint!
   /// The orientation of the toolbox.
   private let orientation: ToolboxCategoryListViewController.Orientation
   /// The button for adding variables to the name manager.
-  public private(set) lazy var addVariableButton: UIButton = {
-    let button = UIButton()
+  private lazy var addVariableButton: Button = {
+    let button = Button()
     let buttonText = message(forKey: "BKY_IOS_VARIABLES_ADD_VARIABLE")
     button.setTitle(buttonText, for: UIControlState.normal)
     button.setTitleColor(ColorPalette.grey.tint200, for: .normal)
     button.setTitleColor(ColorPalette.grey.tint600, for: .highlighted)
     button.backgroundColor = ColorPalette.grey.tint800
     button.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
-    button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.minimumContentEdgeInsets = UIEdgeInsets(top: 16, left: 12, bottom: 16, right: 12)
+
+    // If the button shrinks, the label inside it doesn't always get hidden, so the quick fix is to
+    // clip to bounds.
+    button.clipsToBounds = true
     return button
   }()
 
@@ -111,16 +114,19 @@ import Foundation
   open override func viewDidLoad() {
     super.viewDidLoad()
 
+    if #available(iOS 11.0, *) {
+      // Always respect the safe area.
+      workspaceScrollView.contentInsetAdjustmentBehavior = .always
+    }
+
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
-    headerView.addSubview(addVariableButton)
 
     let views: [String: UIView] = [
       "workspaceView": workspaceViewController.workspaceView,
       "headerView": headerView,
       "footerView": footerView
       ]
-
     let constraints: [String]
     switch (orientation) {
     case .horizontal:
@@ -131,9 +137,12 @@ import Foundation
         "V:|[footerView]|"
       ]
 
-      footerView.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
-      _headerConstraint = headerView.bky_addWidthConstraint(0,
-        priority: UILayoutPriority.required)
+      // By default, add low priority constraints to the header and footer views to set their width
+      // to 0. These constraints can be overriden by higher priority ones, if content is added to
+      // either view. This allows the workspace view to take up as much horizontal space as
+      // possible.
+      headerView.bky_addWidthConstraint(0, priority: .defaultLow)
+      footerView.bky_addWidthConstraint(0, priority: .defaultLow)
     case .vertical:
       constraints = [
         "V:|[headerView][workspaceView][footerView]|",
@@ -142,21 +151,22 @@ import Foundation
         "H:|[footerView]|"
       ]
 
-      footerView.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
-      _headerConstraint = headerView.bky_addHeightConstraint(0,
-        priority: UILayoutPriority.required)
+      // By default, add low priority constraints to the header and footer views to set their height
+      // to 0. These constraints can be overriden by higher priority ones, if content is added to
+      // either view. This allows the workspace view to take up as much vertical space as possible.
+      headerView.bky_addHeightConstraint(0, priority: .defaultLow)
+      footerView.bky_addHeightConstraint(0, priority: .defaultLow)
     }
-
     view.bky_addSubviews(Array(views.values))
     view.bky_addVisualFormatConstraints(constraints, metrics: nil, views: views)
 
-    // Add low priority size constraints. This allows this view to automatically resize itself
-    // if no other higher priority size constraints have been set elsewhere.
-    _widthConstraint = view.bky_addWidthConstraint(0, priority: UILayoutPriority.defaultLow)
-    _heightConstraint = view.bky_addHeightConstraint(0, priority: UILayoutPriority.defaultLow)
+    // Add optional, high priority size constraints. By making them optional, it allows:
+    // 1) this view to still automatically resize itself
+    // 2) other higher priority constraints to change its size
+    _widthConstraint = view.bky_addWidthConstraint(0, priority: .defaultHigh)
+    _heightConstraint = view.bky_addHeightConstraint(0, priority: .defaultHigh)
 
-    view.setNeedsUpdateConstraints()
-    workspaceViewController.workspaceView.setNeedsUpdateConstraints()
+    view.setNeedsLayout()
   }
 
   // MARK: - Public
@@ -214,6 +224,27 @@ import Foundation
       return
     }
 
+    // Add variable button to header view if it's the variable category
+    if let category = category,
+      category.categoryType == .variable && addVariableButton.superview == nil {
+      headerView.addSubview(addVariableButton)
+      headerView.bky_addVisualFormatConstraints([
+        "H:|[addVariableButton]|",
+        "V:|[addVariableButton]|"
+        ], metrics: nil, views: [
+          "addVariableButton": addVariableButton
+        ])
+
+      addVariableButton.updateContentEdgeInsets()
+      view.layoutIfNeeded()
+    } else if addVariableButton.superview != nil {
+      addVariableButton.removeFromSuperview()
+      view.layoutIfNeeded()
+    }
+
+    // Update the toolbox viewport so it shows the beginning of the category.
+    workspaceViewController.workspaceView.setViewport(to: .topLeading, animated: false)
+
     updateSize(animated: animated)
   }
 
@@ -222,28 +253,12 @@ import Foundation
     var newWidth = category?.layout?.viewFrame.size.width ?? 0
     var newHeight = category?.layout?.viewFrame.size.height ?? 0
 
-    // TODO(#291):- Add customization(and default) here.
-    var buttonSize: CGFloat = 0
-    if let category = category,
-      category.categoryType == .variable
-    {
-      addVariableButton.isHidden = false
-      switch (orientation) {
-      case .horizontal:
-        buttonSize = 136
-        newWidth += buttonSize
-      case .vertical:
-        buttonSize = 56
-        newHeight += buttonSize
-      }
-
-      newWidth = max(newWidth, 136)
-      newHeight = max(newHeight, 56)
-    } else {
-      addVariableButton.isHidden = true
+    if let category = category, category.categoryType == .variable {
+      // Take into account the size of the variable button when calculating the size of the toolbox
+      let size = addVariableButton.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
+      newWidth = max(newWidth, size.width)
+      newHeight = max(newHeight, size.height)
     }
-
-    _headerConstraint?.constant = CGFloat(buttonSize)
 
     view.bky_updateConstraints(animated: animated, update: {
       self._widthConstraint.constant = newWidth
@@ -461,6 +476,41 @@ extension ToolboxCategoryViewController: NameManagerListener {
       for fieldVariable in fieldVariables {
         fieldVariable.changeToExistingVariable(newDefault)
       }
+    }
+  }
+}
+
+extension ToolboxCategoryViewController {
+  /**
+   Button that automatically changes its content edge insets when the safe area insets changes.
+   */
+  fileprivate class Button: UIButton {
+    /// The minimum content edge insets for the button.
+    var minimumContentEdgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+
+    @available(iOS 11.0, *)
+    override func safeAreaInsetsDidChange() {
+      super.safeAreaInsetsDidChange()
+
+      updateContentEdgeInsets()
+    }
+
+    /**
+     Updates `contentEdgeInsets` so that it respects both `safeAreaInsets` and
+     `minimumContentEdgeInsets`.
+     */
+    func updateContentEdgeInsets() {
+      var edgeInsets: UIEdgeInsets
+      if #available(iOS 11.0, *) {
+        edgeInsets = safeAreaInsets
+      } else {
+        edgeInsets = UIEdgeInsets.zero
+      }
+      edgeInsets.top = max(edgeInsets.top, minimumContentEdgeInsets.top)
+      edgeInsets.bottom = max(edgeInsets.bottom, minimumContentEdgeInsets.bottom)
+      edgeInsets.left = max(edgeInsets.left, minimumContentEdgeInsets.left)
+      edgeInsets.right = max(edgeInsets.right, minimumContentEdgeInsets.right)
+      contentEdgeInsets = edgeInsets
     }
   }
 }
