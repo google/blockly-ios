@@ -25,38 +25,23 @@ extension BlocklyEvent {
 
     // MARK: - Constants
 
-    /// Possible elements that can be associated with a `BlocklyEvent.UI`.
-    @objc(BKYEventUIElement)
-    public enum Element: Int {
-      case category = 1,
-      click,
-      commentOpen,
-      mutatorOpen,
-      selected,
-      trashOpen,
-      warningOpen
+    /// Value type used for indicating which element is being associated with the UI event.
+    public typealias Element = String
 
-      fileprivate static let stringMapping = [
-        category: "category",
-        click: "click",
-        commentOpen: "commentOpen",
-        mutatorOpen: "mutatorOpen",
-        selected: "selected",
-        trashOpen: "trashOpen",
-        warningOpen: "warningOpen"
-      ]
-
-      public var stringValue: String {
-        return Element.stringMapping[self]!
-      }
-
-      internal init?(string: String) {
-        guard let value = Element.stringMapping.bky_anyKeyForValue(string) else {
-          return nil
-        }
-        self = value
-      }
-    }
+    /// Element representing the visibility of a toolbox category.
+    public static let elementCategory: Element = "category"
+    /// Element representing if a block was tapped on.
+    public static let elementClick: Element = "click"
+    /// Element representing the visibility of a block comment.
+    public static let elementCommentOpen: Element = "commentOpen"
+    /// Element representing the visibility of a block mutator popover.
+    public static let elementMutatorOpen: Element = "mutatorOpen"
+    /// Element representing the selection state of a block.
+    public static let elementSelected: Element = "selected"
+    /// Element representing the visibility of the trash can folder.
+    public static let elementTrashOpen: Element = "trashOpen"
+    /// Element representing the visibility of a block's warning message.
+    public static let elementWarningOpen: Element = "warningOpen"
 
     // MARK: - Properties
 
@@ -103,10 +88,11 @@ extension BlocklyEvent {
      `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyEvent.UI` object.
      */
     public init(json: [String: Any]) throws {
-      if let element = Element(string: json[BlocklyEvent.JSON_ELEMENT] as? String ?? "") {
+      if let element = json[BlocklyEvent.JSON_ELEMENT] as? Element {
         self.element = element
       } else {
-        throw BlocklyError(.jsonParsing, "Invalid UI element \"\(BlocklyEvent.JSON_ELEMENT)\".")
+        throw BlocklyError(.jsonParsing,
+                           "No value was specified for \"\(BlocklyEvent.JSON_ELEMENT)\".")
       }
 
       try super.init(type: BlocklyEvent.UI.EVENT_TYPE, json: json)
@@ -114,18 +100,44 @@ extension BlocklyEvent {
       oldValue = json[BlocklyEvent.JSON_OLD_VALUE] as? String  // Rarely used.
       newValue = json[BlocklyEvent.JSON_NEW_VALUE] as? String
 
-      if element != .category && (blockID?.isEmpty ?? true) {
+      // Validate data for known UI elements
+      if [BlocklyEvent.UI.elementClick,
+          BlocklyEvent.UI.elementCommentOpen,
+          BlocklyEvent.UI.elementMutatorOpen,
+          BlocklyEvent.UI.elementSelected,
+          BlocklyEvent.UI.elementTrashOpen,
+          BlocklyEvent.UI.elementWarningOpen].contains(element) &&
+         (blockID?.isEmpty ?? true) {
         throw BlocklyError(.jsonParsing,
-          "UI element \"\(element.stringValue)\" requires that " +
-          "\"\(BlocklyEvent.JSON_BLOCK_ID)\" be assigned.")
+          "UI element \"\(element)\" requires that \"\(BlocklyEvent.JSON_BLOCK_ID)\" be assigned.")
       }
 
-      if element != .category && element != .click && (newValue?.isEmpty ?? true) {
+      if [BlocklyEvent.UI.elementCommentOpen,
+          BlocklyEvent.UI.elementMutatorOpen,
+          BlocklyEvent.UI.elementSelected,
+          BlocklyEvent.UI.elementTrashOpen,
+          BlocklyEvent.UI.elementWarningOpen].contains(element) &&
+         (newValue?.isEmpty ?? true) {
         throw BlocklyError(.jsonParsing,
-          "UI element \"\(element.stringValue)\" requires that " +
-          "\"\(BlocklyEvent.JSON_NEW_VALUE)\" be assigned.")
+          "UI element \"\(element)\" requires that \(BlocklyEvent.JSON_NEW_VALUE)\" be assigned.")
       }
     }
+
+    // MARK: - Super
+
+    public override func toJSON() throws -> [String: Any] {
+      var json = try super.toJSON()
+
+      json["element"] = element
+      if let newValue = self.newValue {
+        json["newValue"] = newValue
+      }
+      // Old value is not included to reduce size over network.
+
+      return json
+    }
+
+    // MARK: - Convenience Event Creators
 
     /**
      Creates a `BlocklyEvent.UI` reflecting when a block has been clicked, inside a given workspace.
@@ -135,7 +147,7 @@ extension BlocklyEvent {
      - returns: The new `BlocklyEvent.UI`.
      */
     public static func blockClickedEvent(workspace: Workspace, block: Block) -> BlocklyEvent.UI {
-      return BlocklyEvent.UI(element: .click, workspace: workspace, block: block)
+      return BlocklyEvent.UI(element: elementClick, workspace: workspace, block: block)
     }
 
     /**
@@ -152,7 +164,7 @@ extension BlocklyEvent {
       workspace: Workspace, block: Block, selectedBefore: Bool, selectedAfter: Bool)
       -> BlocklyEvent.UI
     {
-      return BlocklyEvent.UI(element: .selected, workspace: workspace, block: block,
+      return BlocklyEvent.UI(element: elementSelected, workspace: workspace, block: block,
                              oldValue: selectedBefore ? "true" : "false",
                              newValue: selectedAfter ? "true" : "false")
     }
@@ -171,7 +183,7 @@ extension BlocklyEvent {
     public static func blockWarningEvent(
       workspace: Workspace, block: Block, openedBefore: Bool, openedAfter: Bool) -> BlocklyEvent.UI
     {
-      return BlocklyEvent.UI(element: .warningOpen, workspace: workspace, block: block,
+      return BlocklyEvent.UI(element: elementWarningOpen, workspace: workspace, block: block,
                              oldValue: openedBefore ? "true" : "false",
                              newValue: openedAfter ? "true" : "false")
     }
@@ -190,7 +202,7 @@ extension BlocklyEvent {
     public static func commentEvent(
       workspace: Workspace, block: Block, openedBefore: Bool, openedAfter: Bool) -> BlocklyEvent.UI
     {
-      return BlocklyEvent.UI(element: .commentOpen, workspace: workspace, block: block,
+      return BlocklyEvent.UI(element: elementCommentOpen, workspace: workspace, block: block,
                              oldValue: openedBefore ? "true" : "false",
                              newValue: openedAfter ? "true" : "false")
     }
@@ -210,7 +222,7 @@ extension BlocklyEvent {
     public static func mutatorPopoverEvent(
       workspace: Workspace, block: Block, openedBefore: Bool, openedAfter: Bool) -> BlocklyEvent.UI
     {
-      return BlocklyEvent.UI(element: .mutatorOpen, workspace: workspace, block: block,
+      return BlocklyEvent.UI(element: elementMutatorOpen, workspace: workspace, block: block,
                              oldValue: openedBefore ? "true" : "false",
                              newValue: openedAfter ? "true" : "false")
     }
@@ -227,21 +239,11 @@ extension BlocklyEvent {
       workspace: Workspace, oldValue: String?, newValue: String?) -> BlocklyEvent.UI
     {
       return BlocklyEvent.UI(
-        element: .category, workspace: workspace, block: nil, oldValue: oldValue, newValue: newValue)
-    }
-
-    // MARK: - Super
-
-    public override func toJSON() throws -> [String: Any] {
-      var json = try super.toJSON()
-
-      json["element"] = element.stringValue
-      if let newValue = self.newValue {
-        json["newValue"] = newValue
-      }
-      // Old value is not included to reduce size over network.
-
-      return json
+        element: elementCategory,
+        workspace: workspace,
+        block: nil,
+        oldValue: oldValue,
+        newValue: newValue)
     }
   }
 }

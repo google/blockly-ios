@@ -24,36 +24,21 @@ extension BlocklyEvent {
 
     // MARK: - Constants
 
-    /// Possible elements that can be associated with a `BlocklyEvent.Change`.
-    @objc(BKYEventChangeElement)
-    public enum Element: Int {
-      case collapsed = 1,
-      comment,
-      disabled,
-      field,
-      inline,
-      mutate
+    /// Value type used for indicating which element is being associated with the change event.
+    public typealias Element = String
 
-      fileprivate static let stringMapping = [
-        collapsed: "collapsed",
-        comment: "comment",
-        disabled: "disabled",
-        field: "field",
-        inline: "inline",
-        mutate: "mutate"
-      ]
-
-      public var stringValue: String {
-        return Element.stringMapping[self]!
-      }
-
-      internal init?(string: String) {
-        guard let value = Element.stringMapping.bky_anyKeyForValue(string) else {
-          return nil
-        }
-        self = value
-      }
-    }
+    /// Element representing a block's collapsed/expanded state.
+    public static let elementCollapsed: Element = "collapsed"
+    /// Element representing a block's comment property.
+    public static let elementComment: Element = "comment"
+    /// Element representing a block's disabled property.
+    public static let elementDisabled: Element = "disabled"
+    /// Element representing a block's field.
+    public static let elementField: Element = "field"
+    /// Element representing a block's inline property.
+    public static let elementInline: Element = "inline"
+    /// Element representing a block mutation.
+    public static let elementMutate: Element = "mutate"
 
     // MARK: - Properties
 
@@ -82,6 +67,7 @@ extension BlocklyEvent {
     /**
      Constructs a `BlocklyEvent.Change`, signifying block's value changed.
 
+     - parameter element: The type of element associated with the change event.
      - parameter workspaceID: The workspace ID containing the change.
      - parameter blockID: The ID string of the block affected.
      - parameter field: [Optional] The field containing the change, if the change is a field value.
@@ -109,12 +95,13 @@ extension BlocklyEvent {
      `BlocklyError`: Thrown when the JSON could not be parsed into a `BlocklyEvent.Change` object.
      */
     public init(json: [String: Any]) throws {
-      if let element = Element(string: json[BlocklyEvent.JSON_ELEMENT] as? String ?? "") {
+      if let element = json[BlocklyEvent.JSON_ELEMENT] as? Element {
         self.element = element
-        self.fieldName = json[BlocklyEvent.JSON_NAME] as? String
       } else {
-        throw BlocklyError(.jsonParsing, "Invalid change element \"\(BlocklyEvent.JSON_BLOCK_ID)\".")
+        throw BlocklyError(.jsonParsing,
+                           "No value was specified for \"\(BlocklyEvent.JSON_ELEMENT)\".")
       }
+      self.fieldName = json[BlocklyEvent.JSON_NAME] as? String
       self.oldValue = json[BlocklyEvent.JSON_OLD_VALUE] as? String
       self.newValue = json[BlocklyEvent.JSON_NEW_VALUE] as? String
 
@@ -125,94 +112,12 @@ extension BlocklyEvent {
       }
     }
 
-    /**
-     Creates a `BlocklyEvent.Change` reflecting a change in the block's comment text.
-
-     - parameter workspace: The workspace containing the block.
-     - parameter block: The block where the state changed.
-     - parameter oldValue: The prior comment text.
-     - parameter newValue: The updated comment text.
-     - returns: The new `BlocklyEvent.Change`.
-     */
-    public static func commentTextEvent(
-      workspace: Workspace, block: Block, oldValue: String, newValue: String) -> BlocklyEvent.Change
-    {
-      return BlocklyEvent.Change(element: .comment, workspaceID: workspace.uuid,
-                                 blockID: block.uuid, oldValue: oldValue, newValue: newValue)
-    }
-
-    /**
-     Creates a `BlocklyEvent.Change` reflecting a change in the block's disabled state.
-
-     - parameter workspace: The workspace containing the block.
-     - parameter block: The block where the state changed.
-     - returns: The new `BlocklyEvent.Change`.
-     */
-    public static func disabledStateEvent(
-      workspace: Workspace, block: Block) -> BlocklyEvent.Change {
-      return BlocklyEvent.Change(
-        element: .disabled, workspaceID: workspace.uuid, blockID: block.uuid,
-        oldValue: !block.disabled ? "true" : "false",
-        newValue: block.disabled ? "true" : "false")
-    }
-
-    /**
-     Creates a `BlocklyEvent.Change` reflecting a change in a field's value.
-
-     - parameter workspace: The workspace containing the block.
-     - parameter block: The block where the state changed.
-     - parameter field: The field with the changed value.
-     - parameter oldValue: The prior value.
-     - parameter newValue: The updated value.
-     - returns: The new `BlocklyEvent.Change`.
-     */
-    public static func fieldValueEvent(
-      workspace: Workspace, block: Block, field: Field, oldValue: String, newValue: String)
-      -> BlocklyEvent.Change
-    {
-      return BlocklyEvent.Change(
-        element: .field, workspaceID: workspace.uuid, blockID: block.uuid,
-        fieldName: field.name, oldValue: oldValue, newValue: newValue)
-    }
-
-    /**
-     Creates a `BlocklyEvent.Change` reflecting a change in the block's inlined inputs state.
-
-     - parameter workspace The workspace containing the block.
-     - parameter block The block where the state changed.
-     - returns: The new `BlocklyEvent.Change`.
-     */
-    public static func inlineStateEvent(workspace: Workspace, block: Block) -> BlocklyEvent.Change {
-      return BlocklyEvent.Change(
-        element: .inline, workspaceID: workspace.uuid, blockID: block.uuid,
-        oldValue: (!block.inputsInline ? "true" : "false"),
-        newValue: (block.inputsInline ? "true" : "false"))
-    }
-
-    /**
-     Creates a `BlocklyEvent.Change` reflecting a change in the block's mutation state.
-
-     - parameter workspace The workspace containing the block.
-     - parameter block The block where the state changed.
-     - parameter oldValue The serialized version of the prior mutation state.
-     - parameter newValue The serialized version of the updated mutation state.
-     - returns: The new `BlocklyEvent.Change`.
-     */
-    public static func mutateEvent(
-      workspace: Workspace, block: Block, oldValue: String?, newValue: String?)
-      -> BlocklyEvent.Change
-    {
-      return BlocklyEvent.Change(
-        element: .mutate, workspaceID: workspace.uuid, blockID: block.uuid,
-        oldValue: oldValue, newValue: newValue)
-    }
-
     // MARK: - Super
 
     public override func toJSON() throws -> [String: Any] {
       var json = try super.toJSON()
 
-      json["element"] = element.stringValue
+      json["element"] = element
       if let fieldName = self.fieldName {
         json["name"] = fieldName
       }
@@ -242,6 +147,90 @@ extension BlocklyEvent {
 
     public override func isDiscardable() -> Bool {
       return oldValue == newValue
+    }
+
+    // MARK: - Convenience Event Creators
+
+    /**
+     Creates a `BlocklyEvent.Change` reflecting a change in the block's comment text.
+
+     - parameter workspace: The workspace containing the block.
+     - parameter block: The block where the state changed.
+     - parameter oldValue: The prior comment text.
+     - parameter newValue: The updated comment text.
+     - returns: The new `BlocklyEvent.Change`.
+     */
+    public static func commentTextEvent(
+      workspace: Workspace, block: Block, oldValue: String, newValue: String) -> BlocklyEvent.Change
+    {
+      return BlocklyEvent.Change(element: elementComment, workspaceID: workspace.uuid,
+                                 blockID: block.uuid, oldValue: oldValue, newValue: newValue)
+    }
+
+    /**
+     Creates a `BlocklyEvent.Change` reflecting a change in the block's disabled state.
+
+     - parameter workspace: The workspace containing the block.
+     - parameter block: The block where the state changed.
+     - returns: The new `BlocklyEvent.Change`.
+     */
+    public static func disabledStateEvent(
+      workspace: Workspace, block: Block) -> BlocklyEvent.Change {
+      return BlocklyEvent.Change(
+        element: elementDisabled, workspaceID: workspace.uuid, blockID: block.uuid,
+        oldValue: !block.disabled ? "true" : "false",
+        newValue: block.disabled ? "true" : "false")
+    }
+
+    /**
+     Creates a `BlocklyEvent.Change` reflecting a change in a field's value.
+
+     - parameter workspace: The workspace containing the block.
+     - parameter block: The block where the state changed.
+     - parameter field: The field with the changed value.
+     - parameter oldValue: The prior value.
+     - parameter newValue: The updated value.
+     - returns: The new `BlocklyEvent.Change`.
+     */
+    public static func fieldValueEvent(
+      workspace: Workspace, block: Block, field: Field, oldValue: String, newValue: String)
+      -> BlocklyEvent.Change
+    {
+      return BlocklyEvent.Change(
+        element: elementField, workspaceID: workspace.uuid, blockID: block.uuid,
+        fieldName: field.name, oldValue: oldValue, newValue: newValue)
+    }
+
+    /**
+     Creates a `BlocklyEvent.Change` reflecting a change in the block's inlined inputs state.
+
+     - parameter workspace The workspace containing the block.
+     - parameter block The block where the state changed.
+     - returns: The new `BlocklyEvent.Change`.
+     */
+    public static func inlineStateEvent(workspace: Workspace, block: Block) -> BlocklyEvent.Change {
+      return BlocklyEvent.Change(
+        element: elementInline, workspaceID: workspace.uuid, blockID: block.uuid,
+        oldValue: (!block.inputsInline ? "true" : "false"),
+        newValue: (block.inputsInline ? "true" : "false"))
+    }
+
+    /**
+     Creates a `BlocklyEvent.Change` reflecting a change in the block's mutation state.
+
+     - parameter workspace The workspace containing the block.
+     - parameter block The block where the state changed.
+     - parameter oldValue The serialized version of the prior mutation state.
+     - parameter newValue The serialized version of the updated mutation state.
+     - returns: The new `BlocklyEvent.Change`.
+     */
+    public static func mutateEvent(
+      workspace: Workspace, block: Block, oldValue: String?, newValue: String?)
+      -> BlocklyEvent.Change
+    {
+      return BlocklyEvent.Change(
+        element: elementMutate, workspaceID: workspace.uuid, blockID: block.uuid,
+        oldValue: oldValue, newValue: newValue)
     }
   }
 }

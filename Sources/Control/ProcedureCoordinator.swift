@@ -482,10 +482,10 @@ extension ProcedureCoordinator: EventManagerListener {
     // Try to handle the event. The first method that returns `true` means it's been handled and
     // we can skip the rest of the checks.
     if let fieldEvent = event as? BlocklyEvent.Change,
-      fieldEvent.element == .field {
+      fieldEvent.element == BlocklyEvent.Change.elementField {
       processFieldChangeEvent(fieldEvent)
     } else if let mutationEvent = event as? BlocklyEvent.Change,
-      mutationEvent.element == .mutate {
+      mutationEvent.element == BlocklyEvent.Change.elementMutate {
       processMutationChangeEvent(mutationEvent)
     } else if let createEvent = event as? BlocklyEvent.Create {
       processCreateEvent(createEvent)
@@ -495,7 +495,7 @@ extension ProcedureCoordinator: EventManagerListener {
   }
 
   private func processFieldChangeEvent(_ fieldEvent: BlocklyEvent.Change) {
-    guard fieldEvent.element == .field,
+    guard fieldEvent.element == BlocklyEvent.Change.elementField,
       fieldEvent.fieldName == "NAME",
       fieldEvent.workspaceID == workbench?.workspace?.uuid,
       let blockID = fieldEvent.blockID,
@@ -524,7 +524,7 @@ extension ProcedureCoordinator: EventManagerListener {
   }
 
   private func processMutationChangeEvent(_ mutationEvent: BlocklyEvent.Change) {
-    guard mutationEvent.element == .mutate,
+    guard mutationEvent.element == BlocklyEvent.Change.elementMutate,
       mutationEvent.workspaceID == workbench?.workspace?.uuid,
       let blockID = mutationEvent.blockID,
       let block = workbench?.workspace?.allBlocks[blockID],
