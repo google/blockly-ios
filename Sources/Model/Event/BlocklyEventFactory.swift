@@ -22,7 +22,7 @@ import Foundation
  `BlocklyEventFactory.shared`.
  */
 @objc(BKYEventFactory)
-@objcMembers public class BlocklyEventFactory: NSObject {
+@objcMembers open class BlocklyEventFactory: NSObject {
 
   // MARK: - Closures
 
@@ -32,7 +32,7 @@ import Foundation
   // MARK: - Properties
 
   /// Shared instance.
-  public static let shared = BlocklyEventFactory()
+  public static var shared = BlocklyEventFactory()
 
   /// Mapping of event types to creation closures.
   private var _creators = Dictionary<BlocklyEvent.EventType, Creator>()

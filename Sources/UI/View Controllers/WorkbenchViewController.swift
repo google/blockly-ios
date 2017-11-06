@@ -1324,40 +1324,36 @@ extension WorkbenchViewController {
 
     let value = (runForward ? event.newValue : event.oldValue) ?? ""
     let boolValue = runForward ? event.newBoolValue : event.oldBoolValue
+    let element = event.element
 
-    switch event.element {
-      case .collapsed:
-        // Not supported.
-        break
-      case .comment:
-        block.layout?.comment = value
-      case .disabled:
-        block.layout?.disabled = boolValue
-      case .field:
-        if let fieldName = event.fieldName,
-          let field = block.firstField(withName: fieldName)
-        {
-          do {
-            try field.layout?.setValue(fromSerializedText: value)
-          } catch let error {
-            bky_assertionFailure(
-              "Couldn't set value(\"\(value)\") for field(\"\(fieldName)\"):\n\(error)")
-          }
-        } else {
-          bky_assertionFailure("Can't set non-existent field: \(event.fieldName ?? "")")
-        }
-        break
-      case .inline:
-        block.layout?.inputsInline = boolValue
-      case .mutate:
+    if element == BlocklyEvent.Change.elementComment {
+      block.layout?.comment = value
+    } else if element == BlocklyEvent.Change.elementDisabled {
+      block.layout?.disabled = boolValue
+    } else if element == BlocklyEvent.Change.elementField {
+      if let fieldName = event.fieldName,
+        let field = block.firstField(withName: fieldName)
+      {
         do {
-          // Update the mutator from xml
-          let mutatorLayout = block.mutator?.layout
-          let xml = try AEXMLDocument(xml: value)
-          try mutatorLayout?.performMutation(fromXML: xml)
+          try field.layout?.setValue(fromSerializedText: value)
         } catch let error {
-          bky_assertionFailure("Can't update mutator from xml [\"\(value)\"]:\n\(error)")
+          bky_assertionFailure(
+            "Couldn't set value(\"\(value)\") for field(\"\(fieldName)\"):\n\(error)")
         }
+      } else {
+        bky_assertionFailure("Can't set non-existent field: \(event.fieldName ?? "")")
+      }
+    } else if element == BlocklyEvent.Change.elementInline {
+      block.layout?.inputsInline = boolValue
+    } else if element == BlocklyEvent.Change.elementMutate {
+      do {
+        // Update the mutator from xml
+        let mutatorLayout = block.mutator?.layout
+        let xml = try AEXMLDocument(xml: value)
+        try mutatorLayout?.performMutation(fromXML: xml)
+      } catch let error {
+        bky_assertionFailure("Can't update mutator from xml [\"\(value)\"]:\n\(error)")
+      }
     }
   }
 
