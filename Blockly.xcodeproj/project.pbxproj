@@ -14,7 +14,6 @@
 		3064BAD01DAFFC58006425A2 /* BKYBlockJSONFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC71DAFFC57006425A2 /* BKYBlockJSONFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD11DAFFC58006425A2 /* BKYEdgeInsets.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC81DAFFC57006425A2 /* BKYEdgeInsets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD21DAFFC58006425A2 /* BKYLayoutConfigStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BAC91DAFFC57006425A2 /* BKYLayoutConfigStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3064BAD31DAFFC58006425A2 /* BKYWorkbenchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BACA1DAFFC57006425A2 /* BKYWorkbenchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD41DAFFC58006425A2 /* BKYWorkspaceUnits.h in Headers */ = {isa = PBXBuildFile; fileRef = 3064BACB1DAFFC57006425A2 /* BKYWorkspaceUnits.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3064BAD51DAFFC58006425A2 /* BKYLayoutConfigStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = 3064BACC1DAFFC57006425A2 /* BKYLayoutConfigStructs.m */; };
 		3064BAD61DAFFC58006425A2 /* BKYWorkspaceUnits.m in Sources */ = {isa = PBXBuildFile; fileRef = 3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */; };
@@ -252,7 +251,6 @@
 		3064BAC71DAFFC57006425A2 /* BKYBlockJSONFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYBlockJSONFile.h; path = ObjC/BKYBlockJSONFile.h; sourceTree = "<group>"; };
 		3064BAC81DAFFC57006425A2 /* BKYEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYEdgeInsets.h; path = ObjC/BKYEdgeInsets.h; sourceTree = "<group>"; };
 		3064BAC91DAFFC57006425A2 /* BKYLayoutConfigStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYLayoutConfigStructs.h; path = ObjC/BKYLayoutConfigStructs.h; sourceTree = "<group>"; };
-		3064BACA1DAFFC57006425A2 /* BKYWorkbenchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYWorkbenchViewController.h; path = ObjC/BKYWorkbenchViewController.h; sourceTree = "<group>"; };
 		3064BACB1DAFFC57006425A2 /* BKYWorkspaceUnits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BKYWorkspaceUnits.h; path = ObjC/BKYWorkspaceUnits.h; sourceTree = "<group>"; };
 		3064BACC1DAFFC57006425A2 /* BKYLayoutConfigStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKYLayoutConfigStructs.m; path = ObjC/BKYLayoutConfigStructs.m; sourceTree = "<group>"; };
 		3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKYWorkspaceUnits.m; path = ObjC/BKYWorkspaceUnits.m; sourceTree = "<group>"; };
@@ -554,7 +552,6 @@
 				3064BACE1DAFFC57006425A2 /* BKYEdgeInsets.m */,
 				3064BAC91DAFFC57006425A2 /* BKYLayoutConfigStructs.h */,
 				3064BACC1DAFFC57006425A2 /* BKYLayoutConfigStructs.m */,
-				3064BACA1DAFFC57006425A2 /* BKYWorkbenchViewController.h */,
 				3064BACB1DAFFC57006425A2 /* BKYWorkspaceUnits.h */,
 				3064BACD1DAFFC57006425A2 /* BKYWorkspaceUnits.m */,
 			);
@@ -1042,7 +1039,6 @@
 			files = (
 				3064BAD21DAFFC58006425A2 /* BKYLayoutConfigStructs.h in Headers */,
 				3064BAD11DAFFC58006425A2 /* BKYEdgeInsets.h in Headers */,
-				3064BAD31DAFFC58006425A2 /* BKYWorkbenchViewController.h in Headers */,
 				3064BACF1DAFFC57006425A2 /* Blockly.h in Headers */,
 				3064BAD01DAFFC58006425A2 /* BKYBlockJSONFile.h in Headers */,
 				3064BAD41DAFFC58006425A2 /* BKYWorkspaceUnits.h in Headers */,

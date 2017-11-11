@@ -26,5 +26,4 @@ FOUNDATION_EXPORT const unsigned char BlocklyVersionString[];
 #import "BKYBlockJSONFile.h"
 #import "BKYEdgeInsets.h"
 #import "BKYLayoutConfigStructs.h"
-#import "BKYWorkbenchViewController.h"
 #import "BKYWorkspaceUnits.h"

@@ -22,35 +22,31 @@ import UIKit
 @objc(BKYWorkbenchViewControllerDelegate)
 public protocol WorkbenchViewControllerDelegate: class {
   /**
-   Event that is called when a `WorkbenchViewController` updates its `state`.
+   Event that is called when a workbench updates its UI state.
+
+   - parameter workbenchViewController: The `WorkbenchViewController`.
+   - parameter state: The current `WorkbenchViewController.UIState`.
    */
   func workbenchViewController(
     _ workbenchViewController: WorkbenchViewController,
     didUpdateState state: WorkbenchViewController.UIState)
-}
-
-/**
- Adding Swift convenience functions to `BKYWorkbenchViewControllerUIState`.
- */
-extension WorkbenchViewControllerUIState {
-  /**
-   Initializes the workbench view controller UI state with a `WorkbenchViewController.UIStateValue`.
-
-   - parameter value: The `WorkbenchViewControllerUIStateValue` of the state.
-   */
-  public init(value: WorkbenchViewControllerUIStateValue) {
-    self.init(rawValue: 1 << UInt(value.rawValue))
-  }
 
   /**
-   Checks if this state intersects with another state.
+   Optional method that a delegate may override to specify the set of UI state values that should
+   be kept in the workbench when a specific value is added via
+   `WorkbenchViewController.addUIStateValue(_:animated)`.
 
-   - parameter other: The other `WorkbenchViewControllerUIState`.
-   - returns: `true` if this state and `other` share any common options. `false` otherwise.
+   - parameter workbenchViewController: The `WorkbenchViewController`.
+   - parameter keepStateValues: The default set of `UIStateValue` values that the system recommends
+   keeping when `stateValue` is added.
+   - parameter stateValue: The `UIStateValue` that is being added to the workbench.
+   - returns: The set of `UIStateValue` values that should be kept.
    */
-  public func intersectsWith(_ other: WorkbenchViewControllerUIState) -> Bool {
-    return intersection(other).rawValue != 0
-  }
+  @objc optional func workbenchViewController(
+    _ workbenchViewController: WorkbenchViewController,
+    shouldKeepStates keepStateValues: Set<WorkbenchViewController.UIStateValue>,
+    forStateValue stateValue: WorkbenchViewController.UIStateValue)
+    -> Set<WorkbenchViewController.UIStateValue>
 }
 
 // TODO(#61): Refactor parts of `WorkbenchViewController` into `WorkspaceViewController`.
@@ -101,13 +97,32 @@ extension WorkbenchViewControllerUIState {
 
   // MARK: - Aliases
 
-  /// Details the bitflags for `WorkbenchViewController`'s state.
-  public typealias UIState = WorkbenchViewControllerUIState
-
-  /// Specifies the bitflags for individual state values of `WorkbenchViewController`.
-  public typealias UIStateValue = WorkbenchViewControllerUIStateValue
+  /// Set of `UIStateValue` values representing the workbench state.
+  public typealias UIState = Set<UIStateValue>
+  /// Underlying type for a UI state value.
+  public typealias UIStateValue = Int
 
   // MARK: - Properties
+
+  /// Total number of `UIStateValue` values that have been created via
+  /// `WorkbenchViewController.newUIStateValue()`.
+  private static var numberOfUIStateValues = 0
+  /// State indicating the trash can is open.
+  public let stateTrashCanOpen = WorkbenchViewController.newUIStateValue()
+  /// State indicating the trash can is highlighted
+  public let stateTrashCanHighlighted = WorkbenchViewController.newUIStateValue()
+  /// State indicating the toolbox category is open.
+  public let stateCategoryOpen = WorkbenchViewController.newUIStateValue()
+  /// State indicating a text field is being edited.
+  public let stateEditingTextField = WorkbenchViewController.newUIStateValue()
+  /// State indicating a block is currently being dragged.
+  public let stateDraggingBlock = WorkbenchViewController.newUIStateValue()
+  /// State indicating a popover is being presented.
+  public let statePresentingPopover = WorkbenchViewController.newUIStateValue()
+  /// State indicating the user panned the workspace.
+  public let stateDidPanWorkspace = WorkbenchViewController.newUIStateValue()
+  /// State indicating the user tapped the workspace.
+  public let stateDidTapWorkspace = WorkbenchViewController.newUIStateValue()
 
   /// The main workspace view controller
   public private(set) lazy var workspaceViewController: WorkspaceViewController = {
@@ -203,7 +218,7 @@ extension WorkbenchViewControllerUIState {
 
   /// The style of workbench
   public final let style: Style
-  /// The current state of the main workspace
+  /// The main workspace.
   open var workspace: Workspace? {
     return _workspaceLayout?.workspace
   }
@@ -246,7 +261,7 @@ extension WorkbenchViewControllerUIState {
 
       if !enableTrashCan {
         // Hide trash can folder
-        removeUIStateValue(.trashCanOpen, animated: false)
+        removeUIStateValue(stateTrashCanOpen, animated: false)
       }
     }
   }
@@ -260,7 +275,8 @@ extension WorkbenchViewControllerUIState {
   /// Enables or disables the ability to undo/redo actions in the workspace. Defaults to `true`.
   open var allowUndoRedo: Bool = true {
     didSet {
-      setUndoRedoVisible(allowUndoRedo)
+      undoButton.isHidden = !allowUndoRedo
+      redoButton.isHidden = !allowUndoRedo
     }
   }
 
@@ -290,8 +306,8 @@ extension WorkbenchViewControllerUIState {
   */
   open var toolboxDrawerStaysOpen: Bool = false
 
-  /// The current state of the UI
-  open fileprivate(set) var state = UIState.defaultState
+  /// A set containing all active states of the UI.
+  open fileprivate(set) var state = WorkbenchViewController.UIState()
 
   /// The delegate for events that occur in the workbench
   open weak var delegate: WorkbenchViewControllerDelegate?
@@ -767,7 +783,8 @@ extension WorkbenchViewControllerUIState {
 
     toolboxCategoryViewController.toolboxLayout = _toolboxLayout
 
-    resetUIState()
+    // Set the state to the default empty state
+    refreshUIState([])
     updateWorkspaceCapacity()
   }
 
@@ -779,7 +796,7 @@ extension WorkbenchViewControllerUIState {
    - parameter gesture: The `UIPanGestureRecognizer` that fired the method.
    */
   @objc private dynamic func didPanWorkspaceView(_ gesture: UIPanGestureRecognizer) {
-    addUIStateValue(.didPanWorkspace)
+    addUIStateValue(stateDidPanWorkspace)
   }
 
   /**
@@ -788,7 +805,7 @@ extension WorkbenchViewControllerUIState {
    - parameter gesture: The `UITapGestureRecognizer` that fired the method.
    */
   @objc private dynamic func didTapWorkspaceView(_ gesture: UITapGestureRecognizer) {
-    addUIStateValue(.didTapWorkspace)
+    addUIStateValue(stateDidTapWorkspace)
   }
 
   /**
@@ -876,89 +893,101 @@ extension WorkbenchViewControllerUIState {
 // MARK: - State Handling
 
 extension WorkbenchViewController {
-  // MARK: - Private
+  /**
+   Creates a new `UIStateValue`. Subclasses may call this to create additional state values that
+   should be handled by `WorkbenchViewController`.
+
+   - returns: A unique `UIStateValue`.
+   */
+  public static func newUIStateValue() -> UIStateValue {
+    let key = numberOfUIStateValues
+    numberOfUIStateValues += 1
+    return key
+  }
 
   /**
-   Appends a state to the current state of the UI. This call should be matched a future call to
-   removeUIState(state:animated:).
+   Adds an individual UI state value to the current state of the workbench. Generally, this call
+   should be matched by a future call to `removeUIStateValue(_:animated:)`.
 
-   - parameter state: The state to append to `self.state`.
-   - parameter animated: True if changes in UI state should be animated. False, if not.
+   - parameter stateValue: The `UIStateValue` to add to `self.state`.
+   - parameter animated: `true` if changes in UI state should be animated. `false`, if not.
+   - see: To change the behavior of how the state value is added to the current state, see
+   `WorkbenchViewControllerDelegate.workbenchViewController(_:shouldKeepStates:forStateValue:)`.
    */
-  fileprivate func addUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
-    var state = UIState(value: stateValue)
-    let newState: UIState
+  public func addUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
+    // Make a list of states to keep when the state is added.
+    var keepStates = Set<UIStateValue>()
 
-    if toolboxDrawerStaysOpen && self.state.intersectsWith(.categoryOpen) {
-      // Always keep the .CategoryOpen state if it existed before
-      state = state.union(.categoryOpen)
+    if toolboxDrawerStaysOpen && self.state.contains(stateCategoryOpen) {
+      // Always keep `stateCategoryOpen` if it existed before
+      keepStates.insert(stateCategoryOpen)
     }
-
-    // When adding a new state, check for compatibility with existing states.
 
     switch stateValue {
-    case .draggingBlock:
+    case stateDraggingBlock:
       // Dragging a block can only co-exist with highlighting the trash can
-      newState = self.state.intersection([.trashCanHighlighted]).union(state)
-    case .trashCanHighlighted:
-      // This state can co-exist with anything, simply add it to the current state
-      newState = self.state.union(state)
-    case .editingTextField:
-      // Allow .EditingTextField to co-exist with .PresentingPopover and .CategoryOpen, but nothing
-      // else
-      newState = self.state.intersection([.presentingPopover, .categoryOpen]).union(state)
-    case .presentingPopover:
-      // If .CategoryOpen already existed, continue to let it exist (as users may want to modify
-      // blocks from inside the toolbox). Disallow everything else.
-      newState = self.state.intersection([.categoryOpen]).union(state)
-    case .defaultState, .didPanWorkspace, .didTapWorkspace, .categoryOpen, .trashCanOpen:
-      // Whenever these states are added, clear out all existing state
-      newState = state
+      keepStates.insert(stateTrashCanHighlighted)
+    case stateTrashCanHighlighted:
+      // This state can co-exist with anything, keep all states.
+      keepStates.formUnion(state)
+    case stateEditingTextField:
+      // Allow `stateEditingTextField` to co-exist with `statePresentingPopover` and
+      // `stateCategoryOpen`, but nothing else
+      keepStates.insert(statePresentingPopover)
+      keepStates.insert(stateCategoryOpen)
+    case statePresentingPopover:
+      // If `stateCategoryOpen` already existed, continue to let it exist (as users may want to
+      // modify blocks from inside the toolbox). Disallow everything else.
+      keepStates.insert(stateCategoryOpen)
+    case stateDidPanWorkspace, stateDidTapWorkspace, stateCategoryOpen, stateTrashCanOpen:
+      // These states are all exclusive. Don't keep anything else.
+      break
+    default:
+      // This is a custom defined state. Let a delegate method handle what states should be kept.
+      break
     }
 
+    // Allow a delegate method to override what states are kept
+    if let delegateKeepStates = delegate?.workbenchViewController?(self,
+                                                                   shouldKeepStates: keepStates,
+                                                                   forStateValue: stateValue) {
+      keepStates = delegateKeepStates
+    }
+
+    // Keep any relevant states from the existing state, and append the new state value.
+    let newState = self.state.intersection(keepStates).union([stateValue])
     refreshUIState(newState, animated: animated)
   }
 
   /**
-   Removes a state to the current state of the UI. This call should have matched a previous call to
-   addUIState(state:animated:).
+   Removes a UI state value from the current state of the workbench. This call should have matched
+   a previous call to `addUIStateValue(_:animated:)`.
 
-   - parameter state: The state to remove from `self.state`.
-   - parameter animated: True if changes in UI state should be animated. False, if not.
+   - parameter stateValue: The `UIStateValue` to remove from `self.state`.
+   - parameter animated: `true` if changes in UI state should be animated. `false`, if not.
    */
-  fileprivate func removeUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
+  public func removeUIStateValue(_ stateValue: UIStateValue, animated: Bool = true) {
     // When subtracting a state value, there is no need to check for compatibility.
     // Simply set the new state, minus the given state value.
-    let newState = self.state.subtracting(UIState(value: stateValue))
+    let newState = self.state.subtracting([stateValue])
     refreshUIState(newState, animated: animated)
   }
 
   /**
-   Resets the UI back to its default state.
+   Refreshes the UI based on a set of states.
 
-   - parameter animated: True if changes in UI state should be animated. False, if not.
-   */
-  fileprivate func resetUIState(_ animated: Bool = true) {
-    addUIStateValue(.defaultState, animated: animated)
-  }
-
-  /**
-   Refreshes the UI based on a given state.
-
-   - parameter state: The state to set the UI
-   - parameter animated: True if changes in UI state should be animated. False, if not.
-   - note: This method should not be called directly. Instead, you should call addUIState(...),
-   removeUIState(...), or resetUIState(...).
+   - parameter state: The `WorkbenchViewController.UIState` to set.
+   - parameter animated: `true` if changes in UI state should be animated. `false`, if not.
    */
   fileprivate func refreshUIState(_ state: UIState, animated: Bool = true) {
     self.state = state
 
-    setTrashCanFolderVisible(state.intersectsWith(.trashCanOpen), animated: animated)
+    setTrashCanFolderVisible(state.contains(stateTrashCanOpen), animated: animated)
 
-    trashCanView.setHighlighted(state.intersectsWith(.trashCanHighlighted), animated: animated)
+    trashCanView.setHighlighted(state.contains(stateTrashCanHighlighted), animated: animated)
 
     if let selectedCategory = toolboxCategoryListViewController.selectedCategory,
-      state.intersectsWith(.categoryOpen) {
+      state.contains(stateCategoryOpen) {
       // Show the toolbox category
       toolboxCategoryViewController.showCategory(selectedCategory, animated: animated)
     } else {
@@ -967,23 +996,26 @@ extension WorkbenchViewController {
       toolboxCategoryListViewController.selectedCategory = nil
     }
 
-    if !state.intersectsWith(.editingTextField) {
+    if !state.contains(stateEditingTextField) {
       // Force all child text fields to end editing (which essentially dismisses the keyboard if
       // it's currently visible)
       self.view.endEditing(true)
     }
 
-    if !state.intersectsWith(.presentingPopover),
+    if !state.contains(statePresentingPopover),
       let presentedViewController = self.presentedViewController,
       !presentedViewController.isBeingDismissed {
       presentedViewController.dismiss(animated: animated, completion: nil)
     }
 
-    // Always show undo/redo except when blocks are being dragged, text fields are being edited,
+    // Always allow undo/redo except when blocks are being dragged, text fields are being edited,
     // or a popover is being shown.
-    setUndoRedoVisible(
-      !state.intersectsWith([.draggingBlock, .editingTextField, .presentingPopover]))
+    setUndoRedoUserInteractionEnabled(!(
+      state.contains(stateDraggingBlock) ||
+      state.contains(stateEditingTextField) ||
+      state.contains(statePresentingPopover)))
 
+    // Notify the delegate so it can make more changes.
     delegate?.workbenchViewController(self, didUpdateState: state)
   }
 }
@@ -999,9 +1031,9 @@ extension WorkbenchViewController {
   @objc fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
     if !_trashCanVisible {
-      addUIStateValue(.trashCanOpen)
+      addUIStateValue(stateTrashCanOpen)
     } else {
-      removeUIStateValue(.trashCanOpen)
+      removeUIStateValue(stateTrashCanOpen)
     }
   }
 
@@ -1045,7 +1077,7 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController: EventManagerListener {
   public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
-    guard _recordEvents else {
+    guard _recordEvents && allowUndoRedo else {
       return
     }
 
@@ -1072,18 +1104,16 @@ extension WorkbenchViewController: EventManagerListener {
 // MARK: - Undo / Redo
 
 extension WorkbenchViewController {
-  fileprivate func setUndoRedoVisible(_ visible: Bool) {
-    let showButtons = visible && allowUndoRedo
-
-    if (undoButton.isUserInteractionEnabled && !showButtons) ||
-       (!undoButton.isUserInteractionEnabled && showButtons)
+  fileprivate func setUndoRedoUserInteractionEnabled(_ enabled: Bool) {
+    if (undoButton.isUserInteractionEnabled && !enabled) ||
+      (!undoButton.isUserInteractionEnabled && enabled)
     {
-      undoButton.isUserInteractionEnabled = showButtons
-      redoButton.isUserInteractionEnabled = showButtons
+      undoButton.isUserInteractionEnabled = enabled
+      redoButton.isUserInteractionEnabled = enabled
 
       UIView.animate(withDuration: 0.3) {
-        self.undoButton.alpha = showButtons ? 1 : 0.3
-        self.redoButton.alpha = showButtons ? 1 : 0.3
+        self.undoButton.alpha = enabled ? 1 : 0.3
+        self.redoButton.alpha = enabled ? 1 : 0.3
       }
     }
   }
@@ -1413,12 +1443,12 @@ extension WorkbenchViewController: WorkspaceViewControllerDelegate {
   open func workspaceViewController(
     _ workspaceViewController: WorkspaceViewController,
     willPresentViewController viewController: UIViewController) {
-    addUIStateValue(.presentingPopover)
+    addUIStateValue(statePresentingPopover)
   }
 
   open func workspaceViewControllerDismissedViewController(
     _ workspaceViewController: WorkspaceViewController) {
-    removeUIStateValue(.presentingPopover)
+    removeUIStateValue(statePresentingPopover)
   }
 }
 
@@ -1513,7 +1543,7 @@ extension WorkbenchViewController {
 
 extension WorkbenchViewController {
   @objc fileprivate dynamic func keyboardWillShowNotification(_ notification: Notification) {
-    addUIStateValue(.editingTextField)
+    addUIStateValue(stateEditingTextField)
 
     if let keyboardEndSize =
       (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -1530,7 +1560,7 @@ extension WorkbenchViewController {
   }
 
   @objc fileprivate dynamic func keyboardWillHideNotification(_ notification: Notification) {
-    removeUIStateValue(.editingTextField)
+    removeUIStateValue(stateEditingTextField)
 
     // Reset the canvas padding of the scroll view (when the keyboard was initially shown)
     let contentInsets = UIEdgeInsets.zero
@@ -1544,13 +1574,13 @@ extension WorkbenchViewController: ToolboxCategoryListViewControllerDelegate {
   public func toolboxCategoryListViewController(
     _ controller: ToolboxCategoryListViewController, didSelectCategory category: Toolbox.Category)
   {
-    addUIStateValue(.categoryOpen, animated: true)
+    addUIStateValue(stateCategoryOpen, animated: true)
   }
 
   public func toolboxCategoryListViewControllerDidDeselectCategory(
     _ controller: ToolboxCategoryListViewController)
   {
-    removeUIStateValue(.categoryOpen, animated: true)
+    removeUIStateValue(stateCategoryOpen, animated: true)
   }
 }
 
@@ -1687,7 +1717,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         blockView = newBlock
 
         if !toolboxDrawerStaysOpen {
-          removeUIStateValue(.categoryOpen, animated: false)
+          removeUIStateValue(stateCategoryOpen, animated: false)
         }
       } else if inTrash {
         let oldBlock = blockView
@@ -1699,14 +1729,14 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         blockView = newBlock
         removeBlockFromTrash(oldBlock)
 
-        removeUIStateValue(.trashCanOpen, animated: false)
+        removeUIStateValue(stateTrashCanOpen, animated: false)
       }
 
       guard let blockLayout = blockView.blockLayout?.draggableBlockLayout else {
         return
       }
 
-      addUIStateValue(.draggingBlock)
+      addUIStateValue(stateDraggingBlock)
       do {
         try _dragger.startDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
       } catch let error {
@@ -1716,13 +1746,13 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
         gesture.cancelAllTouches()
       }
     } else if touchState == .changed || touchState == .ended {
-      addUIStateValue(.draggingBlock)
+      addUIStateValue(stateDraggingBlock)
       _dragger.continueDraggingBlockLayout(blockLayout, touchPosition: workspacePosition)
 
       if isGestureTouchingTrashCan(gesture) && blockLayout.block.deletable {
-        addUIStateValue(.trashCanHighlighted)
+        addUIStateValue(stateTrashCanHighlighted)
       } else {
-        removeUIStateValue(.trashCanHighlighted)
+        removeUIStateValue(stateTrashCanHighlighted)
       }
     }
 
@@ -1757,9 +1787,9 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
 
       if _dragger.numberOfActiveDrags == 0 {
         // Update the UI state
-        removeUIStateValue(.draggingBlock)
+        removeUIStateValue(stateDraggingBlock)
         if !isGestureTouchingTrashCan(gesture) {
-          removeUIStateValue(.trashCanHighlighted)
+          removeUIStateValue(stateTrashCanHighlighted)
         }
 
         EventManager.shared.popGroup()
