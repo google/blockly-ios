@@ -153,6 +153,7 @@ public protocol WorkbenchViewControllerDelegate: class {
     let trashCanView = TrashCanView(imageNamed: "trash_can")
     trashCanView.button
       .addTarget(self, action: #selector(didTapTrashCan(_:)), for: .touchUpInside)
+    trashCanView.button.isUserInteractionEnabled = self.keepTrashedBlocks
     trashCanView.tintColor = ColorPalette.grey.tint800
     return trashCanView
   }()
@@ -260,6 +261,20 @@ public protocol WorkbenchViewControllerDelegate: class {
       setTrashCanViewVisible(enableTrashCan)
 
       if !enableTrashCan {
+        // Hide trash can folder
+        removeUIStateValue(stateTrashCanOpen, animated: false)
+      }
+    }
+  }
+
+  /// If `true`, blocks dragged into trash are kept in memory and can be recalled by tapping the
+  /// trash can. If `false`, blocks are not kept in memory and tapping the trash can is disabled.
+  /// Defaults to `false`.
+  open var keepTrashedBlocks: Bool = false {
+    didSet {
+      trashCanView.button.isUserInteractionEnabled = keepTrashedBlocks
+
+      if !keepTrashedBlocks {
         // Hide trash can folder
         removeUIStateValue(stateTrashCanOpen, animated: false)
       }
@@ -1030,7 +1045,7 @@ extension WorkbenchViewController {
    */
   @objc fileprivate dynamic func didTapTrashCan(_ sender: UIButton) {
     // Toggle trash can visibility
-    if !_trashCanVisible {
+    if !_trashCanVisible && keepTrashedBlocks {
       addUIStateValue(stateTrashCanOpen)
     } else {
       removeUIStateValue(stateTrashCanOpen)
@@ -1235,8 +1250,7 @@ extension WorkbenchViewController {
         if let block = workspace?.allBlocks[blockID] {
           var allBlocksToRemove = block.allBlocksForTree()
           try? _workspaceLayoutCoordinator?.removeBlockTree(block)
-          _ = try? trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(block)
-
+          addBlockToTrash(block)
           allBlocksToRemove.removeAll()
         }
       }
@@ -1482,6 +1496,22 @@ extension WorkbenchViewController {
     }
 
     return newBlockView
+  }
+
+  /**
+   Adds a copy of a given block to the trash.
+
+   - note: If `keepTrashedBlocks` is set to `false`, this method does nothing.
+   - parameter block: The `Block` to add to the trash.
+   */
+  public func addBlockToTrash(_ block: Block) {
+    guard keepTrashedBlocks else { return }
+
+    do {
+      _ = try trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(block)
+    } catch let error {
+      bky_assertionFailure("Could not add block to trash: \(error)")
+    }
   }
 
   /**
@@ -1775,7 +1805,7 @@ extension WorkbenchViewController: BlocklyPanGestureRecognizerDelegate {
             block.disabled = false
           }
 
-          try trashCanViewController.workspaceLayoutCoordinator?.addBlockTree(blockLayout.block)
+          addBlockToTrash(blockLayout.block)
 
           allBlocksToRemove.removeAll()
         } catch let error {
