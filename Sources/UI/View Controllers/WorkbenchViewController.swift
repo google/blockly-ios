@@ -354,21 +354,21 @@ public protocol WorkbenchViewControllerDelegate: class {
   fileprivate var _trashCanVisible: Bool = false
 
   /// Flag determining if this view controller should be recording events for undo/redo purposes.
-  fileprivate var _recordEvents = true
+  open fileprivate(set) var shouldRecordEvents = true
 
   /// Stack of events to run when applying "undo" actions. The events are sorted in
   /// chronological order, where the first event to "undo" is at the end of the array.
-  fileprivate var _undoStack = [BlocklyEvent]() {
+  open var undoStack = [BlocklyEvent]() {
     didSet {
-      undoButton.isEnabled = !_undoStack.isEmpty
+      undoButton.isEnabled = !undoStack.isEmpty
     }
   }
 
   /// Stack of events to run when applying "redo" actions. The events are sorted in reverse
   /// chronological order, where the first event to "redo" is at the end of the array.
-  fileprivate var _redoStack = [BlocklyEvent]() {
+  open var redoStack = [BlocklyEvent]() {
     didSet {
-      redoButton.isEnabled = !_redoStack.isEmpty
+      redoButton.isEnabled = !redoStack.isEmpty
     }
   }
 
@@ -1091,27 +1091,27 @@ extension WorkbenchViewController {
 // MARK: - EventManagerListener Implementation
 
 extension WorkbenchViewController: EventManagerListener {
-  public func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
-    guard _recordEvents && allowUndoRedo else {
+  open func eventManager(_ eventManager: EventManager, didFireEvent event: BlocklyEvent) {
+    guard shouldRecordEvents && allowUndoRedo else {
       return
     }
 
     if event.workspaceID == workspace?.uuid {
       // Try to merge this event with the last one in the undo stack
-      if let lastEvent = _undoStack.last,
+      if let lastEvent = undoStack.last,
         let mergedEvent = lastEvent.merged(withNextChronologicalEvent: event) {
-        _undoStack.removeLast()
+        undoStack.removeLast()
 
         if !mergedEvent.isDiscardable() {
-          _undoStack.append(mergedEvent)
+          undoStack.append(mergedEvent)
         }
       } else {
         // Couldn't merge event with last one, just append it
-        _undoStack.append(event)
+        undoStack.append(event)
       }
 
       // Clear the redo stack now since a new event has been added to the undo stack
-      _redoStack.removeAll()
+      redoStack.removeAll()
     }
   }
 }
@@ -1134,16 +1134,16 @@ extension WorkbenchViewController {
   }
 
   @objc fileprivate dynamic func didTapUndoButton(_ sender: UIButton) {
-    guard !_undoStack.isEmpty else {
+    guard !undoStack.isEmpty else {
       return
     }
 
     // Don't listen to any events, to avoid echoing
-    _recordEvents = false
+    shouldRecordEvents = false
 
     // Pop off the next group of events from the undo stack. These events will already be sorted
     // in the order which they should be played (reverse chronological order).
-    let events = popGroupedEvents(fromStack: &_undoStack)
+    let events = popGroupedEvents(fromStack: &undoStack)
 
     // Run each event in order
     for event in events {
@@ -1151,27 +1151,27 @@ extension WorkbenchViewController {
     }
 
     // Add events back to redo stack
-    _redoStack.append(contentsOf: events)
+    redoStack.append(contentsOf: events)
 
     // Fire pending events before listening to events again, in case outside listeners need to
     // update their state from those events.
     EventManager.shared.firePendingEvents()
 
     // Listen to events again
-    _recordEvents = true
+    shouldRecordEvents = true
   }
 
   @objc fileprivate dynamic func didTapRedoButton(_ sender: UIButton) {
-    guard !_redoStack.isEmpty else {
+    guard !redoStack.isEmpty else {
       return
     }
 
     // Don't listen to any events, to avoid echoing
-    _recordEvents = false
+    shouldRecordEvents = false
 
     // Pop off the next group of events from the redo stack. These events will already be sorted
     // in the order which they should be played (chronological order).
-    let events = popGroupedEvents(fromStack: &_redoStack)
+    let events = popGroupedEvents(fromStack: &redoStack)
 
     // Run each event in order
     for event in events {
@@ -1179,14 +1179,14 @@ extension WorkbenchViewController {
     }
 
     // Add events back to undo stack
-    _undoStack.append(contentsOf: events)
+    undoStack.append(contentsOf: events)
 
     // Fire pending events before listening to events again, in case outside listeners need to
     // update their state from those events.
     EventManager.shared.firePendingEvents()
 
     // Listen to events again
-    _recordEvents = true
+    shouldRecordEvents = true
   }
 }
 
