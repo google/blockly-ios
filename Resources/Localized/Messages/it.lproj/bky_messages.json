@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Aggiungi un input alla funzione.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "input",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Aggiungi, rimuovi o riordina input alla funzione.",
-  "PROCEDURE_ALREADY_EXISTS": "Una procedura denominata '%1' esiste gi\u00e0.",
   "REDO": "Ripeti",
   "REMOVE_COMMENT": "Rimuovi commento",
   "RENAME_VARIABLE": "Rinomina variabile...",

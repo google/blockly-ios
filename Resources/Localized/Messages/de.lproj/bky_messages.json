@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Eine Eingabe zur Funktion hinzuf\u00fcgen.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "Parameter",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Die Eingaben zu dieser Funktion hinzuf\u00fcgen, entfernen oder neu anordnen.",
-  "PROCEDURE_ALREADY_EXISTS": "Eine Prozedur namens \u201e%1\u201c ist bereits vorhanden.",
   "REDO": "Wiederholen",
   "REMOVE_COMMENT": "Kommentar entfernen",
   "RENAME_VARIABLE": "Variable umbenennen \u2026",

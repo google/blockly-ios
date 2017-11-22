@@ -1,6 +1,6 @@
 {
   "ADD_COMMENT": "Prida\u0165 koment\u00e1r",
-  "CANNOT_DELETE_VARIABLE_PROCEDURE": "Nie je mo\u017en\u00e9 zmaza\u0165 premenn\u00fa \u201e%1\u201c, lebo je s\u00fa\u010das\u0165ou defin\u00edcie funkcie \u201e%2\u201c",
+  "CANNOT_DELETE_VARIABLE_PROCEDURE": "Nie je mo\u017en\u00e9 zmaza\u0165 premenn\u00fa \u201e%1\u201c, preto\u017ee je s\u00fa\u010das\u0165ou defin\u00edcie funkcie \u201e%2\u201c",
   "CHANGE_VALUE_TITLE": "Zmeni\u0165 hodnotu:",
   "CLEAN_UP": "Narovna\u0165 bloky",
   "COLLAPSE_ALL": "Zvin\u00fa\u0165 bloky",
@@ -136,8 +136,8 @@
   "LISTS_REPEAT_TITLE": "vytvor zoznam s prvkom %1 opakovan\u00fdm %2 kr\u00e1t",
   "LISTS_REPEAT_TOOLTIP": "Vytvor\u00ed zoznam s nieko\u013ek\u00fdmi rovnak\u00fdmi prvkami s danou hodnotou.",
   "LISTS_REVERSE_HELPURL": "https://github.com/google/blockly/wiki/Lists#reversing-a-list",
-  "LISTS_REVERSE_MESSAGE0": "reverse %1",
-  "LISTS_REVERSE_TOOLTIP": "Reverse a copy of a list.",
+  "LISTS_REVERSE_MESSAGE0": "obr\u00e1ti\u0165 %1",
+  "LISTS_REVERSE_TOOLTIP": "Obr\u00e1ti\u0165 k\u00f3piu zoznamu.",
   "LISTS_SET_INDEX_HELPURL": "https://github.com/google/blockly/wiki/Lists#in-list--set",
   "LISTS_SET_INDEX_INPUT_TO": "ako",
   "LISTS_SET_INDEX_INSERT": "vlo\u017ei\u0165 na",
@@ -303,13 +303,12 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Prida\u0165 vstup do funkcie.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "vstupy",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Prida\u0165, odstr\u00e1ni\u0165 alebo zmeni\u0165 poradie vstupov tejto funkcie.",
-  "PROCEDURE_ALREADY_EXISTS": "Postup s n\u00e1zvom '%1' u\u017e existuje.",
   "REDO": "Znova",
   "REMOVE_COMMENT": "Odstr\u00e1ni\u0165 koment\u00e1r",
   "RENAME_VARIABLE": "Premenova\u0165 premenn\u00fa...",
   "RENAME_VARIABLE_TITLE": "Premenova\u0165 v\u0161etky premenn\u00e9 '%1' na:",
   "TEXT_APPEND_HELPURL": "https://github.com/google/blockly/wiki/Text#text-modification",
-  "TEXT_APPEND_TITLE": "k %1 pripoji\u0165 text %2",
+  "TEXT_APPEND_TITLE": "do %1 pridaj text %2",
   "TEXT_APPEND_TOOLTIP": "Pridaj ur\u010dit\u00fd text do premennej '%1'.",
   "TEXT_CHANGECASE_HELPURL": "https://github.com/google/blockly/wiki/Text#adjusting-text-case",
   "TEXT_CHANGECASE_OPERATOR_LOWERCASE": "na mal\u00e9 p\u00edsmen\u00e1",
@@ -387,5 +386,5 @@
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Nastav\u00ed t\u00fato premenn\u00fa, aby sa rovnala vstupu.",
   "VARIABLE_ALREADY_EXISTS": "Premenn\u00e1 s n\u00e1zvom %1 u\u017e existuje.",
-  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Premenn\u00e1 s n\u00e1zvom '%1' u\u017e existuje pre in\u00fa premenn\u00fa typu '%2'."
 }

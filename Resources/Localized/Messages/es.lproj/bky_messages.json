@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "A\u00f1adir una entrada a la funci\u00f3n.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "entradas",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "A\u00f1adir, eliminar o reordenar entradas para esta funci\u00f3n.",
-  "PROCEDURE_ALREADY_EXISTS": "Ya existe un procedimiento llamado \"%1\".",
   "REDO": "Rehacer",
   "REMOVE_COMMENT": "Eliminar comentario",
   "RENAME_VARIABLE": "Renombrar la variable\u2026",
