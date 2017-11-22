@@ -108,7 +108,7 @@ An input field for picking a date.
   Parses a string of the format "yyyy-MM-dd".
   */
   internal class func dateFromString(_ string: String) -> Date? {
-    if (string.characters.count != 10) {
+    if (string.count != 10) {
       return nil
     }
     let dateFormatter = DateFormatter()

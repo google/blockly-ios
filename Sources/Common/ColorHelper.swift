@@ -32,13 +32,13 @@ import Foundation
 
     // Strip "#" if it exists
     if rgbUpper.hasPrefix("#") {
-      let index = rgbUpper.characters.index(after: rgbUpper.startIndex)
+      let index = rgbUpper.index(after: rgbUpper.startIndex)
       rgbUpper = String(rgbUpper[index...])
     }
 
     // Verify that the string contains 6 valid hexidecimal characters
     let invalidCharacters = CharacterSet(charactersIn: "0123456789ABCDEF").inverted
-    if rgbUpper.characters.count != 6 ||
+    if rgbUpper.count != 6 ||
       rgbUpper.rangeOfCharacter(from: invalidCharacters) != nil {
       return nil
     }

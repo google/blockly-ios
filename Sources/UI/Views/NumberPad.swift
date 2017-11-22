@@ -401,7 +401,7 @@ public protocol NumberPadDelegate: class {
     } else if text == _localizedNumberFormatter.decimalSeparator && !currentText.contains(text) {
       // Add "." since it's not present yet.
       insertText(text)
-    } else if text.characters.count == 1 && !replacement {
+    } else if text.count == 1 && !replacement {
       // This is the equivalent of a button press (either from the number pad or physical keyboard).
       if _localizedNumberFormatter.number(from: text) != nil {
         // The text entered is a localized digit. Figure out how to insert it into the text field.
@@ -416,7 +416,7 @@ public protocol NumberPadDelegate: class {
           insertText(text)
         }
       }
-    } else if text.characters.count > 1 || replacement {
+    } else if text.count > 1 || replacement {
       // This must be a pasted string. Completely replace the current text if it's a valid number.
       if _localizedNumberFormatter.number(from: text) != nil {
         textField.text = text
@@ -501,7 +501,7 @@ public class NumberPadTextField: UITextField {
   public override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     if action == #selector(copy(_:)) {
       // Only allow copy if there's something to copy.
-      return (text?.characters.count ?? 0) > 0
+      return (text?.count ?? 0) > 0
     } else if action == #selector(paste(_:)) {
       // Only allow paste if there's a valid number in the pasteboard.
       if let numberPad = self.numberPad,
