@@ -737,11 +737,8 @@ public protocol WorkbenchViewControllerDelegate: class {
 
     refreshView()
 
-    // Automatically change the viewport to show the top-most block
-    if let topBlock =
-      workspace.topLevelBlocks().sorted(by: { $0.position.y <= $1.position.y }).first {
-      scrollBlockIntoView(blockUUID: topBlock.uuid, location: .topLeading, animated: false)
-    }
+    // Automatically change the viewport to show the top-leading part of the workspace.
+    setViewport(to: .topLeading, animated: false)
 
     // Fire any events that were created as a result of loading a new workspace.
     EventManager.shared.firePendingEvents()
@@ -1706,6 +1703,23 @@ extension WorkbenchViewController {
     // to scroll blocks into the view, immediately after the workspace has loaded, does not work.
     DispatchQueue.main.async {
       self.workspaceView.scrollBlockIntoView(block, location: location, animated: animated)
+    }
+  }
+
+  /**
+   Sets the content offset of the workspace's scroll view so that a specific location in the
+   workspace is visible.
+
+   - parameter location: The `Location` that should be made visible. If `.anywhere` is specified,
+   this method does nothing.
+   - parameter animated: Flag determining if this scroll view adjustment should be animated.
+   */
+  public func setViewport(to location: WorkspaceView.Location, animated: Bool) {
+    // Always perform this method at the end of the run loop, in order to ensure views have first
+    // been created/positioned in the scroll view. This fixes a problem where attempting
+    // to scroll blocks into the view, immediately after the workspace has loaded, does not work.
+    DispatchQueue.main.async {
+      self.workspaceView.setViewport(to: location, animated: animated)
     }
   }
 }

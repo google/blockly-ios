@@ -119,6 +119,7 @@ import Foundation
       workspaceScrollView.contentInsetAdjustmentBehavior = .always
     }
 
+    workspaceViewController.workspaceView.scrollIntoViewEdgeInsets = .zero
     workspaceViewController.workspaceView.allowCanvasPadding = false
     workspaceViewController.workspaceView.translatesAutoresizingMaskIntoConstraints = false
 
