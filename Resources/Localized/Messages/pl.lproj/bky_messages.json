@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Dodaj wej\u015bcie do funkcji.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "wej\u015bcia",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Dodaj, usu\u0144 lub zmie\u0144 kolejno\u015b\u0107 wej\u015b\u0107 tej funkcji.",
-  "PROCEDURE_ALREADY_EXISTS": "Procedura o nazwie '%1' ju\u017c istnieje.",
   "REDO": "Pon\u00f3w",
   "REMOVE_COMMENT": "Usu\u0144 komentarz",
   "RENAME_VARIABLE": "Zmie\u0144 nazw\u0119 zmiennej...",

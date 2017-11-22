@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "\u0130\u015fleve bir girdi ekleyin.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "girdiler",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Bu i\u015flevin girdilerini ekleyin, \u00e7\u0131kar\u0131n, ya da yeniden s\u0131ralay\u0131n.",
-  "PROCEDURE_ALREADY_EXISTS": "'%1' isimli prosed\u00fcr zaten var.",
   "REDO": "Yinele",
   "REMOVE_COMMENT": "Yorumu Sil",
   "RENAME_VARIABLE": "De\u011fi\u015fkeni yeniden adland\u0131r...",

@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Een invoer aan de functie toevoegen.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "ingangen",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Invoer van deze functie toevoegen, verwijderen of herordenen.",
-  "PROCEDURE_ALREADY_EXISTS": "Er bestaat al een variabele met de naam \"%1\".",
   "REDO": "Opnieuw",
   "REMOVE_COMMENT": "Opmerking verwijderen",
   "RENAME_VARIABLE": "Variabele hernoemen...",
@@ -387,5 +386,5 @@
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Verandert de waarde van de variabele naar de waarde van de invoer.",
   "VARIABLE_ALREADY_EXISTS": "Er bestaat al een variabele met de naam \"%1\".",
-  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "Een variabele met de naam '%1' bestaat al voor een andere variabele van type '%2'."
 }
