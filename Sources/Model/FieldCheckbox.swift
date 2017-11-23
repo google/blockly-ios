@@ -49,10 +49,10 @@ An input field for a checkbox.
   }
 
   public override func setValueFromSerializedText(_ text: String) throws {
-    self.checked = (text.caseInsensitiveCompare("true") == .orderedSame)
+    self.checked = (text.caseInsensitiveCompare("TRUE") == .orderedSame)
   }
 
   public override func serializedText() throws -> String? {
-    return self.checked ? "true" : "false"
+    return self.checked ? "TRUE" : "FALSE"
   }
 }
