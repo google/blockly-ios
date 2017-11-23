@@ -448,18 +448,23 @@ NSString *const TurtleObjCViewController_JSCallbackName = @"TurtleViewController
 - (void)workbenchViewController:(BKYWorkbenchViewController *)workbenchViewController
                didUpdateState:(NSSet *)state {
 
-  // Only allow automatic scrolling if the user tapped the workspace.
-  _allowScrollingToBlockView =
-    [state isSubsetOfSet:[NSSet setWithObject:@(workbenchViewController.stateDidTapWorkspace)]];
+  if (_allowScrollingToBlockView) {
+    // Only continue to allow automatic scrolling if the user tapped the workspace.
+    _allowScrollingToBlockView =
+      [state isSubsetOfSet:[NSSet setWithObject:@(workbenchViewController.stateDidTapWorkspace)]];
+  }
 
-  // Only allow block highlighting if the user tapped/panned or opened the toolbox or trash can.
-  _allowBlockHighlighting = [state isSubsetOfSet: [NSSet setWithObjects:
-    @(workbenchViewController.stateDidTapWorkspace),
-    @(workbenchViewController.stateDidPanWorkspace),
-    @(workbenchViewController.stateCategoryOpen),
-    @(workbenchViewController.stateTrashCanOpen),
-    nil
-  ]];
+  if (_allowBlockHighlighting) {
+    // Only continue to allow block highlighting if the user tapped/panned or opened the toolbox or
+    // trash can.
+    _allowBlockHighlighting = [state isSubsetOfSet: [NSSet setWithObjects:
+      @(workbenchViewController.stateDidTapWorkspace),
+      @(workbenchViewController.stateDidPanWorkspace),
+      @(workbenchViewController.stateCategoryOpen),
+      @(workbenchViewController.stateTrashCanOpen),
+      nil
+    ]];
+  }
 }
 
 @end
