@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "L\u00e4gg till en inmatning till funktionen.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "inmatningar",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "L\u00e4gg till, ta bort och \u00e4ndra ordningen f\u00f6r inmatningar till denna funktion.",
-  "PROCEDURE_ALREADY_EXISTS": "En procedur som heter \"%1\" finns redan.",
   "REDO": "G\u00f6r om",
   "REMOVE_COMMENT": "Radera kommentar",
   "RENAME_VARIABLE": "Byt namn p\u00e5 variabel...",

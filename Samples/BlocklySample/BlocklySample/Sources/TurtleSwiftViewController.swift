@@ -412,13 +412,21 @@ extension TurtleSwiftViewController: WorkbenchViewControllerDelegate {
     // We need to disable automatic block view scrolling / block highlighting based on the latest
     // user interaction.
 
-    // Only allow automatic scrolling if the user tapped on the workspace.
-    _allowScrollingToBlockView = state.isSubset(of: [.didTapWorkspace])
+    if _allowScrollingToBlockView {
+      // Only continue to allow automatic scrolling if the user tapped on the workspace.
+      _allowScrollingToBlockView =
+        state.isSubset(of: [workbenchViewController.stateDidTapWorkspace])
+    }
 
-    // Only allow block highlighting if the user tapped/panned the workspace or opened either the
-    // toolbox or trash can.
-    _allowBlockHighlighting =
-      state.isSubset(of: [.didTapWorkspace, .didPanWorkspace, .categoryOpen, .trashCanOpen])
+    if _allowBlockHighlighting {
+      // Only continue to allow block highlighting if the user tapped/panned the workspace or
+      // opened either the toolbox or trash can.
+      _allowBlockHighlighting = state.isSubset(of: [
+        workbenchViewController.stateDidTapWorkspace,
+        workbenchViewController.stateDidPanWorkspace,
+        workbenchViewController.stateCategoryOpen,
+        workbenchViewController.stateTrashCanOpen])
+    }
   }
 }
 

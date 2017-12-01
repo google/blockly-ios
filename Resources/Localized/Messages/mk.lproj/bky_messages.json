@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Add an input to the function.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "inputs",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Add, remove, or reorder inputs to this function.",
-  "PROCEDURE_ALREADY_EXISTS": "A procedure named '%1' already exists.",
   "REDO": "Redo",
   "REMOVE_COMMENT": "\u041e\u0442\u0441\u0442\u0440\u0430\u043d\u0438 \u043a\u043e\u043c\u0435\u043d\u0442\u0430\u0440",
   "RENAME_VARIABLE": "\u041f\u0440\u0435\u0438\u043c\u0435\u043d\u0443\u0432\u0430\u0458 \u043f\u0440\u043e\u043c\u0435\u043d\u043b\u0438\u0432\u0430...",

@@ -134,6 +134,16 @@ public protocol WorkspaceViewControllerDelegate {
     view = workspaceView
   }
 
+  open override func present(
+    _ viewControllerToPresent: UIViewController,
+    animated flag: Bool,
+    completion: (() -> Void)? = nil) {
+
+    delegate?.workspaceViewController(self, willPresentViewController: viewControllerToPresent)
+
+    super.present(viewControllerToPresent, animated: flag, completion: completion)
+  }
+
   // MARK: - Public
 
   /**
@@ -229,8 +239,6 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
 
     self.presentationDelegate = presentationDelegate
 
-    delegate?.workspaceViewController(self, willPresentViewController: viewController)
-
     present(viewController, animated: true, completion: nil)
 
     return true
@@ -240,8 +248,6 @@ extension WorkspaceViewController: LayoutPopoverDelegate {
     _ layoutView: LayoutView, requestedToPresentViewController viewController: UIViewController)
   {
     self.presentationDelegate = nil
-
-    delegate?.workspaceViewController(self, willPresentViewController: viewController)
 
     present(viewController, animated: true, completion: nil)
   }

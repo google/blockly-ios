@@ -17,7 +17,7 @@
  * Base class for all Blockly events.
  */
 @objc(BKYEvent)
-@objcMembers public class BlocklyEvent: NSObject {
+@objcMembers open class BlocklyEvent: NSObject {
 
   // MARK: - Properties
 
@@ -37,13 +37,13 @@
   internal static let JSON_XML = "xml"
 
   /// The type of this event.
-  public let type: EventType
+  open let type: EventType
   /// The ID for the workspace that triggered this event.
-  public let workspaceID: String
+  open let workspaceID: String
   /// The ID for the group of related events.
-  public var groupID: String?
+  open var groupID: String?
   /// The ID of the primary or root affected block.
-  public let blockID: String?
+  open let blockID: String?
 
   // MARK: - Initializers
 
@@ -94,7 +94,7 @@
    - throws:
    `BlocklyError`: Thrown if the event could not be serialized.
    */
-  public func toJSON() throws -> [String: Any] {
+  open func toJSON() throws -> [String: Any] {
     var json = [String: Any]()
     json[BlocklyEvent.JSON_TYPE] = type
     json[BlocklyEvent.JSON_WORKSPACE_ID] = workspaceID
@@ -138,7 +138,7 @@
 
    - returns: `true` if this event can be discarded, or `false` otherwise.
    */
-  public func isDiscardable() -> Bool {
+  open func isDiscardable() -> Bool {
     return false
   }
 
@@ -153,7 +153,7 @@
    - returns: If the events are compatible, this returns a new `BlocklyEvent` that is the result
    of merging the two events together. Otherwise, `nil` is returned.
    */
-  public func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
+  open func merged(withNextChronologicalEvent event: BlocklyEvent) -> BlocklyEvent? {
     return nil
   }
 }

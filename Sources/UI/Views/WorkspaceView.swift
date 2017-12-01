@@ -95,9 +95,12 @@ View for rendering a `WorkspaceLayout`.
   open var canvasPaddingScale = EdgeInsets(top: 0.5, leading: 0.2, bottom: 0.95, trailing: 0.9)
 
   /**
-  The amount of padding that should be added to the edges when automatically scrolling a
-  `Block` into view.
-  */
+   The amount of padding that should be added to the edges when automatically scrolling a
+   `Block` into view or setting the viewport to a specific location.
+
+   - note: See `scrollBlockIntoView(_:location:animated:)` and `setViewport(to:animated:)` for
+   more information.
+   */
   open var scrollIntoViewEdgeInsets = EdgeInsets(top: 20, leading: 20, bottom: 100, trailing: 20)
 
   /// Enables/disables the zooming of a workspace. Defaults to false.
@@ -375,6 +378,8 @@ View for rendering a `WorkspaceLayout`.
 
    - parameter location: The `Location` that should be made visible. If `.anywhere` is specified,
    this method does nothing.
+   - parameter animated: Flag determining if this scroll view adjustment should be animated.
+   - note: See `scrollIntoViewEdgeInsets`.
    */
   open func setViewport(to location: Location, animated: Bool) {
     guard let workspaceLayout = self.workspaceLayout, location != .anywhere else {
@@ -382,7 +387,10 @@ View for rendering a `WorkspaceLayout`.
     }
 
     var contentOffset = CGPoint.zero
-    var scrollAreaInsets = UIEdgeInsets.zero
+    var scrollAreaInsets = UIEdgeInsets(top: scrollIntoViewEdgeInsets.top,
+                                        left: scrollIntoViewEdgeInsets.left,
+                                        bottom: scrollIntoViewEdgeInsets.bottom,
+                                        right: scrollIntoViewEdgeInsets.right)
 
     // Make sure the insets accounts for the safe area
     if #available(iOS 11.0, *) {

@@ -487,7 +487,7 @@ class BlockXMLTest: XCTestCase {
       XCTAssertEqual("field", fieldXML.name)
       XCTAssertEqual(1, fieldXML.attributes.count)
       XCTAssertEqual("checkbox", fieldXML.attributes["name"])
-      XCTAssertEqual("true", fieldXML.value)
+      XCTAssertEqual("TRUE", fieldXML.value)
       XCTAssertEqual(0, fieldXML.children.count)
     }
   }
@@ -551,7 +551,7 @@ class BlockXMLTest: XCTestCase {
       XCTAssertEqual("field", fieldXML.name)
       XCTAssertEqual(1, fieldXML.attributes.count)
       XCTAssertEqual("checkbox", fieldXML.attributes["name"])
-      XCTAssertEqual("true", fieldXML.value)
+      XCTAssertEqual("TRUE", fieldXML.value)
       XCTAssertEqual(0, fieldXML.children.count)
     }
 

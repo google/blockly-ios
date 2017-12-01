@@ -303,7 +303,6 @@
   "PROCEDURES_MUTATORARG_TOOLTIP": "Tilf\u00f8j en parameter til funktionen.",
   "PROCEDURES_MUTATORCONTAINER_TITLE": "parametre",
   "PROCEDURES_MUTATORCONTAINER_TOOLTIP": "Tilf\u00f8je, fjerne eller \u00e6ndre r\u00e6kkef\u00f8lgen af parametre til denne funktion.",
-  "PROCEDURE_ALREADY_EXISTS": "En procedure navngivet \u00bb%1\u00ab findes allerede.",
   "REDO": "Omg\u00f8r",
   "REMOVE_COMMENT": "Fjern kommentar",
   "RENAME_VARIABLE": "Omd\u00f8b variabel...",

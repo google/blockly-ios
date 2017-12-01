@@ -1,3 +1,22 @@
+# [Version 1.2.1](https://github.com/google/blockly-ios/tree/1.2.1) (Dec 2017)
+
+Updates:
+- Opens the event framework so developers can add their own custom events.
+- Opens `WorkbenchViewController` so developers can add their own UI states.
+- Adds `keepTrashedBlocks` to the workbench, which controls if users can open
+the trash folder. By default, it is set to `false` (matching default Web
+behavior).
+- Removes use of deprecated `characters` property on Strings.
+- Changes the workbench to allow changing the viewport location based on
+workspace location, and sets it to first open at the top-leading corner of the
+workspace.
+- Fixes `FieldCheckbox` to serialize XML into capitalized values, matching Web
+behavior.
+- Fixes turtle demo so it stops highlighting/scrolling blocks into view
+if the user has edited the workspace.
+- Updates i18n messages and compiled version of Web Blockly to latest
+November 2017 release.
+
 # [Version 1.2](https://github.com/google/blockly-ios/tree/1.2) (Oct 2017)
 
 Additions:

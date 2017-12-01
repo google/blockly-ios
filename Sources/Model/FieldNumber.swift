@@ -287,7 +287,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
       if let decimalRange = precisionString.range(of: ".") , !self.isInteger {
         // Set the min/max number of fraction digits to the same number of digits after the
         // decimal place of `self.precision`
-        let significantDigits = precisionString[decimalRange.upperBound...].characters.count
+        let significantDigits = precisionString[decimalRange.upperBound...].count
         let fractionDigits = min(significantDigits, FieldNumber.MAXIMUM_FRACTION_DIGITS)
         minimumFractionDigits = fractionDigits
         maximumFractionDigits = fractionDigits
