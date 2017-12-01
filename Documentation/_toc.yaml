@@ -365,8 +365,6 @@ toc:
     path: /blockly/reference/ios/Classes/WorkspaceViewController
   - title: WorkspaceViewControllerDelegate
     path: /blockly/reference/ios/Protocols/WorkspaceViewControllerDelegate
-  - title: WorkbenchViewControllerUIState
-    path: /blockly/reference/ios/Extensions/WorkbenchViewControllerUIState
   - title: ZIndexedGroupView
     path: /blockly/reference/ios/Classes/ZIndexedGroupView
   - title: ZIndexedView
