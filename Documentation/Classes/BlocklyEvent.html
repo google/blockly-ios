@@ -14,7 +14,7 @@
             <h1>BlocklyEvent</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">BlocklyEvent</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objcMembers</span> <span class="n">open</span> <span class="kd">class</span> <span class="kt">BlocklyEvent</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
@@ -78,7 +78,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html#/s:7Blockly0A5EventC0B4Typea">EventType</a></span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">let</span> <span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/BlocklyEvent.html#/s:7Blockly0A5EventC0B4Typea">EventType</a></span></code></pre>
 
                         </div>
                       </div>
@@ -105,7 +105,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">workspaceID</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">let</span> <span class="nv">workspaceID</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -132,7 +132,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">groupID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">var</span> <span class="nv">groupID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -159,7 +159,7 @@
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">blockID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="k">let</span> <span class="nv">blockID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -271,7 +271,7 @@ given <code>json</code>.
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toJSON</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">toJSON</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -353,7 +353,7 @@ to specify individual behavior of when the event can be discarded, based on its 
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">isDiscardable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">isDiscardable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -388,7 +388,7 @@ to specify individual merge behavior with other events.</p>
                         <h4>Declaration</h4>
                         <div class="objc">
                           <p class="aside-title-objc">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">merged</span><span class="p">(</span><span class="n">withNextChronologicalEvent</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">BlocklyEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">BlocklyEvent</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="n">open</span> <span class="kd">func</span> <span class="nf">merged</span><span class="p">(</span><span class="n">withNextChronologicalEvent</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">BlocklyEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">BlocklyEvent</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -935,8 +935,6 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView

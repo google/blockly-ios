@@ -37,7 +37,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Event that is called when a <code><a href="../Classes/WorkbenchViewController.html">WorkbenchViewController</a></code> updates its <code>state</code>.</p>
+                        <p>Event that is called when a workbench updates its UI state.</p>
 
                       </div>
                       <div class="declaration">
@@ -47,6 +47,39 @@
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">workbenchViewController</span><span class="p">(</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockly@objc(pl)BKYWorkbenchViewControllerDelegate(im)workbenchViewController:shouldKeepStates:forStateValue:"></a>
+                    <a name="//apple_ref/swift/Method/workbenchViewController(_:shouldKeepStates:forStateValue:)" class="dashAnchor"></a>
+                    <h3><a class="token" href="#/c:@M@Blockly@objc(pl)BKYWorkbenchViewControllerDelegate(im)workbenchViewController:shouldKeepStates:forStateValue:">workbenchViewController(_:shouldKeepStates:forStateValue:)</a></h3>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Optional method that a delegate may override to specify the set of UI state values that should
+be kept in the workbench when a specific value is added via
+<code>WorkbenchViewController.addUIStateValue(_:animated)</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="objc">
+                          <p class="aside-title-objc">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">optional</span> <span class="kd">func</span> <span class="nf">workbenchViewController</span><span class="p">(</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The set of <code>UIStateValue</code> values that should be kept.</p>
                       </div>
                     </section>
                   </div>
@@ -430,8 +463,6 @@ toc:
       path: /blockly/reference/ios/../Classes/WorkspaceViewController.html
     - title: WorkspaceViewControllerDelegate
       path: /blockly/reference/ios/../Protocols/WorkspaceViewControllerDelegate.html
-    - title: WorkbenchViewControllerUIState
-      path: /blockly/reference/ios/../Extensions/WorkbenchViewControllerUIState.html
     - title: ZIndexedGroupView
       path: /blockly/reference/ios/../Classes/ZIndexedGroupView.html
     - title: ZIndexedView
