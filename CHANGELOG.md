@@ -1,3 +1,9 @@
+# [Version 1.2.2](https://github.com/google/blockly-ios/tree/1.2.2) (Feb 2018)
+
+- Changes Blockly framework to a shared scheme in order to fix compilation
+issue with Carthage
+- Updates i18n messages from Web Blockly (as of 2018/02/12)
+
 # [Version 1.2.1](https://github.com/google/blockly-ios/tree/1.2.1) (Dec 2017)
 
 Updates:
