@@ -1,6 +1,6 @@
 {
   "ADD_COMMENT": "Lis\u00e4\u00e4 kommentti",
-  "CANNOT_DELETE_VARIABLE_PROCEDURE": "Can't delete the variable '%1' because it's part of the definition of the function '%2'",
+  "CANNOT_DELETE_VARIABLE_PROCEDURE": "Ei voida poistaa muuttujaa '%1' koska se on osa funktion m\u00e4\u00e4ritelm\u00e4\u00e4 '%2'",
   "CHANGE_VALUE_TITLE": "Muuta arvoa:",
   "CLEAN_UP": "Siivoa lohkot",
   "COLLAPSE_ALL": "Sulje lohkot",
@@ -71,8 +71,8 @@
   "IOS_ERROR": "Virhe",
   "IOS_OK": "OK",
   "IOS_PROCEDURES_ADD_INPUT": "+ Lis\u00e4\u00e4 sy\u00f6te",
-  "IOS_PROCEDURES_ALLOW_STATEMENTS": "Allow statements",
-  "IOS_PROCEDURES_DUPLICATE_INPUTS_ERROR": "This function has duplicate inputs.",
+  "IOS_PROCEDURES_ALLOW_STATEMENTS": "Salli selostukset",
+  "IOS_PROCEDURES_DUPLICATE_INPUTS_ERROR": "T\u00e4ll\u00e4 toiminnolla on p\u00e4\u00e4llekk\u00e4isi\u00e4 sy\u00f6tt\u00f6j\u00e4.",
   "IOS_PROCEDURES_INPUTS": "SY\u00d6TTEET",
   "IOS_VARIABLES_ADD_BUTTON": "Lis\u00e4\u00e4",
   "IOS_VARIABLES_ADD_VARIABLE": "+ Lis\u00e4\u00e4 muuttuja",

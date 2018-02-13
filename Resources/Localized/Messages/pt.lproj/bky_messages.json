@@ -322,7 +322,7 @@
   "TEXT_CHARAT_LAST": "obter \u00faltima letra",
   "TEXT_CHARAT_RANDOM": "obter letra aleat\u00f3ria",
   "TEXT_CHARAT_TAIL": "",
-  "TEXT_CHARAT_TITLE": "in text %1 %2",
+  "TEXT_CHARAT_TITLE": "no texto %1 %2",
   "TEXT_CHARAT_TOOLTIP": "Retorna a letra na posi\u00e7\u00e3o especificada.",
   "TEXT_COUNT_HELPURL": "https://github.com/google/blockly/wiki/Text#counting-substrings",
   "TEXT_COUNT_MESSAGE0": "contar %1 em %2",
@@ -386,5 +386,5 @@
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "Define esta vari\u00e1vel para o valor inserido.",
   "VARIABLE_ALREADY_EXISTS": "J\u00e1 existe uma vari\u00e1vel com o nome de '%1'.",
-  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "A variable named '%1' already exists for another variable of type '%2'."
+  "VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE": "J\u00e1 existe uma vari\u00e1vel chamada '%1' para outra vari\u00e1vel do tipo '%2'."
 }
