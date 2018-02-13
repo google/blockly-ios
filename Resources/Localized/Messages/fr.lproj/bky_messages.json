@@ -275,7 +275,7 @@
   "MATH_TRIG_TOOLTIP_SIN": "Renvoie le sinus d\u2019un angle en degr\u00e9s (pas en radians).",
   "MATH_TRIG_TOOLTIP_TAN": "Renvoie la tangente d\u2019un angle en degr\u00e9s (pas en radians).",
   "NEW_VARIABLE": "Cr\u00e9er une variable...",
-  "NEW_VARIABLE_TITLE": "Nouveau nom de la variable :",
+  "NEW_VARIABLE_TITLE": "Le nom de la nouvelle variable :",
   "ORDINAL_NUMBER_SUFFIX": "",
   "PROCEDURES_ALLOW_STATEMENTS": "autoriser les ordres",
   "PROCEDURES_BEFORE_PARAMS": "avec :",

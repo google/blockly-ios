@@ -381,7 +381,7 @@
   "VARIABLES_GET_CREATE_SET": "\u521b\u5efa\u201c\u8bbe\u5b9a%1\u201d",
   "VARIABLES_GET_HELPURL": "https://github.com/google/blockly/wiki/Variables#get",
   "VARIABLES_GET_TOOLTIP": "\u8fd4\u56de\u6b64\u53d8\u91cf\u7684\u503c\u3002",
-  "VARIABLES_SET": "\u8d4b\u503c %1 \u5230 %2",
+  "VARIABLES_SET": "\u8d4b\u503c %1 \u4e3a %2",
   "VARIABLES_SET_CREATE_GET": "\u521b\u5efa\u201c\u83b7\u5f97%1\u201d",
   "VARIABLES_SET_HELPURL": "https://github.com/google/blockly/wiki/Variables#set",
   "VARIABLES_SET_TOOLTIP": "\u8bbe\u7f6e\u6b64\u53d8\u91cf\uff0c\u4ee5\u4f7f\u5b83\u548c\u8f93\u5165\u503c\u76f8\u7b49\u3002",
