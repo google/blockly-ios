@@ -24,7 +24,7 @@ Helper class for doing layout calculatinos.
   /**
   Ensure the given layout will fit within a given size, increasing the size if necessary.
 
-  - parameter layout: The layout to accomodate
+  - parameter layout: The layout to accommodate
   - parameter size: The initial workspace size
   - returns: A workspace size that now accommodates the layout.
   */
