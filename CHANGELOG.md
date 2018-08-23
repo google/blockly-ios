@@ -120,7 +120,7 @@ It walks you through the process of creating an iOS app with Blockly.
 
 # [Version 0.7.4](https://github.com/google/blockly-ios/tree/0.7.4) (Apr 2017)
 
-- Updates Cocoapods podspec file to specify AEXML 4.1.0 to accomodate Swift 3.1.
+- Updates Cocoapods podspec file to specify AEXML 4.1.0 to accommodate Swift 3.1.
 
 # [Version 0.7.3](https://github.com/google/blockly-ios/tree/0.7.3) (Apr 2017)
 
