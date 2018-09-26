@@ -1,3 +1,11 @@
+**The blockly-ios project is _no longer actively developed_ by the
+Google Blockly team. We will continue to review and accept pull requests.
+If you are looking to create a new Blockly-based app, we recommend using
+the [web version](http://github.com/google/blockly) in a WebView.  We
+have also create an
+[XCode demonstration project](https://github.com/google/blockly/tree/develop/demos/mobile/ios)
+that does exactly this.**
+
 # Blockly for iOS
 
 [Blockly][1] is a library for building drag-and-drop visual editors for
