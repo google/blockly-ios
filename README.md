@@ -30,9 +30,6 @@ Blockly for iOS includes:
 - Multi-touch support (currently only on iOS)
 - Block animations (currently only on iOS)
 
-The Blockly team is actively working on achieving feature parity across
-all three platforms to support cross-platform development.
-
 # Requirements
 
 Supports devices running **iOS 8.0 or above**.
