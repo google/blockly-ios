@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <animals>
     <cats>
         <cat breed="Siberian" color="lightgray">Tinna</cat>
@@ -8,8 +8,8 @@
     </cats>
     <dogs>
         <dog breed="Bull Terrier" color="white">Villy</dog>
-        <dog breed="Bull Terrier" color="white">Spot</dog>
+        <dog breed="Bull Terrier" color="white" gender="male">Spot</dog>
         <dog breed="Golden Retriever" color="yellow">Betty</dog>
-        <dog breed="Miniature Schnauzer" color="black">Kika</dog>
+        <dog breed="Miniature Schnauzer" color="black" gender="female">Kika</dog>
     </dogs>
 </animals>

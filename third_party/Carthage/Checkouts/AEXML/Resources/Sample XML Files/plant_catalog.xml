@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!-- slightly modified http://www.w3schools.com/xml/plant_catalog.xml -->
 <CATALOG>
 	<PLANT>
@@ -8,9 +8,8 @@
 		<LIGHT>Mostly Shady</LIGHT>
 		<PRICE>2.44</PRICE>
 		<AVAILABILITY>031599</AVAILABILITY>
-        <TRUESTRING>True</TRUESTRING>
-        <TRUENUMBER>1</TRUENUMBER>
-        <FALSEANYTHINGELSE>XYZ</FALSEANYTHINGELSE>
+        <TRUESTRING>true</TRUESTRING>
+        <FALSESTRING>false</FALSESTRING>
         <ELEMENTWITHOUTVALUE></ELEMENTWITHOUTVALUE>
         <EMPTYELEMENT />
 	</PLANT>

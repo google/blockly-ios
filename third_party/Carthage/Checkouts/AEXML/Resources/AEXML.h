@@ -4,9 +4,7 @@
  *  Licensed under the MIT license. See LICENSE file.
  */
 
-import UIKit
+#import <Foundation/Foundation.h>
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-}
+FOUNDATION_EXPORT double AEXMLVersionNumber;
+FOUNDATION_EXPORT const unsigned char AEXMLVersionString[];
