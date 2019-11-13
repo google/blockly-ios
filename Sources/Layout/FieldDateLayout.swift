@@ -37,7 +37,7 @@ import Foundation
   }
 
   // Formatter used to generate `self.textValue`
-  open let dateFormatter: DateFormatter
+  public let dateFormatter: DateFormatter
 
   // MARK: - Initializers
 

@@ -25,7 +25,7 @@ import Foundation
   // MARK: - Properties
 
   /// The workspace layout whose layout hierarchy is being managed by this object
-  open let workspaceLayout: WorkspaceLayout
+  public let workspaceLayout: WorkspaceLayout
 
   /// Builder for constructing layouts under `self.workspaceLayout`
   public final let layoutBuilder: LayoutBuilder
@@ -35,7 +35,7 @@ import Foundation
   public fileprivate(set) final var connectionManager: ConnectionManager?
 
   /// Object responsible for bumping blocks away from each other
-  open let blockBumper = BlockBumper()
+  public let blockBumper = BlockBumper()
 
   /// Manager responsible for keeping track of all variable names under this workspace
   public weak var variableNameManager: NameManager? {

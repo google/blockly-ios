@@ -111,7 +111,7 @@ import Foundation
     fatalError("Called unsupported initializer")
   }
 
-  open override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     if #available(iOS 11.0, *) {

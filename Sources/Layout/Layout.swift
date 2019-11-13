@@ -70,10 +70,10 @@ position and size.
   // MARK: - Static Properties
 
   /// Flag that should be used when the layout's entire display needs to be updated from the UI side
-  open static let Flag_NeedsDisplay = LayoutFlag(highestOrderBitIndex: 0)
+  public static let Flag_NeedsDisplay = LayoutFlag(highestOrderBitIndex: 0)
 
   /// Flag that should be used when `self.viewFrame` has been updated
-  open static let Flag_UpdateViewFrame = LayoutFlag(highestOrderBitIndex: 1)
+  public static let Flag_UpdateViewFrame = LayoutFlag(highestOrderBitIndex: 1)
 
   // MARK: - Properties
 

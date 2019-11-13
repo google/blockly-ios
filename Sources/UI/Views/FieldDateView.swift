@@ -51,7 +51,7 @@ import Foundation
   }()
 
   /// The toolbar that appears above the date picker
-  fileprivate fileprivate(set) lazy var datePickerToolbar: UIToolbar = {
+  fileprivate private(set) lazy var datePickerToolbar: UIToolbar = {
     let datePickerToolbar = UIToolbar()
     datePickerToolbar.barStyle = .default
     datePickerToolbar.isTranslucent = true

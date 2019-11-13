@@ -24,7 +24,7 @@ import Foundation
   // MARK: - Properties
 
   /// The name of the JS object that should be used for each request (e.g. 'Blockly.Python')
-  open let jsGeneratorObject: String
+  public let jsGeneratorObject: String
   /// List of block generator JS files that should be used for each request
   /// (e.g. ['python_compressed.js'])
   open private(set) var jsBlockGeneratorFiles = [BundledFile]()

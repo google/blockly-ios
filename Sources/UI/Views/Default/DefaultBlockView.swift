@@ -95,7 +95,7 @@ import Foundation
      from outside your event-handling code, you may specify nil.
    - returns: The view object that is the farthest descendent the current view and contains `point`.
   */
-  open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+  public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     let hitTestView = super.hitTest(point, with: event)
 
     if hitTestView == self {
@@ -110,7 +110,7 @@ import Foundation
     return hitTestView
   }
 
-  open override func refreshView(
+  public override func refreshView(
     forFlags flags: LayoutFlag = LayoutFlag.All, animated: Bool = false)
   {
     super.refreshView(forFlags: flags, animated: animated)
@@ -258,7 +258,7 @@ import Foundation
     })
   }
 
-  open override func prepareForReuse() {
+  public override func prepareForReuse() {
     super.prepareForReuse()
 
     // Disable animating layer changes, so that the next block layout that uses this view instance

@@ -54,7 +54,7 @@ import Foundation
       try manager.loadMessages( withPrefix: "bky_", jsonPath: "bky_constants.json", bundle: bundle)
       try manager.loadMessages( withPrefix: "bky_", jsonPath: "bky_messages.json", bundle: bundle)
       try manager.loadSynonyms(withPrefix: "bky_", jsonPath: "bky_synonyms.json", bundle: bundle)
-    } catch let error {
+    } catch {
       bky_debugPrint("Could not load default files for MessageManager: \(error)")
     }
 

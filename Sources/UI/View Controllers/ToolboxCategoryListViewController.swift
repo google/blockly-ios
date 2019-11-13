@@ -144,7 +144,7 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
 
   // MARK: - Super
 
-  open override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     guard let collectionView = self.collectionView else { return }
@@ -187,7 +187,7 @@ public protocol ToolboxCategoryListViewControllerDelegate: class {
     view.addObserver(self, forKeyPath: "bounds", options: .new, context: &_kvoContextBounds)
   }
 
-  open override func observeValue(
+  public override func observeValue(
     forKeyPath keyPath: String?,
     of object: Any?,
     change: [NSKeyValueChangeKey : Any]?,

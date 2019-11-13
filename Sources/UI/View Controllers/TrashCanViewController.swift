@@ -75,7 +75,7 @@ import Foundation
 
   // MARK: - Super
 
-  open override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     workspaceView.allowCanvasPadding = false
@@ -86,7 +86,7 @@ import Foundation
     updateMaximumLineBlockSize()
   }
 
-  open override func observeValue(
+  public override func observeValue(
     forKeyPath keyPath: String?,
     of object: Any?,
     change: [NSKeyValueChangeKey : Any]?,

@@ -23,12 +23,12 @@ public protocol Mutator : class {
   /**
    The block that should be mutated by this mutator.
    */
-  weak var block: Block? { get set }
+  var block: Block? { get set }
 
   /**
    The layout associated with this mutator.
    */
-  weak var layout: MutatorLayout? { get set }
+  var layout: MutatorLayout? { get set }
 
   /**
    Mutates `self.block` based on this mutator's internal state.

@@ -37,13 +37,13 @@
   internal static let JSON_XML = "xml"
 
   /// The type of this event.
-  open let type: EventType
+  public let type: EventType
   /// The ID for the workspace that triggered this event.
-  open let workspaceID: String
+  public let workspaceID: String
   /// The ID for the group of related events.
   open var groupID: String?
   /// The ID of the primary or root affected block.
-  open let blockID: String?
+  public let blockID: String?
 
   // MARK: - Initializers
 

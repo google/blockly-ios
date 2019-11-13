@@ -27,16 +27,16 @@ import Foundation
   // MARK: - Properties
 
   /// The associated toolbox
-  open let toolbox: Toolbox
+  public let toolbox: Toolbox
   /// The layout direction to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  open let layoutDirection: WorkspaceFlowLayout.LayoutDirection
+  public let layoutDirection: WorkspaceFlowLayout.LayoutDirection
   /// The layout engine to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  open let engine: LayoutEngine
+  public let engine: LayoutEngine
   /// The layout builder to use when creating new `WorkspaceFlowLayout` instances for each
   /// category in `toolbox`
-  open let layoutBuilder: LayoutBuilder
+  public let layoutBuilder: LayoutBuilder
   /// The associated list of `WorkspaceLayoutCoordinator` instances for `toolbox.categories`
   open var categoryLayoutCoordinators = [WorkspaceLayoutCoordinator]()
 
