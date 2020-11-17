@@ -1,5 +1,5 @@
 **The blockly-ios project is _no longer actively developed_ by the
-Google Blockly team. We will continue to review and accept pull requests.
+Google Blockly team. 
 If you are looking to create a new Blockly-based app, we recommend using
 the [web version](http://github.com/google/blockly) in a WebView.  We
 have also create an
